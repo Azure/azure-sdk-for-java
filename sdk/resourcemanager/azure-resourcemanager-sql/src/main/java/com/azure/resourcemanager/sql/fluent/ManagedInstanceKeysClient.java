@@ -30,7 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.resourcemanager.sql.SqlManagementClient;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.inner.ManagedInstanceKeyInner;
 import com.azure.resourcemanager.sql.fluent.inner.ManagedInstanceKeyListResultInner;
 import java.nio.ByteBuffer;
@@ -118,37 +118,6 @@ public final class ManagedInstanceKeysClient {
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("keyName") String keyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/keys/{keyName}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceKeyInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("keyName") String keyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ManagedInstanceKeyInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/keys/{keyName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
@@ -262,6 +231,7 @@ public final class ManagedInstanceKeysClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByInstance(
                 this.client.getEndpoint(),
@@ -320,7 +290,7 @@ public final class ManagedInstanceKeysClient {
         String resourceGroupName, String managedInstanceName, String filter, Context context) {
         return new PagedFlux<>(
             () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, filter, context),
-            nextLink -> listByInstanceNextSinglePageAsync(nextLink));
+            nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -341,7 +311,7 @@ public final class ManagedInstanceKeysClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, filter),
-            nextLink -> listByInstanceNextSinglePageAsync(nextLink));
+            nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -493,6 +463,7 @@ public final class ManagedInstanceKeysClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -704,6 +675,7 @@ public final class ManagedInstanceKeysClient {
             parameters.validate();
         }
         final String apiVersion = "2017-10-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -730,14 +702,18 @@ public final class ManagedInstanceKeysClient {
      * @return a managed instance key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ManagedInstanceKeyInner>, ManagedInstanceKeyInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ManagedInstanceKeyInner>, ManagedInstanceKeyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String managedInstanceName, String keyName, ManagedInstanceKeyInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, keyName, parameters);
         return this
             .client
-            .<ManagedInstanceKeyInner, ManagedInstanceKeyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ManagedInstanceKeyInner.class, ManagedInstanceKeyInner.class);
+            .<ManagedInstanceKeyInner, ManagedInstanceKeyInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ManagedInstanceKeyInner.class,
+                ManagedInstanceKeyInner.class,
+                Context.NONE);
     }
 
     /**
@@ -755,18 +731,67 @@ public final class ManagedInstanceKeysClient {
      * @return a managed instance key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ManagedInstanceKeyInner>, ManagedInstanceKeyInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ManagedInstanceKeyInner>, ManagedInstanceKeyInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String managedInstanceName,
         String keyName,
         ManagedInstanceKeyInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, keyName, parameters, context);
         return this
             .client
-            .<ManagedInstanceKeyInner, ManagedInstanceKeyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ManagedInstanceKeyInner.class, ManagedInstanceKeyInner.class);
+            .<ManagedInstanceKeyInner, ManagedInstanceKeyInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ManagedInstanceKeyInner.class,
+                ManagedInstanceKeyInner.class,
+                context);
+    }
+
+    /**
+     * Creates or updates a managed instance key.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param keyName The name of the managed instance key to be operated on (updated or created).
+     * @param parameters A managed instance key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ManagedInstanceKeyInner>, ManagedInstanceKeyInner> beginCreateOrUpdate(
+        String resourceGroupName, String managedInstanceName, String keyName, ManagedInstanceKeyInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, keyName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a managed instance key.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param keyName The name of the managed instance key to be operated on (updated or created).
+     * @param parameters A managed instance key.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ManagedInstanceKeyInner>, ManagedInstanceKeyInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String managedInstanceName,
+        String keyName,
+        ManagedInstanceKeyInner parameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, keyName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -785,14 +810,9 @@ public final class ManagedInstanceKeysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceKeyInner> createOrUpdateAsync(
         String resourceGroupName, String managedInstanceName, String keyName, ManagedInstanceKeyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, keyName, parameters);
-        return this
-            .client
-            .<ManagedInstanceKeyInner, ManagedInstanceKeyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ManagedInstanceKeyInner.class, ManagedInstanceKeyInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, keyName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -816,14 +836,9 @@ public final class ManagedInstanceKeysClient {
         String keyName,
         ManagedInstanceKeyInner parameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, keyName, parameters, context);
-        return this
-            .client
-            .<ManagedInstanceKeyInner, ManagedInstanceKeyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ManagedInstanceKeyInner.class, ManagedInstanceKeyInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, keyName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -963,6 +978,7 @@ public final class ManagedInstanceKeysClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -987,11 +1003,13 @@ public final class ManagedInstanceKeysClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String managedInstanceName, String keyName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, managedInstanceName, keyName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1008,11 +1026,51 @@ public final class ManagedInstanceKeysClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String managedInstanceName, String keyName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, managedInstanceName, keyName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes the managed instance key with the given name.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param keyName The name of the managed instance key to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String managedInstanceName, String keyName) {
+        return beginDeleteAsync(resourceGroupName, managedInstanceName, keyName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the managed instance key with the given name.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param keyName The name of the managed instance key to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String managedInstanceName, String keyName, Context context) {
+        return beginDeleteAsync(resourceGroupName, managedInstanceName, keyName, context).getSyncPoller();
     }
 
     /**
@@ -1029,13 +1087,9 @@ public final class ManagedInstanceKeysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName, String keyName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, managedInstanceName, keyName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, managedInstanceName, keyName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1054,13 +1108,9 @@ public final class ManagedInstanceKeysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String managedInstanceName, String keyName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, managedInstanceName, keyName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, managedInstanceName, keyName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1094,414 +1144,6 @@ public final class ManagedInstanceKeysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName, String keyName, Context context) {
         deleteAsync(resourceGroupName, managedInstanceName, keyName, context).block();
-    }
-
-    /**
-     * Creates or updates a managed instance key.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedInstanceKeyInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String keyName, ManagedInstanceKeyInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (keyName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2017-10-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            keyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates a managed instance key.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedInstanceKeyInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String keyName,
-        ManagedInstanceKeyInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (keyName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2017-10-01-preview";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                keyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates a managed instance key.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceKeyInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String managedInstanceName, String keyName, ManagedInstanceKeyInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, managedInstanceName, keyName, parameters)
-            .flatMap(
-                (Response<ManagedInstanceKeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a managed instance key.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceKeyInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String keyName,
-        ManagedInstanceKeyInner parameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, managedInstanceName, keyName, parameters, context)
-            .flatMap(
-                (Response<ManagedInstanceKeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a managed instance key.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceKeyInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String managedInstanceName, String keyName, ManagedInstanceKeyInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, managedInstanceName, keyName, parameters)
-            .block();
-    }
-
-    /**
-     * Creates or updates a managed instance key.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceKeyInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String managedInstanceName,
-        String keyName,
-        ManagedInstanceKeyInner parameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, managedInstanceName, keyName, parameters, context)
-            .block();
-    }
-
-    /**
-     * Deletes the managed instance key with the given name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String keyName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (keyName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-10-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            keyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the managed instance key with the given name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String keyName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (keyName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-10-01-preview";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                keyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes the managed instance key with the given name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String managedInstanceName, String keyName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, managedInstanceName, keyName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the managed instance key with the given name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String managedInstanceName, String keyName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, managedInstanceName, keyName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the managed instance key with the given name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String managedInstanceName, String keyName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, managedInstanceName, keyName).block();
-    }
-
-    /**
-     * Deletes the managed instance key with the given name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String managedInstanceName, String keyName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, managedInstanceName, keyName, context).block();
     }
 
     /**
@@ -1548,6 +1190,7 @@ public final class ManagedInstanceKeysClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByInstanceNext(nextLink, context)
             .map(

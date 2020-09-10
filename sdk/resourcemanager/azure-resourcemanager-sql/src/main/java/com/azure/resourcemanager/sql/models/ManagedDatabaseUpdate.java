@@ -133,6 +133,18 @@ public class ManagedDatabaseUpdate {
     @JsonProperty(value = "properties.longTermRetentionBackupResourceId")
     private String longTermRetentionBackupResourceId;
 
+    /*
+     * Whether to auto complete restore of this managed database.
+     */
+    @JsonProperty(value = "properties.autoCompleteRestore")
+    private Boolean autoCompleteRestore;
+
+    /*
+     * Last backup file name for restore of this managed database.
+     */
+    @JsonProperty(value = "properties.lastBackupName")
+    private String lastBackupName;
+
     /**
      * Get the tags property: Resource tags.
      *
@@ -424,6 +436,46 @@ public class ManagedDatabaseUpdate {
      */
     public ManagedDatabaseUpdate withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId) {
         this.longTermRetentionBackupResourceId = longTermRetentionBackupResourceId;
+        return this;
+    }
+
+    /**
+     * Get the autoCompleteRestore property: Whether to auto complete restore of this managed database.
+     *
+     * @return the autoCompleteRestore value.
+     */
+    public Boolean autoCompleteRestore() {
+        return this.autoCompleteRestore;
+    }
+
+    /**
+     * Set the autoCompleteRestore property: Whether to auto complete restore of this managed database.
+     *
+     * @param autoCompleteRestore the autoCompleteRestore value to set.
+     * @return the ManagedDatabaseUpdate object itself.
+     */
+    public ManagedDatabaseUpdate withAutoCompleteRestore(Boolean autoCompleteRestore) {
+        this.autoCompleteRestore = autoCompleteRestore;
+        return this;
+    }
+
+    /**
+     * Get the lastBackupName property: Last backup file name for restore of this managed database.
+     *
+     * @return the lastBackupName value.
+     */
+    public String lastBackupName() {
+        return this.lastBackupName;
+    }
+
+    /**
+     * Set the lastBackupName property: Last backup file name for restore of this managed database.
+     *
+     * @param lastBackupName the lastBackupName value to set.
+     * @return the ManagedDatabaseUpdate object itself.
+     */
+    public ManagedDatabaseUpdate withLastBackupName(String lastBackupName) {
+        this.lastBackupName = lastBackupName;
         return this;
     }
 

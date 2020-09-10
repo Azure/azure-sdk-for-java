@@ -64,20 +64,10 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
 
         // save entity
         if (information.isNew(entity)) {
-            return operation.insert(information.getContainerName(),
-                entity,
-                createKey(information.getPartitionKeyFieldValue(entity)));
+            return operation.insert(information.getContainerName(), entity);
         } else {
             return operation.upsertAndReturnEntity(information.getContainerName(), entity);
         }
-    }
-
-    private PartitionKey createKey(Object partitionKeyValue) {
-        if (partitionKeyValue == null) {
-            return PartitionKey.NONE;
-        }
-
-        return new PartitionKey(partitionKeyValue);
     }
 
     /**
@@ -193,12 +183,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public void delete(T entity) {
         Assert.notNull(entity, "entity to be deleted should not be null");
 
-        final Object partitionKeyValue = information.getPartitionKeyFieldValue(entity);
-
-        operation.deleteEntityById(information.getContainerName(),
-            entity,
-            information.getId(entity),
-            createKey(partitionKeyValue));
+        operation.deleteEntity(information.getContainerName(), entity);
     }
 
     /**

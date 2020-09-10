@@ -270,7 +270,7 @@ public class RequestResponseChannel implements Disposable {
         return receiveLinkHandler.getErrorContext(receiveLink);
     }
 
-    private Message decodeDelivery(Delivery delivery) {
+    protected Message decodeDelivery(Delivery delivery) {
         final Message response = Proton.message();
         final int msgSize = delivery.pending();
         final byte[] buffer = new byte[msgSize];

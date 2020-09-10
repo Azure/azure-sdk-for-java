@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.ImageInner;
 import com.azure.resourcemanager.compute.fluent.inner.ImageListResultInner;
 import com.azure.resourcemanager.compute.models.ImageUpdate;
@@ -296,8 +295,8 @@ public final class ImagesClient
             createOrUpdateWithResponseAsync(resourceGroupName, imageName, parameters);
         return this
             .client
-            .<ImageInner, ImageInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class);
+            .<ImageInner, ImageInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class, Context.NONE);
     }
 
     /**
@@ -317,12 +316,13 @@ public final class ImagesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ImageInner>, ImageInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String imageName, ImageInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, imageName, parameters, context);
         return this
             .client
-            .<ImageInner, ImageInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class);
+            .<ImageInner, ImageInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class, context);
     }
 
     /**
@@ -567,8 +567,8 @@ public final class ImagesClient
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, imageName, parameters);
         return this
             .client
-            .<ImageInner, ImageInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class);
+            .<ImageInner, ImageInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class, Context.NONE);
     }
 
     /**
@@ -586,12 +586,13 @@ public final class ImagesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ImageInner>, ImageInner> beginUpdateAsync(
         String resourceGroupName, String imageName, ImageUpdate parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, imageName, parameters, context);
         return this
             .client
-            .<ImageInner, ImageInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class);
+            .<ImageInner, ImageInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class, context);
     }
 
     /**
@@ -804,7 +805,9 @@ public final class ImagesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String imageName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, imageName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -821,8 +824,11 @@ public final class ImagesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String imageName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, imageName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1264,7 +1270,7 @@ public final class ImagesClient
     public PagedFlux<ImageInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1399,7 +1405,8 @@ public final class ImagesClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ImageInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

@@ -30,7 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.resourcemanager.sql.SqlManagementClient;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.inner.WorkloadClassifierInner;
 import com.azure.resourcemanager.sql.fluent.inner.WorkloadClassifierListResultInner;
 import java.nio.ByteBuffer;
@@ -132,43 +132,6 @@ public final class WorkloadClassifiersClient {
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("workloadGroupName") String workloadGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
-                + "/{workloadClassifierName}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadClassifierInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("workloadGroupName") String workloadGroupName,
-            @PathParam("workloadClassifierName") String workloadClassifierName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") WorkloadClassifierInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
-                + "/{workloadClassifierName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("workloadGroupName") String workloadGroupName,
-            @PathParam("workloadClassifierName") String workloadClassifierName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -306,6 +269,7 @@ public final class WorkloadClassifiersClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -578,6 +542,7 @@ public final class WorkloadClassifiersClient {
             parameters.validate();
         }
         final String apiVersion = "2019-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -608,7 +573,7 @@ public final class WorkloadClassifiersClient {
      * @return workload classifier operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serverName,
         String databaseName,
@@ -620,8 +585,12 @@ public final class WorkloadClassifiersClient {
                 resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters);
         return this
             .client
-            .<WorkloadClassifierInner, WorkloadClassifierInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), WorkloadClassifierInner.class, WorkloadClassifierInner.class);
+            .<WorkloadClassifierInner, WorkloadClassifierInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                WorkloadClassifierInner.class,
+                WorkloadClassifierInner.class,
+                Context.NONE);
     }
 
     /**
@@ -641,7 +610,7 @@ public final class WorkloadClassifiersClient {
      * @return workload classifier operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serverName,
         String databaseName,
@@ -649,6 +618,7 @@ public final class WorkloadClassifiersClient {
         String workloadClassifierName,
         WorkloadClassifierInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName,
@@ -660,8 +630,76 @@ public final class WorkloadClassifiersClient {
                 context);
         return this
             .client
-            .<WorkloadClassifierInner, WorkloadClassifierInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), WorkloadClassifierInner.class, WorkloadClassifierInner.class);
+            .<WorkloadClassifierInner, WorkloadClassifierInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                WorkloadClassifierInner.class,
+                WorkloadClassifierInner.class,
+                context);
+    }
+
+    /**
+     * Creates or updates a workload classifier.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
+     * @param workloadClassifierName The name of the workload classifier to create/update.
+     * @param parameters Workload classifier operations for a data warehouse.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workload classifier operations for a data warehouse.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String workloadGroupName,
+        String workloadClassifierName,
+        WorkloadClassifierInner parameters) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a workload classifier.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
+     * @param workloadClassifierName The name of the workload classifier to create/update.
+     * @param parameters Workload classifier operations for a data warehouse.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workload classifier operations for a data warehouse.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String workloadGroupName,
+        String workloadClassifierName,
+        WorkloadClassifierInner parameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName,
+                serverName,
+                databaseName,
+                workloadGroupName,
+                workloadClassifierName,
+                parameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -687,15 +725,10 @@ public final class WorkloadClassifiersClient {
         String workloadGroupName,
         String workloadClassifierName,
         WorkloadClassifierInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters);
-        return this
-            .client
-            .<WorkloadClassifierInner, WorkloadClassifierInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), WorkloadClassifierInner.class, WorkloadClassifierInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -723,21 +756,16 @@ public final class WorkloadClassifiersClient {
         String workloadClassifierName,
         WorkloadClassifierInner parameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
+        return beginCreateOrUpdateAsync(
                 resourceGroupName,
                 serverName,
                 databaseName,
                 workloadGroupName,
                 workloadClassifierName,
                 parameters,
-                context);
-        return this
-            .client
-            .<WorkloadClassifierInner, WorkloadClassifierInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), WorkloadClassifierInner.class, WorkloadClassifierInner.class)
+                context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -929,6 +957,7 @@ public final class WorkloadClassifiersClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -957,7 +986,7 @@ public final class WorkloadClassifiersClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String serverName,
         String databaseName,
@@ -966,7 +995,9 @@ public final class WorkloadClassifiersClient {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(
                 resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -985,17 +1016,73 @@ public final class WorkloadClassifiersClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String workloadGroupName,
         String workloadClassifierName,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(
                 resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes a workload classifier.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
+     * @param workloadClassifierName The name of the workload classifier to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String workloadGroupName,
+        String workloadClassifierName) {
+        return beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes a workload classifier.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
+     * @param workloadClassifierName The name of the workload classifier to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String workloadGroupName,
+        String workloadClassifierName,
+        Context context) {
+        return beginDeleteAsync(
+                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1019,14 +1106,9 @@ public final class WorkloadClassifiersClient {
         String databaseName,
         String workloadGroupName,
         String workloadClassifierName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1052,14 +1134,10 @@ public final class WorkloadClassifiersClient {
         String workloadGroupName,
         String workloadClassifierName,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(
+                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1223,6 +1301,7 @@ public final class WorkloadClassifiersClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByWorkloadGroup(
                 this.client.getEndpoint(),
@@ -1286,7 +1365,7 @@ public final class WorkloadClassifiersClient {
             () ->
                 listByWorkloadGroupSinglePageAsync(
                     resourceGroupName, serverName, databaseName, workloadGroupName, context),
-            nextLink -> listByWorkloadGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByWorkloadGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1328,546 +1407,6 @@ public final class WorkloadClassifiersClient {
         String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context) {
         return new PagedIterable<>(
             listByWorkloadGroupAsync(resourceGroupName, serverName, databaseName, workloadGroupName, context));
-    }
-
-    /**
-     * Creates or updates a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to create/update.
-     * @param parameters Workload classifier operations for a data warehouse.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload classifier operations for a data warehouse.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkloadClassifierInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (workloadGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
-        }
-        if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            workloadGroupName,
-                            workloadClassifierName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to create/update.
-     * @param parameters Workload classifier operations for a data warehouse.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload classifier operations for a data warehouse.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkloadClassifierInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (workloadGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
-        }
-        if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                workloadGroupName,
-                workloadClassifierName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to create/update.
-     * @param parameters Workload classifier operations for a data warehouse.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload classifier operations for a data warehouse.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkloadClassifierInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters)
-            .flatMap(
-                (Response<WorkloadClassifierInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to create/update.
-     * @param parameters Workload classifier operations for a data warehouse.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload classifier operations for a data warehouse.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkloadClassifierInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                serverName,
-                databaseName,
-                workloadGroupName,
-                workloadClassifierName,
-                parameters,
-                context)
-            .flatMap(
-                (Response<WorkloadClassifierInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to create/update.
-     * @param parameters Workload classifier operations for a data warehouse.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload classifier operations for a data warehouse.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadClassifierInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters)
-            .block();
-    }
-
-    /**
-     * Creates or updates a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to create/update.
-     * @param parameters Workload classifier operations for a data warehouse.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload classifier operations for a data warehouse.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadClassifierInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName,
-                serverName,
-                databaseName,
-                workloadGroupName,
-                workloadClassifierName,
-                parameters,
-                context)
-            .block();
-    }
-
-    /**
-     * Deletes a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (workloadGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
-        }
-        if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            workloadGroupName,
-                            workloadClassifierName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (workloadGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
-        }
-        if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                workloadGroupName,
-                workloadClassifierName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        return beginDeleteWithoutPollingWithResponseAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        beginDeleteWithoutPollingAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName)
-            .block();
-    }
-
-    /**
-     * Deletes a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
-        beginDeleteWithoutPollingAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context)
-            .block();
     }
 
     /**
@@ -1914,6 +1453,7 @@ public final class WorkloadClassifiersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByWorkloadGroupNext(nextLink, context)
             .map(

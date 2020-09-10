@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.EffectiveNetworkSecurityGroupListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.EffectiveRouteListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
@@ -418,7 +417,9 @@ public final class NetworkInterfacesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkInterfaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkInterfaceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -435,9 +436,12 @@ public final class NetworkInterfacesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkInterfaceName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkInterfaceName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -888,8 +892,12 @@ public final class NetworkInterfacesClient
             createOrUpdateWithResponseAsync(resourceGroupName, networkInterfaceName, parameters);
         return this
             .client
-            .<NetworkInterfaceInner, NetworkInterfaceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NetworkInterfaceInner.class, NetworkInterfaceInner.class);
+            .<NetworkInterfaceInner, NetworkInterfaceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                NetworkInterfaceInner.class,
+                NetworkInterfaceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -907,12 +915,13 @@ public final class NetworkInterfacesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, networkInterfaceName, parameters, context);
         return this
             .client
-            .<NetworkInterfaceInner, NetworkInterfaceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NetworkInterfaceInner.class, NetworkInterfaceInner.class);
+            .<NetworkInterfaceInner, NetworkInterfaceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), NetworkInterfaceInner.class, NetworkInterfaceInner.class, context);
     }
 
     /**
@@ -1311,7 +1320,8 @@ public final class NetworkInterfacesClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkInterfaceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1464,7 +1474,7 @@ public final class NetworkInterfacesClient
     public PagedFlux<NetworkInterfaceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1607,11 +1617,12 @@ public final class NetworkInterfacesClient
             getEffectiveRouteTableWithResponseAsync(resourceGroupName, networkInterfaceName);
         return this
             .client
-            .<EffectiveRouteListResultInner, EffectiveRouteListResultInner>getLroResultAsync(
+            .<EffectiveRouteListResultInner, EffectiveRouteListResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 EffectiveRouteListResultInner.class,
-                EffectiveRouteListResultInner.class);
+                EffectiveRouteListResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1628,15 +1639,17 @@ public final class NetworkInterfacesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getEffectiveRouteTableWithResponseAsync(resourceGroupName, networkInterfaceName, context);
         return this
             .client
-            .<EffectiveRouteListResultInner, EffectiveRouteListResultInner>getLroResultAsync(
+            .<EffectiveRouteListResultInner, EffectiveRouteListResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 EffectiveRouteListResultInner.class,
-                EffectiveRouteListResultInner.class);
+                EffectiveRouteListResultInner.class,
+                context);
     }
 
     /**
@@ -1853,12 +1866,12 @@ public final class NetworkInterfacesClient
             listEffectiveNetworkSecurityGroupsWithResponseAsync(resourceGroupName, networkInterfaceName);
         return this
             .client
-            .<EffectiveNetworkSecurityGroupListResultInner, EffectiveNetworkSecurityGroupListResultInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    EffectiveNetworkSecurityGroupListResultInner.class,
-                    EffectiveNetworkSecurityGroupListResultInner.class);
+            .<EffectiveNetworkSecurityGroupListResultInner, EffectiveNetworkSecurityGroupListResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                EffectiveNetworkSecurityGroupListResultInner.class,
+                EffectiveNetworkSecurityGroupListResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1877,16 +1890,17 @@ public final class NetworkInterfacesClient
             PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroupsAsync(
             String resourceGroupName, String networkInterfaceName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             listEffectiveNetworkSecurityGroupsWithResponseAsync(resourceGroupName, networkInterfaceName, context);
         return this
             .client
-            .<EffectiveNetworkSecurityGroupListResultInner, EffectiveNetworkSecurityGroupListResultInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    EffectiveNetworkSecurityGroupListResultInner.class,
-                    EffectiveNetworkSecurityGroupListResultInner.class);
+            .<EffectiveNetworkSecurityGroupListResultInner, EffectiveNetworkSecurityGroupListResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                EffectiveNetworkSecurityGroupListResultInner.class,
+                EffectiveNetworkSecurityGroupListResultInner.class,
+                context);
     }
 
     /**
@@ -2164,7 +2178,7 @@ public final class NetworkInterfacesClient
             () ->
                 listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(
                     resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, context),
-            nextLink -> listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextLink));
+            nextLink -> listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2360,7 +2374,7 @@ public final class NetworkInterfacesClient
             () ->
                 listVirtualMachineScaleSetNetworkInterfacesSinglePageAsync(
                     resourceGroupName, virtualMachineScaleSetName, context),
-            nextLink -> listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextLink));
+            nextLink -> listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2931,7 +2945,7 @@ public final class NetworkInterfacesClient
                     networkInterfaceName,
                     expand,
                     context),
-            nextLink -> listVirtualMachineScaleSetIpConfigurationsNextSinglePageAsync(nextLink));
+            nextLink -> listVirtualMachineScaleSetIpConfigurationsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2958,7 +2972,7 @@ public final class NetworkInterfacesClient
             () ->
                 listVirtualMachineScaleSetIpConfigurationsSinglePageAsync(
                     resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand),
-            nextLink -> listVirtualMachineScaleSetIpConfigurationsNextSinglePageAsync(nextLink));
+            nextLink -> listVirtualMachineScaleSetIpConfigurationsNextSinglePageAsync(nextLink, context));
     }
 
     /**

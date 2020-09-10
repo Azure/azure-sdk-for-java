@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AzureFirewallInner;
 import com.azure.resourcemanager.network.fluent.inner.AzureFirewallListResultInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -278,7 +277,9 @@ public final class AzureFirewallsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String azureFirewallName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, azureFirewallName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -295,8 +296,11 @@ public final class AzureFirewallsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String azureFirewallName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, azureFirewallName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -694,8 +698,8 @@ public final class AzureFirewallsClient
             createOrUpdateWithResponseAsync(resourceGroupName, azureFirewallName, parameters);
         return this
             .client
-            .<AzureFirewallInner, AzureFirewallInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class);
+            .<AzureFirewallInner, AzureFirewallInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, Context.NONE);
     }
 
     /**
@@ -713,12 +717,13 @@ public final class AzureFirewallsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, azureFirewallName, parameters, context);
         return this
             .client
-            .<AzureFirewallInner, AzureFirewallInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class);
+            .<AzureFirewallInner, AzureFirewallInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, context);
     }
 
     /**
@@ -949,8 +954,8 @@ public final class AzureFirewallsClient
         Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, azureFirewallName, tags);
         return this
             .client
-            .<AzureFirewallInner, AzureFirewallInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class);
+            .<AzureFirewallInner, AzureFirewallInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, Context.NONE);
     }
 
     /**
@@ -968,12 +973,13 @@ public final class AzureFirewallsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTagsAsync(
         String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateTagsWithResponseAsync(resourceGroupName, azureFirewallName, tags, context);
         return this
             .client
-            .<AzureFirewallInner, AzureFirewallInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class);
+            .<AzureFirewallInner, AzureFirewallInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, context);
     }
 
     /**
@@ -1208,7 +1214,7 @@ public final class AzureFirewallsClient
     public PagedFlux<AzureFirewallInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1339,7 +1345,8 @@ public final class AzureFirewallsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AzureFirewallInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**

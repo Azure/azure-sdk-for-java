@@ -7,10 +7,11 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
 
 public final class GroupByDocumentQueryExecutionContext<T extends Resource> implements
@@ -76,39 +79,50 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
                 /* Do groupBy stuff here */
                 // Stage 1:
                 // Drain the groupings fully from all continuation and all partitions
+                ConcurrentMap<String, QueryMetrics> queryMetrics = new ConcurrentHashMap<>();
                 for (FeedResponse<T> page : superList) {
                     List<Document> results = (List<Document>) page.getResults();
                     documentList.addAll(results);
                     requestCharge += page.getRequestCharge();
+                    QueryMetrics.mergeQueryMetricsMap(queryMetrics, BridgeInternal.queryMetricsFromFeedResponse(page));
                 }
 
                 this.aggregateGroupings(documentList);
 
                 // Stage 2:
                 // Emit the results from the grouping table page by page
-                return createFeedResponseFromGroupingTable(maxPageSize, requestCharge);
+                List<Document> groupByResults = null;
+                if (this.groupingTable != null) {
+                    groupByResults = this.groupingTable.drain(maxPageSize);
+                }
+
+                return createFeedResponseFromGroupingTable(maxPageSize, requestCharge, queryMetrics, groupByResults);
             }).expand(tFeedResponse -> {
                 // For groupBy query, we have already drained everything for the first page request
                 // so for following requests, we will just need to drain page by page from the grouping table
-                FeedResponse<T> response = createFeedResponseFromGroupingTable(maxPageSize, 0);
-                if (response == null) {
+                List<Document> groupByResults = null;
+                if (this.groupingTable != null) {
+                    groupByResults = this.groupingTable.drain(maxPageSize);
+                }
+
+                if (groupByResults == null || groupByResults.size() == 0) {
                     return Mono.empty();
                 }
+
+                FeedResponse<T> response = createFeedResponseFromGroupingTable(maxPageSize, 0 , new ConcurrentHashMap<>(), groupByResults);
                 return Mono.just(response);
             });
     }
 
     @SuppressWarnings("unchecked") // safe to upcast
-    private FeedResponse<T> createFeedResponseFromGroupingTable(int pageSize, double requestCharge) {
+    private FeedResponse<T> createFeedResponseFromGroupingTable(int pageSize,
+                                                                double requestCharge,
+                                                                ConcurrentMap<String, QueryMetrics> queryMetrics,
+                                                                List<Document> groupByResults) {
         if (this.groupingTable != null) {
-            List<Document> groupByResults = groupingTable.drain(pageSize);
-            if (groupByResults.size() == 0) {
-                return null;
-            }
-
             HashMap<String, String> headers = new HashMap<>();
             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
-            FeedResponse<Document> frp = BridgeInternal.createFeedResponse(groupByResults, headers);
+            FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(groupByResults, headers, queryMetrics, null);
             return (FeedResponse<T>) frp;
         }
 

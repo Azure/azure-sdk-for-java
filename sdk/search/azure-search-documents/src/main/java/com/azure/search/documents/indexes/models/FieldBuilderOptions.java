@@ -3,7 +3,10 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.MemberNameConverter;
+import com.azure.core.util.serializer.MemberNameConverterProviders;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 
@@ -12,28 +15,36 @@ import java.util.Objects;
 /**
  * Additional parameters to build {@link SearchField}.
  */
-public class FieldBuilderOptions {
-    private MemberNameConverter converter;
+@Fluent
+public final class FieldBuilderOptions {
+    private JsonSerializer jsonSerializer;
 
     /**
-     * Gets the serializer use to build search fields in
-     * {@link SearchIndexClient#buildSearchFields(Class, FieldBuilderOptions)} buildSearchFields} or
-     * {@link SearchIndexAsyncClient#buildSearchFields(Class, FieldBuilderOptions) buildSearchFields}
+     * Gets the serializer used to aid the construction of {@link SearchField SearchFields} in {@link
+     * SearchIndexClient#buildSearchFields(Class, FieldBuilderOptions)} buildSearchFields} or {@link
+     * SearchIndexAsyncClient#buildSearchFields(Class, FieldBuilderOptions) buildSearchFields}.
+     * <p>
+     * If {@link JsonSerializer} is {@code null} or doesn't implement the {@link MemberNameConverter} interface then
+     * {@link MemberNameConverterProviders#createInstance()} will be used to provide a converter from the classpath.
      *
-     * @return the custom serializer.
+     * @return The custom {@link JsonSerializer}.
      */
-    public MemberNameConverter getConverter() {
-        return converter;
+    public JsonSerializer getJsonSerializer() {
+        return jsonSerializer;
     }
 
     /**
-     * Sets the custom serializer.
+     * Sets the serializer.
+     * <p>
+     * For building {@link SearchField SearchFields} it is expected that the {@link JsonSerializer} passed also
+     * implements the {@link MemberNameConverter} interface. If it doesn't {@link
+     * MemberNameConverterProviders#createInstance()} will be used to provide a converter from the classpath.
      *
-     * @param converter The custom serializer to set
-     * @return The {@link FieldBuilderOptions} object itself.
+     * @param jsonSerializer The custom serializer.
+     * @return The updated FieldBuilderOptions object.
      */
-    public FieldBuilderOptions setConverter(MemberNameConverter converter) {
-        this.converter = Objects.requireNonNull(converter, "The converter cannot be null");
+    public FieldBuilderOptions setJsonSerializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = Objects.requireNonNull(jsonSerializer, "'jsonSerializer' cannot be null");
         return this;
     }
 

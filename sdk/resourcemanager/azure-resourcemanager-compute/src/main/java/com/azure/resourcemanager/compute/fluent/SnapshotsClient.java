@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.AccessUriInner;
 import com.azure.resourcemanager.compute.fluent.inner.SnapshotInner;
 import com.azure.resourcemanager.compute.fluent.inner.SnapshotListInner;
@@ -325,8 +324,8 @@ public final class SnapshotsClient
             createOrUpdateWithResponseAsync(resourceGroupName, snapshotName, snapshot);
         return this
             .client
-            .<SnapshotInner, SnapshotInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class);
+            .<SnapshotInner, SnapshotInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class, Context.NONE);
     }
 
     /**
@@ -345,12 +344,13 @@ public final class SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String snapshotName, SnapshotInner snapshot, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, snapshotName, snapshot, context);
         return this
             .client
-            .<SnapshotInner, SnapshotInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class);
+            .<SnapshotInner, SnapshotInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class, context);
     }
 
     /**
@@ -593,8 +593,8 @@ public final class SnapshotsClient
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, snapshotName, snapshot);
         return this
             .client
-            .<SnapshotInner, SnapshotInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class);
+            .<SnapshotInner, SnapshotInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class, Context.NONE);
     }
 
     /**
@@ -613,12 +613,13 @@ public final class SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateAsync(
         String resourceGroupName, String snapshotName, SnapshotUpdate snapshot, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, snapshotName, snapshot, context);
         return this
             .client
-            .<SnapshotInner, SnapshotInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class);
+            .<SnapshotInner, SnapshotInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class, context);
     }
 
     /**
@@ -1017,7 +1018,9 @@ public final class SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String snapshotName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, snapshotName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1035,8 +1038,11 @@ public final class SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String snapshotName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, snapshotName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1264,7 +1270,7 @@ public final class SnapshotsClient
     public PagedFlux<SnapshotInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1395,7 +1401,8 @@ public final class SnapshotsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SnapshotInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1553,8 +1560,8 @@ public final class SnapshotsClient
             grantAccessWithResponseAsync(resourceGroupName, snapshotName, grantAccessData);
         return this
             .client
-            .<AccessUriInner, AccessUriInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class);
+            .<AccessUriInner, AccessUriInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class, Context.NONE);
     }
 
     /**
@@ -1573,12 +1580,13 @@ public final class SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
         String resourceGroupName, String snapshotName, GrantAccessData grantAccessData, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             grantAccessWithResponseAsync(resourceGroupName, snapshotName, grantAccessData, context);
         return this
             .client
-            .<AccessUriInner, AccessUriInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class);
+            .<AccessUriInner, AccessUriInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class, context);
     }
 
     /**
@@ -1803,7 +1811,9 @@ public final class SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(String resourceGroupName, String snapshotName) {
         Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, snapshotName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1821,8 +1831,11 @@ public final class SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(
         String resourceGroupName, String snapshotName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, snapshotName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**

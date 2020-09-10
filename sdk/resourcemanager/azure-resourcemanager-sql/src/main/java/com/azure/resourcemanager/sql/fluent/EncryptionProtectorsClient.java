@@ -30,9 +30,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.resourcemanager.sql.SqlManagementClient;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.inner.EncryptionProtectorInner;
 import com.azure.resourcemanager.sql.fluent.inner.EncryptionProtectorListResultInner;
+import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -76,7 +77,7 @@ public final class EncryptionProtectorsClient {
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
-            @PathParam("encryptionProtectorName") String encryptionProtectorName,
+            @PathParam("encryptionProtectorName") EncryptionProtectorName encryptionProtectorName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -105,7 +106,7 @@ public final class EncryptionProtectorsClient {
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
-            @PathParam("encryptionProtectorName") String encryptionProtectorName,
+            @PathParam("encryptionProtectorName") EncryptionProtectorName encryptionProtectorName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -120,38 +121,7 @@ public final class EncryptionProtectorsClient {
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
-            @PathParam("encryptionProtectorName") String encryptionProtectorName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") EncryptionProtectorInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/encryptionProtector/{encryptionProtectorName}/revalidate")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginRevalidateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("encryptionProtectorName") String encryptionProtectorName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/encryptionProtector/{encryptionProtectorName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EncryptionProtectorInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("encryptionProtectorName") String encryptionProtectorName,
+            @PathParam("encryptionProtectorName") EncryptionProtectorName encryptionProtectorName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EncryptionProtectorInner parameters,
@@ -171,13 +141,15 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> revalidateWithResponseAsync(String resourceGroupName, String serverName) {
+    public Mono<Response<Flux<ByteBuffer>>> revalidateWithResponseAsync(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -191,13 +163,17 @@ public final class EncryptionProtectorsClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        if (encryptionProtectorName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String encryptionProtectorName = "current";
         final String apiVersion = "2015-05-01-preview";
         return FluxUtil
             .withContext(
@@ -220,6 +196,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -228,7 +205,7 @@ public final class EncryptionProtectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> revalidateWithResponseAsync(
-        String resourceGroupName, String serverName, Context context) {
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -242,14 +219,19 @@ public final class EncryptionProtectorsClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        if (encryptionProtectorName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String encryptionProtectorName = "current";
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .revalidate(
                 this.client.getEndpoint(),
@@ -267,55 +249,20 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String serverName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = revalidateWithResponseAsync(resourceGroupName, serverName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
-    }
-
-    /**
-     * Revalidates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRevalidate(
-        String resourceGroupName, String serverName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = revalidateWithResponseAsync(resourceGroupName, serverName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
-    }
-
-    /**
-     * Revalidates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> revalidateAsync(String resourceGroupName, String serverName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = revalidateWithResponseAsync(resourceGroupName, serverName);
+    public PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            revalidateWithResponseAsync(resourceGroupName, serverName, encryptionProtectorName);
         return this
             .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -324,6 +271,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -331,13 +279,14 @@ public final class EncryptionProtectorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> revalidateAsync(String resourceGroupName, String serverName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = revalidateWithResponseAsync(resourceGroupName, serverName, context);
+    public PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            revalidateWithResponseAsync(resourceGroupName, serverName, encryptionProtectorName, context);
         return this
             .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -346,13 +295,93 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginRevalidate(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName) {
+        return beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName).getSyncPoller();
+    }
+
+    /**
+     * Revalidates an existing encryption protector.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginRevalidate(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName, Context context) {
+        return beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName, context).getSyncPoller();
+    }
+
+    /**
+     * Revalidates an existing encryption protector.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> revalidateAsync(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName) {
+        return beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Revalidates an existing encryption protector.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> revalidateAsync(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName, Context context) {
+        return beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Revalidates an existing encryption protector.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void revalidate(String resourceGroupName, String serverName) {
-        revalidateAsync(resourceGroupName, serverName).block();
+    public void revalidate(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName) {
+        revalidateAsync(resourceGroupName, serverName, encryptionProtectorName).block();
     }
 
     /**
@@ -361,14 +390,16 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void revalidate(String resourceGroupName, String serverName, Context context) {
-        revalidateAsync(resourceGroupName, serverName, context).block();
+    public void revalidate(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName, Context context) {
+        revalidateAsync(resourceGroupName, serverName, encryptionProtectorName, context).block();
     }
 
     /**
@@ -463,6 +494,7 @@ public final class EncryptionProtectorsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByServer(
                 this.client.getEndpoint(),
@@ -517,7 +549,7 @@ public final class EncryptionProtectorsClient {
         String resourceGroupName, String serverName, Context context) {
         return new PagedFlux<>(
             () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
-            nextLink -> listByServerNextSinglePageAsync(nextLink));
+            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -560,13 +592,15 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EncryptionProtectorInner>> getWithResponseAsync(String resourceGroupName, String serverName) {
+    public Mono<Response<EncryptionProtectorInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -580,13 +614,17 @@ public final class EncryptionProtectorsClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        if (encryptionProtectorName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String encryptionProtectorName = "current";
         final String apiVersion = "2015-05-01-preview";
         return FluxUtil
             .withContext(
@@ -609,6 +647,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -617,7 +656,7 @@ public final class EncryptionProtectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EncryptionProtectorInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, Context context) {
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -631,14 +670,19 @@ public final class EncryptionProtectorsClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        if (encryptionProtectorName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String encryptionProtectorName = "current";
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -656,14 +700,16 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EncryptionProtectorInner> getAsync(String resourceGroupName, String serverName) {
-        return getWithResponseAsync(resourceGroupName, serverName)
+    public Mono<EncryptionProtectorInner> getAsync(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName) {
+        return getWithResponseAsync(resourceGroupName, serverName, encryptionProtectorName)
             .flatMap(
                 (Response<EncryptionProtectorInner> res) -> {
                     if (res.getValue() != null) {
@@ -680,6 +726,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -687,8 +734,9 @@ public final class EncryptionProtectorsClient {
      * @return a server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EncryptionProtectorInner> getAsync(String resourceGroupName, String serverName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, context)
+    public Mono<EncryptionProtectorInner> getAsync(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName, Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, encryptionProtectorName, context)
             .flatMap(
                 (Response<EncryptionProtectorInner> res) -> {
                     if (res.getValue() != null) {
@@ -705,14 +753,16 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptionProtectorInner get(String resourceGroupName, String serverName) {
-        return getAsync(resourceGroupName, serverName).block();
+    public EncryptionProtectorInner get(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName) {
+        return getAsync(resourceGroupName, serverName, encryptionProtectorName).block();
     }
 
     /**
@@ -721,6 +771,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -728,8 +779,9 @@ public final class EncryptionProtectorsClient {
      * @return a server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptionProtectorInner get(String resourceGroupName, String serverName, Context context) {
-        return getAsync(resourceGroupName, serverName, context).block();
+    public EncryptionProtectorInner get(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName, Context context) {
+        return getAsync(resourceGroupName, serverName, encryptionProtectorName, context).block();
     }
 
     /**
@@ -738,6 +790,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The server encryption protector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -746,7 +799,10 @@ public final class EncryptionProtectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters) {
+        String resourceGroupName,
+        String serverName,
+        EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -760,6 +816,11 @@ public final class EncryptionProtectorsClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        if (encryptionProtectorName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
@@ -771,7 +832,6 @@ public final class EncryptionProtectorsClient {
         } else {
             parameters.validate();
         }
-        final String encryptionProtectorName = "current";
         final String apiVersion = "2015-05-01-preview";
         return FluxUtil
             .withContext(
@@ -795,6 +855,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The server encryption protector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -804,7 +865,11 @@ public final class EncryptionProtectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters, Context context) {
+        String resourceGroupName,
+        String serverName,
+        EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -818,6 +883,11 @@ public final class EncryptionProtectorsClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        if (encryptionProtectorName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
@@ -829,8 +899,8 @@ public final class EncryptionProtectorsClient {
         } else {
             parameters.validate();
         }
-        final String encryptionProtectorName = "current";
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -849,6 +919,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The server encryption protector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -856,14 +927,21 @@ public final class EncryptionProtectorsClient {
      * @return the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters) {
+    public PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String serverName,
+        EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, parameters);
+            createOrUpdateWithResponseAsync(resourceGroupName, serverName, encryptionProtectorName, parameters);
         return this
             .client
-            .<EncryptionProtectorInner, EncryptionProtectorInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), EncryptionProtectorInner.class, EncryptionProtectorInner.class);
+            .<EncryptionProtectorInner, EncryptionProtectorInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                EncryptionProtectorInner.class,
+                EncryptionProtectorInner.class,
+                Context.NONE);
     }
 
     /**
@@ -872,6 +950,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The server encryption protector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -880,375 +959,23 @@ public final class EncryptionProtectorsClient {
      * @return the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters, Context context) {
+    public PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String serverName,
+        EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters,
+        Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, parameters, context);
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, serverName, encryptionProtectorName, parameters, context);
         return this
             .client
-            .<EncryptionProtectorInner, EncryptionProtectorInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), EncryptionProtectorInner.class, EncryptionProtectorInner.class);
-    }
-
-    /**
-     * Updates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The server encryption protector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EncryptionProtectorInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, parameters);
-        return this
-            .client
-            .<EncryptionProtectorInner, EncryptionProtectorInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), EncryptionProtectorInner.class, EncryptionProtectorInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The server encryption protector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EncryptionProtectorInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, parameters, context);
-        return this
-            .client
-            .<EncryptionProtectorInner, EncryptionProtectorInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), EncryptionProtectorInner.class, EncryptionProtectorInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The server encryption protector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptionProtectorInner createOrUpdate(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, serverName, parameters).block();
-    }
-
-    /**
-     * Updates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The server encryption protector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptionProtectorInner createOrUpdate(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, serverName, parameters, context).block();
-    }
-
-    /**
-     * Revalidates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginRevalidateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serverName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String encryptionProtectorName = "current";
-        final String apiVersion = "2015-05-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginRevalidateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            encryptionProtectorName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Revalidates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginRevalidateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serverName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String encryptionProtectorName = "current";
-        final String apiVersion = "2015-05-01-preview";
-        return service
-            .beginRevalidateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                encryptionProtectorName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Revalidates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginRevalidateWithoutPollingAsync(String resourceGroupName, String serverName) {
-        return beginRevalidateWithoutPollingWithResponseAsync(resourceGroupName, serverName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Revalidates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginRevalidateWithoutPollingAsync(String resourceGroupName, String serverName, Context context) {
-        return beginRevalidateWithoutPollingWithResponseAsync(resourceGroupName, serverName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Revalidates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginRevalidateWithoutPolling(String resourceGroupName, String serverName) {
-        beginRevalidateWithoutPollingAsync(resourceGroupName, serverName).block();
-    }
-
-    /**
-     * Revalidates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginRevalidateWithoutPolling(String resourceGroupName, String serverName, Context context) {
-        beginRevalidateWithoutPollingAsync(resourceGroupName, serverName, context).block();
-    }
-
-    /**
-     * Updates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The server encryption protector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EncryptionProtectorInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String encryptionProtectorName = "current";
-        final String apiVersion = "2015-05-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            encryptionProtectorName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The server encryption protector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EncryptionProtectorInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String encryptionProtectorName = "current";
-        final String apiVersion = "2015-05-01-preview";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                encryptionProtectorName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
+            .<EncryptionProtectorInner, EncryptionProtectorInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                EncryptionProtectorInner.class,
+                EncryptionProtectorInner.class,
                 context);
     }
 
@@ -1258,6 +985,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The server encryption protector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1265,17 +993,13 @@ public final class EncryptionProtectorsClient {
      * @return the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EncryptionProtectorInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, serverName, parameters)
-            .flatMap(
-                (Response<EncryptionProtectorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1284,6 +1008,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The server encryption protector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1292,17 +1017,14 @@ public final class EncryptionProtectorsClient {
      * @return the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EncryptionProtectorInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, serverName, parameters, context)
-            .flatMap(
-                (Response<EncryptionProtectorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1311,6 +1033,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The server encryption protector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1318,9 +1041,14 @@ public final class EncryptionProtectorsClient {
      * @return the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptionProtectorInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, serverName, parameters).block();
+    public Mono<EncryptionProtectorInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String serverName,
+        EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1329,6 +1057,7 @@ public final class EncryptionProtectorsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The server encryption protector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1337,9 +1066,61 @@ public final class EncryptionProtectorsClient {
      * @return the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptionProtectorInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String serverName, EncryptionProtectorInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, serverName, parameters, context).block();
+    public Mono<EncryptionProtectorInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String serverName,
+        EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates an existing encryption protector.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
+     * @param parameters The server encryption protector.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the server encryption protector.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EncryptionProtectorInner createOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters).block();
+    }
+
+    /**
+     * Updates an existing encryption protector.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
+     * @param parameters The server encryption protector.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the server encryption protector.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EncryptionProtectorInner createOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters,
+        Context context) {
+        return createOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters, context).block();
     }
 
     /**
@@ -1386,6 +1167,7 @@ public final class EncryptionProtectorsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByServerNext(nextLink, context)
             .map(

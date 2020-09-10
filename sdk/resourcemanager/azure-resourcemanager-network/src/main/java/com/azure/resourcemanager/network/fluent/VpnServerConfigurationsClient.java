@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ListVpnServerConfigurationsResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VpnServerConfigurationInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -495,11 +494,12 @@ public final class VpnServerConfigurationsClient
                 resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters);
         return this
             .client
-            .<VpnServerConfigurationInner, VpnServerConfigurationInner>getLroResultAsync(
+            .<VpnServerConfigurationInner, VpnServerConfigurationInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VpnServerConfigurationInner.class,
-                VpnServerConfigurationInner.class);
+                VpnServerConfigurationInner.class,
+                Context.NONE);
     }
 
     /**
@@ -520,16 +520,18 @@ public final class VpnServerConfigurationsClient
         String vpnServerConfigurationName,
         VpnServerConfigurationInner vpnServerConfigurationParameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters, context);
         return this
             .client
-            .<VpnServerConfigurationInner, VpnServerConfigurationInner>getLroResultAsync(
+            .<VpnServerConfigurationInner, VpnServerConfigurationInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VpnServerConfigurationInner.class,
-                VpnServerConfigurationInner.class);
+                VpnServerConfigurationInner.class,
+                context);
     }
 
     /**
@@ -967,7 +969,9 @@ public final class VpnServerConfigurationsClient
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vpnServerConfigurationName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vpnServerConfigurationName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -984,9 +988,12 @@ public final class VpnServerConfigurationsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vpnServerConfigurationName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, vpnServerConfigurationName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1211,7 +1218,7 @@ public final class VpnServerConfigurationsClient
     public PagedFlux<VpnServerConfigurationInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1342,7 +1349,8 @@ public final class VpnServerConfigurationsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VpnServerConfigurationInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

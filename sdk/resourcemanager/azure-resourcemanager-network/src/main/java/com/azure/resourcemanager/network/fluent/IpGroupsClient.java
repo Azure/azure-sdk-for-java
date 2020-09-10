@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.IpGroupInner;
 import com.azure.resourcemanager.network.fluent.inner.IpGroupListResultInner;
 import com.azure.resourcemanager.network.models.ErrorException;
@@ -519,8 +518,8 @@ public final class IpGroupsClient
             createOrUpdateWithResponseAsync(resourceGroupName, ipGroupsName, parameters);
         return this
             .client
-            .<IpGroupInner, IpGroupInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), IpGroupInner.class, IpGroupInner.class);
+            .<IpGroupInner, IpGroupInner>getLroResult(
+                mono, this.client.getHttpPipeline(), IpGroupInner.class, IpGroupInner.class, Context.NONE);
     }
 
     /**
@@ -538,12 +537,13 @@ public final class IpGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<IpGroupInner>, IpGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ipGroupsName, IpGroupInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, ipGroupsName, parameters, context);
         return this
             .client
-            .<IpGroupInner, IpGroupInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), IpGroupInner.class, IpGroupInner.class);
+            .<IpGroupInner, IpGroupInner>getLroResult(
+                mono, this.client.getHttpPipeline(), IpGroupInner.class, IpGroupInner.class, context);
     }
 
     /**
@@ -943,7 +943,9 @@ public final class IpGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ipGroupsName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ipGroupsName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -960,8 +962,11 @@ public final class IpGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String ipGroupsName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ipGroupsName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1183,7 +1188,7 @@ public final class IpGroupsClient
     public PagedFlux<IpGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1314,7 +1319,8 @@ public final class IpGroupsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IpGroupInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

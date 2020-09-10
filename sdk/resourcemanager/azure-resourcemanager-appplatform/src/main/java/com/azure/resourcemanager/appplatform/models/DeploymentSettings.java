@@ -36,13 +36,6 @@ public final class DeploymentSettings {
     private String jvmOptions;
 
     /*
-     * Instance count, basic tier should be in range (1, 25), standard tier
-     * should be in range (1, 500)
-     */
-    @JsonProperty(value = "instanceCount")
-    private Integer instanceCount;
-
-    /*
      * Collection of environment variables
      */
     @JsonProperty(value = "environmentVariables")
@@ -113,28 +106,6 @@ public final class DeploymentSettings {
      */
     public DeploymentSettings withJvmOptions(String jvmOptions) {
         this.jvmOptions = jvmOptions;
-        return this;
-    }
-
-    /**
-     * Get the instanceCount property: Instance count, basic tier should be in range (1, 25), standard tier should be in
-     * range (1, 500).
-     *
-     * @return the instanceCount value.
-     */
-    public Integer instanceCount() {
-        return this.instanceCount;
-    }
-
-    /**
-     * Set the instanceCount property: Instance count, basic tier should be in range (1, 25), standard tier should be in
-     * range (1, 500).
-     *
-     * @param instanceCount the instanceCount value to set.
-     * @return the DeploymentSettings object itself.
-     */
-    public DeploymentSettings withInstanceCount(Integer instanceCount) {
-        this.instanceCount = instanceCount;
         return this;
     }
 

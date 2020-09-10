@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryApplicationInner;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryApplicationListInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
@@ -315,8 +314,12 @@ public final class GalleryApplicationsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication);
         return this
             .client
-            .<GalleryApplicationInner, GalleryApplicationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryApplicationInner.class, GalleryApplicationInner.class);
+            .<GalleryApplicationInner, GalleryApplicationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                GalleryApplicationInner.class,
+                GalleryApplicationInner.class,
+                Context.NONE);
     }
 
     /**
@@ -343,13 +346,18 @@ public final class GalleryApplicationsClient {
         String galleryApplicationName,
         GalleryApplicationInner galleryApplication,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context);
         return this
             .client
-            .<GalleryApplicationInner, GalleryApplicationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryApplicationInner.class, GalleryApplicationInner.class);
+            .<GalleryApplicationInner, GalleryApplicationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                GalleryApplicationInner.class,
+                GalleryApplicationInner.class,
+                context);
     }
 
     /**
@@ -677,8 +685,12 @@ public final class GalleryApplicationsClient {
             updateWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication);
         return this
             .client
-            .<GalleryApplicationInner, GalleryApplicationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryApplicationInner.class, GalleryApplicationInner.class);
+            .<GalleryApplicationInner, GalleryApplicationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                GalleryApplicationInner.class,
+                GalleryApplicationInner.class,
+                Context.NONE);
     }
 
     /**
@@ -704,13 +716,18 @@ public final class GalleryApplicationsClient {
         String galleryApplicationName,
         GalleryApplicationUpdate galleryApplication,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(
                 resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context);
         return this
             .client
-            .<GalleryApplicationInner, GalleryApplicationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryApplicationInner.class, GalleryApplicationInner.class);
+            .<GalleryApplicationInner, GalleryApplicationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                GalleryApplicationInner.class,
+                GalleryApplicationInner.class,
+                context);
     }
 
     /**
@@ -1191,7 +1208,9 @@ public final class GalleryApplicationsClient {
         String resourceGroupName, String galleryName, String galleryApplicationName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1210,9 +1229,12 @@ public final class GalleryApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String galleryName, String galleryApplicationName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1472,7 +1494,7 @@ public final class GalleryApplicationsClient {
         String resourceGroupName, String galleryName, Context context) {
         return new PagedFlux<>(
             () -> listByGallerySinglePageAsync(resourceGroupName, galleryName, context),
-            nextLink -> listByGalleryNextSinglePageAsync(nextLink));
+            nextLink -> listByGalleryNextSinglePageAsync(nextLink, context));
     }
 
     /**

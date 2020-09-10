@@ -5,6 +5,8 @@ package com.azure.spring.data.cosmos.repository.integration;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.ExcludedPath;
+import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
@@ -22,7 +24,6 @@ import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,16 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class CosmosAnnotationIT {
+
     private static final Role TEST_ROLE_1 = new Role(TestConstants.ID_1, true, TestConstants.LEVEL,
-            TestConstants.ROLE_NAME);
+        TestConstants.ROLE_NAME);
     private static final Role TEST_ROLE_2 = new Role(TestConstants.ID_2, false, TestConstants.LEVEL,
         TestConstants.ROLE_NAME);
     private static final Role TEST_ROLE_3 = new Role(TestConstants.ID_3, true, TestConstants.LEVEL,
@@ -162,17 +165,24 @@ public class CosmosAnnotationIT {
     }
 
     @Test
-    @Ignore // TODO(kuthapar): Ignore this test case for now, will update this from service update.
     public void testIndexingPolicyAnnotation() {
         final IndexingPolicy policy = collectionRole.getIndexingPolicy();
 
         Assert.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
-                "unmatched collection policy indexing mode of class Role");
+            "unmatched collection policy indexing mode of class Role");
         Assert.isTrue(policy.isAutomatic() == TestConstants.INDEXING_POLICY_AUTOMATIC,
             "unmatched collection policy automatic of class Role");
 
-        TestUtils.testIndexingPolicyPathsEquals(policy.getIncludedPaths(), TestConstants.INCLUDED_PATHS);
-        TestUtils.testIndexingPolicyPathsEquals(policy.getExcludedPaths(), TestConstants.EXCLUDED_PATHS);
+        TestUtils.testIndexingPolicyPathsEquals(policy.getIncludedPaths()
+                                                      .stream()
+                                                      .map(IncludedPath::getPath)
+                                                      .collect(Collectors.toList()),
+            TestConstants.INCLUDED_PATHS);
+        TestUtils.testIndexingPolicyPathsEquals(policy.getExcludedPaths()
+                                                      .stream()
+                                                      .map(ExcludedPath::getPath)
+                                                      .collect(Collectors.toList()),
+            TestConstants.EXCLUDED_PATHS);
     }
 }
 

@@ -30,7 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.resourcemanager.sql.SqlManagementClient;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.inner.ReplicationLinkInner;
 import com.azure.resourcemanager.sql.fluent.inner.ReplicationLinkListResultInner;
 import com.azure.resourcemanager.sql.models.UnlinkParameters;
@@ -161,55 +161,6 @@ public final class ReplicationLinksClient {
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginFailoverWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("linkId") String linkId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginFailoverAllowDataLossWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("linkId") String linkId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/unlink")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginUnlinkWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("linkId") String linkId,
-            @BodyParam("application/json") UnlinkParameters parameters,
-            Context context);
     }
 
     /**
@@ -313,6 +264,7 @@ public final class ReplicationLinksClient {
             return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -502,6 +454,7 @@ public final class ReplicationLinksClient {
             return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -708,6 +661,7 @@ public final class ReplicationLinksClient {
             return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .failover(
                 this.client.getEndpoint(),
@@ -734,11 +688,13 @@ public final class ReplicationLinksClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginFailover(
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             failoverWithResponseAsync(resourceGroupName, serverName, databaseName, linkId);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -756,11 +712,53 @@ public final class ReplicationLinksClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginFailover(
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             failoverWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Sets which replica database is primary by failing over from the current primary replica database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginFailover(
+        String resourceGroupName, String serverName, String databaseName, String linkId) {
+        return beginFailoverAsync(resourceGroupName, serverName, databaseName, linkId).getSyncPoller();
+    }
+
+    /**
+     * Sets which replica database is primary by failing over from the current primary replica database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginFailover(
+        String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
+        return beginFailoverAsync(resourceGroupName, serverName, databaseName, linkId, context).getSyncPoller();
     }
 
     /**
@@ -778,13 +776,9 @@ public final class ReplicationLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            failoverWithResponseAsync(resourceGroupName, serverName, databaseName, linkId);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginFailoverAsync(resourceGroupName, serverName, databaseName, linkId)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -804,13 +798,9 @@ public final class ReplicationLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            failoverWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginFailoverAsync(resourceGroupName, serverName, databaseName, linkId, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -952,6 +942,7 @@ public final class ReplicationLinksClient {
             return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .failoverAllowDataLoss(
                 this.client.getEndpoint(),
@@ -979,11 +970,13 @@ public final class ReplicationLinksClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginFailoverAllowDataLoss(
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAllowDataLossAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             failoverAllowDataLossWithResponseAsync(resourceGroupName, serverName, databaseName, linkId);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1002,11 +995,56 @@ public final class ReplicationLinksClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginFailoverAllowDataLoss(
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAllowDataLossAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             failoverAllowDataLossWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Sets which replica database is primary by failing over from the current primary replica database. This operation
+     * might result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginFailoverAllowDataLoss(
+        String resourceGroupName, String serverName, String databaseName, String linkId) {
+        return beginFailoverAllowDataLossAsync(resourceGroupName, serverName, databaseName, linkId).getSyncPoller();
+    }
+
+    /**
+     * Sets which replica database is primary by failing over from the current primary replica database. This operation
+     * might result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginFailoverAllowDataLoss(
+        String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
+        return beginFailoverAllowDataLossAsync(resourceGroupName, serverName, databaseName, linkId, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1026,13 +1064,9 @@ public final class ReplicationLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAllowDataLossAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            failoverAllowDataLossWithResponseAsync(resourceGroupName, serverName, databaseName, linkId);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginFailoverAllowDataLossAsync(resourceGroupName, serverName, databaseName, linkId)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1053,13 +1087,9 @@ public final class ReplicationLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAllowDataLossAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            failoverAllowDataLossWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginFailoverAllowDataLossAsync(resourceGroupName, serverName, databaseName, linkId, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1213,6 +1243,7 @@ public final class ReplicationLinksClient {
         final String apiVersion = "2014-04-01";
         UnlinkParameters parameters = new UnlinkParameters();
         parameters.withForcedTermination(forcedTermination);
+        context = this.client.mergeContext(context);
         return service
             .unlink(
                 this.client.getEndpoint(),
@@ -1241,11 +1272,13 @@ public final class ReplicationLinksClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginUnlink(
+    public PollerFlux<PollResult<Void>, Void> beginUnlinkAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             unlinkWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1264,16 +1297,66 @@ public final class ReplicationLinksClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginUnlink(
+    public PollerFlux<PollResult<Void>, Void> beginUnlinkAsync(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String linkId,
         Boolean forcedTermination,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             unlinkWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginUnlink(
+        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
+        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination).getSyncPoller();
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginUnlink(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String linkId,
+        Boolean forcedTermination,
+        Context context) {
+        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1293,13 +1376,9 @@ public final class ReplicationLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> unlinkAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            unlinkWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1325,13 +1404,9 @@ public final class ReplicationLinksClient {
         String linkId,
         Boolean forcedTermination,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            unlinkWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1474,6 +1549,7 @@ public final class ReplicationLinksClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listByDatabase(
                 this.client.getEndpoint(),
@@ -1562,618 +1638,5 @@ public final class ReplicationLinksClient {
     public PagedIterable<ReplicationLinkInner> listByDatabase(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, context));
-    }
-
-    /**
-     * Sets which replica database is primary by failing over from the current primary replica database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginFailoverWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (linkId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
-        }
-        final String apiVersion = "2014-04-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginFailoverWithoutPolling(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            linkId,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Sets which replica database is primary by failing over from the current primary replica database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginFailoverWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (linkId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
-        }
-        final String apiVersion = "2014-04-01";
-        return service
-            .beginFailoverWithoutPolling(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                linkId,
-                context);
-    }
-
-    /**
-     * Sets which replica database is primary by failing over from the current primary replica database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginFailoverWithoutPollingAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId) {
-        return beginFailoverWithoutPollingWithResponseAsync(resourceGroupName, serverName, databaseName, linkId)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Sets which replica database is primary by failing over from the current primary replica database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginFailoverWithoutPollingAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
-        return beginFailoverWithoutPollingWithResponseAsync(
-                resourceGroupName, serverName, databaseName, linkId, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Sets which replica database is primary by failing over from the current primary replica database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginFailoverWithoutPolling(
-        String resourceGroupName, String serverName, String databaseName, String linkId) {
-        beginFailoverWithoutPollingAsync(resourceGroupName, serverName, databaseName, linkId).block();
-    }
-
-    /**
-     * Sets which replica database is primary by failing over from the current primary replica database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginFailoverWithoutPolling(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
-        beginFailoverWithoutPollingAsync(resourceGroupName, serverName, databaseName, linkId, context).block();
-    }
-
-    /**
-     * Sets which replica database is primary by failing over from the current primary replica database. This operation
-     * might result in data loss.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginFailoverAllowDataLossWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (linkId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
-        }
-        final String apiVersion = "2014-04-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginFailoverAllowDataLossWithoutPolling(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            linkId,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Sets which replica database is primary by failing over from the current primary replica database. This operation
-     * might result in data loss.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginFailoverAllowDataLossWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (linkId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
-        }
-        final String apiVersion = "2014-04-01";
-        return service
-            .beginFailoverAllowDataLossWithoutPolling(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                linkId,
-                context);
-    }
-
-    /**
-     * Sets which replica database is primary by failing over from the current primary replica database. This operation
-     * might result in data loss.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginFailoverAllowDataLossWithoutPollingAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId) {
-        return beginFailoverAllowDataLossWithoutPollingWithResponseAsync(
-                resourceGroupName, serverName, databaseName, linkId)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Sets which replica database is primary by failing over from the current primary replica database. This operation
-     * might result in data loss.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginFailoverAllowDataLossWithoutPollingAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
-        return beginFailoverAllowDataLossWithoutPollingWithResponseAsync(
-                resourceGroupName, serverName, databaseName, linkId, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Sets which replica database is primary by failing over from the current primary replica database. This operation
-     * might result in data loss.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginFailoverAllowDataLossWithoutPolling(
-        String resourceGroupName, String serverName, String databaseName, String linkId) {
-        beginFailoverAllowDataLossWithoutPollingAsync(resourceGroupName, serverName, databaseName, linkId).block();
-    }
-
-    /**
-     * Sets which replica database is primary by failing over from the current primary replica database. This operation
-     * might result in data loss.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginFailoverAllowDataLossWithoutPolling(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
-        beginFailoverAllowDataLossWithoutPollingAsync(resourceGroupName, serverName, databaseName, linkId, context)
-            .block();
-    }
-
-    /**
-     * Deletes a database replication link in forced or friendly way.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginUnlinkWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (linkId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
-        }
-        final String apiVersion = "2014-04-01";
-        UnlinkParameters parameters = new UnlinkParameters();
-        parameters.withForcedTermination(forcedTermination);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUnlinkWithoutPolling(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            linkId,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes a database replication link in forced or friendly way.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginUnlinkWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String linkId,
-        Boolean forcedTermination,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (linkId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
-        }
-        final String apiVersion = "2014-04-01";
-        UnlinkParameters parameters = new UnlinkParameters();
-        parameters.withForcedTermination(forcedTermination);
-        return service
-            .beginUnlinkWithoutPolling(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                linkId,
-                parameters,
-                context);
-    }
-
-    /**
-     * Deletes a database replication link in forced or friendly way.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginUnlinkWithoutPollingAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
-        return beginUnlinkWithoutPollingWithResponseAsync(
-                resourceGroupName, serverName, databaseName, linkId, forcedTermination)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a database replication link in forced or friendly way.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginUnlinkWithoutPollingAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String linkId,
-        Boolean forcedTermination,
-        Context context) {
-        return beginUnlinkWithoutPollingWithResponseAsync(
-                resourceGroupName, serverName, databaseName, linkId, forcedTermination, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a database replication link in forced or friendly way.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginUnlinkWithoutPolling(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
-        beginUnlinkWithoutPollingAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination).block();
-    }
-
-    /**
-     * Deletes a database replication link in forced or friendly way.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginUnlinkWithoutPolling(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String linkId,
-        Boolean forcedTermination,
-        Context context) {
-        beginUnlinkWithoutPollingAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination, context)
-            .block();
     }
 }

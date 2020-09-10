@@ -21,7 +21,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertStatusCollectionInner;
 import reactor.core.publisher.Mono;
 
@@ -164,6 +163,7 @@ public final class MetricAlertsStatusClient {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -343,6 +343,7 @@ public final class MetricAlertsStatusClient {
             return Mono.error(new IllegalArgumentException("Parameter statusName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        context = this.client.mergeContext(context);
         return service
             .listByName(
                 this.client.getEndpoint(),

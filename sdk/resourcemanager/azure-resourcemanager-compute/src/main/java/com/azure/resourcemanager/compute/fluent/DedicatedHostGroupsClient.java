@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.DedicatedHostGroupInner;
 import com.azure.resourcemanager.compute.fluent.inner.DedicatedHostGroupListResultInner;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupUpdate;
@@ -1024,7 +1023,7 @@ public final class DedicatedHostGroupsClient
     public PagedFlux<DedicatedHostGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1163,7 +1162,7 @@ public final class DedicatedHostGroupsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DedicatedHostGroupInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**

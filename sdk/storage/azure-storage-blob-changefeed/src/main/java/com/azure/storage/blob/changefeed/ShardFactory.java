@@ -5,6 +5,7 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.models.ShardCursor;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
@@ -28,15 +29,15 @@ class ShardFactory {
     /**
      * Gets a new instance of a shard.
      * @param shardPath The prefix of the shard virtual directory.
-     * @param segmentCursor The parent segment cursor.
+     * @param changefeedCursor The parent changefeed cursor.
      * @param userCursor The cursor provided by the user.
      * @return {@link Shard}
      */
-    Shard getShard(String shardPath, ChangefeedCursor segmentCursor, ChangefeedCursor userCursor) {
+    Shard getShard(String shardPath, ChangefeedCursor changefeedCursor, ShardCursor userCursor) {
         /* Validate parameters. */
         StorageImplUtils.assertNotNull("shardPath", shardPath);
-        StorageImplUtils.assertNotNull("segmentCursor", segmentCursor);
+        StorageImplUtils.assertNotNull("changefeedCursor", changefeedCursor);
 
-        return new Shard(this.client, shardPath, segmentCursor, userCursor, chunkFactory);
+        return new Shard(this.client, shardPath, changefeedCursor, userCursor, chunkFactory);
     }
 }

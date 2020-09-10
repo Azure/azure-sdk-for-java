@@ -27,7 +27,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.DatabaseBlobAuditingPolicyInner;
 import com.azure.resourcemanager.sql.fluent.inner.DatabaseBlobAuditingPolicyListResultInner;
 import reactor.core.publisher.Mono;
@@ -213,6 +212,7 @@ public final class DatabaseBlobAuditingPoliciesClient {
         }
         final String blobAuditingPolicyName = "default";
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -426,6 +426,7 @@ public final class DatabaseBlobAuditingPoliciesClient {
         }
         final String blobAuditingPolicyName = "default";
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -642,6 +643,7 @@ public final class DatabaseBlobAuditingPoliciesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByDatabase(
                 this.client.getEndpoint(),
@@ -700,7 +702,7 @@ public final class DatabaseBlobAuditingPoliciesClient {
         String resourceGroupName, String serverName, String databaseName, Context context) {
         return new PagedFlux<>(
             () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, context),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -784,6 +786,7 @@ public final class DatabaseBlobAuditingPoliciesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByDatabaseNext(nextLink, context)
             .map(

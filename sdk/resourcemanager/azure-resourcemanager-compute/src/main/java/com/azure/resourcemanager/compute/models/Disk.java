@@ -9,6 +9,7 @@ import com.azure.resourcemanager.compute.fluent.inner.DiskInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -410,6 +411,13 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
                 Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
                 WithSku,
                 WithAvailabilityZone {
+
+            /**
+             * Begins creating the disk resource.
+             *
+             * @return the accepted create operation
+             */
+            Accepted<Disk> beginCreate();
         }
     }
 

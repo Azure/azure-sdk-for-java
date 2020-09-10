@@ -3,26 +3,58 @@
 
 package com.azure.resourcemanager;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.Troubleshooting;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
-import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class VirtualNetworkGatewayTests extends TestBase {
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
     private Azure azure;
 
     @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
+    }
+
+    @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        SdkContext sdkContext = new SdkContext();
+        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         Azure.Authenticated azureAuthed =
             Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
         azure = azureAuthed.withDefaultSubscription();
@@ -35,8 +67,8 @@ public class VirtualNetworkGatewayTests extends TestBase {
     @Test
     @Disabled("Service has bug that cause 'InternalServerError' - record this once service is fixed")
     public void testNetworkWatcherTroubleshooting() throws Exception {
-        String gatewayName = sdkContext.randomResourceName("vngw", 8);
-        String connectionName = sdkContext.randomResourceName("vngwc", 8);
+        String gatewayName = generateRandomResourceName("vngw", 8);
+        String connectionName = generateRandomResourceName("vngwc", 8);
 
         TestNetworkWatcher tnw = new TestNetworkWatcher();
         NetworkWatcher nw = tnw.createResource(azure.networkWatchers());
@@ -77,7 +109,7 @@ public class VirtualNetworkGatewayTests extends TestBase {
         StorageAccount storageAccount =
             azure
                 .storageAccounts()
-                .define("sa" + sdkContext.randomResourceName("", 8))
+                .define("sa" + generateRandomResourceName("", 8))
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .create();

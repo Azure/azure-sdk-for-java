@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectInner;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectListResultInner;
 import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
@@ -144,6 +143,7 @@ public final class SignedInUsersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), context);
     }
 
@@ -277,6 +277,7 @@ public final class SignedInUsersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listOwnedObjects(
                 this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), context)
@@ -316,7 +317,8 @@ public final class SignedInUsersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DirectoryObjectInner> listOwnedObjectsAsync(Context context) {
         return new PagedFlux<>(
-            () -> listOwnedObjectsSinglePageAsync(context), nextLink -> listOwnedObjectsNextSinglePageAsync(nextLink));
+            () -> listOwnedObjectsSinglePageAsync(context),
+            nextLink -> listOwnedObjectsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -421,6 +423,7 @@ public final class SignedInUsersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listOwnedObjectsNext(
                 this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)

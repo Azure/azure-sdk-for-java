@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertListInner;
 import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertResourceInner;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertPatchBody;
@@ -252,6 +251,7 @@ public final class ActivityLogAlertsClient
             activityLogAlert.validate();
         }
         final String apiVersion = "2017-04-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -438,6 +438,7 @@ public final class ActivityLogAlertsClient
                 .error(new IllegalArgumentException("Parameter activityLogAlertName is required and cannot be null."));
         }
         final String apiVersion = "2017-04-01";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -611,6 +612,7 @@ public final class ActivityLogAlertsClient
                 .error(new IllegalArgumentException("Parameter activityLogAlertName is required and cannot be null."));
         }
         final String apiVersion = "2017-04-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -784,6 +786,7 @@ public final class ActivityLogAlertsClient
             activityLogAlertPatch.validate();
         }
         final String apiVersion = "2017-04-01";
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -944,6 +947,7 @@ public final class ActivityLogAlertsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-04-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
@@ -1080,6 +1084,7 @@ public final class ActivityLogAlertsClient
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String apiVersion = "2017-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)

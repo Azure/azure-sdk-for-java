@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.DatabaseUsageInner;
 import com.azure.resourcemanager.sql.fluent.inner.DatabaseUsageListResultInner;
 import reactor.core.publisher.Mono;
@@ -170,6 +169,7 @@ public final class DatabaseUsagesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listByDatabase(
                 this.client.getEndpoint(),

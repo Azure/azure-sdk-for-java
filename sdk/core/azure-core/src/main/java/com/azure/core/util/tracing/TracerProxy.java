@@ -38,7 +38,6 @@ public final class TracerProxy {
      *
      * @param methodName Name of the method triggering the span creation.
      * @param context Additional metadata that is passed through the call stack.
-     *
      * @return An updated {@link Context} object.
      */
     public static Context start(String methodName, Context context) {
@@ -49,8 +48,8 @@ public final class TracerProxy {
     }
 
     /**
-     * For the plugged in {@link Tracer tracer}, the key-value pair metadata is added to its current span. If
-     * the {@code context} does not contain a span, then no metadata is added.
+     * For the plugged in {@link Tracer tracer}, the key-value pair metadata is added to its current span. If the {@code
+     * context} does not contain a span, then no metadata is added.
      *
      * @param key Name of the metadata.
      * @param value Value of the metadata.
@@ -82,7 +81,6 @@ public final class TracerProxy {
      *
      * @param spanName Name of the span.
      * @param context Additional metadata that is passed through the call stack.
-     *
      * @return An updated {@link Context} object.
      */
     public static Context setSpanName(String spanName, Context context) {
@@ -90,5 +88,14 @@ public final class TracerProxy {
             return context;
         }
         return tracer.setSpanName(spanName, context);
+    }
+
+    /**
+     * Returns true if tracing is enabled.
+     *
+     * @return true if tracing is enabled.
+     */
+    public static boolean isTracingEnabled() {
+        return tracer != null;
     }
 }

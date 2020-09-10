@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorQueryResultInner;
@@ -343,11 +342,12 @@ public final class ConnectionMonitorsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters);
         return this
             .client
-            .<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResultAsync(
+            .<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ConnectionMonitorResultInner.class,
-                ConnectionMonitorResultInner.class);
+                ConnectionMonitorResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -370,16 +370,18 @@ public final class ConnectionMonitorsClient {
         String connectionMonitorName,
         ConnectionMonitorInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, networkWatcherName, connectionMonitorName, parameters, context);
         return this
             .client
-            .<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResultAsync(
+            .<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ConnectionMonitorResultInner.class,
-                ConnectionMonitorResultInner.class);
+                ConnectionMonitorResultInner.class,
+                context);
     }
 
     /**
@@ -837,7 +839,9 @@ public final class ConnectionMonitorsClient {
         String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -855,9 +859,12 @@ public final class ConnectionMonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1303,7 +1310,9 @@ public final class ConnectionMonitorsClient {
         String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1321,9 +1330,12 @@ public final class ConnectionMonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1553,7 +1565,9 @@ public final class ConnectionMonitorsClient {
         String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1571,9 +1585,12 @@ public final class ConnectionMonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1805,11 +1822,12 @@ public final class ConnectionMonitorsClient {
             queryWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
         return this
             .client
-            .<ConnectionMonitorQueryResultInner, ConnectionMonitorQueryResultInner>getLroResultAsync(
+            .<ConnectionMonitorQueryResultInner, ConnectionMonitorQueryResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ConnectionMonitorQueryResultInner.class,
-                ConnectionMonitorQueryResultInner.class);
+                ConnectionMonitorQueryResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1827,15 +1845,17 @@ public final class ConnectionMonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQueryAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             queryWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
         return this
             .client
-            .<ConnectionMonitorQueryResultInner, ConnectionMonitorQueryResultInner>getLroResultAsync(
+            .<ConnectionMonitorQueryResultInner, ConnectionMonitorQueryResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ConnectionMonitorQueryResultInner.class,
-                ConnectionMonitorQueryResultInner.class);
+                ConnectionMonitorQueryResultInner.class,
+                context);
     }
 
     /**

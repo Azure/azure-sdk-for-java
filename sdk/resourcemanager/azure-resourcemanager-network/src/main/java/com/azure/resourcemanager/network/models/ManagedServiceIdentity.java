@@ -12,7 +12,7 @@ import java.util.Map;
 
 /** The ManagedServiceIdentity model. */
 @Fluent
-public final class ManagedServiceIdentity {
+public class ManagedServiceIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedServiceIdentity.class);
 
     /*

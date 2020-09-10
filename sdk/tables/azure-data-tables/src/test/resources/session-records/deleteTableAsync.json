@@ -1,4 +1,50 @@
 {
-  "networkCallRecords" : [ ],
-  "variables" : [ "test64347d299d" ]
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "9b6fb7fd-1281-45fd-91ca-5d11bd172a25",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Fri, 21 Aug 2020 21:10:16 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename13930307')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "c2865fe6-8002-009a-6aff-775485000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "9b6fb7fd-1281-45fd-91ca-5d11bd172a25",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename13930307')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('tablename13930307')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "bd9d4c73-4c8b-4565-8f0b-f4b5e23b16aa"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "c2865fee-8002-009a-70ff-775485000000",
+      "Date" : "Fri, 21 Aug 2020 21:10:16 GMT",
+      "x-ms-client-request-id" : "bd9d4c73-4c8b-4565-8f0b-f4b5e23b16aa"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename13930307" ]
 }

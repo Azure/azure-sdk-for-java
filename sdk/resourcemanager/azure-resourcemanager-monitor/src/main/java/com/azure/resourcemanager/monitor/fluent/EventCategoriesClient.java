@@ -24,7 +24,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.EventCategoryCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.LocalizableStringInner;
 import reactor.core.publisher.Mono;
@@ -110,6 +109,7 @@ public final class EventCategoriesClient {
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, context)
             .map(

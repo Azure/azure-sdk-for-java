@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupListInner;
 import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupResourceInner;
 import com.azure.resourcemanager.monitor.models.ActionGroupPatchBody;
@@ -264,6 +263,7 @@ public final class ActionGroupsClient
             actionGroup.validate();
         }
         final String apiVersion = "2019-06-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -444,6 +444,7 @@ public final class ActionGroupsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -616,6 +617,7 @@ public final class ActionGroupsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -786,6 +788,7 @@ public final class ActionGroupsClient
             actionGroupPatch.validate();
         }
         final String apiVersion = "2019-06-01";
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -940,6 +943,7 @@ public final class ActionGroupsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
@@ -1075,6 +1079,7 @@ public final class ActionGroupsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(), apiVersion, context)
@@ -1240,6 +1245,7 @@ public final class ActionGroupsClient
         final String apiVersion = "2019-06-01";
         EnableRequest enableRequest = new EnableRequest();
         enableRequest.withReceiverName(receiverName);
+        context = this.client.mergeContext(context);
         return service
             .enableReceiver(
                 this.client.getEndpoint(),

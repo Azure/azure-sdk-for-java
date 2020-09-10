@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.models.ComputeUsage;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

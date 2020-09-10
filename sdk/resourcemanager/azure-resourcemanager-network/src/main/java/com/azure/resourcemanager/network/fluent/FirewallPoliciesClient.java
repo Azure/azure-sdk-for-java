@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.FirewallPolicyInner;
 import com.azure.resourcemanager.network.fluent.inner.FirewallPolicyListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -261,7 +260,9 @@ public final class FirewallPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String firewallPolicyName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, firewallPolicyName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -278,8 +279,11 @@ public final class FirewallPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String firewallPolicyName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, firewallPolicyName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -729,8 +733,12 @@ public final class FirewallPoliciesClient
             createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, parameters);
         return this
             .client
-            .<FirewallPolicyInner, FirewallPolicyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), FirewallPolicyInner.class, FirewallPolicyInner.class);
+            .<FirewallPolicyInner, FirewallPolicyInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                FirewallPolicyInner.class,
+                FirewallPolicyInner.class,
+                Context.NONE);
     }
 
     /**
@@ -748,12 +756,13 @@ public final class FirewallPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, parameters, context);
         return this
             .client
-            .<FirewallPolicyInner, FirewallPolicyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), FirewallPolicyInner.class, FirewallPolicyInner.class);
+            .<FirewallPolicyInner, FirewallPolicyInner>getLroResult(
+                mono, this.client.getHttpPipeline(), FirewallPolicyInner.class, FirewallPolicyInner.class, context);
     }
 
     /**
@@ -989,7 +998,7 @@ public final class FirewallPoliciesClient
     public PagedFlux<FirewallPolicyInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1120,7 +1129,8 @@ public final class FirewallPoliciesClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FirewallPolicyInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**

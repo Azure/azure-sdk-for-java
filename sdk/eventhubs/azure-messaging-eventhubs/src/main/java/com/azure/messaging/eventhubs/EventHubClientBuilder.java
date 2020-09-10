@@ -98,6 +98,10 @@ public class EventHubClientBuilder {
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
 
+    // Default number of events to fetch for a sync client. The sync client operates in "pull" mode.
+    // So, limit the prefetch to just 1 by default.
+    static final int DEFAULT_PREFETCH_COUNT_FOR_SYNC_CLIENT = 1;
+
     /**
      * The name of the default consumer group in the Event Hubs service.
      */
@@ -134,7 +138,7 @@ public class EventHubClientBuilder {
     private String eventHubName;
     private String consumerGroup;
     private EventHubConnectionProcessor eventHubConnectionProcessor;
-    private int prefetchCount;
+    private Integer prefetchCount;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -148,7 +152,6 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder() {
         transport = AmqpTransportType.AMQP;
-        prefetchCount = DEFAULT_PREFETCH_COUNT;
     }
 
     /**
@@ -465,6 +468,10 @@ public class EventHubClientBuilder {
             scheduler = Schedulers.elastic();
         }
 
+        if (prefetchCount == null) {
+            prefetchCount = DEFAULT_PREFETCH_COUNT;
+        }
+
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final EventHubConnectionProcessor processor;
@@ -514,6 +521,10 @@ public class EventHubClientBuilder {
      *     specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     EventHubClient buildClient() {
+        if (prefetchCount == null) {
+            // For sync clients, do not prefetch eagerly as the client can "pull" as many events as required.
+            prefetchCount = DEFAULT_PREFETCH_COUNT_FOR_SYNC_CLIENT;
+        }
         final EventHubAsyncClient client = buildAsyncClient();
 
         return new EventHubClient(client, retryOptions);

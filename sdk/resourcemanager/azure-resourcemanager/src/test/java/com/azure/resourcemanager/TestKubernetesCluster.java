@@ -4,6 +4,7 @@ package com.azure.resourcemanager;
 
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
@@ -63,11 +64,12 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
                 .defineAgentPool(agentPoolName)
                 .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
                 .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
                 .attach()
                 .withDnsPrefix(dnsPrefix)
                 .withTag("tag1", "value1")
                 .create();
-        Assertions.assertNotNull("Container service not found.", resource.id());
+        Assertions.assertNotNull(resource.id(), "Container service not found.");
         Assertions.assertEquals(Region.US_EAST, resource.region());
         Assertions.assertEquals("aksadmin", resource.linuxRootUsername());
         Assertions.assertEquals(1, resource.agentPools().size());

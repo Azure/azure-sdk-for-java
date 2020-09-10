@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AvailableProvidersListInner;
 import com.azure.resourcemanager.network.fluent.inner.AzureReachabilityReportInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectivityInformationInner;
@@ -834,7 +833,9 @@ public final class NetworkWatchersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkWatcherName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkWatcherName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -851,8 +852,11 @@ public final class NetworkWatchersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkWatcherName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkWatcherName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1720,11 +1724,12 @@ public final class NetworkWatchersClient
             verifyIpFlowWithResponseAsync(resourceGroupName, networkWatcherName, parameters);
         return this
             .client
-            .<VerificationIpFlowResultInner, VerificationIpFlowResultInner>getLroResultAsync(
+            .<VerificationIpFlowResultInner, VerificationIpFlowResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VerificationIpFlowResultInner.class,
-                VerificationIpFlowResultInner.class);
+                VerificationIpFlowResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1742,15 +1747,17 @@ public final class NetworkWatchersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlowAsync(
         String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             verifyIpFlowWithResponseAsync(resourceGroupName, networkWatcherName, parameters, context);
         return this
             .client
-            .<VerificationIpFlowResultInner, VerificationIpFlowResultInner>getLroResultAsync(
+            .<VerificationIpFlowResultInner, VerificationIpFlowResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VerificationIpFlowResultInner.class,
-                VerificationIpFlowResultInner.class);
+                VerificationIpFlowResultInner.class,
+                context);
     }
 
     /**
@@ -1988,8 +1995,8 @@ public final class NetworkWatchersClient
             getNextHopWithResponseAsync(resourceGroupName, networkWatcherName, parameters);
         return this
             .client
-            .<NextHopResultInner, NextHopResultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NextHopResultInner.class, NextHopResultInner.class);
+            .<NextHopResultInner, NextHopResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), NextHopResultInner.class, NextHopResultInner.class, Context.NONE);
     }
 
     /**
@@ -2007,12 +2014,13 @@ public final class NetworkWatchersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHopAsync(
         String resourceGroupName, String networkWatcherName, NextHopParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getNextHopWithResponseAsync(resourceGroupName, networkWatcherName, parameters, context);
         return this
             .client
-            .<NextHopResultInner, NextHopResultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NextHopResultInner.class, NextHopResultInner.class);
+            .<NextHopResultInner, NextHopResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), NextHopResultInner.class, NextHopResultInner.class, context);
     }
 
     /**
@@ -2252,11 +2260,12 @@ public final class NetworkWatchersClient
             getVMSecurityRulesWithResponseAsync(resourceGroupName, networkWatcherName, targetResourceId);
         return this
             .client
-            .<SecurityGroupViewResultInner, SecurityGroupViewResultInner>getLroResultAsync(
+            .<SecurityGroupViewResultInner, SecurityGroupViewResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 SecurityGroupViewResultInner.class,
-                SecurityGroupViewResultInner.class);
+                SecurityGroupViewResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2275,15 +2284,17 @@ public final class NetworkWatchersClient
     public PollerFlux<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner>
         beginGetVMSecurityRulesAsync(
             String resourceGroupName, String networkWatcherName, String targetResourceId, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getVMSecurityRulesWithResponseAsync(resourceGroupName, networkWatcherName, targetResourceId, context);
         return this
             .client
-            .<SecurityGroupViewResultInner, SecurityGroupViewResultInner>getLroResultAsync(
+            .<SecurityGroupViewResultInner, SecurityGroupViewResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 SecurityGroupViewResultInner.class,
-                SecurityGroupViewResultInner.class);
+                SecurityGroupViewResultInner.class,
+                context);
     }
 
     /**
@@ -2522,11 +2533,12 @@ public final class NetworkWatchersClient
             getTroubleshootingWithResponseAsync(resourceGroupName, networkWatcherName, parameters);
         return this
             .client
-            .<TroubleshootingResultInner, TroubleshootingResultInner>getLroResultAsync(
+            .<TroubleshootingResultInner, TroubleshootingResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 TroubleshootingResultInner.class,
-                TroubleshootingResultInner.class);
+                TroubleshootingResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2544,15 +2556,17 @@ public final class NetworkWatchersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingAsync(
         String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getTroubleshootingWithResponseAsync(resourceGroupName, networkWatcherName, parameters, context);
         return this
             .client
-            .<TroubleshootingResultInner, TroubleshootingResultInner>getLroResultAsync(
+            .<TroubleshootingResultInner, TroubleshootingResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 TroubleshootingResultInner.class,
-                TroubleshootingResultInner.class);
+                TroubleshootingResultInner.class,
+                context);
     }
 
     /**
@@ -2793,11 +2807,12 @@ public final class NetworkWatchersClient
             getTroubleshootingResultWithResponseAsync(resourceGroupName, networkWatcherName, targetResourceId);
         return this
             .client
-            .<TroubleshootingResultInner, TroubleshootingResultInner>getLroResultAsync(
+            .<TroubleshootingResultInner, TroubleshootingResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 TroubleshootingResultInner.class,
-                TroubleshootingResultInner.class);
+                TroubleshootingResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2816,15 +2831,17 @@ public final class NetworkWatchersClient
     public PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner>
         beginGetTroubleshootingResultAsync(
             String resourceGroupName, String networkWatcherName, String targetResourceId, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getTroubleshootingResultWithResponseAsync(resourceGroupName, networkWatcherName, targetResourceId, context);
         return this
             .client
-            .<TroubleshootingResultInner, TroubleshootingResultInner>getLroResultAsync(
+            .<TroubleshootingResultInner, TroubleshootingResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 TroubleshootingResultInner.class,
-                TroubleshootingResultInner.class);
+                TroubleshootingResultInner.class,
+                context);
     }
 
     /**
@@ -3064,8 +3081,12 @@ public final class NetworkWatchersClient
             setFlowLogConfigurationWithResponseAsync(resourceGroupName, networkWatcherName, parameters);
         return this
             .client
-            .<FlowLogInformationInner, FlowLogInformationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), FlowLogInformationInner.class, FlowLogInformationInner.class);
+            .<FlowLogInformationInner, FlowLogInformationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                FlowLogInformationInner.class,
+                FlowLogInformationInner.class,
+                Context.NONE);
     }
 
     /**
@@ -3083,12 +3104,17 @@ public final class NetworkWatchersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfigurationAsync(
         String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             setFlowLogConfigurationWithResponseAsync(resourceGroupName, networkWatcherName, parameters, context);
         return this
             .client
-            .<FlowLogInformationInner, FlowLogInformationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), FlowLogInformationInner.class, FlowLogInformationInner.class);
+            .<FlowLogInformationInner, FlowLogInformationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                FlowLogInformationInner.class,
+                FlowLogInformationInner.class,
+                context);
     }
 
     /**
@@ -3329,8 +3355,12 @@ public final class NetworkWatchersClient
             getFlowLogStatusWithResponseAsync(resourceGroupName, networkWatcherName, targetResourceId);
         return this
             .client
-            .<FlowLogInformationInner, FlowLogInformationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), FlowLogInformationInner.class, FlowLogInformationInner.class);
+            .<FlowLogInformationInner, FlowLogInformationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                FlowLogInformationInner.class,
+                FlowLogInformationInner.class,
+                Context.NONE);
     }
 
     /**
@@ -3348,12 +3378,17 @@ public final class NetworkWatchersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatusAsync(
         String resourceGroupName, String networkWatcherName, String targetResourceId, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getFlowLogStatusWithResponseAsync(resourceGroupName, networkWatcherName, targetResourceId, context);
         return this
             .client
-            .<FlowLogInformationInner, FlowLogInformationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), FlowLogInformationInner.class, FlowLogInformationInner.class);
+            .<FlowLogInformationInner, FlowLogInformationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                FlowLogInformationInner.class,
+                FlowLogInformationInner.class,
+                context);
     }
 
     /**
@@ -3596,11 +3631,12 @@ public final class NetworkWatchersClient
             checkConnectivityWithResponseAsync(resourceGroupName, networkWatcherName, parameters);
         return this
             .client
-            .<ConnectivityInformationInner, ConnectivityInformationInner>getLroResultAsync(
+            .<ConnectivityInformationInner, ConnectivityInformationInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ConnectivityInformationInner.class,
-                ConnectivityInformationInner.class);
+                ConnectivityInformationInner.class,
+                Context.NONE);
     }
 
     /**
@@ -3620,15 +3656,17 @@ public final class NetworkWatchersClient
     public PollerFlux<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner>
         beginCheckConnectivityAsync(
             String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             checkConnectivityWithResponseAsync(resourceGroupName, networkWatcherName, parameters, context);
         return this
             .client
-            .<ConnectivityInformationInner, ConnectivityInformationInner>getLroResultAsync(
+            .<ConnectivityInformationInner, ConnectivityInformationInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ConnectivityInformationInner.class,
-                ConnectivityInformationInner.class);
+                ConnectivityInformationInner.class,
+                context);
     }
 
     /**
@@ -3879,11 +3917,12 @@ public final class NetworkWatchersClient
             getAzureReachabilityReportWithResponseAsync(resourceGroupName, networkWatcherName, parameters);
         return this
             .client
-            .<AzureReachabilityReportInner, AzureReachabilityReportInner>getLroResultAsync(
+            .<AzureReachabilityReportInner, AzureReachabilityReportInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 AzureReachabilityReportInner.class,
-                AzureReachabilityReportInner.class);
+                AzureReachabilityReportInner.class,
+                Context.NONE);
     }
 
     /**
@@ -3906,15 +3945,17 @@ public final class NetworkWatchersClient
             String networkWatcherName,
             AzureReachabilityReportParameters parameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getAzureReachabilityReportWithResponseAsync(resourceGroupName, networkWatcherName, parameters, context);
         return this
             .client
-            .<AzureReachabilityReportInner, AzureReachabilityReportInner>getLroResultAsync(
+            .<AzureReachabilityReportInner, AzureReachabilityReportInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 AzureReachabilityReportInner.class,
-                AzureReachabilityReportInner.class);
+                AzureReachabilityReportInner.class,
+                context);
     }
 
     /**
@@ -4177,11 +4218,12 @@ public final class NetworkWatchersClient
             listAvailableProvidersWithResponseAsync(resourceGroupName, networkWatcherName, parameters);
         return this
             .client
-            .<AvailableProvidersListInner, AvailableProvidersListInner>getLroResultAsync(
+            .<AvailableProvidersListInner, AvailableProvidersListInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 AvailableProvidersListInner.class,
-                AvailableProvidersListInner.class);
+                AvailableProvidersListInner.class,
+                Context.NONE);
     }
 
     /**
@@ -4204,15 +4246,17 @@ public final class NetworkWatchersClient
             String networkWatcherName,
             AvailableProvidersListParameters parameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             listAvailableProvidersWithResponseAsync(resourceGroupName, networkWatcherName, parameters, context);
         return this
             .client
-            .<AvailableProvidersListInner, AvailableProvidersListInner>getLroResultAsync(
+            .<AvailableProvidersListInner, AvailableProvidersListInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 AvailableProvidersListInner.class,
-                AvailableProvidersListInner.class);
+                AvailableProvidersListInner.class,
+                context);
     }
 
     /**
@@ -4480,12 +4524,12 @@ public final class NetworkWatchersClient
             getNetworkConfigurationDiagnosticWithResponseAsync(resourceGroupName, networkWatcherName, parameters);
         return this
             .client
-            .<NetworkConfigurationDiagnosticResponseInner, NetworkConfigurationDiagnosticResponseInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    NetworkConfigurationDiagnosticResponseInner.class,
-                    NetworkConfigurationDiagnosticResponseInner.class);
+            .<NetworkConfigurationDiagnosticResponseInner, NetworkConfigurationDiagnosticResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                NetworkConfigurationDiagnosticResponseInner.class,
+                NetworkConfigurationDiagnosticResponseInner.class,
+                Context.NONE);
     }
 
     /**
@@ -4511,17 +4555,18 @@ public final class NetworkWatchersClient
             String networkWatcherName,
             NetworkConfigurationDiagnosticParameters parameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getNetworkConfigurationDiagnosticWithResponseAsync(
                 resourceGroupName, networkWatcherName, parameters, context);
         return this
             .client
-            .<NetworkConfigurationDiagnosticResponseInner, NetworkConfigurationDiagnosticResponseInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    NetworkConfigurationDiagnosticResponseInner.class,
-                    NetworkConfigurationDiagnosticResponseInner.class);
+            .<NetworkConfigurationDiagnosticResponseInner, NetworkConfigurationDiagnosticResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                NetworkConfigurationDiagnosticResponseInner.class,
+                NetworkConfigurationDiagnosticResponseInner.class,
+                context);
     }
 
     /**

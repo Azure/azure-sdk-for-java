@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.ADGroupInner;
 import com.azure.resourcemanager.authorization.fluent.inner.CheckGroupMembershipResultInner;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectInner;
@@ -310,6 +309,7 @@ public final class GroupsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .isMemberOf(
                 this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context);
@@ -470,6 +470,7 @@ public final class GroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .removeMember(
                 this.client.getEndpoint(),
@@ -629,6 +630,7 @@ public final class GroupsClient {
         }
         GroupAddMemberParameters parameters = new GroupAddMemberParameters();
         parameters.withUrl(url);
+        context = this.client.mergeContext(context);
         return service
             .addMember(
                 this.client.getEndpoint(),
@@ -785,6 +787,7 @@ public final class GroupsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context);
@@ -933,6 +936,7 @@ public final class GroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
             .map(
@@ -973,7 +977,7 @@ public final class GroupsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ADGroupInner> listAsync(String filter, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -987,7 +991,8 @@ public final class GroupsClient {
     public PagedFlux<ADGroupInner> listAsync() {
         final String filter = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1108,6 +1113,7 @@ public final class GroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getGroupMembers(
                 this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context)
@@ -1151,7 +1157,7 @@ public final class GroupsClient {
     public PagedFlux<DirectoryObjectInner> getGroupMembersAsync(String objectId, Context context) {
         return new PagedFlux<>(
             () -> getGroupMembersSinglePageAsync(objectId, context),
-            nextLink -> getGroupMembersNextSinglePageAsync(nextLink));
+            nextLink -> getGroupMembersNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1249,6 +1255,7 @@ public final class GroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context);
     }
@@ -1393,6 +1400,7 @@ public final class GroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context);
@@ -1534,6 +1542,7 @@ public final class GroupsClient {
         }
         GroupGetMemberGroupsParameters parameters = new GroupGetMemberGroupsParameters();
         parameters.withSecurityEnabledOnly(securityEnabledOnly);
+        context = this.client.mergeContext(context);
         return service
             .getMemberGroups(
                 this.client.getEndpoint(),
@@ -1689,6 +1698,7 @@ public final class GroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listOwners(
                 this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context)
@@ -1731,7 +1741,8 @@ public final class GroupsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId, Context context) {
         return new PagedFlux<>(
-            () -> listOwnersSinglePageAsync(objectId, context), nextLink -> listOwnersNextSinglePageAsync(nextLink));
+            () -> listOwnersSinglePageAsync(objectId, context),
+            nextLink -> listOwnersNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1850,6 +1861,7 @@ public final class GroupsClient {
         }
         AddOwnerParameters parameters = new AddOwnerParameters();
         parameters.withUrl(url);
+        context = this.client.mergeContext(context);
         return service
             .addOwner(
                 this.client.getEndpoint(),
@@ -2011,6 +2023,7 @@ public final class GroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .removeOwner(
                 this.client.getEndpoint(),
@@ -2157,6 +2170,7 @@ public final class GroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(
                 this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
@@ -2247,6 +2261,7 @@ public final class GroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getGroupMembersNext(
                 this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
@@ -2304,6 +2319,7 @@ public final class GroupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listOwnersNext(nextLink, context)
             .map(

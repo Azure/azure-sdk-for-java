@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.SshPublicKeyGenerateKeyPairResultInner;
 import com.azure.resourcemanager.compute.fluent.inner.SshPublicKeyResourceInner;
 import com.azure.resourcemanager.compute.fluent.inner.SshPublicKeysGroupListResultInner;
@@ -286,7 +285,7 @@ public final class SshPublicKeysClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SshPublicKeyResourceInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -446,7 +445,7 @@ public final class SshPublicKeysClient
     public PagedFlux<SshPublicKeyResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

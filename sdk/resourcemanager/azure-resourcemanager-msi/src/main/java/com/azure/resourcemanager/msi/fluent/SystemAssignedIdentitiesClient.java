@@ -21,7 +21,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.msi.ManagedServiceIdentityClient;
 import com.azure.resourcemanager.msi.fluent.inner.SystemAssignedIdentityInner;
 import reactor.core.publisher.Mono;
 
@@ -112,6 +111,7 @@ public final class SystemAssignedIdentitiesClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service.getByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), context);
     }
 

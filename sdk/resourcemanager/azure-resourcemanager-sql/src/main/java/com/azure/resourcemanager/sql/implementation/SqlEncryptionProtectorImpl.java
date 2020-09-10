@@ -8,6 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
 import com.azure.resourcemanager.sql.models.ServerKeyType;
 import com.azure.resourcemanager.sql.models.SqlEncryptionProtector;
 import com.azure.resourcemanager.sql.models.SqlServer;
@@ -164,7 +165,8 @@ public class SqlEncryptionProtectorImpl
             .sqlServerManager
             .inner()
             .getEncryptionProtectors()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.inner())
+            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT,
+                this.inner())
             .map(
                 encryptionProtectorInner -> {
                     self.setInner(encryptionProtectorInner);
@@ -193,6 +195,6 @@ public class SqlEncryptionProtectorImpl
             .sqlServerManager
             .inner()
             .getEncryptionProtectors()
-            .getAsync(this.resourceGroupName, this.sqlServerName);
+            .getAsync(this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT);
     }
 }

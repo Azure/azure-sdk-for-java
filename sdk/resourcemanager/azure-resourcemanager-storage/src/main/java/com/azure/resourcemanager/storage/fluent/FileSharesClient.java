@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.FileShareInner;
 import com.azure.resourcemanager.storage.fluent.inner.FileShareItemInner;
 import com.azure.resourcemanager.storage.fluent.inner.FileShareItemsInner;
@@ -277,6 +276,7 @@ public final class FileSharesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -348,7 +348,7 @@ public final class FileSharesClient {
         Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, expand, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -371,7 +371,7 @@ public final class FileSharesClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, expand),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -554,6 +554,7 @@ public final class FileSharesClient {
         } else {
             fileShare.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(),
@@ -787,6 +788,7 @@ public final class FileSharesClient {
         } else {
             fileShare.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1008,6 +1010,7 @@ public final class FileSharesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -1273,6 +1276,7 @@ public final class FileSharesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1498,6 +1502,7 @@ public final class FileSharesClient {
         DeletedShare deletedShare = new DeletedShare();
         deletedShare.withDeletedShareName(deletedShareName);
         deletedShare.withDeletedShareVersion(deletedShareVersion);
+        context = this.client.mergeContext(context);
         return service
             .restore(
                 this.client.getEndpoint(),
@@ -1667,6 +1672,7 @@ public final class FileSharesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

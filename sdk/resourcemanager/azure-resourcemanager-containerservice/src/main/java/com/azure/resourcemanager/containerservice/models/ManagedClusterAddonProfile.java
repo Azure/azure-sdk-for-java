@@ -27,6 +27,12 @@ public final class ManagedClusterAddonProfile {
     @JsonProperty(value = "config")
     private Map<String, String> config;
 
+    /*
+     * Information of user assigned identity used by this add-on.
+     */
+    @JsonProperty(value = "identity", access = JsonProperty.Access.WRITE_ONLY)
+    private UserAssignedIdentity identity;
+
     /**
      * Get the enabled property: Whether the add-on is enabled or not.
      *
@@ -68,10 +74,22 @@ public final class ManagedClusterAddonProfile {
     }
 
     /**
+     * Get the identity property: Information of user assigned identity used by this add-on.
+     *
+     * @return the identity value.
+     */
+    public UserAssignedIdentity identity() {
+        return this.identity;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 }

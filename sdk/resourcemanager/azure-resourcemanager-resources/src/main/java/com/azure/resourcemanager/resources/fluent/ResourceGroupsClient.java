@@ -34,7 +34,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupExportResultInner;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupListResultInner;
@@ -601,7 +600,9 @@ public final class ResourceGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -617,8 +618,11 @@ public final class ResourceGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1153,11 +1157,12 @@ public final class ResourceGroupsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = exportTemplateWithResponseAsync(resourceGroupName, parameters);
         return this
             .client
-            .<ResourceGroupExportResultInner, ResourceGroupExportResultInner>getLroResultAsync(
+            .<ResourceGroupExportResultInner, ResourceGroupExportResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ResourceGroupExportResultInner.class,
-                ResourceGroupExportResultInner.class);
+                ResourceGroupExportResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1174,14 +1179,16 @@ public final class ResourceGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner>
         beginExportTemplateAsync(String resourceGroupName, ExportTemplateRequest parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = exportTemplateWithResponseAsync(resourceGroupName, parameters, context);
         return this
             .client
-            .<ResourceGroupExportResultInner, ResourceGroupExportResultInner>getLroResultAsync(
+            .<ResourceGroupExportResultInner, ResourceGroupExportResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ResourceGroupExportResultInner.class,
-                ResourceGroupExportResultInner.class);
+                ResourceGroupExportResultInner.class,
+                context);
     }
 
     /**
@@ -1411,7 +1418,7 @@ public final class ResourceGroupsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceGroupInner> listAsync(String filter, Integer top, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, top, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1426,7 +1433,8 @@ public final class ResourceGroupsClient {
         final String filter = null;
         final Integer top = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, top), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter, top), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

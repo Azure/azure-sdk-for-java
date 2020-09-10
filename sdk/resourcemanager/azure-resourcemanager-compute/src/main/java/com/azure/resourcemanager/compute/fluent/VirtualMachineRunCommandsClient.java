@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.RunCommandDocumentBaseInner;
 import com.azure.resourcemanager.compute.fluent.inner.RunCommandDocumentInner;
 import com.azure.resourcemanager.compute.fluent.inner.RunCommandListResultInner;
@@ -206,7 +205,7 @@ public final class VirtualMachineRunCommandsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RunCommandDocumentBaseInner> listAsync(String location, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

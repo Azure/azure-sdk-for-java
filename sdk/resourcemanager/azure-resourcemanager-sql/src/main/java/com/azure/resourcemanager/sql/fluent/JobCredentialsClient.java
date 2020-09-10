@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.JobCredentialInner;
 import com.azure.resourcemanager.sql.fluent.inner.JobCredentialListResultInner;
 import reactor.core.publisher.Mono;
@@ -234,6 +233,7 @@ public final class JobCredentialsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByAgent(
                 this.client.getEndpoint(),
@@ -292,7 +292,7 @@ public final class JobCredentialsClient {
         String resourceGroupName, String serverName, String jobAgentName, Context context) {
         return new PagedFlux<>(
             () -> listByAgentSinglePageAsync(resourceGroupName, serverName, jobAgentName, context),
-            nextLink -> listByAgentNextSinglePageAsync(nextLink));
+            nextLink -> listByAgentNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -433,6 +433,7 @@ public final class JobCredentialsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -662,6 +663,7 @@ public final class JobCredentialsClient {
             parameters.validate();
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -894,6 +896,7 @@ public final class JobCredentialsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1026,6 +1029,7 @@ public final class JobCredentialsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByAgentNext(nextLink, context)
             .map(

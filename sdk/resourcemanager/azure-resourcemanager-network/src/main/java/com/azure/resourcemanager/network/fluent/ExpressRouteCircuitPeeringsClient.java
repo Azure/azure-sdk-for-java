@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringListResultInner;
 import java.nio.ByteBuffer;
@@ -253,7 +252,9 @@ public final class ExpressRouteCircuitPeeringsClient {
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String peeringName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, circuitName, peeringName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -271,9 +272,12 @@ public final class ExpressRouteCircuitPeeringsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String peeringName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, circuitName, peeringName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -714,11 +718,12 @@ public final class ExpressRouteCircuitPeeringsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, circuitName, peeringName, peeringParameters);
         return this
             .client
-            .<ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringInner>getLroResultAsync(
+            .<ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ExpressRouteCircuitPeeringInner.class,
-                ExpressRouteCircuitPeeringInner.class);
+                ExpressRouteCircuitPeeringInner.class,
+                Context.NONE);
     }
 
     /**
@@ -742,15 +747,17 @@ public final class ExpressRouteCircuitPeeringsClient {
             String peeringName,
             ExpressRouteCircuitPeeringInner peeringParameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, circuitName, peeringName, peeringParameters, context);
         return this
             .client
-            .<ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringInner>getLroResultAsync(
+            .<ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ExpressRouteCircuitPeeringInner.class,
-                ExpressRouteCircuitPeeringInner.class);
+                ExpressRouteCircuitPeeringInner.class,
+                context);
     }
 
     /**
@@ -1032,7 +1039,7 @@ public final class ExpressRouteCircuitPeeringsClient {
         String resourceGroupName, String circuitName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, circuitName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

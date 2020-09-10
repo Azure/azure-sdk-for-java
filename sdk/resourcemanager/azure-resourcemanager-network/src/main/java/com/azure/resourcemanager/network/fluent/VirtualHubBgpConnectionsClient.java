@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.BgpConnectionInner;
 import com.azure.resourcemanager.network.fluent.inner.ListVirtualHubBgpConnectionResultsInner;
 import java.nio.ByteBuffer;
@@ -460,8 +459,8 @@ public final class VirtualHubBgpConnectionsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, connectionName, parameters);
         return this
             .client
-            .<BgpConnectionInner, BgpConnectionInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BgpConnectionInner.class, BgpConnectionInner.class);
+            .<BgpConnectionInner, BgpConnectionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), BgpConnectionInner.class, BgpConnectionInner.class, Context.NONE);
     }
 
     /**
@@ -484,12 +483,13 @@ public final class VirtualHubBgpConnectionsClient {
         String connectionName,
         BgpConnectionInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, connectionName, parameters, context);
         return this
             .client
-            .<BgpConnectionInner, BgpConnectionInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BgpConnectionInner.class, BgpConnectionInner.class);
+            .<BgpConnectionInner, BgpConnectionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), BgpConnectionInner.class, BgpConnectionInner.class, context);
     }
 
     /**
@@ -738,7 +738,9 @@ public final class VirtualHubBgpConnectionsClient {
         String resourceGroupName, String virtualHubName, String connectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualHubName, connectionName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -756,9 +758,12 @@ public final class VirtualHubBgpConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, String connectionName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualHubName, connectionName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1007,7 +1012,7 @@ public final class VirtualHubBgpConnectionsClient {
     public PagedFlux<BgpConnectionInner> listAsync(String resourceGroupName, String virtualHubName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, virtualHubName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

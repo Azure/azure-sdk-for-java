@@ -8,6 +8,7 @@ import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionIn
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -90,6 +91,11 @@ class PrivateEndpointConnectionsImpl
                     self.addPrivateEndpointConnection(childResource);
                     return childResource;
                 });
+    }
+
+    @Override
+    protected Flux<PrivateEndpointConnectionImpl> listChildResourcesAsync() {
+        return listAsync();
     }
 
     @Override

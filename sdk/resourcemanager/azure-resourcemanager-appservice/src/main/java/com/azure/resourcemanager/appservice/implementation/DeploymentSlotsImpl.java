@@ -54,11 +54,11 @@ class DeploymentSlotsImpl
                             this
                                 .inner()
                                 .getConfigurationSlotAsync(
-                                    siteInner.resourceGroup(), parent.name(), siteInner.name()),
+                                    siteInner.resourceGroup(), parent.name(), siteInner.name().replaceAll(".*/", "")),
                             this
                                 .inner()
                                 .getDiagnosticLogsConfigurationSlotAsync(
-                                    siteInner.resourceGroup(), parent.name(), siteInner.name()),
+                                    siteInner.resourceGroup(), parent.name(), siteInner.name().replaceAll(".*/", "")),
                             (siteConfigResourceInner, logsConfigInner) ->
                                 this.wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
     }
@@ -77,8 +77,10 @@ class DeploymentSlotsImpl
                 siteInner ->
                     Mono
                         .zip(
-                            innerCollection.getConfigurationSlotAsync(resourceGroup, parentName, name),
-                            innerCollection.getDiagnosticLogsConfigurationSlotAsync(resourceGroup, parentName, name),
+                            innerCollection.getConfigurationSlotAsync(resourceGroup, parentName,
+                                name.replaceAll(".*/", "")),
+                            innerCollection.getDiagnosticLogsConfigurationSlotAsync(resourceGroup, parentName,
+                                name.replaceAll(".*/", "")),
                             (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) ->
                                 wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
     }

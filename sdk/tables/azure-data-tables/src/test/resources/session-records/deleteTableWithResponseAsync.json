@@ -1,4 +1,50 @@
 {
-  "networkCallRecords" : [ ],
-  "variables" : [ "test919686220d" ]
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "04f49e94-5b4d-412b-917e-6d4672153a66",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Fri, 21 Aug 2020 21:10:02 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename24219d2c')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "fcf55d64-d002-0073-56ff-7792cf000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "04f49e94-5b4d-412b-917e-6d4672153a66",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename24219d2c')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('tablename24219d2c')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "01cd0c88-e6b4-4b8a-b130-19ca8f2af661"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "fcf55d6e-d002-0073-5cff-7792cf000000",
+      "Date" : "Fri, 21 Aug 2020 21:10:02 GMT",
+      "x-ms-client-request-id" : "01cd0c88-e6b4-4b8a-b130-19ca8f2af661"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename24219d2c" ]
 }

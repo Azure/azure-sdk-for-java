@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.sql.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for ManagedInstanceAdministratorType. */
-public enum ManagedInstanceAdministratorType {
-    /** Enum value ActiveDirectory. */
-    ACTIVE_DIRECTORY("ActiveDirectory");
-
-    /** The actual serialized value for a ManagedInstanceAdministratorType instance. */
-    private final String value;
-
-    ManagedInstanceAdministratorType(String value) {
-        this.value = value;
-    }
+public final class ManagedInstanceAdministratorType extends ExpandableStringEnum<ManagedInstanceAdministratorType> {
+    /** Static value ActiveDirectory for ManagedInstanceAdministratorType. */
+    public static final ManagedInstanceAdministratorType ACTIVE_DIRECTORY = fromString("ActiveDirectory");
 
     /**
-     * Parses a serialized value to a ManagedInstanceAdministratorType instance.
+     * Creates or finds a ManagedInstanceAdministratorType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ManagedInstanceAdministratorType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ManagedInstanceAdministratorType.
      */
     @JsonCreator
-    public static ManagedInstanceAdministratorType fromString(String value) {
-        ManagedInstanceAdministratorType[] items = ManagedInstanceAdministratorType.values();
-        for (ManagedInstanceAdministratorType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ManagedInstanceAdministratorType fromString(String name) {
+        return fromString(name, ManagedInstanceAdministratorType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known ManagedInstanceAdministratorType values. */
+    public static Collection<ManagedInstanceAdministratorType> values() {
+        return values(ManagedInstanceAdministratorType.class);
     }
 }

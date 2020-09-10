@@ -42,12 +42,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-autoconfigure:[1.2.8-beta.1]
-                </include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-autoconfigure;current} -->
-                <include>com.microsoft.azure:spring-integration-servicebus:[1.2.8-beta.1]
-                </include> <!-- {x-include-update;com.microsoft.azure:spring-integration-servicebus;current} -->
-                <include>com.microsoft.azure:azure-servicebus:[3.4.0]
-                </include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
+                <include>com.microsoft.azure:spring-cloud-azure-autoconfigure:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-autoconfigure;current} -->
+                <include>com.microsoft.azure:spring-integration-servicebus:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-servicebus;current} -->
+                <include>com.microsoft.azure:azure-servicebus:[3.4.0]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

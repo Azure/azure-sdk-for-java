@@ -45,8 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.data.tables.implementation.TableConstants.PARTITION_KEY;
-import static com.azure.data.tables.implementation.TableConstants.ROW_KEY;
+import static com.azure.data.tables.implementation.TablesConstants.PARTITION_KEY;
+import static com.azure.data.tables.implementation.TablesConstants.ROW_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -135,14 +135,14 @@ public class AzureTableImplTest extends TestBase {
         String requestId = testResourceNamer.randomUuid();
 
         azureTable.getTables().createWithResponseAsync(tableProperties, requestId,
-            ResponseFormat.RETURN_CONTENT, null, Context.NONE).block();
+            ResponseFormat.RETURN_NO_CONTENT, null, Context.NONE).block();
     }
 
     void insertNoETag(String tableName, Map<String, Object> properties) {
         String requestId = testResourceNamer.randomUuid();
 
         azureTable.getTables().insertEntityWithResponseAsync(tableName, TIMEOUT_IN_MS,
-            requestId, ResponseFormat.RETURN_CONTENT, properties, null, Context.NONE).log().block();
+            requestId, ResponseFormat.RETURN_NO_CONTENT, properties, null, Context.NONE).log().block();
     }
 
     @Test
@@ -150,12 +150,12 @@ public class AzureTableImplTest extends TestBase {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         TableProperties tableProperties = new TableProperties().setTableName(tableName);
-        int expectedStatusCode = 201;
+        int expectedStatusCode = 204;
         String requestId = testResourceNamer.randomUuid();
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().createWithResponseAsync(tableProperties,
-            requestId, ResponseFormat.RETURN_CONTENT, null, Context.NONE))
+            requestId, ResponseFormat.RETURN_NO_CONTENT, null, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
             })
@@ -174,7 +174,7 @@ public class AzureTableImplTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().createWithResponseAsync(tableProperties,
-            requestId, ResponseFormat.RETURN_CONTENT, defaultQueryOptions, Context.NONE))
+            requestId, ResponseFormat.RETURN_NO_CONTENT, defaultQueryOptions, Context.NONE))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof TableServiceErrorException);
 
@@ -285,12 +285,12 @@ public class AzureTableImplTest extends TestBase {
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         properties.put(PARTITION_KEY, partitionKeyValue);
         properties.put(ROW_KEY, rowKeyValue);
-        int expectedStatusCode = 201;
+        int expectedStatusCode = 204;
         String requestId = testResourceNamer.randomUuid();
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().insertEntityWithResponseAsync(tableName, TIMEOUT_IN_MS,
-            requestId, ResponseFormat.RETURN_CONTENT, properties, null, Context.NONE))
+            requestId, ResponseFormat.RETURN_NO_CONTENT, properties, null, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
             })

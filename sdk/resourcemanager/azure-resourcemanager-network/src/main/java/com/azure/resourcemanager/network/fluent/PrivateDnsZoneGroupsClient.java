@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.PrivateDnsZoneGroupInner;
 import com.azure.resourcemanager.network.fluent.inner.PrivateDnsZoneGroupListResultInner;
 import com.azure.resourcemanager.network.models.ErrorException;
@@ -260,7 +259,9 @@ public final class PrivateDnsZoneGroupsClient {
         String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -278,9 +279,12 @@ public final class PrivateDnsZoneGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -736,8 +740,12 @@ public final class PrivateDnsZoneGroupsClient {
                 resourceGroupName, privateEndpointName, privateDnsZoneGroupName, parameters);
         return this
             .client
-            .<PrivateDnsZoneGroupInner, PrivateDnsZoneGroupInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PrivateDnsZoneGroupInner.class, PrivateDnsZoneGroupInner.class);
+            .<PrivateDnsZoneGroupInner, PrivateDnsZoneGroupInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateDnsZoneGroupInner.class,
+                PrivateDnsZoneGroupInner.class,
+                Context.NONE);
     }
 
     /**
@@ -760,13 +768,18 @@ public final class PrivateDnsZoneGroupsClient {
         String privateDnsZoneGroupName,
         PrivateDnsZoneGroupInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, privateEndpointName, privateDnsZoneGroupName, parameters, context);
         return this
             .client
-            .<PrivateDnsZoneGroupInner, PrivateDnsZoneGroupInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PrivateDnsZoneGroupInner.class, PrivateDnsZoneGroupInner.class);
+            .<PrivateDnsZoneGroupInner, PrivateDnsZoneGroupInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateDnsZoneGroupInner.class,
+                PrivateDnsZoneGroupInner.class,
+                context);
     }
 
     /**
@@ -1055,7 +1068,7 @@ public final class PrivateDnsZoneGroupsClient {
         String privateEndpointName, String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(privateEndpointName, resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

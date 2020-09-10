@@ -87,7 +87,6 @@ stages:
             displayName: "Create release tag"
             condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
             environment: github
-            timeoutInMinutes: 5
             dependsOn: VerifyReleaseVersion
             variables:
               - template: ../variables/globals.yml

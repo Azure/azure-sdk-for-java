@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.LocalNetworkGatewayInner;
 import com.azure.resourcemanager.network.fluent.inner.LocalNetworkGatewayListResultInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -283,8 +282,12 @@ public final class LocalNetworkGatewaysClient
             createOrUpdateWithResponseAsync(resourceGroupName, localNetworkGatewayName, parameters);
         return this
             .client
-            .<LocalNetworkGatewayInner, LocalNetworkGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), LocalNetworkGatewayInner.class, LocalNetworkGatewayInner.class);
+            .<LocalNetworkGatewayInner, LocalNetworkGatewayInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                LocalNetworkGatewayInner.class,
+                LocalNetworkGatewayInner.class,
+                Context.NONE);
     }
 
     /**
@@ -305,12 +308,17 @@ public final class LocalNetworkGatewaysClient
         String localNetworkGatewayName,
         LocalNetworkGatewayInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, localNetworkGatewayName, parameters, context);
         return this
             .client
-            .<LocalNetworkGatewayInner, LocalNetworkGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), LocalNetworkGatewayInner.class, LocalNetworkGatewayInner.class);
+            .<LocalNetworkGatewayInner, LocalNetworkGatewayInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                LocalNetworkGatewayInner.class,
+                LocalNetworkGatewayInner.class,
+                context);
     }
 
     /**
@@ -719,7 +727,9 @@ public final class LocalNetworkGatewaysClient
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String localNetworkGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, localNetworkGatewayName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -736,9 +746,12 @@ public final class LocalNetworkGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String localNetworkGatewayName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, localNetworkGatewayName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1151,7 +1164,7 @@ public final class LocalNetworkGatewaysClient
     public PagedFlux<LocalNetworkGatewayInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

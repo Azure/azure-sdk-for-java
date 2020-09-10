@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.NatGatewayInner;
 import com.azure.resourcemanager.network.fluent.inner.NatGatewayListResultInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -274,7 +273,9 @@ public final class NatGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String natGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, natGatewayName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -291,8 +292,11 @@ public final class NatGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String natGatewayName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, natGatewayName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -738,8 +742,8 @@ public final class NatGatewaysClient
             createOrUpdateWithResponseAsync(resourceGroupName, natGatewayName, parameters);
         return this
             .client
-            .<NatGatewayInner, NatGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NatGatewayInner.class, NatGatewayInner.class);
+            .<NatGatewayInner, NatGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), NatGatewayInner.class, NatGatewayInner.class, Context.NONE);
     }
 
     /**
@@ -757,12 +761,13 @@ public final class NatGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String natGatewayName, NatGatewayInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, natGatewayName, parameters, context);
         return this
             .client
-            .<NatGatewayInner, NatGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NatGatewayInner.class, NatGatewayInner.class);
+            .<NatGatewayInner, NatGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), NatGatewayInner.class, NatGatewayInner.class, context);
     }
 
     /**
@@ -1157,7 +1162,8 @@ public final class NatGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NatGatewayInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1310,7 +1316,7 @@ public final class NatGatewaysClient
     public PagedFlux<NatGatewayInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

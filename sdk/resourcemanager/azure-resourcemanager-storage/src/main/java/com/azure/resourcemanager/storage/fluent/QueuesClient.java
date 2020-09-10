@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.ListQueueInner;
 import com.azure.resourcemanager.storage.fluent.inner.ListQueueResourceInner;
 import com.azure.resourcemanager.storage.fluent.inner.StorageQueueInner;
@@ -252,6 +251,7 @@ public final class QueuesClient {
         }
         StorageQueueInner queue = new StorageQueueInner();
         queue.withMetadata(metadata);
+        context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(),
@@ -473,6 +473,7 @@ public final class QueuesClient {
         }
         StorageQueueInner queue = new StorageQueueInner();
         queue.withMetadata(metadata);
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -687,6 +688,7 @@ public final class QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -893,6 +895,7 @@ public final class QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1086,6 +1089,7 @@ public final class QueuesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1151,7 +1155,7 @@ public final class QueuesClient {
         String resourceGroupName, String accountName, String maxpagesize, String filter, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1173,7 +1177,7 @@ public final class QueuesClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1282,6 +1286,7 @@ public final class QueuesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

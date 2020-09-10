@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.sql.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for IdentityType. */
-public enum IdentityType {
-    /** Enum value SystemAssigned. */
-    SYSTEM_ASSIGNED("SystemAssigned");
-
-    /** The actual serialized value for a IdentityType instance. */
-    private final String value;
-
-    IdentityType(String value) {
-        this.value = value;
-    }
+public final class IdentityType extends ExpandableStringEnum<IdentityType> {
+    /** Static value SystemAssigned for IdentityType. */
+    public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
     /**
-     * Parses a serialized value to a IdentityType instance.
+     * Creates or finds a IdentityType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed IdentityType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding IdentityType.
      */
     @JsonCreator
-    public static IdentityType fromString(String value) {
-        IdentityType[] items = IdentityType.values();
-        for (IdentityType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static IdentityType fromString(String name) {
+        return fromString(name, IdentityType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known IdentityType values. */
+    public static Collection<IdentityType> values() {
+        return values(IdentityType.class);
     }
 }

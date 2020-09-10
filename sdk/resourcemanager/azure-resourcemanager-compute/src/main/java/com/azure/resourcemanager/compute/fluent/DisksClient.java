@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.AccessUriInner;
 import com.azure.resourcemanager.compute.fluent.inner.DiskInner;
 import com.azure.resourcemanager.compute.fluent.inner.DiskListInner;
@@ -323,8 +322,8 @@ public final class DisksClient
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, diskName, disk);
         return this
             .client
-            .<DiskInner, DiskInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class);
+            .<DiskInner, DiskInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, Context.NONE);
     }
 
     /**
@@ -343,12 +342,13 @@ public final class DisksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String diskName, DiskInner disk, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, diskName, disk, context);
         return this
             .client
-            .<DiskInner, DiskInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class);
+            .<DiskInner, DiskInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, context);
     }
 
     /**
@@ -589,8 +589,8 @@ public final class DisksClient
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diskName, disk);
         return this
             .client
-            .<DiskInner, DiskInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class);
+            .<DiskInner, DiskInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, Context.NONE);
     }
 
     /**
@@ -609,11 +609,12 @@ public final class DisksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DiskInner>, DiskInner> beginUpdateAsync(
         String resourceGroupName, String diskName, DiskUpdate disk, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diskName, disk, context);
         return this
             .client
-            .<DiskInner, DiskInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class);
+            .<DiskInner, DiskInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, context);
     }
 
     /**
@@ -1009,7 +1010,9 @@ public final class DisksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1027,8 +1030,11 @@ public final class DisksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String diskName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1255,7 +1261,7 @@ public final class DisksClient
     public PagedFlux<DiskInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1386,7 +1392,8 @@ public final class DisksClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiskInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1544,8 +1551,8 @@ public final class DisksClient
             grantAccessWithResponseAsync(resourceGroupName, diskName, grantAccessData);
         return this
             .client
-            .<AccessUriInner, AccessUriInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class);
+            .<AccessUriInner, AccessUriInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class, Context.NONE);
     }
 
     /**
@@ -1564,12 +1571,13 @@ public final class DisksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             grantAccessWithResponseAsync(resourceGroupName, diskName, grantAccessData, context);
         return this
             .client
-            .<AccessUriInner, AccessUriInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class);
+            .<AccessUriInner, AccessUriInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class, context);
     }
 
     /**
@@ -1793,7 +1801,9 @@ public final class DisksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(String resourceGroupName, String diskName) {
         Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, diskName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1811,8 +1821,11 @@ public final class DisksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(
         String resourceGroupName, String diskName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, diskName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**

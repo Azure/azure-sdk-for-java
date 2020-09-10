@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.IpAllocationInner;
 import com.azure.resourcemanager.network.fluent.inner.IpAllocationListResultInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -276,7 +275,9 @@ public final class IpAllocationsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ipAllocationName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ipAllocationName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -293,8 +294,11 @@ public final class IpAllocationsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String ipAllocationName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ipAllocationName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -744,8 +748,8 @@ public final class IpAllocationsClient
             createOrUpdateWithResponseAsync(resourceGroupName, ipAllocationName, parameters);
         return this
             .client
-            .<IpAllocationInner, IpAllocationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), IpAllocationInner.class, IpAllocationInner.class);
+            .<IpAllocationInner, IpAllocationInner>getLroResult(
+                mono, this.client.getHttpPipeline(), IpAllocationInner.class, IpAllocationInner.class, Context.NONE);
     }
 
     /**
@@ -763,12 +767,13 @@ public final class IpAllocationsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<IpAllocationInner>, IpAllocationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ipAllocationName, IpAllocationInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, ipAllocationName, parameters, context);
         return this
             .client
-            .<IpAllocationInner, IpAllocationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), IpAllocationInner.class, IpAllocationInner.class);
+            .<IpAllocationInner, IpAllocationInner>getLroResult(
+                mono, this.client.getHttpPipeline(), IpAllocationInner.class, IpAllocationInner.class, context);
     }
 
     /**
@@ -1166,7 +1171,8 @@ public final class IpAllocationsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IpAllocationInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1320,7 +1326,7 @@ public final class IpAllocationsClient
     public PagedFlux<IpAllocationInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

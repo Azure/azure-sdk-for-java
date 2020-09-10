@@ -35,11 +35,9 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceCollectionInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.LogFileUrlResponseInner;
-import com.azure.resourcemanager.appplatform.models.DeploymentResourceProperties;
 import java.nio.ByteBuffer;
 import java.util.List;
 import reactor.core.publisher.Flux;
@@ -93,7 +91,7 @@ public final class DeploymentsClient {
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -110,9 +108,9 @@ public final class DeploymentsClient {
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
+        Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -161,7 +159,7 @@ public final class DeploymentsClient {
                 + "/{serviceName}/deployments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentResourceCollectionInner>> listClusterAllDeployments(
+        Mono<Response<DeploymentResourceCollectionInner>> listForCluster(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -245,7 +243,7 @@ public final class DeploymentsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentResourceCollectionInner>> listClusterAllDeploymentsNext(
+        Mono<Response<DeploymentResourceCollectionInner>> listForClusterNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -348,6 +346,7 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -462,7 +461,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -474,7 +473,7 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties) {
+        DeploymentResourceInner deploymentResource) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -500,11 +499,12 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (deploymentResource == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter deploymentResource is required and cannot be null."));
+        } else {
+            deploymentResource.validate();
         }
-        DeploymentResourceInner deploymentResource = new DeploymentResourceInner();
-        deploymentResource.withProperties(properties);
         return FluxUtil
             .withContext(
                 context ->
@@ -530,7 +530,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -543,7 +543,7 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties,
+        DeploymentResourceInner deploymentResource,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -570,11 +570,13 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (deploymentResource == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter deploymentResource is required and cannot be null."));
+        } else {
+            deploymentResource.validate();
         }
-        DeploymentResourceInner deploymentResource = new DeploymentResourceInner();
-        deploymentResource.withProperties(properties);
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -596,7 +598,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -608,45 +610,18 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, properties);
-        return this
-            .client
-            .<DeploymentResourceInner, DeploymentResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentResourceInner.class, DeploymentResourceInner.class);
-    }
-
-    /**
-     * Create a new Deployment or update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties,
-        Context context) {
+        DeploymentResourceInner deploymentResource) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, appName, deploymentName, properties, context);
+                resourceGroupName, serviceName, appName, deploymentName, deploymentResource);
         return this
             .client
-            .<DeploymentResourceInner, DeploymentResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentResourceInner.class, DeploymentResourceInner.class);
+            .<DeploymentResourceInner, DeploymentResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentResourceInner.class,
+                DeploymentResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -657,7 +632,44 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, serviceName, appName, deploymentName, deploymentResource, context);
+        return this
+            .client
+            .<DeploymentResourceInner, DeploymentResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentResourceInner.class,
+                DeploymentResourceInner.class,
+                context);
+    }
+
+    /**
+     * Create a new Deployment or update an exiting Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -669,8 +681,8 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties)
+        DeploymentResourceInner deploymentResource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource)
             .getSyncPoller();
     }
 
@@ -682,7 +694,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -695,9 +707,10 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties,
+        DeploymentResourceInner deploymentResource,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, serviceName, appName, deploymentName, deploymentResource, context)
             .getSyncPoller();
     }
 
@@ -709,7 +722,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -721,8 +734,8 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties)
+        DeploymentResourceInner deploymentResource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -735,7 +748,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -748,9 +761,10 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties,
+        DeploymentResourceInner deploymentResource,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, serviceName, appName, deploymentName, deploymentResource, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -763,7 +777,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -775,8 +789,8 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties).block();
+        DeploymentResourceInner deploymentResource) {
+        return createOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource).block();
     }
 
     /**
@@ -787,7 +801,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -800,9 +814,9 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties,
+        DeploymentResourceInner deploymentResource,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context)
+        return createOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource, context)
             .block();
     }
 
@@ -820,7 +834,7 @@ public final class DeploymentsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -878,7 +892,7 @@ public final class DeploymentsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -905,6 +919,7 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -931,9 +946,97 @@ public final class DeploymentsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Operation to delete a Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Operation to delete a Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        return beginDeleteAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
+    }
+
+    /**
+     * Operation to delete a Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        return beginDeleteAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
+    }
+
+    /**
+     * Operation to delete a Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return beginDeleteAsync(resourceGroupName, serviceName, appName, deploymentName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -953,8 +1056,9 @@ public final class DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return beginDeleteAsync(resourceGroupName, serviceName, appName, deploymentName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1001,7 +1105,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1013,7 +1117,7 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties) {
+        DeploymentResourceInner deploymentResource) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1039,11 +1143,12 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (deploymentResource == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter deploymentResource is required and cannot be null."));
+        } else {
+            deploymentResource.validate();
         }
-        DeploymentResourceInner deploymentResource = new DeploymentResourceInner();
-        deploymentResource.withProperties(properties);
         return FluxUtil
             .withContext(
                 context ->
@@ -1069,7 +1174,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1082,7 +1187,7 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties,
+        DeploymentResourceInner deploymentResource,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1109,11 +1214,13 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (deploymentResource == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter deploymentResource is required and cannot be null."));
+        } else {
+            deploymentResource.validate();
         }
-        DeploymentResourceInner deploymentResource = new DeploymentResourceInner();
-        deploymentResource.withProperties(properties);
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1135,7 +1242,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1147,13 +1254,17 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties) {
+        DeploymentResourceInner deploymentResource) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, properties);
+            updateWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource);
         return this
             .client
-            .<DeploymentResourceInner, DeploymentResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentResourceInner.class, DeploymentResourceInner.class);
+            .<DeploymentResourceInner, DeploymentResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentResourceInner.class,
+                DeploymentResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1164,7 +1275,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1177,14 +1288,20 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties,
+        DeploymentResourceInner deploymentResource,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context);
+            updateWithResponseAsync(
+                resourceGroupName, serviceName, appName, deploymentName, deploymentResource, context);
         return this
             .client
-            .<DeploymentResourceInner, DeploymentResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentResourceInner.class, DeploymentResourceInner.class);
+            .<DeploymentResourceInner, DeploymentResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentResourceInner.class,
+                DeploymentResourceInner.class,
+                context);
     }
 
     /**
@@ -1195,7 +1312,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1207,34 +1324,8 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties).getSyncPoller();
-    }
-
-    /**
-     * Operation to update an exiting Deployment.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceProperties properties,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context)
+        DeploymentResourceInner deploymentResource) {
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource)
             .getSyncPoller();
     }
 
@@ -1246,7 +1337,34 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DeploymentResourceInner deploymentResource,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Operation to update an exiting Deployment.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1258,8 +1376,8 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties)
+        DeploymentResourceInner deploymentResource) {
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1272,7 +1390,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1285,9 +1403,9 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties,
+        DeploymentResourceInner deploymentResource,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context)
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1300,7 +1418,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1312,8 +1430,8 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties) {
-        return updateAsync(resourceGroupName, serviceName, appName, deploymentName, properties).block();
+        DeploymentResourceInner deploymentResource) {
+        return updateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource).block();
     }
 
     /**
@@ -1324,7 +1442,7 @@ public final class DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param properties Deployment resource properties payload.
+     * @param deploymentResource Deployment resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1337,9 +1455,10 @@ public final class DeploymentsClient {
         String serviceName,
         String appName,
         String deploymentName,
-        DeploymentResourceProperties properties,
+        DeploymentResourceInner deploymentResource,
         Context context) {
-        return updateAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context).block();
+        return updateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource, context)
+            .block();
     }
 
     /**
@@ -1448,6 +1567,7 @@ public final class DeploymentsClient {
         }
         String versionConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1509,7 +1629,7 @@ public final class DeploymentsClient {
         String resourceGroupName, String serviceName, String appName, List<String> version, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, serviceName, appName, version, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1530,7 +1650,7 @@ public final class DeploymentsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, serviceName, appName, version),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1604,7 +1724,7 @@ public final class DeploymentsClient {
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentResourceInner>> listClusterAllDeploymentsSinglePageAsync(
+    public Mono<PagedResponse<DeploymentResourceInner>> listForClusterSinglePageAsync(
         String resourceGroupName, String serviceName, List<String> version) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1631,7 +1751,7 @@ public final class DeploymentsClient {
             .withContext(
                 context ->
                     service
-                        .listClusterAllDeployments(
+                        .listForCluster(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -1665,7 +1785,7 @@ public final class DeploymentsClient {
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentResourceInner>> listClusterAllDeploymentsSinglePageAsync(
+    public Mono<PagedResponse<DeploymentResourceInner>> listForClusterSinglePageAsync(
         String resourceGroupName, String serviceName, List<String> version, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1688,8 +1808,9 @@ public final class DeploymentsClient {
         }
         String versionConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
+        context = this.client.mergeContext(context);
         return service
-            .listClusterAllDeployments(
+            .listForCluster(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
@@ -1721,11 +1842,11 @@ public final class DeploymentsClient {
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentResourceInner> listClusterAllDeploymentsAsync(
+    public PagedFlux<DeploymentResourceInner> listForClusterAsync(
         String resourceGroupName, String serviceName, List<String> version) {
         return new PagedFlux<>(
-            () -> listClusterAllDeploymentsSinglePageAsync(resourceGroupName, serviceName, version),
-            nextLink -> listClusterAllDeploymentsNextSinglePageAsync(nextLink));
+            () -> listForClusterSinglePageAsync(resourceGroupName, serviceName, version),
+            nextLink -> listForClusterNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1742,11 +1863,11 @@ public final class DeploymentsClient {
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentResourceInner> listClusterAllDeploymentsAsync(
+    public PagedFlux<DeploymentResourceInner> listForClusterAsync(
         String resourceGroupName, String serviceName, List<String> version, Context context) {
         return new PagedFlux<>(
-            () -> listClusterAllDeploymentsSinglePageAsync(resourceGroupName, serviceName, version, context),
-            nextLink -> listClusterAllDeploymentsNextSinglePageAsync(nextLink));
+            () -> listForClusterSinglePageAsync(resourceGroupName, serviceName, version, context),
+            nextLink -> listForClusterNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1761,13 +1882,12 @@ public final class DeploymentsClient {
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentResourceInner> listClusterAllDeploymentsAsync(
-        String resourceGroupName, String serviceName) {
+    public PagedFlux<DeploymentResourceInner> listForClusterAsync(String resourceGroupName, String serviceName) {
         final List<String> version = null;
         final Context context = null;
         return new PagedFlux<>(
-            () -> listClusterAllDeploymentsSinglePageAsync(resourceGroupName, serviceName, version),
-            nextLink -> listClusterAllDeploymentsNextSinglePageAsync(nextLink));
+            () -> listForClusterSinglePageAsync(resourceGroupName, serviceName, version),
+            nextLink -> listForClusterNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1783,9 +1903,9 @@ public final class DeploymentsClient {
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentResourceInner> listClusterAllDeployments(
+    public PagedIterable<DeploymentResourceInner> listForCluster(
         String resourceGroupName, String serviceName, List<String> version) {
-        return new PagedIterable<>(listClusterAllDeploymentsAsync(resourceGroupName, serviceName, version));
+        return new PagedIterable<>(listForClusterAsync(resourceGroupName, serviceName, version));
     }
 
     /**
@@ -1802,9 +1922,9 @@ public final class DeploymentsClient {
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentResourceInner> listClusterAllDeployments(
+    public PagedIterable<DeploymentResourceInner> listForCluster(
         String resourceGroupName, String serviceName, List<String> version, Context context) {
-        return new PagedIterable<>(listClusterAllDeploymentsAsync(resourceGroupName, serviceName, version, context));
+        return new PagedIterable<>(listForClusterAsync(resourceGroupName, serviceName, version, context));
     }
 
     /**
@@ -1819,11 +1939,10 @@ public final class DeploymentsClient {
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentResourceInner> listClusterAllDeployments(
-        String resourceGroupName, String serviceName) {
+    public PagedIterable<DeploymentResourceInner> listForCluster(String resourceGroupName, String serviceName) {
         final List<String> version = null;
         final Context context = null;
-        return new PagedIterable<>(listClusterAllDeploymentsAsync(resourceGroupName, serviceName, version));
+        return new PagedIterable<>(listForClusterAsync(resourceGroupName, serviceName, version));
     }
 
     /**
@@ -1925,6 +2044,7 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .start(
                 this.client.getEndpoint(),
@@ -1955,7 +2075,9 @@ public final class DeploymentsClient {
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1975,9 +2097,12 @@ public final class DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2196,6 +2321,7 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .stop(
                 this.client.getEndpoint(),
@@ -2226,7 +2352,9 @@ public final class DeploymentsClient {
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2246,9 +2374,12 @@ public final class DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2467,6 +2598,7 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .restart(
                 this.client.getEndpoint(),
@@ -2497,7 +2629,9 @@ public final class DeploymentsClient {
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             restartWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2517,9 +2651,12 @@ public final class DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             restartWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2739,6 +2876,7 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getLogFileUrl(
                 this.client.getEndpoint(),
@@ -2888,6 +3026,7 @@ public final class DeploymentsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -2911,12 +3050,12 @@ public final class DeploymentsClient {
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentResourceInner>> listClusterAllDeploymentsNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<DeploymentResourceInner>> listForClusterNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.listClusterAllDeploymentsNext(nextLink, context))
+            .withContext(context -> service.listForClusterNext(nextLink, context))
             .<PagedResponse<DeploymentResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2940,13 +3079,14 @@ public final class DeploymentsClient {
      * @return object that includes an array of App resources and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentResourceInner>> listClusterAllDeploymentsNextSinglePageAsync(
+    public Mono<PagedResponse<DeploymentResourceInner>> listForClusterNextSinglePageAsync(
         String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
-            .listClusterAllDeploymentsNext(nextLink, context)
+            .listForClusterNext(nextLink, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

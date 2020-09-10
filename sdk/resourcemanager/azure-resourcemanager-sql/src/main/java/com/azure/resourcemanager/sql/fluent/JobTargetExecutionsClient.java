@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.JobExecutionInner;
 import com.azure.resourcemanager.sql.fluent.inner.JobExecutionListResultInner;
 import java.time.OffsetDateTime;
@@ -308,6 +307,7 @@ public final class JobTargetExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByJobExecution(
                 this.client.getEndpoint(),
@@ -443,7 +443,7 @@ public final class JobTargetExecutionsClient {
                     skip,
                     top,
                     context),
-            nextLink -> listByJobExecutionNextSinglePageAsync(nextLink));
+            nextLink -> listByJobExecutionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -486,7 +486,7 @@ public final class JobTargetExecutionsClient {
                     isActive,
                     skip,
                     top),
-            nextLink -> listByJobExecutionNextSinglePageAsync(nextLink));
+            nextLink -> listByJobExecutionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -809,6 +809,7 @@ public final class JobTargetExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByStep(
                 this.client.getEndpoint(),
@@ -951,7 +952,7 @@ public final class JobTargetExecutionsClient {
                     skip,
                     top,
                     context),
-            nextLink -> listByStepNextSinglePageAsync(nextLink));
+            nextLink -> listByStepNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1001,7 +1002,7 @@ public final class JobTargetExecutionsClient {
                     isActive,
                     skip,
                     top),
-            nextLink -> listByStepNextSinglePageAsync(nextLink));
+            nextLink -> listByStepNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1304,6 +1305,7 @@ public final class JobTargetExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -1500,6 +1502,7 @@ public final class JobTargetExecutionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByJobExecutionNext(nextLink, context)
             .map(
@@ -1556,6 +1559,7 @@ public final class JobTargetExecutionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByStepNext(nextLink, context)
             .map(

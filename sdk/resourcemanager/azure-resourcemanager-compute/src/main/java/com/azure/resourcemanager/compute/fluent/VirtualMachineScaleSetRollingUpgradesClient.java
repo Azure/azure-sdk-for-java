@@ -25,7 +25,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.RollingUpgradeStatusInfoInner;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -224,7 +223,9 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String vmScaleSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, vmScaleSetName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -241,8 +242,11 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginCancelAsync(
         String resourceGroupName, String vmScaleSetName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, vmScaleSetName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -450,7 +454,9 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
     public PollerFlux<PollResult<Void>, Void> beginStartOSUpgradeAsync(
         String resourceGroupName, String vmScaleSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startOSUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -468,9 +474,12 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStartOSUpgradeAsync(
         String resourceGroupName, String vmScaleSetName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             startOSUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -685,7 +694,9 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
         String resourceGroupName, String vmScaleSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             startExtensionUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -703,9 +714,12 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStartExtensionUpgradeAsync(
         String resourceGroupName, String vmScaleSetName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             startExtensionUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**

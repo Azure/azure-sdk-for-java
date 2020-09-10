@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpTag;
@@ -19,6 +20,9 @@ import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,12 +30,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Implementation for PublicIPAddress and its create and update interfaces. */
 class PublicIpAddressImpl
     extends GroupableResourceImpl<PublicIpAddress, PublicIpAddressInner, PublicIpAddressImpl, NetworkManager>
     implements PublicIpAddress, PublicIpAddress.Definition, PublicIpAddress.Update, AppliableWithTags<PublicIpAddress> {
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
 
     PublicIpAddressImpl(String name, PublicIpAddressInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
@@ -170,9 +178,38 @@ class PublicIpAddressImpl
         }
     }
 
+    @Override
+    public Accepted<PublicIpAddress> beginCreate() {
+        return AcceptedImpl.newAccepted(logger,
+            this.manager().inner(),
+            () -> this.manager().inner().getPublicIpAddresses()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
+            inner -> new PublicIpAddressImpl(inner.name(), inner, this.manager()),
+            PublicIpAddressInner.class,
+            () -> {
+                Flux<Indexable> dependencyTasksAsync =
+                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                dependencyTasksAsync.blockLast();
+
+                this.cleanupDnsSettings();
+            },
+            this::setInner);
+    }
+
     // CreateUpdateTaskGroup.ResourceCreator implementation
     @Override
     public Mono<PublicIpAddress> createResourceAsync() {
+        this.cleanupDnsSettings();
+
+        return this
+            .manager()
+            .inner()
+            .getPublicIpAddresses()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(innerToFluentMap(this));
+    }
+
+    private void cleanupDnsSettings() {
         // Clean up empty DNS settings
         final PublicIpAddressDnsSettings dnsSettings = this.inner().dnsSettings();
         if (dnsSettings != null) {
@@ -182,13 +219,6 @@ class PublicIpAddressImpl
                 this.inner().withDnsSettings(null);
             }
         }
-
-        return this
-            .manager()
-            .inner()
-            .getPublicIpAddresses()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-            .map(innerToFluentMap(this));
     }
 
     private boolean equalsResourceType(String resourceType) {
@@ -311,6 +341,12 @@ class PublicIpAddressImpl
                 }
             }
         }
+        return this;
+    }
+
+    @Override
+    public PublicIpAddressImpl withIpAddressVersion(IpVersion ipVersion) {
+        this.inner().withPublicIpAddressVersion(ipVersion);
         return this;
     }
 }

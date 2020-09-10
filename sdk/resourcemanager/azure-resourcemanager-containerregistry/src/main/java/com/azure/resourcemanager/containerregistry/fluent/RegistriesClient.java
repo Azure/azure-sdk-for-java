@@ -32,7 +32,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryListCredentialsResultInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryListResultInner;
@@ -291,95 +291,6 @@ public final class RegistriesClient
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
-                + "/registries/{registryName}/importImage")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginImportImageWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @BodyParam("application/json") ImportImageParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
-                + "/registries/{registryName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegistryInner>> beginCreateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @BodyParam("application/json") RegistryInner registry,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
-                + "/registries/{registryName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
-                + "/registries/{registryName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegistryInner>> beginUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @BodyParam("application/json") RegistryUpdateParameters registryUpdateParameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
-                + "/registries/{registryName}/updatePolicies")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegistryPoliciesInner>> beginUpdatePoliciesWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @BodyParam("application/json") RegistryPoliciesInner registryPoliciesUpdateParameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
-                + "/registries/{registryName}/scheduleRun")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunInner>> beginScheduleRunWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RunRequest runRequest,
-            Context context);
-
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -489,6 +400,7 @@ public final class RegistriesClient
             parameters.validate();
         }
         final String apiVersion = "2017-10-01";
+        context = this.client.mergeContext(context);
         return service
             .importImage(
                 this.client.getEndpoint(),
@@ -512,11 +424,13 @@ public final class RegistriesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginImportImage(
+    public PollerFlux<PollResult<Void>, Void> beginImportImageAsync(
         String resourceGroupName, String registryName, ImportImageParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             importImageWithResponseAsync(resourceGroupName, registryName, parameters);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -532,11 +446,49 @@ public final class RegistriesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginImportImage(
+    public PollerFlux<PollResult<Void>, Void> beginImportImageAsync(
         String resourceGroupName, String registryName, ImportImageParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             importImageWithResponseAsync(resourceGroupName, registryName, parameters, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Copies an image to this container registry from the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param parameters The parameters specifying the image to copy and the source container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginImportImage(
+        String resourceGroupName, String registryName, ImportImageParameters parameters) {
+        return beginImportImageAsync(resourceGroupName, registryName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Copies an image to this container registry from the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param parameters The parameters specifying the image to copy and the source container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginImportImage(
+        String resourceGroupName, String registryName, ImportImageParameters parameters, Context context) {
+        return beginImportImageAsync(resourceGroupName, registryName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -553,13 +505,9 @@ public final class RegistriesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> importImageAsync(
         String resourceGroupName, String registryName, ImportImageParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            importImageWithResponseAsync(resourceGroupName, registryName, parameters);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginImportImageAsync(resourceGroupName, registryName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -577,13 +525,9 @@ public final class RegistriesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> importImageAsync(
         String resourceGroupName, String registryName, ImportImageParameters parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            importImageWithResponseAsync(resourceGroupName, registryName, parameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginImportImageAsync(resourceGroupName, registryName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -693,6 +637,7 @@ public final class RegistriesClient
         final String apiVersion = "2017-10-01";
         RegistryNameCheckRequest registryNameCheckRequest = new RegistryNameCheckRequest();
         registryNameCheckRequest.withName(name);
+        context = this.client.mergeContext(context);
         return service
             .checkNameAvailability(
                 this.client.getEndpoint(),
@@ -861,6 +806,7 @@ public final class RegistriesClient
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -1043,6 +989,7 @@ public final class RegistriesClient
             registry.validate();
         }
         final String apiVersion = "2017-10-01";
+        context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(),
@@ -1066,13 +1013,13 @@ public final class RegistriesClient
      * @return an object that represents a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RegistryInner>, RegistryInner> beginCreate(
+    public PollerFlux<PollResult<RegistryInner>, RegistryInner> beginCreateAsync(
         String resourceGroupName, String registryName, RegistryInner registry) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, registryName, registry);
         return this
             .client
-            .<RegistryInner, RegistryInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class);
+            .<RegistryInner, RegistryInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class, Context.NONE);
     }
 
     /**
@@ -1088,14 +1035,50 @@ public final class RegistriesClient
      * @return an object that represents a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RegistryInner>, RegistryInner> beginCreate(
+    public PollerFlux<PollResult<RegistryInner>, RegistryInner> beginCreateAsync(
         String resourceGroupName, String registryName, RegistryInner registry, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, registryName, registry, context);
         return this
             .client
-            .<RegistryInner, RegistryInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class);
+            .<RegistryInner, RegistryInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class, context);
+    }
+
+    /**
+     * Creates a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registry An object that represents a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RegistryInner>, RegistryInner> beginCreate(
+        String resourceGroupName, String registryName, RegistryInner registry) {
+        return beginCreateAsync(resourceGroupName, registryName, registry).getSyncPoller();
+    }
+
+    /**
+     * Creates a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registry An object that represents a container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RegistryInner>, RegistryInner> beginCreate(
+        String resourceGroupName, String registryName, RegistryInner registry, Context context) {
+        return beginCreateAsync(resourceGroupName, registryName, registry, context).getSyncPoller();
     }
 
     /**
@@ -1111,13 +1094,9 @@ public final class RegistriesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RegistryInner> createAsync(String resourceGroupName, String registryName, RegistryInner registry) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, registryName, registry);
-        return this
-            .client
-            .<RegistryInner, RegistryInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class)
+        return beginCreateAsync(resourceGroupName, registryName, registry)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1135,14 +1114,9 @@ public final class RegistriesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RegistryInner> createAsync(
         String resourceGroupName, String registryName, RegistryInner registry, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, registryName, registry, context);
-        return this
-            .client
-            .<RegistryInner, RegistryInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class)
+        return beginCreateAsync(resourceGroupName, registryName, registry, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1259,6 +1233,7 @@ public final class RegistriesClient
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1280,9 +1255,11 @@ public final class RegistriesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1297,10 +1274,45 @@ public final class RegistriesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String registryName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName) {
+        return beginDeleteAsync(resourceGroupName, registryName).getSyncPoller();
+    }
+
+    /**
+     * Deletes a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String registryName, Context context) {
+        return beginDeleteAsync(resourceGroupName, registryName, context).getSyncPoller();
     }
 
     /**
@@ -1315,12 +1327,7 @@ public final class RegistriesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, registryName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1336,12 +1343,9 @@ public final class RegistriesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, registryName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1474,6 +1478,7 @@ public final class RegistriesClient
             registryUpdateParameters.validate();
         }
         final String apiVersion = "2017-10-01";
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1497,14 +1502,14 @@ public final class RegistriesClient
      * @return an object that represents a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RegistryInner>, RegistryInner> beginUpdate(
+    public PollerFlux<PollResult<RegistryInner>, RegistryInner> beginUpdateAsync(
         String resourceGroupName, String registryName, RegistryUpdateParameters registryUpdateParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, registryName, registryUpdateParameters);
         return this
             .client
-            .<RegistryInner, RegistryInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class);
+            .<RegistryInner, RegistryInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class, Context.NONE);
     }
 
     /**
@@ -1520,17 +1525,56 @@ public final class RegistriesClient
      * @return an object that represents a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RegistryInner>, RegistryInner> beginUpdate(
+    public PollerFlux<PollResult<RegistryInner>, RegistryInner> beginUpdateAsync(
         String resourceGroupName,
         String registryName,
         RegistryUpdateParameters registryUpdateParameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, registryName, registryUpdateParameters, context);
         return this
             .client
-            .<RegistryInner, RegistryInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class);
+            .<RegistryInner, RegistryInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class, context);
+    }
+
+    /**
+     * Updates a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryUpdateParameters The parameters for updating a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RegistryInner>, RegistryInner> beginUpdate(
+        String resourceGroupName, String registryName, RegistryUpdateParameters registryUpdateParameters) {
+        return beginUpdateAsync(resourceGroupName, registryName, registryUpdateParameters).getSyncPoller();
+    }
+
+    /**
+     * Updates a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryUpdateParameters The parameters for updating a container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RegistryInner>, RegistryInner> beginUpdate(
+        String resourceGroupName,
+        String registryName,
+        RegistryUpdateParameters registryUpdateParameters,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, registryName, registryUpdateParameters, context).getSyncPoller();
     }
 
     /**
@@ -1547,14 +1591,9 @@ public final class RegistriesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RegistryInner> updateAsync(
         String resourceGroupName, String registryName, RegistryUpdateParameters registryUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, registryName, registryUpdateParameters);
-        return this
-            .client
-            .<RegistryInner, RegistryInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class)
+        return beginUpdateAsync(resourceGroupName, registryName, registryUpdateParameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1575,14 +1614,9 @@ public final class RegistriesClient
         String registryName,
         RegistryUpdateParameters registryUpdateParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, registryName, registryUpdateParameters, context);
-        return this
-            .client
-            .<RegistryInner, RegistryInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RegistryInner.class, RegistryInner.class)
+        return beginUpdateAsync(resourceGroupName, registryName, registryUpdateParameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1703,6 +1737,7 @@ public final class RegistriesClient
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, context)
@@ -1747,7 +1782,7 @@ public final class RegistriesClient
     public PagedFlux<RegistryInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1841,6 +1876,7 @@ public final class RegistriesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1877,7 +1913,8 @@ public final class RegistriesClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RegistryInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1987,6 +2024,7 @@ public final class RegistriesClient
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01";
+        context = this.client.mergeContext(context);
         return service
             .listCredentials(
                 this.client.getEndpoint(),
@@ -2172,6 +2210,7 @@ public final class RegistriesClient
         final String apiVersion = "2017-10-01";
         RegenerateCredentialParameters regenerateCredentialParameters = new RegenerateCredentialParameters();
         regenerateCredentialParameters.withName(name);
+        context = this.client.mergeContext(context);
         return service
             .regenerateCredential(
                 this.client.getEndpoint(),
@@ -2350,6 +2389,7 @@ public final class RegistriesClient
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01";
+        context = this.client.mergeContext(context);
         return service
             .listUsages(
                 this.client.getEndpoint(),
@@ -2520,6 +2560,7 @@ public final class RegistriesClient
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01";
+        context = this.client.mergeContext(context);
         return service
             .listPolicies(
                 this.client.getEndpoint(),
@@ -2712,6 +2753,7 @@ public final class RegistriesClient
             registryPoliciesUpdateParameters.validate();
         }
         final String apiVersion = "2017-10-01";
+        context = this.client.mergeContext(context);
         return service
             .updatePolicies(
                 this.client.getEndpoint(),
@@ -2735,14 +2777,18 @@ public final class RegistriesClient
      * @return an object that represents policies for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RegistryPoliciesInner>, RegistryPoliciesInner> beginUpdatePolicies(
+    public PollerFlux<PollResult<RegistryPoliciesInner>, RegistryPoliciesInner> beginUpdatePoliciesAsync(
         String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updatePoliciesWithResponseAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters);
         return this
             .client
-            .<RegistryPoliciesInner, RegistryPoliciesInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RegistryPoliciesInner.class, RegistryPoliciesInner.class);
+            .<RegistryPoliciesInner, RegistryPoliciesInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                RegistryPoliciesInner.class,
+                RegistryPoliciesInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2758,17 +2804,58 @@ public final class RegistriesClient
      * @return an object that represents policies for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RegistryPoliciesInner>, RegistryPoliciesInner> beginUpdatePolicies(
+    public PollerFlux<PollResult<RegistryPoliciesInner>, RegistryPoliciesInner> beginUpdatePoliciesAsync(
         String resourceGroupName,
         String registryName,
         RegistryPoliciesInner registryPoliciesUpdateParameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updatePoliciesWithResponseAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters, context);
         return this
             .client
-            .<RegistryPoliciesInner, RegistryPoliciesInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RegistryPoliciesInner.class, RegistryPoliciesInner.class);
+            .<RegistryPoliciesInner, RegistryPoliciesInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RegistryPoliciesInner.class, RegistryPoliciesInner.class, context);
+    }
+
+    /**
+     * Updates the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents policies for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RegistryPoliciesInner>, RegistryPoliciesInner> beginUpdatePolicies(
+        String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
+        return beginUpdatePoliciesAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents policies for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RegistryPoliciesInner>, RegistryPoliciesInner> beginUpdatePolicies(
+        String resourceGroupName,
+        String registryName,
+        RegistryPoliciesInner registryPoliciesUpdateParameters,
+        Context context) {
+        return beginUpdatePoliciesAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2785,14 +2872,9 @@ public final class RegistriesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RegistryPoliciesInner> updatePoliciesAsync(
         String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updatePoliciesWithResponseAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters);
-        return this
-            .client
-            .<RegistryPoliciesInner, RegistryPoliciesInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RegistryPoliciesInner.class, RegistryPoliciesInner.class)
+        return beginUpdatePoliciesAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2813,14 +2895,9 @@ public final class RegistriesClient
         String registryName,
         RegistryPoliciesInner registryPoliciesUpdateParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updatePoliciesWithResponseAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters, context);
-        return this
-            .client
-            .<RegistryPoliciesInner, RegistryPoliciesInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RegistryPoliciesInner.class, RegistryPoliciesInner.class)
+        return beginUpdatePoliciesAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2955,6 +3032,7 @@ public final class RegistriesClient
             runRequest.validate();
         }
         final String apiVersion = "2018-09-01";
+        context = this.client.mergeContext(context);
         return service
             .scheduleRun(
                 this.client.getEndpoint(),
@@ -2978,13 +3056,14 @@ public final class RegistriesClient
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RunInner>, RunInner> beginScheduleRun(
+    public PollerFlux<PollResult<RunInner>, RunInner> beginScheduleRunAsync(
         String resourceGroupName, String registryName, RunRequest runRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             scheduleRunWithResponseAsync(resourceGroupName, registryName, runRequest);
         return this
             .client
-            .<RunInner, RunInner>getLroResultAsync(mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class);
+            .<RunInner, RunInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class, Context.NONE);
     }
 
     /**
@@ -3000,13 +3079,50 @@ public final class RegistriesClient
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RunInner>, RunInner> beginScheduleRun(
+    public PollerFlux<PollResult<RunInner>, RunInner> beginScheduleRunAsync(
         String resourceGroupName, String registryName, RunRequest runRequest, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             scheduleRunWithResponseAsync(resourceGroupName, registryName, runRequest, context);
         return this
             .client
-            .<RunInner, RunInner>getLroResultAsync(mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class);
+            .<RunInner, RunInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class, context);
+    }
+
+    /**
+     * Schedules a new run based on the request parameters and add it to the run queue.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runRequest The request parameters for scheduling a run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RunInner>, RunInner> beginScheduleRun(
+        String resourceGroupName, String registryName, RunRequest runRequest) {
+        return beginScheduleRunAsync(resourceGroupName, registryName, runRequest).getSyncPoller();
+    }
+
+    /**
+     * Schedules a new run based on the request parameters and add it to the run queue.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runRequest The request parameters for scheduling a run.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RunInner>, RunInner> beginScheduleRun(
+        String resourceGroupName, String registryName, RunRequest runRequest, Context context) {
+        return beginScheduleRunAsync(resourceGroupName, registryName, runRequest, context).getSyncPoller();
     }
 
     /**
@@ -3022,13 +3138,9 @@ public final class RegistriesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RunInner> scheduleRunAsync(String resourceGroupName, String registryName, RunRequest runRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            scheduleRunWithResponseAsync(resourceGroupName, registryName, runRequest);
-        return this
-            .client
-            .<RunInner, RunInner>getLroResultAsync(mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class)
+        return beginScheduleRunAsync(resourceGroupName, registryName, runRequest)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3046,13 +3158,9 @@ public final class RegistriesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RunInner> scheduleRunAsync(
         String resourceGroupName, String registryName, RunRequest runRequest, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            scheduleRunWithResponseAsync(resourceGroupName, registryName, runRequest, context);
-        return this
-            .client
-            .<RunInner, RunInner>getLroResultAsync(mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class)
+        return beginScheduleRunAsync(resourceGroupName, registryName, runRequest, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3169,6 +3277,7 @@ public final class RegistriesClient
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
         final String apiVersion = "2018-09-01";
+        context = this.client.mergeContext(context);
         return service
             .getBuildSourceUploadUrl(
                 this.client.getEndpoint(),
@@ -3261,1133 +3370,6 @@ public final class RegistriesClient
     }
 
     /**
-     * Copies an image to this container registry from the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginImportImageWithoutPollingWithResponseAsync(
-        String resourceGroupName, String registryName, ImportImageParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2017-10-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginImportImageWithoutPolling(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Copies an image to this container registry from the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginImportImageWithoutPollingWithResponseAsync(
-        String resourceGroupName, String registryName, ImportImageParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2017-10-01";
-        return service
-            .beginImportImageWithoutPolling(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                parameters,
-                context);
-    }
-
-    /**
-     * Copies an image to this container registry from the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginImportImageWithoutPollingAsync(
-        String resourceGroupName, String registryName, ImportImageParameters parameters) {
-        return beginImportImageWithoutPollingWithResponseAsync(resourceGroupName, registryName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Copies an image to this container registry from the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginImportImageWithoutPollingAsync(
-        String resourceGroupName, String registryName, ImportImageParameters parameters, Context context) {
-        return beginImportImageWithoutPollingWithResponseAsync(resourceGroupName, registryName, parameters, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Copies an image to this container registry from the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginImportImageWithoutPolling(
-        String resourceGroupName, String registryName, ImportImageParameters parameters) {
-        beginImportImageWithoutPollingAsync(resourceGroupName, registryName, parameters).block();
-    }
-
-    /**
-     * Copies an image to this container registry from the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginImportImageWithoutPolling(
-        String resourceGroupName, String registryName, ImportImageParameters parameters, Context context) {
-        beginImportImageWithoutPollingAsync(resourceGroupName, registryName, parameters, context).block();
-    }
-
-    /**
-     * Creates a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registry An object that represents a container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RegistryInner>> beginCreateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String registryName, RegistryInner registry) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (registry == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registry is required and cannot be null."));
-        } else {
-            registry.validate();
-        }
-        final String apiVersion = "2017-10-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateWithoutPolling(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            registry,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registry An object that represents a container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RegistryInner>> beginCreateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String registryName, RegistryInner registry, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (registry == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registry is required and cannot be null."));
-        } else {
-            registry.validate();
-        }
-        final String apiVersion = "2017-10-01";
-        return service
-            .beginCreateWithoutPolling(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                registry,
-                context);
-    }
-
-    /**
-     * Creates a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registry An object that represents a container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RegistryInner> beginCreateWithoutPollingAsync(
-        String resourceGroupName, String registryName, RegistryInner registry) {
-        return beginCreateWithoutPollingWithResponseAsync(resourceGroupName, registryName, registry)
-            .flatMap(
-                (Response<RegistryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registry An object that represents a container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RegistryInner> beginCreateWithoutPollingAsync(
-        String resourceGroupName, String registryName, RegistryInner registry, Context context) {
-        return beginCreateWithoutPollingWithResponseAsync(resourceGroupName, registryName, registry, context)
-            .flatMap(
-                (Response<RegistryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registry An object that represents a container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegistryInner beginCreateWithoutPolling(
-        String resourceGroupName, String registryName, RegistryInner registry) {
-        return beginCreateWithoutPollingAsync(resourceGroupName, registryName, registry).block();
-    }
-
-    /**
-     * Creates a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registry An object that represents a container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegistryInner beginCreateWithoutPolling(
-        String resourceGroupName, String registryName, RegistryInner registry, Context context) {
-        return beginCreateWithoutPollingAsync(resourceGroupName, registryName, registry, context).block();
-    }
-
-    /**
-     * Deletes a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String registryName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        final String apiVersion = "2017-10-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String registryName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        final String apiVersion = "2017-10-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                context);
-    }
-
-    /**
-     * Deletes a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String registryName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, registryName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String registryName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, registryName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String registryName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, registryName).block();
-    }
-
-    /**
-     * Deletes a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String registryName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, registryName, context).block();
-    }
-
-    /**
-     * Updates a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registryUpdateParameters The parameters for updating a container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RegistryInner>> beginUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String registryName, RegistryUpdateParameters registryUpdateParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (registryUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter registryUpdateParameters is required and cannot be null."));
-        } else {
-            registryUpdateParameters.validate();
-        }
-        final String apiVersion = "2017-10-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            registryUpdateParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registryUpdateParameters The parameters for updating a container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RegistryInner>> beginUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String registryName,
-        RegistryUpdateParameters registryUpdateParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (registryUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter registryUpdateParameters is required and cannot be null."));
-        } else {
-            registryUpdateParameters.validate();
-        }
-        final String apiVersion = "2017-10-01";
-        return service
-            .beginUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                registryUpdateParameters,
-                context);
-    }
-
-    /**
-     * Updates a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registryUpdateParameters The parameters for updating a container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RegistryInner> beginUpdateWithoutPollingAsync(
-        String resourceGroupName, String registryName, RegistryUpdateParameters registryUpdateParameters) {
-        return beginUpdateWithoutPollingWithResponseAsync(resourceGroupName, registryName, registryUpdateParameters)
-            .flatMap(
-                (Response<RegistryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registryUpdateParameters The parameters for updating a container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RegistryInner> beginUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String registryName,
-        RegistryUpdateParameters registryUpdateParameters,
-        Context context) {
-        return beginUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, registryName, registryUpdateParameters, context)
-            .flatMap(
-                (Response<RegistryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registryUpdateParameters The parameters for updating a container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegistryInner beginUpdateWithoutPolling(
-        String resourceGroupName, String registryName, RegistryUpdateParameters registryUpdateParameters) {
-        return beginUpdateWithoutPollingAsync(resourceGroupName, registryName, registryUpdateParameters).block();
-    }
-
-    /**
-     * Updates a container registry with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registryUpdateParameters The parameters for updating a container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegistryInner beginUpdateWithoutPolling(
-        String resourceGroupName,
-        String registryName,
-        RegistryUpdateParameters registryUpdateParameters,
-        Context context) {
-        return beginUpdateWithoutPollingAsync(resourceGroupName, registryName, registryUpdateParameters, context)
-            .block();
-    }
-
-    /**
-     * Updates the policies for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents policies for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RegistryPoliciesInner>> beginUpdatePoliciesWithoutPollingWithResponseAsync(
-        String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (registryPoliciesUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter registryPoliciesUpdateParameters is required and cannot be null."));
-        } else {
-            registryPoliciesUpdateParameters.validate();
-        }
-        final String apiVersion = "2017-10-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdatePoliciesWithoutPolling(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            registryPoliciesUpdateParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates the policies for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents policies for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RegistryPoliciesInner>> beginUpdatePoliciesWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String registryName,
-        RegistryPoliciesInner registryPoliciesUpdateParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (registryPoliciesUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter registryPoliciesUpdateParameters is required and cannot be null."));
-        } else {
-            registryPoliciesUpdateParameters.validate();
-        }
-        final String apiVersion = "2017-10-01";
-        return service
-            .beginUpdatePoliciesWithoutPolling(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                registryPoliciesUpdateParameters,
-                context);
-    }
-
-    /**
-     * Updates the policies for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents policies for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RegistryPoliciesInner> beginUpdatePoliciesWithoutPollingAsync(
-        String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
-        return beginUpdatePoliciesWithoutPollingWithResponseAsync(
-                resourceGroupName, registryName, registryPoliciesUpdateParameters)
-            .flatMap(
-                (Response<RegistryPoliciesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates the policies for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents policies for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RegistryPoliciesInner> beginUpdatePoliciesWithoutPollingAsync(
-        String resourceGroupName,
-        String registryName,
-        RegistryPoliciesInner registryPoliciesUpdateParameters,
-        Context context) {
-        return beginUpdatePoliciesWithoutPollingWithResponseAsync(
-                resourceGroupName, registryName, registryPoliciesUpdateParameters, context)
-            .flatMap(
-                (Response<RegistryPoliciesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates the policies for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents policies for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegistryPoliciesInner beginUpdatePoliciesWithoutPolling(
-        String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
-        return beginUpdatePoliciesWithoutPollingAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters)
-            .block();
-    }
-
-    /**
-     * Updates the policies for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param registryPoliciesUpdateParameters An object that represents policies for a container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents policies for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegistryPoliciesInner beginUpdatePoliciesWithoutPolling(
-        String resourceGroupName,
-        String registryName,
-        RegistryPoliciesInner registryPoliciesUpdateParameters,
-        Context context) {
-        return beginUpdatePoliciesWithoutPollingAsync(
-                resourceGroupName, registryName, registryPoliciesUpdateParameters, context)
-            .block();
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The request parameters for scheduling a run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RunInner>> beginScheduleRunWithoutPollingWithResponseAsync(
-        String resourceGroupName, String registryName, RunRequest runRequest) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (runRequest == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runRequest is required and cannot be null."));
-        } else {
-            runRequest.validate();
-        }
-        final String apiVersion = "2018-09-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginScheduleRunWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            apiVersion,
-                            runRequest,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The request parameters for scheduling a run.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RunInner>> beginScheduleRunWithoutPollingWithResponseAsync(
-        String resourceGroupName, String registryName, RunRequest runRequest, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (runRequest == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runRequest is required and cannot be null."));
-        } else {
-            runRequest.validate();
-        }
-        final String apiVersion = "2018-09-01";
-        return service
-            .beginScheduleRunWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                apiVersion,
-                runRequest,
-                context);
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The request parameters for scheduling a run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RunInner> beginScheduleRunWithoutPollingAsync(
-        String resourceGroupName, String registryName, RunRequest runRequest) {
-        return beginScheduleRunWithoutPollingWithResponseAsync(resourceGroupName, registryName, runRequest)
-            .flatMap(
-                (Response<RunInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The request parameters for scheduling a run.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RunInner> beginScheduleRunWithoutPollingAsync(
-        String resourceGroupName, String registryName, RunRequest runRequest, Context context) {
-        return beginScheduleRunWithoutPollingWithResponseAsync(resourceGroupName, registryName, runRequest, context)
-            .flatMap(
-                (Response<RunInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The request parameters for scheduling a run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunInner beginScheduleRunWithoutPolling(
-        String resourceGroupName, String registryName, RunRequest runRequest) {
-        return beginScheduleRunWithoutPollingAsync(resourceGroupName, registryName, runRequest).block();
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The request parameters for scheduling a run.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunInner beginScheduleRunWithoutPolling(
-        String resourceGroupName, String registryName, RunRequest runRequest, Context context) {
-        return beginScheduleRunWithoutPollingAsync(resourceGroupName, registryName, runRequest, context).block();
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -4430,6 +3412,7 @@ public final class RegistriesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(
@@ -4486,6 +3469,7 @@ public final class RegistriesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

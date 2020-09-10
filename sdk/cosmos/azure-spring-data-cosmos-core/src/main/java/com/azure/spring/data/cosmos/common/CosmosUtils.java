@@ -4,12 +4,9 @@ package com.azure.spring.data.cosmos.common;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import com.azure.spring.data.cosmos.exception.IllegalQueryException;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -71,43 +68,5 @@ public class CosmosUtils {
         } else {
             throw new IllegalQueryException("Type of id field must be String or Integer or Long");
         }
-    }
-
-    /**
-     * Creates partition key from json node by converting the jsonNode type to appropriate Java type.
-     * @param jsonNode jsonNode domain object
-     * @param entityInfo entityInfo for the domainType
-     * @return cosmos partitionKey object
-     */
-    public static PartitionKey createPartitionKey(JsonNode jsonNode, CosmosEntityInformation<?, ?> entityInfo) {
-        String partitionKeyName = entityInfo.getPartitionKeyFieldName();
-        if (partitionKeyName == null) {
-            return PartitionKey.NONE;
-        }
-        return new PartitionKey(getValue(jsonNode.get(partitionKeyName)));
-    }
-
-    private static Object getValue(JsonNode value) {
-        if (value.isValueNode()) {
-            switch (value.getNodeType()) {
-                case BOOLEAN:
-                    return value.asBoolean();
-                case NUMBER:
-                    if (value.isInt()) {
-                        return value.asInt();
-                    } else if (value.isLong()) {
-                        return value.asLong();
-                    } else if (value.isDouble()) {
-                        return value.asDouble();
-                    } else {
-                        return value;
-                    }
-                case STRING:
-                    return value.asText();
-                default:
-                    return value;
-            }
-        }
-        return value;
     }
 }

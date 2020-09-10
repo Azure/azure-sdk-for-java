@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationDescriptionInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
@@ -167,7 +166,8 @@ public final class CertificateRegistrationProvidersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CsmOperationDescriptionInner> listOperationsAsync(Context context) {
         return new PagedFlux<>(
-            () -> listOperationsSinglePageAsync(context), nextLink -> listOperationsNextSinglePageAsync(nextLink));
+            () -> listOperationsSinglePageAsync(context),
+            nextLink -> listOperationsNextSinglePageAsync(nextLink, context));
     }
 
     /**

@@ -26,7 +26,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
 import com.azure.resourcemanager.resources.fluent.inner.ProviderListResultInner;
 import reactor.core.publisher.Mono;
@@ -584,7 +583,7 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProviderInner> listAsync(Integer top, String expand, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(top, expand, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(top, expand, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -599,7 +598,8 @@ public final class ProvidersClient {
         final Integer top = null;
         final String expand = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(top, expand), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(top, expand), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -762,7 +762,7 @@ public final class ProvidersClient {
     public PagedFlux<ProviderInner> listAtTenantScopeAsync(Integer top, String expand, Context context) {
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(top, expand, context),
-            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -779,7 +779,7 @@ public final class ProvidersClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(top, expand),
-            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**

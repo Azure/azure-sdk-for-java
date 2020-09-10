@@ -21,8 +21,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.ManagedDatabaseRestoreDetailsResultInner;
+import com.azure.resourcemanager.sql.models.RestoreDetailsName;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagedDatabaseRestoreDetails. */
@@ -69,7 +69,7 @@ public final class ManagedDatabaseRestoreDetailsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("databaseName") String databaseName,
-            @PathParam("restoreDetailsName") String restoreDetailsName,
+            @PathParam("restoreDetailsName") RestoreDetailsName restoreDetailsName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -78,10 +78,10 @@ public final class ManagedDatabaseRestoreDetailsClient {
     /**
      * Gets managed database restore details.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param restoreDetailsName The name of the restore details to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -89,7 +89,10 @@ public final class ManagedDatabaseRestoreDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedDatabaseRestoreDetailsResultInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName) {
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        RestoreDetailsName restoreDetailsName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -107,14 +110,17 @@ public final class ManagedDatabaseRestoreDetailsClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (restoreDetailsName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter restoreDetailsName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String restoreDetailsName = "Default";
-        final String apiVersion = "2019-06-01-preview";
+        final String apiVersion = "2020-02-02-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -134,10 +140,10 @@ public final class ManagedDatabaseRestoreDetailsClient {
     /**
      * Gets managed database restore details.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param restoreDetailsName The name of the restore details to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -146,7 +152,11 @@ public final class ManagedDatabaseRestoreDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedDatabaseRestoreDetailsResultInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, Context context) {
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        RestoreDetailsName restoreDetailsName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -164,14 +174,18 @@ public final class ManagedDatabaseRestoreDetailsClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (restoreDetailsName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter restoreDetailsName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String restoreDetailsName = "Default";
-        final String apiVersion = "2019-06-01-preview";
+        final String apiVersion = "2020-02-02-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -187,10 +201,10 @@ public final class ManagedDatabaseRestoreDetailsClient {
     /**
      * Gets managed database restore details.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param restoreDetailsName The name of the restore details to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -198,8 +212,11 @@ public final class ManagedDatabaseRestoreDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseRestoreDetailsResultInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName) {
-        return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName)
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        RestoreDetailsName restoreDetailsName) {
+        return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, restoreDetailsName)
             .flatMap(
                 (Response<ManagedDatabaseRestoreDetailsResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -213,10 +230,10 @@ public final class ManagedDatabaseRestoreDetailsClient {
     /**
      * Gets managed database restore details.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param restoreDetailsName The name of the restore details to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -225,8 +242,12 @@ public final class ManagedDatabaseRestoreDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseRestoreDetailsResultInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, Context context) {
-        return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, context)
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        RestoreDetailsName restoreDetailsName,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, restoreDetailsName, context)
             .flatMap(
                 (Response<ManagedDatabaseRestoreDetailsResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -240,10 +261,10 @@ public final class ManagedDatabaseRestoreDetailsClient {
     /**
      * Gets managed database restore details.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param restoreDetailsName The name of the restore details to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -251,17 +272,20 @@ public final class ManagedDatabaseRestoreDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseRestoreDetailsResultInner get(
-        String resourceGroupName, String managedInstanceName, String databaseName) {
-        return getAsync(resourceGroupName, managedInstanceName, databaseName).block();
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        RestoreDetailsName restoreDetailsName) {
+        return getAsync(resourceGroupName, managedInstanceName, databaseName, restoreDetailsName).block();
     }
 
     /**
      * Gets managed database restore details.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param restoreDetailsName The name of the restore details to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -270,7 +294,11 @@ public final class ManagedDatabaseRestoreDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseRestoreDetailsResultInner get(
-        String resourceGroupName, String managedInstanceName, String databaseName, Context context) {
-        return getAsync(resourceGroupName, managedInstanceName, databaseName, context).block();
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        RestoreDetailsName restoreDetailsName,
+        Context context) {
+        return getAsync(resourceGroupName, managedInstanceName, databaseName, restoreDetailsName, context).block();
     }
 }

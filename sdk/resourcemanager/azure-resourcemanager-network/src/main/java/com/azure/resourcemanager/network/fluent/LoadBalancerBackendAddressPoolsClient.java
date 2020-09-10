@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
 import com.azure.resourcemanager.network.fluent.inner.LoadBalancerBackendAddressPoolListResultInner;
 import java.nio.ByteBuffer;
@@ -283,7 +282,7 @@ public final class LoadBalancerBackendAddressPoolsClient {
         String resourceGroupName, String loadBalancerName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, loadBalancerName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -663,8 +662,12 @@ public final class LoadBalancerBackendAddressPoolsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, loadBalancerName, backendAddressPoolName, parameters);
         return this
             .client
-            .<BackendAddressPoolInner, BackendAddressPoolInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BackendAddressPoolInner.class, BackendAddressPoolInner.class);
+            .<BackendAddressPoolInner, BackendAddressPoolInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BackendAddressPoolInner.class,
+                BackendAddressPoolInner.class,
+                Context.NONE);
     }
 
     /**
@@ -687,13 +690,18 @@ public final class LoadBalancerBackendAddressPoolsClient {
         String backendAddressPoolName,
         BackendAddressPoolInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, loadBalancerName, backendAddressPoolName, parameters, context);
         return this
             .client
-            .<BackendAddressPoolInner, BackendAddressPoolInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BackendAddressPoolInner.class, BackendAddressPoolInner.class);
+            .<BackendAddressPoolInner, BackendAddressPoolInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BackendAddressPoolInner.class,
+                BackendAddressPoolInner.class,
+                context);
     }
 
     /**
@@ -961,7 +969,9 @@ public final class LoadBalancerBackendAddressPoolsClient {
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, loadBalancerName, backendAddressPoolName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -979,9 +989,12 @@ public final class LoadBalancerBackendAddressPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, loadBalancerName, backendAddressPoolName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**

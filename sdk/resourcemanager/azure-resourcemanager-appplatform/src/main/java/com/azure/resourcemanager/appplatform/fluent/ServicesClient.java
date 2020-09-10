@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceListInner;
 import com.azure.resourcemanager.appplatform.models.NameAvailability;
@@ -96,7 +95,7 @@ public final class ServicesClient
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -325,6 +324,7 @@ public final class ServicesClient
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -512,6 +512,7 @@ public final class ServicesClient
         } else {
             resource.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -542,8 +543,12 @@ public final class ServicesClient
             createOrUpdateWithResponseAsync(resourceGroupName, serviceName, resource);
         return this
             .client
-            .<ServiceResourceInner, ServiceResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ServiceResourceInner.class, ServiceResourceInner.class);
+            .<ServiceResourceInner, ServiceResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ServiceResourceInner.class,
+                ServiceResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -562,12 +567,13 @@ public final class ServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, ServiceResourceInner resource, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, serviceName, resource, context);
         return this
             .client
-            .<ServiceResourceInner, ServiceResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ServiceResourceInner.class, ServiceResourceInner.class);
+            .<ServiceResourceInner, ServiceResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ServiceResourceInner.class, ServiceResourceInner.class, context);
     }
 
     /**
@@ -765,6 +771,7 @@ public final class ServicesClient
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -789,7 +796,9 @@ public final class ServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -807,8 +816,11 @@ public final class ServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1005,6 +1017,7 @@ public final class ServicesClient
         } else {
             resource.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1034,8 +1047,12 @@ public final class ServicesClient
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, serviceName, resource);
         return this
             .client
-            .<ServiceResourceInner, ServiceResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ServiceResourceInner.class, ServiceResourceInner.class);
+            .<ServiceResourceInner, ServiceResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ServiceResourceInner.class,
+                ServiceResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1054,12 +1071,13 @@ public final class ServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdateAsync(
         String resourceGroupName, String serviceName, ServiceResourceInner resource, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, serviceName, resource, context);
         return this
             .client
-            .<ServiceResourceInner, ServiceResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ServiceResourceInner.class, ServiceResourceInner.class);
+            .<ServiceResourceInner, ServiceResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ServiceResourceInner.class, ServiceResourceInner.class, context);
     }
 
     /**
@@ -1256,6 +1274,7 @@ public final class ServicesClient
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listTestKeys(
                 this.client.getEndpoint(),
@@ -1442,6 +1461,7 @@ public final class ServicesClient
         }
         RegenerateTestKeyRequestPayload regenerateTestKeyRequest = new RegenerateTestKeyRequestPayload();
         regenerateTestKeyRequest.withKeyType(keyType);
+        context = this.client.mergeContext(context);
         return service
             .regenerateTestKey(
                 this.client.getEndpoint(),
@@ -1542,6 +1562,8 @@ public final class ServicesClient
     }
 
     /**
+     * Disable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1586,6 +1608,8 @@ public final class ServicesClient
     }
 
     /**
+     * Disable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1617,6 +1641,7 @@ public final class ServicesClient
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .disableTestEndpoint(
                 this.client.getEndpoint(),
@@ -1628,6 +1653,8 @@ public final class ServicesClient
     }
 
     /**
+     * Disable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1643,6 +1670,8 @@ public final class ServicesClient
     }
 
     /**
+     * Disable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1659,6 +1688,8 @@ public final class ServicesClient
     }
 
     /**
+     * Disable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1672,6 +1703,8 @@ public final class ServicesClient
     }
 
     /**
+     * Disable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1686,6 +1719,8 @@ public final class ServicesClient
     }
 
     /**
+     * Enable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1730,6 +1765,8 @@ public final class ServicesClient
     }
 
     /**
+     * Enable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1761,6 +1798,7 @@ public final class ServicesClient
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .enableTestEndpoint(
                 this.client.getEndpoint(),
@@ -1772,6 +1810,8 @@ public final class ServicesClient
     }
 
     /**
+     * Enable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1794,6 +1834,8 @@ public final class ServicesClient
     }
 
     /**
+     * Enable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1817,6 +1859,8 @@ public final class ServicesClient
     }
 
     /**
+     * Enable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1831,6 +1875,8 @@ public final class ServicesClient
     }
 
     /**
+     * Enable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1930,6 +1976,7 @@ public final class ServicesClient
         } else {
             availabilityParameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .checkNameAvailability(
                 this.client.getEndpoint(),
@@ -2086,6 +2133,7 @@ public final class ServicesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
             .map(
@@ -2124,7 +2172,7 @@ public final class ServicesClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceResourceInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2233,6 +2281,7 @@ public final class ServicesClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -2282,7 +2331,7 @@ public final class ServicesClient
     public PagedFlux<ServiceResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2360,6 +2409,7 @@ public final class ServicesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listBySubscriptionNext(nextLink, context)
             .map(
@@ -2416,6 +2466,7 @@ public final class ServicesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

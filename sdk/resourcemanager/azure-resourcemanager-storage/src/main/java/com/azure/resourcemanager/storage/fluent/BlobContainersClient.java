@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.BlobContainerInner;
 import com.azure.resourcemanager.storage.fluent.inner.ImmutabilityPolicyInner;
 import com.azure.resourcemanager.storage.fluent.inner.LeaseContainerResponseInner;
@@ -413,6 +412,7 @@ public final class BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -490,7 +490,7 @@ public final class BlobContainersClient {
         Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -514,7 +514,7 @@ public final class BlobContainersClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -708,6 +708,7 @@ public final class BlobContainersClient {
         } else {
             blobContainer.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(),
@@ -953,6 +954,7 @@ public final class BlobContainersClient {
         } else {
             blobContainer.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1179,6 +1181,7 @@ public final class BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -1385,6 +1388,7 @@ public final class BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1589,6 +1593,7 @@ public final class BlobContainersClient {
         }
         LegalHoldInner legalHold = new LegalHoldInner();
         legalHold.withTags(tags);
+        context = this.client.mergeContext(context);
         return service
             .setLegalHold(
                 this.client.getEndpoint(),
@@ -1822,6 +1827,7 @@ public final class BlobContainersClient {
         }
         LegalHoldInner legalHold = new LegalHoldInner();
         legalHold.withTags(tags);
+        context = this.client.mergeContext(context);
         return service
             .clearLegalHold(
                 this.client.getEndpoint(),
@@ -2092,6 +2098,7 @@ public final class BlobContainersClient {
             parametersInternal.withAllowProtectedAppendWrites(allowProtectedAppendWrites);
         }
         ImmutabilityPolicyInner parameters = parametersInternal;
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdateImmutabilityPolicy(
                 this.client.getEndpoint(),
@@ -2404,6 +2411,7 @@ public final class BlobContainersClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String immutabilityPolicyName = "default";
+        context = this.client.mergeContext(context);
         return service
             .getImmutabilityPolicy(
                 this.client.getEndpoint(),
@@ -2587,8 +2595,8 @@ public final class BlobContainersClient {
 
     /**
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
-     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only
-     * way is to delete the container after deleting all blobs inside the container.
+     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
+     * only way is to delete the container after deleting all expired blobs inside the policy locked container.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -2653,8 +2661,8 @@ public final class BlobContainersClient {
 
     /**
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
-     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only
-     * way is to delete the container after deleting all blobs inside the container.
+     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
+     * only way is to delete the container after deleting all expired blobs inside the policy locked container.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -2701,6 +2709,7 @@ public final class BlobContainersClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         final String immutabilityPolicyName = "default";
+        context = this.client.mergeContext(context);
         return service
             .deleteImmutabilityPolicy(
                 this.client.getEndpoint(),
@@ -2716,8 +2725,8 @@ public final class BlobContainersClient {
 
     /**
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
-     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only
-     * way is to delete the container after deleting all blobs inside the container.
+     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
+     * only way is to delete the container after deleting all expired blobs inside the policy locked container.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -2750,8 +2759,8 @@ public final class BlobContainersClient {
 
     /**
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
-     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only
-     * way is to delete the container after deleting all blobs inside the container.
+     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
+     * only way is to delete the container after deleting all expired blobs inside the policy locked container.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -2786,8 +2795,8 @@ public final class BlobContainersClient {
 
     /**
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
-     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only
-     * way is to delete the container after deleting all blobs inside the container.
+     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
+     * only way is to delete the container after deleting all expired blobs inside the policy locked container.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -2812,8 +2821,8 @@ public final class BlobContainersClient {
 
     /**
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
-     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only
-     * way is to delete the container after deleting all blobs inside the container.
+     * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
+     * only way is to delete the container after deleting all expired blobs inside the policy locked container.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -2948,6 +2957,7 @@ public final class BlobContainersClient {
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .lockImmutabilityPolicy(
                 this.client.getEndpoint(),
@@ -3227,6 +3237,7 @@ public final class BlobContainersClient {
             parametersInternal.withAllowProtectedAppendWrites(allowProtectedAppendWrites);
         }
         ImmutabilityPolicyInner parameters = parametersInternal;
+        context = this.client.mergeContext(context);
         return service
             .extendImmutabilityPolicy(
                 this.client.getEndpoint(),
@@ -3543,6 +3554,7 @@ public final class BlobContainersClient {
         if (parameters != null) {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .lease(
                 this.client.getEndpoint(),
@@ -3771,6 +3783,7 @@ public final class BlobContainersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

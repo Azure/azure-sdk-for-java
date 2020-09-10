@@ -38,7 +38,6 @@ public class Constants {
 
         logOptions.addAllowedQueryParamName("api-version");
         logOptions.addAllowedQueryParamName("allowIndexDowntime");
-        // logOptions.addAllowedQueryParamName("$select"); // Disabled for now while it is determined safe to log.
 
         return logOptions;
     };

@@ -4,7 +4,10 @@
 package com.azure.resourcemanager.resources.childresource;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import reactor.core.publisher.Flux;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class PulletsImpl extends ExternalChildResourcesCachedImpl<PulletImpl, Pullet, Object, ChickenImpl, Object> {
@@ -37,7 +40,12 @@ class PulletsImpl extends ExternalChildResourcesCachedImpl<PulletImpl, Pullet, O
         resources.add(new PulletImpl("Savvy", this.getParent()));
         resources.add(new PulletImpl("Pinky", this.getParent()));
         resources.add(new PulletImpl("Goldilocks", this.getParent()));
-        return resources;
+        return Collections.unmodifiableList(resources);
+    }
+
+    @Override
+    protected Flux<PulletImpl> listChildResourcesAsync() {
+        return Flux.fromIterable(listChildResources());
     }
 
     @Override

@@ -15,7 +15,7 @@ import com.azure.ai.formrecognizer.implementation.models.PageResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
-import com.azure.ai.formrecognizer.models.BoundingBox;
+import com.azure.ai.formrecognizer.models.FieldBoundingBox;
 import com.azure.ai.formrecognizer.models.FormElement;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
@@ -40,6 +40,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -53,24 +56,14 @@ import java.util.regex.Pattern;
 
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
-import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.deserializeRawResponse;
-import static com.azure.ai.formrecognizer.TestUtils.BLANK_FORM_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
-import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.FAKE_ENCODED_EMPTY_SPACE_URL;
-import static com.azure.ai.formrecognizer.TestUtils.FORM_1_JPG_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
-import static com.azure.ai.formrecognizer.TestUtils.INVOICE_1_PDF;
-import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.MULTIPAGE_INVOICE_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
-import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
-import static com.azure.ai.formrecognizer.TestUtils.getFileData;
+import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -79,23 +72,18 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormRecognizerClientTestBase extends TestBase {
-    private static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
-    private static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
-    private static final String INVOICE_PDF = "Invoice_6.pdf";
-    private static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
+
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
     private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond,"
         + " WA";
     private static final String EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE = "+15555555555";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
-    private static final String IS_PLAYBACK_MODE = "isPlaybackMode";
-
-    static final String OCR_EXTRACTION_INVALID_URL_ERROR = "OCR extraction error: [Wrong response code: "
-        + "InvalidImageURL. Message: Image URL is badly formatted..]";
-    static final String EXPECTED_INVALID_URL_ERROR_CODE = "3014";
-    static final String EXPECTED_INVALID_ANALYZE_EXCEPTION_MESSAGE =
-        "Analyze operation failed, " + "errorCode: [" + EXPECTED_INVALID_URL_ERROR_CODE + "], "
-            + "message: " + OCR_EXTRACTION_INVALID_URL_ERROR;
+    static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
+    static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
+    static final String INVOICE_6_PDF = "Invoice_6.pdf";
+    static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
+    static final String EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
+    static final String EXPECTED_URL_BADLY_FORMATTED_ERROR_CODE = "2001";
     static final String INVALID_ENDPOINT = "https://notreal.azure.com";
     static final String EXPECTED_BAD_ARGUMENT_CODE = "BadArgument";
     static final String EXPECTED_BAD_ARGUMENT_ERROR_MESSAGE = "Bad or unrecognizable request JSON or binary file.";
@@ -111,9 +99,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
     static final String EXPECTED_UNABLE_TO_READ_FILE = "Analyze operation failed, errorCode: [2005], message: Unable "
         + "to read file.";
+    static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
 
     static final String ENCODED_EMPTY_SPACE = "{\"source\":\"https://fakeuri.com/blank%20space\"}";
-
     Duration durationTestMode;
 
     /**
@@ -263,10 +251,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    private static void validateBoundingBoxData(List<Float> expectedBoundingBox, BoundingBox actualBoundingBox) {
-        if (actualBoundingBox != null && actualBoundingBox.getPoints() != null) {
+    private static void validateBoundingBoxData(List<Float> expectedBoundingBox, FieldBoundingBox actualFieldBoundingBox) {
+        if (actualFieldBoundingBox != null && actualFieldBoundingBox.getPoints() != null) {
             int i = 0;
-            for (Point point : actualBoundingBox.getPoints()) {
+            for (Point point : actualFieldBoundingBox.getPoints()) {
                 assertEquals(expectedBoundingBox.get(i), point.getX());
                 assertEquals(expectedBoundingBox.get(++i), point.getY());
                 i++;
@@ -611,110 +599,33 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    void receiptSourceUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG));
-    }
-
-    void receiptSourceUrlRunnerFieldElements(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG), true);
-    }
-
-    void receiptPngSourceUrlRunnerFieldElements(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(RECEIPT_CONTOSO_PNG), true);
-    }
-
-    void receiptDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)),
-                RECEIPT_FILE_LENGTH);
-        } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG)), RECEIPT_FILE_LENGTH);
-        }
-    }
-
-    void receiptDataRunnerFieldElements(BiConsumer<InputStream, Boolean> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)), true);
-        } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG)), true);
-        }
-    }
-
-    void receiptPngDataRunnerFieldElements(BiConsumer<InputStream, Boolean> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)), true);
-        } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_PNG)), true);
-        }
-    }
-
     void invalidSourceUrlRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
-    }
-
-    void contentFromDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)),
-                LAYOUT_FILE_LENGTH);
-        } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(FORM_JPG)), LAYOUT_FILE_LENGTH);
-        }
-    }
-
-    void multipageFromDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)),
-                MULTIPAGE_INVOICE_FILE_LENGTH);
-        } else {
-            testRunner.accept(
-                getFileData(getStorageTestingFileUrl(MULTIPAGE_INVOICE_PDF)), MULTIPAGE_INVOICE_FILE_LENGTH);
-        }
-    }
-
-    void multipageFromUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(MULTIPAGE_INVOICE_PDF));
-    }
-
-    void contentFromUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(FORM_JPG));
-    }
-
-    void pdfContentFromUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(INVOICE_1_PDF));
     }
 
     void encodedBlankSpaceSourceUrlRunner(Consumer<String> testRunner) {
         testRunner.accept(FAKE_ENCODED_EMPTY_SPACE_URL);
     }
 
-    void customFormDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)),
-                CUSTOM_FORM_FILE_LENGTH);
-        } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(INVOICE_PDF)), CUSTOM_FORM_FILE_LENGTH);
-        }
+    void urlRunner(Consumer<String> testRunner, String fileName) {
+        testRunner.accept(URL_TEST_FILE_FORMAT + fileName);
     }
 
-    void customFormJpgDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)),
-                FORM_1_JPG_FILE_LENGTH);
-        } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(FORM_JPG)), FORM_1_JPG_FILE_LENGTH);
-        }
+    void urlPdfUnlabeledRunner(Consumer<String> testRunner) {
+        testRunner.accept(getStorageTestingFileUrl(MULTIPAGE_INVOICE_PDF));
     }
 
-    void urlRunner(Consumer<String> testRunner, String formData) {
-        testRunner.accept(getStorageTestingFileUrl(formData));
-    }
+    void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
+        final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
 
-    void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)),
-                BLANK_FORM_FILE_LENGTH);
+            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
         } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(BLANK_PDF)), BLANK_FORM_FILE_LENGTH);
+            try {
+                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("Local file not found.", e);
+            }
         }
     }
 
@@ -888,7 +799,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             return "https://isPlaybackmode?SASToken";
         } else {
-            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
+            return Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL");
         }
     }
 

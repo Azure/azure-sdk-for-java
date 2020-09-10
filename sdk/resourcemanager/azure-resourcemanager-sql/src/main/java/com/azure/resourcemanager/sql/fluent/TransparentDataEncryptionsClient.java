@@ -23,8 +23,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionInner;
+import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus;
 import reactor.core.publisher.Mono;
 
@@ -71,7 +71,7 @@ public final class TransparentDataEncryptionsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
-            @PathParam("transparentDataEncryptionName") String transparentDataEncryptionName,
+            @PathParam("transparentDataEncryptionName") TransparentDataEncryptionName transparentDataEncryptionName,
             @BodyParam("application/json") TransparentDataEncryptionInner parameters,
             Context context);
 
@@ -88,7 +88,7 @@ public final class TransparentDataEncryptionsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
-            @PathParam("transparentDataEncryptionName") String transparentDataEncryptionName,
+            @PathParam("transparentDataEncryptionName") TransparentDataEncryptionName transparentDataEncryptionName,
             Context context);
     }
 
@@ -99,6 +99,7 @@ public final class TransparentDataEncryptionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which setting the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @param status The status of the database transparent data encryption.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -107,7 +108,11 @@ public final class TransparentDataEncryptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TransparentDataEncryptionInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionStatus status) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName,
+        TransparentDataEncryptionStatus status) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -130,8 +135,13 @@ public final class TransparentDataEncryptionsClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (transparentDataEncryptionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter transparentDataEncryptionName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
-        final String transparentDataEncryptionName = "current";
         TransparentDataEncryptionInner parameters = new TransparentDataEncryptionInner();
         parameters.withStatus(status);
         return FluxUtil
@@ -158,6 +168,7 @@ public final class TransparentDataEncryptionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which setting the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @param status The status of the database transparent data encryption.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,6 +181,7 @@ public final class TransparentDataEncryptionsClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName,
         TransparentDataEncryptionStatus status,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -194,10 +206,16 @@ public final class TransparentDataEncryptionsClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (transparentDataEncryptionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter transparentDataEncryptionName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
-        final String transparentDataEncryptionName = "current";
         TransparentDataEncryptionInner parameters = new TransparentDataEncryptionInner();
         parameters.withStatus(status);
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -218,6 +236,7 @@ public final class TransparentDataEncryptionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which setting the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @param status The status of the database transparent data encryption.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -226,8 +245,13 @@ public final class TransparentDataEncryptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TransparentDataEncryptionInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionStatus status) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, status)
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName,
+        TransparentDataEncryptionStatus status) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, serverName, databaseName, transparentDataEncryptionName, status)
             .flatMap(
                 (Response<TransparentDataEncryptionInner> res) -> {
                     if (res.getValue() != null) {
@@ -245,6 +269,7 @@ public final class TransparentDataEncryptionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which setting the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @param status The status of the database transparent data encryption.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,9 +282,11 @@ public final class TransparentDataEncryptionsClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName,
         TransparentDataEncryptionStatus status,
         Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, status, context)
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, serverName, databaseName, transparentDataEncryptionName, status, context)
             .flatMap(
                 (Response<TransparentDataEncryptionInner> res) -> {
                     if (res.getValue() != null) {
@@ -277,6 +304,7 @@ public final class TransparentDataEncryptionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which setting the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @param status The status of the database transparent data encryption.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -285,8 +313,13 @@ public final class TransparentDataEncryptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransparentDataEncryptionInner createOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionStatus status) {
-        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, status).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName,
+        TransparentDataEncryptionStatus status) {
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, transparentDataEncryptionName, status)
+            .block();
     }
 
     /**
@@ -296,6 +329,7 @@ public final class TransparentDataEncryptionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which setting the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @param status The status of the database transparent data encryption.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -308,9 +342,12 @@ public final class TransparentDataEncryptionsClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName,
         TransparentDataEncryptionStatus status,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, status, context).block();
+        return createOrUpdateAsync(
+                resourceGroupName, serverName, databaseName, transparentDataEncryptionName, status, context)
+            .block();
     }
 
     /**
@@ -320,6 +357,7 @@ public final class TransparentDataEncryptionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -327,7 +365,10 @@ public final class TransparentDataEncryptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TransparentDataEncryptionInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -350,8 +391,13 @@ public final class TransparentDataEncryptionsClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (transparentDataEncryptionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter transparentDataEncryptionName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
-        final String transparentDataEncryptionName = "current";
         return FluxUtil
             .withContext(
                 context ->
@@ -375,6 +421,7 @@ public final class TransparentDataEncryptionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -383,7 +430,11 @@ public final class TransparentDataEncryptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TransparentDataEncryptionInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -406,8 +457,14 @@ public final class TransparentDataEncryptionsClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (transparentDataEncryptionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter transparentDataEncryptionName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
-        final String transparentDataEncryptionName = "current";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -427,6 +484,7 @@ public final class TransparentDataEncryptionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -434,8 +492,11 @@ public final class TransparentDataEncryptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TransparentDataEncryptionInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName)
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, transparentDataEncryptionName)
             .flatMap(
                 (Response<TransparentDataEncryptionInner> res) -> {
                     if (res.getValue() != null) {
@@ -453,6 +514,7 @@ public final class TransparentDataEncryptionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -461,8 +523,12 @@ public final class TransparentDataEncryptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TransparentDataEncryptionInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName, context)
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, transparentDataEncryptionName, context)
             .flatMap(
                 (Response<TransparentDataEncryptionInner> res) -> {
                     if (res.getValue() != null) {
@@ -480,14 +546,19 @@ public final class TransparentDataEncryptionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a database's transparent data encryption configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransparentDataEncryptionInner get(String resourceGroupName, String serverName, String databaseName) {
-        return getAsync(resourceGroupName, serverName, databaseName).block();
+    public TransparentDataEncryptionInner get(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName) {
+        return getAsync(resourceGroupName, serverName, databaseName, transparentDataEncryptionName).block();
     }
 
     /**
@@ -497,6 +568,7 @@ public final class TransparentDataEncryptionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -505,7 +577,11 @@ public final class TransparentDataEncryptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransparentDataEncryptionInner get(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return getAsync(resourceGroupName, serverName, databaseName, context).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName,
+        Context context) {
+        return getAsync(resourceGroupName, serverName, databaseName, transparentDataEncryptionName, context).block();
     }
 }

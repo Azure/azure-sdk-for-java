@@ -5,7 +5,6 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
@@ -20,10 +19,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.function.Function;
 
@@ -231,18 +228,12 @@ public final class GenericResourcesImpl
     public Accepted<Void> beginDeleteById(String id) {
         String apiVersion = getApiVersionFromId(id).block();
 
-        Response<Flux<ByteBuffer>> activationResponse = this.inner()
-            .deleteByIdWithResponseAsync(id, apiVersion).block();
-        if (activationResponse == null) {
-            throw logger.logExceptionAsError(new NullPointerException());
-        } else {
-            return new AcceptedImpl<Void, Void>(activationResponse,
-                manager().inner().getSerializerAdapter(),
-                manager().inner().getHttpPipeline(),
-                Void.class,
-                Void.class,
-                Function.identity());
-        }
+        return AcceptedImpl.newAccepted(logger,
+            manager().inner(),
+            () -> this.inner().deleteByIdWithResponseAsync(id, apiVersion).block(),
+            Function.identity(),
+            Void.class,
+            null);
     }
 
     private Mono<String> getApiVersionFromId(final String id) {

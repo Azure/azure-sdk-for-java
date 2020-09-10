@@ -5,7 +5,6 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
@@ -16,10 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 import java.util.function.Function;
 
 /**
@@ -100,18 +97,12 @@ public final class ResourceGroupsImpl
 
     @Override
     public Accepted<Void> beginDeleteByName(String name) {
-        Response<Flux<ByteBuffer>> activationResponse = manager().inner().getResourceGroups()
-            .deleteWithResponseAsync(name).block();
-        if (activationResponse == null) {
-            throw logger.logExceptionAsError(new NullPointerException());
-        } else {
-            return new AcceptedImpl<Void, Void>(activationResponse,
-                manager().inner().getSerializerAdapter(),
-                manager().inner().getHttpPipeline(),
-                Void.class,
-                Void.class,
-                Function.identity());
-        }
+        return AcceptedImpl.newAccepted(logger,
+            manager().inner(),
+            () -> this.manager().inner().getResourceGroups().deleteWithResponseAsync(name).block(),
+            Function.identity(),
+            Void.class,
+            null);
     }
 
 //    @Override

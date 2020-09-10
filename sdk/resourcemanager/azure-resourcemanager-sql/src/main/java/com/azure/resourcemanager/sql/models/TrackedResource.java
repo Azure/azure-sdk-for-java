@@ -13,7 +13,7 @@ import java.util.Map;
 
 /** The TrackedResource model. */
 @Fluent
-public class TrackedResource extends ProxyResource {
+public final class TrackedResource extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TrackedResource.class);
 
     /*

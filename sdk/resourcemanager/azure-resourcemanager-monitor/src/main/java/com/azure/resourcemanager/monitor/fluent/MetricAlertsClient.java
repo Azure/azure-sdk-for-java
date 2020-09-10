@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceInner;
 import com.azure.resourcemanager.monitor.models.MetricAlertResourcePatch;
@@ -208,6 +207,7 @@ public final class MetricAlertsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
@@ -343,6 +343,7 @@ public final class MetricAlertsClient
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
@@ -491,6 +492,7 @@ public final class MetricAlertsClient
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -674,6 +676,7 @@ public final class MetricAlertsClient
             parameters.validate();
         }
         final String apiVersion = "2018-03-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -865,6 +868,7 @@ public final class MetricAlertsClient
             parameters.validate();
         }
         final String apiVersion = "2018-03-01";
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1041,6 +1045,7 @@ public final class MetricAlertsClient
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),

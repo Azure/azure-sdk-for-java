@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupListResultInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -283,7 +282,9 @@ public final class NetworkSecurityGroupsClient
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkSecurityGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkSecurityGroupName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -300,9 +301,12 @@ public final class NetworkSecurityGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkSecurityGroupName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkSecurityGroupName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -761,8 +765,12 @@ public final class NetworkSecurityGroupsClient
             createOrUpdateWithResponseAsync(resourceGroupName, networkSecurityGroupName, parameters);
         return this
             .client
-            .<NetworkSecurityGroupInner, NetworkSecurityGroupInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NetworkSecurityGroupInner.class, NetworkSecurityGroupInner.class);
+            .<NetworkSecurityGroupInner, NetworkSecurityGroupInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                NetworkSecurityGroupInner.class,
+                NetworkSecurityGroupInner.class,
+                Context.NONE);
     }
 
     /**
@@ -783,12 +791,17 @@ public final class NetworkSecurityGroupsClient
         String networkSecurityGroupName,
         NetworkSecurityGroupInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, networkSecurityGroupName, parameters, context);
         return this
             .client
-            .<NetworkSecurityGroupInner, NetworkSecurityGroupInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NetworkSecurityGroupInner.class, NetworkSecurityGroupInner.class);
+            .<NetworkSecurityGroupInner, NetworkSecurityGroupInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                NetworkSecurityGroupInner.class,
+                NetworkSecurityGroupInner.class,
+                context);
     }
 
     /**
@@ -1199,7 +1212,8 @@ public final class NetworkSecurityGroupsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkSecurityGroupInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1352,7 +1366,7 @@ public final class NetworkSecurityGroupsClient
     public PagedFlux<NetworkSecurityGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

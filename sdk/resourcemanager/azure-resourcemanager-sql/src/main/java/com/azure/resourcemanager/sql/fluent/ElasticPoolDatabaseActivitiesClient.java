@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolDatabaseActivityInner;
 import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolDatabaseActivityListResultInner;
 import reactor.core.publisher.Mono;
@@ -176,6 +175,7 @@ public final class ElasticPoolDatabaseActivitiesClient {
                 .error(new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listByElasticPool(
                 this.client.getEndpoint(),

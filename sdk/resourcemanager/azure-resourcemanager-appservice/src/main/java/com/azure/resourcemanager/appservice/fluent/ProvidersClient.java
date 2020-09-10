@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.ApplicationStackCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.ApplicationStackResourceInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationCollectionInner;
@@ -211,7 +210,7 @@ public final class ProvidersClient {
         ProviderOsTypeSelected osTypeSelected, Context context) {
         return new PagedFlux<>(
             () -> getAvailableStacksSinglePageAsync(osTypeSelected, context),
-            nextLink -> getAvailableStacksNextSinglePageAsync(nextLink));
+            nextLink -> getAvailableStacksNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -227,7 +226,7 @@ public final class ProvidersClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> getAvailableStacksSinglePageAsync(osTypeSelected),
-            nextLink -> getAvailableStacksNextSinglePageAsync(nextLink));
+            nextLink -> getAvailableStacksNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -364,7 +363,8 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CsmOperationDescriptionInner> listOperationsAsync(Context context) {
         return new PagedFlux<>(
-            () -> listOperationsSinglePageAsync(context), nextLink -> listOperationsNextSinglePageAsync(nextLink));
+            () -> listOperationsSinglePageAsync(context),
+            nextLink -> listOperationsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -515,7 +515,7 @@ public final class ProvidersClient {
     public PagedFlux<ApplicationStackResourceInner> listAsync(ProviderOsTypeSelected osTypeSelected, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(osTypeSelected, context),
-            nextLink -> getAvailableStacksOnPremNextSinglePageAsync(nextLink));
+            nextLink -> getAvailableStacksOnPremNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -531,7 +531,7 @@ public final class ProvidersClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(osTypeSelected),
-            nextLink -> getAvailableStacksOnPremNextSinglePageAsync(nextLink));
+            nextLink -> getAvailableStacksOnPremNextSinglePageAsync(nextLink, context));
     }
 
     /**

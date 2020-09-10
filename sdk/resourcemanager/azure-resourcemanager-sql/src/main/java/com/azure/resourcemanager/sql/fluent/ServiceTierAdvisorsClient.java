@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.ServiceTierAdvisorInner;
 import com.azure.resourcemanager.sql.fluent.inner.ServiceTierAdvisorListResultInner;
 import reactor.core.publisher.Mono;
@@ -199,6 +198,7 @@ public final class ServiceTierAdvisorsClient {
                     new IllegalArgumentException("Parameter serviceTierAdvisorName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -409,6 +409,7 @@ public final class ServiceTierAdvisorsClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listByDatabase(
                 this.client.getEndpoint(),

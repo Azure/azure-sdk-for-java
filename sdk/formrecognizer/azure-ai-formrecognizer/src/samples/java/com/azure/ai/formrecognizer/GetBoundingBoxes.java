@@ -56,7 +56,7 @@ public class GetBoundingBoxes {
             final List<FormPage> pages = recognizedForm.getPages();
             for (int i1 = 0; i1 < pages.size(); i1++) {
                 final FormPage formPage = pages.get(i1);
-                System.out.printf("------- Recognizing info on page %s of Form -------%n", i1);
+                System.out.printf("------- Recognizing info on page %s of Form ------- %n", i1);
                 System.out.printf("Has width: %f, angle: %.2f, height: %f %n", formPage.getWidth(),
                     formPage.getTextAngle(), formPage.getHeight());
                 // Table information

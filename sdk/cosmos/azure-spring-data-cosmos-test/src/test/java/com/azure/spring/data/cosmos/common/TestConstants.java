@@ -17,47 +17,23 @@ public final class TestConstants {
 
     public static final String ROLE_COLLECTION_NAME = "RoleCollectionName";
     public static final int TIME_TO_LIVE = 5;
-    public static final boolean INDEXING_POLICY_AUTOMATIC = false;
+    public static final boolean INDEXING_POLICY_AUTOMATIC = true;
     public static final IndexingMode INDEXING_POLICY_MODE = IndexingMode.CONSISTENT;
-    public static final String INCLUDED_PATH_0 = "{\"path\":\"/*\",\"indexes\":["
-            + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":2},"
-            + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":2},"
-            + "{\"kind\":\"Spatial\",\"dataType\":\"Point\"}"
-            + "]}";
-    public static final String INCLUDED_PATH_1 = "{\"path\":\"/cache/*\",\"indexes\":["
-            + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":3},"
-            + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":3},"
-            + "{\"kind\":\"Spatial\",\"dataType\":\"LineString\"}"
-            + "]}";
-    public static final String INCLUDED_PATH_2 = "{\"path\":\"/entities/*\",\"indexes\":["
-            + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":4},"
-            + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":4},"
-            + "{\"kind\":\"Spatial\",\"dataType\":\"Polygon\"}"
-            + "]}";
+    public static final String INCLUDED_PATH_0 = "/*";
+    public static final String INCLUDED_PATH_1 = "/cache/*";
+    public static final String INCLUDED_PATH_2 = "/entities/*";
     public static final String[] INCLUDED_PATHS = {
         INCLUDED_PATH_0,
         INCLUDED_PATH_1,
         INCLUDED_PATH_2,
     };
-    public static final String EXCLUDED_PATH_0 = "{\"path\":\"/excluded/*\"}";
-    public static final String EXCLUDED_PATH_1 = "{\"path\":\"/props/*\"}";
+    public static final String EXCLUDED_PATH_0 = "/excluded/*";
+    public static final String EXCLUDED_PATH_1 = "/props/*";
+    public static final String EXCLUDED_PATH_2 = "/_etag/?";
     public static final String[] EXCLUDED_PATHS = {
         EXCLUDED_PATH_0,
         EXCLUDED_PATH_1,
-    };
-
-    public static final String ORDER_BY_STRING_PATH = "{\"path\":\"/*\",\"indexes\":["
-            + "{\"kind\":\"Range\",\"dataType\":\"String\",\"precision\":-1},"
-            + "]}";
-
-    public static final String STARTS_WITH_INCLUDED_PATH =
-            "{\"path\":\"/*\",\"indexes\":["
-                + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":-1},"
-                + "{\"kind\":\"Range\",\"dataType\":\"String\",\"precision\":3}"
-                + "]}";
-
-    public static final String[] PERSON_INCLUDED_PATHS = {
-        STARTS_WITH_INCLUDED_PATH
+        EXCLUDED_PATH_2,
     };
 
     public static final String DB_NAME = "testdb";

@@ -27,9 +27,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.GeoBackupPolicyInner;
 import com.azure.resourcemanager.sql.fluent.inner.GeoBackupPolicyListResultInner;
+import com.azure.resourcemanager.sql.models.GeoBackupPolicyName;
 import com.azure.resourcemanager.sql.models.GeoBackupPolicyState;
 import reactor.core.publisher.Mono;
 
@@ -74,7 +74,7 @@ public final class GeoBackupPoliciesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
-            @PathParam("geoBackupPolicyName") String geoBackupPolicyName,
+            @PathParam("geoBackupPolicyName") GeoBackupPolicyName geoBackupPolicyName,
             @BodyParam("application/json") GeoBackupPolicyInner parameters,
             Context context);
 
@@ -91,7 +91,7 @@ public final class GeoBackupPoliciesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
-            @PathParam("geoBackupPolicyName") String geoBackupPolicyName,
+            @PathParam("geoBackupPolicyName") GeoBackupPolicyName geoBackupPolicyName,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -117,6 +117,7 @@ public final class GeoBackupPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param geoBackupPolicyName The name of the geo backup policy.
      * @param state The state of the geo backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -125,7 +126,11 @@ public final class GeoBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GeoBackupPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, GeoBackupPolicyState state) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        GeoBackupPolicyName geoBackupPolicyName,
+        GeoBackupPolicyState state) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -148,11 +153,14 @@ public final class GeoBackupPoliciesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (geoBackupPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter geoBackupPolicyName is required and cannot be null."));
+        }
         if (state == null) {
             return Mono.error(new IllegalArgumentException("Parameter state is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
-        final String geoBackupPolicyName = "Default";
         GeoBackupPolicyInner parameters = new GeoBackupPolicyInner();
         parameters.withState(state);
         return FluxUtil
@@ -179,6 +187,7 @@ public final class GeoBackupPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param geoBackupPolicyName The name of the geo backup policy.
      * @param state The state of the geo backup policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -188,7 +197,12 @@ public final class GeoBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GeoBackupPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, GeoBackupPolicyState state, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        GeoBackupPolicyName geoBackupPolicyName,
+        GeoBackupPolicyState state,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -211,13 +225,17 @@ public final class GeoBackupPoliciesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (geoBackupPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter geoBackupPolicyName is required and cannot be null."));
+        }
         if (state == null) {
             return Mono.error(new IllegalArgumentException("Parameter state is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
-        final String geoBackupPolicyName = "Default";
         GeoBackupPolicyInner parameters = new GeoBackupPolicyInner();
         parameters.withState(state);
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -238,6 +256,7 @@ public final class GeoBackupPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param geoBackupPolicyName The name of the geo backup policy.
      * @param state The state of the geo backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -246,8 +265,12 @@ public final class GeoBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GeoBackupPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String databaseName, GeoBackupPolicyState state) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, state)
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        GeoBackupPolicyName geoBackupPolicyName,
+        GeoBackupPolicyState state) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, geoBackupPolicyName, state)
             .flatMap(
                 (Response<GeoBackupPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -265,6 +288,7 @@ public final class GeoBackupPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param geoBackupPolicyName The name of the geo backup policy.
      * @param state The state of the geo backup policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -274,8 +298,14 @@ public final class GeoBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GeoBackupPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String databaseName, GeoBackupPolicyState state, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, state, context)
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        GeoBackupPolicyName geoBackupPolicyName,
+        GeoBackupPolicyState state,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, serverName, databaseName, geoBackupPolicyName, state, context)
             .flatMap(
                 (Response<GeoBackupPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -293,6 +323,7 @@ public final class GeoBackupPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param geoBackupPolicyName The name of the geo backup policy.
      * @param state The state of the geo backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -301,8 +332,12 @@ public final class GeoBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeoBackupPolicyInner createOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, GeoBackupPolicyState state) {
-        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, state).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        GeoBackupPolicyName geoBackupPolicyName,
+        GeoBackupPolicyState state) {
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, geoBackupPolicyName, state).block();
     }
 
     /**
@@ -312,6 +347,7 @@ public final class GeoBackupPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param geoBackupPolicyName The name of the geo backup policy.
      * @param state The state of the geo backup policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -321,8 +357,14 @@ public final class GeoBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeoBackupPolicyInner createOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, GeoBackupPolicyState state, Context context) {
-        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, state, context).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        GeoBackupPolicyName geoBackupPolicyName,
+        GeoBackupPolicyState state,
+        Context context) {
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, geoBackupPolicyName, state, context)
+            .block();
     }
 
     /**
@@ -332,6 +374,7 @@ public final class GeoBackupPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param geoBackupPolicyName The name of the geo backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -339,7 +382,7 @@ public final class GeoBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GeoBackupPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName) {
+        String resourceGroupName, String serverName, String databaseName, GeoBackupPolicyName geoBackupPolicyName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -362,8 +405,11 @@ public final class GeoBackupPoliciesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (geoBackupPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter geoBackupPolicyName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
-        final String geoBackupPolicyName = "Default";
         return FluxUtil
             .withContext(
                 context ->
@@ -387,6 +433,7 @@ public final class GeoBackupPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param geoBackupPolicyName The name of the geo backup policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -395,7 +442,11 @@ public final class GeoBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GeoBackupPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        GeoBackupPolicyName geoBackupPolicyName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -418,8 +469,12 @@ public final class GeoBackupPoliciesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (geoBackupPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter geoBackupPolicyName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
-        final String geoBackupPolicyName = "Default";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -439,14 +494,16 @@ public final class GeoBackupPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param geoBackupPolicyName The name of the geo backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a geo backup policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GeoBackupPolicyInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName)
+    public Mono<GeoBackupPolicyInner> getAsync(
+        String resourceGroupName, String serverName, String databaseName, GeoBackupPolicyName geoBackupPolicyName) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, geoBackupPolicyName)
             .flatMap(
                 (Response<GeoBackupPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -464,6 +521,7 @@ public final class GeoBackupPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param geoBackupPolicyName The name of the geo backup policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -472,8 +530,12 @@ public final class GeoBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GeoBackupPolicyInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName, context)
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        GeoBackupPolicyName geoBackupPolicyName,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, geoBackupPolicyName, context)
             .flatMap(
                 (Response<GeoBackupPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -491,14 +553,16 @@ public final class GeoBackupPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param geoBackupPolicyName The name of the geo backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a geo backup policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GeoBackupPolicyInner get(String resourceGroupName, String serverName, String databaseName) {
-        return getAsync(resourceGroupName, serverName, databaseName).block();
+    public GeoBackupPolicyInner get(
+        String resourceGroupName, String serverName, String databaseName, GeoBackupPolicyName geoBackupPolicyName) {
+        return getAsync(resourceGroupName, serverName, databaseName, geoBackupPolicyName).block();
     }
 
     /**
@@ -508,6 +572,7 @@ public final class GeoBackupPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param geoBackupPolicyName The name of the geo backup policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -515,8 +580,13 @@ public final class GeoBackupPoliciesClient {
      * @return a geo backup policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GeoBackupPolicyInner get(String resourceGroupName, String serverName, String databaseName, Context context) {
-        return getAsync(resourceGroupName, serverName, databaseName, context).block();
+    public GeoBackupPolicyInner get(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        GeoBackupPolicyName geoBackupPolicyName,
+        Context context) {
+        return getAsync(resourceGroupName, serverName, databaseName, geoBackupPolicyName, context).block();
     }
 
     /**
@@ -615,6 +685,7 @@ public final class GeoBackupPoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listByDatabase(
                 this.client.getEndpoint(),

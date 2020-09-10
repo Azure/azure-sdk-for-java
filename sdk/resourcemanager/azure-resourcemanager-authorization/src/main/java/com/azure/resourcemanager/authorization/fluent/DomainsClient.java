@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.DomainInner;
 import com.azure.resourcemanager.authorization.fluent.inner.DomainListResultInner;
 import reactor.core.publisher.Mono;
@@ -144,6 +143,7 @@ public final class DomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
             .map(
@@ -304,6 +304,7 @@ public final class DomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(), domainName, this.client.getApiVersion(), this.client.getTenantId(), context);

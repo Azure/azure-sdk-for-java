@@ -24,7 +24,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VpnServerConfigurationsResponseInner;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -188,11 +187,12 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClient {
         Mono<Response<Flux<ByteBuffer>>> mono = listWithResponseAsync(resourceGroupName, virtualWanName);
         return this
             .client
-            .<VpnServerConfigurationsResponseInner, VpnServerConfigurationsResponseInner>getLroResultAsync(
+            .<VpnServerConfigurationsResponseInner, VpnServerConfigurationsResponseInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VpnServerConfigurationsResponseInner.class,
-                VpnServerConfigurationsResponseInner.class);
+                VpnServerConfigurationsResponseInner.class,
+                Context.NONE);
     }
 
     /**
@@ -209,14 +209,16 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VpnServerConfigurationsResponseInner>, VpnServerConfigurationsResponseInner>
         beginListAsync(String resourceGroupName, String virtualWanName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = listWithResponseAsync(resourceGroupName, virtualWanName, context);
         return this
             .client
-            .<VpnServerConfigurationsResponseInner, VpnServerConfigurationsResponseInner>getLroResultAsync(
+            .<VpnServerConfigurationsResponseInner, VpnServerConfigurationsResponseInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VpnServerConfigurationsResponseInner.class,
-                VpnServerConfigurationsResponseInner.class);
+                VpnServerConfigurationsResponseInner.class,
+                context);
     }
 
     /**

@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionResetSharedKeyInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionSharedKeyInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionInner;
@@ -373,11 +372,12 @@ public final class VirtualNetworkGatewayConnectionsClient
             createOrUpdateWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters);
         return this
             .client
-            .<VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnectionInner>getLroResultAsync(
+            .<VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnectionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VirtualNetworkGatewayConnectionInner.class,
-                VirtualNetworkGatewayConnectionInner.class);
+                VirtualNetworkGatewayConnectionInner.class,
+                Context.NONE);
     }
 
     /**
@@ -399,16 +399,18 @@ public final class VirtualNetworkGatewayConnectionsClient
             String virtualNetworkGatewayConnectionName,
             VirtualNetworkGatewayConnectionInner parameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context);
         return this
             .client
-            .<VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnectionInner>getLroResultAsync(
+            .<VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnectionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VirtualNetworkGatewayConnectionInner.class,
-                VirtualNetworkGatewayConnectionInner.class);
+                VirtualNetworkGatewayConnectionInner.class,
+                context);
     }
 
     /**
@@ -832,7 +834,9 @@ public final class VirtualNetworkGatewayConnectionsClient
         String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -849,9 +853,12 @@ public final class VirtualNetworkGatewayConnectionsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1080,11 +1087,12 @@ public final class VirtualNetworkGatewayConnectionsClient
             updateTagsWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, tags);
         return this
             .client
-            .<VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnectionInner>getLroResultAsync(
+            .<VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnectionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VirtualNetworkGatewayConnectionInner.class,
-                VirtualNetworkGatewayConnectionInner.class);
+                VirtualNetworkGatewayConnectionInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1106,15 +1114,17 @@ public final class VirtualNetworkGatewayConnectionsClient
             String virtualNetworkGatewayConnectionName,
             Map<String, String> tags,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateTagsWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, tags, context);
         return this
             .client
-            .<VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnectionInner>getLroResultAsync(
+            .<VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnectionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VirtualNetworkGatewayConnectionInner.class,
-                VirtualNetworkGatewayConnectionInner.class);
+                VirtualNetworkGatewayConnectionInner.class,
+                context);
     }
 
     /**
@@ -1374,8 +1384,12 @@ public final class VirtualNetworkGatewayConnectionsClient
             setSharedKeyWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters);
         return this
             .client
-            .<ConnectionSharedKeyInner, ConnectionSharedKeyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ConnectionSharedKeyInner.class, ConnectionSharedKeyInner.class);
+            .<ConnectionSharedKeyInner, ConnectionSharedKeyInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ConnectionSharedKeyInner.class,
+                ConnectionSharedKeyInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1397,12 +1411,17 @@ public final class VirtualNetworkGatewayConnectionsClient
         String virtualNetworkGatewayConnectionName,
         ConnectionSharedKeyInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             setSharedKeyWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context);
         return this
             .client
-            .<ConnectionSharedKeyInner, ConnectionSharedKeyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ConnectionSharedKeyInner.class, ConnectionSharedKeyInner.class);
+            .<ConnectionSharedKeyInner, ConnectionSharedKeyInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ConnectionSharedKeyInner.class,
+                ConnectionSharedKeyInner.class,
+                context);
     }
 
     /**
@@ -1846,7 +1865,7 @@ public final class VirtualNetworkGatewayConnectionsClient
         String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2011,11 +2030,12 @@ public final class VirtualNetworkGatewayConnectionsClient
             resetSharedKeyWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, keyLength);
         return this
             .client
-            .<ConnectionResetSharedKeyInner, ConnectionResetSharedKeyInner>getLroResultAsync(
+            .<ConnectionResetSharedKeyInner, ConnectionResetSharedKeyInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ConnectionResetSharedKeyInner.class,
-                ConnectionResetSharedKeyInner.class);
+                ConnectionResetSharedKeyInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2036,15 +2056,17 @@ public final class VirtualNetworkGatewayConnectionsClient
     public PollerFlux<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner>
         beginResetSharedKeyAsync(
             String resourceGroupName, String virtualNetworkGatewayConnectionName, int keyLength, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             resetSharedKeyWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, keyLength, context);
         return this
             .client
-            .<ConnectionResetSharedKeyInner, ConnectionResetSharedKeyInner>getLroResultAsync(
+            .<ConnectionResetSharedKeyInner, ConnectionResetSharedKeyInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ConnectionResetSharedKeyInner.class,
-                ConnectionResetSharedKeyInner.class);
+                ConnectionResetSharedKeyInner.class,
+                context);
     }
 
     /**
@@ -2302,7 +2324,8 @@ public final class VirtualNetworkGatewayConnectionsClient
             startPacketCaptureWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, filterData);
         return this
             .client
-            .<String, String>getLroResultAsync(mono, this.client.getHttpPipeline(), String.class, String.class);
+            .<String, String>getLroResult(
+                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
     }
 
     /**
@@ -2320,12 +2343,13 @@ public final class VirtualNetworkGatewayConnectionsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, String filterData, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             startPacketCaptureWithResponseAsync(
                 resourceGroupName, virtualNetworkGatewayConnectionName, filterData, context);
         return this
             .client
-            .<String, String>getLroResultAsync(mono, this.client.getHttpPipeline(), String.class, String.class);
+            .<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class, context);
     }
 
     /**
@@ -2564,7 +2588,8 @@ public final class VirtualNetworkGatewayConnectionsClient
             stopPacketCaptureWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, sasUrl);
         return this
             .client
-            .<String, String>getLroResultAsync(mono, this.client.getHttpPipeline(), String.class, String.class);
+            .<String, String>getLroResult(
+                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
     }
 
     /**
@@ -2582,11 +2607,12 @@ public final class VirtualNetworkGatewayConnectionsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, String sasUrl, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopPacketCaptureWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, sasUrl, context);
         return this
             .client
-            .<String, String>getLroResultAsync(mono, this.client.getHttpPipeline(), String.class, String.class);
+            .<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class, context);
     }
 
     /**

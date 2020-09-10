@@ -8,6 +8,7 @@ import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -198,6 +199,17 @@ public interface PublicIpAddress
             WithCreate withIpTag(String tag, String ipTagType);
         }
 
+        /** The stage of the definition allowing to specify IP address version associated with the public IP address. */
+        interface WithIpAddressVersion {
+            /**
+             * Sets IP address version.
+             *
+             * @param ipVersion IP address version
+             * @return the next stage of the definition
+             */
+            WithCreate withIpAddressVersion(IpVersion ipVersion);
+        }
+
         /**
          * The stage of the public IP definition which contains all the minimum required inputs for the resource to be
          * created (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
@@ -211,7 +223,15 @@ public interface PublicIpAddress
                 DefinitionStages.WithAvailabilityZone,
                 DefinitionStages.WithSku,
                 DefinitionStages.WithIpTag,
+                DefinitionStages.WithIpAddressVersion,
                 Resource.DefinitionWithTags<WithCreate> {
+
+            /**
+             * Begins creating the public IP address resource.
+             *
+             * @return the accepted create operation
+             */
+            Accepted<PublicIpAddress> beginCreate();
         }
     }
 
@@ -227,6 +247,7 @@ public interface PublicIpAddress
             UpdateStages.WithReverseFQDN,
             UpdateStages.WithIdleTimout,
             UpdateStages.WithIpTag,
+            UpdateStages.WithIpAddressVersion,
             Resource.UpdateWithTags<Update> {
     }
 
@@ -331,6 +352,17 @@ public interface PublicIpAddress
              * @return the next stage of the update
              */
             Update withoutIpTag(String tag);
+        }
+
+        /** The stage of the update allowing to specify IP address version associated with the public IP address. */
+        interface WithIpAddressVersion {
+            /**
+             * Sets IP address version.
+             *
+             * @param ipVersion IP address version
+             * @return the next stage of the definition
+             */
+            Update withIpAddressVersion(IpVersion ipVersion);
         }
     }
 }

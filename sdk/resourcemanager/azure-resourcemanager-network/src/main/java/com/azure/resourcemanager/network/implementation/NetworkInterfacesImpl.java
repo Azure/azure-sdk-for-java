@@ -5,6 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
@@ -15,14 +16,19 @@ import com.azure.resourcemanager.network.models.NetworkInterfaces;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 
 import java.util.ArrayList;
+import java.util.function.Function;
 
 /** Implementation for {@link NetworkInterfaces}. */
 public class NetworkInterfacesImpl
     extends TopLevelModifiableResourcesImpl<
         NetworkInterface, NetworkInterfaceImpl, NetworkInterfaceInner, NetworkInterfacesClient, NetworkManager>
     implements NetworkInterfaces {
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
 
     public NetworkInterfacesImpl(final NetworkManager networkManager) {
         super(networkManager.inner().getNetworkInterfaces(), networkManager);
@@ -85,5 +91,20 @@ public class NetworkInterfacesImpl
             return null;
         }
         return new NetworkInterfaceImpl(inner.name(), inner, this.manager());
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteById(String id) {
+        return beginDeleteByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
+        return AcceptedImpl.newAccepted(logger,
+            manager().inner(),
+            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
+            Function.identity(),
+            Void.class,
+            null);
     }
 }

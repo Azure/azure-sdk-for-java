@@ -73,7 +73,6 @@ public final class MessageIdsImpl {
      *
      * @param queueName The queue name.
      * @param messageid The message ID name.
-     * @param queueMessage A Message object which can be stored in a Queue.
      * @param popReceipt Required. Specifies the valid pop receipt value returned from an earlier call to the Get Messages or Update Message operation.
      * @param visibilitytimeout Optional. Specifies the new visibility timeout value, in seconds, relative to server time. The default value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot be larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility timeout of a message can be set to a value later than the expiry time.
      * @param context The context to associate with this operation.
@@ -81,7 +80,8 @@ public final class MessageIdsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(String queueName, String messageid, QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Context context) {
+    public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(String queueName, String messageid, String popReceipt, int visibilitytimeout, Context context) {
+        final QueueMessage queueMessage = null;
         final Integer timeout = null;
         final String requestId = null;
         return service.update(queueName, messageid, this.client.getUrl(), queueMessage, popReceipt, visibilitytimeout, timeout, this.client.getVersion(), requestId, context);
@@ -92,9 +92,9 @@ public final class MessageIdsImpl {
      *
      * @param queueName The queue name.
      * @param messageid The message ID name.
-     * @param queueMessage A Message object which can be stored in a Queue.
      * @param popReceipt Required. Specifies the valid pop receipt value returned from an earlier call to the Get Messages or Update Message operation.
      * @param visibilitytimeout Optional. Specifies the new visibility timeout value, in seconds, relative to server time. The default value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot be larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility timeout of a message can be set to a value later than the expiry time.
+     * @param queueMessage A Message object which can be stored in a Queue.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
@@ -102,7 +102,7 @@ public final class MessageIdsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(String queueName, String messageid, QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Integer timeout, String requestId, Context context) {
+    public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(String queueName, String messageid, String popReceipt, int visibilitytimeout, QueueMessage queueMessage, Integer timeout, String requestId, Context context) {
         return service.update(queueName, messageid, this.client.getUrl(), queueMessage, popReceipt, visibilitytimeout, timeout, this.client.getVersion(), requestId, context);
     }
 

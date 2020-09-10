@@ -29,7 +29,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.resourcemanager.sql.SqlManagementClient;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.inner.ExtendedServerBlobAuditingPolicyInner;
 import com.azure.resourcemanager.sql.fluent.inner.ExtendedServerBlobAuditingPolicyListResultInner;
 import java.nio.ByteBuffer;
@@ -111,22 +111,6 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
             @PathParam("serverName") String serverName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/extendedAuditingSettings/{blobAuditingPolicyName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExtendedServerBlobAuditingPolicyInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("blobAuditingPolicyName") String blobAuditingPolicyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ExtendedServerBlobAuditingPolicyInner parameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -223,6 +207,7 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
         }
         final String blobAuditingPolicyName = "default";
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -419,6 +404,7 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
         }
         final String blobAuditingPolicyName = "default";
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -445,17 +431,18 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
-        beginCreateOrUpdate(
+        beginCreateOrUpdateAsync(
             String resourceGroupName, String serverName, ExtendedServerBlobAuditingPolicyInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, serverName, parameters);
         return this
             .client
-            .<ExtendedServerBlobAuditingPolicyInner, ExtendedServerBlobAuditingPolicyInner>getLroResultAsync(
+            .<ExtendedServerBlobAuditingPolicyInner, ExtendedServerBlobAuditingPolicyInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ExtendedServerBlobAuditingPolicyInner.class,
-                ExtendedServerBlobAuditingPolicyInner.class);
+                ExtendedServerBlobAuditingPolicyInner.class,
+                Context.NONE);
     }
 
     /**
@@ -473,20 +460,64 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
+        beginCreateOrUpdateAsync(
+            String resourceGroupName,
+            String serverName,
+            ExtendedServerBlobAuditingPolicyInner parameters,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, serverName, parameters, context);
+        return this
+            .client
+            .<ExtendedServerBlobAuditingPolicyInner, ExtendedServerBlobAuditingPolicyInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ExtendedServerBlobAuditingPolicyInner.class,
+                ExtendedServerBlobAuditingPolicyInner.class,
+                context);
+    }
+
+    /**
+     * Creates or updates an extended server's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters An extended server blob auditing policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended server blob auditing policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
+        beginCreateOrUpdate(
+            String resourceGroupName, String serverName, ExtendedServerBlobAuditingPolicyInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates an extended server's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters An extended server blob auditing policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended server blob auditing policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
             String serverName,
             ExtendedServerBlobAuditingPolicyInner parameters,
             Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, parameters, context);
-        return this
-            .client
-            .<ExtendedServerBlobAuditingPolicyInner, ExtendedServerBlobAuditingPolicyInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ExtendedServerBlobAuditingPolicyInner.class,
-                ExtendedServerBlobAuditingPolicyInner.class);
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -504,17 +535,9 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExtendedServerBlobAuditingPolicyInner> createOrUpdateAsync(
         String resourceGroupName, String serverName, ExtendedServerBlobAuditingPolicyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, parameters);
-        return this
-            .client
-            .<ExtendedServerBlobAuditingPolicyInner, ExtendedServerBlobAuditingPolicyInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ExtendedServerBlobAuditingPolicyInner.class,
-                ExtendedServerBlobAuditingPolicyInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -536,17 +559,9 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
         String serverName,
         ExtendedServerBlobAuditingPolicyInner parameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, parameters, context);
-        return this
-            .client
-            .<ExtendedServerBlobAuditingPolicyInner, ExtendedServerBlobAuditingPolicyInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ExtendedServerBlobAuditingPolicyInner.class,
-                ExtendedServerBlobAuditingPolicyInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -681,6 +696,7 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByServer(
                 this.client.getEndpoint(),
@@ -736,7 +752,7 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
         String resourceGroupName, String serverName, Context context) {
         return new PagedFlux<>(
             () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
-            nextLink -> listByServerNextSinglePageAsync(nextLink));
+            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -772,216 +788,6 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
     public PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByServer(
         String resourceGroupName, String serverName, Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
-    }
-
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExtendedServerBlobAuditingPolicyInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serverName, ExtendedServerBlobAuditingPolicyInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String blobAuditingPolicyName = "default";
-        final String apiVersion = "2017-03-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            blobAuditingPolicyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExtendedServerBlobAuditingPolicyInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        ExtendedServerBlobAuditingPolicyInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String blobAuditingPolicyName = "default";
-        final String apiVersion = "2017-03-01-preview";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                blobAuditingPolicyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExtendedServerBlobAuditingPolicyInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String serverName, ExtendedServerBlobAuditingPolicyInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, serverName, parameters)
-            .flatMap(
-                (Response<ExtendedServerBlobAuditingPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExtendedServerBlobAuditingPolicyInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String serverName,
-        ExtendedServerBlobAuditingPolicyInner parameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, serverName, parameters, context)
-            .flatMap(
-                (Response<ExtendedServerBlobAuditingPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtendedServerBlobAuditingPolicyInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String serverName, ExtendedServerBlobAuditingPolicyInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, serverName, parameters).block();
-    }
-
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtendedServerBlobAuditingPolicyInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String serverName,
-        ExtendedServerBlobAuditingPolicyInner parameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, serverName, parameters, context).block();
     }
 
     /**
@@ -1028,6 +834,7 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByServerNext(nextLink, context)
             .map(

@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -38,11 +37,9 @@ import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
 import com.azure.resourcemanager.resources.fluent.inner.DeploymentInner;
 import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -309,26 +306,21 @@ public final class DeploymentImpl extends
 
     @Override
     public Accepted<Deployment> beginCreate() {
-        if (this.creatableResourceGroup != null) {
-            this.creatableResourceGroup.create();
-        }
-
-        Response<Flux<ByteBuffer>> activationResponse = this.manager().inner().getDeployments()
-            .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters).block();
-        if (activationResponse == null) {
-            throw logger.logExceptionAsError(new NullPointerException());
-        } else {
-            Accepted<Deployment> accepted = new AcceptedImpl<DeploymentExtendedInner, Deployment>(activationResponse,
-                this.manager().inner().getSerializerAdapter(),
-                this.manager().inner().getHttpPipeline(),
-                DeploymentExtendedInner.class,
-                DeploymentExtendedInner.class,
-                inner -> new DeploymentImpl(inner, inner.name(), resourceManager));
-
-            setInner(accepted.getActivationResponse().getValue().inner());
-            prepareForUpdate(this.inner());
-            return accepted;
-        }
+        return AcceptedImpl.newAccepted(logger,
+            this.manager().inner(),
+            () -> this.manager().inner().getDeployments()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters).block(),
+            inner -> new DeploymentImpl(inner, inner.name(), resourceManager),
+            DeploymentExtendedInner.class,
+            () -> {
+                if (this.creatableResourceGroup != null) {
+                    this.creatableResourceGroup.create();
+                }
+            },
+            inner -> {
+                setInner(inner);
+                prepareForUpdate(inner);
+            });
     }
 
     @Override

@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.ListTableServicesInner;
 import com.azure.resourcemanager.storage.fluent.inner.TableServicePropertiesInner;
 import com.azure.resourcemanager.storage.models.CorsRules;
@@ -185,6 +184,7 @@ public final class TableServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -382,6 +382,7 @@ public final class TableServicesClient {
         final String tableServiceName = "default";
         TableServicePropertiesInner parameters = new TableServicePropertiesInner();
         parameters.withCors(cors);
+        context = this.client.mergeContext(context);
         return service
             .setServiceProperties(
                 this.client.getEndpoint(),
@@ -582,6 +583,7 @@ public final class TableServicesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String tableServiceName = "default";
+        context = this.client.mergeContext(context);
         return service
             .getServiceProperties(
                 this.client.getEndpoint(),

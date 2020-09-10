@@ -21,7 +21,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.LocationCapabilitiesInner;
 import com.azure.resourcemanager.sql.models.CapabilityGroup;
 import reactor.core.publisher.Mono;
@@ -140,6 +139,7 @@ public final class CapabilitiesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByLocation(
                 this.client.getEndpoint(), locationName, include, this.client.getSubscriptionId(), apiVersion, context);

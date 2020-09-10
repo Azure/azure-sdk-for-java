@@ -105,4 +105,13 @@ class BuildHelperTest extends Specification {
             return new DateTimeRfc1123(dateHeader)
         }
     }
+
+    def "Parse protocol"() {
+        when:
+        def parts = BuilderHelper.parseEndpoint(endpoint +
+            "?sv=2019-12-12&ss=bfqt&srt=s&sp=rwdlacupx&se=2020-08-15T05:43:05Z&st=2020-08-14T21:43:05Z&spr=https,http&sig=sig", null)
+
+        then:
+        parts.getSasToken().contains("https%2Chttp")
+    }
 }

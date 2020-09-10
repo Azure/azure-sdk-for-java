@@ -34,7 +34,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.inner.GenericResourceExpandedInner;
 import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceListResultInner;
@@ -477,7 +476,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceGroupName, String filter, String expand, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -497,7 +496,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -697,7 +696,9 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     public PollerFlux<PollResult<Void>, Void> beginMoveResourcesAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = moveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -716,9 +717,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginMoveResourcesAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             moveResourcesWithResponseAsync(sourceResourceGroupName, parameters, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -954,7 +958,9 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String sourceResourceGroupName, ResourcesMoveInfo parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             validateMoveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -975,9 +981,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginValidateMoveResourcesAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             validateMoveResourcesWithResponseAsync(sourceResourceGroupName, parameters, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1285,7 +1294,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     public PagedFlux<GenericResourceExpandedInner> listAsync(
         String filter, String expand, Integer top, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, expand, top, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, expand, top, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1302,7 +1312,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         final Integer top = null;
         final Context context = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, expand, top), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, expand, top), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1874,7 +1884,9 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 resourceType,
                 resourceName,
                 apiVersion);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1902,6 +1914,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(
                 resourceGroupName,
@@ -1911,7 +1924,9 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 resourceName,
                 apiVersion,
                 context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2319,8 +2334,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 parameters);
         return this
             .client
-            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
+            .<GenericResourceInner, GenericResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                GenericResourceInner.class,
+                GenericResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2349,6 +2368,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String apiVersion,
         GenericResourceInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName,
@@ -2361,8 +2381,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 context);
         return this
             .client
-            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
+            .<GenericResourceInner, GenericResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class, context);
     }
 
     /**
@@ -2784,8 +2804,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 parameters);
         return this
             .client
-            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
+            .<GenericResourceInner, GenericResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                GenericResourceInner.class,
+                GenericResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2814,6 +2838,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String apiVersion,
         GenericResourceInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(
                 resourceGroupName,
@@ -2826,8 +2851,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 context);
         return this
             .client
-            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
+            .<GenericResourceInner, GenericResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class, context);
     }
 
     /**
@@ -3590,7 +3615,9 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteByIdAsync(String resourceId, String apiVersion) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(resourceId, apiVersion);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3609,8 +3636,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteByIdAsync(
         String resourceId, String apiVersion, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(resourceId, apiVersion, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -3815,8 +3845,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters);
         return this
             .client
-            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
+            .<GenericResourceInner, GenericResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                GenericResourceInner.class,
+                GenericResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -3836,12 +3870,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters, context);
         return this
             .client
-            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
+            .<GenericResourceInner, GenericResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class, context);
     }
 
     /**
@@ -4061,8 +4096,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         Mono<Response<Flux<ByteBuffer>>> mono = updateByIdWithResponseAsync(resourceId, apiVersion, parameters);
         return this
             .client
-            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
+            .<GenericResourceInner, GenericResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                GenericResourceInner.class,
+                GenericResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -4082,12 +4121,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateByIdWithResponseAsync(resourceId, apiVersion, parameters, context);
         return this
             .client
-            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
+            .<GenericResourceInner, GenericResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class, context);
     }
 
     /**

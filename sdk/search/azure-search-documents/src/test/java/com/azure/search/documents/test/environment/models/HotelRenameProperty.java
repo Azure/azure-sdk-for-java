@@ -8,40 +8,38 @@ import com.azure.search.documents.indexes.SimpleFieldProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class HotelRenameProperty {
-    @SimpleFieldProperty(isKey = true, isSortable = true)
-    @JsonProperty()
     private String hotelId;
-
-    @SearchableFieldProperty(isSortable = true, analyzerName = "en.lucene")
-    @JsonProperty(value = "HotelName")
     private String hotelName;
-
-    @SimpleFieldProperty
     private String description;
 
-    public String hotelId() {
+    @SimpleFieldProperty(isKey = true, isSortable = true)
+    @JsonProperty
+    public String getHotelId() {
         return this.hotelId;
     }
 
-    public HotelRenameProperty hotelId(String hotelId) {
+    public HotelRenameProperty setHotelId(String hotelId) {
         this.hotelId = hotelId;
         return this;
     }
 
-    public String hotelName() {
+    @SearchableFieldProperty(isSortable = true, analyzerName = "en.lucene")
+    @JsonProperty(value = "HotelName")
+    public String getHotelName() {
         return this.hotelName;
     }
 
-    public HotelRenameProperty hotelName(String hotelName) {
+    public HotelRenameProperty setHotelName(String hotelName) {
         this.hotelName = hotelName;
         return this;
     }
 
-    public String description() {
+    @SimpleFieldProperty
+    public String getDescription() {
         return this.description;
     }
 
-    public HotelRenameProperty description(String description) {
+    public HotelRenameProperty setDescription(String description) {
         this.description = description;
         return this;
     }

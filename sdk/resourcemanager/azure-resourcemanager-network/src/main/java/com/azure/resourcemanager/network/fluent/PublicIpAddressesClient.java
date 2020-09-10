@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
 import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressListResultInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -346,7 +345,9 @@ public final class PublicIpAddressesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String publicIpAddressName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, publicIpAddressName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -363,9 +364,12 @@ public final class PublicIpAddressesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String publicIpAddressName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, publicIpAddressName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -816,8 +820,12 @@ public final class PublicIpAddressesClient
             createOrUpdateWithResponseAsync(resourceGroupName, publicIpAddressName, parameters);
         return this
             .client
-            .<PublicIpAddressInner, PublicIpAddressInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PublicIpAddressInner.class, PublicIpAddressInner.class);
+            .<PublicIpAddressInner, PublicIpAddressInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PublicIpAddressInner.class,
+                PublicIpAddressInner.class,
+                Context.NONE);
     }
 
     /**
@@ -835,12 +843,13 @@ public final class PublicIpAddressesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String publicIpAddressName, PublicIpAddressInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, publicIpAddressName, parameters, context);
         return this
             .client
-            .<PublicIpAddressInner, PublicIpAddressInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PublicIpAddressInner.class, PublicIpAddressInner.class);
+            .<PublicIpAddressInner, PublicIpAddressInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PublicIpAddressInner.class, PublicIpAddressInner.class, context);
     }
 
     /**
@@ -1239,7 +1248,8 @@ public final class PublicIpAddressesClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PublicIpAddressInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1392,7 +1402,7 @@ public final class PublicIpAddressesClient
     public PagedFlux<PublicIpAddressInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1578,7 +1588,7 @@ public final class PublicIpAddressesClient
             () ->
                 listVirtualMachineScaleSetPublicIpAddressesSinglePageAsync(
                     resourceGroupName, virtualMachineScaleSetName, context),
-            nextLink -> listVirtualMachineScaleSetPublicIpAddressesNextSinglePageAsync(nextLink));
+            nextLink -> listVirtualMachineScaleSetPublicIpAddressesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1847,7 +1857,7 @@ public final class PublicIpAddressesClient
                     networkInterfaceName,
                     ipConfigurationName,
                     context),
-            nextLink -> listVirtualMachineScaleSetVMPublicIpAddressesNextSinglePageAsync(nextLink));
+            nextLink -> listVirtualMachineScaleSetVMPublicIpAddressesNextSinglePageAsync(nextLink, context));
     }
 
     /**

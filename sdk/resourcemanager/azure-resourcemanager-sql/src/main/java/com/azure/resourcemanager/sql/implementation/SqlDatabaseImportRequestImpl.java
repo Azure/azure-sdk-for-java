@@ -7,6 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.AuthenticationType;
+import com.azure.resourcemanager.sql.models.ExtensionName;
 import com.azure.resourcemanager.sql.models.ImportExtensionRequest;
 import com.azure.resourcemanager.sql.models.ImportOperationMode;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
@@ -53,6 +54,7 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                 this.sqlDatabase.resourceGroupName,
                 this.sqlDatabase.sqlServerName,
                 this.sqlDatabase.name(),
+                ExtensionName.IMPORT,
                 this.inner())
             .flatMap(
                 importExportResponseInner ->

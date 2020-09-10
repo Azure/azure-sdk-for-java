@@ -25,7 +25,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.models.GetVpnSitesConfigurationRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -197,7 +196,9 @@ public final class VpnSitesConfigurationsClient {
     public PollerFlux<PollResult<Void>, Void> beginDownloadAsync(
         String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
         Mono<Response<Flux<ByteBuffer>>> mono = downloadWithResponseAsync(resourceGroupName, virtualWanName, request);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -215,9 +216,12 @@ public final class VpnSitesConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDownloadAsync(
         String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             downloadWithResponseAsync(resourceGroupName, virtualWanName, request, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**

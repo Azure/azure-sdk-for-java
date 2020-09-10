@@ -6,7 +6,7 @@ The project provides a Spring Boot Starter `spring-cloud-starter-azure-storage` 
 ## Getting started
 ## Examples
 
-Please use this [sample](../../spring-cloud-azure-samples/spring-cloud-azure-storage-sample/) as a reference for how to use **Spring Cloud Azure Storage** in your projects. 
+Please use this `sample` as a reference for how to use **Spring Cloud Azure Storage** in your projects. 
 
 ### Feature List 
 
@@ -17,7 +17,7 @@ Please use this [sample](../../spring-cloud-azure-samples/spring-cloud-azure-sto
 
 #### Auto-configuration for Azure Blob storage
 
-Please use [`spring-cloud-starter-azure-storage`](spring-cloud-azure-starters/spring-cloud-starter-azure-storage/) to auto-configure Azure Storge in your project. 
+Please use `spring-cloud-starter-azure-storage` to auto-configure Azure Storge in your project. 
 
 **Maven Coordinates** 
 ```
@@ -33,7 +33,7 @@ dependencies {
 }
 ```
 
-The [`spring-cloud-starter-azure-storage`](spring-cloud-azure-starters/spring-cloud-starter-azure-storage/) provides the following configuration options in `application.properties`.
+The `spring-cloud-starter-azure-storage` provides the following configuration options in `application.properties`.
 
 Name | Description | Required | Default 
 ---|---|---|---

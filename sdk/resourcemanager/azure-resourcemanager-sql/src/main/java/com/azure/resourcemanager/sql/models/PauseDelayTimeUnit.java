@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.sql.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for PauseDelayTimeUnit. */
-public enum PauseDelayTimeUnit {
-    /** Enum value Minutes. */
-    MINUTES("Minutes");
-
-    /** The actual serialized value for a PauseDelayTimeUnit instance. */
-    private final String value;
-
-    PauseDelayTimeUnit(String value) {
-        this.value = value;
-    }
+public final class PauseDelayTimeUnit extends ExpandableStringEnum<PauseDelayTimeUnit> {
+    /** Static value Minutes for PauseDelayTimeUnit. */
+    public static final PauseDelayTimeUnit MINUTES = fromString("Minutes");
 
     /**
-     * Parses a serialized value to a PauseDelayTimeUnit instance.
+     * Creates or finds a PauseDelayTimeUnit from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed PauseDelayTimeUnit object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding PauseDelayTimeUnit.
      */
     @JsonCreator
-    public static PauseDelayTimeUnit fromString(String value) {
-        PauseDelayTimeUnit[] items = PauseDelayTimeUnit.values();
-        for (PauseDelayTimeUnit item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static PauseDelayTimeUnit fromString(String name) {
+        return fromString(name, PauseDelayTimeUnit.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known PauseDelayTimeUnit values. */
+    public static Collection<PauseDelayTimeUnit> values() {
+        return values(PauseDelayTimeUnit.class);
     }
 }

@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteLinkInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteLinkListResultInner;
 import reactor.core.publisher.Mono;
@@ -429,7 +428,7 @@ public final class ExpressRouteLinksClient {
         String resourceGroupName, String expressRoutePortName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, expressRoutePortName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

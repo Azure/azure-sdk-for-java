@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.storage.fluent.inner.PrivateEndpointConnectionListResultInner;
 import com.azure.resourcemanager.storage.models.PrivateEndpoint;
@@ -213,6 +212,7 @@ public final class PrivateEndpointConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -399,6 +399,7 @@ public final class PrivateEndpointConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -642,6 +643,7 @@ public final class PrivateEndpointConnectionsClient {
         PrivateEndpointConnectionInner properties = new PrivateEndpointConnectionInner();
         properties.withPrivateEndpoint(privateEndpoint);
         properties.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
+        context = this.client.mergeContext(context);
         return service
             .put(
                 this.client.getEndpoint(),
@@ -906,6 +908,7 @@ public final class PrivateEndpointConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),

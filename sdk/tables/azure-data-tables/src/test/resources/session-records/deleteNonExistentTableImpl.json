@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test44414193ed')",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test78156389eb')",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-client-request-id" : "a03bea56-1006-4657-8fbf-38033ba93775"
+      "x-ms-client-request-id" : "0858bf69-adff-4d47-b57e-9d620b018555"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -14,10 +14,10 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "b166a474-2002-0074-6b74-649570000000",
-      "Body" : "{\"odata.error\":{\"code\":\"ResourceNotFound\",\"message\":{\"lang\":\"en-US\",\"value\":\"The specified resource does not exist.\\nRequestId:b166a474-2002-0074-6b74-649570000000\\nTime:2020-07-28T00:15:15.5979393Z\"}}}",
-      "Date" : "Tue, 28 Jul 2020 00:15:15 GMT",
-      "x-ms-client-request-id" : "a03bea56-1006-4657-8fbf-38033ba93775",
+      "x-ms-request-id" : "117d9419-9002-0062-2cff-77087b000000",
+      "Body" : "{\"odata.error\":{\"code\":\"ResourceNotFound\",\"message\":{\"lang\":\"en-US\",\"value\":\"The specified resource does not exist.\\nRequestId:117d9419-9002-0062-2cff-77087b000000\\nTime:2020-08-21T21:09:35.5512687Z\"}}}",
+      "Date" : "Fri, 21 Aug 2020 21:09:35 GMT",
+      "x-ms-client-request-id" : "0858bf69-adff-4d47-b57e-9d620b018555",
       "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
     },
     "Exception" : null
@@ -26,7 +26,7 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables?$format=application/json%3Bodata%3Dminimalmetadata",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-client-request-id" : "59e1df42-f841-43f1-90fe-74170181b689"
+      "x-ms-client-request-id" : "3a5a3a86-3a43-46cd-9051-c15a8d4b726b"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -36,13 +36,13 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "0801ca2e-7002-009d-6574-64533a000000",
-      "Body" : "{\"odata.metadata\":\"https://connieystorage.table.core.windows.net/$metadata#Tables\",\"value\":[]}",
-      "Date" : "Tue, 28 Jul 2020 00:15:14 GMT",
-      "x-ms-client-request-id" : "59e1df42-f841-43f1-90fe-74170181b689",
+      "x-ms-request-id" : "117d9426-9002-0062-36ff-77087b000000",
+      "Body" : "{\"odata.metadata\":\"https://brsiegelsample.table.core.windows.net/$metadata#Tables\",\"value\":[]}",
+      "Date" : "Fri, 21 Aug 2020 21:09:35 GMT",
+      "x-ms-client-request-id" : "3a5a3a86-3a43-46cd-9051-c15a8d4b726b",
       "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "test44414193ed", "a03bea56-1006-4657-8fbf-38033ba93775", "59e1df42-f841-43f1-90fe-74170181b689" ]
+  "variables" : [ "test78156389eb", "0858bf69-adff-4d47-b57e-9d620b018555", "3a5a3a86-3a43-46cd-9051-c15a8d4b726b" ]
 }

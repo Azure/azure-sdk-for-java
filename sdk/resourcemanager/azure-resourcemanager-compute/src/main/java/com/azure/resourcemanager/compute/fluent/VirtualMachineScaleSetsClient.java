@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.RecoveryWalkResponseInner;
 import com.azure.resourcemanager.compute.fluent.inner.UpgradeOperationHistoricalStatusInfoInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
@@ -561,11 +560,12 @@ public final class VirtualMachineScaleSetsClient
             createOrUpdateWithResponseAsync(resourceGroupName, vmScaleSetName, parameters);
         return this
             .client
-            .<VirtualMachineScaleSetInner, VirtualMachineScaleSetInner>getLroResultAsync(
+            .<VirtualMachineScaleSetInner, VirtualMachineScaleSetInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VirtualMachineScaleSetInner.class,
-                VirtualMachineScaleSetInner.class);
+                VirtualMachineScaleSetInner.class,
+                Context.NONE);
     }
 
     /**
@@ -583,15 +583,17 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, vmScaleSetName, parameters, context);
         return this
             .client
-            .<VirtualMachineScaleSetInner, VirtualMachineScaleSetInner>getLroResultAsync(
+            .<VirtualMachineScaleSetInner, VirtualMachineScaleSetInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VirtualMachineScaleSetInner.class,
-                VirtualMachineScaleSetInner.class);
+                VirtualMachineScaleSetInner.class,
+                context);
     }
 
     /**
@@ -826,11 +828,12 @@ public final class VirtualMachineScaleSetsClient
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, vmScaleSetName, parameters);
         return this
             .client
-            .<VirtualMachineScaleSetInner, VirtualMachineScaleSetInner>getLroResultAsync(
+            .<VirtualMachineScaleSetInner, VirtualMachineScaleSetInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VirtualMachineScaleSetInner.class,
-                VirtualMachineScaleSetInner.class);
+                VirtualMachineScaleSetInner.class,
+                Context.NONE);
     }
 
     /**
@@ -848,15 +851,17 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginUpdateAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetUpdate parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, vmScaleSetName, parameters, context);
         return this
             .client
-            .<VirtualMachineScaleSetInner, VirtualMachineScaleSetInner>getLroResultAsync(
+            .<VirtualMachineScaleSetInner, VirtualMachineScaleSetInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VirtualMachineScaleSetInner.class,
-                VirtualMachineScaleSetInner.class);
+                VirtualMachineScaleSetInner.class,
+                context);
     }
 
     /**
@@ -1072,7 +1077,9 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmScaleSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vmScaleSetName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1089,8 +1096,11 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vmScaleSetName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1491,7 +1501,9 @@ public final class VirtualMachineScaleSetsClient
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deallocateWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1511,9 +1523,12 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deallocateWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1754,7 +1769,9 @@ public final class VirtualMachineScaleSetsClient
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteInstancesWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1772,9 +1789,12 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteInstancesAsync(
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteInstancesWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2180,7 +2200,7 @@ public final class VirtualMachineScaleSetsClient
     public PagedFlux<VirtualMachineScaleSetInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2319,7 +2339,8 @@ public final class VirtualMachineScaleSetsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineScaleSetInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2503,7 +2524,7 @@ public final class VirtualMachineScaleSetsClient
         String resourceGroupName, String vmScaleSetName, Context context) {
         return new PagedFlux<>(
             () -> listSkusSinglePageAsync(resourceGroupName, vmScaleSetName, context),
-            nextLink -> listSkusNextSinglePageAsync(nextLink));
+            nextLink -> listSkusNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2686,7 +2707,7 @@ public final class VirtualMachineScaleSetsClient
         String resourceGroupName, String vmScaleSetName, Context context) {
         return new PagedFlux<>(
             () -> getOSUpgradeHistorySinglePageAsync(resourceGroupName, vmScaleSetName, context),
-            nextLink -> getOSUpgradeHistoryNextSinglePageAsync(nextLink));
+            nextLink -> getOSUpgradeHistoryNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2867,7 +2888,9 @@ public final class VirtualMachineScaleSetsClient
         String resourceGroupName, String vmScaleSetName, Boolean skipShutdown, List<String> instanceIds) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             powerOffWithResponseAsync(resourceGroupName, vmScaleSetName, skipShutdown, instanceIds);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2894,9 +2917,12 @@ public final class VirtualMachineScaleSetsClient
         Boolean skipShutdown,
         List<String> instanceIds,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             powerOffWithResponseAsync(resourceGroupName, vmScaleSetName, skipShutdown, instanceIds, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -3176,7 +3202,9 @@ public final class VirtualMachineScaleSetsClient
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             restartWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3195,9 +3223,12 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             restartWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -3436,7 +3467,9 @@ public final class VirtualMachineScaleSetsClient
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3455,9 +3488,12 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -3700,7 +3736,9 @@ public final class VirtualMachineScaleSetsClient
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             redeployWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3720,9 +3758,12 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginRedeployAsync(
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             redeployWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -3974,7 +4015,9 @@ public final class VirtualMachineScaleSetsClient
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             performMaintenanceWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3995,9 +4038,12 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginPerformMaintenanceAsync(
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             performMaintenanceWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -4246,7 +4292,9 @@ public final class VirtualMachineScaleSetsClient
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateInstancesWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -4264,9 +4312,12 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginUpdateInstancesAsync(
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateInstancesWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -4505,7 +4556,9 @@ public final class VirtualMachineScaleSetsClient
         VirtualMachineScaleSetReimageParameters vmScaleSetReimageInput) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             reimageWithResponseAsync(resourceGroupName, vmScaleSetName, vmScaleSetReimageInput);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -4528,9 +4581,12 @@ public final class VirtualMachineScaleSetsClient
         String vmScaleSetName,
         VirtualMachineScaleSetReimageParameters vmScaleSetReimageInput,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             reimageWithResponseAsync(resourceGroupName, vmScaleSetName, vmScaleSetReimageInput, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -4836,7 +4892,9 @@ public final class VirtualMachineScaleSetsClient
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             reimageAllWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -4856,9 +4914,12 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginReimageAllAsync(
         String resourceGroupName, String vmScaleSetName, List<String> instanceIds, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             reimageAllWithResponseAsync(resourceGroupName, vmScaleSetName, instanceIds, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -5472,7 +5533,9 @@ public final class VirtualMachineScaleSetsClient
         String resourceGroupName, String vmScaleSetName, OrchestrationServiceStateInput parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             setOrchestrationServiceStateWithResponseAsync(resourceGroupName, vmScaleSetName, parameters);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -5490,9 +5553,12 @@ public final class VirtualMachineScaleSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginSetOrchestrationServiceStateAsync(
         String resourceGroupName, String vmScaleSetName, OrchestrationServiceStateInput parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             setOrchestrationServiceStateWithResponseAsync(resourceGroupName, vmScaleSetName, parameters, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**

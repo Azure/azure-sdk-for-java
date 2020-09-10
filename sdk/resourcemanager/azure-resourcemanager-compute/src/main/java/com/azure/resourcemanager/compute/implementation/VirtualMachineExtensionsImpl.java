@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -130,7 +131,12 @@ class VirtualMachineExtensionsImpl
                 }
             }
         }
-        return childResources;
+        return Collections.unmodifiableList(childResources);
+    }
+
+    @Override
+    protected Flux<VirtualMachineExtensionImpl> listChildResourcesAsync() {
+        return Flux.fromIterable(listChildResources());
     }
 
     @Override

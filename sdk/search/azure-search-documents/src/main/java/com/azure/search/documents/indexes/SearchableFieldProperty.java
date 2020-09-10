@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  * The annotation is to indicate whether the field is a searchable field. The boolean field of isSearchable
  * defaults to true if use the annotation.
  */
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SearchableFieldProperty {
     /**

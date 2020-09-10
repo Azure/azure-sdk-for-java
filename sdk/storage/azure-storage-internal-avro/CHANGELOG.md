@@ -1,7 +1,10 @@
 # Release History
 
-## 12.0.0-beta.2 (Unreleased)
+## 12.1.0-beta.1 (Unreleased)
 
+
+## 12.0.0 (2020-08-13)
+- GA release.
 
 ## 12.0.0-beta.1 (2019-07-07)
 - Initial release. 

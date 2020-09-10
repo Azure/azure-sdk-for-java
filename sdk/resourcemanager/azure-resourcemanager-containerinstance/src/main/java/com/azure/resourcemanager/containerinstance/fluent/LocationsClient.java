@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerinstance.ContainerInstanceManagementClient;
 import com.azure.resourcemanager.containerinstance.fluent.inner.CachedImagesListResultInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.CapabilitiesListResultInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.UsageInner;
@@ -375,7 +374,7 @@ public final class LocationsClient {
     public PagedFlux<CachedImages> listCachedImagesAsync(String location, Context context) {
         return new PagedFlux<>(
             () -> listCachedImagesSinglePageAsync(location, context),
-            nextLink -> listCachedImagesNextSinglePageAsync(nextLink));
+            nextLink -> listCachedImagesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -530,7 +529,7 @@ public final class LocationsClient {
     public PagedFlux<Capabilities> listCapabilitiesAsync(String location, Context context) {
         return new PagedFlux<>(
             () -> listCapabilitiesSinglePageAsync(location, context),
-            nextLink -> listCapabilitiesNextSinglePageAsync(nextLink));
+            nextLink -> listCapabilitiesNextSinglePageAsync(nextLink, context));
     }
 
     /**

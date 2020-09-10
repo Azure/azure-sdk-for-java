@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
 import com.azure.resourcemanager.appservice.fluent.inner.TopLevelDomainCollectionInner;
@@ -215,7 +214,8 @@ public final class TopLevelDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TopLevelDomainInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -536,7 +536,7 @@ public final class TopLevelDomainsClient {
         String name, TopLevelDomainAgreementOption agreementOption, Context context) {
         return new PagedFlux<>(
             () -> listAgreementsSinglePageAsync(name, agreementOption, context),
-            nextLink -> listAgreementsNextSinglePageAsync(nextLink));
+            nextLink -> listAgreementsNextSinglePageAsync(nextLink, context));
     }
 
     /**

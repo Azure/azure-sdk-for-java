@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.changefeed;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.ContinuablePage;
@@ -27,22 +28,18 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
 
     private final ClientLogger logger = new ClientLogger(BlobChangefeedPagedFlux.class);
 
-    private final ChangefeedFactory changefeedFactory;
-    private final OffsetDateTime startTime;
-    private final OffsetDateTime endTime;
-    private final String cursor;
+    private final Changefeed changefeed;
 
     private static final Integer DEFAULT_PAGE_SIZE = 5000;
+
+    private Context context;
 
     /**
      * Creates an instance of {@link BlobChangefeedPagedFlux}.
      */
     BlobChangefeedPagedFlux(ChangefeedFactory changefeedFactory, OffsetDateTime startTime, OffsetDateTime endTime) {
         StorageImplUtils.assertNotNull("changefeedFactory", changefeedFactory);
-        this.changefeedFactory = changefeedFactory;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.cursor = null;
+        this.changefeed = changefeedFactory.getChangefeed(startTime, endTime);
     }
 
     /**
@@ -50,10 +47,15 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
      */
     BlobChangefeedPagedFlux(ChangefeedFactory changefeedFactory, String cursor) {
         StorageImplUtils.assertNotNull("changefeedFactory", changefeedFactory);
-        this.changefeedFactory = changefeedFactory;
-        this.startTime = null;
-        this.endTime = null;
-        this.cursor = cursor;
+        this.changefeed = changefeedFactory.getChangefeed(cursor);
+    }
+
+    /**
+     * Package-private method used only by "BlobChangeFeedPagedIterable" to set context
+     */
+    BlobChangefeedPagedFlux setSubscriberContext(Context context) {
+        this.context = context;
+        return this;
     }
 
     @Override
@@ -95,21 +97,14 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
     public Flux<BlobChangefeedPagedResponse> byPage(String continuationToken, int preferredPageSize) {
 
         if (continuationToken != null) {
-            return FluxUtil.fluxError(logger, new UnsupportedOperationException("continuationToken not supported. Use "
-                + "client.getEvents(String) to pass in a cursor."));
+            return FluxUtil.pagedFluxError(logger, new UnsupportedOperationException("continuationToken not "
+                + "supported. Use client.getEvents(String) to pass in a cursor."));
         }
         if (preferredPageSize <= 0) {
-            return FluxUtil.fluxError(logger, new IllegalArgumentException("preferredPageSize > 0 required but "
+            return FluxUtil.pagedFluxError(logger, new IllegalArgumentException("preferredPageSize > 0 required but "
                 + "provided: " + preferredPageSize));
         }
         preferredPageSize = Integer.min(preferredPageSize, DEFAULT_PAGE_SIZE);
-
-        Changefeed changefeed;
-        if (cursor != null) {
-            changefeed = changefeedFactory.getChangefeed(cursor);
-        } else {
-            changefeed = changefeedFactory.getChangefeed(startTime, endTime);
-        }
 
         return changefeed.getEvents()
             /* Window the events to the page size. This takes the Flux<BlobChangefeedEventWrapper> and
@@ -134,13 +129,13 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
                 return Mono.zip(e, c);
             })
             /* Construct the BlobChangefeedPagedResponse. */
-            .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()));
+            .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()))
+            .subscriberContext(FluxUtil.toReactorContext(this.context));
     }
 
     @Override
     public void subscribe(CoreSubscriber<? super BlobChangefeedEvent> coreSubscriber) {
-        byPage(null, DEFAULT_PAGE_SIZE)
-            .flatMap((page) -> Flux.fromIterable(page.getElements()))
+        changefeed.getEvents().map(BlobChangefeedEventWrapper::getEvent)
             .subscribe(coreSubscriber);
     }
 }

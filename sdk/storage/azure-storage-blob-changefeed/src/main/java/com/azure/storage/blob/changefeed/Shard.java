@@ -4,11 +4,13 @@
 package com.azure.storage.blob.changefeed;
 
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
-import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
+import com.azure.storage.blob.changefeed.implementation.models.ShardCursor;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import reactor.core.publisher.Flux;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -24,18 +26,18 @@ class Shard  {
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String shardPath; /* Shard virtual directory path/prefix. */
-    private final ChangefeedCursor segmentCursor; /* Cursor associated with parent segment. */
-    private final ChangefeedCursor userCursor; /* User provided cursor. */
+    private final ChangefeedCursor changefeedCursor; /* Cursor associated with parent segment. */
+    private final ShardCursor userCursor; /* User provided cursor. */
     private final ChunkFactory chunkFactory;
 
     /**
      * Creates a new Shard.
      */
-    Shard(BlobContainerAsyncClient client, String shardPath, ChangefeedCursor segmentCursor,
-        ChangefeedCursor userCursor, ChunkFactory chunkFactory) {
+    Shard(BlobContainerAsyncClient client, String shardPath, ChangefeedCursor changefeedCursor,
+        ShardCursor userCursor, ChunkFactory chunkFactory) {
         this.client = client;
         this.shardPath = shardPath;
-        this.segmentCursor = segmentCursor;
+        this.changefeedCursor = changefeedCursor;
         this.userCursor = userCursor;
         this.chunkFactory = chunkFactory;
     }
@@ -47,20 +49,19 @@ class Shard  {
     Flux<BlobChangefeedEventWrapper> getEvents() {
         /* List relevant chunks. */
         return listChunks()
-            .concatMap(chunkPath -> {
-                /* Defaults for blockOffset and objectBlockIndex. */
+            .concatMap(tuple2 -> {
+                /* Defaults for blockOffset and eventIndex. */
                 long blockOffset = 0;
-                long objectBlockIndex = 0;
+                long eventIndex = 0;
                 /* If a user cursor was provided and it points to this chunk path, the chunk should get events based
-                   off the blockOffset and objectBlockIndex.
-                   This just makes sure only the targeted chunkPath uses the blockOffset and objectBlockIndex to
+                   off the blockOffset and eventIndex.
+                   This just makes sure only the targeted chunkPath uses the blockOffset and eventIndex to
                    read events. Any subsequent chunk will read all of its events (i.e. blockOffset = 0). */
-                if (userCursor != null && userCursor.getChunkPath().equals(chunkPath)) {
+                if (userCursor != null && userCursor.getCurrentChunkPath().equals(tuple2.getT1())) {
                     blockOffset = userCursor.getBlockOffset();
-                    objectBlockIndex = userCursor.getObjectBlockIndex();
+                    eventIndex = userCursor.getEventIndex();
                 }
-                return chunkFactory.getChunk(chunkPath, segmentCursor.toChunkCursor(chunkPath),
-                    blockOffset, objectBlockIndex)
+                return chunkFactory.getChunk(tuple2.getT1(), tuple2.getT2(), changefeedCursor, blockOffset, eventIndex)
                     .getEvents();
             });
     }
@@ -69,7 +70,7 @@ class Shard  {
      * Lists relevant chunks in a shard.
      * @return A reactive stream of chunks.
      */
-    private Flux<String> listChunks() {
+    private Flux<Tuple2<String, Long>> listChunks() {
         /* Shard paths looks like $blobchangefeed/log/00/2020/03/25/0200/ */
         /* The underlying chunks will look like
            $blobchangefeed/log/00/2020/03/25/0200/0000.avro,
@@ -80,8 +81,8 @@ class Shard  {
            $blobchangefeed/log/00/2020/03/25/0200/0001.avro,
            $blobchangefeed/log/00/2020/03/25/0200/0002.avro
            */
-        Flux<String> chunks = client.listBlobs(new ListBlobsOptions().setPrefix(shardPath))
-            .map(BlobItem::getName);
+        Flux<Tuple2<String, Long>> chunks = client.listBlobs(new ListBlobsOptions().setPrefix(shardPath))
+            .map(blobItem -> Tuples.of(blobItem.getName(), blobItem.getProperties().getContentLength()));
         /* If no user cursor was provided, just return all chunks without filtering. */
         if (userCursor == null) {
             return chunks;
@@ -89,13 +90,13 @@ class Shard  {
         } else {
             return Flux.defer(() -> {
                 AtomicBoolean pass = new AtomicBoolean(); /* Whether or not to pass the event through. */
-                return chunks.filter(chunkPath -> {
+                return chunks.filter(tuple2 -> {
                     if (pass.get()) {
                         return true;
                     } else {
                     /* If we hit the chunk specified in the user cursor, set pass to true and pass this chunk
                        and any subsequent chunks through. */
-                        if (userCursor.getChunkPath().equals(chunkPath)) {
+                        if (userCursor.getCurrentChunkPath().equals(tuple2.getT1())) {
                             pass.set(true); /* This allows us to pass subsequent chunks through.*/
                             return true; /* This allows us to pass this chunk through. */
                         } else {

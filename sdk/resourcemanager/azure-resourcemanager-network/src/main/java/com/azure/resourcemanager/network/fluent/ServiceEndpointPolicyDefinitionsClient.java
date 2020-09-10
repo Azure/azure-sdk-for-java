@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ServiceEndpointPolicyDefinitionInner;
 import com.azure.resourcemanager.network.fluent.inner.ServiceEndpointPolicyDefinitionListResultInner;
 import java.nio.ByteBuffer;
@@ -274,7 +273,9 @@ public final class ServiceEndpointPolicyDefinitionsClient {
         String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -295,10 +296,13 @@ public final class ServiceEndpointPolicyDefinitionsClient {
         String serviceEndpointPolicyName,
         String serviceEndpointPolicyDefinitionName,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(
                 resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -800,11 +804,12 @@ public final class ServiceEndpointPolicyDefinitionsClient {
                 serviceEndpointPolicyDefinitions);
         return this
             .client
-            .<ServiceEndpointPolicyDefinitionInner, ServiceEndpointPolicyDefinitionInner>getLroResultAsync(
+            .<ServiceEndpointPolicyDefinitionInner, ServiceEndpointPolicyDefinitionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ServiceEndpointPolicyDefinitionInner.class,
-                ServiceEndpointPolicyDefinitionInner.class);
+                ServiceEndpointPolicyDefinitionInner.class,
+                Context.NONE);
     }
 
     /**
@@ -828,6 +833,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
             String serviceEndpointPolicyDefinitionName,
             ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName,
@@ -837,11 +843,12 @@ public final class ServiceEndpointPolicyDefinitionsClient {
                 context);
         return this
             .client
-            .<ServiceEndpointPolicyDefinitionInner, ServiceEndpointPolicyDefinitionInner>getLroResultAsync(
+            .<ServiceEndpointPolicyDefinitionInner, ServiceEndpointPolicyDefinitionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ServiceEndpointPolicyDefinitionInner.class,
-                ServiceEndpointPolicyDefinitionInner.class);
+                ServiceEndpointPolicyDefinitionInner.class,
+                context);
     }
 
     /**
@@ -1163,7 +1170,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
         String resourceGroupName, String serviceEndpointPolicyName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, serviceEndpointPolicyName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

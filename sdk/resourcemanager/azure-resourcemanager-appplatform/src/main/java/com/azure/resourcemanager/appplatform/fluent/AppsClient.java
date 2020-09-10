@@ -33,9 +33,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceCollectionInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
+import com.azure.resourcemanager.appplatform.models.CustomDomainValidatePayload;
+import com.azure.resourcemanager.appplatform.models.CustomDomainValidateResult;
 import com.azure.resourcemanager.appplatform.models.ResourceUploadDefinition;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -88,7 +89,7 @@ public final class AppsClient {
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -104,9 +105,9 @@ public final class AppsClient {
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
+        Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -158,6 +159,22 @@ public final class AppsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
+                + "/{serviceName}/apps/{appName}/validateDomain")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CustomDomainValidateResult>> validateDomain(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serviceName") String serviceName,
+            @PathParam("appName") String appName,
+            @BodyParam("application/json") CustomDomainValidatePayload validatePayload,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -261,6 +278,7 @@ public final class AppsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -515,6 +533,7 @@ public final class AppsClient {
         } else {
             appResource.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -547,8 +566,8 @@ public final class AppsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, appResource);
         return this
             .client
-            .<AppResourceInner, AppResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class);
+            .<AppResourceInner, AppResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class, Context.NONE);
     }
 
     /**
@@ -568,12 +587,13 @@ public final class AppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, appResource, context);
         return this
             .client
-            .<AppResourceInner, AppResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class);
+            .<AppResourceInner, AppResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class, context);
     }
 
     /**
@@ -710,7 +730,8 @@ public final class AppsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String appName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -762,7 +783,7 @@ public final class AppsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String serviceName, String appName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -786,6 +807,7 @@ public final class AppsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -810,9 +832,92 @@ public final class AppsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String serviceName, String appName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName, appName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Operation to delete an App.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String serviceName, String appName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, serviceName, appName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Operation to delete an App.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serviceName, String appName) {
+        return beginDeleteAsync(resourceGroupName, serviceName, appName).getSyncPoller();
+    }
+
+    /**
+     * Operation to delete an App.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serviceName, String appName, Context context) {
+        return beginDeleteAsync(resourceGroupName, serviceName, appName, context).getSyncPoller();
+    }
+
+    /**
+     * Operation to delete an App.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, appName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return beginDeleteAsync(resourceGroupName, serviceName, appName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -830,8 +935,9 @@ public final class AppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, appName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return beginDeleteAsync(resourceGroupName, serviceName, appName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -970,6 +1076,7 @@ public final class AppsClient {
         } else {
             appResource.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1002,8 +1109,8 @@ public final class AppsClient {
             updateWithResponseAsync(resourceGroupName, serviceName, appName, appResource);
         return this
             .client
-            .<AppResourceInner, AppResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class);
+            .<AppResourceInner, AppResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class, Context.NONE);
     }
 
     /**
@@ -1023,12 +1130,13 @@ public final class AppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginUpdateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, serviceName, appName, appResource, context);
         return this
             .client
-            .<AppResourceInner, AppResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class);
+            .<AppResourceInner, AppResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class, context);
     }
 
     /**
@@ -1241,6 +1349,7 @@ public final class AppsClient {
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1293,7 +1402,7 @@ public final class AppsClient {
     public PagedFlux<AppResourceInner> listAsync(String resourceGroupName, String serviceName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, serviceName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1419,6 +1528,7 @@ public final class AppsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getResourceUploadUrl(
                 this.client.getEndpoint(),
@@ -1520,6 +1630,216 @@ public final class AppsClient {
     }
 
     /**
+     * Check the resource name is valid as well as not in use.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param name Name to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CustomDomainValidateResult>> validateDomainWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String name) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        CustomDomainValidatePayload validatePayload = new CustomDomainValidatePayload();
+        validatePayload.withName(name);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .validateDomain(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serviceName,
+                            appName,
+                            validatePayload,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Check the resource name is valid as well as not in use.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param name Name to be validated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CustomDomainValidateResult>> validateDomainWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        CustomDomainValidatePayload validatePayload = new CustomDomainValidatePayload();
+        validatePayload.withName(name);
+        context = this.client.mergeContext(context);
+        return service
+            .validateDomain(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serviceName,
+                appName,
+                validatePayload,
+                context);
+    }
+
+    /**
+     * Check the resource name is valid as well as not in use.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param name Name to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CustomDomainValidateResult> validateDomainAsync(
+        String resourceGroupName, String serviceName, String appName, String name) {
+        return validateDomainWithResponseAsync(resourceGroupName, serviceName, appName, name)
+            .flatMap(
+                (Response<CustomDomainValidateResult> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Check the resource name is valid as well as not in use.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param name Name to be validated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CustomDomainValidateResult> validateDomainAsync(
+        String resourceGroupName, String serviceName, String appName, String name, Context context) {
+        return validateDomainWithResponseAsync(resourceGroupName, serviceName, appName, name, context)
+            .flatMap(
+                (Response<CustomDomainValidateResult> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Check the resource name is valid as well as not in use.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param name Name to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDomainValidateResult validateDomain(
+        String resourceGroupName, String serviceName, String appName, String name) {
+        return validateDomainAsync(resourceGroupName, serviceName, appName, name).block();
+    }
+
+    /**
+     * Check the resource name is valid as well as not in use.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param name Name to be validated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDomainValidateResult validateDomain(
+        String resourceGroupName, String serviceName, String appName, String name, Context context) {
+        return validateDomainAsync(resourceGroupName, serviceName, appName, name, context).block();
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -1562,6 +1882,7 @@ public final class AppsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

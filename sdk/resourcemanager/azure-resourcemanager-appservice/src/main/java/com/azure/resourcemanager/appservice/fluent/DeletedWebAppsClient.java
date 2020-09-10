@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.DeletedSiteInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DeletedWebAppCollectionInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
@@ -209,7 +208,8 @@ public final class DeletedWebAppsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSiteInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -361,7 +361,7 @@ public final class DeletedWebAppsClient {
     public PagedFlux<DeletedSiteInner> listByLocationAsync(String location, Context context) {
         return new PagedFlux<>(
             () -> listByLocationSinglePageAsync(location, context),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink));
+            nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
     /**

@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRoutePortInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRoutePortListResultInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -278,7 +277,9 @@ public final class ExpressRoutePortsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String expressRoutePortName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, expressRoutePortName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -295,9 +296,12 @@ public final class ExpressRoutePortsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String expressRoutePortName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, expressRoutePortName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -696,8 +700,12 @@ public final class ExpressRoutePortsClient
             createOrUpdateWithResponseAsync(resourceGroupName, expressRoutePortName, parameters);
         return this
             .client
-            .<ExpressRoutePortInner, ExpressRoutePortInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ExpressRoutePortInner.class, ExpressRoutePortInner.class);
+            .<ExpressRoutePortInner, ExpressRoutePortInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ExpressRoutePortInner.class,
+                ExpressRoutePortInner.class,
+                Context.NONE);
     }
 
     /**
@@ -715,12 +723,13 @@ public final class ExpressRoutePortsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ExpressRoutePortInner>, ExpressRoutePortInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String expressRoutePortName, ExpressRoutePortInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, expressRoutePortName, parameters, context);
         return this
             .client
-            .<ExpressRoutePortInner, ExpressRoutePortInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ExpressRoutePortInner.class, ExpressRoutePortInner.class);
+            .<ExpressRoutePortInner, ExpressRoutePortInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ExpressRoutePortInner.class, ExpressRoutePortInner.class, context);
     }
 
     /**
@@ -1145,7 +1154,7 @@ public final class ExpressRoutePortsClient
     public PagedFlux<ExpressRoutePortInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1276,7 +1285,8 @@ public final class ExpressRoutePortsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRoutePortInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

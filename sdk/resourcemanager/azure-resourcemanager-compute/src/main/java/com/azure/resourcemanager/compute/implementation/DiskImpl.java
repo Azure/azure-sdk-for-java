@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AccessLevel;
 import com.azure.resourcemanager.compute.models.CreationData;
@@ -19,17 +20,24 @@ import com.azure.resourcemanager.compute.fluent.inner.DiskInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** The implementation for {@link Disk} and its create and update interfaces. */
 class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeManager>
     implements Disk, Disk.Definition, Disk.Update {
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
 
     DiskImpl(String name, DiskInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
@@ -359,5 +367,21 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     protected Mono<DiskInner> getInnerAsync() {
         return this.manager().inner().getDisks().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public Accepted<Disk> beginCreate() {
+        return AcceptedImpl.newAccepted(logger,
+            this.manager().inner(),
+            () -> this.manager().inner().getDisks()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
+            inner -> new DiskImpl(inner.name(), inner, this.manager()),
+            DiskInner.class,
+            () -> {
+                Flux<Indexable> dependencyTasksAsync =
+                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                dependencyTasksAsync.blockLast();
+            },
+            this::setInner);
     }
 }

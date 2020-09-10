@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.ResourceHealthMetadataCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.ResourceHealthMetadataInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
@@ -272,7 +271,8 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceHealthMetadataInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -429,7 +429,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     public PagedFlux<ResourceHealthMetadataInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -602,7 +602,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listBySiteSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listBySiteNextSinglePageAsync(nextLink));
+            nextLink -> listBySiteNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -959,7 +959,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         String resourceGroupName, String name, String slot, Context context) {
         return new PagedFlux<>(
             () -> listBySiteSlotSinglePageAsync(resourceGroupName, name, slot, context),
-            nextLink -> listBySiteSlotNextSinglePageAsync(nextLink));
+            nextLink -> listBySiteSlotNextSinglePageAsync(nextLink, context));
     }
 
     /**

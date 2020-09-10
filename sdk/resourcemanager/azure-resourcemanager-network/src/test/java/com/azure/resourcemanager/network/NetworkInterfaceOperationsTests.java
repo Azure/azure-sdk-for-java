@@ -31,10 +31,10 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
     @Test
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void canUseMultipleIPConfigs() throws Exception {
-        String networkName = sdkContext.randomResourceName("net", 15);
+        String networkName = generateRandomResourceName("net", 15);
         String[] nicNames = new String[3];
         for (int i = 0; i < nicNames.length; i++) {
-            nicNames[i] = sdkContext.randomResourceName("nic", 15);
+            nicNames[i] = generateRandomResourceName("nic", 15);
         }
 
         Network network =

@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricBaselinesResponseInner;
 import com.azure.resourcemanager.monitor.fluent.inner.SingleMetricBaselineInner;
 import com.azure.resourcemanager.monitor.models.ResultType;
@@ -197,6 +196,7 @@ public final class BaselinesClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2019-03-01";
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),

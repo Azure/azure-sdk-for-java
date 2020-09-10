@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.indexes.FieldIgnore;
+import com.azure.search.documents.indexes.FieldBuilderIgnore;
 import com.azure.search.documents.indexes.SearchableFieldProperty;
 import com.azure.search.documents.indexes.SimpleFieldProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -26,7 +26,7 @@ public class Hotel {
     @JsonProperty(value = "Description")
     private String description;
 
-    @FieldIgnore
+    @FieldBuilderIgnore
     @JsonProperty(value = "Description_fr")
     private String descriptionFr;
 

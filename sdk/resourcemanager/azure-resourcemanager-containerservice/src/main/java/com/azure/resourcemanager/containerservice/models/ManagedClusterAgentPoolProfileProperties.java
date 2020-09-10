@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** The ManagedClusterAgentPoolProfileProperties model. */
 @Fluent
@@ -17,7 +18,8 @@ public class ManagedClusterAgentPoolProfileProperties {
 
     /*
      * Number of agents (VMs) to host docker containers. Allowed values must be
-     * in the range of 1 to 100 (inclusive). The default value is 1.
+     * in the range of 0 to 100 (inclusive) for user pools and in the range of
+     * 1 to 100 (inclusive) for system pools. The default value is 1.
      */
     @JsonProperty(value = "count")
     private Integer count;
@@ -80,10 +82,28 @@ public class ManagedClusterAgentPoolProfileProperties {
     private AgentPoolType type;
 
     /*
+     * AgentPoolMode represents mode of an agent pool
+     */
+    @JsonProperty(value = "mode")
+    private AgentPoolMode mode;
+
+    /*
      * Version of orchestrator specified when creating the managed cluster.
      */
     @JsonProperty(value = "orchestratorVersion")
     private String orchestratorVersion;
+
+    /*
+     * Version of node image
+     */
+    @JsonProperty(value = "nodeImageVersion")
+    private String nodeImageVersion;
+
+    /*
+     * Settings for upgrading the agentpool
+     */
+    @JsonProperty(value = "upgradeSettings")
+    private AgentPoolUpgradeSettings upgradeSettings;
 
     /*
      * The current deployment or provisioning state, which only appears in the
@@ -93,7 +113,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     private String provisioningState;
 
     /*
-     * (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets
+     * Availability zones for nodes. Must use VirtualMachineScaleSets
      * AgentPoolType.
      */
     @JsonProperty(value = "availabilityZones")
@@ -113,11 +133,32 @@ public class ManagedClusterAgentPoolProfileProperties {
     private ScaleSetPriority scaleSetPriority;
 
     /*
-     * ScaleSetEvictionPolicy to be used to specify eviction policy for low
-     * priority virtual machine scale set. Default to Delete.
+     * ScaleSetEvictionPolicy to be used to specify eviction policy for Spot
+     * virtual machine scale set. Default to Delete.
      */
     @JsonProperty(value = "scaleSetEvictionPolicy")
     private ScaleSetEvictionPolicy scaleSetEvictionPolicy;
+
+    /*
+     * SpotMaxPrice to be used to specify the maximum price you are willing to
+     * pay in US Dollars. Possible values are any decimal value greater than
+     * zero or -1 which indicates default price to be up-to on-demand.
+     */
+    @JsonProperty(value = "spotMaxPrice")
+    private Float spotMaxPrice;
+
+    /*
+     * Agent pool tags to be persisted on the agent pool virtual machine scale
+     * set.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
+
+    /*
+     * Agent pool node labels to be persisted across all nodes in agent pool.
+     */
+    @JsonProperty(value = "nodeLabels")
+    private Map<String, String> nodeLabels;
 
     /*
      * Taints added to new nodes during node pool create and scale. For
@@ -126,9 +167,16 @@ public class ManagedClusterAgentPoolProfileProperties {
     @JsonProperty(value = "nodeTaints")
     private List<String> nodeTaints;
 
+    /*
+     * The ID for Proximity Placement Group.
+     */
+    @JsonProperty(value = "proximityPlacementGroupID")
+    private String proximityPlacementGroupId;
+
     /**
      * Get the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
-     * 1 to 100 (inclusive). The default value is 1.
+     * 0 to 100 (inclusive) for user pools and in the range of 1 to 100 (inclusive) for system pools. The default value
+     * is 1.
      *
      * @return the count value.
      */
@@ -138,7 +186,8 @@ public class ManagedClusterAgentPoolProfileProperties {
 
     /**
      * Set the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
-     * 1 to 100 (inclusive). The default value is 1.
+     * 0 to 100 (inclusive) for user pools and in the range of 1 to 100 (inclusive) for system pools. The default value
+     * is 1.
      *
      * @param count the count value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
@@ -331,6 +380,26 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
+     * Get the mode property: AgentPoolMode represents mode of an agent pool.
+     *
+     * @return the mode value.
+     */
+    public AgentPoolMode mode() {
+        return this.mode;
+    }
+
+    /**
+     * Set the mode property: AgentPoolMode represents mode of an agent pool.
+     *
+     * @param mode the mode value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withMode(AgentPoolMode mode) {
+        this.mode = mode;
+        return this;
+    }
+
+    /**
      * Get the orchestratorVersion property: Version of orchestrator specified when creating the managed cluster.
      *
      * @return the orchestratorVersion value.
@@ -351,6 +420,46 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
+     * Get the nodeImageVersion property: Version of node image.
+     *
+     * @return the nodeImageVersion value.
+     */
+    public String nodeImageVersion() {
+        return this.nodeImageVersion;
+    }
+
+    /**
+     * Set the nodeImageVersion property: Version of node image.
+     *
+     * @param nodeImageVersion the nodeImageVersion value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withNodeImageVersion(String nodeImageVersion) {
+        this.nodeImageVersion = nodeImageVersion;
+        return this;
+    }
+
+    /**
+     * Get the upgradeSettings property: Settings for upgrading the agentpool.
+     *
+     * @return the upgradeSettings value.
+     */
+    public AgentPoolUpgradeSettings upgradeSettings() {
+        return this.upgradeSettings;
+    }
+
+    /**
+     * Set the upgradeSettings property: Settings for upgrading the agentpool.
+     *
+     * @param upgradeSettings the upgradeSettings value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withUpgradeSettings(AgentPoolUpgradeSettings upgradeSettings) {
+        this.upgradeSettings = upgradeSettings;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
      *
@@ -361,8 +470,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Get the availabilityZones property: (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets
-     * AgentPoolType.
+     * Get the availabilityZones property: Availability zones for nodes. Must use VirtualMachineScaleSets AgentPoolType.
      *
      * @return the availabilityZones value.
      */
@@ -371,8 +479,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Set the availabilityZones property: (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets
-     * AgentPoolType.
+     * Set the availabilityZones property: Availability zones for nodes. Must use VirtualMachineScaleSets AgentPoolType.
      *
      * @param availabilityZones the availabilityZones value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
@@ -425,8 +532,8 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Get the scaleSetEvictionPolicy property: ScaleSetEvictionPolicy to be used to specify eviction policy for low
-     * priority virtual machine scale set. Default to Delete.
+     * Get the scaleSetEvictionPolicy property: ScaleSetEvictionPolicy to be used to specify eviction policy for Spot
+     * virtual machine scale set. Default to Delete.
      *
      * @return the scaleSetEvictionPolicy value.
      */
@@ -435,8 +542,8 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Set the scaleSetEvictionPolicy property: ScaleSetEvictionPolicy to be used to specify eviction policy for low
-     * priority virtual machine scale set. Default to Delete.
+     * Set the scaleSetEvictionPolicy property: ScaleSetEvictionPolicy to be used to specify eviction policy for Spot
+     * virtual machine scale set. Default to Delete.
      *
      * @param scaleSetEvictionPolicy the scaleSetEvictionPolicy value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
@@ -444,6 +551,70 @@ public class ManagedClusterAgentPoolProfileProperties {
     public ManagedClusterAgentPoolProfileProperties withScaleSetEvictionPolicy(
         ScaleSetEvictionPolicy scaleSetEvictionPolicy) {
         this.scaleSetEvictionPolicy = scaleSetEvictionPolicy;
+        return this;
+    }
+
+    /**
+     * Get the spotMaxPrice property: SpotMaxPrice to be used to specify the maximum price you are willing to pay in US
+     * Dollars. Possible values are any decimal value greater than zero or -1 which indicates default price to be up-to
+     * on-demand.
+     *
+     * @return the spotMaxPrice value.
+     */
+    public Float spotMaxPrice() {
+        return this.spotMaxPrice;
+    }
+
+    /**
+     * Set the spotMaxPrice property: SpotMaxPrice to be used to specify the maximum price you are willing to pay in US
+     * Dollars. Possible values are any decimal value greater than zero or -1 which indicates default price to be up-to
+     * on-demand.
+     *
+     * @param spotMaxPrice the spotMaxPrice value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withSpotMaxPrice(Float spotMaxPrice) {
+        this.spotMaxPrice = spotMaxPrice;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Agent pool tags to be persisted on the agent pool virtual machine scale set.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Agent pool tags to be persisted on the agent pool virtual machine scale set.
+     *
+     * @param tags the tags value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the nodeLabels property: Agent pool node labels to be persisted across all nodes in agent pool.
+     *
+     * @return the nodeLabels value.
+     */
+    public Map<String, String> nodeLabels() {
+        return this.nodeLabels;
+    }
+
+    /**
+     * Set the nodeLabels property: Agent pool node labels to be persisted across all nodes in agent pool.
+     *
+     * @param nodeLabels the nodeLabels value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withNodeLabels(Map<String, String> nodeLabels) {
+        this.nodeLabels = nodeLabels;
         return this;
     }
 
@@ -470,10 +641,33 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
+     * Get the proximityPlacementGroupId property: The ID for Proximity Placement Group.
+     *
+     * @return the proximityPlacementGroupId value.
+     */
+    public String proximityPlacementGroupId() {
+        return this.proximityPlacementGroupId;
+    }
+
+    /**
+     * Set the proximityPlacementGroupId property: The ID for Proximity Placement Group.
+     *
+     * @param proximityPlacementGroupId the proximityPlacementGroupId value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withProximityPlacementGroupId(String proximityPlacementGroupId) {
+        this.proximityPlacementGroupId = proximityPlacementGroupId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (upgradeSettings() != null) {
+            upgradeSettings().validate();
+        }
     }
 }

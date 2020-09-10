@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AvailablePrivateEndpointTypeInner;
 import com.azure.resourcemanager.network.fluent.inner.AvailablePrivateEndpointTypesResultInner;
 import reactor.core.publisher.Mono;
@@ -219,7 +218,7 @@ public final class AvailablePrivateEndpointTypesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailablePrivateEndpointTypeInner> listAsync(String location, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -395,7 +394,7 @@ public final class AvailablePrivateEndpointTypesClient {
         String location, String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(location, resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

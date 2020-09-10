@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.inner.ApplicationListResultInner;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectInner;
@@ -313,6 +312,7 @@ public final class ApplicationsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context);
@@ -461,6 +461,7 @@ public final class ApplicationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
             .map(
@@ -501,7 +502,7 @@ public final class ApplicationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationInner> listAsync(String filter, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -515,7 +516,8 @@ public final class ApplicationsClient {
     public PagedFlux<ApplicationInner> listAsync() {
         final String filter = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -629,6 +631,7 @@ public final class ApplicationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -762,6 +765,7 @@ public final class ApplicationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -928,6 +932,7 @@ public final class ApplicationsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .patch(
                 this.client.getEndpoint(),
@@ -1077,6 +1082,7 @@ public final class ApplicationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listOwners(
                 this.client.getEndpoint(),
@@ -1124,7 +1130,7 @@ public final class ApplicationsClient {
     public PagedFlux<DirectoryObjectInner> listOwnersAsync(String applicationObjectId, Context context) {
         return new PagedFlux<>(
             () -> listOwnersSinglePageAsync(applicationObjectId, context),
-            nextLink -> listOwnersNextSinglePageAsync(nextLink));
+            nextLink -> listOwnersNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1245,6 +1251,7 @@ public final class ApplicationsClient {
         }
         AddOwnerParameters parameters = new AddOwnerParameters();
         parameters.withUrl(url);
+        context = this.client.mergeContext(context);
         return service
             .addOwner(
                 this.client.getEndpoint(),
@@ -1410,6 +1417,7 @@ public final class ApplicationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .removeOwner(
                 this.client.getEndpoint(),
@@ -1555,6 +1563,7 @@ public final class ApplicationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listKeyCredentials(
                 this.client.getEndpoint(),
@@ -1713,6 +1722,7 @@ public final class ApplicationsClient {
         }
         KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
         parameters.withValue(value);
+        context = this.client.mergeContext(context);
         return service
             .updateKeyCredentials(
                 this.client.getEndpoint(),
@@ -1860,6 +1870,7 @@ public final class ApplicationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listPasswordCredentials(
                 this.client.getEndpoint(),
@@ -2019,6 +2030,7 @@ public final class ApplicationsClient {
         }
         PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
         parameters.withValue(value);
+        context = this.client.mergeContext(context);
         return service
             .updatePasswordCredentials(
                 this.client.getEndpoint(),
@@ -2161,6 +2173,7 @@ public final class ApplicationsClient {
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getServicePrincipalsIdByAppId(
                 this.client.getEndpoint(),
@@ -2320,6 +2333,7 @@ public final class ApplicationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(
                 this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
@@ -2377,6 +2391,7 @@ public final class ApplicationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listOwnersNext(nextLink, context)
             .map(

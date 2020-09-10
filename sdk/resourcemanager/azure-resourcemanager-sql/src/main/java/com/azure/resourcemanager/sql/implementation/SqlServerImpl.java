@@ -19,6 +19,7 @@ import com.azure.resourcemanager.sql.fluent.inner.ServerAzureADAdministratorInne
 import com.azure.resourcemanager.sql.fluent.inner.ServerInner;
 import com.azure.resourcemanager.sql.fluent.inner.ServerUsageInner;
 import com.azure.resourcemanager.sql.fluent.inner.ServiceObjectiveInner;
+import com.azure.resourcemanager.sql.models.AdministratorName;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.IdentityType;
 import com.azure.resourcemanager.sql.models.RecommendedElasticPool;
@@ -326,13 +327,15 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
                 .manager()
                 .inner()
                 .getServerAzureADAdministrators()
-                .createOrUpdate(this.resourceGroupName(), this.name(), serverAzureADAdministratorInner));
+                .createOrUpdate(this.resourceGroupName(), this.name(), AdministratorName.ACTIVE_DIRECTORY,
+                    serverAzureADAdministratorInner));
     }
 
     @Override
     public SqlActiveDirectoryAdministratorImpl getActiveDirectoryAdministrator() {
         ServerAzureADAdministratorInner serverAzureADAdministratorInner =
-            this.manager().inner().getServerAzureADAdministrators().get(this.resourceGroupName(), this.name());
+            this.manager().inner().getServerAzureADAdministrators().get(this.resourceGroupName(), this.name(),
+                AdministratorName.ACTIVE_DIRECTORY);
 
         return serverAzureADAdministratorInner != null
             ? new SqlActiveDirectoryAdministratorImpl(serverAzureADAdministratorInner)
@@ -341,7 +344,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public void removeActiveDirectoryAdministrator() {
-        this.manager().inner().getServerAzureADAdministrators().delete(this.resourceGroupName(), this.name());
+        this.manager().inner().getServerAzureADAdministrators().delete(this.resourceGroupName(), this.name(),
+            AdministratorName.ACTIVE_DIRECTORY);
     }
 
     @Override
@@ -403,7 +407,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
                     .manager()
                     .inner()
                     .getServerAzureADAdministrators()
-                    .createOrUpdateAsync(self.resourceGroupName(), self.name(), serverAzureADAdministratorInner)
+                    .createOrUpdateAsync(self.resourceGroupName(), self.name(), AdministratorName.ACTIVE_DIRECTORY,
+                        serverAzureADAdministratorInner)
                     .flatMap(serverAzureADAdministratorInner1 -> context.voidMono());
             };
         return this;

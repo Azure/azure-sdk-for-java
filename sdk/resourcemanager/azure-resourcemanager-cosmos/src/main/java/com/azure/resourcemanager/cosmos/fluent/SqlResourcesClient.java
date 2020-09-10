@@ -30,7 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.inner.SqlContainerGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.SqlContainerListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.SqlDatabaseGetResultsInner;
@@ -486,217 +486,6 @@ public final class SqlResourcesClient {
             @PathParam("triggerName") String triggerName,
             @QueryParam("api-version") String apiVersion,
             Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlDatabaseGetResultsInner>> beginCreateUpdateSqlDatabaseWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteSqlDatabaseWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ThroughputSettingsGetResultsInner>> beginUpdateSqlDatabaseThroughputWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ThroughputSettingsUpdateParameters updateThroughputParameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlContainerGetResultsInner>> beginCreateUpdateSqlContainerWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("containerName") String containerName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteSqlContainerWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("containerName") String containerName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
-                + "/throughputSettings/default")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ThroughputSettingsGetResultsInner>> beginUpdateSqlContainerThroughputWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("containerName") String containerName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ThroughputSettingsUpdateParameters updateThroughputParameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
-                + "/storedProcedures/{storedProcedureName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlStoredProcedureGetResultsInner>> beginCreateUpdateSqlStoredProcedureWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("containerName") String containerName,
-            @PathParam("storedProcedureName") String storedProcedureName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json")
-                SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
-                + "/storedProcedures/{storedProcedureName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteSqlStoredProcedureWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("containerName") String containerName,
-            @PathParam("storedProcedureName") String storedProcedureName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
-                + "/userDefinedFunctions/{userDefinedFunctionName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlUserDefinedFunctionGetResultsInner>> beginCreateUpdateSqlUserDefinedFunctionWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("containerName") String containerName,
-            @PathParam("userDefinedFunctionName") String userDefinedFunctionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json")
-                SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
-                + "/userDefinedFunctions/{userDefinedFunctionName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteSqlUserDefinedFunctionWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("containerName") String containerName,
-            @PathParam("userDefinedFunctionName") String userDefinedFunctionName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers"
-                + "/{triggerName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlTriggerGetResultsInner>> beginCreateUpdateSqlTriggerWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("containerName") String containerName,
-            @PathParam("triggerName") String triggerName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers"
-                + "/{triggerName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteSqlTriggerWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("containerName") String containerName,
-            @PathParam("triggerName") String triggerName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
     }
 
     /**
@@ -784,6 +573,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .listSqlDatabases(
                 this.client.getEndpoint(),
@@ -952,6 +742,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .getSqlDatabase(
                 this.client.getEndpoint(),
@@ -1165,6 +956,7 @@ public final class SqlResourcesClient {
             createUpdateSqlDatabaseParameters.validate();
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .createUpdateSqlDatabase(
                 this.client.getEndpoint(),
@@ -1190,21 +982,23 @@ public final class SqlResourcesClient {
      * @return an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+    public PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner>
+        beginCreateUpdateSqlDatabaseAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createUpdateSqlDatabaseWithResponseAsync(
                 resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters);
         return this
             .client
-            .<SqlDatabaseGetResultsInner, SqlDatabaseGetResultsInner>getLroResultAsync(
+            .<SqlDatabaseGetResultsInner, SqlDatabaseGetResultsInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 SqlDatabaseGetResultsInner.class,
-                SqlDatabaseGetResultsInner.class);
+                SqlDatabaseGetResultsInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1221,22 +1015,73 @@ public final class SqlResourcesClient {
      * @return an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
-        Context context) {
+    public PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner>
+        beginCreateUpdateSqlDatabaseAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
+            Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createUpdateSqlDatabaseWithResponseAsync(
                 resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context);
         return this
             .client
-            .<SqlDatabaseGetResultsInner, SqlDatabaseGetResultsInner>getLroResultAsync(
+            .<SqlDatabaseGetResultsInner, SqlDatabaseGetResultsInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 SqlDatabaseGetResultsInner.class,
-                SqlDatabaseGetResultsInner.class);
+                SqlDatabaseGetResultsInner.class,
+                context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+        return beginCreateUpdateSqlDatabaseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB SQL database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
+        Context context) {
+        return beginCreateUpdateSqlDatabaseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1257,15 +1102,10 @@ public final class SqlResourcesClient {
         String accountName,
         String databaseName,
         SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateSqlDatabaseWithResponseAsync(
-                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters);
-        return this
-            .client
-            .<SqlDatabaseGetResultsInner, SqlDatabaseGetResultsInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SqlDatabaseGetResultsInner.class, SqlDatabaseGetResultsInner.class)
+        return beginCreateUpdateSqlDatabaseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1288,15 +1128,10 @@ public final class SqlResourcesClient {
         String databaseName,
         SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateSqlDatabaseWithResponseAsync(
-                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context);
-        return this
-            .client
-            .<SqlDatabaseGetResultsInner, SqlDatabaseGetResultsInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SqlDatabaseGetResultsInner.class, SqlDatabaseGetResultsInner.class)
+        return beginCreateUpdateSqlDatabaseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1437,6 +1272,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .deleteSqlDatabase(
                 this.client.getEndpoint(),
@@ -1460,11 +1296,13 @@ public final class SqlResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabase(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabaseAsync(
         String resourceGroupName, String accountName, String databaseName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1480,11 +1318,49 @@ public final class SqlResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabase(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabaseAsync(
         String resourceGroupName, String accountName, String databaseName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(
+        String resourceGroupName, String accountName, String databaseName) {
+        return beginDeleteSqlDatabaseAsync(resourceGroupName, accountName, databaseName).getSyncPoller();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        return beginDeleteSqlDatabaseAsync(resourceGroupName, accountName, databaseName, context).getSyncPoller();
     }
 
     /**
@@ -1500,13 +1376,9 @@ public final class SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteSqlDatabaseAsync(resourceGroupName, accountName, databaseName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1524,13 +1396,9 @@ public final class SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSqlDatabaseAsync(
         String resourceGroupName, String accountName, String databaseName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteSqlDatabaseAsync(resourceGroupName, accountName, databaseName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1658,6 +1526,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .getSqlDatabaseThroughput(
                 this.client.getEndpoint(),
@@ -1879,6 +1748,7 @@ public final class SqlResourcesClient {
             updateThroughputParameters.validate();
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .updateSqlDatabaseThroughput(
                 this.client.getEndpoint(),
@@ -1905,7 +1775,7 @@ public final class SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateSqlDatabaseThroughput(
+        beginUpdateSqlDatabaseThroughputAsync(
             String resourceGroupName,
             String accountName,
             String databaseName,
@@ -1915,11 +1785,12 @@ public final class SqlResourcesClient {
                 resourceGroupName, accountName, databaseName, updateThroughputParameters);
         return this
             .client
-            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
-                ThroughputSettingsGetResultsInner.class);
+                ThroughputSettingsGetResultsInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1937,22 +1808,74 @@ public final class SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlDatabaseThroughputAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateSqlDatabaseThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                context);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlDatabaseThroughput(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        return beginUpdateSqlDatabaseThroughputAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughput(
             String resourceGroupName,
             String accountName,
             String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters,
             Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateSqlDatabaseThroughputWithResponseAsync(
-                resourceGroupName, accountName, databaseName, updateThroughputParameters, context);
-        return this
-            .client
-            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ThroughputSettingsGetResultsInner.class,
-                ThroughputSettingsGetResultsInner.class);
+        return beginUpdateSqlDatabaseThroughputAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1973,18 +1896,10 @@ public final class SqlResourcesClient {
         String accountName,
         String databaseName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateSqlDatabaseThroughputWithResponseAsync(
-                resourceGroupName, accountName, databaseName, updateThroughputParameters);
-        return this
-            .client
-            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ThroughputSettingsGetResultsInner.class,
-                ThroughputSettingsGetResultsInner.class)
+        return beginUpdateSqlDatabaseThroughputAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2007,18 +1922,10 @@ public final class SqlResourcesClient {
         String databaseName,
         ThroughputSettingsUpdateParameters updateThroughputParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateSqlDatabaseThroughputWithResponseAsync(
-                resourceGroupName, accountName, databaseName, updateThroughputParameters, context);
-        return this
-            .client
-            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ThroughputSettingsGetResultsInner.class,
-                ThroughputSettingsGetResultsInner.class)
+        return beginUpdateSqlDatabaseThroughputAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2163,6 +2070,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .listSqlContainers(
                 this.client.getEndpoint(),
@@ -2348,6 +2256,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .getSqlContainer(
                 this.client.getEndpoint(),
@@ -2577,6 +2486,7 @@ public final class SqlResourcesClient {
             createUpdateSqlContainerParameters.validate();
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .createUpdateSqlContainer(
                 this.client.getEndpoint(),
@@ -2605,7 +2515,7 @@ public final class SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
-        beginCreateUpdateSqlContainer(
+        beginCreateUpdateSqlContainerAsync(
             String resourceGroupName,
             String accountName,
             String databaseName,
@@ -2616,11 +2526,12 @@ public final class SqlResourcesClient {
                 resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters);
         return this
             .client
-            .<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResultAsync(
+            .<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 SqlContainerGetResultsInner.class,
-                SqlContainerGetResultsInner.class);
+                SqlContainerGetResultsInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2639,13 +2550,14 @@ public final class SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
-        beginCreateUpdateSqlContainer(
+        beginCreateUpdateSqlContainerAsync(
             String resourceGroupName,
             String accountName,
             String databaseName,
             String containerName,
             SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createUpdateSqlContainerWithResponseAsync(
                 resourceGroupName,
@@ -2656,11 +2568,71 @@ public final class SqlResourcesClient {
                 context);
         return this
             .client
-            .<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResultAsync(
+            .<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 SqlContainerGetResultsInner.class,
-                SqlContainerGetResultsInner.class);
+                SqlContainerGetResultsInner.class,
+                context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
+        beginCreateUpdateSqlContainer(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return beginCreateUpdateSqlContainerAsync(
+                resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
+        beginCreateUpdateSqlContainer(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
+            Context context) {
+        return beginCreateUpdateSqlContainerAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                createUpdateSqlContainerParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -2683,18 +2655,10 @@ public final class SqlResourcesClient {
         String databaseName,
         String containerName,
         SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateSqlContainerWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters);
-        return this
-            .client
-            .<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlContainerGetResultsInner.class,
-                SqlContainerGetResultsInner.class)
+        return beginCreateUpdateSqlContainerAsync(
+                resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2719,23 +2683,15 @@ public final class SqlResourcesClient {
         String containerName,
         SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateSqlContainerWithResponseAsync(
+        return beginCreateUpdateSqlContainerAsync(
                 resourceGroupName,
                 accountName,
                 databaseName,
                 containerName,
                 createUpdateSqlContainerParameters,
-                context);
-        return this
-            .client
-            .<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlContainerGetResultsInner.class,
-                SqlContainerGetResultsInner.class)
+                context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2894,6 +2850,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .deleteSqlContainer(
                 this.client.getEndpoint(),
@@ -2919,11 +2876,13 @@ public final class SqlResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainer(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(
         String resourceGroupName, String accountName, String databaseName, String containerName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2940,11 +2899,53 @@ public final class SqlResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainer(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(
         String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2962,13 +2963,9 @@ public final class SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSqlContainerAsync(
         String resourceGroupName, String accountName, String databaseName, String containerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2987,13 +2984,9 @@ public final class SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSqlContainerAsync(
         String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3130,6 +3123,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .getSqlContainerThroughput(
                 this.client.getEndpoint(),
@@ -3361,6 +3355,7 @@ public final class SqlResourcesClient {
             updateThroughputParameters.validate();
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .updateSqlContainerThroughput(
                 this.client.getEndpoint(),
@@ -3389,7 +3384,7 @@ public final class SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateSqlContainerThroughput(
+        beginUpdateSqlContainerThroughputAsync(
             String resourceGroupName,
             String accountName,
             String databaseName,
@@ -3400,11 +3395,12 @@ public final class SqlResourcesClient {
                 resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters);
         return this
             .client
-            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
-                ThroughputSettingsGetResultsInner.class);
+                ThroughputSettingsGetResultsInner.class,
+                Context.NONE);
     }
 
     /**
@@ -3423,6 +3419,69 @@ public final class SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlContainerThroughputAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateSqlContainerThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                context);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlContainerThroughput(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        return beginUpdateSqlContainerThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlContainerThroughput(
             String resourceGroupName,
             String accountName,
@@ -3430,16 +3489,9 @@ public final class SqlResourcesClient {
             String containerName,
             ThroughputSettingsUpdateParameters updateThroughputParameters,
             Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateSqlContainerThroughputWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context);
-        return this
-            .client
-            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ThroughputSettingsGetResultsInner.class,
-                ThroughputSettingsGetResultsInner.class);
+        return beginUpdateSqlContainerThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3462,18 +3514,10 @@ public final class SqlResourcesClient {
         String databaseName,
         String containerName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateSqlContainerThroughputWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters);
-        return this
-            .client
-            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ThroughputSettingsGetResultsInner.class,
-                ThroughputSettingsGetResultsInner.class)
+        return beginUpdateSqlContainerThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3498,18 +3542,10 @@ public final class SqlResourcesClient {
         String containerName,
         ThroughputSettingsUpdateParameters updateThroughputParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateSqlContainerThroughputWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context);
-        return this
-            .client
-            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ThroughputSettingsGetResultsInner.class,
-                ThroughputSettingsGetResultsInner.class)
+        return beginUpdateSqlContainerThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3667,6 +3703,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .listSqlStoredProcedures(
                 this.client.getEndpoint(),
@@ -3882,6 +3919,7 @@ public final class SqlResourcesClient {
                 .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .getSqlStoredProcedure(
                 this.client.getEndpoint(),
@@ -4153,6 +4191,7 @@ public final class SqlResourcesClient {
             createUpdateSqlStoredProcedureParameters.validate();
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .createUpdateSqlStoredProcedure(
                 this.client.getEndpoint(),
@@ -4183,7 +4222,7 @@ public final class SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
-        beginCreateUpdateSqlStoredProcedure(
+        beginCreateUpdateSqlStoredProcedureAsync(
             String resourceGroupName,
             String accountName,
             String databaseName,
@@ -4200,11 +4239,12 @@ public final class SqlResourcesClient {
                 createUpdateSqlStoredProcedureParameters);
         return this
             .client
-            .<SqlStoredProcedureGetResultsInner, SqlStoredProcedureGetResultsInner>getLroResultAsync(
+            .<SqlStoredProcedureGetResultsInner, SqlStoredProcedureGetResultsInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 SqlStoredProcedureGetResultsInner.class,
-                SqlStoredProcedureGetResultsInner.class);
+                SqlStoredProcedureGetResultsInner.class,
+                Context.NONE);
     }
 
     /**
@@ -4224,7 +4264,7 @@ public final class SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
-        beginCreateUpdateSqlStoredProcedure(
+        beginCreateUpdateSqlStoredProcedureAsync(
             String resourceGroupName,
             String accountName,
             String databaseName,
@@ -4232,6 +4272,7 @@ public final class SqlResourcesClient {
             String storedProcedureName,
             SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createUpdateSqlStoredProcedureWithResponseAsync(
                 resourceGroupName,
@@ -4243,11 +4284,81 @@ public final class SqlResourcesClient {
                 context);
         return this
             .client
-            .<SqlStoredProcedureGetResultsInner, SqlStoredProcedureGetResultsInner>getLroResultAsync(
+            .<SqlStoredProcedureGetResultsInner, SqlStoredProcedureGetResultsInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 SqlStoredProcedureGetResultsInner.class,
-                SqlStoredProcedureGetResultsInner.class);
+                SqlStoredProcedureGetResultsInner.class,
+                context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL storedProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB storedProcedure name.
+     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB storedProcedure.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
+        beginCreateUpdateSqlStoredProcedure(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String storedProcedureName,
+            SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
+        return beginCreateUpdateSqlStoredProcedureAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                createUpdateSqlStoredProcedureParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL storedProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB storedProcedure name.
+     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB storedProcedure.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
+        beginCreateUpdateSqlStoredProcedure(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String storedProcedureName,
+            SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
+            Context context) {
+        return beginCreateUpdateSqlStoredProcedureAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                createUpdateSqlStoredProcedureParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -4272,23 +4383,15 @@ public final class SqlResourcesClient {
         String containerName,
         String storedProcedureName,
         SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateSqlStoredProcedureWithResponseAsync(
+        return beginCreateUpdateSqlStoredProcedureAsync(
                 resourceGroupName,
                 accountName,
                 databaseName,
                 containerName,
                 storedProcedureName,
-                createUpdateSqlStoredProcedureParameters);
-        return this
-            .client
-            .<SqlStoredProcedureGetResultsInner, SqlStoredProcedureGetResultsInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlStoredProcedureGetResultsInner.class,
-                SqlStoredProcedureGetResultsInner.class)
+                createUpdateSqlStoredProcedureParameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4315,24 +4418,16 @@ public final class SqlResourcesClient {
         String storedProcedureName,
         SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateSqlStoredProcedureWithResponseAsync(
+        return beginCreateUpdateSqlStoredProcedureAsync(
                 resourceGroupName,
                 accountName,
                 databaseName,
                 containerName,
                 storedProcedureName,
                 createUpdateSqlStoredProcedureParameters,
-                context);
-        return this
-            .client
-            .<SqlStoredProcedureGetResultsInner, SqlStoredProcedureGetResultsInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlStoredProcedureGetResultsInner.class,
-                SqlStoredProcedureGetResultsInner.class)
+                context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4521,6 +4616,7 @@ public final class SqlResourcesClient {
                 .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .deleteSqlStoredProcedure(
                 this.client.getEndpoint(),
@@ -4548,7 +4644,7 @@ public final class SqlResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedureAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
@@ -4557,7 +4653,9 @@ public final class SqlResourcesClient {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlStoredProcedureWithResponseAsync(
                 resourceGroupName, accountName, databaseName, containerName, storedProcedureName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -4575,17 +4673,72 @@ public final class SqlResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedureAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
         String containerName,
         String storedProcedureName,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlStoredProcedureWithResponseAsync(
                 resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL storedProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB storedProcedure name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName) {
+        return beginDeleteSqlStoredProcedureAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL storedProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB storedProcedure name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        Context context) {
+        return beginDeleteSqlStoredProcedureAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -4608,14 +4761,10 @@ public final class SqlResourcesClient {
         String databaseName,
         String containerName,
         String storedProcedureName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteSqlStoredProcedureWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, storedProcedureName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteSqlStoredProcedureAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4640,14 +4789,10 @@ public final class SqlResourcesClient {
         String containerName,
         String storedProcedureName,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteSqlStoredProcedureWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteSqlStoredProcedureAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4802,6 +4947,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .listSqlUserDefinedFunctions(
                 this.client.getEndpoint(),
@@ -5021,6 +5167,7 @@ public final class SqlResourcesClient {
                     new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .getSqlUserDefinedFunction(
                 this.client.getEndpoint(),
@@ -5296,6 +5443,7 @@ public final class SqlResourcesClient {
             createUpdateSqlUserDefinedFunctionParameters.validate();
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .createUpdateSqlUserDefinedFunction(
                 this.client.getEndpoint(),
@@ -5327,7 +5475,7 @@ public final class SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
-        beginCreateUpdateSqlUserDefinedFunction(
+        beginCreateUpdateSqlUserDefinedFunctionAsync(
             String resourceGroupName,
             String accountName,
             String databaseName,
@@ -5344,11 +5492,12 @@ public final class SqlResourcesClient {
                 createUpdateSqlUserDefinedFunctionParameters);
         return this
             .client
-            .<SqlUserDefinedFunctionGetResultsInner, SqlUserDefinedFunctionGetResultsInner>getLroResultAsync(
+            .<SqlUserDefinedFunctionGetResultsInner, SqlUserDefinedFunctionGetResultsInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 SqlUserDefinedFunctionGetResultsInner.class,
-                SqlUserDefinedFunctionGetResultsInner.class);
+                SqlUserDefinedFunctionGetResultsInner.class,
+                Context.NONE);
     }
 
     /**
@@ -5369,7 +5518,7 @@ public final class SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
-        beginCreateUpdateSqlUserDefinedFunction(
+        beginCreateUpdateSqlUserDefinedFunctionAsync(
             String resourceGroupName,
             String accountName,
             String databaseName,
@@ -5377,6 +5526,7 @@ public final class SqlResourcesClient {
             String userDefinedFunctionName,
             SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createUpdateSqlUserDefinedFunctionWithResponseAsync(
                 resourceGroupName,
@@ -5388,11 +5538,83 @@ public final class SqlResourcesClient {
                 context);
         return this
             .client
-            .<SqlUserDefinedFunctionGetResultsInner, SqlUserDefinedFunctionGetResultsInner>getLroResultAsync(
+            .<SqlUserDefinedFunctionGetResultsInner, SqlUserDefinedFunctionGetResultsInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 SqlUserDefinedFunctionGetResultsInner.class,
-                SqlUserDefinedFunctionGetResultsInner.class);
+                SqlUserDefinedFunctionGetResultsInner.class,
+                context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL userDefinedFunction.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
+     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     *     userDefinedFunction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB userDefinedFunction.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
+        beginCreateUpdateSqlUserDefinedFunction(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String userDefinedFunctionName,
+            SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
+        return beginCreateUpdateSqlUserDefinedFunctionAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                createUpdateSqlUserDefinedFunctionParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL userDefinedFunction.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
+     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
+     *     userDefinedFunction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB userDefinedFunction.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
+        beginCreateUpdateSqlUserDefinedFunction(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String userDefinedFunctionName,
+            SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
+            Context context) {
+        return beginCreateUpdateSqlUserDefinedFunctionAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                createUpdateSqlUserDefinedFunctionParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -5418,23 +5640,15 @@ public final class SqlResourcesClient {
         String containerName,
         String userDefinedFunctionName,
         SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateSqlUserDefinedFunctionWithResponseAsync(
+        return beginCreateUpdateSqlUserDefinedFunctionAsync(
                 resourceGroupName,
                 accountName,
                 databaseName,
                 containerName,
                 userDefinedFunctionName,
-                createUpdateSqlUserDefinedFunctionParameters);
-        return this
-            .client
-            .<SqlUserDefinedFunctionGetResultsInner, SqlUserDefinedFunctionGetResultsInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlUserDefinedFunctionGetResultsInner.class,
-                SqlUserDefinedFunctionGetResultsInner.class)
+                createUpdateSqlUserDefinedFunctionParameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5462,24 +5676,16 @@ public final class SqlResourcesClient {
         String userDefinedFunctionName,
         SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateSqlUserDefinedFunctionWithResponseAsync(
+        return beginCreateUpdateSqlUserDefinedFunctionAsync(
                 resourceGroupName,
                 accountName,
                 databaseName,
                 containerName,
                 userDefinedFunctionName,
                 createUpdateSqlUserDefinedFunctionParameters,
-                context);
-        return this
-            .client
-            .<SqlUserDefinedFunctionGetResultsInner, SqlUserDefinedFunctionGetResultsInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlUserDefinedFunctionGetResultsInner.class,
-                SqlUserDefinedFunctionGetResultsInner.class)
+                context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5672,6 +5878,7 @@ public final class SqlResourcesClient {
                     new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .deleteSqlUserDefinedFunction(
                 this.client.getEndpoint(),
@@ -5699,7 +5906,7 @@ public final class SqlResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunctionAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
@@ -5708,7 +5915,9 @@ public final class SqlResourcesClient {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlUserDefinedFunctionWithResponseAsync(
                 resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -5726,17 +5935,72 @@ public final class SqlResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunctionAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
         String containerName,
         String userDefinedFunctionName,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlUserDefinedFunctionWithResponseAsync(
                 resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName) {
+        return beginDeleteSqlUserDefinedFunctionAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        Context context) {
+        return beginDeleteSqlUserDefinedFunctionAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -5759,14 +6023,10 @@ public final class SqlResourcesClient {
         String databaseName,
         String containerName,
         String userDefinedFunctionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteSqlUserDefinedFunctionWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteSqlUserDefinedFunctionAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5791,14 +6051,10 @@ public final class SqlResourcesClient {
         String containerName,
         String userDefinedFunctionName,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteSqlUserDefinedFunctionWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteSqlUserDefinedFunctionAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5954,6 +6210,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .listSqlTriggers(
                 this.client.getEndpoint(),
@@ -6160,6 +6417,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .getSqlTrigger(
                 this.client.getEndpoint(),
@@ -6417,6 +6675,7 @@ public final class SqlResourcesClient {
             createUpdateSqlTriggerParameters.validate();
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .createUpdateSqlTrigger(
                 this.client.getEndpoint(),
@@ -6446,13 +6705,14 @@ public final class SqlResourcesClient {
      * @return an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
+    public PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner>
+        beginCreateUpdateSqlTriggerAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String triggerName,
+            SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createUpdateSqlTriggerWithResponseAsync(
                 resourceGroupName,
@@ -6463,8 +6723,12 @@ public final class SqlResourcesClient {
                 createUpdateSqlTriggerParameters);
         return this
             .client
-            .<SqlTriggerGetResultsInner, SqlTriggerGetResultsInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SqlTriggerGetResultsInner.class, SqlTriggerGetResultsInner.class);
+            .<SqlTriggerGetResultsInner, SqlTriggerGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlTriggerGetResultsInner.class,
+                SqlTriggerGetResultsInner.class,
+                Context.NONE);
     }
 
     /**
@@ -6483,14 +6747,16 @@ public final class SqlResourcesClient {
      * @return an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
-        Context context) {
+    public PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner>
+        beginCreateUpdateSqlTriggerAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String triggerName,
+            SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
+            Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createUpdateSqlTriggerWithResponseAsync(
                 resourceGroupName,
@@ -6502,8 +6768,79 @@ public final class SqlResourcesClient {
                 context);
         return this
             .client
-            .<SqlTriggerGetResultsInner, SqlTriggerGetResultsInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SqlTriggerGetResultsInner.class, SqlTriggerGetResultsInner.class);
+            .<SqlTriggerGetResultsInner, SqlTriggerGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlTriggerGetResultsInner.class,
+                SqlTriggerGetResultsInner.class,
+                context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL trigger.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param triggerName Cosmos DB trigger name.
+     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB trigger.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
+        return beginCreateUpdateSqlTriggerAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                createUpdateSqlTriggerParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL trigger.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param triggerName Cosmos DB trigger name.
+     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB trigger.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
+        Context context) {
+        return beginCreateUpdateSqlTriggerAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                createUpdateSqlTriggerParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -6528,20 +6865,15 @@ public final class SqlResourcesClient {
         String containerName,
         String triggerName,
         SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateSqlTriggerWithResponseAsync(
+        return beginCreateUpdateSqlTriggerAsync(
                 resourceGroupName,
                 accountName,
                 databaseName,
                 containerName,
                 triggerName,
-                createUpdateSqlTriggerParameters);
-        return this
-            .client
-            .<SqlTriggerGetResultsInner, SqlTriggerGetResultsInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SqlTriggerGetResultsInner.class, SqlTriggerGetResultsInner.class)
+                createUpdateSqlTriggerParameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6568,21 +6900,16 @@ public final class SqlResourcesClient {
         String triggerName,
         SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateSqlTriggerWithResponseAsync(
+        return beginCreateUpdateSqlTriggerAsync(
                 resourceGroupName,
                 accountName,
                 databaseName,
                 containerName,
                 triggerName,
                 createUpdateSqlTriggerParameters,
-                context);
-        return this
-            .client
-            .<SqlTriggerGetResultsInner, SqlTriggerGetResultsInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SqlTriggerGetResultsInner.class, SqlTriggerGetResultsInner.class)
+                context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6765,6 +7092,7 @@ public final class SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .deleteSqlTrigger(
                 this.client.getEndpoint(),
@@ -6792,11 +7120,13 @@ public final class SqlResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlTrigger(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlTriggerAsync(
         String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlTriggerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, triggerName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -6814,17 +7144,67 @@ public final class SqlResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlTrigger(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlTriggerAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
         String containerName,
         String triggerName,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlTriggerWithResponseAsync(
                 resourceGroupName, accountName, databaseName, containerName, triggerName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL trigger.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param triggerName Cosmos DB trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(
+        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
+        return beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL trigger.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param triggerName Cosmos DB trigger name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        Context context) {
+        return beginDeleteSqlTriggerAsync(
+                resourceGroupName, accountName, databaseName, containerName, triggerName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -6843,13 +7223,9 @@ public final class SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSqlTriggerAsync(
         String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteSqlTriggerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, triggerName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6874,14 +7250,10 @@ public final class SqlResourcesClient {
         String containerName,
         String triggerName,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteSqlTriggerWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, triggerName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteSqlTriggerAsync(
+                resourceGroupName, accountName, databaseName, containerName, triggerName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6924,2978 +7296,6 @@ public final class SqlResourcesClient {
         String triggerName,
         Context context) {
         deleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, context)
-            .block();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB SQL database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlDatabaseGetResultsInner>> beginCreateUpdateSqlDatabaseWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (createUpdateSqlDatabaseParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createUpdateSqlDatabaseParameters is required and cannot be null."));
-        } else {
-            createUpdateSqlDatabaseParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateUpdateSqlDatabaseWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseName,
-                            apiVersion,
-                            createUpdateSqlDatabaseParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB SQL database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlDatabaseGetResultsInner>> beginCreateUpdateSqlDatabaseWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (createUpdateSqlDatabaseParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createUpdateSqlDatabaseParameters is required and cannot be null."));
-        } else {
-            createUpdateSqlDatabaseParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .beginCreateUpdateSqlDatabaseWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseName,
-                apiVersion,
-                createUpdateSqlDatabaseParameters,
-                context);
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB SQL database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabaseWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
-        return beginCreateUpdateSqlDatabaseWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters)
-            .flatMap(
-                (Response<SqlDatabaseGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB SQL database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabaseWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
-        Context context) {
-        return beginCreateUpdateSqlDatabaseWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context)
-            .flatMap(
-                (Response<SqlDatabaseGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB SQL database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlDatabaseGetResultsInner beginCreateUpdateSqlDatabaseWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
-        return beginCreateUpdateSqlDatabaseWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters)
-            .block();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param createUpdateSqlDatabaseParameters Parameters to create and update Cosmos DB SQL database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB SQL database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlDatabaseGetResultsInner beginCreateUpdateSqlDatabaseWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
-        Context context) {
-        return beginCreateUpdateSqlDatabaseWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context)
-            .block();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteSqlDatabaseWithoutPollingWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteSqlDatabaseWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseName,
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteSqlDatabaseWithoutPollingWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .beginDeleteSqlDatabaseWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseName,
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteSqlDatabaseWithoutPollingAsync(
-        String resourceGroupName, String accountName, String databaseName) {
-        return beginDeleteSqlDatabaseWithoutPollingWithResponseAsync(resourceGroupName, accountName, databaseName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteSqlDatabaseWithoutPollingAsync(
-        String resourceGroupName, String accountName, String databaseName, Context context) {
-        return beginDeleteSqlDatabaseWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteSqlDatabaseWithoutPolling(
-        String resourceGroupName, String accountName, String databaseName) {
-        beginDeleteSqlDatabaseWithoutPollingAsync(resourceGroupName, accountName, databaseName).block();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteSqlDatabaseWithoutPolling(
-        String resourceGroupName, String accountName, String databaseName, Context context) {
-        beginDeleteSqlDatabaseWithoutPollingAsync(resourceGroupName, accountName, databaseName, context).block();
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ThroughputSettingsGetResultsInner>>
-        beginUpdateSqlDatabaseThroughputWithoutPollingWithResponseAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (updateThroughputParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter updateThroughputParameters is required and cannot be null."));
-        } else {
-            updateThroughputParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateSqlDatabaseThroughputWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseName,
-                            apiVersion,
-                            updateThroughputParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ThroughputSettingsGetResultsInner>>
-        beginUpdateSqlDatabaseThroughputWithoutPollingWithResponseAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters,
-            Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (updateThroughputParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter updateThroughputParameters is required and cannot be null."));
-        } else {
-            updateThroughputParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .beginUpdateSqlDatabaseThroughputWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseName,
-                apiVersion,
-                updateThroughputParameters,
-                context);
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> beginUpdateSqlDatabaseThroughputWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateSqlDatabaseThroughputWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, updateThroughputParameters)
-            .flatMap(
-                (Response<ThroughputSettingsGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> beginUpdateSqlDatabaseThroughputWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters,
-        Context context) {
-        return beginUpdateSqlDatabaseThroughputWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
-            .flatMap(
-                (Response<ThroughputSettingsGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner beginUpdateSqlDatabaseThroughputWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateSqlDatabaseThroughputWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, updateThroughputParameters)
-            .block();
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner beginUpdateSqlDatabaseThroughputWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters,
-        Context context) {
-        return beginUpdateSqlDatabaseThroughputWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
-            .block();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlContainerGetResultsInner>> beginCreateUpdateSqlContainerWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (createUpdateSqlContainerParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createUpdateSqlContainerParameters is required and cannot be null."));
-        } else {
-            createUpdateSqlContainerParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateUpdateSqlContainerWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseName,
-                            containerName,
-                            apiVersion,
-                            createUpdateSqlContainerParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlContainerGetResultsInner>> beginCreateUpdateSqlContainerWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (createUpdateSqlContainerParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createUpdateSqlContainerParameters is required and cannot be null."));
-        } else {
-            createUpdateSqlContainerParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .beginCreateUpdateSqlContainerWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                apiVersion,
-                createUpdateSqlContainerParameters,
-                context);
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlContainerGetResultsInner> beginCreateUpdateSqlContainerWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        return beginCreateUpdateSqlContainerWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters)
-            .flatMap(
-                (Response<SqlContainerGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlContainerGetResultsInner> beginCreateUpdateSqlContainerWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
-        Context context) {
-        return beginCreateUpdateSqlContainerWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                createUpdateSqlContainerParameters,
-                context)
-            .flatMap(
-                (Response<SqlContainerGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlContainerGetResultsInner beginCreateUpdateSqlContainerWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        return beginCreateUpdateSqlContainerWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters)
-            .block();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters Parameters to create and update Cosmos DB container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlContainerGetResultsInner beginCreateUpdateSqlContainerWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
-        Context context) {
-        return beginCreateUpdateSqlContainerWithoutPollingAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                createUpdateSqlContainerParameters,
-                context)
-            .block();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteSqlContainerWithoutPollingWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteSqlContainerWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseName,
-                            containerName,
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteSqlContainerWithoutPollingWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .beginDeleteSqlContainerWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteSqlContainerWithoutPollingAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName) {
-        return beginDeleteSqlContainerWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteSqlContainerWithoutPollingAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return beginDeleteSqlContainerWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteSqlContainerWithoutPolling(
-        String resourceGroupName, String accountName, String databaseName, String containerName) {
-        beginDeleteSqlContainerWithoutPollingAsync(resourceGroupName, accountName, databaseName, containerName).block();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteSqlContainerWithoutPolling(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        beginDeleteSqlContainerWithoutPollingAsync(resourceGroupName, accountName, databaseName, containerName, context)
-            .block();
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ThroughputSettingsGetResultsInner>>
-        beginUpdateSqlContainerThroughputWithoutPollingWithResponseAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (updateThroughputParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter updateThroughputParameters is required and cannot be null."));
-        } else {
-            updateThroughputParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateSqlContainerThroughputWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseName,
-                            containerName,
-                            apiVersion,
-                            updateThroughputParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ThroughputSettingsGetResultsInner>>
-        beginUpdateSqlContainerThroughputWithoutPollingWithResponseAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters,
-            Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (updateThroughputParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter updateThroughputParameters is required and cannot be null."));
-        } else {
-            updateThroughputParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .beginUpdateSqlContainerThroughputWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                apiVersion,
-                updateThroughputParameters,
-                context);
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> beginUpdateSqlContainerThroughputWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateSqlContainerThroughputWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters)
-            .flatMap(
-                (Response<ThroughputSettingsGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> beginUpdateSqlContainerThroughputWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters,
-        Context context) {
-        return beginUpdateSqlContainerThroughputWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context)
-            .flatMap(
-                (Response<ThroughputSettingsGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner beginUpdateSqlContainerThroughputWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateSqlContainerThroughputWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters)
-            .block();
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner beginUpdateSqlContainerThroughputWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters,
-        Context context) {
-        return beginUpdateSqlContainerThroughputWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context)
-            .block();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL storedProcedure.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB storedProcedure.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlStoredProcedureGetResultsInner>>
-        beginCreateUpdateSqlStoredProcedureWithoutPollingWithResponseAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            String storedProcedureName,
-            SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (storedProcedureName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
-        }
-        if (createUpdateSqlStoredProcedureParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createUpdateSqlStoredProcedureParameters is required and cannot be null."));
-        } else {
-            createUpdateSqlStoredProcedureParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateUpdateSqlStoredProcedureWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseName,
-                            containerName,
-                            storedProcedureName,
-                            apiVersion,
-                            createUpdateSqlStoredProcedureParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL storedProcedure.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB storedProcedure.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlStoredProcedureGetResultsInner>>
-        beginCreateUpdateSqlStoredProcedureWithoutPollingWithResponseAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            String storedProcedureName,
-            SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
-            Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (storedProcedureName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
-        }
-        if (createUpdateSqlStoredProcedureParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createUpdateSqlStoredProcedureParameters is required and cannot be null."));
-        } else {
-            createUpdateSqlStoredProcedureParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .beginCreateUpdateSqlStoredProcedureWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                storedProcedureName,
-                apiVersion,
-                createUpdateSqlStoredProcedureParameters,
-                context);
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL storedProcedure.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB storedProcedure.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlStoredProcedureGetResultsInner> beginCreateUpdateSqlStoredProcedureWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
-        return beginCreateUpdateSqlStoredProcedureWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                storedProcedureName,
-                createUpdateSqlStoredProcedureParameters)
-            .flatMap(
-                (Response<SqlStoredProcedureGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL storedProcedure.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB storedProcedure.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlStoredProcedureGetResultsInner> beginCreateUpdateSqlStoredProcedureWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
-        Context context) {
-        return beginCreateUpdateSqlStoredProcedureWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                storedProcedureName,
-                createUpdateSqlStoredProcedureParameters,
-                context)
-            .flatMap(
-                (Response<SqlStoredProcedureGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL storedProcedure.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB storedProcedure.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlStoredProcedureGetResultsInner beginCreateUpdateSqlStoredProcedureWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
-        return beginCreateUpdateSqlStoredProcedureWithoutPollingAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                storedProcedureName,
-                createUpdateSqlStoredProcedureParameters)
-            .block();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL storedProcedure.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param createUpdateSqlStoredProcedureParameters Parameters to create and update Cosmos DB storedProcedure.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB storedProcedure.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlStoredProcedureGetResultsInner beginCreateUpdateSqlStoredProcedureWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
-        Context context) {
-        return beginCreateUpdateSqlStoredProcedureWithoutPollingAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                storedProcedureName,
-                createUpdateSqlStoredProcedureParameters,
-                context)
-            .block();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteSqlStoredProcedureWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (storedProcedureName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteSqlStoredProcedureWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseName,
-                            containerName,
-                            storedProcedureName,
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteSqlStoredProcedureWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (storedProcedureName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .beginDeleteSqlStoredProcedureWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                storedProcedureName,
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteSqlStoredProcedureWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName) {
-        return beginDeleteSqlStoredProcedureWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteSqlStoredProcedureWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        Context context) {
-        return beginDeleteSqlStoredProcedureWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteSqlStoredProcedureWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName) {
-        beginDeleteSqlStoredProcedureWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
-            .block();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param storedProcedureName Cosmos DB storedProcedure name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteSqlStoredProcedureWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        Context context) {
-        beginDeleteSqlStoredProcedureWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context)
-            .block();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
-     *     userDefinedFunction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB userDefinedFunction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlUserDefinedFunctionGetResultsInner>>
-        beginCreateUpdateSqlUserDefinedFunctionWithoutPollingWithResponseAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            String userDefinedFunctionName,
-            SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (userDefinedFunctionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
-        }
-        if (createUpdateSqlUserDefinedFunctionParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createUpdateSqlUserDefinedFunctionParameters is required and cannot be null."));
-        } else {
-            createUpdateSqlUserDefinedFunctionParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateUpdateSqlUserDefinedFunctionWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseName,
-                            containerName,
-                            userDefinedFunctionName,
-                            apiVersion,
-                            createUpdateSqlUserDefinedFunctionParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
-     *     userDefinedFunction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB userDefinedFunction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlUserDefinedFunctionGetResultsInner>>
-        beginCreateUpdateSqlUserDefinedFunctionWithoutPollingWithResponseAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            String userDefinedFunctionName,
-            SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
-            Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (userDefinedFunctionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
-        }
-        if (createUpdateSqlUserDefinedFunctionParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createUpdateSqlUserDefinedFunctionParameters is required and cannot be null."));
-        } else {
-            createUpdateSqlUserDefinedFunctionParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .beginCreateUpdateSqlUserDefinedFunctionWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                userDefinedFunctionName,
-                apiVersion,
-                createUpdateSqlUserDefinedFunctionParameters,
-                context);
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
-     *     userDefinedFunction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB userDefinedFunction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlUserDefinedFunctionGetResultsInner> beginCreateUpdateSqlUserDefinedFunctionWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
-        return beginCreateUpdateSqlUserDefinedFunctionWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                userDefinedFunctionName,
-                createUpdateSqlUserDefinedFunctionParameters)
-            .flatMap(
-                (Response<SqlUserDefinedFunctionGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
-     *     userDefinedFunction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB userDefinedFunction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlUserDefinedFunctionGetResultsInner> beginCreateUpdateSqlUserDefinedFunctionWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
-        Context context) {
-        return beginCreateUpdateSqlUserDefinedFunctionWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                userDefinedFunctionName,
-                createUpdateSqlUserDefinedFunctionParameters,
-                context)
-            .flatMap(
-                (Response<SqlUserDefinedFunctionGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
-     *     userDefinedFunction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB userDefinedFunction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlUserDefinedFunctionGetResultsInner beginCreateUpdateSqlUserDefinedFunctionWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
-        return beginCreateUpdateSqlUserDefinedFunctionWithoutPollingAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                userDefinedFunctionName,
-                createUpdateSqlUserDefinedFunctionParameters)
-            .block();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters Parameters to create and update Cosmos DB
-     *     userDefinedFunction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB userDefinedFunction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlUserDefinedFunctionGetResultsInner beginCreateUpdateSqlUserDefinedFunctionWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
-        Context context) {
-        return beginCreateUpdateSqlUserDefinedFunctionWithoutPollingAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                userDefinedFunctionName,
-                createUpdateSqlUserDefinedFunctionParameters,
-                context)
-            .block();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteSqlUserDefinedFunctionWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (userDefinedFunctionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteSqlUserDefinedFunctionWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseName,
-                            containerName,
-                            userDefinedFunctionName,
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteSqlUserDefinedFunctionWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (userDefinedFunctionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .beginDeleteSqlUserDefinedFunctionWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                userDefinedFunctionName,
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteSqlUserDefinedFunctionWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName) {
-        return beginDeleteSqlUserDefinedFunctionWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteSqlUserDefinedFunctionWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        Context context) {
-        return beginDeleteSqlUserDefinedFunctionWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteSqlUserDefinedFunctionWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName) {
-        beginDeleteSqlUserDefinedFunctionWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName)
-            .block();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteSqlUserDefinedFunctionWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        Context context) {
-        beginDeleteSqlUserDefinedFunctionWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context)
-            .block();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL trigger.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB trigger.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlTriggerGetResultsInner>> beginCreateUpdateSqlTriggerWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (triggerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
-        }
-        if (createUpdateSqlTriggerParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createUpdateSqlTriggerParameters is required and cannot be null."));
-        } else {
-            createUpdateSqlTriggerParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateUpdateSqlTriggerWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseName,
-                            containerName,
-                            triggerName,
-                            apiVersion,
-                            createUpdateSqlTriggerParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL trigger.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB trigger.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlTriggerGetResultsInner>> beginCreateUpdateSqlTriggerWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (triggerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
-        }
-        if (createUpdateSqlTriggerParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createUpdateSqlTriggerParameters is required and cannot be null."));
-        } else {
-            createUpdateSqlTriggerParameters.validate();
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .beginCreateUpdateSqlTriggerWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                triggerName,
-                apiVersion,
-                createUpdateSqlTriggerParameters,
-                context);
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL trigger.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB trigger.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlTriggerGetResultsInner> beginCreateUpdateSqlTriggerWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
-        return beginCreateUpdateSqlTriggerWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                triggerName,
-                createUpdateSqlTriggerParameters)
-            .flatMap(
-                (Response<SqlTriggerGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL trigger.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB trigger.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlTriggerGetResultsInner> beginCreateUpdateSqlTriggerWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
-        Context context) {
-        return beginCreateUpdateSqlTriggerWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                triggerName,
-                createUpdateSqlTriggerParameters,
-                context)
-            .flatMap(
-                (Response<SqlTriggerGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL trigger.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB trigger.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlTriggerGetResultsInner beginCreateUpdateSqlTriggerWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
-        return beginCreateUpdateSqlTriggerWithoutPollingAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                triggerName,
-                createUpdateSqlTriggerParameters)
-            .block();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL trigger.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param triggerName Cosmos DB trigger name.
-     * @param createUpdateSqlTriggerParameters Parameters to create and update Cosmos DB trigger.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB trigger.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlTriggerGetResultsInner beginCreateUpdateSqlTriggerWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
-        Context context) {
-        return beginCreateUpdateSqlTriggerWithoutPollingAsync(
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                triggerName,
-                createUpdateSqlTriggerParameters,
-                context)
-            .block();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL trigger.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param triggerName Cosmos DB trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteSqlTriggerWithoutPollingWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (triggerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteSqlTriggerWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseName,
-                            containerName,
-                            triggerName,
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL trigger.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param triggerName Cosmos DB trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteSqlTriggerWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (triggerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .beginDeleteSqlTriggerWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseName,
-                containerName,
-                triggerName,
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL trigger.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param triggerName Cosmos DB trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteSqlTriggerWithoutPollingAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
-        return beginDeleteSqlTriggerWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, triggerName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL trigger.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param triggerName Cosmos DB trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteSqlTriggerWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        Context context) {
-        return beginDeleteSqlTriggerWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, databaseName, containerName, triggerName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL trigger.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param triggerName Cosmos DB trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteSqlTriggerWithoutPolling(
-        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
-        beginDeleteSqlTriggerWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, containerName, triggerName)
-            .block();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL trigger.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param triggerName Cosmos DB trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteSqlTriggerWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        Context context) {
-        beginDeleteSqlTriggerWithoutPollingAsync(
-                resourceGroupName, accountName, databaseName, containerName, triggerName, context)
             .block();
     }
 }

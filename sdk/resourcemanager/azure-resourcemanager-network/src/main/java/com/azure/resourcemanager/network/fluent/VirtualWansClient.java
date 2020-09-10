@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ListVirtualWansResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualWanInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -464,8 +463,8 @@ public final class VirtualWansClient
             createOrUpdateWithResponseAsync(resourceGroupName, virtualWanName, wanParameters);
         return this
             .client
-            .<VirtualWanInner, VirtualWanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualWanInner.class, VirtualWanInner.class);
+            .<VirtualWanInner, VirtualWanInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VirtualWanInner.class, VirtualWanInner.class, Context.NONE);
     }
 
     /**
@@ -483,12 +482,13 @@ public final class VirtualWansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualWanName, VirtualWanInner wanParameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, virtualWanName, wanParameters, context);
         return this
             .client
-            .<VirtualWanInner, VirtualWanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualWanInner.class, VirtualWanInner.class);
+            .<VirtualWanInner, VirtualWanInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VirtualWanInner.class, VirtualWanInner.class, context);
     }
 
     /**
@@ -889,7 +889,9 @@ public final class VirtualWansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualWanName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualWanName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -906,8 +908,11 @@ public final class VirtualWansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualWanName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualWanName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1131,7 +1136,7 @@ public final class VirtualWansClient
     public PagedFlux<VirtualWanInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1262,7 +1267,8 @@ public final class VirtualWansClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualWanInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

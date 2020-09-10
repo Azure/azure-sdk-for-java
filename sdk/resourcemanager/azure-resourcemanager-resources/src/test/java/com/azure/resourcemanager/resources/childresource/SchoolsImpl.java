@@ -223,6 +223,11 @@ class SchoolsImpl {
         }
 
         @Override
+        protected Flux<TeacherImpl> listChildResourcesAsync() {
+            return Flux.empty();
+        }
+
+        @Override
         protected List<TeacherImpl> listChildResources() {
             return new ArrayList<>();
         }
@@ -345,6 +350,11 @@ class SchoolsImpl {
 
         StudentImpl findStudent(String studentName) {
             return this.find(studentName);
+        }
+
+        @Override
+        protected Flux<StudentImpl> listChildResourcesAsync() {
+            return Flux.empty();
         }
 
         @Override

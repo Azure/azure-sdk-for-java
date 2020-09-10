@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkTapInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkTapListResultInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -275,7 +274,9 @@ public final class VirtualNetworkTapsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String tapName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, tapName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -292,8 +293,11 @@ public final class VirtualNetworkTapsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String tapName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, tapName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -683,8 +687,12 @@ public final class VirtualNetworkTapsClient
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, tapName, parameters);
         return this
             .client
-            .<VirtualNetworkTapInner, VirtualNetworkTapInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualNetworkTapInner.class, VirtualNetworkTapInner.class);
+            .<VirtualNetworkTapInner, VirtualNetworkTapInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualNetworkTapInner.class,
+                VirtualNetworkTapInner.class,
+                Context.NONE);
     }
 
     /**
@@ -702,12 +710,17 @@ public final class VirtualNetworkTapsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VirtualNetworkTapInner>, VirtualNetworkTapInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String tapName, VirtualNetworkTapInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, tapName, parameters, context);
         return this
             .client
-            .<VirtualNetworkTapInner, VirtualNetworkTapInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualNetworkTapInner.class, VirtualNetworkTapInner.class);
+            .<VirtualNetworkTapInner, VirtualNetworkTapInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualNetworkTapInner.class,
+                VirtualNetworkTapInner.class,
+                context);
     }
 
     /**
@@ -1103,7 +1116,8 @@ public final class VirtualNetworkTapsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkTapInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1257,7 +1271,7 @@ public final class VirtualNetworkTapsClient
     public PagedFlux<VirtualNetworkTapInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

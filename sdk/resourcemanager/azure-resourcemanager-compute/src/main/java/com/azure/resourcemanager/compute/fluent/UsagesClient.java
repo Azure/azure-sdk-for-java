@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.ListUsagesResultInner;
 import com.azure.resourcemanager.compute.fluent.inner.UsageInner;
 import reactor.core.publisher.Mono;
@@ -194,7 +193,7 @@ public final class UsagesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listAsync(String location, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

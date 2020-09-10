@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.UsageInner;
 import com.azure.resourcemanager.sql.fluent.inner.UsageListResultInner;
 import reactor.core.publisher.Mono;
@@ -177,6 +176,7 @@ public final class UsagesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByInstancePool(
                 this.client.getEndpoint(),
@@ -235,7 +235,7 @@ public final class UsagesClient {
         String resourceGroupName, String instancePoolName, Boolean expandChildren, Context context) {
         return new PagedFlux<>(
             () -> listByInstancePoolSinglePageAsync(resourceGroupName, instancePoolName, expandChildren, context),
-            nextLink -> listByInstancePoolNextSinglePageAsync(nextLink));
+            nextLink -> listByInstancePoolNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -255,7 +255,7 @@ public final class UsagesClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listByInstancePoolSinglePageAsync(resourceGroupName, instancePoolName, expandChildren),
-            nextLink -> listByInstancePoolNextSinglePageAsync(nextLink));
+            nextLink -> listByInstancePoolNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -357,6 +357,7 @@ public final class UsagesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByInstancePoolNext(nextLink, context)
             .map(

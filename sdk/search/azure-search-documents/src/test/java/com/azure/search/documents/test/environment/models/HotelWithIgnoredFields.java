@@ -3,21 +3,20 @@
 
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.indexes.FieldIgnore;
+import com.azure.search.documents.indexes.FieldBuilderIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class HotelWithIgnoredFields {
-    @FieldIgnore
     private String hotelId;
-    @JsonIgnore
     private String hotelName;
-
     private String notIgnoredName;
 
+    @FieldBuilderIgnore
     public String getHotelId() {
         return hotelId;
     }
 
+    @JsonIgnore
     public String getHotelName() {
         return hotelName;
     }

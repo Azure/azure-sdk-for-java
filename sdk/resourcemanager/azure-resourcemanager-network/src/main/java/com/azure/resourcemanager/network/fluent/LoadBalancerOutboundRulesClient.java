@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.LoadBalancerOutboundRuleListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.OutboundRuleInner;
 import reactor.core.publisher.Mono;
@@ -241,7 +240,7 @@ public final class LoadBalancerOutboundRulesClient {
     public PagedFlux<OutboundRuleInner> listAsync(String resourceGroupName, String loadBalancerName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, loadBalancerName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

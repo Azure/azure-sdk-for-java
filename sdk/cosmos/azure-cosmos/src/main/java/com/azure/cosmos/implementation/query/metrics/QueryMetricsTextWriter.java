@@ -55,9 +55,9 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     private static final String SCHEDULING_METRICS = "Scheduling Metrics";
 
     // Constants for Partition Execution Timeline Table
-    private static final String START_TIME_HEADER = "Start Time (UTC)";
-    private static final String END_TIME_HEADER = "End Time (UTC)";
-    private static final String DURATION_HEADER = "Duration (ms)";
+    public static final String START_TIME_HEADER = "Start Time (UTC)";
+    public static final String END_TIME_HEADER = "End Time (UTC)";
+    public static final String DURATION_HEADER = "Duration (ms)";
     private static final String PARTITION_KEY_RANGE_ID_HEADER = "Partition Id";
     private static final String NUMBER_OF_DOCUMENTS_HEADER = "NUMBER of Documents";
     private static final String RETRY_COUNT_HEADER = "Retry Count";
@@ -135,7 +135,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     private long lastTurnaroundTime;
     private long lastNumberOfPreemptions;
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+    public static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("HH:mm:ss:SSSS").withZone(ZoneOffset.UTC);
 
     public QueryMetricsTextWriter(StringBuilder stringBuilder) {

@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.RouteInner;
 import com.azure.resourcemanager.network.fluent.inner.RouteListResultInner;
 import java.nio.ByteBuffer;
@@ -250,7 +249,9 @@ public final class RoutesClient {
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String routeTableName, String routeName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeTableName, routeName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -268,9 +269,12 @@ public final class RoutesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String routeTableName, String routeName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, routeTableName, routeName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -702,8 +706,8 @@ public final class RoutesClient {
             createOrUpdateWithResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters);
         return this
             .client
-            .<RouteInner, RouteInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class);
+            .<RouteInner, RouteInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class, Context.NONE);
     }
 
     /**
@@ -726,12 +730,13 @@ public final class RoutesClient {
         String routeName,
         RouteInner routeParameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, routeTableName, routeName, routeParameters, context);
         return this
             .client
-            .<RouteInner, RouteInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class);
+            .<RouteInner, RouteInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class, context);
     }
 
     /**
@@ -1003,7 +1008,7 @@ public final class RoutesClient {
     public PagedFlux<RouteInner> listAsync(String resourceGroupName, String routeTableName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, routeTableName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

@@ -2,19 +2,27 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.PublicIpAddressesClient;
 import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
+
+import java.util.function.Function;
 
 /** Implementation for {@link PublicIpAddresses}. */
 public class PublicIpAddressesImpl
     extends TopLevelModifiableResourcesImpl<
     PublicIpAddress, PublicIpAddressImpl, PublicIpAddressInner, PublicIpAddressesClient, NetworkManager>
     implements PublicIpAddresses {
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
 
     public PublicIpAddressesImpl(final NetworkManager networkManager) {
         super(networkManager.inner().getPublicIpAddresses(), networkManager);
@@ -44,5 +52,20 @@ public class PublicIpAddressesImpl
             return null;
         }
         return new PublicIpAddressImpl(inner.id(), inner, this.manager());
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteById(String id) {
+        return beginDeleteByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
+        return AcceptedImpl.newAccepted(logger,
+            manager().inner(),
+            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
+            Function.identity(),
+            Void.class,
+            null);
     }
 }

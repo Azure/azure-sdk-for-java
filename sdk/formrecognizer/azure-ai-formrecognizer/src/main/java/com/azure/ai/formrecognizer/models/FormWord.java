@@ -24,7 +24,7 @@ public final class FormWord extends FormElement {
      * @param pageNumber the 1 based page number.
      * @param confidence the confidence property of the Form Word.
      */
-    public FormWord(String text, BoundingBox boundingBox, int pageNumber, final float confidence) {
+    public FormWord(String text, FieldBoundingBox boundingBox, int pageNumber, final float confidence) {
         super(text, boundingBox, pageNumber);
         this.confidence = confidence;
     }
@@ -42,7 +42,7 @@ public final class FormWord extends FormElement {
      * {@inheritDoc}
      */
     @Override
-    public BoundingBox getBoundingBox() {
+    public FieldBoundingBox getBoundingBox() {
         return super.getBoundingBox();
     }
 

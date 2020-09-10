@@ -738,7 +738,8 @@ public class CosmosAsyncDatabase {
                 .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
                     ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders(),
-                    ModelBridgeInternal.queryMetrics(response)));
+                    ModelBridgeInternal.queryMetrics(response),
+                    ModelBridgeInternal.getQueryPlanDiagnosticsContext(response)));
         });
     }
 

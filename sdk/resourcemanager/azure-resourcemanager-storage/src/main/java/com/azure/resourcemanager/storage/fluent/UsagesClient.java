@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.UsageInner;
 import com.azure.resourcemanager.storage.fluent.inner.UsageListResultInner;
 import reactor.core.publisher.Mono;
@@ -139,6 +138,7 @@ public final class UsagesClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByLocation(
                 this.client.getEndpoint(),

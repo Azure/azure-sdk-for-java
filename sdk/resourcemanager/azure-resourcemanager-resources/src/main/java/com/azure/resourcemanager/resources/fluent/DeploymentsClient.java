@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.inner.DeploymentExportResultInner;
 import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
 import com.azure.resourcemanager.resources.fluent.inner.DeploymentInner;
@@ -758,7 +757,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtScopeAsync(String scope, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtScopeWithResponseAsync(scope, deploymentName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -780,8 +781,11 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtScopeAsync(
         String scope, String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtScopeWithResponseAsync(scope, deploymentName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1161,8 +1165,12 @@ public final class DeploymentsClient
             createOrUpdateAtScopeWithResponseAsync(scope, deploymentName, parameters);
         return this
             .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class);
+            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentExtendedInner.class,
+                DeploymentExtendedInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1180,12 +1188,17 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScopeAsync(
         String scope, String deploymentName, DeploymentInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateAtScopeWithResponseAsync(scope, deploymentName, parameters, context);
         return this
             .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class);
+            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentExtendedInner.class,
+                DeploymentExtendedInner.class,
+                context);
     }
 
     /**
@@ -1678,11 +1691,12 @@ public final class DeploymentsClient
         Mono<Response<Flux<ByteBuffer>>> mono = validateAtScopeWithResponseAsync(scope, deploymentName, parameters);
         return this
             .client
-            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 DeploymentValidateResultInner.class,
-                DeploymentValidateResultInner.class);
+                DeploymentValidateResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1701,15 +1715,17 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtScopeAsync(String scope, String deploymentName, DeploymentInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             validateAtScopeWithResponseAsync(scope, deploymentName, parameters, context);
         return this
             .client
-            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 DeploymentValidateResultInner.class,
-                DeploymentValidateResultInner.class);
+                DeploymentValidateResultInner.class,
+                context);
     }
 
     /**
@@ -2089,7 +2105,7 @@ public final class DeploymentsClient
         String scope, String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, filter, top, context),
-            nextLink -> listAtScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2107,7 +2123,8 @@ public final class DeploymentsClient
         final Integer top = null;
         final Context context = null;
         return new PagedFlux<>(
-            () -> listAtScopeSinglePageAsync(scope, filter, top), nextLink -> listAtScopeNextSinglePageAsync(nextLink));
+            () -> listAtScopeSinglePageAsync(scope, filter, top),
+            nextLink -> listAtScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2246,7 +2263,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtTenantScopeAsync(String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtTenantScopeWithResponseAsync(deploymentName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2266,8 +2285,11 @@ public final class DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtTenantScopeAsync(String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtTenantScopeWithResponseAsync(deploymentName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2619,8 +2641,12 @@ public final class DeploymentsClient
             createOrUpdateAtTenantScopeWithResponseAsync(deploymentName, parameters);
         return this
             .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class);
+            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentExtendedInner.class,
+                DeploymentExtendedInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2637,12 +2663,17 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateAtTenantScopeWithResponseAsync(deploymentName, parameters, context);
         return this
             .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class);
+            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentExtendedInner.class,
+                DeploymentExtendedInner.class,
+                context);
     }
 
     /**
@@ -3094,11 +3125,12 @@ public final class DeploymentsClient
         Mono<Response<Flux<ByteBuffer>>> mono = validateAtTenantScopeWithResponseAsync(deploymentName, parameters);
         return this
             .client
-            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 DeploymentValidateResultInner.class,
-                DeploymentValidateResultInner.class);
+                DeploymentValidateResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -3116,15 +3148,17 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             validateAtTenantScopeWithResponseAsync(deploymentName, parameters, context);
         return this
             .client
-            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 DeploymentValidateResultInner.class,
-                DeploymentValidateResultInner.class);
+                DeploymentValidateResultInner.class,
+                context);
     }
 
     /**
@@ -3325,11 +3359,12 @@ public final class DeploymentsClient
         Mono<Response<Flux<ByteBuffer>>> mono = whatIfAtTenantScopeWithResponseAsync(deploymentName, parameters);
         return this
             .client
-            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
+            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 WhatIfOperationResultInner.class,
-                WhatIfOperationResultInner.class);
+                WhatIfOperationResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -3346,15 +3381,17 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScopeAsync(
         String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             whatIfAtTenantScopeWithResponseAsync(deploymentName, parameters, context);
         return this
             .client
-            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
+            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 WhatIfOperationResultInner.class,
-                WhatIfOperationResultInner.class);
+                WhatIfOperationResultInner.class,
+                context);
     }
 
     /**
@@ -3697,7 +3734,7 @@ public final class DeploymentsClient
     public PagedFlux<DeploymentExtendedInner> listAtTenantScopeAsync(String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(filter, top, context),
-            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3714,7 +3751,7 @@ public final class DeploymentsClient
         final Context context = null;
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(filter, top),
-            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3860,7 +3897,9 @@ public final class DeploymentsClient
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupScopeAsync(
         String groupId, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtManagementGroupScopeWithResponseAsync(groupId, deploymentName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3882,9 +3921,12 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupScopeAsync(
         String groupId, String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -4270,8 +4312,12 @@ public final class DeploymentsClient
             createOrUpdateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters);
         return this
             .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class);
+            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentExtendedInner.class,
+                DeploymentExtendedInner.class,
+                Context.NONE);
     }
 
     /**
@@ -4290,12 +4336,17 @@ public final class DeploymentsClient
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtManagementGroupScopeAsync(
             String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters, context);
         return this
             .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class);
+            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentExtendedInner.class,
+                DeploymentExtendedInner.class,
+                context);
     }
 
     /**
@@ -4797,11 +4848,12 @@ public final class DeploymentsClient
             validateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters);
         return this
             .client
-            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 DeploymentValidateResultInner.class,
-                DeploymentValidateResultInner.class);
+                DeploymentValidateResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -4821,15 +4873,17 @@ public final class DeploymentsClient
     public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtManagementGroupScopeAsync(
             String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             validateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters, context);
         return this
             .client
-            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 DeploymentValidateResultInner.class,
-                DeploymentValidateResultInner.class);
+                DeploymentValidateResultInner.class,
+                context);
     }
 
     /**
@@ -5050,11 +5104,12 @@ public final class DeploymentsClient
             whatIfAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters);
         return this
             .client
-            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
+            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 WhatIfOperationResultInner.class,
-                WhatIfOperationResultInner.class);
+                WhatIfOperationResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -5073,15 +5128,17 @@ public final class DeploymentsClient
     public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtManagementGroupScopeAsync(
             String groupId, String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             whatIfAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters, context);
         return this
             .client
-            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
+            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 WhatIfOperationResultInner.class,
-                WhatIfOperationResultInner.class);
+                WhatIfOperationResultInner.class,
+                context);
     }
 
     /**
@@ -5461,7 +5518,7 @@ public final class DeploymentsClient
         String groupId, String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, filter, top, context),
-            nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -5480,7 +5537,7 @@ public final class DeploymentsClient
         final Context context = null;
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, filter, top),
-            nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -5641,7 +5698,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionScopeAsync(String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtSubscriptionScopeWithResponseAsync(deploymentName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -5662,8 +5721,11 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionScopeAsync(
         String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtSubscriptionScopeWithResponseAsync(deploymentName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -6055,8 +6117,12 @@ public final class DeploymentsClient
             createOrUpdateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters);
         return this
             .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class);
+            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentExtendedInner.class,
+                DeploymentExtendedInner.class,
+                Context.NONE);
     }
 
     /**
@@ -6074,12 +6140,17 @@ public final class DeploymentsClient
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtSubscriptionScopeAsync(
             String deploymentName, DeploymentInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters, context);
         return this
             .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class);
+            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentExtendedInner.class,
+                DeploymentExtendedInner.class,
+                context);
     }
 
     /**
@@ -6593,11 +6664,12 @@ public final class DeploymentsClient
             validateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters);
         return this
             .client
-            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 DeploymentValidateResultInner.class,
-                DeploymentValidateResultInner.class);
+                DeploymentValidateResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -6615,15 +6687,17 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             validateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters, context);
         return this
             .client
-            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 DeploymentValidateResultInner.class,
-                DeploymentValidateResultInner.class);
+                DeploymentValidateResultInner.class,
+                context);
     }
 
     /**
@@ -6843,11 +6917,12 @@ public final class DeploymentsClient
         Mono<Response<Flux<ByteBuffer>>> mono = whatIfAtSubscriptionScopeWithResponseAsync(deploymentName, parameters);
         return this
             .client
-            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
+            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 WhatIfOperationResultInner.class,
-                WhatIfOperationResultInner.class);
+                WhatIfOperationResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -6864,15 +6939,17 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtSubscriptionScopeAsync(String deploymentName, DeploymentWhatIf parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             whatIfAtSubscriptionScopeWithResponseAsync(deploymentName, parameters, context);
         return this
             .client
-            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
+            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 WhatIfOperationResultInner.class,
-                WhatIfOperationResultInner.class);
+                WhatIfOperationResultInner.class,
+                context);
     }
 
     /**
@@ -7258,7 +7335,7 @@ public final class DeploymentsClient
     public PagedFlux<DeploymentExtendedInner> listAsync(String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, top, context),
-            nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -7274,7 +7351,8 @@ public final class DeploymentsClient
         final Integer top = null;
         final Context context = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top), nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, top),
+            nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -7448,7 +7526,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, deploymentName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -7472,8 +7552,11 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, deploymentName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -7922,8 +8005,12 @@ public final class DeploymentsClient
             createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, parameters);
         return this
             .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class);
+            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentExtendedInner.class,
+                DeploymentExtendedInner.class,
+                Context.NONE);
     }
 
     /**
@@ -7942,12 +8029,17 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, parameters, context);
         return this
             .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class);
+            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentExtendedInner.class,
+                DeploymentExtendedInner.class,
+                context);
     }
 
     /**
@@ -8525,11 +8617,12 @@ public final class DeploymentsClient
             validateWithResponseAsync(resourceGroupName, deploymentName, parameters);
         return this
             .client
-            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 DeploymentValidateResultInner.class,
-                DeploymentValidateResultInner.class);
+                DeploymentValidateResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -8549,15 +8642,17 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             validateWithResponseAsync(resourceGroupName, deploymentName, parameters, context);
         return this
             .client
-            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 DeploymentValidateResultInner.class,
-                DeploymentValidateResultInner.class);
+                DeploymentValidateResultInner.class,
+                context);
     }
 
     /**
@@ -8805,11 +8900,12 @@ public final class DeploymentsClient
         Mono<Response<Flux<ByteBuffer>>> mono = whatIfWithResponseAsync(resourceGroupName, deploymentName, parameters);
         return this
             .client
-            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
+            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 WhatIfOperationResultInner.class,
-                WhatIfOperationResultInner.class);
+                WhatIfOperationResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -8828,15 +8924,17 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAsync(
         String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             whatIfWithResponseAsync(resourceGroupName, deploymentName, parameters, context);
         return this
             .client
-            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
+            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 WhatIfOperationResultInner.class,
-                WhatIfOperationResultInner.class);
+                WhatIfOperationResultInner.class,
+                context);
     }
 
     /**
@@ -9274,7 +9372,7 @@ public final class DeploymentsClient
         String resourceGroupName, String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -9294,7 +9392,7 @@ public final class DeploymentsClient
         final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

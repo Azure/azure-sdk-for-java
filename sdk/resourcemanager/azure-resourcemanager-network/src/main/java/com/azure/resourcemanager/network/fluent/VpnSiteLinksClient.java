@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ListVpnSiteLinksResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VpnSiteLinkInner;
 import reactor.core.publisher.Mono;
@@ -425,7 +424,7 @@ public final class VpnSiteLinksClient {
         String resourceGroupName, String vpnSiteName, Context context) {
         return new PagedFlux<>(
             () -> listByVpnSiteSinglePageAsync(resourceGroupName, vpnSiteName, context),
-            nextLink -> listByVpnSiteNextSinglePageAsync(nextLink));
+            nextLink -> listByVpnSiteNextSinglePageAsync(nextLink, context));
     }
 
     /**

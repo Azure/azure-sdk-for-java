@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.FlowLogInner;
 import com.azure.resourcemanager.network.fluent.inner.FlowLogListResultInner;
 import java.nio.ByteBuffer;
@@ -274,8 +273,8 @@ public final class FlowLogsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, networkWatcherName, flowLogName, parameters);
         return this
             .client
-            .<FlowLogInner, FlowLogInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), FlowLogInner.class, FlowLogInner.class);
+            .<FlowLogInner, FlowLogInner>getLroResult(
+                mono, this.client.getHttpPipeline(), FlowLogInner.class, FlowLogInner.class, Context.NONE);
     }
 
     /**
@@ -298,12 +297,13 @@ public final class FlowLogsClient {
         String flowLogName,
         FlowLogInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, networkWatcherName, flowLogName, parameters, context);
         return this
             .client
-            .<FlowLogInner, FlowLogInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), FlowLogInner.class, FlowLogInner.class);
+            .<FlowLogInner, FlowLogInner>getLroResult(
+                mono, this.client.getHttpPipeline(), FlowLogInner.class, FlowLogInner.class, context);
     }
 
     /**
@@ -741,7 +741,9 @@ public final class FlowLogsClient {
         String resourceGroupName, String networkWatcherName, String flowLogName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, flowLogName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -759,9 +761,12 @@ public final class FlowLogsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkWatcherName, String flowLogName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, flowLogName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1011,7 +1016,7 @@ public final class FlowLogsClient {
     public PagedFlux<FlowLogInner> listAsync(String resourceGroupName, String networkWatcherName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, networkWatcherName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

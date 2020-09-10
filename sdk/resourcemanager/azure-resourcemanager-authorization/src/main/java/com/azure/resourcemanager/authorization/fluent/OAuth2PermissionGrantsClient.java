@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.OAuth2PermissionGrantInner;
 import com.azure.resourcemanager.authorization.fluent.inner.OAuth2PermissionGrantListResultInner;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
@@ -177,6 +176,7 @@ public final class OAuth2PermissionGrantsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
             .map(
@@ -217,7 +217,7 @@ public final class OAuth2PermissionGrantsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OAuth2PermissionGrantInner> listAsync(String filter, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -231,7 +231,8 @@ public final class OAuth2PermissionGrantsClient {
     public PagedFlux<OAuth2PermissionGrantInner> listAsync() {
         final String filter = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -344,6 +345,7 @@ public final class OAuth2PermissionGrantsClient {
         if (body != null) {
             body.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), body, context);
     }
@@ -524,6 +526,7 @@ public final class OAuth2PermissionGrantsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context);
@@ -660,6 +663,7 @@ public final class OAuth2PermissionGrantsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(
                 this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)

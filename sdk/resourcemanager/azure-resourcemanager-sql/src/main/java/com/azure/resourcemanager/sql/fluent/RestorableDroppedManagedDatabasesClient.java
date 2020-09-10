@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.RestorableDroppedManagedDatabaseInner;
 import com.azure.resourcemanager.sql.fluent.inner.RestorableDroppedManagedDatabaseListResultInner;
 import reactor.core.publisher.Mono;
@@ -193,6 +192,7 @@ public final class RestorableDroppedManagedDatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByInstance(
                 this.client.getEndpoint(),
@@ -248,7 +248,7 @@ public final class RestorableDroppedManagedDatabasesClient {
         String resourceGroupName, String managedInstanceName, Context context) {
         return new PagedFlux<>(
             () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
-            nextLink -> listByInstanceNextSinglePageAsync(nextLink));
+            nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -386,6 +386,7 @@ public final class RestorableDroppedManagedDatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -532,6 +533,7 @@ public final class RestorableDroppedManagedDatabasesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByInstanceNext(nextLink, context)
             .map(

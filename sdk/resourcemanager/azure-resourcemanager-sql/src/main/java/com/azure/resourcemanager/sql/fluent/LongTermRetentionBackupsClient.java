@@ -28,7 +28,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.resourcemanager.sql.SqlManagementClient;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.inner.LongTermRetentionBackupInner;
 import com.azure.resourcemanager.sql.fluent.inner.LongTermRetentionBackupListResultInner;
 import com.azure.resourcemanager.sql.models.LongTermRetentionDatabaseState;
@@ -235,41 +235,6 @@ public final class LongTermRetentionBackupsClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases"
-                + "/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteByResourceGroupWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("locationName") String locationName,
-            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
-            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
-            @PathParam("backupName") String backupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers"
-                + "/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}"
-                + "/longTermRetentionBackups/{backupName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("locationName") String locationName,
-            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
-            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
-            @PathParam("backupName") String backupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -444,6 +409,7 @@ public final class LongTermRetentionBackupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -720,6 +686,7 @@ public final class LongTermRetentionBackupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .deleteByResourceGroup(
                 this.client.getEndpoint(),
@@ -748,7 +715,7 @@ public final class LongTermRetentionBackupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteByResourceGroup(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteByResourceGroupAsync(
         String resourceGroupName,
         String locationName,
         String longTermRetentionServerName,
@@ -761,7 +728,9 @@ public final class LongTermRetentionBackupsClient {
                 longTermRetentionServerName,
                 longTermRetentionDatabaseName,
                 backupName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -780,13 +749,14 @@ public final class LongTermRetentionBackupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteByResourceGroup(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteByResourceGroupAsync(
         String resourceGroupName,
         String locationName,
         String longTermRetentionServerName,
         String longTermRetentionDatabaseName,
         String backupName,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteByResourceGroupWithResponseAsync(
                 resourceGroupName,
@@ -795,7 +765,68 @@ public final class LongTermRetentionBackupsClient {
                 longTermRetentionDatabaseName,
                 backupName,
                 context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
+        return beginDeleteByResourceGroupAsync(
+                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        Context context) {
+        return beginDeleteByResourceGroupAsync(
+                resourceGroupName,
+                locationName,
+                longTermRetentionServerName,
+                longTermRetentionDatabaseName,
+                backupName,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -819,18 +850,10 @@ public final class LongTermRetentionBackupsClient {
         String longTermRetentionServerName,
         String longTermRetentionDatabaseName,
         String backupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteByResourceGroupWithResponseAsync(
-                resourceGroupName,
-                locationName,
-                longTermRetentionServerName,
-                longTermRetentionDatabaseName,
-                backupName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteByResourceGroupAsync(
+                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -856,19 +879,15 @@ public final class LongTermRetentionBackupsClient {
         String longTermRetentionDatabaseName,
         String backupName,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteByResourceGroupWithResponseAsync(
+        return beginDeleteByResourceGroupAsync(
                 resourceGroupName,
                 locationName,
                 longTermRetentionServerName,
                 longTermRetentionDatabaseName,
                 backupName,
-                context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+                context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1067,6 +1086,7 @@ public final class LongTermRetentionBackupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupDatabase(
                 this.client.getEndpoint(),
@@ -1160,7 +1180,7 @@ public final class LongTermRetentionBackupsClient {
                     onlyLatestPerDatabase,
                     databaseState,
                     context),
-            nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1194,7 +1214,7 @@ public final class LongTermRetentionBackupsClient {
                     longTermRetentionDatabaseName,
                     onlyLatestPerDatabase,
                     databaseState),
-            nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1403,6 +1423,7 @@ public final class LongTermRetentionBackupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupLocation(
                 this.client.getEndpoint(),
@@ -1475,7 +1496,7 @@ public final class LongTermRetentionBackupsClient {
             () ->
                 listByResourceGroupLocationSinglePageAsync(
                     resourceGroupName, locationName, onlyLatestPerDatabase, databaseState, context),
-            nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1499,7 +1520,7 @@ public final class LongTermRetentionBackupsClient {
             () ->
                 listByResourceGroupLocationSinglePageAsync(
                     resourceGroupName, locationName, onlyLatestPerDatabase, databaseState),
-            nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1694,6 +1715,7 @@ public final class LongTermRetentionBackupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupServer(
                 this.client.getEndpoint(),
@@ -1776,7 +1798,7 @@ public final class LongTermRetentionBackupsClient {
                     onlyLatestPerDatabase,
                     databaseState,
                     context),
-            nextLink -> listByResourceGroupServerNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1801,7 +1823,7 @@ public final class LongTermRetentionBackupsClient {
             () ->
                 listByResourceGroupServerSinglePageAsync(
                     resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState),
-            nextLink -> listByResourceGroupServerNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2002,6 +2024,7 @@ public final class LongTermRetentionBackupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -2237,6 +2260,7 @@ public final class LongTermRetentionBackupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -2262,7 +2286,7 @@ public final class LongTermRetentionBackupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String locationName,
         String longTermRetentionServerName,
         String longTermRetentionDatabaseName,
@@ -2270,7 +2294,9 @@ public final class LongTermRetentionBackupsClient {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(
                 locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2287,16 +2313,66 @@ public final class LongTermRetentionBackupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String locationName,
         String longTermRetentionServerName,
         String longTermRetentionDatabaseName,
         String backupName,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(
                 locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName) {
+        return beginDeleteAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        Context context) {
+        return beginDeleteAsync(
+                locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2317,14 +2393,9 @@ public final class LongTermRetentionBackupsClient {
         String longTermRetentionServerName,
         String longTermRetentionDatabaseName,
         String backupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2347,14 +2418,10 @@ public final class LongTermRetentionBackupsClient {
         String longTermRetentionDatabaseName,
         String backupName,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(
+                locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2524,6 +2591,7 @@ public final class LongTermRetentionBackupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByDatabase(
                 this.client.getEndpoint(),
@@ -2608,7 +2676,7 @@ public final class LongTermRetentionBackupsClient {
                     onlyLatestPerDatabase,
                     databaseState,
                     context),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2636,7 +2704,7 @@ public final class LongTermRetentionBackupsClient {
                     longTermRetentionDatabaseName,
                     onlyLatestPerDatabase,
                     databaseState),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2814,6 +2882,7 @@ public final class LongTermRetentionBackupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByLocation(
                 this.client.getEndpoint(),
@@ -2873,7 +2942,7 @@ public final class LongTermRetentionBackupsClient {
         Context context) {
         return new PagedFlux<>(
             () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState, context),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink));
+            nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2892,7 +2961,7 @@ public final class LongTermRetentionBackupsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink));
+            nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3057,6 +3126,7 @@ public final class LongTermRetentionBackupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByServer(
                 this.client.getEndpoint(),
@@ -3127,7 +3197,7 @@ public final class LongTermRetentionBackupsClient {
             () ->
                 listByServerSinglePageAsync(
                     locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState, context),
-            nextLink -> listByServerNextSinglePageAsync(nextLink));
+            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3150,7 +3220,7 @@ public final class LongTermRetentionBackupsClient {
             () ->
                 listByServerSinglePageAsync(
                     locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState),
-            nextLink -> listByServerNextSinglePageAsync(nextLink));
+            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3221,488 +3291,6 @@ public final class LongTermRetentionBackupsClient {
     }
 
     /**
-     * Deletes a long term retention backup.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteByResourceGroupWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (longTermRetentionServerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter longTermRetentionServerName is required and cannot be null."));
-        }
-        if (longTermRetentionDatabaseName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter longTermRetentionDatabaseName is required and cannot be null."));
-        }
-        if (backupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteByResourceGroupWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            locationName,
-                            longTermRetentionServerName,
-                            longTermRetentionDatabaseName,
-                            backupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteByResourceGroupWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (longTermRetentionServerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter longTermRetentionServerName is required and cannot be null."));
-        }
-        if (longTermRetentionDatabaseName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter longTermRetentionDatabaseName is required and cannot be null."));
-        }
-        if (backupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        return service
-            .beginDeleteByResourceGroupWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                locationName,
-                longTermRetentionServerName,
-                longTermRetentionDatabaseName,
-                backupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteByResourceGroupWithoutPollingAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName) {
-        return beginDeleteByResourceGroupWithoutPollingWithResponseAsync(
-                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteByResourceGroupWithoutPollingAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        Context context) {
-        return beginDeleteByResourceGroupWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                locationName,
-                longTermRetentionServerName,
-                longTermRetentionDatabaseName,
-                backupName,
-                context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteByResourceGroupWithoutPolling(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName) {
-        beginDeleteByResourceGroupWithoutPollingAsync(
-                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
-            .block();
-    }
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteByResourceGroupWithoutPolling(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        Context context) {
-        beginDeleteByResourceGroupWithoutPollingAsync(
-                resourceGroupName,
-                locationName,
-                longTermRetentionServerName,
-                longTermRetentionDatabaseName,
-                backupName,
-                context)
-            .block();
-    }
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (longTermRetentionServerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter longTermRetentionServerName is required and cannot be null."));
-        }
-        if (longTermRetentionDatabaseName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter longTermRetentionDatabaseName is required and cannot be null."));
-        }
-        if (backupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            locationName,
-                            longTermRetentionServerName,
-                            longTermRetentionDatabaseName,
-                            backupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (longTermRetentionServerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter longTermRetentionServerName is required and cannot be null."));
-        }
-        if (longTermRetentionDatabaseName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter longTermRetentionDatabaseName is required and cannot be null."));
-        }
-        if (backupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                locationName,
-                longTermRetentionServerName,
-                longTermRetentionDatabaseName,
-                backupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName) {
-        return beginDeleteWithoutPollingWithResponseAsync(
-                locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(
-                locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName) {
-        beginDeleteWithoutPollingAsync(
-                locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
-            .block();
-    }
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        Context context) {
-        beginDeleteWithoutPollingAsync(
-                locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context)
-            .block();
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -3747,6 +3335,7 @@ public final class LongTermRetentionBackupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupDatabaseNext(nextLink, context)
             .map(
@@ -3805,6 +3394,7 @@ public final class LongTermRetentionBackupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupLocationNext(nextLink, context)
             .map(
@@ -3863,6 +3453,7 @@ public final class LongTermRetentionBackupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupServerNext(nextLink, context)
             .map(
@@ -3920,6 +3511,7 @@ public final class LongTermRetentionBackupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByDatabaseNext(nextLink, context)
             .map(
@@ -3977,6 +3569,7 @@ public final class LongTermRetentionBackupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByLocationNext(nextLink, context)
             .map(
@@ -4034,6 +3627,7 @@ public final class LongTermRetentionBackupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByServerNext(nextLink, context)
             .map(

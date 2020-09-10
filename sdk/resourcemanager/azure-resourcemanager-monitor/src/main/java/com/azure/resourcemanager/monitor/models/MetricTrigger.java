@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
+import java.util.List;
 
 /** The MetricTrigger model. */
 @Fluent
@@ -20,6 +21,12 @@ public final class MetricTrigger {
      */
     @JsonProperty(value = "metricName", required = true)
     private String metricName;
+
+    /*
+     * the namespace of the metric that defines what the rule monitors.
+     */
+    @JsonProperty(value = "metricNamespace")
+    private String metricNamespace;
 
     /*
      * the resource identifier of the resource the rule monitors.
@@ -69,6 +76,14 @@ public final class MetricTrigger {
     @JsonProperty(value = "threshold", required = true)
     private double threshold;
 
+    /*
+     * List of dimension conditions. For example:
+     * [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment""
+         + ","Operator":"Equals","Values":["default"]}].
+     */
+    @JsonProperty(value = "dimensions")
+    private List<ScaleRuleMetricDimension> dimensions;
+
     /**
      * Get the metricName property: the name of the metric that defines what the rule monitors.
      *
@@ -86,6 +101,26 @@ public final class MetricTrigger {
      */
     public MetricTrigger withMetricName(String metricName) {
         this.metricName = metricName;
+        return this;
+    }
+
+    /**
+     * Get the metricNamespace property: the namespace of the metric that defines what the rule monitors.
+     *
+     * @return the metricNamespace value.
+     */
+    public String metricNamespace() {
+        return this.metricNamespace;
+    }
+
+    /**
+     * Set the metricNamespace property: the namespace of the metric that defines what the rule monitors.
+     *
+     * @param metricNamespace the metricNamespace value to set.
+     * @return the MetricTrigger object itself.
+     */
+    public MetricTrigger withMetricNamespace(String metricNamespace) {
+        this.metricNamespace = metricNamespace;
         return this;
     }
 
@@ -238,6 +273,30 @@ public final class MetricTrigger {
     }
 
     /**
+     * Get the dimensions property: List of dimension conditions. For example:
+     * [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment""
+         + ","Operator":"Equals","Values":["default"]}].
+     *
+     * @return the dimensions value.
+     */
+    public List<ScaleRuleMetricDimension> dimensions() {
+        return this.dimensions;
+    }
+
+    /**
+     * Set the dimensions property: List of dimension conditions. For example:
+     * [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment""
+         + ","Operator":"Equals","Values":["default"]}].
+     *
+     * @param dimensions the dimensions value to set.
+     * @return the MetricTrigger object itself.
+     */
+    public MetricTrigger withDimensions(List<ScaleRuleMetricDimension> dimensions) {
+        this.dimensions = dimensions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -277,6 +336,9 @@ public final class MetricTrigger {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operator in model MetricTrigger"));
+        }
+        if (dimensions() != null) {
+            dimensions().forEach(e -> e.validate());
         }
     }
 }

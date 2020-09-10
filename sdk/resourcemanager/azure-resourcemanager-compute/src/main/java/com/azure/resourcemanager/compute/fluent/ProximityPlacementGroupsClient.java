@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupInner;
 import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupListResultInner;
 import com.azure.resourcemanager.compute.models.UpdateResource;
@@ -1069,7 +1068,7 @@ public final class ProximityPlacementGroupsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProximityPlacementGroupInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1224,7 +1223,7 @@ public final class ProximityPlacementGroupsClient
     public PagedFlux<ProximityPlacementGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

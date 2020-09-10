@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.AuthorizationManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.ClassicAdministratorInner;
 import com.azure.resourcemanager.authorization.fluent.inner.ClassicAdministratorListResultInner;
 import reactor.core.publisher.Mono;
@@ -139,6 +138,7 @@ public final class ClassicAdministratorsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-06-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -175,7 +175,8 @@ public final class ClassicAdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClassicAdministratorInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -247,6 +248,7 @@ public final class ClassicAdministratorsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

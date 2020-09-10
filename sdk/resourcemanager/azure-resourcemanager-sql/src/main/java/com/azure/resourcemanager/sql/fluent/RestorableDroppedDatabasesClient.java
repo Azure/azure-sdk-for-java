@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.RestorableDroppedDatabaseInner;
 import com.azure.resourcemanager.sql.fluent.inner.RestorableDroppedDatabaseListResultInner;
 import reactor.core.publisher.Mono;
@@ -190,6 +189,7 @@ public final class RestorableDroppedDatabasesClient {
                         "Parameter restorableDroppededDatabaseId is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -382,6 +382,7 @@ public final class RestorableDroppedDatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listByServer(
                 this.client.getEndpoint(),

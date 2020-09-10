@@ -116,4 +116,28 @@ class TableResourcesImpl extends WrapperImpl<TableResourcesInner> implements Tab
         });
     }
 
+    @Override
+    public Observable<ThroughputSettingsGetResults> migrateTableToAutoscaleAsync(String resourceGroupName, String accountName, String tableName) {
+        TableResourcesInner client = this.inner();
+        return client.migrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ThroughputSettingsGetResults> migrateTableToManualThroughputAsync(String resourceGroupName, String accountName, String tableName) {
+        TableResourcesInner client = this.inner();
+        return client.migrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
 }

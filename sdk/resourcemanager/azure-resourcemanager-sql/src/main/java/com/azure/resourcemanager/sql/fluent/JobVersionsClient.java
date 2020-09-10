@@ -26,7 +26,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.JobVersionListResultInner;
 import reactor.core.publisher.Mono;
 
@@ -209,6 +208,7 @@ public final class JobVersionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByJob(
                 this.client.getEndpoint(),
@@ -270,7 +270,7 @@ public final class JobVersionsClient {
         String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
         return new PagedFlux<>(
             () -> listByJobSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName, context),
-            nextLink -> listByJobNextSinglePageAsync(nextLink));
+            nextLink -> listByJobNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -421,6 +421,7 @@ public final class JobVersionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -585,6 +586,7 @@ public final class JobVersionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByJobNext(nextLink, context)
             .map(

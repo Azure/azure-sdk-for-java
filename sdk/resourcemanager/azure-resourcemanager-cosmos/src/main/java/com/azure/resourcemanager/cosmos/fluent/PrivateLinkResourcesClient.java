@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.PrivateLinkResourceInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.PrivateLinkResourceListResultInner;
 import reactor.core.publisher.Mono;
@@ -174,6 +173,7 @@ public final class PrivateLinkResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByDatabaseAccount(
                 this.client.getEndpoint(),
@@ -343,6 +343,7 @@ public final class PrivateLinkResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),

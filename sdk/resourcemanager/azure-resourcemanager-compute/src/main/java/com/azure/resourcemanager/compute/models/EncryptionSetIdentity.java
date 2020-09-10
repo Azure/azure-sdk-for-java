@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EncryptionSetIdentity model. */
 @Fluent
-public final class EncryptionSetIdentity {
+public class EncryptionSetIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionSetIdentity.class);
 
     /*

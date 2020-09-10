@@ -27,7 +27,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteGatewayInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteGatewayListInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -554,8 +553,12 @@ public final class ExpressRouteGatewaysClient
                 resourceGroupName, expressRouteGatewayName, putExpressRouteGatewayParameters);
         return this
             .client
-            .<ExpressRouteGatewayInner, ExpressRouteGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ExpressRouteGatewayInner.class, ExpressRouteGatewayInner.class);
+            .<ExpressRouteGatewayInner, ExpressRouteGatewayInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ExpressRouteGatewayInner.class,
+                ExpressRouteGatewayInner.class,
+                Context.NONE);
     }
 
     /**
@@ -576,13 +579,18 @@ public final class ExpressRouteGatewaysClient
         String expressRouteGatewayName,
         ExpressRouteGatewayInner putExpressRouteGatewayParameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, expressRouteGatewayName, putExpressRouteGatewayParameters, context);
         return this
             .client
-            .<ExpressRouteGatewayInner, ExpressRouteGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ExpressRouteGatewayInner.class, ExpressRouteGatewayInner.class);
+            .<ExpressRouteGatewayInner, ExpressRouteGatewayInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ExpressRouteGatewayInner.class,
+                ExpressRouteGatewayInner.class,
+                context);
     }
 
     /**
@@ -1006,7 +1014,9 @@ public final class ExpressRouteGatewaysClient
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String expressRouteGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, expressRouteGatewayName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1024,9 +1034,12 @@ public final class ExpressRouteGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String expressRouteGatewayName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, expressRouteGatewayName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**

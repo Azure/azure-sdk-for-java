@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
 import com.azure.resourcemanager.network.fluent.inner.SubnetListResultInner;
 import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
@@ -289,7 +288,9 @@ public final class SubnetsClient {
         String resourceGroupName, String virtualNetworkName, String subnetName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -307,9 +308,12 @@ public final class SubnetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -800,8 +804,8 @@ public final class SubnetsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters);
         return this
             .client
-            .<SubnetInner, SubnetInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SubnetInner.class, SubnetInner.class);
+            .<SubnetInner, SubnetInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SubnetInner.class, SubnetInner.class, Context.NONE);
     }
 
     /**
@@ -824,13 +828,14 @@ public final class SubnetsClient {
         String subnetName,
         SubnetInner subnetParameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, virtualNetworkName, subnetName, subnetParameters, context);
         return this
             .client
-            .<SubnetInner, SubnetInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SubnetInner.class, SubnetInner.class);
+            .<SubnetInner, SubnetInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SubnetInner.class, SubnetInner.class, context);
     }
 
     /**
@@ -1115,7 +1120,9 @@ public final class SubnetsClient {
         Mono<Response<Flux<ByteBuffer>>> mono =
             prepareNetworkPoliciesWithResponseAsync(
                 resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1138,10 +1145,13 @@ public final class SubnetsClient {
         String subnetName,
         PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             prepareNetworkPoliciesWithResponseAsync(
                 resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1419,7 +1429,9 @@ public final class SubnetsClient {
         String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             unprepareNetworkPoliciesWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, serviceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1438,10 +1450,13 @@ public final class SubnetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginUnprepareNetworkPoliciesAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             unprepareNetworkPoliciesWithResponseAsync(
                 resourceGroupName, virtualNetworkName, subnetName, serviceName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1704,7 +1719,7 @@ public final class SubnetsClient {
     public PagedFlux<SubnetInner> listAsync(String resourceGroupName, String virtualNetworkName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, virtualNetworkName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

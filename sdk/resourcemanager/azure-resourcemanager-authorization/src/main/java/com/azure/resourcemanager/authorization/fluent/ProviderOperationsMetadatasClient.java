@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.AuthorizationManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.ProviderOperationsMetadataInner;
 import com.azure.resourcemanager.authorization.fluent.inner.ProviderOperationsMetadataListResultInner;
 import reactor.core.publisher.Mono;
@@ -149,6 +148,7 @@ public final class ProviderOperationsMetadatasClient {
                         "Parameter resourceProviderNamespace is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceProviderNamespace, apiVersion, expand, context);
     }
 
@@ -322,6 +322,7 @@ public final class ProviderOperationsMetadatasClient {
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, expand, context)
             .map(
@@ -362,7 +363,7 @@ public final class ProviderOperationsMetadatasClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProviderOperationsMetadataInner> listAsync(String expand, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(expand, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(expand, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -376,7 +377,8 @@ public final class ProviderOperationsMetadatasClient {
     public PagedFlux<ProviderOperationsMetadataInner> listAsync() {
         final String expand = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(expand), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(expand), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -466,6 +468,7 @@ public final class ProviderOperationsMetadatasClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

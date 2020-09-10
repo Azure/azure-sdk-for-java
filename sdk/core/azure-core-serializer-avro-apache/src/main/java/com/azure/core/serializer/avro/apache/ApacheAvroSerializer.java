@@ -3,8 +3,8 @@
 
 package com.azure.core.serializer.avro.apache;
 
+import com.azure.core.experimental.serializer.AvroSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import org.apache.avro.Schema;
 import org.apache.avro.io.DatumReader;
@@ -23,9 +23,9 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 
 /**
- * Apache Avro based implementation of the {@link ObjectSerializer} interface.
+ * Apache Avro based implementation of the {@link AvroSerializer} interface.
  */
-public class ApacheAvroSerializer implements ObjectSerializer {
+public class ApacheAvroSerializer implements AvroSerializer {
     private final ClientLogger logger = new ClientLogger(ApacheAvroSerializer.class);
 
     private final Schema schema;

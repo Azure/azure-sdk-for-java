@@ -24,7 +24,7 @@ public abstract class FormElement {
     /*
      * BoundingBox specifying relative coordinates of the element.
      */
-    private final BoundingBox boundingBox;
+    private final FieldBoundingBox boundingBox;
 
     /**
      * Creates raw OCR item.
@@ -32,7 +32,7 @@ public abstract class FormElement {
      * @param boundingBox The BoundingBox specifying relative coordinates of the element.
      * @param pageNumber the 1 based page number.
      */
-    FormElement(final String text, final BoundingBox boundingBox, final int pageNumber) {
+    FormElement(final String text, final FieldBoundingBox boundingBox, final int pageNumber) {
         this.text = text;
         this.boundingBox = boundingBox;
         this.pageNumber = pageNumber;
@@ -43,7 +43,7 @@ public abstract class FormElement {
      *
      * @return the bounding box of the element.
      */
-    public BoundingBox getBoundingBox() {
+    public FieldBoundingBox getBoundingBox() {
         return boundingBox;
     }
 

@@ -3,9 +3,9 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
+import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
@@ -77,7 +77,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceNamer;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -92,7 +91,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -120,7 +118,7 @@ class VirtualMachineImpl
     // the name of the virtual machine
     private final String vmName;
     // used to generate unique name for any dependency resources
-    private final ResourceNamer namer;
+    private final IdentifierProvider namer;
     // unique key of a creatable storage account to be used for virtual machine child resources that
     // requires storage [OS disk, data disk, boot diagnostics etc..]
     private String creatableStorageAccountKey;
@@ -196,7 +194,7 @@ class VirtualMachineImpl
         this.authorizationManager = authorizationManager;
         this.vmName = name;
         this.isMarketplaceLinuxImage = false;
-        this.namer = this.manager().sdkContext().getResourceNamerFactory().createResourceNamer(this.vmName);
+        this.namer = this.manager().sdkContext().createIdentifierProvider(this.vmName);
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         this.virtualMachineExtensions =
@@ -395,7 +393,7 @@ class VirtualMachineImpl
 
     @Override
     public RunCommandResult runPowerShellScript(
-        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
         return this
             .manager()
             .virtualMachines()
@@ -1769,30 +1767,22 @@ class VirtualMachineImpl
     }
 
     public Accepted<VirtualMachine> beginCreate() {
-        Flux<Indexable> dependencyTasksAsync = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
-        dependencyTasksAsync.blockLast();
+        return AcceptedImpl.<VirtualMachine, VirtualMachineInner>newAccepted(logger,
+            this.manager().inner(),
+            () -> this.manager().inner().getVirtualMachines()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, inner()).block(),
+            inner -> new VirtualMachineImpl(inner.name(), inner, this.manager(),
+                this.storageManager, this.networkManager, this.authorizationManager),
+            VirtualMachineInner.class,
+            () -> {
+                Flux<Indexable> dependencyTasksAsync =
+                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                dependencyTasksAsync.blockLast();
 
-        // same as createResourceAsync
-        prepareCreateResourceAsync().block();
-
-        Response<Flux<ByteBuffer>> activationResponse = this.manager().inner().getVirtualMachines()
-            .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, inner()).block();
-
-        if (activationResponse == null) {
-            throw logger.logExceptionAsError(new NullPointerException());
-        } else {
-            Accepted<VirtualMachine> accepted = new AcceptedImpl<VirtualMachineInner, VirtualMachine>(
-                activationResponse,
-                this.manager().inner().getSerializerAdapter(),
-                this.manager().inner().getHttpPipeline(),
-                VirtualMachineInner.class,
-                VirtualMachineInner.class,
-                inner -> new VirtualMachineImpl(inner.name(), inner, this.manager(),
-                    this.storageManager, this.networkManager, this.authorizationManager));
-
-            reset(accepted.getActivationResponse().getValue().inner());
-            return accepted;
-        }
+                // same as createResourceAsync
+                prepareCreateResourceAsync().block();
+            },
+            this::reset);
     }
 
     @Override

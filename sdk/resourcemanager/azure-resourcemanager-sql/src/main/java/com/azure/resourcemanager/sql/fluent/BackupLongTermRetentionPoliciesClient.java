@@ -25,8 +25,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.resourcemanager.sql.SqlManagementClient;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.inner.BackupLongTermRetentionPolicyInner;
+import com.azure.resourcemanager.sql.models.LongTermRetentionPolicyName;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -74,7 +75,7 @@ public final class BackupLongTermRetentionPoliciesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
-            @PathParam("policyName") String policyName,
+            @PathParam("policyName") LongTermRetentionPolicyName policyName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -90,7 +91,7 @@ public final class BackupLongTermRetentionPoliciesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
-            @PathParam("policyName") String policyName,
+            @PathParam("policyName") LongTermRetentionPolicyName policyName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") BackupLongTermRetentionPolicyInner parameters,
@@ -110,23 +111,6 @@ public final class BackupLongTermRetentionPoliciesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupLongTermRetentionPolicyInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("policyName") String policyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BackupLongTermRetentionPolicyInner parameters,
-            Context context);
     }
 
     /**
@@ -136,6 +120,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -143,7 +128,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupLongTermRetentionPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName) {
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -160,13 +145,15 @@ public final class BackupLongTermRetentionPoliciesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (policyName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -191,6 +178,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -199,7 +187,11 @@ public final class BackupLongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupLongTermRetentionPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        LongTermRetentionPolicyName policyName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -216,14 +208,17 @@ public final class BackupLongTermRetentionPoliciesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (policyName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -243,6 +238,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -250,8 +246,8 @@ public final class BackupLongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupLongTermRetentionPolicyInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName)
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, policyName)
             .flatMap(
                 (Response<BackupLongTermRetentionPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -269,6 +265,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -277,8 +274,12 @@ public final class BackupLongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupLongTermRetentionPolicyInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName, context)
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        LongTermRetentionPolicyName policyName,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, policyName, context)
             .flatMap(
                 (Response<BackupLongTermRetentionPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -296,14 +297,16 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a database's long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupLongTermRetentionPolicyInner get(String resourceGroupName, String serverName, String databaseName) {
-        return getAsync(resourceGroupName, serverName, databaseName).block();
+    public BackupLongTermRetentionPolicyInner get(
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName) {
+        return getAsync(resourceGroupName, serverName, databaseName, policyName).block();
     }
 
     /**
@@ -313,6 +316,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -321,8 +325,12 @@ public final class BackupLongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupLongTermRetentionPolicyInner get(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return getAsync(resourceGroupName, serverName, databaseName, context).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        LongTermRetentionPolicyName policyName,
+        Context context) {
+        return getAsync(resourceGroupName, serverName, databaseName, policyName, context).block();
     }
 
     /**
@@ -332,6 +340,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @param parameters A long term retention policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -343,6 +352,7 @@ public final class BackupLongTermRetentionPoliciesClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
+        LongTermRetentionPolicyName policyName,
         BackupLongTermRetentionPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -360,6 +370,9 @@ public final class BackupLongTermRetentionPoliciesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (policyName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
@@ -371,7 +384,6 @@ public final class BackupLongTermRetentionPoliciesClient {
         } else {
             parameters.validate();
         }
-        final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -397,6 +409,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @param parameters A long term retention policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -409,6 +422,7 @@ public final class BackupLongTermRetentionPoliciesClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
+        LongTermRetentionPolicyName policyName,
         BackupLongTermRetentionPolicyInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -427,6 +441,9 @@ public final class BackupLongTermRetentionPoliciesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (policyName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
@@ -438,8 +455,8 @@ public final class BackupLongTermRetentionPoliciesClient {
         } else {
             parameters.validate();
         }
-        final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -460,6 +477,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @param parameters A long term retention policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -468,20 +486,22 @@ public final class BackupLongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<BackupLongTermRetentionPolicyInner>, BackupLongTermRetentionPolicyInner>
-        beginCreateOrUpdate(
+        beginCreateOrUpdateAsync(
             String resourceGroupName,
             String serverName,
             String databaseName,
+            LongTermRetentionPolicyName policyName,
             BackupLongTermRetentionPolicyInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters);
+            createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, policyName, parameters);
         return this
             .client
-            .<BackupLongTermRetentionPolicyInner, BackupLongTermRetentionPolicyInner>getLroResultAsync(
+            .<BackupLongTermRetentionPolicyInner, BackupLongTermRetentionPolicyInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 BackupLongTermRetentionPolicyInner.class,
-                BackupLongTermRetentionPolicyInner.class);
+                BackupLongTermRetentionPolicyInner.class,
+                Context.NONE);
     }
 
     /**
@@ -491,6 +511,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @param parameters A long term retention policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -500,21 +521,79 @@ public final class BackupLongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<BackupLongTermRetentionPolicyInner>, BackupLongTermRetentionPolicyInner>
+        beginCreateOrUpdateAsync(
+            String resourceGroupName,
+            String serverName,
+            String databaseName,
+            LongTermRetentionPolicyName policyName,
+            BackupLongTermRetentionPolicyInner parameters,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, serverName, databaseName, policyName, parameters, context);
+        return this
+            .client
+            .<BackupLongTermRetentionPolicyInner, BackupLongTermRetentionPolicyInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BackupLongTermRetentionPolicyInner.class,
+                BackupLongTermRetentionPolicyInner.class,
+                context);
+    }
+
+    /**
+     * Sets a database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
+     * @param parameters A long term retention policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BackupLongTermRetentionPolicyInner>, BackupLongTermRetentionPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
             String serverName,
             String databaseName,
+            LongTermRetentionPolicyName policyName,
+            BackupLongTermRetentionPolicyInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Sets a database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
+     * @param parameters A long term retention policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BackupLongTermRetentionPolicyInner>, BackupLongTermRetentionPolicyInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String serverName,
+            String databaseName,
+            LongTermRetentionPolicyName policyName,
             BackupLongTermRetentionPolicyInner parameters,
             Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context);
-        return this
-            .client
-            .<BackupLongTermRetentionPolicyInner, BackupLongTermRetentionPolicyInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                BackupLongTermRetentionPolicyInner.class,
-                BackupLongTermRetentionPolicyInner.class);
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -524,6 +603,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @param parameters A long term retention policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -535,18 +615,11 @@ public final class BackupLongTermRetentionPoliciesClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
+        LongTermRetentionPolicyName policyName,
         BackupLongTermRetentionPolicyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters);
-        return this
-            .client
-            .<BackupLongTermRetentionPolicyInner, BackupLongTermRetentionPolicyInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                BackupLongTermRetentionPolicyInner.class,
-                BackupLongTermRetentionPolicyInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -556,6 +629,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @param parameters A long term retention policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -568,19 +642,12 @@ public final class BackupLongTermRetentionPoliciesClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
+        LongTermRetentionPolicyName policyName,
         BackupLongTermRetentionPolicyInner parameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context);
-        return this
-            .client
-            .<BackupLongTermRetentionPolicyInner, BackupLongTermRetentionPolicyInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                BackupLongTermRetentionPolicyInner.class,
-                BackupLongTermRetentionPolicyInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -590,6 +657,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @param parameters A long term retention policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -601,8 +669,9 @@ public final class BackupLongTermRetentionPoliciesClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
+        LongTermRetentionPolicyName policyName,
         BackupLongTermRetentionPolicyInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters).block();
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).block();
     }
 
     /**
@@ -612,6 +681,7 @@ public final class BackupLongTermRetentionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
      * @param parameters A long term retention policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -624,9 +694,11 @@ public final class BackupLongTermRetentionPoliciesClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
+        LongTermRetentionPolicyName policyName,
         BackupLongTermRetentionPolicyInner parameters,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
+            .block();
     }
 
     /**
@@ -721,6 +793,7 @@ public final class BackupLongTermRetentionPoliciesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByDatabase(
                 this.client.getEndpoint(),
@@ -820,244 +893,5 @@ public final class BackupLongTermRetentionPoliciesClient {
     public BackupLongTermRetentionPolicyInner listByDatabase(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         return listByDatabaseAsync(resourceGroupName, serverName, databaseName, context).block();
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters A long term retention policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BackupLongTermRetentionPolicyInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        BackupLongTermRetentionPolicyInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String policyName = "default";
-        final String apiVersion = "2017-03-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            policyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters A long term retention policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BackupLongTermRetentionPolicyInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        BackupLongTermRetentionPolicyInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String policyName = "default";
-        final String apiVersion = "2017-03-01-preview";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                policyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters A long term retention policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BackupLongTermRetentionPolicyInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        BackupLongTermRetentionPolicyInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, serverName, databaseName, parameters)
-            .flatMap(
-                (Response<BackupLongTermRetentionPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters A long term retention policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BackupLongTermRetentionPolicyInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        BackupLongTermRetentionPolicyInner parameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, serverName, databaseName, parameters, context)
-            .flatMap(
-                (Response<BackupLongTermRetentionPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters A long term retention policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupLongTermRetentionPolicyInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        BackupLongTermRetentionPolicyInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, serverName, databaseName, parameters).block();
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters A long term retention policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupLongTermRetentionPolicyInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        BackupLongTermRetentionPolicyInner parameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, serverName, databaseName, parameters, context)
-            .block();
     }
 }

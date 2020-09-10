@@ -450,32 +450,6 @@
       </plugin>
 
       <plugin>
-        <groupId>net.jonathangiles.tools</groupId>
-        <artifactId>whitelistgenerator-maven-plugin</artifactId>
-        <version>1.0.2</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>generateAllowlistReport</id>
-            <phase>package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-            <configuration>
-              <baseDir>.</baseDir>
-              <reportFile>target/dependency-allowlist.json</reportFile>
-              <ignoredGA>
-                <param>com.azure:azure-cosmos-benchmark</param>
-                <param>com.azure:azure-core-test</param>
-                <param>com.azure:azure-e2e</param>
-                <param>com.azure:azure-storage-perf</param>
-                <param>com.azure:perf-test-core</param>
-              </ignoredGA>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
@@ -609,6 +583,10 @@
               <group>
                 <title>Azure Core - Serializer - JSON - Jackson</title>
                 <packages>com.azure.core.serializer.json.jackson*</packages>
+              </group>
+              <group>
+                <title>Azure Anomaly Detector</title>
+                <packages>com.azure.ai.anomalydetector*</packages>
               </group>
               <group>
                 <title>Azure App Configuration</title>
@@ -1107,63 +1085,6 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <argLine>
-                <!-- KeyVault tests fail without these exports. -->
-                --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-
-                <!-- Needed for JUnit offline instrumentation -->
-                --add-reads com.azure.core=ALL-UNNAMED
-                --add-reads com.azure.core.test=ALL-UNNAMED
-                --add-reads com.azure.core.amqp=ALL-UNNAMED
-
-                <!-- JUnit5 and Mockito use reflection to create objects. -->
-                --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-                --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
-                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
-                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics.implementation.models=com.azure.core
-                --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys=ALL-UNNAMED
-
-                <!-- Cosmos module need this -->
-                --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
-
-                <!-- AMQP tests fail without this. ArgumentCaptor requires reflection. -->
-                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
-                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
-
-                <!-- Checkpoint store tests fail without this -->
-                --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
-                --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
-
-                <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
-                --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
-                --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
-              </argLine>
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
@@ -1441,6 +1362,31 @@
                   <reporters>html</reporters>
                   <showAll>true</showAll>
                   <dependencyManagement>true</dependencyManagement>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>net.jonathangiles.tools</groupId>
+            <artifactId>whitelistgenerator-maven-plugin</artifactId>
+            <version>1.0.2</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>generateAllowlistReport</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+                <configuration>
+                  <baseDir>.</baseDir>
+                  <reportFile>target/dependency-allowlist.json</reportFile>
+                  <ignoredGA>
+                    <param>com.azure:azure-cosmos-benchmark</param>
+                    <param>com.azure:azure-core-test</param>
+                    <param>com.azure:azure-e2e</param>
+                    <param>com.azure:azure-storage-perf</param>
+                    <param>com.azure:perf-test-core</param>
+                  </ignoredGA>
                 </configuration>
               </execution>
             </executions>

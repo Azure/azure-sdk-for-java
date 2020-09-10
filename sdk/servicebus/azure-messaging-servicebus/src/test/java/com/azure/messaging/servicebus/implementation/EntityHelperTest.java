@@ -3,16 +3,16 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
+import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
+import com.azure.messaging.servicebus.administration.models.EntityStatus;
+import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
+import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.implementation.models.TopicDescription;
-import com.azure.messaging.servicebus.models.CreateQueueOptions;
-import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
-import com.azure.messaging.servicebus.models.CreateTopicOptions;
-import com.azure.messaging.servicebus.models.EntityStatus;
-import com.azure.messaging.servicebus.models.QueueProperties;
-import com.azure.messaging.servicebus.models.SubscriptionProperties;
-import com.azure.messaging.servicebus.models.TopicProperties;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -26,8 +26,7 @@ class EntityHelperTest {
     @Test
     void createTopic() {
         // Arrange
-        final String queueName = "some-topic";
-        final CreateTopicOptions expected = new CreateTopicOptions(queueName)
+        final CreateTopicOptions expected = new CreateTopicOptions()
             .setStatus(EntityStatus.RECEIVE_DISABLED)
             .setUserMetadata("Test-topic-Metadata");
 
@@ -51,8 +50,7 @@ class EntityHelperTest {
     @Test
     void createQueue() {
         // Arrange
-        final String queueName = "some-queue";
-        final CreateQueueOptions expected = new CreateQueueOptions(queueName)
+        final CreateQueueOptions expected = new CreateQueueOptions()
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
             .setDeadLetteringOnMessageExpiration(true)
@@ -106,7 +104,7 @@ class EntityHelperTest {
     void setQueueName() {
         // Arrange
         final String newName = "I'm a new name";
-        final CreateQueueOptions options = new CreateQueueOptions("some name");
+        final CreateQueueOptions options = new CreateQueueOptions();
         final QueueProperties properties = EntityHelper.toModel(EntityHelper.getQueueDescription(options));
 
         // Act
@@ -119,9 +117,7 @@ class EntityHelperTest {
     @Test
     void createSubscription() {
         // Arrange
-        final String topicName = "topic?";
-        final String subscriptionName = "subscription";
-        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions(topicName, subscriptionName)
+        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
             .setDeadLetteringOnMessageExpiration(true)

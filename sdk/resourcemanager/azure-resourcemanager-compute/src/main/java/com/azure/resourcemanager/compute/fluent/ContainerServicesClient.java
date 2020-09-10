@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.ContainerServiceInner;
 import com.azure.resourcemanager.compute.fluent.inner.ContainerServiceListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -256,7 +255,8 @@ public final class ContainerServicesClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ContainerServiceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -413,8 +413,12 @@ public final class ContainerServicesClient
             createOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters);
         return this
             .client
-            .<ContainerServiceInner, ContainerServiceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ContainerServiceInner.class, ContainerServiceInner.class);
+            .<ContainerServiceInner, ContainerServiceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ContainerServiceInner.class,
+                ContainerServiceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -432,12 +436,13 @@ public final class ContainerServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters, context);
         return this
             .client
-            .<ContainerServiceInner, ContainerServiceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ContainerServiceInner.class, ContainerServiceInner.class);
+            .<ContainerServiceInner, ContainerServiceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ContainerServiceInner.class, ContainerServiceInner.class, context);
     }
 
     /**
@@ -851,7 +856,9 @@ public final class ContainerServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String containerServiceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerServiceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -871,9 +878,12 @@ public final class ContainerServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String containerServiceName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, containerServiceName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1123,7 +1133,7 @@ public final class ContainerServicesClient
     public PagedFlux<ContainerServiceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

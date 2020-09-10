@@ -30,10 +30,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.VirtualClusterInner;
 import com.azure.resourcemanager.sql.fluent.inner.VirtualClusterListResultInner;
 import com.azure.resourcemanager.sql.models.VirtualClusterUpdate;
@@ -138,35 +138,6 @@ public final class VirtualClustersClient
             @BodyParam("application/json") VirtualClusterUpdate parameters,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters"
-                + "/{virtualClusterName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualClusterName") String virtualClusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters"
-                + "/{virtualClusterName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualClusterInner>> beginUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualClusterName") String virtualClusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VirtualClusterUpdate parameters,
-            Context context);
-
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -244,6 +215,7 @@ public final class VirtualClustersClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
@@ -280,7 +252,8 @@ public final class VirtualClustersClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualClusterInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -391,6 +364,7 @@ public final class VirtualClustersClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(), apiVersion, context)
@@ -437,7 +411,7 @@ public final class VirtualClustersClient
     public PagedFlux<VirtualClusterInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -556,6 +530,7 @@ public final class VirtualClustersClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -735,6 +710,7 @@ public final class VirtualClustersClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -757,9 +733,11 @@ public final class VirtualClustersClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualClusterName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualClusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualClusterName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -775,10 +753,47 @@ public final class VirtualClustersClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualClusterName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualClusterName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes a virtual cluster.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualClusterName) {
+        return beginDeleteAsync(resourceGroupName, virtualClusterName).getSyncPoller();
+    }
+
+    /**
+     * Deletes a virtual cluster.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualClusterName, Context context) {
+        return beginDeleteAsync(resourceGroupName, virtualClusterName, context).getSyncPoller();
     }
 
     /**
@@ -794,12 +809,9 @@ public final class VirtualClustersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualClusterName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualClusterName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, virtualClusterName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -816,12 +828,9 @@ public final class VirtualClustersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualClusterName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualClusterName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, virtualClusterName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -953,6 +962,7 @@ public final class VirtualClustersClient
             parameters.validate();
         }
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -977,14 +987,18 @@ public final class VirtualClustersClient
      * @return an Azure SQL virtual cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualClusterInner>, VirtualClusterInner> beginUpdate(
+    public PollerFlux<PollResult<VirtualClusterInner>, VirtualClusterInner> beginUpdateAsync(
         String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, virtualClusterName, parameters);
         return this
             .client
-            .<VirtualClusterInner, VirtualClusterInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualClusterInner.class, VirtualClusterInner.class);
+            .<VirtualClusterInner, VirtualClusterInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualClusterInner.class,
+                VirtualClusterInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1001,14 +1015,52 @@ public final class VirtualClustersClient
      * @return an Azure SQL virtual cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualClusterInner>, VirtualClusterInner> beginUpdate(
+    public PollerFlux<PollResult<VirtualClusterInner>, VirtualClusterInner> beginUpdateAsync(
         String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, virtualClusterName, parameters, context);
         return this
             .client
-            .<VirtualClusterInner, VirtualClusterInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualClusterInner.class, VirtualClusterInner.class);
+            .<VirtualClusterInner, VirtualClusterInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VirtualClusterInner.class, VirtualClusterInner.class, context);
+    }
+
+    /**
+     * Updates a virtual cluster.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @param parameters An update request for an Azure SQL Database virtual cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL virtual cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VirtualClusterInner>, VirtualClusterInner> beginUpdate(
+        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, virtualClusterName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Updates a virtual cluster.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @param parameters An update request for an Azure SQL Database virtual cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL virtual cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VirtualClusterInner>, VirtualClusterInner> beginUpdate(
+        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, virtualClusterName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1026,14 +1078,9 @@ public final class VirtualClustersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualClusterInner> updateAsync(
         String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, virtualClusterName, parameters);
-        return this
-            .client
-            .<VirtualClusterInner, VirtualClusterInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualClusterInner.class, VirtualClusterInner.class)
+        return beginUpdateAsync(resourceGroupName, virtualClusterName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1052,14 +1099,9 @@ public final class VirtualClustersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualClusterInner> updateAsync(
         String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, virtualClusterName, parameters, context);
-        return this
-            .client
-            .<VirtualClusterInner, VirtualClusterInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualClusterInner.class, VirtualClusterInner.class)
+        return beginUpdateAsync(resourceGroupName, virtualClusterName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1097,367 +1139,6 @@ public final class VirtualClustersClient
     public VirtualClusterInner update(
         String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, virtualClusterName, parameters, context).block();
-    }
-
-    /**
-     * Deletes a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String virtualClusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualClusterName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2015-05-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualClusterName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String virtualClusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualClusterName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2015-05-01-preview";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualClusterName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String virtualClusterName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, virtualClusterName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String virtualClusterName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, virtualClusterName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String virtualClusterName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, virtualClusterName).block();
-    }
-
-    /**
-     * Deletes a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String virtualClusterName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, virtualClusterName, context).block();
-    }
-
-    /**
-     * Updates a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters An update request for an Azure SQL Database virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualClusterInner>> beginUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualClusterName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2015-05-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualClusterName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters An update request for an Azure SQL Database virtual cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualClusterInner>> beginUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualClusterName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2015-05-01-preview";
-        return service
-            .beginUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualClusterName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
-
-    /**
-     * Updates a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters An update request for an Azure SQL Database virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualClusterInner> beginUpdateWithoutPollingAsync(
-        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
-        return beginUpdateWithoutPollingWithResponseAsync(resourceGroupName, virtualClusterName, parameters)
-            .flatMap(
-                (Response<VirtualClusterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters An update request for an Azure SQL Database virtual cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualClusterInner> beginUpdateWithoutPollingAsync(
-        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters, Context context) {
-        return beginUpdateWithoutPollingWithResponseAsync(resourceGroupName, virtualClusterName, parameters, context)
-            .flatMap(
-                (Response<VirtualClusterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters An update request for an Azure SQL Database virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualClusterInner beginUpdateWithoutPolling(
-        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
-        return beginUpdateWithoutPollingAsync(resourceGroupName, virtualClusterName, parameters).block();
-    }
-
-    /**
-     * Updates a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters An update request for an Azure SQL Database virtual cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL virtual cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualClusterInner beginUpdateWithoutPolling(
-        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters, Context context) {
-        return beginUpdateWithoutPollingAsync(resourceGroupName, virtualClusterName, parameters, context).block();
     }
 
     /**
@@ -1503,6 +1184,7 @@ public final class VirtualClustersClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -1560,6 +1242,7 @@ public final class VirtualClustersClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(

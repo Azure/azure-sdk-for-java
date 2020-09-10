@@ -42,4 +42,15 @@ public @interface Container {
      * @return default as true
      */
     boolean autoCreateContainer() default Constants.DEFAULT_AUTO_CREATE_CONTAINER;
+
+    /**
+     * To set the partition key definition for container
+     * Should only be used for nested partition key scenario.
+     *
+     * For general partition key support, use the {@link PartitionKey} annotation
+     * By default {@link PartitionKey} annotation will take precedence, unless not specified.
+     *
+     * @return partition key path
+     */
+    String partitionKeyPath() default "";
 }

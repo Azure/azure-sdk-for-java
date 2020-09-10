@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
+import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
@@ -16,6 +18,7 @@ import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** The AgentPool model. */
 @JsonFlatten
@@ -25,7 +28,8 @@ public class AgentPoolInner extends SubResource {
 
     /*
      * Number of agents (VMs) to host docker containers. Allowed values must be
-     * in the range of 1 to 100 (inclusive). The default value is 1.
+     * in the range of 0 to 100 (inclusive) for user pools and in the range of
+     * 1 to 100 (inclusive) for system pools. The default value is 1.
      */
     @JsonProperty(value = "properties.count")
     private Integer count;
@@ -88,10 +92,28 @@ public class AgentPoolInner extends SubResource {
     private AgentPoolType typePropertiesType;
 
     /*
+     * AgentPoolMode represents mode of an agent pool
+     */
+    @JsonProperty(value = "properties.mode")
+    private AgentPoolMode mode;
+
+    /*
      * Version of orchestrator specified when creating the managed cluster.
      */
     @JsonProperty(value = "properties.orchestratorVersion")
     private String orchestratorVersion;
+
+    /*
+     * Version of node image
+     */
+    @JsonProperty(value = "properties.nodeImageVersion")
+    private String nodeImageVersion;
+
+    /*
+     * Settings for upgrading the agentpool
+     */
+    @JsonProperty(value = "properties.upgradeSettings")
+    private AgentPoolUpgradeSettings upgradeSettings;
 
     /*
      * The current deployment or provisioning state, which only appears in the
@@ -101,7 +123,7 @@ public class AgentPoolInner extends SubResource {
     private String provisioningState;
 
     /*
-     * (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets
+     * Availability zones for nodes. Must use VirtualMachineScaleSets
      * AgentPoolType.
      */
     @JsonProperty(value = "properties.availabilityZones")
@@ -121,11 +143,32 @@ public class AgentPoolInner extends SubResource {
     private ScaleSetPriority scaleSetPriority;
 
     /*
-     * ScaleSetEvictionPolicy to be used to specify eviction policy for low
-     * priority virtual machine scale set. Default to Delete.
+     * ScaleSetEvictionPolicy to be used to specify eviction policy for Spot
+     * virtual machine scale set. Default to Delete.
      */
     @JsonProperty(value = "properties.scaleSetEvictionPolicy")
     private ScaleSetEvictionPolicy scaleSetEvictionPolicy;
+
+    /*
+     * SpotMaxPrice to be used to specify the maximum price you are willing to
+     * pay in US Dollars. Possible values are any decimal value greater than
+     * zero or -1 which indicates default price to be up-to on-demand.
+     */
+    @JsonProperty(value = "properties.spotMaxPrice")
+    private Float spotMaxPrice;
+
+    /*
+     * Agent pool tags to be persisted on the agent pool virtual machine scale
+     * set.
+     */
+    @JsonProperty(value = "properties.tags")
+    private Map<String, String> tags;
+
+    /*
+     * Agent pool node labels to be persisted across all nodes in agent pool.
+     */
+    @JsonProperty(value = "properties.nodeLabels")
+    private Map<String, String> nodeLabels;
 
     /*
      * Taints added to new nodes during node pool create and scale. For
@@ -133,6 +176,12 @@ public class AgentPoolInner extends SubResource {
      */
     @JsonProperty(value = "properties.nodeTaints")
     private List<String> nodeTaints;
+
+    /*
+     * The ID for Proximity Placement Group.
+     */
+    @JsonProperty(value = "properties.proximityPlacementGroupID")
+    private String proximityPlacementGroupId;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -149,7 +198,8 @@ public class AgentPoolInner extends SubResource {
 
     /**
      * Get the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
-     * 1 to 100 (inclusive). The default value is 1.
+     * 0 to 100 (inclusive) for user pools and in the range of 1 to 100 (inclusive) for system pools. The default value
+     * is 1.
      *
      * @return the count value.
      */
@@ -159,7 +209,8 @@ public class AgentPoolInner extends SubResource {
 
     /**
      * Set the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
-     * 1 to 100 (inclusive). The default value is 1.
+     * 0 to 100 (inclusive) for user pools and in the range of 1 to 100 (inclusive) for system pools. The default value
+     * is 1.
      *
      * @param count the count value to set.
      * @return the AgentPoolInner object itself.
@@ -352,6 +403,26 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
+     * Get the mode property: AgentPoolMode represents mode of an agent pool.
+     *
+     * @return the mode value.
+     */
+    public AgentPoolMode mode() {
+        return this.mode;
+    }
+
+    /**
+     * Set the mode property: AgentPoolMode represents mode of an agent pool.
+     *
+     * @param mode the mode value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withMode(AgentPoolMode mode) {
+        this.mode = mode;
+        return this;
+    }
+
+    /**
      * Get the orchestratorVersion property: Version of orchestrator specified when creating the managed cluster.
      *
      * @return the orchestratorVersion value.
@@ -372,6 +443,46 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
+     * Get the nodeImageVersion property: Version of node image.
+     *
+     * @return the nodeImageVersion value.
+     */
+    public String nodeImageVersion() {
+        return this.nodeImageVersion;
+    }
+
+    /**
+     * Set the nodeImageVersion property: Version of node image.
+     *
+     * @param nodeImageVersion the nodeImageVersion value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withNodeImageVersion(String nodeImageVersion) {
+        this.nodeImageVersion = nodeImageVersion;
+        return this;
+    }
+
+    /**
+     * Get the upgradeSettings property: Settings for upgrading the agentpool.
+     *
+     * @return the upgradeSettings value.
+     */
+    public AgentPoolUpgradeSettings upgradeSettings() {
+        return this.upgradeSettings;
+    }
+
+    /**
+     * Set the upgradeSettings property: Settings for upgrading the agentpool.
+     *
+     * @param upgradeSettings the upgradeSettings value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withUpgradeSettings(AgentPoolUpgradeSettings upgradeSettings) {
+        this.upgradeSettings = upgradeSettings;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
      *
@@ -382,8 +493,7 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the availabilityZones property: (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets
-     * AgentPoolType.
+     * Get the availabilityZones property: Availability zones for nodes. Must use VirtualMachineScaleSets AgentPoolType.
      *
      * @return the availabilityZones value.
      */
@@ -392,8 +502,7 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the availabilityZones property: (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets
-     * AgentPoolType.
+     * Set the availabilityZones property: Availability zones for nodes. Must use VirtualMachineScaleSets AgentPoolType.
      *
      * @param availabilityZones the availabilityZones value to set.
      * @return the AgentPoolInner object itself.
@@ -446,8 +555,8 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the scaleSetEvictionPolicy property: ScaleSetEvictionPolicy to be used to specify eviction policy for low
-     * priority virtual machine scale set. Default to Delete.
+     * Get the scaleSetEvictionPolicy property: ScaleSetEvictionPolicy to be used to specify eviction policy for Spot
+     * virtual machine scale set. Default to Delete.
      *
      * @return the scaleSetEvictionPolicy value.
      */
@@ -456,14 +565,78 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the scaleSetEvictionPolicy property: ScaleSetEvictionPolicy to be used to specify eviction policy for low
-     * priority virtual machine scale set. Default to Delete.
+     * Set the scaleSetEvictionPolicy property: ScaleSetEvictionPolicy to be used to specify eviction policy for Spot
+     * virtual machine scale set. Default to Delete.
      *
      * @param scaleSetEvictionPolicy the scaleSetEvictionPolicy value to set.
      * @return the AgentPoolInner object itself.
      */
     public AgentPoolInner withScaleSetEvictionPolicy(ScaleSetEvictionPolicy scaleSetEvictionPolicy) {
         this.scaleSetEvictionPolicy = scaleSetEvictionPolicy;
+        return this;
+    }
+
+    /**
+     * Get the spotMaxPrice property: SpotMaxPrice to be used to specify the maximum price you are willing to pay in US
+     * Dollars. Possible values are any decimal value greater than zero or -1 which indicates default price to be up-to
+     * on-demand.
+     *
+     * @return the spotMaxPrice value.
+     */
+    public Float spotMaxPrice() {
+        return this.spotMaxPrice;
+    }
+
+    /**
+     * Set the spotMaxPrice property: SpotMaxPrice to be used to specify the maximum price you are willing to pay in US
+     * Dollars. Possible values are any decimal value greater than zero or -1 which indicates default price to be up-to
+     * on-demand.
+     *
+     * @param spotMaxPrice the spotMaxPrice value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withSpotMaxPrice(Float spotMaxPrice) {
+        this.spotMaxPrice = spotMaxPrice;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Agent pool tags to be persisted on the agent pool virtual machine scale set.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Agent pool tags to be persisted on the agent pool virtual machine scale set.
+     *
+     * @param tags the tags value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the nodeLabels property: Agent pool node labels to be persisted across all nodes in agent pool.
+     *
+     * @return the nodeLabels value.
+     */
+    public Map<String, String> nodeLabels() {
+        return this.nodeLabels;
+    }
+
+    /**
+     * Set the nodeLabels property: Agent pool node labels to be persisted across all nodes in agent pool.
+     *
+     * @param nodeLabels the nodeLabels value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withNodeLabels(Map<String, String> nodeLabels) {
+        this.nodeLabels = nodeLabels;
         return this;
     }
 
@@ -486,6 +659,26 @@ public class AgentPoolInner extends SubResource {
      */
     public AgentPoolInner withNodeTaints(List<String> nodeTaints) {
         this.nodeTaints = nodeTaints;
+        return this;
+    }
+
+    /**
+     * Get the proximityPlacementGroupId property: The ID for Proximity Placement Group.
+     *
+     * @return the proximityPlacementGroupId value.
+     */
+    public String proximityPlacementGroupId() {
+        return this.proximityPlacementGroupId;
+    }
+
+    /**
+     * Set the proximityPlacementGroupId property: The ID for Proximity Placement Group.
+     *
+     * @param proximityPlacementGroupId the proximityPlacementGroupId value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withProximityPlacementGroupId(String proximityPlacementGroupId) {
+        this.proximityPlacementGroupId = proximityPlacementGroupId;
         return this;
     }
 
@@ -514,5 +707,8 @@ public class AgentPoolInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (upgradeSettings() != null) {
+            upgradeSettings().validate();
+        }
     }
 }

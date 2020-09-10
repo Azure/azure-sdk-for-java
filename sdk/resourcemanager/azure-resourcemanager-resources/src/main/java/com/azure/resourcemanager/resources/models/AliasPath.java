@@ -33,6 +33,13 @@ public final class AliasPath {
     @JsonProperty(value = "pattern")
     private AliasPattern pattern;
 
+    /*
+     * The metadata of the alias path. If missing, fall back to the default
+     * metadata of the alias.
+     */
+    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
+    private AliasPathMetadata metadata;
+
     /**
      * Get the path property: The path of an alias.
      *
@@ -94,6 +101,16 @@ public final class AliasPath {
     }
 
     /**
+     * Get the metadata property: The metadata of the alias path. If missing, fall back to the default metadata of the
+     * alias.
+     *
+     * @return the metadata value.
+     */
+    public AliasPathMetadata metadata() {
+        return this.metadata;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -101,6 +118,9 @@ public final class AliasPath {
     public void validate() {
         if (pattern() != null) {
             pattern().validate();
+        }
+        if (metadata() != null) {
+            metadata().validate();
         }
     }
 }

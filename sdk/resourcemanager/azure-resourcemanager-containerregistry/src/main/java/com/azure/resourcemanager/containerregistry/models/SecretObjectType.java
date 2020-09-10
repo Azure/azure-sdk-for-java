@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.containerregistry.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for SecretObjectType. */
-public enum SecretObjectType {
-    /** Enum value Opaque. */
-    OPAQUE("Opaque");
-
-    /** The actual serialized value for a SecretObjectType instance. */
-    private final String value;
-
-    SecretObjectType(String value) {
-        this.value = value;
-    }
+public final class SecretObjectType extends ExpandableStringEnum<SecretObjectType> {
+    /** Static value Opaque for SecretObjectType. */
+    public static final SecretObjectType OPAQUE = fromString("Opaque");
 
     /**
-     * Parses a serialized value to a SecretObjectType instance.
+     * Creates or finds a SecretObjectType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed SecretObjectType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding SecretObjectType.
      */
     @JsonCreator
-    public static SecretObjectType fromString(String value) {
-        SecretObjectType[] items = SecretObjectType.values();
-        for (SecretObjectType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static SecretObjectType fromString(String name) {
+        return fromString(name, SecretObjectType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known SecretObjectType values. */
+    public static Collection<SecretObjectType> values() {
+        return values(SecretObjectType.class);
     }
 }

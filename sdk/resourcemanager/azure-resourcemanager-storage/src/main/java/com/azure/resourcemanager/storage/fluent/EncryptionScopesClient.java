@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.EncryptionScopeInner;
 import com.azure.resourcemanager.storage.fluent.inner.EncryptionScopeListResultInner;
 import reactor.core.publisher.Mono;
@@ -254,6 +253,7 @@ public final class EncryptionScopesClient {
         } else {
             encryptionScope.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .put(
                 this.client.getEndpoint(),
@@ -516,6 +516,7 @@ public final class EncryptionScopesClient {
         } else {
             encryptionScope.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .patch(
                 this.client.getEndpoint(),
@@ -750,6 +751,7 @@ public final class EncryptionScopesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter encryptionScopeName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -955,6 +957,7 @@ public final class EncryptionScopesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1011,7 +1014,7 @@ public final class EncryptionScopesClient {
     public PagedFlux<EncryptionScopeInner> listAsync(String resourceGroupName, String accountName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1096,6 +1099,7 @@ public final class EncryptionScopesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

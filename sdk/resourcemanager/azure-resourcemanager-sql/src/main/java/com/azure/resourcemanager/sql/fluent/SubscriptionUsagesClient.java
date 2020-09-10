@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.SubscriptionUsageInner;
 import com.azure.resourcemanager.sql.fluent.inner.SubscriptionUsageListResultInner;
 import reactor.core.publisher.Mono;
@@ -167,6 +166,7 @@ public final class SubscriptionUsagesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByLocation(
                 this.client.getEndpoint(), locationName, this.client.getSubscriptionId(), apiVersion, context)
@@ -210,7 +210,7 @@ public final class SubscriptionUsagesClient {
     public PagedFlux<SubscriptionUsageInner> listByLocationAsync(String locationName, Context context) {
         return new PagedFlux<>(
             () -> listByLocationSinglePageAsync(locationName, context),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink));
+            nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -320,6 +320,7 @@ public final class SubscriptionUsagesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -452,6 +453,7 @@ public final class SubscriptionUsagesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByLocationNext(nextLink, context)
             .map(

@@ -45,6 +45,13 @@ public final class Alias {
     @JsonProperty(value = "defaultPattern")
     private AliasPattern defaultPattern;
 
+    /*
+     * The default alias path metadata. Applies to the default path and to any
+     * alias path that doesn't have metadata
+     */
+    @JsonProperty(value = "defaultMetadata", access = JsonProperty.Access.WRITE_ONLY)
+    private AliasPathMetadata defaultMetadata;
+
     /**
      * Get the name property: The alias name.
      *
@@ -146,6 +153,16 @@ public final class Alias {
     }
 
     /**
+     * Get the defaultMetadata property: The default alias path metadata. Applies to the default path and to any alias
+     * path that doesn't have metadata.
+     *
+     * @return the defaultMetadata value.
+     */
+    public AliasPathMetadata defaultMetadata() {
+        return this.defaultMetadata;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -156,6 +173,9 @@ public final class Alias {
         }
         if (defaultPattern() != null) {
             defaultPattern().validate();
+        }
+        if (defaultMetadata() != null) {
+            defaultMetadata().validate();
         }
     }
 }

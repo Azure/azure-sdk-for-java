@@ -15,6 +15,14 @@ azure.activedirectory.user-group.object-id-key=id
 
 Follow the guide [here](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app).
 
+The sample retrieves user's group membership using Azure AD graph API which requires the registered app to have `Direcory.AccessAsUser.All` "Access the directory as the signed-in user" under `Delegated Permissions`. You need AAD admin privilege to be able to grant the permission in API ACCESS -> Required permission. You can follow the below steps:
+
+* In the list of pages for the app, select **API permissions**
+   - Click the **Add a permission** button and then,
+   - Ensure that the **Microsoft APIs** tab is selected
+   - In the *Commonly used Microsoft APIs* section, click on **Microsoft Graph**
+   - In the **Delegated permissions** section, ensure that the right permissions are checked: **Directory.AccessAsUser.All**
+   - Select the **Add permissions** button
 ### Configure groups for sign in user
 
 In order to try the authorization action with this sample with minimum effort, [configure the user and groups in Azure Active Directory](https://docs.microsoft.com/azure/active-directory/active-directory-groups-create-azure-portal), configure the user with `group1`. 
@@ -78,7 +86,7 @@ azure.activedirectory.user-group.allowed-groups=group1, group2
 ## Troubleshooting
 
 ### If registered application is not multi-tenanted, how to run this sample?
-In this auto-configuration, by [default](https://github.com/Microsoft/azure-spring-boot/blob/master/azure-spring-boot/src/main/resources/aad-oauth2-common.properties#L1-L4) `/common` is used for the tenant value. According to [Active Directory Sign In Request format](https://docs.microsoft.com/azure/active-directory/develop/v2-protocols-oidc#send-the-sign-in-request), if your application is not multi-tenanted, you have to configure a tenant specific authorization endpoints.
+In this auto-configuration, by [default](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot/src/main/resources/aad-oauth2-common.properties#L1-L4) `/common` is used for the tenant value. According to [Active Directory Sign In Request format](https://docs.microsoft.com/azure/active-directory/develop/v2-protocols-oidc#send-the-sign-in-request), if your application is not multi-tenanted, you have to configure a tenant specific authorization endpoints.
 
 Configure endpoints with specific tenant-id by replacing `common` in your application.properties file:
 ```properties

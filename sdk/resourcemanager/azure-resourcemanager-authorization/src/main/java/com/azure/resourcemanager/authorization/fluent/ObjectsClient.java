@@ -26,7 +26,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectInner;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectListResultInner;
 import com.azure.resourcemanager.authorization.models.GetObjectsParameters;
@@ -165,6 +164,7 @@ public final class ObjectsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .getObjectsByObjectIds(
                 this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context)
@@ -212,7 +212,7 @@ public final class ObjectsClient {
         GetObjectsParameters parameters, Context context) {
         return new PagedFlux<>(
             () -> getObjectsByObjectIdsSinglePageAsync(parameters, context),
-            nextLink -> getObjectsByObjectIdsNextSinglePageAsync(nextLink));
+            nextLink -> getObjectsByObjectIdsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -322,6 +322,7 @@ public final class ObjectsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getObjectsByObjectIdsNext(
                 this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)

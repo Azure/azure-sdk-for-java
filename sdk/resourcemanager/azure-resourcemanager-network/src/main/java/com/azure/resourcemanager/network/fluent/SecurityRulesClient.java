@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleListResultInner;
 import java.nio.ByteBuffer;
@@ -258,7 +257,9 @@ public final class SecurityRulesClient {
         String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -276,9 +277,12 @@ public final class SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkSecurityGroupName, String securityRuleName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -735,8 +739,8 @@ public final class SecurityRulesClient {
                 resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters);
         return this
             .client
-            .<SecurityRuleInner, SecurityRuleInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SecurityRuleInner.class, SecurityRuleInner.class);
+            .<SecurityRuleInner, SecurityRuleInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SecurityRuleInner.class, SecurityRuleInner.class, Context.NONE);
     }
 
     /**
@@ -759,13 +763,14 @@ public final class SecurityRulesClient {
         String securityRuleName,
         SecurityRuleInner securityRuleParameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters, context);
         return this
             .client
-            .<SecurityRuleInner, SecurityRuleInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SecurityRuleInner.class, SecurityRuleInner.class);
+            .<SecurityRuleInner, SecurityRuleInner>getLroResult(
+                mono, this.client.getHttpPipeline(), SecurityRuleInner.class, SecurityRuleInner.class, context);
     }
 
     /**
@@ -1061,7 +1066,7 @@ public final class SecurityRulesClient {
         String resourceGroupName, String networkSecurityGroupName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, networkSecurityGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

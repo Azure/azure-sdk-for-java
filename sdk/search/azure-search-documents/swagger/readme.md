@@ -6,7 +6,7 @@ This is the AutoRest configuration file for SearchServiceClient and SearchIndexC
 ---
 ## Getting Started 
 
-To build the SDK for SearchServiceClient and SearchIndexClient, simply [Install AutoRest](https://aka.ms/autorest/install) and in this folder, run:
+To build the SDK for SearchServiceClient and SearchIndexClient, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
 
 > `autorest`
 

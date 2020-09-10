@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayPrivateLinkResourceInner;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayPrivateLinkResourceListResultInner;
 import reactor.core.publisher.Mono;
@@ -234,7 +233,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClient {
         String resourceGroupName, String applicationGatewayName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, applicationGatewayName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

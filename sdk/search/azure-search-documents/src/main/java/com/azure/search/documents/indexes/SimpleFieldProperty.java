@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  * The annotation is to indicate whether the field is a simple field. This annotation can only set boolean field of
  * {@link SearchField}. {@code isSearchable} will set to {@code false}.
  */
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SimpleFieldProperty {
     /**

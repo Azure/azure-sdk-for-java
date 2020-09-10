@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.MetricInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.MetricListResultInner;
 import reactor.core.publisher.Mono;
@@ -183,6 +182,7 @@ public final class DatabaseAccountRegionsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .listMetrics(
                 this.client.getEndpoint(),

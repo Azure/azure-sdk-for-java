@@ -24,7 +24,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.ManagementPolicyInner;
 import com.azure.resourcemanager.storage.models.ManagementPolicyName;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
@@ -199,6 +198,7 @@ public final class ManagementPoliciesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -420,6 +420,7 @@ public final class ManagementPoliciesClient {
         }
         ManagementPolicyInner properties = new ManagementPolicyInner();
         properties.withPolicy(policy);
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -642,6 +643,7 @@ public final class ManagementPoliciesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),

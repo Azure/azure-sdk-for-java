@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ListVirtualHubRouteTableV2SResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualHubRouteTableV2Inner;
 import com.azure.resourcemanager.network.models.ErrorException;
@@ -475,11 +474,12 @@ public final class VirtualHubRouteTableV2SClient {
                 resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters);
         return this
             .client
-            .<VirtualHubRouteTableV2Inner, VirtualHubRouteTableV2Inner>getLroResultAsync(
+            .<VirtualHubRouteTableV2Inner, VirtualHubRouteTableV2Inner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VirtualHubRouteTableV2Inner.class,
-                VirtualHubRouteTableV2Inner.class);
+                VirtualHubRouteTableV2Inner.class,
+                Context.NONE);
     }
 
     /**
@@ -502,16 +502,18 @@ public final class VirtualHubRouteTableV2SClient {
         String routeTableName,
         VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, context);
         return this
             .client
-            .<VirtualHubRouteTableV2Inner, VirtualHubRouteTableV2Inner>getLroResultAsync(
+            .<VirtualHubRouteTableV2Inner, VirtualHubRouteTableV2Inner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 VirtualHubRouteTableV2Inner.class,
-                VirtualHubRouteTableV2Inner.class);
+                VirtualHubRouteTableV2Inner.class,
+                context);
     }
 
     /**
@@ -777,7 +779,9 @@ public final class VirtualHubRouteTableV2SClient {
         String resourceGroupName, String virtualHubName, String routeTableName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualHubName, routeTableName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -795,9 +799,12 @@ public final class VirtualHubRouteTableV2SClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualHubName, routeTableName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1047,7 +1054,7 @@ public final class VirtualHubRouteTableV2SClient {
         String resourceGroupName, String virtualHubName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, virtualHubName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

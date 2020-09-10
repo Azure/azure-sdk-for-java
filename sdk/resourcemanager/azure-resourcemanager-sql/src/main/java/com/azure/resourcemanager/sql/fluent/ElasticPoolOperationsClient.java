@@ -26,7 +26,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolOperationInner;
 import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolOperationListResultInner;
 import java.util.UUID;
@@ -203,6 +202,7 @@ public final class ElasticPoolOperationsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .cancel(
                 this.client.getEndpoint(),
@@ -395,6 +395,7 @@ public final class ElasticPoolOperationsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByElasticPool(
                 this.client.getEndpoint(),
@@ -453,7 +454,7 @@ public final class ElasticPoolOperationsClient {
         String resourceGroupName, String serverName, String elasticPoolName, Context context) {
         return new PagedFlux<>(
             () -> listByElasticPoolSinglePageAsync(resourceGroupName, serverName, elasticPoolName, context),
-            nextLink -> listByElasticPoolNextSinglePageAsync(nextLink));
+            nextLink -> listByElasticPoolNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -537,6 +538,7 @@ public final class ElasticPoolOperationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByElasticPoolNext(nextLink, context)
             .map(

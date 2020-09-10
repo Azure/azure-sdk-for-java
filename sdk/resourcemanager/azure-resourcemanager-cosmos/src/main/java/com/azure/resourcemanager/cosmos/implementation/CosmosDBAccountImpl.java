@@ -15,6 +15,7 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountListConnectionStri
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListKeysResult;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListReadOnlyKeysResult;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountOfferType;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountRegenerateKeyParameters;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
@@ -22,6 +23,7 @@ import com.azure.resourcemanager.cosmos.models.KeyKind;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.cosmos.models.PrivateLinkResource;
+import com.azure.resourcemanager.cosmos.models.RegionForOnlineOffline;
 import com.azure.resourcemanager.cosmos.models.SqlDatabase;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -258,7 +260,8 @@ class CosmosDBAccountImpl
 
     @Override
     public void offlineRegion(Region region) {
-        this.manager().inner().getDatabaseAccounts().offlineRegion(this.resourceGroupName(), this.name(), region.label());
+        this.manager().inner().getDatabaseAccounts().offlineRegion(this.resourceGroupName(), this.name(),
+            new RegionForOnlineOffline().withRegion(region.label()));
     }
 
     @Override
@@ -267,12 +270,14 @@ class CosmosDBAccountImpl
             .manager()
             .inner()
             .getDatabaseAccounts()
-            .offlineRegionAsync(this.resourceGroupName(), this.name(), region.label());
+            .offlineRegionAsync(this.resourceGroupName(), this.name(),
+                new RegionForOnlineOffline().withRegion(region.label()));
     }
 
     @Override
     public void onlineRegion(Region region) {
-        this.manager().inner().getDatabaseAccounts().onlineRegion(this.resourceGroupName(), this.name(), region.label());
+        this.manager().inner().getDatabaseAccounts().onlineRegion(this.resourceGroupName(), this.name(),
+            new RegionForOnlineOffline().withRegion(region.label()));
     }
 
     @Override
@@ -281,12 +286,14 @@ class CosmosDBAccountImpl
             .manager()
             .inner()
             .getDatabaseAccounts()
-            .onlineRegionAsync(this.resourceGroupName(), this.name(), region.label());
+            .onlineRegionAsync(this.resourceGroupName(), this.name(),
+                new RegionForOnlineOffline().withRegion(region.label()));
     }
 
     @Override
     public void regenerateKey(KeyKind keyKind) {
-        this.manager().inner().getDatabaseAccounts().regenerateKey(this.resourceGroupName(), this.name(), keyKind);
+        this.manager().inner().getDatabaseAccounts().regenerateKey(this.resourceGroupName(), this.name(),
+            new DatabaseAccountRegenerateKeyParameters().withKeyKind(keyKind));
     }
 
     @Override
@@ -295,7 +302,8 @@ class CosmosDBAccountImpl
             .manager()
             .inner()
             .getDatabaseAccounts()
-            .regenerateKeyAsync(this.resourceGroupName(), this.name(), keyKind);
+            .regenerateKeyAsync(this.resourceGroupName(), this.name(),
+                new DatabaseAccountRegenerateKeyParameters().withKeyKind(keyKind));
     }
 
     @Override
@@ -612,7 +620,8 @@ class CosmosDBAccountImpl
                                     .flatMap(
                                         index -> {
                                             data.set(0, data.get(0) + 30);
-                                            return Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(30)));
+                                            return Mono.delay(SdkContext.getDelayDuration(
+                                                manager().inner().getDefaultPollInterval()));
                                         }));
                 });
     }

@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.DdosProtectionPlanInner;
 import com.azure.resourcemanager.network.fluent.inner.DdosProtectionPlanListResultInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -281,7 +280,9 @@ public final class DdosProtectionPlansClient
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String ddosProtectionPlanName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ddosProtectionPlanName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -298,9 +299,12 @@ public final class DdosProtectionPlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String ddosProtectionPlanName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, ddosProtectionPlanName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -704,8 +708,12 @@ public final class DdosProtectionPlansClient
             createOrUpdateWithResponseAsync(resourceGroupName, ddosProtectionPlanName, parameters);
         return this
             .client
-            .<DdosProtectionPlanInner, DdosProtectionPlanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosProtectionPlanInner.class, DdosProtectionPlanInner.class);
+            .<DdosProtectionPlanInner, DdosProtectionPlanInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DdosProtectionPlanInner.class,
+                DdosProtectionPlanInner.class,
+                Context.NONE);
     }
 
     /**
@@ -723,12 +731,17 @@ public final class DdosProtectionPlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, ddosProtectionPlanName, parameters, context);
         return this
             .client
-            .<DdosProtectionPlanInner, DdosProtectionPlanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosProtectionPlanInner.class, DdosProtectionPlanInner.class);
+            .<DdosProtectionPlanInner, DdosProtectionPlanInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DdosProtectionPlanInner.class,
+                DdosProtectionPlanInner.class,
+                context);
     }
 
     /**
@@ -1129,7 +1142,8 @@ public final class DdosProtectionPlansClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DdosProtectionPlanInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1283,7 +1297,7 @@ public final class DdosProtectionPlansClient
     public PagedFlux<DdosProtectionPlanInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

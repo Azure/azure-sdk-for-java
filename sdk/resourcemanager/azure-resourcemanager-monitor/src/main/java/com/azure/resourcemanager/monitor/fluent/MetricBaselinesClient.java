@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.BaselineResponseInner;
 import com.azure.resourcemanager.monitor.fluent.inner.CalculateBaselineResponseInner;
 import com.azure.resourcemanager.monitor.models.ResultType;
@@ -189,6 +188,7 @@ public final class MetricBaselinesClient {
             return Mono.error(new IllegalArgumentException("Parameter metricName is required and cannot be null."));
         }
         final String apiVersion = "2017-11-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -479,6 +479,7 @@ public final class MetricBaselinesClient {
             timeSeriesInformation.validate();
         }
         final String apiVersion = "2017-11-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .calculateBaseline(this.client.getEndpoint(), resourceUri, apiVersion, timeSeriesInformation, context);
     }

@@ -28,6 +28,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -38,11 +41,11 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
+import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
-import static com.azure.ai.formrecognizer.TestUtils.getFileData;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,6 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class FormTrainingClientTestBase extends TestBase {
     private static final String RESOURCE_ID = "FORM_RECOGNIZER_TARGET_RESOURCE_ID";
     private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
+    private static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
 
     static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
@@ -62,8 +66,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             + "message: " + EXPECTED_INVALID_MODEL_ERROR;
     static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
-    static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
-        "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
     static final String FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL";
     static final String NO_VALID_BLOB_FOUND = "No valid blobs found in the specified Azure blob container."
@@ -351,11 +353,17 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         assertTrue(actualReceipt.getFields().isEmpty());
     }
 
-    void blankPdfDataRunner(Consumer<InputStream> testRunner) {
+    void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
+        final long fileLength = new File(LOCAL_FILE_PATH + BLANK_PDF).length();
+
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)));
+            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
         } else {
-            testRunner.accept(getFileData(getBlankPDFFileUrl()));
+            try {
+                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + BLANK_PDF), fileLength);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("Local file not found.", e);
+            }
         }
     }
 
@@ -374,32 +382,5 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         return interceptorManager.isPlaybackMode()
             ? "https://isPlaybackmode"
             : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL);
-    }
-
-    /**
-     * Prepare the file url from the testing data set SAS Url value.
-     *
-     * @return the testing data specific file Url
-     */
-    private String getBlankPDFFileUrl() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode";
-        } else {
-            final String[] urlParts = getTestingContainerUrl().split("\\?");
-            return urlParts[0] + "/" + TestUtils.BLANK_PDF + "?" + urlParts[1];
-        }
-    }
-
-    /**
-     * Get the testing data set SAS Url value based on the test running mode.
-     *
-     * @return the testing data set Url
-     */
-    private String getTestingContainerUrl() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode?SASToken";
-        } else {
-            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
-        }
     }
 }

@@ -251,6 +251,14 @@ public interface VirtualMachines
     Mono<RunCommandResult> runCommandAsync(String groupName, String name, RunCommandInput inputCommand);
 
     /**
+     * Begins deleting a virtual machine from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the virtual machine to delete
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteById(String id);
+
+    /**
      * Begins deleting a virtual machine from Azure, identifying it by its name and its resource group.
      *
      * @param resourceGroupName the resource group the resource is part of

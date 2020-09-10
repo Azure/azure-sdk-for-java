@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.containerregistry.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for TrustPolicyType. */
-public enum TrustPolicyType {
-    /** Enum value Notary. */
-    NOTARY("Notary");
-
-    /** The actual serialized value for a TrustPolicyType instance. */
-    private final String value;
-
-    TrustPolicyType(String value) {
-        this.value = value;
-    }
+public final class TrustPolicyType extends ExpandableStringEnum<TrustPolicyType> {
+    /** Static value Notary for TrustPolicyType. */
+    public static final TrustPolicyType NOTARY = fromString("Notary");
 
     /**
-     * Parses a serialized value to a TrustPolicyType instance.
+     * Creates or finds a TrustPolicyType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed TrustPolicyType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding TrustPolicyType.
      */
     @JsonCreator
-    public static TrustPolicyType fromString(String value) {
-        TrustPolicyType[] items = TrustPolicyType.values();
-        for (TrustPolicyType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static TrustPolicyType fromString(String name) {
+        return fromString(name, TrustPolicyType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known TrustPolicyType values. */
+    public static Collection<TrustPolicyType> values() {
+        return values(TrustPolicyType.class);
     }
 }

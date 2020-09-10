@@ -21,7 +21,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.keyvault.KeyVaultManagementClient;
 import com.azure.resourcemanager.keyvault.fluent.inner.PrivateLinkResourceListResultInner;
 import reactor.core.publisher.Mono;
 
@@ -148,6 +147,7 @@ public final class PrivateLinkResourcesClient {
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByVault(
                 this.client.getEndpoint(),

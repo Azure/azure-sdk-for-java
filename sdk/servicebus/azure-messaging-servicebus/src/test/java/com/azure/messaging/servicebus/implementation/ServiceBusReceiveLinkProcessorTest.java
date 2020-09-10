@@ -48,7 +48,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -408,7 +408,7 @@ class ServiceBusReceiveLinkProcessorTest {
         linkProcessor.onSubscribe(subscription);
 
         // Assert
-        verifyZeroInteractions(subscription);
+        verifyNoInteractions(subscription);
     }
 
     /**
@@ -420,7 +420,6 @@ class ServiceBusReceiveLinkProcessorTest {
         // Arrange
         final Duration delay = Duration.ofSeconds(1);
         final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2, link3};
-        final Message message3 = mock(Message.class);
 
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
         final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
@@ -611,7 +610,7 @@ class ServiceBusReceiveLinkProcessorTest {
         // Arrange
         final int backpressure = 10;
         final int existingCredits = 1;
-        final int expectedCredits  = backpressure - existingCredits;
+        final int expectedCredits = backpressure - existingCredits;
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
         FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
 

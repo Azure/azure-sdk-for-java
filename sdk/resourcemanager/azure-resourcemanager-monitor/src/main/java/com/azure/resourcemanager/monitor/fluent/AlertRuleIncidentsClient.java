@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.IncidentInner;
 import com.azure.resourcemanager.monitor.fluent.inner.IncidentListResultInner;
 import reactor.core.publisher.Mono;
@@ -178,6 +177,7 @@ public final class AlertRuleIncidentsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -357,6 +357,7 @@ public final class AlertRuleIncidentsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        context = this.client.mergeContext(context);
         return service
             .listByAlertRule(
                 this.client.getEndpoint(),

@@ -30,7 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.resourcemanager.sql.SqlManagementClient;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.inner.RestorePointInner;
 import com.azure.resourcemanager.sql.fluent.inner.RestorePointListResultInner;
 import com.azure.resourcemanager.sql.models.CreateDatabaseRestorePointDefinition;
@@ -127,22 +127,6 @@ public final class RestorePointsClient {
             @PathParam("restorePointName") String restorePointName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/restorePoints")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RestorePointInner>> beginCreateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CreateDatabaseRestorePointDefinition parameters,
             Context context);
     }
 
@@ -242,6 +226,7 @@ public final class RestorePointsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByDatabase(
                 this.client.getEndpoint(),
@@ -439,6 +424,7 @@ public final class RestorePointsClient {
         final String apiVersion = "2017-03-01-preview";
         CreateDatabaseRestorePointDefinition parameters = new CreateDatabaseRestorePointDefinition();
         parameters.withRestorePointLabel(restorePointLabel);
+        context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(),
@@ -465,14 +451,14 @@ public final class RestorePointsClient {
      * @return database restore points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
+    public PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
         String resourceGroupName, String serverName, String databaseName, String restorePointLabel) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, serverName, databaseName, restorePointLabel);
         return this
             .client
-            .<RestorePointInner, RestorePointInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RestorePointInner.class, RestorePointInner.class);
+            .<RestorePointInner, RestorePointInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RestorePointInner.class, RestorePointInner.class, Context.NONE);
     }
 
     /**
@@ -490,14 +476,55 @@ public final class RestorePointsClient {
      * @return database restore points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
+    public PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
         String resourceGroupName, String serverName, String databaseName, String restorePointLabel, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, serverName, databaseName, restorePointLabel, context);
         return this
             .client
-            .<RestorePointInner, RestorePointInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RestorePointInner.class, RestorePointInner.class);
+            .<RestorePointInner, RestorePointInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RestorePointInner.class, RestorePointInner.class, context);
+    }
+
+    /**
+     * Creates a restore point for a data warehouse.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param restorePointLabel The restore point label to apply.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database restore points.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
+        String resourceGroupName, String serverName, String databaseName, String restorePointLabel) {
+        return beginCreateAsync(resourceGroupName, serverName, databaseName, restorePointLabel).getSyncPoller();
+    }
+
+    /**
+     * Creates a restore point for a data warehouse.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param restorePointLabel The restore point label to apply.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database restore points.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
+        String resourceGroupName, String serverName, String databaseName, String restorePointLabel, Context context) {
+        return beginCreateAsync(resourceGroupName, serverName, databaseName, restorePointLabel, context)
+            .getSyncPoller();
     }
 
     /**
@@ -516,14 +543,9 @@ public final class RestorePointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RestorePointInner> createAsync(
         String resourceGroupName, String serverName, String databaseName, String restorePointLabel) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, serverName, databaseName, restorePointLabel);
-        return this
-            .client
-            .<RestorePointInner, RestorePointInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RestorePointInner.class, RestorePointInner.class)
+        return beginCreateAsync(resourceGroupName, serverName, databaseName, restorePointLabel)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -543,14 +565,9 @@ public final class RestorePointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RestorePointInner> createAsync(
         String resourceGroupName, String serverName, String databaseName, String restorePointLabel, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, serverName, databaseName, restorePointLabel, context);
-        return this
-            .client
-            .<RestorePointInner, RestorePointInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RestorePointInner.class, RestorePointInner.class)
+        return beginCreateAsync(resourceGroupName, serverName, databaseName, restorePointLabel, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -695,6 +712,7 @@ public final class RestorePointsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -904,6 +922,7 @@ public final class RestorePointsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -991,221 +1010,5 @@ public final class RestorePointsClient {
     public void delete(
         String resourceGroupName, String serverName, String databaseName, String restorePointName, Context context) {
         deleteAsync(resourceGroupName, serverName, databaseName, restorePointName, context).block();
-    }
-
-    /**
-     * Creates a restore point for a data warehouse.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RestorePointInner>> beginCreateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (restorePointLabel == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter restorePointLabel is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        CreateDatabaseRestorePointDefinition parameters = new CreateDatabaseRestorePointDefinition();
-        parameters.withRestorePointLabel(restorePointLabel);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates a restore point for a data warehouse.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RestorePointInner>> beginCreateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (restorePointLabel == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter restorePointLabel is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        CreateDatabaseRestorePointDefinition parameters = new CreateDatabaseRestorePointDefinition();
-        parameters.withRestorePointLabel(restorePointLabel);
-        return service
-            .beginCreateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates a restore point for a data warehouse.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RestorePointInner> beginCreateWithoutPollingAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel) {
-        return beginCreateWithoutPollingWithResponseAsync(
-                resourceGroupName, serverName, databaseName, restorePointLabel)
-            .flatMap(
-                (Response<RestorePointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a restore point for a data warehouse.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RestorePointInner> beginCreateWithoutPollingAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel, Context context) {
-        return beginCreateWithoutPollingWithResponseAsync(
-                resourceGroupName, serverName, databaseName, restorePointLabel, context)
-            .flatMap(
-                (Response<RestorePointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a restore point for a data warehouse.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorePointInner beginCreateWithoutPolling(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel) {
-        return beginCreateWithoutPollingAsync(resourceGroupName, serverName, databaseName, restorePointLabel).block();
-    }
-
-    /**
-     * Creates a restore point for a data warehouse.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorePointInner beginCreateWithoutPolling(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel, Context context) {
-        return beginCreateWithoutPollingAsync(resourceGroupName, serverName, databaseName, restorePointLabel, context)
-            .block();
     }
 }

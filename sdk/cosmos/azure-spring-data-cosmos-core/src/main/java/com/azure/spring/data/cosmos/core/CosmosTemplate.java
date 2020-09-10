@@ -41,6 +41,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -49,9 +50,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static com.azure.spring.data.cosmos.common.CosmosUtils.createPartitionKey;
 
 /**
  * Template class for cosmos db
@@ -149,9 +149,20 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @return the inserted item
      */
     public <T> T insert(T objectToSave, PartitionKey partitionKey) {
-        Assert.notNull(objectToSave, "domainType should not be null");
-
         return insert(getContainerName(objectToSave.getClass()), objectToSave, partitionKey);
+    }
+
+    /**
+     * Inserts item into the given container
+     *
+     * @param containerName must not be {@literal null}
+     * @param objectToSave must not be {@literal null}
+     * @param <T> type class of domain type
+     * @return the inserted item
+     */
+    @Override
+    public <T> T insert(String containerName, T objectToSave) {
+        return insert(containerName, objectToSave, null);
     }
 
     /**
@@ -167,6 +178,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
+        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToSave.getClass();
+
+        generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
+
         final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
 
         LOGGER.debug("execute createItem in database {} container {}", this.databaseName,
@@ -174,8 +189,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
-        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToSave.getClass();
-
+        //  if the partition key is null, SDK will get the partitionKey from the object
         final CosmosItemResponse<JsonNode> response = cosmosAsyncClient
             .getDatabase(this.databaseName)
             .getContainer(containerName)
@@ -190,6 +204,14 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         assert response != null;
         return toDomainObject(domainType, response.getItem());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> void generateIdIfNullAndAutoGenerationEnabled(T originalItem, Class<?> type) {
+        CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
+        if (entityInfo.shouldGenerateId() && ReflectionUtils.getField(entityInfo.getIdField(), originalItem) == null) {
+            ReflectionUtils.setField(entityInfo.getIdField(), originalItem, UUID.randomUUID().toString());
+        }
     }
 
     /**
@@ -373,7 +395,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .publishOn(Schedulers.parallel())
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    null, cosmosItemFeedResponse);
+                    cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
             .map(jsonNode -> toDomainObject(domainType, jsonNode))
@@ -420,6 +442,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public CosmosContainerProperties createContainerIfNotExists(CosmosEntityInformation<?, ?> information) {
+
         final CosmosContainerResponse response = cosmosAsyncClient
             .createDatabaseIfNotExists(this.databaseName)
             .publishOn(Schedulers.parallel())
@@ -429,9 +452,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosDatabaseResponse.getDiagnostics(), null);
                 final CosmosContainerProperties cosmosContainerProperties =
-                    new CosmosContainerProperties(
-                        information.getContainerName(), "/"
-                        + information.getPartitionKeyFieldName());
+                    new CosmosContainerProperties(information.getContainerName(), information.getPartitionKeyPath());
                 cosmosContainerProperties.setDefaultTimeToLiveInSeconds(information.getTimeToLive());
                 cosmosContainerProperties.setIndexingPolicy(information.getIndexingPolicy());
 
@@ -464,7 +485,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     /**
-     * Delete the DocumentQuery, need to query by id at first, then delete the item from the result.
+     * Deletes the item by id and partition key.
      *
      * @param containerName Container name of database
      * @param id item id
@@ -474,22 +495,22 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         deleteById(containerName, id, partitionKey, new CosmosItemRequestOptions());
     }
 
-
     /**
-     * Delete the DocumentQuery, need to query by id at first, then delete the item from the result. This method
-     * respects the version of the entity whereas deleteById does not
+     * Deletes the entity
      *
-     * @param containerName Container name of database
-     * @param entity the entity to delete
-     * @param id item id
-     * @param partitionKey the partition key
+     * @param <T> type class of domain type
+     * @param containerName the container name
+     * @param entity the entity object
      */
-    public void deleteEntityById(String containerName, Object entity, Object id, PartitionKey partitionKey) {
+    @Override
+    public <T> void deleteEntity(String containerName, T entity) {
         Assert.notNull(entity, "entity to be deleted should not be null");
+        @SuppressWarnings("unchecked")
+        final Class<T> domainType = (Class<T>) entity.getClass();
         final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(entity.getClass(), originalItem, options);
-        deleteById(containerName, id, partitionKey, options);
+        deleteItem(originalItem, containerName, domainType);
     }
 
     private void deleteById(String containerName, Object id, PartitionKey partitionKey,
@@ -716,7 +737,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to get count value", throwable))
             .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                null, response))
+                response.getCosmosDiagnostics(), response))
             .next()
             .map(r -> r.getResults().get(0).asLong())
             .block();
@@ -771,15 +792,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                              String containerName,
                              @NonNull Class<T> domainType) {
 
-        final PartitionKey partitionKey = createPartitionKey(jsonNode, CosmosEntityInformation.getInstance(domainType));
-
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(domainType, jsonNode, options);
 
         return cosmosAsyncClient
             .getDatabase(this.databaseName)
             .getContainer(containerName)
-            .deleteItem(jsonNode.get("id").asText(), partitionKey)
+            .deleteItem(jsonNode, options)
             .publishOn(Schedulers.parallel())
             .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                 response.getDiagnostics(), null))

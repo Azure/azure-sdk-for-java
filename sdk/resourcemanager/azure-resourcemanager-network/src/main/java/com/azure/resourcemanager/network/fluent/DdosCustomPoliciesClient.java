@@ -28,7 +28,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.DdosCustomPolicyInner;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -233,7 +232,9 @@ public final class DdosCustomPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ddosCustomPolicyName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ddosCustomPolicyName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -250,9 +251,12 @@ public final class DdosCustomPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String ddosCustomPolicyName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, ddosCustomPolicyName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -651,8 +655,12 @@ public final class DdosCustomPoliciesClient
             createOrUpdateWithResponseAsync(resourceGroupName, ddosCustomPolicyName, parameters);
         return this
             .client
-            .<DdosCustomPolicyInner, DdosCustomPolicyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosCustomPolicyInner.class, DdosCustomPolicyInner.class);
+            .<DdosCustomPolicyInner, DdosCustomPolicyInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DdosCustomPolicyInner.class,
+                DdosCustomPolicyInner.class,
+                Context.NONE);
     }
 
     /**
@@ -670,12 +678,13 @@ public final class DdosCustomPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, ddosCustomPolicyName, parameters, context);
         return this
             .client
-            .<DdosCustomPolicyInner, DdosCustomPolicyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosCustomPolicyInner.class, DdosCustomPolicyInner.class);
+            .<DdosCustomPolicyInner, DdosCustomPolicyInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DdosCustomPolicyInner.class, DdosCustomPolicyInner.class, context);
     }
 
     /**

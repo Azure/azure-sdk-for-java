@@ -8,6 +8,8 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.sql.models.ManagedInstanceOperationParametersPair;
+import com.azure.resourcemanager.sql.models.ManagedInstanceOperationSteps;
 import com.azure.resourcemanager.sql.models.ManagementOperationState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -96,6 +98,18 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.isCancellable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCancellable;
+
+    /*
+     * The operation parameters.
+     */
+    @JsonProperty(value = "properties.operationParameters", access = JsonProperty.Access.WRITE_ONLY)
+    private ManagedInstanceOperationParametersPair operationParameters;
+
+    /*
+     * The operation steps.
+     */
+    @JsonProperty(value = "properties.operationSteps", access = JsonProperty.Access.WRITE_ONLY)
+    private ManagedInstanceOperationSteps operationSteps;
 
     /**
      * Get the managedInstanceName property: The name of the managed instance the operation is being performed on.
@@ -215,10 +229,34 @@ public class ManagedInstanceOperationInner extends ProxyResource {
     }
 
     /**
+     * Get the operationParameters property: The operation parameters.
+     *
+     * @return the operationParameters value.
+     */
+    public ManagedInstanceOperationParametersPair operationParameters() {
+        return this.operationParameters;
+    }
+
+    /**
+     * Get the operationSteps property: The operation steps.
+     *
+     * @return the operationSteps value.
+     */
+    public ManagedInstanceOperationSteps operationSteps() {
+        return this.operationSteps;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (operationParameters() != null) {
+            operationParameters().validate();
+        }
+        if (operationSteps() != null) {
+            operationSteps().validate();
+        }
     }
 }

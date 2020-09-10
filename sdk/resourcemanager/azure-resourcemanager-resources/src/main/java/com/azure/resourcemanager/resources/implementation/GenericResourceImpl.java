@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
@@ -14,12 +13,9 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
+import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * The implementation for GenericResource and its nested interfaces.
@@ -153,35 +149,23 @@ final class GenericResourceImpl
     @Override
     public Accepted<GenericResource> beginCreate() {
         String apiVersion = this.getApiVersionAsync().block();
+        String name = isInCreateMode() ? this.name() : ResourceUtils.nameFromResourceId(inner().id());
 
-        String name = this.name();
-        if (!isInCreateMode()) {
-            name = ResourceUtils.nameFromResourceId(inner().id());
-        }
-
-        Response<Flux<ByteBuffer>> activationResponse = this.manager().inner().getResources()
-            .createOrUpdateWithResponseAsync(
-                resourceGroupName(),
-                resourceProviderNamespace,
-                parentResourcePath(),
-                resourceType,
-                name,
-                apiVersion,
-                inner()).block();
-        if (activationResponse == null) {
-            throw logger.logExceptionAsError(new NullPointerException());
-        } else {
-            Accepted<GenericResource> accepted = new AcceptedImpl<GenericResourceInner, GenericResource>(
-                activationResponse,
-                this.manager().inner().getSerializerAdapter(),
-                this.manager().inner().getHttpPipeline(),
-                GenericResourceInner.class,
-                GenericResourceInner.class,
-                inner -> new GenericResourceImpl(inner.id(), inner, this.manager()));
-
-            setInner(accepted.getActivationResponse().getValue().inner());
-            return accepted;
-        }
+        return AcceptedImpl.newAccepted(logger,
+            this.manager().inner(),
+            () -> this.manager().inner().getResources()
+                .createOrUpdateWithResponseAsync(
+                    resourceGroupName(),
+                    resourceProviderNamespace,
+                    parentResourcePath(),
+                    resourceType,
+                    name,
+                    apiVersion,
+                    inner()).block(),
+            inner -> new GenericResourceImpl(inner.id(), inner, this.manager()),
+            GenericResourceInner.class,
+            null,
+            this::setInner);
     }
 
     // CreateUpdateTaskGroup.ResourceCreator implementation

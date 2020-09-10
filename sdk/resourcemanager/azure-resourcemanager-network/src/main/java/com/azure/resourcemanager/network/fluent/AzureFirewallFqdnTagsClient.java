@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AzureFirewallFqdnTagInner;
 import com.azure.resourcemanager.network.fluent.inner.AzureFirewallFqdnTagListResultInner;
 import reactor.core.publisher.Mono;
@@ -176,7 +175,8 @@ public final class AzureFirewallFqdnTagsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AzureFirewallFqdnTagInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**

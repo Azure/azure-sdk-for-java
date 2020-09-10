@@ -11,7 +11,6 @@ import java.util.List;
  * This is a class to test whether we filter out the empty String in synonymMaps.
  */
 public class HotelWithEmptyInSynonymMaps {
-    @SearchableFieldProperty(synonymMapNames = {"asynonymMaps", "", "  ", "maps"})
     private List<String> tags;
 
     /**
@@ -19,6 +18,7 @@ public class HotelWithEmptyInSynonymMaps {
      *
      * @return The tags of hotel.
      */
+    @SearchableFieldProperty(synonymMapNames = {"asynonymMaps", "", "  ", "maps"})
     public List<String> getTags() {
         return tags;
     }

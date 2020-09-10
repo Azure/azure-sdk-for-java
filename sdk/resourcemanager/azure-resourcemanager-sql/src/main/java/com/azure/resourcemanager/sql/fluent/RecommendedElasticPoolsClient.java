@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolInner;
 import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolListMetricsResultInner;
 import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolListResultInner;
@@ -204,6 +203,7 @@ public final class RecommendedElasticPoolsClient {
                         "Parameter recommendedElasticPoolName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -392,6 +392,7 @@ public final class RecommendedElasticPoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listByServer(
                 this.client.getEndpoint(),
@@ -576,6 +577,7 @@ public final class RecommendedElasticPoolsClient {
                         "Parameter recommendedElasticPoolName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listMetrics(
                 this.client.getEndpoint(),

@@ -24,7 +24,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -160,6 +159,7 @@ public final class DiagnosticSettingsClient implements InnerSupportsDelete<Void>
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, context);
     }
 
@@ -314,6 +314,7 @@ public final class DiagnosticSettingsClient implements InnerSupportsDelete<Void>
             parameters.validate();
         }
         final String apiVersion = "2017-05-01-preview";
+        context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceUri, apiVersion, name, parameters, context);
     }
 
@@ -459,6 +460,7 @@ public final class DiagnosticSettingsClient implements InnerSupportsDelete<Void>
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceUri, apiVersion, name, context);
     }
 
@@ -571,6 +573,7 @@ public final class DiagnosticSettingsClient implements InnerSupportsDelete<Void>
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceUri, apiVersion, context);
     }
 

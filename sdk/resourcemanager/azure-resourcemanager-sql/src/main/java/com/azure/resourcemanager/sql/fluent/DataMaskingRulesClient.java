@@ -27,7 +27,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.DataMaskingRuleInner;
 import com.azure.resourcemanager.sql.fluent.inner.DataMaskingRuleListResultInner;
 import reactor.core.publisher.Mono;
@@ -224,6 +223,7 @@ public final class DataMaskingRulesClient {
         }
         final String apiVersion = "2014-04-01";
         final String dataMaskingPolicyName = "Default";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -458,6 +458,7 @@ public final class DataMaskingRulesClient {
         }
         final String apiVersion = "2014-04-01";
         final String dataMaskingPolicyName = "Default";
+        context = this.client.mergeContext(context);
         return service
             .listByDatabase(
                 this.client.getEndpoint(),

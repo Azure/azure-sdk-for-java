@@ -25,7 +25,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.LogAnalyticsOperationResultInner;
 import com.azure.resourcemanager.compute.models.LogAnalyticsInputBase;
 import com.azure.resourcemanager.compute.models.RequestRateByIntervalInput;
@@ -198,11 +197,12 @@ public final class LogAnalyticsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = exportRequestRateByIntervalWithResponseAsync(location, parameters);
         return this
             .client
-            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResultAsync(
+            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 LogAnalyticsOperationResultInner.class,
-                LogAnalyticsOperationResultInner.class);
+                LogAnalyticsOperationResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -220,15 +220,17 @@ public final class LogAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportRequestRateByIntervalAsync(String location, RequestRateByIntervalInput parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             exportRequestRateByIntervalWithResponseAsync(location, parameters, context);
         return this
             .client
-            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResultAsync(
+            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 LogAnalyticsOperationResultInner.class,
-                LogAnalyticsOperationResultInner.class);
+                LogAnalyticsOperationResultInner.class,
+                context);
     }
 
     /**
@@ -445,11 +447,12 @@ public final class LogAnalyticsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters);
         return this
             .client
-            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResultAsync(
+            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 LogAnalyticsOperationResultInner.class,
-                LogAnalyticsOperationResultInner.class);
+                LogAnalyticsOperationResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -466,14 +469,16 @@ public final class LogAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportThrottledRequestsAsync(String location, LogAnalyticsInputBase parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters, context);
         return this
             .client
-            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResultAsync(
+            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 LogAnalyticsOperationResultInner.class,
-                LogAnalyticsOperationResultInner.class);
+                LogAnalyticsOperationResultInner.class,
+                context);
     }
 
     /**

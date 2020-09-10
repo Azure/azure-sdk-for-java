@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ListVirtualHubsResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualHubInner;
 import com.azure.resourcemanager.network.models.EffectiveRoutesParameters;
@@ -483,8 +482,8 @@ public final class VirtualHubsClient
             createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, virtualHubParameters);
         return this
             .client
-            .<VirtualHubInner, VirtualHubInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualHubInner.class, VirtualHubInner.class);
+            .<VirtualHubInner, VirtualHubInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VirtualHubInner.class, VirtualHubInner.class, Context.NONE);
     }
 
     /**
@@ -502,12 +501,13 @@ public final class VirtualHubsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, virtualHubParameters, context);
         return this
             .client
-            .<VirtualHubInner, VirtualHubInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualHubInner.class, VirtualHubInner.class);
+            .<VirtualHubInner, VirtualHubInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VirtualHubInner.class, VirtualHubInner.class, context);
     }
 
     /**
@@ -909,7 +909,9 @@ public final class VirtualHubsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualHubName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -926,8 +928,11 @@ public final class VirtualHubsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualHubName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1151,7 +1156,7 @@ public final class VirtualHubsClient
     public PagedFlux<VirtualHubInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1282,7 +1287,8 @@ public final class VirtualHubsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualHubInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1435,7 +1441,9 @@ public final class VirtualHubsClient
         String resourceGroupName, String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             getEffectiveVirtualHubRoutesWithResponseAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1457,10 +1465,13 @@ public final class VirtualHubsClient
         String virtualHubName,
         EffectiveRoutesParameters effectiveRoutesParameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getEffectiveVirtualHubRoutesWithResponseAsync(
                 resourceGroupName, virtualHubName, effectiveRoutesParameters, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**

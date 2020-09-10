@@ -36,7 +36,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.BlobRestoreStatusInner;
 import com.azure.resourcemanager.storage.fluent.inner.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.storage.fluent.inner.ListAccountSasResponseInner;
@@ -366,6 +365,7 @@ public final class StorageAccountsClient
         }
         StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
         accountName.withName(name);
+        context = this.client.mergeContext(context);
         return service
             .checkNameAvailability(
                 this.client.getEndpoint(),
@@ -551,6 +551,7 @@ public final class StorageAccountsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(),
@@ -584,8 +585,12 @@ public final class StorageAccountsClient
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, parameters);
         return this
             .client
-            .<StorageAccountInner, StorageAccountInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), StorageAccountInner.class, StorageAccountInner.class);
+            .<StorageAccountInner, StorageAccountInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                StorageAccountInner.class,
+                StorageAccountInner.class,
+                Context.NONE);
     }
 
     /**
@@ -608,12 +613,13 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, accountName, parameters, context);
         return this
             .client
-            .<StorageAccountInner, StorageAccountInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), StorageAccountInner.class, StorageAccountInner.class);
+            .<StorageAccountInner, StorageAccountInner>getLroResult(
+                mono, this.client.getHttpPipeline(), StorageAccountInner.class, StorageAccountInner.class, context);
     }
 
     /**
@@ -836,6 +842,7 @@ public final class StorageAccountsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1005,6 +1012,7 @@ public final class StorageAccountsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -1272,6 +1280,7 @@ public final class StorageAccountsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1464,6 +1473,7 @@ public final class StorageAccountsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
             .map(
@@ -1502,7 +1512,8 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StorageAccountInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1610,6 +1621,7 @@ public final class StorageAccountsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -1775,6 +1787,7 @@ public final class StorageAccountsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listKeys(
                 this.client.getEndpoint(),
@@ -2024,6 +2037,7 @@ public final class StorageAccountsClient
         }
         StorageAccountRegenerateKeyParameters regenerateKey = new StorageAccountRegenerateKeyParameters();
         regenerateKey.withKeyName(keyName);
+        context = this.client.mergeContext(context);
         return service
             .regenerateKey(
                 this.client.getEndpoint(),
@@ -2229,6 +2243,7 @@ public final class StorageAccountsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .listAccountSas(
                 this.client.getEndpoint(),
@@ -2430,6 +2445,7 @@ public final class StorageAccountsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .listServiceSas(
                 this.client.getEndpoint(),
@@ -2621,6 +2637,7 @@ public final class StorageAccountsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .failover(
                 this.client.getEndpoint(),
@@ -2648,7 +2665,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2669,8 +2688,11 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String accountName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2905,6 +2927,7 @@ public final class StorageAccountsClient
         BlobRestoreParameters parameters = new BlobRestoreParameters();
         parameters.withTimeToRestore(timeToRestore);
         parameters.withBlobRanges(blobRanges);
+        context = this.client.mergeContext(context);
         return service
             .restoreBlobRanges(
                 this.client.getEndpoint(),
@@ -2937,8 +2960,12 @@ public final class StorageAccountsClient
             restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges);
         return this
             .client
-            .<BlobRestoreStatusInner, BlobRestoreStatusInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BlobRestoreStatusInner.class, BlobRestoreStatusInner.class);
+            .<BlobRestoreStatusInner, BlobRestoreStatusInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BlobRestoreStatusInner.class,
+                BlobRestoreStatusInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2963,12 +2990,17 @@ public final class StorageAccountsClient
         OffsetDateTime timeToRestore,
         List<BlobRestoreRange> blobRanges,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context);
         return this
             .client
-            .<BlobRestoreStatusInner, BlobRestoreStatusInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BlobRestoreStatusInner.class, BlobRestoreStatusInner.class);
+            .<BlobRestoreStatusInner, BlobRestoreStatusInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BlobRestoreStatusInner.class,
+                BlobRestoreStatusInner.class,
+                context);
     }
 
     /**
@@ -3194,6 +3226,7 @@ public final class StorageAccountsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .revokeUserDelegationKeys(
                 this.client.getEndpoint(),
@@ -3317,6 +3350,7 @@ public final class StorageAccountsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

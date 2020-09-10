@@ -25,9 +25,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionActivityInner;
 import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionActivityListResultInner;
+import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TransparentDataEncryptionActivities. */
@@ -76,7 +76,7 @@ public final class TransparentDataEncryptionActivitiesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
-            @PathParam("transparentDataEncryptionName") String transparentDataEncryptionName,
+            @PathParam("transparentDataEncryptionName") TransparentDataEncryptionName transparentDataEncryptionName,
             Context context);
     }
 
@@ -87,6 +87,7 @@ public final class TransparentDataEncryptionActivitiesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -94,7 +95,10 @@ public final class TransparentDataEncryptionActivitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TransparentDataEncryptionActivityInner>> listByConfigurationSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -117,8 +121,13 @@ public final class TransparentDataEncryptionActivitiesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (transparentDataEncryptionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter transparentDataEncryptionName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
-        final String transparentDataEncryptionName = "current";
         return FluxUtil
             .withContext(
                 context ->
@@ -146,6 +155,7 @@ public final class TransparentDataEncryptionActivitiesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -154,7 +164,11 @@ public final class TransparentDataEncryptionActivitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TransparentDataEncryptionActivityInner>> listByConfigurationSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -177,8 +191,14 @@ public final class TransparentDataEncryptionActivitiesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (transparentDataEncryptionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter transparentDataEncryptionName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
-        final String transparentDataEncryptionName = "current";
+        context = this.client.mergeContext(context);
         return service
             .listByConfiguration(
                 this.client.getEndpoint(),
@@ -202,6 +222,7 @@ public final class TransparentDataEncryptionActivitiesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -209,28 +230,14 @@ public final class TransparentDataEncryptionActivitiesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TransparentDataEncryptionActivityInner> listByConfigurationAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        return new PagedFlux<>(() -> listByConfigurationSinglePageAsync(resourceGroupName, serverName, databaseName));
-    }
-
-    /**
-     * Returns a database's transparent data encryption operation result.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database for which the transparent data encryption applies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list database transparent data encryption activity request.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TransparentDataEncryptionActivityInner> listByConfigurationAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName) {
         return new PagedFlux<>(
-            () -> listByConfigurationSinglePageAsync(resourceGroupName, serverName, databaseName, context));
+            () ->
+                listByConfigurationSinglePageAsync(
+                    resourceGroupName, serverName, databaseName, transparentDataEncryptionName));
     }
 
     /**
@@ -240,6 +247,34 @@ public final class TransparentDataEncryptionActivitiesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response to a list database transparent data encryption activity request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TransparentDataEncryptionActivityInner> listByConfigurationAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName,
+        Context context) {
+        return new PagedFlux<>(
+            () ->
+                listByConfigurationSinglePageAsync(
+                    resourceGroupName, serverName, databaseName, transparentDataEncryptionName, context));
+    }
+
+    /**
+     * Returns a database's transparent data encryption operation result.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database for which the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -247,8 +282,12 @@ public final class TransparentDataEncryptionActivitiesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransparentDataEncryptionActivityInner> listByConfiguration(
-        String resourceGroupName, String serverName, String databaseName) {
-        return new PagedIterable<>(listByConfigurationAsync(resourceGroupName, serverName, databaseName));
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName) {
+        return new PagedIterable<>(
+            listByConfigurationAsync(resourceGroupName, serverName, databaseName, transparentDataEncryptionName));
     }
 
     /**
@@ -258,6 +297,7 @@ public final class TransparentDataEncryptionActivitiesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the transparent data encryption applies.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -266,7 +306,13 @@ public final class TransparentDataEncryptionActivitiesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransparentDataEncryptionActivityInner> listByConfiguration(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return new PagedIterable<>(listByConfigurationAsync(resourceGroupName, serverName, databaseName, context));
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        TransparentDataEncryptionName transparentDataEncryptionName,
+        Context context) {
+        return new PagedIterable<>(
+            listByConfigurationAsync(
+                resourceGroupName, serverName, databaseName, transparentDataEncryptionName, context));
     }
 }

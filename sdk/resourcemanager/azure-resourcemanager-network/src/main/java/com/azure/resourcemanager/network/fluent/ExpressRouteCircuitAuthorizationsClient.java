@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AuthorizationListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitAuthorizationInner;
 import java.nio.ByteBuffer;
@@ -258,7 +257,9 @@ public final class ExpressRouteCircuitAuthorizationsClient {
         String resourceGroupName, String circuitName, String authorizationName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, circuitName, authorizationName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -276,9 +277,12 @@ public final class ExpressRouteCircuitAuthorizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String authorizationName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, circuitName, authorizationName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -727,11 +731,12 @@ public final class ExpressRouteCircuitAuthorizationsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters);
         return this
             .client
-            .<ExpressRouteCircuitAuthorizationInner, ExpressRouteCircuitAuthorizationInner>getLroResultAsync(
+            .<ExpressRouteCircuitAuthorizationInner, ExpressRouteCircuitAuthorizationInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ExpressRouteCircuitAuthorizationInner.class,
-                ExpressRouteCircuitAuthorizationInner.class);
+                ExpressRouteCircuitAuthorizationInner.class,
+                Context.NONE);
     }
 
     /**
@@ -755,16 +760,18 @@ public final class ExpressRouteCircuitAuthorizationsClient {
             String authorizationName,
             ExpressRouteCircuitAuthorizationInner authorizationParameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, circuitName, authorizationName, authorizationParameters, context);
         return this
             .client
-            .<ExpressRouteCircuitAuthorizationInner, ExpressRouteCircuitAuthorizationInner>getLroResultAsync(
+            .<ExpressRouteCircuitAuthorizationInner, ExpressRouteCircuitAuthorizationInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ExpressRouteCircuitAuthorizationInner.class,
-                ExpressRouteCircuitAuthorizationInner.class);
+                ExpressRouteCircuitAuthorizationInner.class,
+                context);
     }
 
     /**
@@ -1052,7 +1059,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
         String resourceGroupName, String circuitName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, circuitName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

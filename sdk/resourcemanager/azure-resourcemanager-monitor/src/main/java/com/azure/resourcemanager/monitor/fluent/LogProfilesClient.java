@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.LogProfileCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.LogProfileResourceInner;
 import com.azure.resourcemanager.monitor.models.LogProfileResourcePatch;
@@ -188,6 +187,7 @@ public final class LogProfilesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(this.client.getEndpoint(), logProfileName, apiVersion, this.client.getSubscriptionId(), context);
     }
@@ -316,6 +316,7 @@ public final class LogProfilesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        context = this.client.mergeContext(context);
         return service
             .get(this.client.getEndpoint(), logProfileName, apiVersion, this.client.getSubscriptionId(), context);
     }
@@ -477,6 +478,7 @@ public final class LogProfilesClient {
             parameters.validate();
         }
         final String apiVersion = "2016-03-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -653,6 +655,7 @@ public final class LogProfilesClient {
             logProfilesResource.validate();
         }
         final String apiVersion = "2016-03-01";
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -801,6 +804,7 @@ public final class LogProfilesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(

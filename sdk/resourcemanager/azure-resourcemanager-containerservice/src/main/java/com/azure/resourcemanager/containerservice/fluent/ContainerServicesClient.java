@@ -30,7 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.resourcemanager.containerservice.ContainerServiceManagementClient;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservice.fluent.inner.ContainerServiceInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.ContainerServiceListResultInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.OrchestratorVersionProfileListResultInner;
@@ -151,35 +151,6 @@ public final class ContainerServicesClient
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/containerServices/{containerServiceName}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerServiceInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerServiceName") String containerServiceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ContainerServiceInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/containerServices/{containerServiceName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerServiceName") String containerServiceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -258,6 +229,7 @@ public final class ContainerServicesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-07-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -296,7 +268,8 @@ public final class ContainerServicesClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ContainerServiceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -423,6 +396,7 @@ public final class ContainerServicesClient
             parameters.validate();
         }
         final String apiVersion = "2017-07-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -446,14 +420,18 @@ public final class ContainerServicesClient
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters);
         return this
             .client
-            .<ContainerServiceInner, ContainerServiceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ContainerServiceInner.class, ContainerServiceInner.class);
+            .<ContainerServiceInner, ContainerServiceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ContainerServiceInner.class,
+                ContainerServiceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -469,14 +447,50 @@ public final class ContainerServicesClient
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters, context);
         return this
             .client
-            .<ContainerServiceInner, ContainerServiceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ContainerServiceInner.class, ContainerServiceInner.class);
+            .<ContainerServiceInner, ContainerServiceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ContainerServiceInner.class, ContainerServiceInner.class, context);
+    }
+
+    /**
+     * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @param parameters Container service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdate(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, containerServiceName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @param parameters Container service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdate(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, containerServiceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -493,14 +507,9 @@ public final class ContainerServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerServiceInner> createOrUpdateAsync(
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters);
-        return this
-            .client
-            .<ContainerServiceInner, ContainerServiceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ContainerServiceInner.class, ContainerServiceInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, containerServiceName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -518,14 +527,9 @@ public final class ContainerServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerServiceInner> createOrUpdateAsync(
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters, context);
-        return this
-            .client
-            .<ContainerServiceInner, ContainerServiceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ContainerServiceInner.class, ContainerServiceInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, containerServiceName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -650,6 +654,7 @@ public final class ContainerServicesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-07-01";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -837,6 +842,7 @@ public final class ContainerServicesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-07-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -861,9 +867,11 @@ public final class ContainerServicesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerServiceName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String containerServiceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerServiceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -881,11 +889,52 @@ public final class ContainerServicesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String containerServiceName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, containerServiceName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerServiceName) {
+        return beginDeleteAsync(resourceGroupName, containerServiceName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String containerServiceName, Context context) {
+        return beginDeleteAsync(resourceGroupName, containerServiceName, context).getSyncPoller();
     }
 
     /**
@@ -903,12 +952,9 @@ public final class ContainerServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String containerServiceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerServiceName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, containerServiceName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -927,13 +973,9 @@ public final class ContainerServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String containerServiceName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, containerServiceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, containerServiceName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1055,6 +1097,7 @@ public final class ContainerServicesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-07-01";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1103,7 +1146,7 @@ public final class ContainerServicesClient
     public PagedFlux<ContainerServiceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1214,6 +1257,7 @@ public final class ContainerServicesClient
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .listOrchestrators(
                 this.client.getEndpoint(),
@@ -1352,375 +1396,6 @@ public final class ContainerServicesClient
     }
 
     /**
-     * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerServiceName The name of the container service in the specified subscription and resource group.
-     * @param parameters Container service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerServiceInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerServiceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2017-07-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            containerServiceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerServiceName The name of the container service in the specified subscription and resource group.
-     * @param parameters Container service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerServiceInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerServiceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2017-07-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                containerServiceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerServiceName The name of the container service in the specified subscription and resource group.
-     * @param parameters Container service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerServiceInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, containerServiceName, parameters)
-            .flatMap(
-                (Response<ContainerServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerServiceName The name of the container service in the specified subscription and resource group.
-     * @param parameters Container service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerServiceInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, containerServiceName, parameters, context)
-            .flatMap(
-                (Response<ContainerServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerServiceName The name of the container service in the specified subscription and resource group.
-     * @param parameters Container service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerServiceInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, containerServiceName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerServiceName The name of the container service in the specified subscription and resource group.
-     * @param parameters Container service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerServiceInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, containerServiceName, parameters, context)
-            .block();
-    }
-
-    /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not
-     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
-     * availability sets. All the other resources created with the container service are part of the same resource group
-     * and can be deleted individually.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerServiceName The name of the container service in the specified subscription and resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String containerServiceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerServiceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-07-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            containerServiceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not
-     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
-     * availability sets. All the other resources created with the container service are part of the same resource group
-     * and can be deleted individually.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerServiceName The name of the container service in the specified subscription and resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String containerServiceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerServiceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-07-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                containerServiceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not
-     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
-     * availability sets. All the other resources created with the container service are part of the same resource group
-     * and can be deleted individually.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerServiceName The name of the container service in the specified subscription and resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String containerServiceName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, containerServiceName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not
-     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
-     * availability sets. All the other resources created with the container service are part of the same resource group
-     * and can be deleted individually.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerServiceName The name of the container service in the specified subscription and resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String containerServiceName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, containerServiceName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not
-     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
-     * availability sets. All the other resources created with the container service are part of the same resource group
-     * and can be deleted individually.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerServiceName The name of the container service in the specified subscription and resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String containerServiceName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, containerServiceName).block();
-    }
-
-    /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not
-     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
-     * availability sets. All the other resources created with the container service are part of the same resource group
-     * and can be deleted individually.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerServiceName The name of the container service in the specified subscription and resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String containerServiceName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, containerServiceName, context).block();
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -1763,6 +1438,7 @@ public final class ContainerServicesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -1820,6 +1496,7 @@ public final class ContainerServicesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(

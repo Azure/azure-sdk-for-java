@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ListP2SVpnGatewaysResultInner;
 import com.azure.resourcemanager.network.fluent.inner.P2SVpnConnectionHealthInner;
 import com.azure.resourcemanager.network.fluent.inner.P2SVpnGatewayInner;
@@ -537,8 +536,8 @@ public final class P2SVpnGatewaysClient
             createOrUpdateWithResponseAsync(resourceGroupName, gatewayName, p2SVpnGatewayParameters);
         return this
             .client
-            .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class);
+            .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, Context.NONE);
     }
 
     /**
@@ -556,12 +555,13 @@ public final class P2SVpnGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, gatewayName, p2SVpnGatewayParameters, context);
         return this
             .client
-            .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class);
+            .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, context);
     }
 
     /**
@@ -963,7 +963,9 @@ public final class P2SVpnGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String gatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -980,8 +982,11 @@ public final class P2SVpnGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String gatewayName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1203,7 +1208,7 @@ public final class P2SVpnGatewaysClient
     public PagedFlux<P2SVpnGatewayInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1334,7 +1339,8 @@ public final class P2SVpnGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<P2SVpnGatewayInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1481,8 +1487,12 @@ public final class P2SVpnGatewaysClient
             generateVpnProfileWithResponseAsync(resourceGroupName, gatewayName, authenticationMethod);
         return this
             .client
-            .<VpnProfileResponseInner, VpnProfileResponseInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnProfileResponseInner.class, VpnProfileResponseInner.class);
+            .<VpnProfileResponseInner, VpnProfileResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VpnProfileResponseInner.class,
+                VpnProfileResponseInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1500,12 +1510,17 @@ public final class P2SVpnGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfileAsync(
         String resourceGroupName, String gatewayName, AuthenticationMethod authenticationMethod, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             generateVpnProfileWithResponseAsync(resourceGroupName, gatewayName, authenticationMethod, context);
         return this
             .client
-            .<VpnProfileResponseInner, VpnProfileResponseInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnProfileResponseInner.class, VpnProfileResponseInner.class);
+            .<VpnProfileResponseInner, VpnProfileResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VpnProfileResponseInner.class,
+                VpnProfileResponseInner.class,
+                context);
     }
 
     /**
@@ -1727,8 +1742,8 @@ public final class P2SVpnGatewaysClient
             getP2SVpnConnectionHealthWithResponseAsync(resourceGroupName, gatewayName);
         return this
             .client
-            .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class);
+            .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, Context.NONE);
     }
 
     /**
@@ -1745,12 +1760,13 @@ public final class P2SVpnGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginGetP2SVpnConnectionHealthAsync(
         String resourceGroupName, String gatewayName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getP2SVpnConnectionHealthWithResponseAsync(resourceGroupName, gatewayName, context);
         return this
             .client
-            .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class);
+            .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, context);
     }
 
     /**
@@ -1984,11 +2000,12 @@ public final class P2SVpnGatewaysClient
             getP2SVpnConnectionHealthDetailedWithResponseAsync(resourceGroupName, gatewayName, request);
         return this
             .client
-            .<P2SVpnConnectionHealthInner, P2SVpnConnectionHealthInner>getLroResultAsync(
+            .<P2SVpnConnectionHealthInner, P2SVpnConnectionHealthInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 P2SVpnConnectionHealthInner.class,
-                P2SVpnConnectionHealthInner.class);
+                P2SVpnConnectionHealthInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2009,15 +2026,17 @@ public final class P2SVpnGatewaysClient
     public PollerFlux<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
         beginGetP2SVpnConnectionHealthDetailedAsync(
             String resourceGroupName, String gatewayName, P2SVpnConnectionHealthRequest request, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getP2SVpnConnectionHealthDetailedWithResponseAsync(resourceGroupName, gatewayName, request, context);
         return this
             .client
-            .<P2SVpnConnectionHealthInner, P2SVpnConnectionHealthInner>getLroResultAsync(
+            .<P2SVpnConnectionHealthInner, P2SVpnConnectionHealthInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 P2SVpnConnectionHealthInner.class,
-                P2SVpnConnectionHealthInner.class);
+                P2SVpnConnectionHealthInner.class,
+                context);
     }
 
     /**
@@ -2262,7 +2281,9 @@ public final class P2SVpnGatewaysClient
         String resourceGroupName, String p2SVpnGatewayName, List<String> vpnConnectionIds) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             disconnectP2SVpnConnectionsWithResponseAsync(resourceGroupName, p2SVpnGatewayName, vpnConnectionIds);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2280,10 +2301,13 @@ public final class P2SVpnGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDisconnectP2SVpnConnectionsAsync(
         String resourceGroupName, String p2SVpnGatewayName, List<String> vpnConnectionIds, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             disconnectP2SVpnConnectionsWithResponseAsync(
                 resourceGroupName, p2SVpnGatewayName, vpnConnectionIds, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**

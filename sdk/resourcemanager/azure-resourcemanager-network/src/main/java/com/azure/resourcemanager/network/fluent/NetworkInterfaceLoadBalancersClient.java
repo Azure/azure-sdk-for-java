@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.LoadBalancerInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceLoadBalancerListResultInner;
 import reactor.core.publisher.Mono;
@@ -229,7 +228,7 @@ public final class NetworkInterfaceLoadBalancersClient {
         String resourceGroupName, String networkInterfaceName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, networkInterfaceName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

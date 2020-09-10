@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionInner;
 import reactor.core.publisher.Mono;
@@ -126,6 +125,7 @@ public final class MetricDefinitionsClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), resourceUri, apiVersion, metricnamespace, context)
             .map(
