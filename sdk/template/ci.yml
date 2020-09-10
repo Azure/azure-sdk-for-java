@@ -32,4 +32,4 @@ extends:
         safeName: azuresdktemplate
         skipDocMs: true
         options:
-          - skipPublishPackage: true
+          skipPublishPackage: true
