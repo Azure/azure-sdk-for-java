@@ -7,7 +7,6 @@ import com.azure.digitaltwins.core.models.ModelData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
-
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,10 +127,5 @@ public class ModelsAsyncTest extends ModelsTestBase {
         String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, asyncClient, this.randomIntegerStringGenerator);
 
         createModelsRunner(buildingModelId, floorModelId, hvacModelId, wardModelId, createModelsTestRunner);
-    }
-
-    private DigitalTwinsAsyncClient getAsyncClient(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
-        return getDigitalTwinsClientBuilder(httpClient, serviceVersion)
-            .buildAsyncClient();
     }
 }

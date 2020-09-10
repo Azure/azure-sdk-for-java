@@ -72,6 +72,16 @@ public class DigitalTwinsTestBase extends TestBase
         return builder;
     }
 
+    protected DigitalTwinsClient getClient(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+        return getDigitalTwinsClientBuilder(httpClient, serviceVersion)
+            .buildClient();
+    }
+
+    protected DigitalTwinsAsyncClient getAsyncClient(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+        return getDigitalTwinsClientBuilder(httpClient, serviceVersion)
+            .buildAsyncClient();
+    }
+
     /**
      * This function generates a random string of integers for use when creating models with a random version. It takes
      * a maxLength parameter that determines how long of a string of integers will be produced.
