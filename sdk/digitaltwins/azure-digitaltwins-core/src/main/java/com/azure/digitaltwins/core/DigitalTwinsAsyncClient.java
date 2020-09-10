@@ -1436,11 +1436,21 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+
+        Object payloadObject = null;
+        try {
+            payloadObject = mapper.readValue(payload, Object.class);
+        }
+        catch (JsonProcessingException e) {
+            logger.error("Could not parse the payload [%s]: %s", payload, e);
+            return Mono.error(e);
+        }
+
         return protocolLayer.getDigitalTwins().sendComponentTelemetryWithResponseAsync(
             digitalTwinId,
             componentName,
             publishTelemetryRequestOptions.getMessageId(),
-            payload,
+            payloadObject,
             publishTelemetryRequestOptions.getTimestamp().toString(),
             context);
     }
