@@ -381,7 +381,9 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Sets the scheduled enqueue time of this message.
+     * Sets the scheduled enqueue time of this message. A {@code null} will not be set. If this value needs to be unset
+     * it could be done by value removing from {@link AmqpAnnotatedMessage#getMessageAnnotations()} using key
+     * {@link AmqpMessageConstant#SCHEDULED_ENQUEUE_UTC_TIME_NAME}.
      *
      * @param scheduledEnqueueTime the datetime at which this message should be enqueued in Azure Service Bus.
      *
