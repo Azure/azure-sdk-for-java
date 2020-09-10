@@ -13,8 +13,6 @@ trigger:
       - sdk/appconfiguration/mgmt-v2019_10_01
       - sdk/appconfiguration/mgmt-v2019_11_01_preview
 
-
-
 pr:
   branches:
     include:
