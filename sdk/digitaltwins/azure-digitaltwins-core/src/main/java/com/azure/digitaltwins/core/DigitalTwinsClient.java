@@ -450,6 +450,17 @@ public final class DigitalTwinsClient {
      * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
      *
      * @param digitalTwinId The Id of the target digital twin.
+     * @return A {@link PagedIterable} of application/json relationships directed towards the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IncomingRelationship> listIncomingRelationships(String digitalTwinId) {
+        return listIncomingRelationships(digitalTwinId, Context.NONE);
+    }
+
+    /**
+     * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the target digital twin.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of application/json relationships directed towards the specified digital twin and the http response.
      */

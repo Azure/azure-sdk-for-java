@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.*;
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 
@@ -86,7 +87,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
             }
             catch (Exception ex)
             {
-                throw new AssertionFailedError("Test celanup failed", ex);
+                fail("Test cleanup failed", ex);
             }
         }
     }
