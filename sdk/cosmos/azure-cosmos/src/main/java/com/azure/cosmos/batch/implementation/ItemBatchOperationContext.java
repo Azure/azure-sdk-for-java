@@ -94,7 +94,7 @@ public class ItemBatchOperationContext implements AutoCloseable {
         return this.retryPolicy.shouldRetry(
             result.getResponseStatus(),
             result.getSubStatusCode(),
-            BatchExecUtils.getResponseHeaders(result));
+            BatchExecUtils.getResponseHeadersFromBatchOperationResult(result));
     }
 
     private boolean assertBatcher(BatchAsyncBatcher completer) {

@@ -5,6 +5,7 @@ package com.azure.cosmos.batch.emulatortest;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.batch.implementation.BatchRequestResponseConstant;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -29,7 +30,7 @@ public class CosmosItemBulkTests extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 100)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createItem_withBulk() {
         CosmosAsyncContainer container = this.bulkContainer;
 
@@ -48,6 +49,27 @@ public class CosmosItemBulkTests extends BatchTestBase {
             assertEquals(String.valueOf(i), document.getId());
         }
     }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void createItemLargeOperationSize_withBulk() {
+        CosmosAsyncContainer container = this.bulkContainer;
+        int appxDocSize = 3 * BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
+
+        List<Mono<CosmosItemResponse<TestDoc>>> responseMonos = new ArrayList<>();
+        for (int i = 0; i < 10; i++)
+        {
+            TestDoc item = this.populateTestDoc("TBD", appxDocSize);
+            responseMonos.add(executeCreateAsync(container, item));
+        }
+
+        for (int i = 0; i < 10; i++) {
+            CosmosItemResponse<TestDoc> response = responseMonos.get(i).block();
+            assertEquals(HttpResponseStatus.CREATED.code(), response.getStatusCode());
+            assertTrue(response.getRequestCharge() > 0);
+            assertFalse(Strings.isNullOrEmpty(response.getDiagnostics().toString()));
+        }
+    }
+
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void upsertItem_withbulk() {

@@ -10,7 +10,7 @@ package com.azure.cosmos.batch.implementation;
 public class BatchRequestResponseConstant {
 
     // Size limits:
-    public static final int MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES = 2202010;
+    public static final int MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES = 220201;
     public static final int MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST = 100;
 
     public static final String FIELD_OPERATION_TYPE = "operationType";

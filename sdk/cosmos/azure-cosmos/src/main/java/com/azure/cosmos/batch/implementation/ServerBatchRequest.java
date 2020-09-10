@@ -77,14 +77,16 @@ public abstract class ServerBatchRequest {
 
         for(ItemBatchOperation<?> operation : operations) {
 
-            operation.materializeResource();
             JsonSerializable operationJsonSerializable = ItemBatchOperation.writeOperation(operation);
+            int operationSerializedLength = operationJsonSerializable.toString().length();
 
-            if (totalSerializedLength + operationJsonSerializable.toString().length() > this.maxBodyLength || totalOperationCount + 1 > this.maxOperationCount) {
+            if (totalOperationCount != 0 &&
+                (totalSerializedLength + operationSerializedLength > this.maxBodyLength || totalOperationCount + 1 > this.maxOperationCount)) {
+                // Apply the limit only if at least there is one operation in selected operations.
                 break;
             }
 
-            totalSerializedLength += operationJsonSerializable.toString().length();
+            totalSerializedLength += operationSerializedLength;
             totalOperationCount++;
 
             arrayNode.add(operationJsonSerializable.getPropertyBag());
@@ -98,7 +100,7 @@ public abstract class ServerBatchRequest {
 
     public final String transferRequestBody() {
 
-        checkState(this.requestBody != null, "expected non-null body stream");
+        checkState(this.requestBody != null, "expected non-null body");
 
         String requestBody = this.requestBody;
         this.requestBody = null;

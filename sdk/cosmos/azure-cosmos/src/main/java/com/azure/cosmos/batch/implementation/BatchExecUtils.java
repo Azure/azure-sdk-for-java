@@ -50,15 +50,14 @@ public class BatchExecUtils {
      * @param result a {@link TransactionalBatchOperationResult}
      * @return a new {@link RxDocumentServiceResponse batch response message}.
      */
-    public static RxDocumentServiceResponse toResponseMessage(TransactionalBatchOperationResult<?> result) {
+    public static RxDocumentServiceResponse convertToDocumentServiceResponse(TransactionalBatchOperationResult<?> result) {
 
-        Map<String, String> headers = getResponseHeaders(result);
+        Map<String, String> headers = getResponseHeadersFromBatchOperationResult(result);
 
         StoreResponse storeResponse = new StoreResponse(
             result.getResponseStatus(),
             new ArrayList<>(headers.entrySet()),
             result.getResourceObject() != null ? Utils.getUTF8BytesOrNull(result.getResourceObject().toString()) : null);
-
 
         if (result.getCosmosDiagnostics() != null) {
             DirectBridgeInternal.setCosmosDiagnostics(storeResponse, result.getCosmosDiagnostics());
@@ -67,7 +66,7 @@ public class BatchExecUtils {
         return new RxDocumentServiceResponse(storeResponse);
     }
 
-    public static Map<String, String> getResponseHeaders(TransactionalBatchOperationResult<?> result) {
+    static Map<String, String> getResponseHeadersFromBatchOperationResult(TransactionalBatchOperationResult<?> result) {
         Map<String, String> headers = new HashMap<>();
 
         headers.put(HttpConstants.HttpHeaders.SUB_STATUS, String.valueOf(result.getSubStatusCode()));

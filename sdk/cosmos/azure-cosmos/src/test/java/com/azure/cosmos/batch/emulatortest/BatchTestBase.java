@@ -180,7 +180,7 @@ public class BatchTestBase extends TestSuiteBase {
         return populateTestDoc(partitionKey, 20);
     }
 
-    protected  TestDoc populateTestDoc(String partitionKey, int minDesiredSize) {
+    protected TestDoc populateTestDoc(String partitionKey, int minDesiredSize) {
         String description = StringUtils.repeat("x", minDesiredSize);
         return new TestDoc(UUID.randomUUID().toString(), this.random.nextInt(), description, partitionKey);
     }

@@ -1145,7 +1145,7 @@ public class CosmosAsyncContainer {
 
         Mono<CosmosItemResponse<T>> responseMono = this.executor.addAsync(operation, bulkRequestOptions)
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(
-                BridgeInternal.toResourceResponse(BatchExecUtils.toResponseMessage(response), Document.class), itemType, getItemDeserializer()));
+                BridgeInternal.toResourceResponse(BatchExecUtils.convertToDocumentServiceResponse(response), Document.class), itemType, getItemDeserializer()));
 
         return withContext(context -> database.getClient().getTracerProvider().
             traceEnabledCosmosItemResponsePublisher(responseMono,

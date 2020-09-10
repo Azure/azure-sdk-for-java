@@ -47,7 +47,7 @@ import static com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper
  */
 public class BatchAsyncContainerExecutor implements AutoCloseable {
 
-    private static final int DEFAULT_MAX_DEGREE_OF_CONCURRENCY = 150;
+    private static final int DEFAULT_MAX_DEGREE_OF_CONCURRENCY = 50;
     private final HashedWheelTimer timer = new HashedWheelTimer();
     private final ConcurrentHashMap<String, Semaphore> limiters = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, BatchAsyncStreamer> streamers = new ConcurrentHashMap<>();
@@ -113,7 +113,7 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
 
             BatchAsyncContainerExecutor.validateOperationEpk(operation, options);
         }
-
+        // This is used to get approximate length while adding to Batcher.
         return operation.materializeResource();
     }
 
