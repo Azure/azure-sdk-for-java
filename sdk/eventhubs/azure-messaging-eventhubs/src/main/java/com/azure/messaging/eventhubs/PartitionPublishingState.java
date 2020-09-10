@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.messaging.eventhubs.implementation.PartitionPublishingUtils;
+
 import java.util.concurrent.Semaphore;
 
 /**
@@ -134,6 +136,10 @@ public final class PartitionPublishingState {
         this.sequenceNumber = sequenceNumber;
     }
 
+    void increaseSequenceNumber(int delta) {
+        this.setSequenceNumber(PartitionPublishingUtils.incrementSequenceNumber(this.sequenceNumber, delta));
+    }
+
     /**
      * An idempotent producer must sequentially send events to an EventHubs partition. This {@link Semaphore}
      * is used to send sequentially.
@@ -152,5 +158,14 @@ public final class PartitionPublishingState {
 
     void setFromLink(boolean fromLink) {
         this.fromLink = fromLink;
+    }
+
+    @Override
+    public String toString() {
+        return "PartitionPublishingState{"
+            + "ownerLevel=" + ownerLevel
+            + ", producerGroupId=" + producerGroupId
+            + ", sequenceNumber=" + sequenceNumber
+            + '}';
     }
 }

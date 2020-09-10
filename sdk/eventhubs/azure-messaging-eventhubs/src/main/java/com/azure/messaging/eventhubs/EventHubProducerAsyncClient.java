@@ -244,8 +244,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         PartitionPublishingState publishingState = getClientPartitionPublishingState(partitionId);
         if (publishingState.isFromLink()) {
             return Mono.just(publishingState);
-        }
-        else {
+        } else {
             return withRetry(this.getSendLink(partitionId).flatMap(amqpSendLink ->
                     Mono.just(this.getClientPartitionPublishingState(partitionId))),
                 retryOptions.getTryTimeout(), retryPolicy);
@@ -549,11 +548,12 @@ public class EventHubProducerAsyncClient implements Closeable {
                     }
                 })
                 .then(Mono.fromRunnable(() -> {
-                    publishingState.setSequenceNumber(PartitionPublishingUtils.incrementSequenceNumber(
-                        publishingState.getSequenceNumber(), batch.getCount()));
+                    publishingState.increaseSequenceNumber(batch.getCount());
                 }))
                 // Release the partition state semaphore
-                .doFinally(signal -> publishingState.getSendingSemaphore().release()).then();
+                .doFinally(
+                    signal -> publishingState.getSendingSemaphore().release()
+                ).then();
         } else {
             return withRetry(getSendLink(batch.getPartitionId())
                 .flatMap(link -> messages.size() == 1
@@ -650,7 +650,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private void setPartitionPublishingState(
         String partitionId, Long producerGroupId, Short ownerLevel, Integer sequenceNumber) {
         PartitionPublishingState publishingState = getClientPartitionPublishingState(partitionId);
-        if (publishingState != null) {
+        if (publishingState != null && publishingState.getSequenceNumber() <= sequenceNumber) {
             publishingState.setOwnerLevel(ownerLevel);
             publishingState.setProducerGroupId(producerGroupId);
             publishingState.setSequenceNumber(sequenceNumber);

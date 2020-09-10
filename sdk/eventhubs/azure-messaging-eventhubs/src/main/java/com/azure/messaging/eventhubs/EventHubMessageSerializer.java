@@ -349,6 +349,13 @@ class EventHubMessageSerializer implements MessageSerializer {
                     case REPLY_TO_GROUP_ID:
                         message.setReplyToGroupId((String) value);
                         break;
+                    case PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME:
+                        final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
+                            ? new MessageAnnotations(new HashMap<>())
+                            : message.getMessageAnnotations();
+                        messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
+                        message.setMessageAnnotations(messageAnnotations);
+                        break;
                     default:
                         throw new IllegalArgumentException(
                             String.format(
