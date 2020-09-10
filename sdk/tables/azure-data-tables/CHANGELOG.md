@@ -1,5 +1,8 @@
 # Release History
 
+## 12.0.0-beta.2 (Unreleased)
+
+
 ## 12.0.0-beta.1 (2020-09-10):
 
 Version 12.0.0-beta.1 is a beta of our efforts in creating a client library that is developer-friendly, idiomatic to
