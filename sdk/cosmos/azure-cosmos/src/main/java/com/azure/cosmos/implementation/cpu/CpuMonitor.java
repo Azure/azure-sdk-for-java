@@ -118,8 +118,10 @@ public class CpuMonitor {
 
     private static void closeInternal() {
         synchronized (lifeCycleLock) {
-            future.cancel(false);
-            future = null;
+            if (future != null) {
+                future.cancel(false);
+                future = null;
+            }
 
             rwLock.writeLock().lock();
             try {
