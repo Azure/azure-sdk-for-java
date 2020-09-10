@@ -24,11 +24,11 @@ public class FlatMapSequentialTests {
         Function<Throwable, Publisher<String>> onError = e -> Mono.just(e.getMessage());
         Supplier<Publisher<String>> onComplete = () -> complete;
 
-        StepVerifier.create(
-            mono.flatMapMany(onNext, onError, onComplete)
-        )
-            .expectNext("2", "3", "1")
-            .verifyComplete();
+//        StepVerifier.create(
+//            mono.flatMapMany(onNext, onError, onComplete)
+//        )
+//            .expectNext("2", "3", "1")
+//            .verifyComplete();
 
         StepVerifier.create(
             Utils.flatMapSequential(mono.flux(),
@@ -75,26 +75,26 @@ public class FlatMapSequentialTests {
             .expectNext(0, 1, 2, 3, 4)
             .verifyErrorMessage("Test");
 
-        StepVerifier.create(Flux.just(1, 3, 5, 7)
-            .flatMapDelayError(i -> {
-                if (i == 5) {
-                    throw new RuntimeException("Test");
-                }
-                return Mono.just(i);
-            }, 32, 32)
-        )
-            .expectNext(1, 3)
-            .verifyErrorMessage("Test");
-
-        StepVerifier.create(Flux.just(1, 3, 5, 7)
-            .flatMapDelayError(i -> {
-                if (i == 5) {
-                    return Mono.error(new RuntimeException("Test"));
-                }
-                return Mono.just(i);
-            }, 32, 32)
-        )
-            .expectNext(1, 3, 7)
-            .verifyErrorMessage("Test");
+//        StepVerifier.create(Flux.just(1, 3, 5, 7)
+//            .flatMapDelayError(i -> {
+//                if (i == 5) {
+//                    throw new RuntimeException("Test");
+//                }
+//                return Mono.just(i);
+//            }, 32, 32)
+//        )
+//            .expectNext(1, 3)
+//            .verifyErrorMessage("Test");
+//
+//        StepVerifier.create(Flux.just(1, 3, 5, 7)
+//            .flatMapDelayError(i -> {
+//                if (i == 5) {
+//                    return Mono.error(new RuntimeException("Test"));
+//                }
+//                return Mono.just(i);
+//            }, 32, 32)
+//        )
+//            .expectNext(1, 3, 7)
+//            .verifyErrorMessage("Test");
     }
 }
