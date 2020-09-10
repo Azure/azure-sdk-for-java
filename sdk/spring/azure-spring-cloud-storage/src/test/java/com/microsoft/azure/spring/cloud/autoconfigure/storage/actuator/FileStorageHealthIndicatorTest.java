@@ -29,30 +29,15 @@ import reactor.core.publisher.Mono;
 public class FileStorageHealthIndicatorTest {
     private static final String MOCK_URL = "https://example.org/bigly_fake_url";
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void testWithNoStorageConfiguration() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withAllowBeanDefinitionOverriding(true)
+            .withBean(ShareServiceClientBuilder.class)
             .withConfiguration(AutoConfigurations.of(AzureStorageActuatorAutoConfiguration.class));
 
         contextRunner.withBean(FileStorageHealthIndicator.class).run(context -> {
-            Health health = context.getBean(FileStorageHealthIndicator.class).getHealth(true);
-            Assert.assertEquals(AzureStorageActuatorConstants.NOT_CONFIGURED_STATUS, health.getStatus());
-            Assert.assertEquals("No storage health details expected when storage not configured.", 0,
-                    health.getDetails().size());
-        });
-    }
-
-    @Test
-    public void testWithStorageConfigurationAndNoAccount() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withAllowBeanDefinitionOverriding(true)
-            .withConfiguration(AutoConfigurations.of(AzureStorageAutoConfiguration.class,
-                AzureStorageActuatorAutoConfiguration.class))
-            .withBean(FileStorageHealthIndicator.class);
-        contextRunner.run(context -> {
-            Health health = context.getBean(FileStorageHealthIndicator.class).getHealth(true);
-            Assert.assertEquals(AzureStorageActuatorConstants.NOT_CONFIGURED_STATUS, health.getStatus());
+            context.getBean(FileStorageHealthIndicator.class).getHealth(true);
         });
     }
 
