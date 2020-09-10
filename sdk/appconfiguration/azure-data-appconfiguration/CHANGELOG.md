@@ -1,4 +1,7 @@
 # Release History
+## 1.2.0-beta.1 (Unreleased)
+
+
 ## 1.1.5 (2020-09-10)
 - Update dependency version, `azure-core` to 1.8.1 and `azure-core-http-netty` to 1.6.1.
 
