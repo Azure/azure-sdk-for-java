@@ -1460,10 +1460,12 @@ public class ProxyTaskGroupTests {
         down.await();
 
         boolean b1 = seen.equals(new ArrayList<>(Arrays.asList(new String[]{"A", "C", "B", "C"})));
-        boolean b2 = seen.equals(new ArrayList<>(Arrays.asList(new String[]{"C", "A", "B", "C"})));
+        // boolean b2 = seen.equals(new ArrayList<>(Arrays.asList(new String[]{"C", "A", "B", "C"})));
+        boolean b2 = seen.equals(new ArrayList<>(Arrays.asList(new String[]{"A", "B", "C", "C"}))); // due to new compare reason, 'C' will always after 'A' and 'C' could return after 'B'
 
         if (!b1 && !b2) {
-            Assertions.assertTrue(false, "Emission order should be either [A, C, B, C] or [C, A, B, C] but got " + seen);
+            // Assertions.assertTrue(false, "Emission order should be either [A, C, B, C] or [C, A, B, C] but got " + seen);
+            Assertions.assertTrue(false, "Emission order should be either [A, C, B, C] or [A, B, C, C] but got " + seen);
         }
 
         Assertions.assertEquals(beforeGroupInvokeCntB[0], 1);
