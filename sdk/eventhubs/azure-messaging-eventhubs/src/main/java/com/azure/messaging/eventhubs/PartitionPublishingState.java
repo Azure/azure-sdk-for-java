@@ -13,6 +13,11 @@ public final class PartitionPublishingState {
     private Long producerGroupId;
     private Integer sequenceNumber;
 
+    /**
+     * Indicate whether the state has ever been retrieved from the link, or it's just a pure client created object.
+     * Once the state is retrieved from the link, this value is always true.
+     */
+    private boolean fromLink = false;
     // Idempotent producer requires all event data batches of a partition are sent out sequentially.
     private final Semaphore sendingSemaphore = new Semaphore(1);
 
@@ -20,7 +25,11 @@ public final class PartitionPublishingState {
      * Create a PartitionPublishingState with producer group id, owner level and starting sequence number
      * being {@code null}.
      */
-    public PartitionPublishingState() {
+    PartitionPublishingState() {
+    }
+
+    PartitionPublishingState(PartitionPublishingState that) {
+        this(that.getProducerGroupId(), that.getOwnerLevel(), that.getSequenceNumber());
     }
 
     /**
@@ -104,7 +113,7 @@ public final class PartitionPublishingState {
      * Set the owner level.
      * @param ownerLevel The owner level of the idempotent producer.
      */
-    public void setOwnerLevel(Short ownerLevel) {
+    void setOwnerLevel(Short ownerLevel) {
         this.ownerLevel = ownerLevel;
     }
 
@@ -112,7 +121,7 @@ public final class PartitionPublishingState {
      * Set the producer group id.
      * @param producerGroupId The producer group id of the idempotent producer.
      */
-    public void setProducerGroupId(Long producerGroupId) {
+    void setProducerGroupId(Long producerGroupId) {
         this.producerGroupId = producerGroupId;
     }
 
@@ -121,7 +130,7 @@ public final class PartitionPublishingState {
      * @param sequenceNumber The next publishing sequence number of a partition when an idempotent producer send
      * an {@link EventData} to.
      */
-    public void setSequenceNumber(Integer sequenceNumber) {
+    void setSequenceNumber(Integer sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
     }
 
@@ -132,5 +141,16 @@ public final class PartitionPublishingState {
      */
     Semaphore getSendingSemaphore() {
         return sendingSemaphore;
+    }
+
+    /**
+     * @return whether the state has ever been retrieved from the link, or it's just a pure client created object.
+     */
+    boolean isFromLink() {
+        return fromLink;
+    }
+
+    void setFromLink(boolean fromLink) {
+        this.fromLink = fromLink;
     }
 }

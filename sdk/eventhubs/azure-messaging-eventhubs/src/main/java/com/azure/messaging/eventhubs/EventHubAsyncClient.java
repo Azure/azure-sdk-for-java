@@ -34,12 +34,12 @@ class EventHubAsyncClient implements Closeable {
     private final Runnable onClientClose;
     private final TracerProvider tracerProvider;
     private final boolean enableIdempotentPartitions;
-    private final Map<String, PartitionPublishingState> partitionPublishingStates;
+    private final Map<String, PartitionPublishingState> initialPartitionPublishingStates;
 
     EventHubAsyncClient(
         EventHubConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
-        boolean enableIdempotentPartitions, Map<String, PartitionPublishingState> partitionPublishingStates) {
+        boolean enableIdempotentPartitions, Map<String, PartitionPublishingState> initialPartitionPublishingStates) {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
@@ -49,7 +49,7 @@ class EventHubAsyncClient implements Closeable {
 
         this.isSharedConnection = isSharedConnection;
         this.enableIdempotentPartitions = enableIdempotentPartitions;
-        this.partitionPublishingStates = partitionPublishingStates;
+        this.initialPartitionPublishingStates = initialPartitionPublishingStates;
     }
 
     /**
@@ -112,7 +112,7 @@ class EventHubAsyncClient implements Closeable {
     EventHubProducerAsyncClient createProducer() {
         return new EventHubProducerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
             connectionProcessor, connectionProcessor.getRetryOptions(), tracerProvider, messageSerializer, scheduler,
-            isSharedConnection, onClientClose, enableIdempotentPartitions, partitionPublishingStates);
+            isSharedConnection, onClientClose, enableIdempotentPartitions, initialPartitionPublishingStates);
     }
 
     /**

@@ -140,7 +140,7 @@ public class EventHubClientBuilder {
     private EventHubConnectionProcessor eventHubConnectionProcessor;
     private Integer prefetchCount;
     private boolean enableIdempotentPartitionPublishing;
-    private Map<String, PartitionPublishingState> startingPartitionPublishingStates;
+    private Map<String, PartitionPublishingState> initialPartitionPublishingStates;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -400,9 +400,9 @@ public class EventHubClientBuilder {
      * are the partition ids.
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder startingPartitionPublishingStates(Map<String,
+    public EventHubClientBuilder initialPartitionPublishingStates(Map<String,
         PartitionPublishingState> states) {
-        this.startingPartitionPublishingStates = states;
+        this.initialPartitionPublishingStates = states;
         return this;
     }
 
@@ -536,7 +536,7 @@ public class EventHubClientBuilder {
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
             isSharedConnection.get(), this::onClientClose,
-            enableIdempotentPartitionPublishing, startingPartitionPublishingStates);
+            enableIdempotentPartitionPublishing, initialPartitionPublishingStates);
     }
 
     /**
