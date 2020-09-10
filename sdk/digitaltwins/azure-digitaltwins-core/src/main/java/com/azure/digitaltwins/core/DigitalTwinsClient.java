@@ -768,4 +768,34 @@ public final class DigitalTwinsClient {
     }
 
     //endregion Event Route APIs
+
+    //region Telemetry APIs
+
+    public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
+        TelemetryOptions telemetryOptions = new TelemetryOptions();
+        publishComponentTelemetry(digitalTwinId, componentName, payload, telemetryOptions);
+    }
+
+    public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload, TelemetryOptions telemetryOptions) {
+        publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, telemetryOptions, Context.NONE);
+    }
+
+    public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, TelemetryOptions telemetryOptions, Context context) {
+        return digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, telemetryOptions, context).block();
+    }
+
+    public void publishTelemetry(String digitalTwinId, String payload) {
+        TelemetryOptions telemetryOptions = new TelemetryOptions();
+        publishTelemetry(digitalTwinId, payload, telemetryOptions);
+    }
+
+    public void publishTelemetry(String digitalTwinId, String payload, TelemetryOptions telemetryOptions) {
+        publishTelemetryWithResponse(digitalTwinId, payload, telemetryOptions, Context.NONE);
+    }
+
+    public Response<Void> publishTelemetryWithResponse(String digitalTwinId, String payload, TelemetryOptions telemetryOptions, Context context) {
+        return digitalTwinsAsyncClient.publishTelemetryWithResponse(digitalTwinId, payload, telemetryOptions, context).block();
+    }
+
+    //endregion TelemetryAPIs
 }
