@@ -23,11 +23,11 @@ public class AmqpRetryOptions {
      * Creates an instance with the default retry options set.
      */
     public AmqpRetryOptions() {
-        maxRetries = 3;
-        delay = Duration.ofMillis(800);
-        maxDelay = Duration.ofMinutes(1);
-        tryTimeout = Duration.ofMinutes(1);
-        retryMode = AmqpRetryMode.EXPONENTIAL;
+        this.maxRetries = 3;
+        this.delay = Duration.ofMillis(800);
+        this.maxDelay = Duration.ofMinutes(1);
+        this.tryTimeout = Duration.ofMinutes(1);
+        this.retryMode = AmqpRetryMode.EXPONENTIAL;
     }
 
     /**
