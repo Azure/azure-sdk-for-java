@@ -9,9 +9,9 @@
 package com.microsoft.azure.management.eventhubs.v2017_04_01;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.eventhubs.v2017_04_01.implementation.NetworkRuleSetInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.eventhubs.v2017_04_01.implementation.EventHubsManager;
-import com.microsoft.azure.management.eventhubs.v2017_04_01.implementation.NetworkRuleSetInner;
 import java.util.List;
 
 /**
