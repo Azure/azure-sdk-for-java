@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+
 /**
  * Fluent credential builder for instantiating a {@link SharedTokenCacheCredential}.
  *
