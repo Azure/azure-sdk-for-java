@@ -5,11 +5,12 @@ import com.azure.digitaltwins.core.DigitalTwinsClient;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 
 import java.net.HttpURLConnection;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class UniqueIdHelper {
     public static String getUniqueModelId(String baseName, DigitalTwinsAsyncClient client, Function<Integer, String> randomIntegerStringGenerator) {
-        return getUniqueId(baseName, (modelId -> client.getModel(modelId).block().getId()), randomIntegerStringGenerator);
+        return getUniqueId(baseName, (modelId -> Objects.requireNonNull(client.getModel(modelId).block()).getId()), randomIntegerStringGenerator);
     }
 
     public static String getUniqueModelId(String baseName, DigitalTwinsClient client, Function<Integer, String> randomIntegerStringGenerator) {
