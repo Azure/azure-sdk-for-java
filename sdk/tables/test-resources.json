@@ -97,7 +97,7 @@
     "outputs": {
         "AZURE_TABLES_CONNECTION_STRING": {
             "type": "string",
-            "value": "[if(equals(parameters('endpointType'), 'storage'), concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('mgmtApiVersion')).keys[0].value, ';EndpointSuffix=core.windows.net/;'), concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('primaryAccountName')), variables('mgmtApiVersion')).primaryMasterKey, ';EndpointSuffix=cosmos.azure.com:443/;'))]",
+            "value": "[if(equals(parameters('endpointType'), 'storage'), concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('mgmtApiVersion')).keys[0].value, ';EndpointSuffix=core.windows.net/;'), concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('primaryAccountName')), '2020-04-01').primaryMasterKey, ';EndpointSuffix=cosmos.azure.com:443/;'))]",
         }
     }
 }

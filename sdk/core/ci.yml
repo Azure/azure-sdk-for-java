@@ -12,6 +12,9 @@ trigger:
       - sdk/parents/azure-sdk-parent/
       - sdk/parents/azure-client-sdk-parent/
       - eng/
+    exclude:
+      - eng/versioning
+      - eng/jacoco-test-coverage
 
 pr:
   branches:
@@ -26,6 +29,9 @@ pr:
       - sdk/parents/azure-sdk-parent/
       - sdk/parents/azure-client-sdk-parent/
       - eng/
+    exclude:
+      - eng/versioning
+      - eng/jacoco-test-coverage
 
 
 extends:

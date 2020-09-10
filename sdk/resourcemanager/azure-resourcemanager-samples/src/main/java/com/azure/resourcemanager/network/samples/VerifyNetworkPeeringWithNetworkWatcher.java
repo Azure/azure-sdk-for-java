@@ -181,11 +181,6 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
             System.out.println("Connectivity from B to A: " + connectivityBtoA.execute().connectionStatus());
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + resourceGroupName);
@@ -196,7 +191,6 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

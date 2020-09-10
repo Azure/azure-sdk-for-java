@@ -59,8 +59,6 @@ public final class CreateCosmosDBWithIPRange {
             System.out.println("Deleted the CosmosDB");
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
         } finally {
             try {
                 System.out.println("Deleting resource group: " + rgName);
@@ -72,8 +70,6 @@ public final class CreateCosmosDBWithIPRange {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**
