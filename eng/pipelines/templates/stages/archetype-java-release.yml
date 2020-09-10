@@ -144,7 +144,7 @@ stages:
           #                 BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
           #                 JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
 
-          - ${{if and(ne(artifact.options.skipPublishDocs, 'true'), ne(artifact.options.skipDocMs, 'true'))}}:
+          - ${{if and(ne(artifact.options.skipPublishDocs, 'true'), ne(artifact.skipDocMs, 'true'))}}:
             - deployment: PublicDocsMs
               displayName: "Publish Updates for Docs.MS"
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
