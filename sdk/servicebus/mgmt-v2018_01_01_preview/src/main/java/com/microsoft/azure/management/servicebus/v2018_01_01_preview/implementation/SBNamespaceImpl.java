@@ -14,6 +14,8 @@ import rx.Observable;
 import com.microsoft.azure.management.servicebus.v2018_01_01_preview.SBNamespaceUpdateParameters;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.servicebus.v2018_01_01_preview.SBSku;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.Encryption;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.Identity;
 import rx.functions.Func1;
 
 class SBNamespaceImpl extends GroupableResourceCoreImpl<SBNamespace, SBNamespaceInner, SBNamespaceImpl, ServiceBusManager> implements SBNamespace, SBNamespace.Definition, SBNamespace.Update {
@@ -72,6 +74,11 @@ class SBNamespaceImpl extends GroupableResourceCoreImpl<SBNamespace, SBNamespace
     }
 
     @Override
+    public Encryption encryption() {
+        return this.inner().encryption();
+    }
+
+    @Override
     public String metricId() {
         return this.inner().metricId();
     }
@@ -99,6 +106,22 @@ class SBNamespaceImpl extends GroupableResourceCoreImpl<SBNamespace, SBNamespace
     @Override
     public Boolean zoneRedundant() {
         return this.inner().zoneRedundant();
+    }
+
+    @Override
+    public SBNamespaceImpl withIdentity(Identity identity) {
+        this.updateParameter.withIdentity(identity);
+        return this;
+    }
+
+    @Override
+    public SBNamespaceImpl withEncryption(Encryption encryption) {
+        if (isInCreateMode()) {
+            this.inner().withEncryption(encryption);
+        } else {
+            this.updateParameter.withEncryption(encryption);
+        }
+        return this;
     }
 
     @Override
