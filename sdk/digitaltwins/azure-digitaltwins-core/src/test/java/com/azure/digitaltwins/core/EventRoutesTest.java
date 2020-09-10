@@ -12,6 +12,9 @@ import java.net.HttpURLConnection;
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
 
+/**
+ * Tests for the sync client's event route APIs
+ */
 public class EventRoutesTest extends EventRoutesTestBase {
 
     private final ClientLogger logger = new ClientLogger(EventRoutesTest.class);
