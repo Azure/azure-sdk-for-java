@@ -122,9 +122,4 @@ public class ModelsTest extends ModelsTestBase {
 
         createModelsRunner(buildingModelId, floorModelId, hvacModelId, wardModelId, createModelsTestRunner);
     }
-
-    private DigitalTwinsClient getClient(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
-        return getDigitalTwinsClientBuilder(httpClient, serviceVersion)
-            .buildClient();
-    }
 }
