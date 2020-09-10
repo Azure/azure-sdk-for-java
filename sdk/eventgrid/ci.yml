@@ -39,7 +39,7 @@ pr:
       - sdk/eventgrid/microsoft-azure-eventgrid
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: eventgrid
     Artifacts:
