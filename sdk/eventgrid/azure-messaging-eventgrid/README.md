@@ -82,12 +82,12 @@ topic or domain. They behave similarly to keys, and require a key to produce, bu
 with an expiration time, so they can be used to restrict access to a topic or domain.
 Here is sample code to produce a shared access signature that expires after 20 minutes:
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L101-L104 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L104-L107 -->
 ```java
 OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
-String credentialString = EventGridSharedAccessSignatureCredential
-    .createSharedAccessSignature(endpoint, expiration, new AzureKeyCredential(key));
-EventGridSharedAccessSignatureCredential signature = new EventGridSharedAccessSignatureCredential(credentialString);
+String credentialString = EventGridSasCredential
+    .createSas(endpoint, expiration, new AzureKeyCredential(key));
+EventGridSasCredential signature = new EventGridSasCredential(credentialString);
 ```
 
 #### Creating the Client
@@ -98,21 +98,21 @@ be used instead of a key in any of these samples by calling the `sharedAccessSig
 method instead of `keyCredential`. 
 
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L19-L22 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L28-L31 -->
 ```java
 EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
     .endpoint(endpoint)
-    .keyCredential(new AzureKeyCredential(key))
+    .credential(new AzureKeyCredential(key))
     .buildClient();
 ```
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L31-L34 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L35-L38 -->
 ```java
 EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilder()
     .endpoint(endpoint)
-    .keyCredential(new AzureKeyCredential(key))
+    .credential(new AzureKeyCredential(key))
     .buildAsyncClient();
 ```
 
@@ -161,7 +161,7 @@ The `EventGridEvent` model has 3 required properties to set:
 
 These are set in the constructor, and a variety of other properties can be optionally set or overridden.
 Learn more [here][EventGridEvent].
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L38-L41 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L42-L48 -->
 ```java
 List<EventGridEvent> events = new ArrayList<>();
 events.add(
@@ -179,7 +179,7 @@ The `CloudEvent` model has 2 required properties to set:
 
 These are set in the constructor, and a variety of other properties can be optionally set or overridden.
 Learn more [here][CloudEvent].
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L48-L54 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L52-L58 -->
 ```java
 List<CloudEvent> events = new ArrayList<>();
 events.add(
@@ -204,7 +204,7 @@ of an event. Again, the handling is different based on the event schema being re
 from the topic/subscription.
 
 #### `EventGridEvent`
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L58-L75 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L62-L79 -->
 ```java
 List<EventGridEvent> events = EventGridEvent.parse(jsonData);
 
@@ -227,7 +227,7 @@ for (EventGridEvent event : events) {
 ```
 
 #### `CloudEvent`
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L79-L96 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L83-L100 -->
 ```java
 List<CloudEvent> events = CloudEvent.parse(jsonData);
 
