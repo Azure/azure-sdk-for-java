@@ -31,3 +31,4 @@ extends:
         groupId: com.azure
         safeName: azuresdktemplate
         skipDocMs: true
+        options.skipPublishPackage: true

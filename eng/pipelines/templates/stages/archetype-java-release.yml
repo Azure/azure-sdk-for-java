@@ -84,7 +84,7 @@ stages:
 
 
           - deployment: TagRepository
-            displayName: "Create release tag"
+            displayName: "Create release tag _${{artifact.options.skipPublishPackage}}"
             condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
             environment: github
             #dependsOn: VerifyReleaseVersion
