@@ -3,12 +3,15 @@
 
 package com.azure.data.schemaregistry.models;
 
+import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.SchemaRegistryClient;
+
 import java.util.Arrays;
 
 /**
- * Stores all relevant information returned from CachedSchemaRegistryClient layer.
+ * Stores all relevant information returned from {@link SchemaRegistryClient}/{@link SchemaRegistryAsyncClient} layer.
  */
-public final class SchemaRegistryProperties {
+public final class SchemaProperties {
 
     private final String schemaId;
     private final SerializationType serializationType;
@@ -23,7 +26,7 @@ public final class SchemaRegistryProperties {
      * @param schemaName name of the schema.
      * @param schemaByteArray byte payload representing schema, returned from Azure Schema Registry
      */
-    public SchemaRegistryProperties(
+    public SchemaProperties(
         String schemaId,
         SerializationType serializationType,
         String schemaName,

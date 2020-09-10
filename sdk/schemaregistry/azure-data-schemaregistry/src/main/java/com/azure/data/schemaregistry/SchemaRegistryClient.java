@@ -8,7 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.data.schemaregistry.models.SchemaRegistryProperties;
+import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 
 /**
@@ -33,8 +33,8 @@ public final class SchemaRegistryClient {
      * @return The schema properties on successful registration of the schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SchemaRegistryProperties registerSchema(String schemaGroup, String schemaName, String schemaString,
-                                                   SerializationType serializationType) {
+    public SchemaProperties registerSchema(String schemaGroup, String schemaName, String schemaString,
+                                           SerializationType serializationType) {
         return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE)
             .getValue();
     }
@@ -49,8 +49,8 @@ public final class SchemaRegistryClient {
      * @return The schema properties on successful registration of the schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SchemaRegistryProperties> registerSchemaWithResponse(String schemaGroup, String schemaName,
-                                         String schemaString, SerializationType serializationType, Context context) {
+    public Response<SchemaProperties> registerSchemaWithResponse(String schemaGroup, String schemaName,
+                                                                 String schemaString, SerializationType serializationType, Context context) {
         return this.asyncClient.registerSchemaWithResponse(schemaGroup, schemaName, schemaString, serializationType,
             context).block();
     }
@@ -59,10 +59,10 @@ public final class SchemaRegistryClient {
      * Gets the schema properties of the schema associated with the unique schemaId.
      * @param schemaId The unique identifier of the schema.
      *
-     * @return The {@link SchemaRegistryProperties} associated with the given {@code schemaId}.
+     * @return The {@link SchemaProperties} associated with the given {@code schemaId}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SchemaRegistryProperties getSchema(String schemaId) {
+    public SchemaProperties getSchema(String schemaId) {
         return getSchemaWithResponse(schemaId, Context.NONE).getValue();
     }
 
@@ -70,11 +70,11 @@ public final class SchemaRegistryClient {
      * Gets the schema properties of the schema associated with the unique schemaId.
      * @param schemaId The unique identifier of the schema.
      * @param context The context to pass to the Http pipeline.
-     * @return The {@link SchemaRegistryProperties} associated with the given {@code schemaId} along with the HTTP
+     * @return The {@link SchemaProperties} associated with the given {@code schemaId} along with the HTTP
      * response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SchemaRegistryProperties> getSchemaWithResponse(String schemaId, Context context) {
+    public Response<SchemaProperties> getSchemaWithResponse(String schemaId, Context context) {
         return this.asyncClient.getSchemaWithResponse(schemaId).block();
     }
 

@@ -3,11 +3,11 @@
 
 package com.azure.data.schemaregistry.avro;
 
-import com.azure.core.experimental.serializer.ObjectSerializer;
-import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.models.SchemaRegistryProperties;
+import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 import reactor.core.publisher.Mono;
 
@@ -94,12 +94,12 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <S extends OutputStream> S serialize(S stream, Object value) {
-        return serializeAsync(stream, value).block();
+    public void serialize(OutputStream outputStream, Object value) {
+        serializeAsync(outputStream, value).block();
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serializeAsync(S outputStream, Object object) {
+    public Mono<Void> serializeAsync(OutputStream outputStream, Object object) {
 
         if (object == null) {
             return monoError(logger, new NullPointerException(
@@ -116,10 +116,10 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                 try {
                     outputStream.write(idBuffer.array());
                     outputStream.write(codec.encode(object));
+                    sink.complete();
                 } catch (IOException e) {
                     sink.error(new UncheckedIOException(e.getMessage(), e));
                 }
-                sink.next(outputStream);
             });
     }
 
@@ -149,7 +149,7 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
         if (this.autoRegisterSchemas) {
             return this.schemaRegistryClient
                 .registerSchema(schemaGroup, schemaName, schemaString, SerializationType.AVRO)
-                .map(SchemaRegistryProperties::getSchemaId);
+                .map(SchemaProperties::getSchemaId);
         } else {
 
             return this.schemaRegistryClient.getSchemaId(

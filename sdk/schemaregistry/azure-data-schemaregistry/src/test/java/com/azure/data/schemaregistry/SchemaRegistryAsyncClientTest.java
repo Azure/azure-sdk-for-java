@@ -19,7 +19,7 @@ import com.azure.data.schemaregistry.implementation.models.GetIdBySchemaContentR
 import com.azure.data.schemaregistry.implementation.models.GetSchemaByIdHeaders;
 import com.azure.data.schemaregistry.implementation.models.GetSchemaByIdResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemaId;
-import com.azure.data.schemaregistry.models.SchemaRegistryProperties;
+import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -40,14 +40,14 @@ public class SchemaRegistryAsyncClientTest {
 
     private SchemaRegistryAsyncClient client;
     private AzureSchemaRegistryRestService restService;
-    private HashMap<String, SchemaRegistryProperties> guidCache;
-    private HashMap<String, SchemaRegistryProperties> schemaStringCache;
+    private HashMap<String, SchemaProperties> guidCache;
+    private HashMap<String, SchemaProperties> schemaStringCache;
     private ConcurrentSkipListMap<String, Function<String, Object>> typeParserDictionary;
 
     @BeforeEach
     protected void setUp() {
-        this.guidCache = new HashMap<String, SchemaRegistryProperties>();
-        this.schemaStringCache = new HashMap<String, SchemaRegistryProperties>();
+        this.guidCache = new HashMap<String, SchemaProperties>();
+        this.schemaStringCache = new HashMap<String, SchemaProperties>();
 
         this.typeParserDictionary = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
         this.typeParserDictionary.put(MOCK_SERIALIZATION.toString(), (s) -> s);
@@ -125,8 +125,8 @@ public class SchemaRegistryAsyncClientTest {
                     MOCK_AVRO_SCHEMA,
                     mockHeaders)));
 
-        SchemaRegistryProperties first = client.getSchema(mockId.toString()).block();
-        SchemaRegistryProperties second = client.getSchema(mockId.toString()).block();
+        SchemaProperties first = client.getSchema(mockId.toString()).block();
+        SchemaProperties second = client.getSchema(mockId.toString()).block();
 
         assertTrue(first.equals(second));
         assertEquals(mockId.toString(), first.getSchemaId());
