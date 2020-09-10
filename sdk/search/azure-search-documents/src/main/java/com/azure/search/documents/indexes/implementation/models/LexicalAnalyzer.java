@@ -38,9 +38,13 @@ public class LexicalAnalyzer {
     @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of LexicalAnalyzer class. */
+    /**
+     * Creates an instance of LexicalAnalyzer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public LexicalAnalyzer(@JsonProperty(value = "name") String name) {
+    public LexicalAnalyzer(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 
@@ -52,23 +56,5 @@ public class LexicalAnalyzer {
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the analyzer. It must only contain letters, digits, spaces, dashes or
-     * underscores, can only start and end with alphanumeric characters, and is limited to 128 characters.
-     *
-     * @param name the name value to set.
-     * @return the LexicalAnalyzer object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model LexicalAnalyzer");
-        }
     }
 }
