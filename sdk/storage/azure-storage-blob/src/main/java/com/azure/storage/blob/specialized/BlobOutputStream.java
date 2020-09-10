@@ -230,7 +230,6 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     } else {
                         this.lastError = new IOException(e);
                     }
-
                     return Mono.empty();
                 })
                 .doOnTerminate(() -> {
