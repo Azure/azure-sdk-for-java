@@ -18,13 +18,13 @@ public class BindingResourceProperties {
     /**
      * The name of the bound resource.
      */
-    @JsonProperty(value = "resourceName")
+    @JsonProperty(value = "resourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceName;
 
     /**
      * The standard Azure resource type of the bound resource.
      */
-    @JsonProperty(value = "resourceType")
+    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /**
@@ -74,34 +74,12 @@ public class BindingResourceProperties {
     }
 
     /**
-     * Set the name of the bound resource.
-     *
-     * @param resourceName the resourceName value to set
-     * @return the BindingResourceProperties object itself.
-     */
-    public BindingResourceProperties withResourceName(String resourceName) {
-        this.resourceName = resourceName;
-        return this;
-    }
-
-    /**
      * Get the standard Azure resource type of the bound resource.
      *
      * @return the resourceType value
      */
     public String resourceType() {
         return this.resourceType;
-    }
-
-    /**
-     * Set the standard Azure resource type of the bound resource.
-     *
-     * @param resourceType the resourceType value to set
-     * @return the BindingResourceProperties object itself.
-     */
-    public BindingResourceProperties withResourceType(String resourceType) {
-        this.resourceType = resourceType;
-        return this;
     }
 
     /**
