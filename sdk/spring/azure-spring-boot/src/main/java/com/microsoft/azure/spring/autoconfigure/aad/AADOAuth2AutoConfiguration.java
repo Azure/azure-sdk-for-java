@@ -44,10 +44,8 @@ public class AADOAuth2AutoConfiguration {
     private final AADAuthenticationProperties aadAuthProps;
     private final ServiceEndpointsProperties serviceEndpointsProps;
 
-    public AADOAuth2AutoConfiguration(
-        AADAuthenticationProperties aadAuthProperties,
-        ServiceEndpointsProperties serviceEndpointsProps
-    ) {
+    public AADOAuth2AutoConfiguration(AADAuthenticationProperties aadAuthProperties,
+                                      ServiceEndpointsProperties serviceEndpointsProps) {
         this.aadAuthProps = aadAuthProperties;
         this.serviceEndpointsProps = serviceEndpointsProps;
     }

@@ -38,10 +38,8 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
     }
 
     // Add claims to authorization-url
-    private OAuth2AuthorizationRequest addClaims(
-        HttpServletRequest httpServletRequest,
-        OAuth2AuthorizationRequest oAuth2AuthorizationRequest
-    ) {
+    private OAuth2AuthorizationRequest addClaims(HttpServletRequest httpServletRequest,
+                                                 OAuth2AuthorizationRequest oAuth2AuthorizationRequest) {
         if (oAuth2AuthorizationRequest == null || httpServletRequest == null) {
             return oAuth2AuthorizationRequest;
         }

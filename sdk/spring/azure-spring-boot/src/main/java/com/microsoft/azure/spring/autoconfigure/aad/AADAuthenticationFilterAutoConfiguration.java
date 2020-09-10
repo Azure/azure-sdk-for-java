@@ -53,10 +53,8 @@ public class AADAuthenticationFilterAutoConfiguration {
     private final AADAuthenticationProperties aadAuthProps;
     private final ServiceEndpointsProperties serviceEndpointsProps;
 
-    public AADAuthenticationFilterAutoConfiguration(
-        AADAuthenticationProperties aadAuthFilterProps,
-        ServiceEndpointsProperties serviceEndpointsProps
-    ) {
+    public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties aadAuthFilterProps,
+                                                    ServiceEndpointsProperties serviceEndpointsProps) {
         this.aadAuthProps = aadAuthFilterProps;
         this.serviceEndpointsProps = serviceEndpointsProps;
     }
