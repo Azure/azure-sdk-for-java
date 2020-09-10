@@ -64,22 +64,6 @@ public class TopicsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface TopicsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Topics listByNamespace" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics")
-        Observable<Response<ResponseBody>> listByNamespace(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$skip") Integer skip, @Query("$top") Integer top, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Topics createOrUpdate" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("subscriptionId") String subscriptionId, @Body SBTopicInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Topics delete" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Topics get" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Topics listAuthorizationRules" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/authorizationRules")
         Observable<Response<ResponseBody>> listAuthorizationRules(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -104,552 +88,30 @@ public class TopicsInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/authorizationRules/{authorizationRuleName}/regenerateKeys")
         Observable<Response<ResponseBody>> regenerateKeys(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("authorizationRuleName") String authorizationRuleName, @Path("subscriptionId") String subscriptionId, @Body RegenerateAccessKeyParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Topics listByNamespaceNext" })
-        @GET
-        Observable<Response<ResponseBody>> listByNamespaceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Topics listByNamespace" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics")
+        Observable<Response<ResponseBody>> listByNamespace(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$skip") Integer skip, @Query("$top") Integer top, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Topics createOrUpdate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}")
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("subscriptionId") String subscriptionId, @Body SBTopicInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Topics delete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Topics get" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}")
+        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Topics listAuthorizationRulesNext" })
         @GET
         Observable<Response<ResponseBody>> listAuthorizationRulesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-    }
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.v2017_04_01.Topics listByNamespaceNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByNamespaceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-    /**
-     * Gets all the topics in a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;SBTopicInner&gt; object if successful.
-     */
-    public PagedList<SBTopicInner> listByNamespace(final String resourceGroupName, final String namespaceName) {
-        ServiceResponse<Page<SBTopicInner>> response = listByNamespaceSinglePageAsync(resourceGroupName, namespaceName).toBlocking().single();
-        return new PagedList<SBTopicInner>(response.body()) {
-            @Override
-            public Page<SBTopicInner> nextPage(String nextPageLink) {
-                return listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Gets all the topics in a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<SBTopicInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final ListOperationCallback<SBTopicInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByNamespaceSinglePageAsync(resourceGroupName, namespaceName),
-            new Func1<String, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<SBTopicInner>>> call(String nextPageLink) {
-                    return listByNamespaceNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the topics in a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;SBTopicInner&gt; object
-     */
-    public Observable<Page<SBTopicInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName) {
-        return listByNamespaceWithServiceResponseAsync(resourceGroupName, namespaceName)
-            .map(new Func1<ServiceResponse<Page<SBTopicInner>>, Page<SBTopicInner>>() {
-                @Override
-                public Page<SBTopicInner> call(ServiceResponse<Page<SBTopicInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the topics in a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;SBTopicInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<SBTopicInner>>> listByNamespaceWithServiceResponseAsync(final String resourceGroupName, final String namespaceName) {
-        return listByNamespaceSinglePageAsync(resourceGroupName, namespaceName)
-            .concatMap(new Func1<ServiceResponse<Page<SBTopicInner>>, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<SBTopicInner>>> call(ServiceResponse<Page<SBTopicInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listByNamespaceNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Gets all the topics in a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;SBTopicInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<SBTopicInner>>> listByNamespaceSinglePageAsync(final String resourceGroupName, final String namespaceName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (namespaceName == null) {
-            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Integer skip = null;
-        final Integer top = null;
-        return service.listByNamespace(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), skip, top, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<SBTopicInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<SBTopicInner>> result = listByNamespaceDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SBTopicInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Gets all the topics in a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;SBTopicInner&gt; object if successful.
-     */
-    public PagedList<SBTopicInner> listByNamespace(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
-        ServiceResponse<Page<SBTopicInner>> response = listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, skip, top).toBlocking().single();
-        return new PagedList<SBTopicInner>(response.body()) {
-            @Override
-            public Page<SBTopicInner> nextPage(String nextPageLink) {
-                return listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Gets all the topics in a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<SBTopicInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top, final ListOperationCallback<SBTopicInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, skip, top),
-            new Func1<String, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<SBTopicInner>>> call(String nextPageLink) {
-                    return listByNamespaceNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the topics in a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;SBTopicInner&gt; object
-     */
-    public Observable<Page<SBTopicInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
-        return listByNamespaceWithServiceResponseAsync(resourceGroupName, namespaceName, skip, top)
-            .map(new Func1<ServiceResponse<Page<SBTopicInner>>, Page<SBTopicInner>>() {
-                @Override
-                public Page<SBTopicInner> call(ServiceResponse<Page<SBTopicInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the topics in a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;SBTopicInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<SBTopicInner>>> listByNamespaceWithServiceResponseAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
-        return listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, skip, top)
-            .concatMap(new Func1<ServiceResponse<Page<SBTopicInner>>, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<SBTopicInner>>> call(ServiceResponse<Page<SBTopicInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listByNamespaceNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Gets all the topics in a namespace.
-     *
-    ServiceResponse<PageImpl<SBTopicInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
-    ServiceResponse<PageImpl<SBTopicInner>> * @param namespaceName The namespace name
-    ServiceResponse<PageImpl<SBTopicInner>> * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
-    ServiceResponse<PageImpl<SBTopicInner>> * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;SBTopicInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<SBTopicInner>>> listByNamespaceSinglePageAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (namespaceName == null) {
-            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listByNamespace(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), skip, top, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<SBTopicInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<SBTopicInner>> result = listByNamespaceDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SBTopicInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<SBTopicInner>> listByNamespaceDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SBTopicInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<SBTopicInner>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * Creates a topic in the specified namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param topicName The topic name.
-     * @param parameters Parameters supplied to create a topic resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SBTopicInner object if successful.
-     */
-    public SBTopicInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName, SBTopicInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, parameters).toBlocking().single().body();
-    }
-
-    /**
-     * Creates a topic in the specified namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param topicName The topic name.
-     * @param parameters Parameters supplied to create a topic resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<SBTopicInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName, SBTopicInner parameters, final ServiceCallback<SBTopicInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, parameters), serviceCallback);
-    }
-
-    /**
-     * Creates a topic in the specified namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param topicName The topic name.
-     * @param parameters Parameters supplied to create a topic resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SBTopicInner object
-     */
-    public Observable<SBTopicInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName, SBTopicInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, parameters).map(new Func1<ServiceResponse<SBTopicInner>, SBTopicInner>() {
-            @Override
-            public SBTopicInner call(ServiceResponse<SBTopicInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates a topic in the specified namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param topicName The topic name.
-     * @param parameters Parameters supplied to create a topic resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SBTopicInner object
-     */
-    public Observable<ServiceResponse<SBTopicInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, SBTopicInner parameters) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (namespaceName == null) {
-            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
-        }
-        if (topicName == null) {
-            throw new IllegalArgumentException("Parameter topicName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        return service.createOrUpdate(resourceGroupName, namespaceName, topicName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SBTopicInner>>>() {
-                @Override
-                public Observable<ServiceResponse<SBTopicInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<SBTopicInner> clientResponse = createOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<SBTopicInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SBTopicInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SBTopicInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * Deletes a topic from the specified namespace and resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void delete(String resourceGroupName, String namespaceName, String topicName) {
-        deleteWithServiceResponseAsync(resourceGroupName, namespaceName, topicName).toBlocking().single().body();
-    }
-
-    /**
-     * Deletes a topic from the specified namespace and resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param topicName The topic name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, namespaceName, topicName), serviceCallback);
-    }
-
-    /**
-     * Deletes a topic from the specified namespace and resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, namespaceName, topicName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes a topic from the specified namespace and resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (namespaceName == null) {
-            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
-        }
-        if (topicName == null) {
-            throw new IllegalArgumentException("Parameter topicName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.delete(resourceGroupName, namespaceName, topicName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns a description for the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SBTopicInner object if successful.
-     */
-    public SBTopicInner get(String resourceGroupName, String namespaceName, String topicName) {
-        return getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName).toBlocking().single().body();
-    }
-
-    /**
-     * Returns a description for the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param topicName The topic name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<SBTopicInner> getAsync(String resourceGroupName, String namespaceName, String topicName, final ServiceCallback<SBTopicInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName), serviceCallback);
-    }
-
-    /**
-     * Returns a description for the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SBTopicInner object
-     */
-    public Observable<SBTopicInner> getAsync(String resourceGroupName, String namespaceName, String topicName) {
-        return getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName).map(new Func1<ServiceResponse<SBTopicInner>, SBTopicInner>() {
-            @Override
-            public SBTopicInner call(ServiceResponse<SBTopicInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Returns a description for the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SBTopicInner object
-     */
-    public Observable<ServiceResponse<SBTopicInner>> getWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (namespaceName == null) {
-            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
-        }
-        if (topicName == null) {
-            throw new IllegalArgumentException("Parameter topicName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, namespaceName, topicName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SBTopicInner>>>() {
-                @Override
-                public Observable<ServiceResponse<SBTopicInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<SBTopicInner> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<SBTopicInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SBTopicInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SBTopicInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
     }
 
     /**
@@ -1304,14 +766,15 @@ public class TopicsInner {
     /**
      * Gets all the topics in a namespace.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SBTopicInner&gt; object if successful.
      */
-    public PagedList<SBTopicInner> listByNamespaceNext(final String nextPageLink) {
-        ServiceResponse<Page<SBTopicInner>> response = listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<SBTopicInner> listByNamespace(final String resourceGroupName, final String namespaceName) {
+        ServiceResponse<Page<SBTopicInner>> response = listByNamespaceSinglePageAsync(resourceGroupName, namespaceName).toBlocking().single();
         return new PagedList<SBTopicInner>(response.body()) {
             @Override
             public Page<SBTopicInner> nextPage(String nextPageLink) {
@@ -1323,15 +786,15 @@ public class TopicsInner {
     /**
      * Gets all the topics in a namespace.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SBTopicInner>> listByNamespaceNextAsync(final String nextPageLink, final ServiceFuture<List<SBTopicInner>> serviceFuture, final ListOperationCallback<SBTopicInner> serviceCallback) {
+    public ServiceFuture<List<SBTopicInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final ListOperationCallback<SBTopicInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByNamespaceNextSinglePageAsync(nextPageLink),
+            listByNamespaceSinglePageAsync(resourceGroupName, namespaceName),
             new Func1<String, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SBTopicInner>>> call(String nextPageLink) {
@@ -1344,12 +807,13 @@ public class TopicsInner {
     /**
      * Gets all the topics in a namespace.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SBTopicInner&gt; object
      */
-    public Observable<Page<SBTopicInner>> listByNamespaceNextAsync(final String nextPageLink) {
-        return listByNamespaceNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<SBTopicInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName) {
+        return listByNamespaceWithServiceResponseAsync(resourceGroupName, namespaceName)
             .map(new Func1<ServiceResponse<Page<SBTopicInner>>, Page<SBTopicInner>>() {
                 @Override
                 public Page<SBTopicInner> call(ServiceResponse<Page<SBTopicInner>> response) {
@@ -1361,12 +825,13 @@ public class TopicsInner {
     /**
      * Gets all the topics in a namespace.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SBTopicInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SBTopicInner>>> listByNamespaceNextWithServiceResponseAsync(final String nextPageLink) {
-        return listByNamespaceNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<SBTopicInner>>> listByNamespaceWithServiceResponseAsync(final String resourceGroupName, final String namespaceName) {
+        return listByNamespaceSinglePageAsync(resourceGroupName, namespaceName)
             .concatMap(new Func1<ServiceResponse<Page<SBTopicInner>>, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SBTopicInner>>> call(ServiceResponse<Page<SBTopicInner>> page) {
@@ -1382,21 +847,32 @@ public class TopicsInner {
     /**
      * Gets all the topics in a namespace.
      *
-    ServiceResponse<PageImpl<SBTopicInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SBTopicInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<SBTopicInner>>> listByNamespaceNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+    public Observable<ServiceResponse<Page<SBTopicInner>>> listByNamespaceSinglePageAsync(final String resourceGroupName, final String namespaceName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.listByNamespaceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        if (namespaceName == null) {
+            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Integer skip = null;
+        final Integer top = null;
+        return service.listByNamespace(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), skip, top, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SBTopicInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<SBTopicInner>> result = listByNamespaceNextDelegate(response);
+                        ServiceResponse<PageImpl<SBTopicInner>> result = listByNamespaceDelegate(response);
                         return Observable.just(new ServiceResponse<Page<SBTopicInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1405,9 +881,422 @@ public class TopicsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<SBTopicInner>> listByNamespaceNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    /**
+     * Gets all the topics in a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
+     * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SBTopicInner&gt; object if successful.
+     */
+    public PagedList<SBTopicInner> listByNamespace(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
+        ServiceResponse<Page<SBTopicInner>> response = listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, skip, top).toBlocking().single();
+        return new PagedList<SBTopicInner>(response.body()) {
+            @Override
+            public Page<SBTopicInner> nextPage(String nextPageLink) {
+                return listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
+     * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SBTopicInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top, final ListOperationCallback<SBTopicInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, skip, top),
+            new Func1<String, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SBTopicInner>>> call(String nextPageLink) {
+                    return listByNamespaceNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
+     * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SBTopicInner&gt; object
+     */
+    public Observable<Page<SBTopicInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
+        return listByNamespaceWithServiceResponseAsync(resourceGroupName, namespaceName, skip, top)
+            .map(new Func1<ServiceResponse<Page<SBTopicInner>>, Page<SBTopicInner>>() {
+                @Override
+                public Page<SBTopicInner> call(ServiceResponse<Page<SBTopicInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
+     * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SBTopicInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SBTopicInner>>> listByNamespaceWithServiceResponseAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
+        return listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, skip, top)
+            .concatMap(new Func1<ServiceResponse<Page<SBTopicInner>>, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SBTopicInner>>> call(ServiceResponse<Page<SBTopicInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByNamespaceNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+    ServiceResponse<PageImpl<SBTopicInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
+    ServiceResponse<PageImpl<SBTopicInner>> * @param namespaceName The namespace name
+    ServiceResponse<PageImpl<SBTopicInner>> * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
+    ServiceResponse<PageImpl<SBTopicInner>> * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SBTopicInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SBTopicInner>>> listByNamespaceSinglePageAsync(final String resourceGroupName, final String namespaceName, final Integer skip, final Integer top) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (namespaceName == null) {
+            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByNamespace(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), skip, top, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SBTopicInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SBTopicInner>> result = listByNamespaceDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SBTopicInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SBTopicInner>> listByNamespaceDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SBTopicInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SBTopicInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates a topic in the specified namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param topicName The topic name.
+     * @param parameters Parameters supplied to create a topic resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SBTopicInner object if successful.
+     */
+    public SBTopicInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName, SBTopicInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Creates a topic in the specified namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param topicName The topic name.
+     * @param parameters Parameters supplied to create a topic resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SBTopicInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName, SBTopicInner parameters, final ServiceCallback<SBTopicInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, parameters), serviceCallback);
+    }
+
+    /**
+     * Creates a topic in the specified namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param topicName The topic name.
+     * @param parameters Parameters supplied to create a topic resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SBTopicInner object
+     */
+    public Observable<SBTopicInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName, SBTopicInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, parameters).map(new Func1<ServiceResponse<SBTopicInner>, SBTopicInner>() {
+            @Override
+            public SBTopicInner call(ServiceResponse<SBTopicInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates a topic in the specified namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param topicName The topic name.
+     * @param parameters Parameters supplied to create a topic resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SBTopicInner object
+     */
+    public Observable<ServiceResponse<SBTopicInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, SBTopicInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (namespaceName == null) {
+            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
+        }
+        if (topicName == null) {
+            throw new IllegalArgumentException("Parameter topicName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.createOrUpdate(resourceGroupName, namespaceName, topicName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SBTopicInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SBTopicInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SBTopicInner> clientResponse = createOrUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SBTopicInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SBTopicInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SBTopicInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a topic from the specified namespace and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String resourceGroupName, String namespaceName, String topicName) {
+        deleteWithServiceResponseAsync(resourceGroupName, namespaceName, topicName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a topic from the specified namespace and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param topicName The topic name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, namespaceName, topicName), serviceCallback);
+    }
+
+    /**
+     * Deletes a topic from the specified namespace and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, namespaceName, topicName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a topic from the specified namespace and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (namespaceName == null) {
+            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
+        }
+        if (topicName == null) {
+            throw new IllegalArgumentException("Parameter topicName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.delete(resourceGroupName, namespaceName, topicName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns a description for the specified topic.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SBTopicInner object if successful.
+     */
+    public SBTopicInner get(String resourceGroupName, String namespaceName, String topicName) {
+        return getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName).toBlocking().single().body();
+    }
+
+    /**
+     * Returns a description for the specified topic.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param topicName The topic name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SBTopicInner> getAsync(String resourceGroupName, String namespaceName, String topicName, final ServiceCallback<SBTopicInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName), serviceCallback);
+    }
+
+    /**
+     * Returns a description for the specified topic.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SBTopicInner object
+     */
+    public Observable<SBTopicInner> getAsync(String resourceGroupName, String namespaceName, String topicName) {
+        return getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName).map(new Func1<ServiceResponse<SBTopicInner>, SBTopicInner>() {
+            @Override
+            public SBTopicInner call(ServiceResponse<SBTopicInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns a description for the specified topic.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SBTopicInner object
+     */
+    public Observable<ServiceResponse<SBTopicInner>> getWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (namespaceName == null) {
+            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
+        }
+        if (topicName == null) {
+            throw new IllegalArgumentException("Parameter topicName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(resourceGroupName, namespaceName, topicName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SBTopicInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SBTopicInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SBTopicInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SBTopicInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SBTopicInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SBTopicInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -1519,6 +1408,117 @@ public class TopicsInner {
     private ServiceResponse<PageImpl<SBAuthorizationRuleInner>> listAuthorizationRulesNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SBAuthorizationRuleInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SBAuthorizationRuleInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SBTopicInner&gt; object if successful.
+     */
+    public PagedList<SBTopicInner> listByNamespaceNext(final String nextPageLink) {
+        ServiceResponse<Page<SBTopicInner>> response = listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<SBTopicInner>(response.body()) {
+            @Override
+            public Page<SBTopicInner> nextPage(String nextPageLink) {
+                return listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SBTopicInner>> listByNamespaceNextAsync(final String nextPageLink, final ServiceFuture<List<SBTopicInner>> serviceFuture, final ListOperationCallback<SBTopicInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByNamespaceNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SBTopicInner>>> call(String nextPageLink) {
+                    return listByNamespaceNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SBTopicInner&gt; object
+     */
+    public Observable<Page<SBTopicInner>> listByNamespaceNextAsync(final String nextPageLink) {
+        return listByNamespaceNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SBTopicInner>>, Page<SBTopicInner>>() {
+                @Override
+                public Page<SBTopicInner> call(ServiceResponse<Page<SBTopicInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SBTopicInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SBTopicInner>>> listByNamespaceNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByNamespaceNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SBTopicInner>>, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SBTopicInner>>> call(ServiceResponse<Page<SBTopicInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByNamespaceNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+    ServiceResponse<PageImpl<SBTopicInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SBTopicInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SBTopicInner>>> listByNamespaceNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByNamespaceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SBTopicInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SBTopicInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SBTopicInner>> result = listByNamespaceNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SBTopicInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SBTopicInner>> listByNamespaceNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SBTopicInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SBTopicInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
