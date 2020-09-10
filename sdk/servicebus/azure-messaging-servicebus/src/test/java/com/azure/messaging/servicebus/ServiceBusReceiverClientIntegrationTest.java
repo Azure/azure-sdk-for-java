@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * Integration tests for {@link ServiceBusReceiverClient} from queues or subscriptions.
+ * Integration tests for {@link com.azure.messaging.servicebus.ServiceBusReceiverClient} from queues or subscriptions.
  */
 @Tag("integration")
 class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
@@ -739,7 +739,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage messageToSend = getMessage(messageId, isSessionEnabled);
         final int maxMessages = 1;
 
-        Map<String, Object> sentProperties = messageToSend.getProperties();
+        Map<String, Object> sentProperties = messageToSend.getApplicationProperties();
         sentProperties.put("NullProperty", null);
         sentProperties.put("BooleanProperty", true);
         sentProperties.put("ByteProperty", (byte) 1);
@@ -770,7 +770,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         messagesPending.decrementAndGet();
         assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
 
-        final Map<String, Object> received = receivedMessage.getProperties();
+        final Map<String, Object> received = receivedMessage.getApplicationProperties();
 
         assertEquals(sentProperties.size(), received.size());
 

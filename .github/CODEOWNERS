@@ -39,6 +39,9 @@
 # PRLabel: %DigitalTwins
 /sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum
 
+# PRLabel: %Event Grid
+/sdk/eventgrid/                                     @srnagar @yijunxiems
+
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang @yijunxiems
 
