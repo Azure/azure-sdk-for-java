@@ -103,7 +103,7 @@ public interface EventHubs extends SupportsCreating<EventHubResource.DefinitionS
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<NamespaceSharedAccessAuthorizationRuleResource> posttAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName);
+    Observable<NamespaceSharedAccessAuthorizationRuleResource> postAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName);
 
     /**
      * Gets the ACS and SAS connection strings for the Event Hub.
