@@ -100,7 +100,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             properties = new HashMap<>();
             properties.put(PRODUCER_EPOCH, publishingState.getOwnerLevel());
             properties.put(PRODUCER_ID, publishingState.getProducerGroupId());
-            properties.put(PRODUCER_SEQUENCE_NUMBER, publishingState.getProducerGroupId());
+            properties.put(PRODUCER_SEQUENCE_NUMBER, publishingState.getSequenceNumber());
         }
         return createProducer(linkName, entityPath, timeout, retry, properties, desiredCapabilities)
             .cast(AmqpSendLink.class);
