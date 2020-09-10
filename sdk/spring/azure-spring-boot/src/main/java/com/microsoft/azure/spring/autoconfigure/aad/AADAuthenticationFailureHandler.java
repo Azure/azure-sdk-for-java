@@ -27,7 +27,7 @@ public class AADAuthenticationFailureHandler implements AuthenticationFailureHan
     private AuthenticationFailureHandler defaultHandler;
 
     public AADAuthenticationFailureHandler() {
-        this.defaultHandler = new SimpleUrlAuthenticationFailureHandler(AADConstantsHelper.FAILURE_DEFAULT_URL);
+        this.defaultHandler = new SimpleUrlAuthenticationFailureHandler(Constants.FAILURE_DEFAULT_URL);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class AADAuthenticationFailureHandler implements AuthenticationFailureHan
                                         AuthenticationException exception) throws IOException, ServletException {
         final OAuth2AuthenticationException targetException = (OAuth2AuthenticationException) exception;
         // Handle conditional access policy
-        if (AADConstantsHelper.CONDITIONAL_ACCESS_POLICY.equals((targetException.getError().getErrorCode()))) {
+        if (Constants.CONDITIONAL_ACCESS_POLICY.equals((targetException.getError().getErrorCode()))) {
             // Get infos
             final Throwable cause = targetException.getCause();
             if (cause instanceof MsalServiceException) {
@@ -44,11 +44,11 @@ public class AADAuthenticationFailureHandler implements AuthenticationFailureHan
                 Optional.of(cause)
                         .map(c -> (MsalServiceException) c)
                         .map(MsalServiceException::claims)
-                        .ifPresent(claims -> request.getSession().setAttribute(AADConstantsHelper.CAP_CLAIMS, claims));
+                        .ifPresent(claims -> request.getSession().setAttribute(Constants.CAP_CLAIMS, claims));
                 // Redirect
                 String redirectUrl = Optional.of(request)
                         .map(HttpServletRequest::getSession)
-                        .map(s -> s.getAttribute(AADConstantsHelper.SAVED_REQUEST))
+                        .map(s -> s.getAttribute(Constants.SAVED_REQUEST))
                         .map(r -> (DefaultSavedRequest) r)
                         .map(DefaultSavedRequest::getRedirectUrl)
                         .orElse(null);

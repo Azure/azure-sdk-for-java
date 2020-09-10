@@ -47,9 +47,9 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
             Optional.of(httpServletRequest)
                     .map(HttpServletRequest::getSession)
                     .map(httpSession -> {
-                        String claims = (String) httpSession.getAttribute(AADConstantsHelper.CAP_CLAIMS);
+                        String claims = (String) httpSession.getAttribute(Constants.CAP_CLAIMS);
                         if (claims != null) {
-                            httpSession.removeAttribute(AADConstantsHelper.CAP_CLAIMS);
+                            httpSession.removeAttribute(Constants.CAP_CLAIMS);
                         }
                         return claims;
                     })
@@ -58,7 +58,7 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
             return oAuth2AuthorizationRequest;
         }
         final Map<String, Object> additionalParameters = new HashMap<>();
-        additionalParameters.put(AADConstantsHelper.CLAIMS, conditionalAccessPolicyClaims);
+        additionalParameters.put(Constants.CLAIMS, conditionalAccessPolicyClaims);
         Optional.of(oAuth2AuthorizationRequest)
                 .map(OAuth2AuthorizationRequest::getAdditionalParameters)
                 .ifPresent(additionalParameters::putAll);
