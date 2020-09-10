@@ -147,7 +147,7 @@ stages:
           - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
             - deployment: PublicDocsMs
               displayName: "Publish Updates for Docs.MS"
-              condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+              condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(artifact.skipDocMs, 'true'))
               environment: github
               dependsOn: PublishPackage
               variables:
