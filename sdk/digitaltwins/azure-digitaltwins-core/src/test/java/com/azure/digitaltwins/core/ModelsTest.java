@@ -4,6 +4,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.models.ModelData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -14,7 +15,6 @@ import java.util.function.Consumer;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -40,9 +40,7 @@ public class ModelsTest extends ModelsTestBase {
             });
         });
 
-        for (int modelIndex = 0; modelIndex < createdModels.size(); modelIndex++) {
-            final ModelData expected = createdModels.get(modelIndex);
-
+        for (final ModelData expected : createdModels) {
             // Get the model
             getModelRunner(expected.getId(), (modelId) -> {
                 ModelData actual = client.getModel(modelId);
@@ -76,10 +74,8 @@ public class ModelsTest extends ModelsTestBase {
     @Override
     public void getModelThrowsIfModelDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
-        final String nonExistantModelId = "urn:doesnotexist:fakemodel:1000";
-        getModelRunner(nonExistantModelId, (modelId) -> {
-            assertRestException(() -> client.getModel(modelId), HttpURLConnection.HTTP_NOT_FOUND);
-        });
+        final String nonExistentModelId = "urn:doesnotexist:fakemodel:1000";
+        getModelRunner(nonExistentModelId, (modelId) -> assertRestException(() -> client.getModel(modelId), HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -94,9 +90,7 @@ public class ModelsTest extends ModelsTestBase {
         modelsToCreate.add(wardModelPayload);
 
         List<ModelData> createdModels = client.createModels(modelsToCreate);
-        createdModels.forEach((modelData) -> {
-            assertNotNull(modelData);
-        });
+        createdModels.forEach(Assertions::assertNotNull);
 
         assertRestException(
             () -> client.createModels(modelsToCreate),
@@ -109,9 +103,7 @@ public class ModelsTest extends ModelsTestBase {
     public void getModelThrowsIfModelIdInvalid(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         final String malformedModelId = "thisIsNotAValidModelId";
-        getModelRunner(malformedModelId, (modelId) -> {
-            assertRestException(() -> client.getModel(modelId), HttpURLConnection.HTTP_BAD_REQUEST);
-        });
+        getModelRunner(malformedModelId, (modelId) -> assertRestException(() -> client.getModel(modelId), HttpURLConnection.HTTP_BAD_REQUEST));
     }
 
     private void createModelsRunner(DigitalTwinsClient client, Consumer<List<String>> createModelsTestRunner) {

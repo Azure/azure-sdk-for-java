@@ -4,6 +4,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.models.ModelData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -31,24 +32,18 @@ public class ModelsAsyncTest extends ModelsTestBase {
 
         // Create some models to test the lifecycle of
         List<ModelData> createdModels = new ArrayList<>();
-        createModelsRunner(asyncClient, (modelsList) -> {
-            StepVerifier.create(asyncClient.createModels(modelsList))
-                .assertNext(createdModelsResponseList -> {
-                    createdModels.addAll(createdModelsResponseList);
-                    logger.info("Created {} models successfully", createdModelsResponseList.size());
-                })
-                .verifyComplete();
-            });
+        createModelsRunner(asyncClient, (modelsList) -> StepVerifier.create(asyncClient.createModels(modelsList))
+            .assertNext(createdModelsResponseList -> {
+                createdModels.addAll(createdModelsResponseList);
+                logger.info("Created {} models successfully", createdModelsResponseList.size());
+            })
+            .verifyComplete());
 
-        for (int modelIndex = 0; modelIndex < createdModels.size(); modelIndex++) {
-            final ModelData expected = createdModels.get(modelIndex);
-
+        for (final ModelData expected : createdModels) {
             // Get the model
             getModelRunner(expected.getId(), (modelId) -> {
                 StepVerifier.create(asyncClient.getModelWithResponse(modelId))
-                    .assertNext(retrievedModel -> {
-                        assertModelDataAreEqual(expected, retrievedModel.getValue(), false);
-                    })
+                    .assertNext(retrievedModel -> assertModelDataAreEqual(expected, retrievedModel.getValue(), false))
                     .verifyComplete();
                 logger.info("Model {} matched expectations", modelId);
             });
@@ -63,9 +58,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
             // Get the model again to see if it was decommissioned as expected
             getModelRunner(expected.getId(), (modelId) -> {
                 StepVerifier.create(asyncClient.getModel(modelId))
-                    .assertNext(retrievedModel -> {
-                        assertTrue(retrievedModel.isDecommissioned());
-                    })
+                    .assertNext(retrievedModel -> assertTrue(retrievedModel.isDecommissioned()))
                     .verifyComplete();
                 logger.info("Model {} was decommissioned successfully", modelId);
             });
@@ -84,8 +77,8 @@ public class ModelsAsyncTest extends ModelsTestBase {
     @Override
     public void getModelThrowsIfModelDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
-        final String nonExistantModelId = "urn:doesnotexist:fakemodel:1000";
-        StepVerifier.create(asyncClient.getModel(nonExistantModelId))
+        final String nonExistentModelId = "urn:doesnotexist:fakemodel:1000";
+        StepVerifier.create(asyncClient.getModel(nonExistentModelId))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
@@ -101,9 +94,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
         modelsToCreate.add(wardModelPayload);
 
         StepVerifier.create(asyncClient.createModels(modelsToCreate))
-            .assertNext((modelData -> {
-                assertNotNull(modelData);
-            }))
+            .assertNext((Assertions::assertNotNull))
             .verifyComplete();
 
         StepVerifier.create(asyncClient.createModels(modelsToCreate))

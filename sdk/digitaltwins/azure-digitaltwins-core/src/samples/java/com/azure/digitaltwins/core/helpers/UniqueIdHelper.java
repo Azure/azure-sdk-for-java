@@ -21,7 +21,7 @@ public class UniqueIdHelper {
     }
 
     public static String getUniqueDigitalTwinId(String baseName, DigitalTwinsClient client, Function<Integer, String> randomIntegerStringGenerator) {
-        return getUniqueId(baseName, (digitalTwinId -> client.getDigitalTwin(digitalTwinId)), randomIntegerStringGenerator);
+        return getUniqueId(baseName, (client::getDigitalTwin), randomIntegerStringGenerator);
     }
 
     // Taking randomIntegerStringGenerator as a parameter here because e2e tests use a special function for recording and replaying "random" numbers
