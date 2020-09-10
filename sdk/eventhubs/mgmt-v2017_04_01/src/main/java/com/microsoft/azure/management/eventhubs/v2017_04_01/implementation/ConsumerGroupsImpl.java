@@ -64,10 +64,14 @@ class ConsumerGroupsImpl extends WrapperImpl<ConsumerGroupsInner> implements Con
     public Observable<ConsumerGroup> getAsync(String resourceGroupName, String namespaceName, String eventHubName, String consumerGroupName) {
         ConsumerGroupsInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, eventHubName, consumerGroupName)
-        .map(new Func1<ConsumerGroupInner, ConsumerGroup>() {
+        .flatMap(new Func1<ConsumerGroupInner, Observable<ConsumerGroup>>() {
             @Override
-            public ConsumerGroup call(ConsumerGroupInner inner) {
-                return wrapModel(inner);
+            public Observable<ConsumerGroup> call(ConsumerGroupInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ConsumerGroup)wrapModel(inner));
+                }
             }
        });
     }

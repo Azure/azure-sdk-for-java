@@ -28,7 +28,7 @@ class DisasterRecoveryConfigNamespaceAuthorizationRuleImpl extends IndexableRefr
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.namespaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "namespaces");
         this.alias = IdParsingUtils.getValueFromIdByName(inner.id(), "disasterRecoveryConfigs");
-        this.authorizationRuleName = IdParsingUtils.getValueFromIdByName(inner.id(), "AuthorizationRules");
+        this.authorizationRuleName = IdParsingUtils.getValueFromIdByName(inner.id(), "authorizationRules");
     }
 
     @Override
