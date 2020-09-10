@@ -1,5 +1,8 @@
 # Release History
 
+## 11.2.0-beta.1 (Unreleased)
+
+
 ## 11.1.0 (2020-09-09)
 
 ### New Features
