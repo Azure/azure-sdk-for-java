@@ -27,7 +27,7 @@ SLF4J is only needed if you plan to use logging, please also download an SLF4J b
 - Azure-spring-data-cosmos also supports `Response Diagnostics String` and `Query Metrics`.
 Set `queryMetricsEnabled` flag to true in application.properties to enable query metrics.
 In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information.
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AppConfiguration.java#L23-L82 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AppConfiguration.java#L26-L85 -->
 
 ```java
 @Configuration
@@ -93,7 +93,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 ```
 ### Customizing Configuration
 You can customize `DirectConnectionConfig` or `GatewayConnectionConfig` or both and provide them to `CosmosClientBuilder` bean to customize `CosmosAsyncClient`
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AppConfigurationCodeSnippet.java#L45-L61 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AppConfigurationCodeSnippet.java#L48-L64 -->
 
 ```java
 @Bean
@@ -316,7 +316,7 @@ public class SampleApplication implements CommandLineRunner {
   By default, container name will be class name of user domain class. To customize it, add the `@Container(containerName="myCustomContainerName")` annotation to the domain class. The container field also supports SpEL expressions (eg. `container = "${dynamic.container.name}"` or `container = "#{@someBean.getContainerName()}"`) in order to provide container names programmatically/via configuration properties.
 - Custom IndexingPolicy
   By default, IndexingPolicy will be set by azure service. To customize it add annotation `@CosmosIndexingPolicy` to domain class. This annotation has 4 attributes to customize, see following:
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/CosmosIndexingPolicyCodeSnippet.java#L16-L27 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/CosmosIndexingPolicyCodeSnippet.java#L15-L26 -->
 ```java
 // Indicate if indexing policy use automatic or not
 // Default value is true
