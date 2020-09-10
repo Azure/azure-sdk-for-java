@@ -360,9 +360,4 @@ class ReactorConnectionTest {
 
         verify(transport, times(1)).unbind();
     }
-
-    @Test
-    void closesDownstreamLinks() {
-
-    }
 }
