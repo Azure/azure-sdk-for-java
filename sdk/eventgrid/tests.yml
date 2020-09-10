@@ -11,4 +11,4 @@ jobs:
       Artifacts:
         - name: azure-messaging-eventgrid
           groupId: com.azure
-          safeName: azureeventgrid
+          safeName: azuremessagingeventgrid

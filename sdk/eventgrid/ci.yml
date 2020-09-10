@@ -44,3 +44,6 @@ extends:
       - name: azure-eventgrid
         groupId: com.microsoft.azure
         safeName: azureeventgrid
+      - name: azure-messaging-eventgrid
+        groupId: com.microsoft.azure
+        safeName: azuremessagingeventgrid
