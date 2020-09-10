@@ -17,11 +17,8 @@ import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.digitaltwins.core.serialization.BasicRelationship;
 import com.azure.digitaltwins.core.util.*;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
-
-import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides a client for interacting synchronously with an Azure Digital Twins instance.
@@ -765,7 +762,7 @@ public final class DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEventRouteWithResponse(String eventRouteId)
     {
-        return withContext(context -> this.digitalTwinsAsyncClient.deleteEventRouteWithResponse(eventRouteId, context)).block();
+        return this.digitalTwinsAsyncClient.deleteEventRouteWithResponse(eventRouteId, Context.NONE).block();
     }
 
     /**
