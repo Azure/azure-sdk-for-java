@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.4 (Unreleased)
+
+
 ## 1.0.0-beta.3 (2020-09-10)
 - Updated to use `azure-core` for `ObjectSerializer`.
 - Removed `AvroSchemaRegistrySerializer` and `AvroSchemaRegistryCodec`
