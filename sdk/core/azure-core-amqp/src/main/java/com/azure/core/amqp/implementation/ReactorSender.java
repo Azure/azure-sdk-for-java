@@ -291,7 +291,7 @@ class ReactorSender implements AmqpSendLink {
      *
      * @param errorCondition Error condition associated with close operation.
      */
-    public void dispose(ErrorCondition errorCondition) {
+    void dispose(ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
             return;
         }

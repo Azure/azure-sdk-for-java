@@ -253,7 +253,7 @@ public class ReactorConnection implements AmqpConnection {
             "Disposed by client."));
     }
 
-    public void dispose(ErrorCondition errorCondition) {
+    void dispose(ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
             return;
         }
@@ -408,7 +408,7 @@ public class ReactorConnection implements AmqpConnection {
             return session;
         }
 
-        public void dispose(ErrorCondition errorCondition) {
+        void dispose(ErrorCondition errorCondition) {
             if (isDisposed.getAndSet(true)) {
                 return;
             }

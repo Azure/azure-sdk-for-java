@@ -130,7 +130,7 @@ public class ReactorSession implements AmqpSession {
         dispose(null);
     }
 
-    public void dispose(ErrorCondition errorCondition) {
+    void dispose(ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
             return;
         }
@@ -577,7 +577,7 @@ public class ReactorSession implements AmqpSession {
             return link;
         }
 
-        public void dispose(ErrorCondition errorCondition) {
+        void dispose(ErrorCondition errorCondition) {
             if (isDisposed.getAndSet(true)) {
                 return;
             }

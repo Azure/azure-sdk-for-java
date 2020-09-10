@@ -165,7 +165,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
      *
      * @param condition Error condition associated with close operation.
      */
-    public void dispose(ErrorCondition condition) {
+    void dispose(ErrorCondition condition) {
         if (isDisposed.getAndSet(true)) {
             return;
         }
