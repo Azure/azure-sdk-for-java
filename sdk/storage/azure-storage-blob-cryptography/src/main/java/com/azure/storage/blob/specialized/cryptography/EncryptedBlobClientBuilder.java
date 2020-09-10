@@ -202,7 +202,7 @@ public final class EncryptedBlobClientBuilder {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         } else if (tokenCredential != null) {
             BuilderHelper.httpsValidation(tokenCredential, "bearer token", endpoint, logger);
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE));
         } else if (sasTokenCredential != null) {
             policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
         }

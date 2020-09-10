@@ -162,8 +162,7 @@ public final class BuilderHelper {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
-            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential,
-                String.format("%s/.default", endpoint));
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE);
         } else if (sasTokenCredential != null) {
             credentialPolicy =  new SasTokenCredentialPolicy(sasTokenCredential);
         } else {
