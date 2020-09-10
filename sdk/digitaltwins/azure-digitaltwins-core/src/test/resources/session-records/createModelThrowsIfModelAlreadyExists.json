@@ -1,0 +1,57 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:Ward;1000939?includeModelDefinition=true&api-version=2020-05-31-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_265; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f9c9cceb-656a-450a-bb39-50ee55181e0c"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "210",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Ward;1000939. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Wed, 09 Sep 2020 22:46:28 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models?api-version=2020-05-31-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_265; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8bd69e4f-ff44-408a-9769-3ba71cf16e77",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "213",
+      "StatusCode" : "201",
+      "Body" : "[{\"id\":\"dtmi:example:Ward;1000939\",\"description\":{\"en\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\"},\"displayName\":{\"en\":\"Ward\"},\"decommissioned\":false,\"uploadTime\":\"2020-09-09T22:46:29.9501501+00:00\"}]",
+      "Date" : "Wed, 09 Sep 2020 22:46:29 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models?api-version=2020-05-31-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_265; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "edec8538-52af-4985-919f-8d30421731ae",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "222",
+      "StatusCode" : "409",
+      "Body" : "{\"error\":{\"code\":\"ModelAlreadyExists\",\"message\":\"Model with same ID already exists dtmi:example:Ward;1000939. Use Model_List API to view models that already exist. See the Swagger example.(http://aka.ms/ModelListSwSmpl)\"}}",
+      "Date" : "Wed, 09 Sep 2020 22:46:29 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "22215c" ]
+}

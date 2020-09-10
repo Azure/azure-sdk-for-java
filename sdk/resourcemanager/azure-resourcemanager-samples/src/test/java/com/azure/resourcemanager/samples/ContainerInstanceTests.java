@@ -7,8 +7,11 @@ import com.azure.resourcemanager.containerinstance.samples.ManageContainerInstan
 import com.azure.resourcemanager.containerinstance.samples.ManageContainerInstanceWithManualAzureFileShareMountCreation;
 import com.azure.resourcemanager.containerinstance.samples.ManageContainerInstanceWithMultipleContainerImages;
 import com.azure.resourcemanager.containerinstance.samples.ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator;
+import com.jcraft.jsch.JSchException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 public class ContainerInstanceTests extends SamplesTestBase {
 
@@ -37,7 +40,7 @@ public class ContainerInstanceTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator() {
+    public void testManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator() throws InterruptedException, JSchException, IOException {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator.runSample(azure, "", ""));

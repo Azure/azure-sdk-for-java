@@ -12,6 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingByFilter;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point to AD user management API. */
@@ -20,6 +21,7 @@ public interface ActiveDirectoryUsers
     extends SupportsGettingById<ActiveDirectoryUser>,
         SupportsGettingByName<ActiveDirectoryUser>,
         SupportsListing<ActiveDirectoryUser>,
+        SupportsListingByFilter<ActiveDirectoryUser>,
         SupportsCreating<ActiveDirectoryUser.DefinitionStages.Blank>,
         SupportsDeletingById,
         HasManager<AuthorizationManager>,

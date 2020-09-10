@@ -13,15 +13,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
+import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
-import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
+import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
+import com.azure.digitaltwins.core.models.EventRoute;
+import com.azure.digitaltwins.core.models.EventRoutesListOptions;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetComponentResponse;
-import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
-import com.azure.digitaltwins.core.util.DigitalTwinsResponseHeaders;
-import com.azure.digitaltwins.core.util.ListModelOptions;
-import com.azure.digitaltwins.core.util.UpdateOperationUtility;
+import com.azure.digitaltwins.core.serialization.BasicRelationship;
+import com.azure.digitaltwins.core.util.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -53,7 +54,7 @@ public final class DigitalTwinsAsyncClient {
     private static final ObjectMapper mapper = new ObjectMapper();
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
-    private static final Boolean includeModelDefinition = true;
+    private static final Boolean includeModelDefinitionOnGet = true;
 
     DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
@@ -90,6 +91,8 @@ public final class DigitalTwinsAsyncClient {
     public HttpPipeline getHttpPipeline() {
         return this.protocolLayer.getHttpPipeline();
     }
+
+    //region Digital twin APIs
 
     /**
      * Creates a digital twin.
@@ -325,6 +328,10 @@ public final class DigitalTwinsAsyncClient {
             .getDigitalTwins()
             .deleteWithResponseAsync(digitalTwinId, ifMatch, context);
     }
+
+    //endregion Digital twin APIs
+
+    //region Relationship APIs
 
     /**
      * Creates a relationship on a digital twin.
@@ -649,7 +656,7 @@ public final class DigitalTwinsAsyncClient {
      * Gets all the relationships on a digital twin by iterating through a collection.
      *
      * @param digitalTwinId The Id of the source digital twin.
-     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link com.azure.digitaltwins.core.implementation.serialization.BasicRelationship}.
+     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link BasicRelationship}.
      * @param <T> The generic type to convert the relationship to.
      * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
      */
@@ -739,31 +746,32 @@ public final class DigitalTwinsAsyncClient {
             nextLink -> protocolLayer.getDigitalTwins().listIncomingRelationshipsNextSinglePageAsync(nextLink, context));
     }
 
+    //endregion Relationship APIs
 
-    //==================================================================================================================================================
-    // Models APIs
-    //==================================================================================================================================================
+    //region Model APIs
 
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A {@link PagedFlux} of created models and the http response.
+     * @return A List of created models.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> createModels(List<String> models) {
-        return new PagedFlux<>(
-            () -> withContext(context -> createModelsSinglePageAsync(models, context)),
-            nextLink -> withContext(context -> Mono.empty()));
+    public Mono<List<ModelData>> createModels(List<String> models) {
+        return createModelsWithResponse(models)
+            .map(Response::getValue);
     }
 
-    PagedFlux<ModelData> createModels(List<String> models, Context context){
-        return new PagedFlux<>(
-            () -> createModelsSinglePageAsync(models, context),
-            nextLink -> Mono.empty());
+    /**
+     * Creates one or many models.
+     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @return A List of created models and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<Response<List<ModelData>>> createModelsWithResponse(List<String> models) {
+        return withContext(context -> createModelsWithResponse(models, context));
     }
 
-    Mono<PagedResponse<ModelData>> createModelsSinglePageAsync(List<String> models, Context context)
-    {
+    Mono<Response<List<ModelData>>> createModelsWithResponse(List<String> models, Context context) {
         List<Object> modelsPayload = new ArrayList<>();
         for (String model: models) {
             try {
@@ -776,14 +784,13 @@ public final class DigitalTwinsAsyncClient {
         }
 
         return protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload, context)
-            .map(
-                listResponse -> new PagedResponseBase<>(
-                    listResponse.getRequest(),
-                    listResponse.getStatusCode(),
-                    listResponse.getHeaders(),
-                    listResponse.getValue(),
-                    null,
-                    ((ResponseBase)listResponse).getDeserializedHeaders()));
+            .map(listResponse -> {
+                List<ModelData> convertedList = listResponse.getValue().stream()
+                    .map(ModelDataConverter::map)
+                    .collect(Collectors.toList());
+
+                return new SimpleResponse<>(listResponse.getRequest(), listResponse.getStatusCode(), listResponse.getHeaders(), convertedList);
+            });
     }
 
     /**
@@ -810,7 +817,15 @@ public final class DigitalTwinsAsyncClient {
     Mono<Response<ModelData>> getModelWithResponse(String modelId, Context context){
         return protocolLayer
             .getDigitalTwinModels()
-            .getByIdWithResponseAsync(modelId, includeModelDefinition, context);
+            .getByIdWithResponseAsync(modelId, includeModelDefinitionOnGet, context)
+            .map(response -> {
+                com.azure.digitaltwins.core.implementation.models.ModelData modelData = response.getValue();
+                return new SimpleResponse<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    ModelDataConverter.map(modelData));
+            });
     }
 
     /**
@@ -851,11 +866,39 @@ public final class DigitalTwinsAsyncClient {
             listModelOptions.getDependenciesFor(),
             listModelOptions.getIncludeModelDefinition(),
             new DigitalTwinModelsListOptions().setMaxItemCount(listModelOptions.getMaxItemCount()),
-            context);
+            context)
+            .map(
+                objectPagedResponse -> {
+                    List<ModelData> convertedList = objectPagedResponse.getValue().stream()
+                        .map(ModelDataConverter::map)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+                    return new PagedResponseBase<>(
+                        objectPagedResponse.getRequest(),
+                        objectPagedResponse.getStatusCode(),
+                        objectPagedResponse.getHeaders(),
+                        convertedList,
+                        null,
+                        ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
+                }
+            );
     }
 
     Mono<PagedResponse<ModelData>> listModelsNextSinglePageAsync(String nextLink, Context context){
-        return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(nextLink, context);
+        return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(nextLink, context)
+            .map(objectPagedResponse -> {
+            List<ModelData> convertedList = objectPagedResponse.getValue().stream()
+                .map(ModelDataConverter::map)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+            return new PagedResponseBase<>(
+                objectPagedResponse.getRequest(),
+                objectPagedResponse.getStatusCode(),
+                objectPagedResponse.getHeaders(),
+                convertedList,
+                objectPagedResponse.getContinuationToken(),
+                ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
+        });
     }
 
     /**
@@ -866,7 +909,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
         return deleteModelWithResponse(modelId)
-            .map(Response::getValue);
+            .flatMap(voidResponse -> Mono.empty());
     }
 
     /**
@@ -896,7 +939,7 @@ public final class DigitalTwinsAsyncClient {
      */
     public Mono<Void> decommissionModel(String modelId) {
         return decommissionModelWithResponse(modelId)
-            .map(Response::getValue);
+            .flatMap(voidResponse -> Mono.empty());
     }
 
     /**
@@ -916,9 +959,9 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(modelId, updateOperation, context);
     }
 
-    //==================================================================================================================================================
-    // Component APIs
-    //==================================================================================================================================================
+    //endregion Model APIs
+
+    //region Component APIs
 
     /**
      * Get a component of a digital twin.
@@ -1004,7 +1047,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateComponent(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations) {
         return updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, new UpdateComponentRequestOptions())
-            .map(DigitalTwinsResponse::getValue);
+            .flatMap(voidResponse -> Mono.empty());
     }
 
     /**
@@ -1030,4 +1073,269 @@ public final class DigitalTwinsAsyncClient {
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null, twinHeaders));
             });
     }
+
+    //endregion Component APIs
+
+    //region Query APIs
+
+    /**
+     * Query digital twins.
+     * @param query The query string, in SQL-like syntax.
+     * @return A {@link PagedFlux} of application/json query result items.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> query(String query) {
+        return new PagedFlux<>(
+            () -> withContext(context -> queryFirstPage(query, context)),
+            nextLink -> withContext(context -> queryNextPage(nextLink, context)));
+    }
+
+    PagedFlux<String> query(String query, Context context) {
+        return new PagedFlux<>(
+            () -> queryFirstPage(query, context),
+            nextLink -> queryNextPage(nextLink, context));
+    }
+
+    /**
+     * Query digital twins.
+     * @param query The query string, in SQL-like syntax.
+     * @param clazz The model class to convert the query response to.
+     * @param <T> The generic type to convert the query response to.
+     * @return A {@link PagedFlux} of application/json of the specified type.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T> PagedFlux<T> query(String query, Class<T> clazz) {
+        return new PagedFlux<T>(
+            () -> withContext(context -> queryFirstPage(query, clazz, context)),
+            nextLink -> withContext(context -> queryNextPage(nextLink, clazz, context)));
+    }
+
+    <T> PagedFlux<T> query(String query, Class<T> clazz, Context context) {
+        return new PagedFlux<>(
+            () -> queryFirstPage(query, clazz, context),
+            nextLink -> queryNextPage(nextLink, clazz, context));
+    }
+
+    Mono<PagedResponse<String>> queryFirstPage(String query, Context context) {
+        QuerySpecification querySpecification = new QuerySpecification().setQuery(query);
+
+        return protocolLayer
+            .getQueries()
+            .queryTwinsWithResponseAsync(querySpecification, context)
+            .map(objectPagedResponse -> new PagedResponseBase<>(
+                objectPagedResponse.getRequest(),
+                objectPagedResponse.getStatusCode(),
+                objectPagedResponse.getHeaders(),
+                objectPagedResponse.getValue().getItems().stream()
+                    .map(object -> {
+                        try {
+                            return mapper.writeValueAsString(object);
+                        } catch (JsonProcessingException e) {
+                            logger.error("JsonProcessingException occurred while retrieving query result items: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while retrieving query result items", e);
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()),
+                objectPagedResponse.getValue().getContinuationToken(),
+                objectPagedResponse.getDeserializedHeaders()));
+    }
+
+    <T> Mono<PagedResponse<T>> queryFirstPage(String query, Class<T> clazz, Context context) {
+        QuerySpecification querySpecification = new QuerySpecification().setQuery(query);
+
+        return protocolLayer
+            .getQueries()
+            .queryTwinsWithResponseAsync(querySpecification, context)
+            .map(objectPagedResponse -> new PagedResponseBase<>(
+                objectPagedResponse.getRequest(),
+                objectPagedResponse.getStatusCode(),
+                objectPagedResponse.getHeaders(),
+                objectPagedResponse.getValue().getItems().stream()
+                    .map(object -> mapper.convertValue(object, clazz))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()),
+                objectPagedResponse.getValue().getContinuationToken(),
+                objectPagedResponse.getDeserializedHeaders()));
+    }
+
+    Mono<PagedResponse<String>> queryNextPage(String nextLink, Context context) {
+        QuerySpecification querySpecification = new QuerySpecification().setContinuationToken(nextLink);
+
+        return protocolLayer
+            .getQueries()
+            .queryTwinsWithResponseAsync(querySpecification, context)
+            .map(objectPagedResponse -> new PagedResponseBase<>(
+                objectPagedResponse.getRequest(),
+                objectPagedResponse.getStatusCode(),
+                objectPagedResponse.getHeaders(),
+                objectPagedResponse.getValue().getItems().stream()
+                    .map(object -> {
+                        try {
+                            return mapper.writeValueAsString(object);
+                        } catch (JsonProcessingException e) {
+                            logger.error("JsonProcessingException occurred while retrieving query result items: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while retrieving query result items", e);
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()),
+                objectPagedResponse.getValue().getContinuationToken(),
+                objectPagedResponse.getDeserializedHeaders()));
+    }
+
+    <T> Mono<PagedResponse<T>> queryNextPage(String nextLink, Class<T> clazz, Context context) {
+        QuerySpecification querySpecification = new QuerySpecification().setContinuationToken(nextLink);
+
+        return protocolLayer
+            .getQueries()
+            .queryTwinsWithResponseAsync(querySpecification, context)
+            .map(objectPagedResponse -> new PagedResponseBase<>(
+                objectPagedResponse.getRequest(),
+                objectPagedResponse.getStatusCode(),
+                objectPagedResponse.getHeaders(),
+                objectPagedResponse.getValue().getItems().stream()
+                    .map(object -> mapper.convertValue(object, clazz))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()),
+                objectPagedResponse.getValue().getContinuationToken(),
+                objectPagedResponse.getDeserializedHeaders()));
+    }
+
+    //endregion Query APIs
+
+    //region Event Route APIs
+
+    /**
+     * Create an event route.
+     * @param eventRouteId The Id of the event route to create.
+     * @param eventRoute The event route to create.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createEventRoute(String eventRouteId, EventRoute eventRoute)
+    {
+        return createEventRouteWithResponse(eventRouteId, eventRoute)
+            .flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Create an event route.
+     * @param eventRouteId The Id of the event route to create.
+     * @param eventRoute The event route to create.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute)
+    {
+        return withContext(context -> createEventRouteWithResponse(eventRouteId, eventRoute, context));
+    }
+
+    Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, Context context)
+    {
+        return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, eventRoute, context);
+    }
+
+    /**
+     * Get an event route.
+     * @param eventRouteId The Id of the event route to get.
+     * @return The retrieved event route.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EventRoute> getEventRoute(String eventRouteId)
+    {
+        return getEventRouteWithResponse(eventRouteId)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Get an event route.
+     * @param eventRouteId The Id of the event route to get.
+     * @return A {@link Response} containing the retrieved event route.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId)
+    {
+        return withContext(context -> getEventRouteWithResponse(eventRouteId, context));
+    }
+
+    Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId, Context context)
+    {
+        return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(eventRouteId, context);
+    }
+
+    /**
+     * Delete an event route.
+     * @param eventRouteId The Id of the event route to delete.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteEventRoute(String eventRouteId)
+    {
+        return deleteEventRouteWithResponse(eventRouteId)
+            .flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Delete an event route.
+     * @param eventRouteId The Id of the event route to delete.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId)
+    {
+        return withContext(context -> deleteEventRouteWithResponse(eventRouteId, context));
+    }
+
+    Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId, Context context)
+    {
+        return this.protocolLayer.getEventRoutes().deleteWithResponseAsync(eventRouteId, context);
+    }
+
+    /**
+     * List all the event routes that exist in your digital twins instance.
+     * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
+     * This PagedFlux may take multiple service requests to iterate over all event routes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<EventRoute> listEventRoutes()
+    {
+        return listEventRoutes(new EventRoutesListOptions());
+    }
+
+    /**
+     * List all the event routes that exist in your digital twins instance.
+     * @param options The optional parameters to use when listing event routes. See {@link EventRoutesListOptions} for more details
+     * on what optional parameters can be set.
+     * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
+     * This PagedFlux may take multiple service requests to iterate over all event routes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<EventRoute> listEventRoutes(EventRoutesListOptions options)
+    {
+        return new PagedFlux<>(
+            () -> withContext(context -> listEventRoutesFirstPage(options, context)),
+            nextLink -> withContext(context -> listEventRoutesNextPage(nextLink, context)));
+    }
+
+    PagedFlux<EventRoute> listEventRoutes(EventRoutesListOptions options, Context context)
+    {
+        return new PagedFlux<>(
+            () -> listEventRoutesFirstPage(options, context),
+            nextLink -> listEventRoutesNextPage(nextLink, context));
+    }
+
+    Mono<PagedResponse<EventRoute>> listEventRoutesFirstPage(EventRoutesListOptions options, Context context) {
+        return protocolLayer
+            .getEventRoutes()
+            .listSinglePageAsync(options, context);
+    }
+
+    Mono<PagedResponse<EventRoute>> listEventRoutesNextPage(String nextLink, Context context) {
+        return protocolLayer
+            .getEventRoutes()
+            .listNextSinglePageAsync(nextLink, context);
+    }
+
+    //endregion Event Route APIs
 }

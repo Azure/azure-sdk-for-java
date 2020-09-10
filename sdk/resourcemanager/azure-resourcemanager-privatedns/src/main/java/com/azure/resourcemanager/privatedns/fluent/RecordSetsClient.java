@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.privatedns.PrivateDnsManagementClient;
 import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
 import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetListResultInner;
 import com.azure.resourcemanager.privatedns.models.RecordType;

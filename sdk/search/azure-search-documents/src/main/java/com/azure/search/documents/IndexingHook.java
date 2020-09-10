@@ -7,8 +7,8 @@ import com.azure.search.documents.models.IndexAction;
 
 /**
  * This interface represents callback hooks that are triggered when {@link IndexAction IndexActions} are added, succeed,
- * fail, or are removed from the document indexing batch while using a {@link SearchIndexBatchingClient} or {@link
- * SearchIndexBatchingAsyncClient}.
+ * fail, or are removed from the document indexing batch while using a {@link SearchBatchClient} or {@link
+ * SearchBatchAsyncClient}.
  */
 public interface IndexingHook {
     /**

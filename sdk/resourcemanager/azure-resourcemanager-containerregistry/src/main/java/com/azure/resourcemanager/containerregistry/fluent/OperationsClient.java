@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.fluent.inner.OperationDefinitionInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.OperationListResultInner;
 import reactor.core.publisher.Mono;
