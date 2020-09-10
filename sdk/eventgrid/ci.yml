@@ -41,6 +41,6 @@ extends:
   parameters:
     ServiceDirectory: eventgrid
     Artifacts:
-      - name: azure-eventgrid
-        groupId: com.microsoft.azure
-        safeName: azureeventgrid
+      - name: azure-messaging-eventgrid
+        groupId: com.azure
+        safeName: azuremessagingeventgrid
