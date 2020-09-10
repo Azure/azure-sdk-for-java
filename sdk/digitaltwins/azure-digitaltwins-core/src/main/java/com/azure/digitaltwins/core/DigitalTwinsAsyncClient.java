@@ -937,6 +937,7 @@ public final class DigitalTwinsAsyncClient {
      * @param modelId The Id of the model to decommission.
      * @return an empty Mono
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> decommissionModel(String modelId) {
         return decommissionModelWithResponse(modelId)
             .flatMap(voidResponse -> Mono.empty());
@@ -947,6 +948,7 @@ public final class DigitalTwinsAsyncClient {
      * @param modelId The Id of the model to decommission.
      * @return The http response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> decommissionModelWithResponse(String modelId) {
         return withContext(context -> decommissionModelWithResponse(modelId, context));
     }

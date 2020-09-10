@@ -550,6 +550,7 @@ public final class DigitalTwinsClient {
      * Decommissions a model.
      * @param modelId The Id of the model to decommission.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void decommissionModel(String modelId) {
         decommissionModelWithResponse(modelId, Context.NONE);
     }
@@ -560,6 +561,7 @@ public final class DigitalTwinsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The http response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> decommissionModelWithResponse(String modelId, Context context) {
         return digitalTwinsAsyncClient.decommissionModelWithResponse(modelId, context).block();
     }
