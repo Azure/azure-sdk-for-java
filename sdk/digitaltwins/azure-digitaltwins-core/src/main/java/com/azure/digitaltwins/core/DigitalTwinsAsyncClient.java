@@ -1349,6 +1349,7 @@ public final class DigitalTwinsAsyncClient {
      * @param payload The application/json telemetry payload to be sent.
      * @return An empty mono.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishTelemetry(String digitalTwinId, String payload) {
         PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
         return withContext(context -> publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context))
@@ -1364,6 +1365,7 @@ public final class DigitalTwinsAsyncClient {
      * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
      * @return A {@link Response} containing an empty mono.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
         return withContext(context -> publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context));
     }
@@ -1395,6 +1397,7 @@ public final class DigitalTwinsAsyncClient {
      * @param payload The application/json telemetry payload to be sent.
      * @return An empty mono.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
         PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
         return withContext(context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context))
@@ -1411,6 +1414,7 @@ public final class DigitalTwinsAsyncClient {
      * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
      * @return A {@link Response} containing an empty mono.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
         return withContext(context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context));
     }

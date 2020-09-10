@@ -779,6 +779,7 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the digital twin.
      * @param payload The application/json telemetry payload to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void publishTelemetry(String digitalTwinId, String payload) {
         PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
         publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, Context.NONE);
@@ -794,6 +795,7 @@ public final class DigitalTwinsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
         return digitalTwinsAsyncClient.publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context).block();
     }
@@ -806,6 +808,7 @@ public final class DigitalTwinsClient {
      * @param componentName The name of the DTDL component.
      * @param payload The application/json telemetry payload to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
         PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
         publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, Context.NONE);
@@ -822,6 +825,7 @@ public final class DigitalTwinsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
         return digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context).block();
     }
