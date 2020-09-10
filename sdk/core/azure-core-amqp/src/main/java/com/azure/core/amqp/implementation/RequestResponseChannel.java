@@ -138,12 +138,10 @@ public class RequestResponseChannel implements Disposable {
             receiveLinkHandler.getEndpointStates().subscribe(
                 state -> endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state)),
                 this::handleError, this::dispose),
-            receiveLinkHandler.getErrors().subscribe(this::handleError),
 
             sendLinkHandler.getEndpointStates().subscribe(state ->
                 endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state)),
-                this::handleError, this::dispose),
-            sendLinkHandler.getErrors().subscribe(this::handleError)
+                this::handleError, this::dispose)
         );
 
         //@formatter:on
