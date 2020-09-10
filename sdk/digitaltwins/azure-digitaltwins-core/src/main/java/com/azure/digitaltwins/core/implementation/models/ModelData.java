@@ -176,4 +176,15 @@ public final class ModelData {
         this.model = model;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getId() == null) {
+            throw new IllegalArgumentException("Missing required property id in model ModelData");
+        }
+    }
 }

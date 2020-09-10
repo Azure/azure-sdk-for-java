@@ -26,7 +26,7 @@ public class CosmosFactory {
         Constants.USER_AGENT_SUFFIX + PropertyLoader.getProjectVersion();
 
     private static String getUserAgentSuffix() {
-        return ";" + USER_AGENT_SUFFIX;
+        return USER_AGENT_SUFFIX;
     }
 
     /**
