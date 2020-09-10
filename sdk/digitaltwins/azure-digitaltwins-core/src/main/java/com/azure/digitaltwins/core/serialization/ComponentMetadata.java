@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @Fluent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ComponentMetadata {
+public final class ComponentMetadata {
 
     /**
      * Model-defined writable properties' request state.

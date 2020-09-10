@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
-public class DigitalTwinMetadata {
+public final class DigitalTwinMetadata {
 
     @JsonProperty(value = "$model", required = true)
     private String modelId;
