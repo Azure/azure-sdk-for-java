@@ -10,6 +10,7 @@
             "com\\.azure\\..+\\.samples(\\..+)?",
             "com\\.fasterxml\\.jackson\\..+",
             "reactor\\.netty\\..+",
+            "reactor\\.util\\..+",
             "io\\.netty\\..+",
             "com\\.nimbusds(\\..+)?",
             "com\\.microsoft\\.azure\\..+",
@@ -19,7 +20,8 @@
             "io\\.micrometer(\\..+)?",
             "com\\.azure\\.data\\.cosmos(\\..+)?",
             "com\\.azure\\.spring\\.data\\.cosmos\\..+",
-            "org\\.springframework\\.data\\..+"
+            "org\\.springframework\\.data\\..+",
+            "org\\.apache\\.avro\\..+"
           ]
         }
       }
