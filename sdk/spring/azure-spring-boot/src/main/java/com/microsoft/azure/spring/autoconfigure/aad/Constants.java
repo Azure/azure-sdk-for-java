@@ -9,4 +9,5 @@ public class Constants {
     public static final String CAP_CLAIMS = "CAP_Claims";
     public static final String CLAIMS = "claims";
     public static final String FAILURE_DEFAULT_URL = "/login?error";
+    public static final String OBJECT_TYPE_GROUP = "Group";
 }
