@@ -30,7 +30,7 @@ import java.util.concurrent.Future;
  * ReflectionUtils.setTransportClient(documentClient, spyTransportClient);
  *
  * // use the documentClient
- * // do assertion on the request and response spyTransportClient recieves using Mockito
+ * // do assertion on the request and response spyTransportClient receives using Mockito
  */
 public class ReflectionUtils {
 
@@ -66,9 +66,10 @@ public class ReflectionUtils {
         }
     }
 
-    private static <R> R getStaticField(Class klass, String fieldName) {
+    @SuppressWarnings("unchecked")
+    private static <R> R getStaticField(Class<?> classType, String fieldName) {
         try {
-            return (R) FieldUtils.readStaticField(klass, fieldName, true);
+            return (R) FieldUtils.readStaticField(classType, fieldName, true);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -154,7 +155,7 @@ public class ReflectionUtils {
         return get(UserAgentContainer.class, rxDocumentClient, "userAgentContainer");
     }
 
-    public static Future getFuture() {
+    public static Future<?> getFuture() {
         return getStaticField(CpuMonitor.class, "future");
     }
 

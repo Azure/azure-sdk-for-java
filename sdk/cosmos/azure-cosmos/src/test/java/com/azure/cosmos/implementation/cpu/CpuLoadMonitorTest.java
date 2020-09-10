@@ -28,7 +28,7 @@ public class CpuLoadMonitorTest {
             CpuMonitor.register(listener);
             cpuMonitorList.add(listener);
 
-            Future workFuture = ReflectionUtils.getFuture();
+            Future<?> workFuture = ReflectionUtils.getFuture();
             assertThat(workFuture).isNotNull();
             assertThat(workFuture.isCancelled()).isFalse();
             assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
@@ -43,7 +43,7 @@ public class CpuLoadMonitorTest {
 
             assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
 
-            Future workFuture = ReflectionUtils.getFuture();
+            Future<?> workFuture = ReflectionUtils.getFuture();
             assertThat(workFuture).isNotNull();
             assertThat(workFuture.isCancelled()).isFalse();
         }
@@ -55,7 +55,7 @@ public class CpuLoadMonitorTest {
         CpuMonitor.unregister(newListener);
 
         assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
-        Future workFuture = ReflectionUtils.getFuture();
+        Future<?> workFuture = ReflectionUtils.getFuture();
         assertThat(workFuture).isNotNull();
         assertThat(workFuture.isCancelled()).isFalse();
 

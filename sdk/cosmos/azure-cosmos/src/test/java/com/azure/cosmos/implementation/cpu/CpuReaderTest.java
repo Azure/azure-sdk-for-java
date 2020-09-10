@@ -8,8 +8,6 @@ import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CpuReaderTest {
-
-
     @Test(groups = "unit")
     public void range() {
         double cpuLoad = new CpuReader().getSystemWideCpuUsage();

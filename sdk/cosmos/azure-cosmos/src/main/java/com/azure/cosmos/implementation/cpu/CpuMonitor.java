@@ -27,7 +27,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * in the absence of a listener the CpuMonitor will shutdown.
  */
 public class CpuMonitor {
-    private final static int DEFAULT_REFRESH_INTERVAL_IN_SECONDS = 10;
+    private final static int DEFAULT_REFRESH_INTERVAL_IN_SECONDS = 5;
     private final static int HISTORY_LENGTH = 6;
     private static Duration refreshInterval = Duration.ofSeconds(DEFAULT_REFRESH_INTERVAL_IN_SECONDS);
 
@@ -45,7 +45,9 @@ public class CpuMonitor {
     private static final List<WeakReference<CpuListener>> cpuListeners = new ArrayList<>();
     private static final Object lifeCycleLock = new Object();
 
-    private static CpuLoadHistory currentReading = new CpuLoadHistory(Collections.emptyList(), refreshInterval); // Guarded by rwLock.
+    private static final CpuLoadHistory DEFAULT_READING = new CpuLoadHistory(Collections.emptyList(), refreshInterval);
+
+    private static CpuLoadHistory currentReading = DEFAULT_READING; // Guarded by rwLock.
     private static final CpuLoad[] buffer = new CpuLoad[CpuMonitor.HISTORY_LENGTH];
 
     private static ScheduledFuture<?> future;
@@ -94,8 +96,15 @@ public class CpuMonitor {
         synchronized (lifeCycleLock) {
             future.cancel(false);
             future = null;
-        }
 
+            rwLock.writeLock().lock();
+            try {
+                // sets a dummy value for current reading.
+                currentReading = DEFAULT_READING;
+            } finally {
+                rwLock.writeLock().unlock();
+            }
+        }
     }
 
     // Returns a read-only collection of CPU load measurements, or null if
@@ -148,17 +157,19 @@ public class CpuMonitor {
     }
 
     private static void start() {
-        rwLock.writeLock().lock();
-        try {
-            // sets a dummy value for current reading.
-            currentReading = new CpuLoadHistory(Collections.emptyList(), refreshInterval);
-            future = scheduledExecutorService.scheduleAtFixedRate(
-                () -> refresh(),
-                0,
-                refreshInterval.toMillis() / 1000,
-                TimeUnit.SECONDS);
-        } finally {
-            rwLock.writeLock().unlock();
+        synchronized (lifeCycleLock) {
+            rwLock.writeLock().lock();
+            try {
+                // sets a dummy value for current reading.
+                currentReading = DEFAULT_READING;
+                future = scheduledExecutorService.scheduleAtFixedRate(
+                    () -> refresh(),
+                    0,
+                    refreshInterval.toMillis() / TimeUnit.SECONDS.toMillis(1),
+                    TimeUnit.SECONDS);
+            } finally {
+                rwLock.writeLock().unlock();
+            }
         }
     }
 

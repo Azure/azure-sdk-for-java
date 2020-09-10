@@ -29,7 +29,10 @@ public class CpuReader {
     public double getSystemWideCpuUsage() {
         try {
             if (operatingSystemMXBean != null) {
-                return operatingSystemMXBean.getSystemCpuLoad();
+                double val = operatingSystemMXBean.getSystemCpuLoad();
+                if (val > 0) {
+                    return val;
+                }
             }
 
             return Double.NaN;
