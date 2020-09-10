@@ -46,7 +46,6 @@ public class ReactorConnection implements AmqpConnection {
     private final ClientLogger logger = new ClientLogger(ReactorConnection.class);
     private final ConcurrentMap<String, SessionSubscription> sessionMap = new ConcurrentHashMap<>();
 
-    private final AtomicBoolean hasConnection = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final DirectProcessor<AmqpShutdownSignal> shutdownSignals = DirectProcessor.create();
     private final FluxSink<AmqpShutdownSignal> shutdownSignalsSink = shutdownSignals.sink();
@@ -104,8 +103,7 @@ public class ReactorConnection implements AmqpConnection {
         this.senderSettleMode = senderSettleMode;
         this.receiverSettleMode = receiverSettleMode;
 
-        this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)
-            .doOnSubscribe(c -> hasConnection.set(true));
+        this.connectionMono = Mono.fromCallable(this::getOrCreateConnection);
 
         this.endpointStates = this.handler.getEndpointStates()
             .takeUntilOther(shutdownSignals)
@@ -138,14 +136,12 @@ public class ReactorConnection implements AmqpConnection {
                 "connectionId[%s]: Connection is disposed. Cannot get CBS node.", connectionId))));
         }
 
-        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = RetryUtil.withRetry(
-            getEndpointStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE),
-            connectionOptions.getRetry().getTryTimeout(), retryPolicy)
+        final Mono<ClaimsBasedSecurityNode> cbsNodeMono =
+            RetryUtil.withRetry(getEndpointStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE),
+                connectionOptions.getRetry().getTryTimeout(), retryPolicy)
             .then(Mono.fromCallable(this::getOrCreateCBSNode));
 
-        return hasConnection.get()
-            ? cbsNodeMono
-            : connectionMono.then(cbsNodeMono);
+        return connectionMono.then(cbsNodeMono);
     }
 
     @Override

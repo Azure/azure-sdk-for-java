@@ -323,15 +323,9 @@ class ReactorSender implements AmqpSendLink {
     }
 
     private Mono<Void> validateEndpoint() {
-        return Mono.defer(() -> {
-            if (hasConnected.get()) {
-                return Mono.empty();
-            } else {
-                return RetryUtil.withRetry(
-                    handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
-                    .then();
-            }
-        });
+        return Mono.defer(() -> RetryUtil.withRetry(
+            handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
+            .then());
     }
 
     /**
