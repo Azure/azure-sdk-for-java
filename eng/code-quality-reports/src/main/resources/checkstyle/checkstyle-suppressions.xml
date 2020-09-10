@@ -541,4 +541,7 @@
 
   <!-- Suppress Anomaly Detector checks as it's fully generated code for now -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-ai-anomalydetector[/\\]src[/\\]"/>
+
+  <!-- Suppress Event Grid checks for now -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-messaging-eventgrid[/\\]src[/\\]"/>
 </suppressions>
