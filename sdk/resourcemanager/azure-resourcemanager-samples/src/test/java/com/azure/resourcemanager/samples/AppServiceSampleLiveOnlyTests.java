@@ -22,14 +22,17 @@ import com.azure.resourcemanager.appservice.samples.ManageWebAppSourceControl;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppStorageAccountConnection;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppWithDomainSsl;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppWithTrafficManager;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppSourceControl() {
+    public void testManageWebAppSourceControl() throws GitAPIException {
         if (skipInPlayback()) {
             return;
         }
@@ -49,7 +52,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppSourceControl() {
+    public void testManageLinuxWebAppSourceControl() throws GitAPIException {
         if (skipInPlayback()) {
             return;
         }
@@ -69,7 +72,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppWithContainerRegistry() {
+    public void testManageLinuxWebAppWithContainerRegistry() throws IOException, InterruptedException {
         if (skipInPlayback()) {
             return;
         }
@@ -79,7 +82,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageFunctionAppWithAuthentication() {
+    public void testManageFunctionAppWithAuthentication() throws GitAPIException {
         if (skipInPlayback()) {
             return;
         }
@@ -89,7 +92,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageFunctionAppSourceControl() {
+    public void testManageFunctionAppSourceControl() throws GitAPIException {
         if (skipInPlayback()) {
             return;
         }
@@ -129,7 +132,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageFunctionAppLogs() {
+    public void testManageFunctionAppLogs() throws IOException {
         if (skipInPlayback()) {
             return;
         }
@@ -139,7 +142,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppLogs() {
+    public void testManageWebAppLogs() throws IOException {
         if (skipInPlayback()) {
             return;
         }
@@ -159,7 +162,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppWithDomainSsl() {
+    public void testManageWebAppWithDomainSsl() throws IOException {
         if (skipInPlayback()) {
             return;
         }
@@ -169,7 +172,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppWithTrafficManager() {
+    public void testManageWebAppWithTrafficManager() throws IOException {
         if (skipInPlayback()) {
             return;
         }
@@ -179,7 +182,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppWithDomainSsl() {
+    public void testManageLinuxWebAppWithDomainSsl() throws IOException {
         if (skipInPlayback()) {
             return;
         }
@@ -189,7 +192,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppWithTrafficManager() {
+    public void testManageLinuxWebAppWithTrafficManager() throws IOException {
         if (skipInPlayback()) {
             return;
         }
@@ -199,7 +202,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageFunctionAppWithDomainSsl() {
+    public void testManageFunctionAppWithDomainSsl() throws IOException {
         if (skipInPlayback()) {
             return;
         }

@@ -11,10 +11,12 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.digitaltwins.core.models.EventRoute;
+import com.azure.digitaltwins.core.models.EventRoutesListOptions;
 import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
-import com.azure.digitaltwins.core.util.ListModelOptions;
+import com.azure.digitaltwins.core.serialization.BasicRelationship;
+import com.azure.digitaltwins.core.util.*;
 
 import java.util.List;
 
@@ -58,6 +60,8 @@ public final class DigitalTwinsClient {
     public DigitalTwinsServiceVersion getServiceVersion() {
         return this.digitalTwinsAsyncClient.getServiceVersion();
     }
+
+    //region Digital twin APIs
 
     /**
      * Creates a digital twin.
@@ -221,6 +225,10 @@ public final class DigitalTwinsClient {
     {
         return digitalTwinsAsyncClient.deleteDigitalTwinWithResponse(digitalTwinId, options, context).block();
     }
+
+    //endregion Digital twin APIs
+
+    //region Relationship APIs
 
     /**
      * Creates a relationship on a digital twin.
@@ -414,7 +422,7 @@ public final class DigitalTwinsClient {
      * Gets all the relationships on a digital twin by iterating through a collection.
      *
      * @param digitalTwinId The Id of the source digital twin.
-     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link com.azure.digitaltwins.core.implementation.serialization.BasicRelationship}.
+     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link BasicRelationship}.
      * @param <T> The generic type to convert the relationship to.
      * @return A {@link PagedIterable} of relationships belonging to the specified digital twin and the http response.
      */
@@ -442,6 +450,17 @@ public final class DigitalTwinsClient {
      * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
      *
      * @param digitalTwinId The Id of the target digital twin.
+     * @return A {@link PagedIterable} of application/json relationships directed towards the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IncomingRelationship> listIncomingRelationships(String digitalTwinId) {
+        return listIncomingRelationships(digitalTwinId, Context.NONE);
+    }
+
+    /**
+     * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the target digital twin.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of application/json relationships directed towards the specified digital twin and the http response.
      */
@@ -450,9 +469,9 @@ public final class DigitalTwinsClient {
         return new PagedIterable<>(digitalTwinsAsyncClient.listIncomingRelationships(digitalTwinId, context));
     }
 
-    //==================================================================================================================================================
-    // Models APIs
-    //==================================================================================================================================================
+    //endregion Relationship APIs
+
+    //region Model APIs
 
     /**
      * Creates one or many models.
@@ -556,9 +575,9 @@ public final class DigitalTwinsClient {
         return digitalTwinsAsyncClient.decommissionModelWithResponse(modelId, context).block();
     }
 
-    //==================================================================================================================================================
-    // Component APIs
-    //==================================================================================================================================================
+    //endregion Model APIs
+
+    //region Component APIs
 
     /**
      * Get a component of a digital twin.
@@ -636,4 +655,150 @@ public final class DigitalTwinsClient {
     public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions options, Context context) {
         return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, options, context).block();
     }
+
+    //endregion Component APIs
+
+    //region Query APIs
+
+    /**
+     * Query digital twins.
+     *
+     * @param query The query string, in SQL-like syntax.
+     * @return A {@link PagedIterable} of application/json query result items.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> query(String query) {
+        return query(query, Context.NONE);
+    }
+
+    /**
+     * Query digital twins.
+     *
+     * @param query The query string, in SQL-like syntax.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link PagedIterable} of application/json query result items.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> query(String query, Context context) {
+        return new PagedIterable<>(digitalTwinsAsyncClient.query(query, context));
+    }
+
+    /**
+     * Query digital twins.
+     *
+     * @param query The query string, in SQL-like syntax.
+     * @param clazz The model class to convert the query response to.
+     * @param <T> The generic type to convert the query response to.
+     * @return A {@link PagedIterable} of application/json query result items.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T> PagedIterable<T> query(String query, Class<T> clazz) {
+        return query(query, clazz, Context.NONE);
+    }
+
+    /**
+     * Query digital twins.
+     *
+     * @param query The query string, in SQL-like syntax.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @param clazz The model class to convert the query response to.
+     * @param <T> The generic type to convert the query response to.
+     * @return A {@link PagedIterable} of application/json query result items.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T> PagedIterable<T> query(String query, Class<T> clazz, Context context) {
+        return new PagedIterable<>(digitalTwinsAsyncClient.query(query, clazz, context));
+    }
+
+    //endregion Query APIs
+
+    //region Event Route APIs
+    /**
+     * Create an event route.
+     * @param eventRouteId The id of the event route to create.
+     * @param eventRoute The event route to create.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createEventRoute(String eventRouteId, EventRoute eventRoute) {
+        createEventRouteWithResponse(eventRouteId, eventRoute, Context.NONE);
+    }
+
+    /**
+     * Create an event route.
+     * @param eventRouteId The id of the event route to create.
+     * @param eventRoute The event route to create.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, Context context) {
+        this.digitalTwinsAsyncClient.createEventRouteWithResponse(eventRouteId, eventRoute, context).block();
+    }
+
+    /**
+     * Get an event route.
+     * @param eventRouteId The Id of the event route to get.
+     * @return The retrieved event route.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventRoute getEventRoute(String eventRouteId) {
+        return getEventRouteWithResponse(eventRouteId, Context.NONE).getValue();
+    }
+
+    /**
+     * Get an event route.
+     * @param eventRouteId The Id of the event route to get.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing the retrieved event route.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EventRoute> getEventRouteWithResponse(String eventRouteId, Context context) {
+        return this.digitalTwinsAsyncClient.getEventRouteWithResponse(eventRouteId, context).block();
+    }
+
+    /**
+     * Delete an event route.
+     * @param eventRouteId The Id of the event route to delete.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteEventRoute(String eventRouteId)
+    {
+        deleteEventRouteWithResponse(eventRouteId, Context.NONE);
+    }
+
+    /**
+     * Delete an event route.
+     * @param eventRouteId The Id of the event route to delete.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing no parsed value.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteEventRouteWithResponse(String eventRouteId, Context context)
+    {
+        return this.digitalTwinsAsyncClient.deleteEventRouteWithResponse(eventRouteId, context).block();
+    }
+
+    /**
+     * List all the event routes that exist in your digital twins instance.
+     * @return A {@link PagedIterable} containing all the event routes that exist in your digital twins instance.
+     * This PagedIterable may take multiple service requests to iterate over all event routes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EventRoute> listEventRoutes() {
+        return listEventRoutes(new EventRoutesListOptions(), Context.NONE);
+    }
+
+    /**
+     * List all the event routes that exist in your digital twins instance.
+     * @param options The optional parameters to use when listing event routes. See {@link EventRoutesListOptions} for more details
+     * on what optional parameters can be set.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link PagedIterable} containing all the event routes that exist in your digital twins instance.
+     * This PagedIterable may take multiple service requests to iterate over all event routes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EventRoute> listEventRoutes(EventRoutesListOptions options, Context context) {
+        return new PagedIterable<>(this.digitalTwinsAsyncClient.listEventRoutes(options, context));
+    }
+
+    //endregion Event Route APIs
 }

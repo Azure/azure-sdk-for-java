@@ -95,10 +95,10 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory) {
 function Publish-java-GithubIODocs ()
 {
   $PublishedDocs = Get-ChildItem "$DocLocation" | Where-Object -FilterScript {$_.Name.EndsWith("-javadoc.jar")}
-  foreach ($Item in $PublishedDocs) 
+  foreach ($Item in $PublishedDocs)
   {
     $UnjarredDocumentationPath = ""
-    try 
+    try
     {
       $PkgName = $Item.BaseName
       # The jar's unpacking command doesn't allow specifying a target directory
@@ -136,14 +136,15 @@ function Publish-java-GithubIODocs ()
       Write-Host "DocDir $($UnjarredDocumentationPath)"
       Write-Host "PkgName $($ArtifactId)"
       Write-Host "DocVersion $($Version)"
+      $releaseTag = RetrieveReleaseTag "Maven" $PublicArtifactLocation 
+      Upload-Blobs -DocDir $UnjarredDocumentationPath -PkgName $ArtifactId -DocVersion $Version -ReleaseTag $releaseTag
 
-      Upload-Blobs -DocDir $UnjarredDocumentationPath -PkgName $ArtifactId -DocVersion $Version
-    } 
-    Finally 
+    }
+    Finally
     {
-      if (![string]::IsNullOrEmpty($UnjarredDocumentationPath)) 
+      if (![string]::IsNullOrEmpty($UnjarredDocumentationPath))
       {
-        if (Test-Path -Path $UnjarredDocumentationPath) 
+        if (Test-Path -Path $UnjarredDocumentationPath)
         {
           Write-Host "Cleaning up $UnjarredDocumentationPath"
           Remove-Item -Recurse -Force $UnjarredDocumentationPath

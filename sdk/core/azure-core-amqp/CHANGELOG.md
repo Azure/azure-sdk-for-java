@@ -1,6 +1,9 @@
 # Release History
 
 ## 1.5.0-beta.1 (Unreleased)
+- Remove unused and duplicate logic for Handlers.getErrors(). 
+- Close children sessions and links when a connection is disposed.
+- Added AMQP Message envelope which can be accessed using `AmqpAnnotatedMessage`.
 
 ## 1.4.0 (2020-08-11)
 

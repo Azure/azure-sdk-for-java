@@ -6,15 +6,16 @@ package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
 import com.azure.messaging.servicebus.implementation.models.EntityAvailabilityStatus;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 import com.azure.messaging.servicebus.implementation.models.TopicDescription;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimitive;
 
@@ -30,7 +31,7 @@ public final class TopicProperties {
     private final EntityAvailabilityStatus entityAvailabilityStatus;
     private boolean filteringMessagesBeforePublishing;
     private Boolean isAnonymousAccessible;
-    private List<AuthorizationRule> authorizationRules;
+    private final List<AuthorizationRule> authorizationRules;
     private EntityStatus status;
     private final OffsetDateTime createdAt;
     private final OffsetDateTime updatedAt;
@@ -55,10 +56,9 @@ public final class TopicProperties {
             }
 
             @Override
-            public TopicDescription toImplementation(TopicProperties topic) {
-                return new TopicDescription()
+            public TopicDescription toImplementation(TopicProperties topic, List<AuthorizationRuleImpl> rules) {
+                final TopicDescription description = new TopicDescription()
                     .setAccessedAt(topic.getAccessedAt())
-                    .setAuthorizationRules(topic.getAuthorizationRules())
                     .setAutoDeleteOnIdle(topic.getAutoDeleteOnIdle())
                     .setCreatedAt(topic.getCreatedAt())
                     .setDefaultMessageTimeToLive(topic.getDefaultMessageTimeToLive())
@@ -79,6 +79,12 @@ public final class TopicProperties {
                     .setRequiresDuplicateDetection(topic.requiresDuplicateDetection())
                     .setUpdatedAt(topic.getUpdatedAt())
                     .setUserMetadata(topic.getUserMetadata());
+
+                if (!rules.isEmpty()) {
+                    description.setAuthorizationRules(rules);
+                }
+
+                return description;
             }
 
             @Override
@@ -96,7 +102,10 @@ public final class TopicProperties {
     TopicProperties(TopicDescription topic) {
         Objects.requireNonNull(topic, "'options' cannot be null.");
         this.accessedAt = topic.getAccessedAt();
-        this.authorizationRules = topic.getAuthorizationRules();
+        this.authorizationRules = topic.getAuthorizationRules()
+            .stream()
+            .map(SharedAccessAuthorizationRule::new)
+            .collect(Collectors.toList());
         this.autoDeleteOnIdle = topic.getAutoDeleteOnIdle();
         this.createdAt = topic.getCreatedAt();
         this.defaultMessageTimeToLive = topic.getDefaultMessageTimeToLive();
@@ -243,9 +252,6 @@ public final class TopicProperties {
      * @return the authorizationRules value.
      */
     public List<AuthorizationRule> getAuthorizationRules() {
-        if (this.authorizationRules == null) {
-            this.authorizationRules = new ArrayList<>();
-        }
         return this.authorizationRules;
     }
 

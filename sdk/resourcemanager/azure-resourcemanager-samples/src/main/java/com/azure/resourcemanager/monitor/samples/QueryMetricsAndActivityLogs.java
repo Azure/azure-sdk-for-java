@@ -59,7 +59,7 @@ public final class QueryMetricsAndActivityLogs {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         final String storageAccountName = azure.sdkContext().randomResourceName("saMonitor", 20);
         final String rgName = azure.sdkContext().randomResourceName("rgMonitor", 20);
 
@@ -155,9 +155,6 @@ public final class QueryMetricsAndActivityLogs {
             }
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             if (azure.resourceGroups().getByName(rgName) != null) {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -167,7 +164,6 @@ public final class QueryMetricsAndActivityLogs {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**
