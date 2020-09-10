@@ -375,7 +375,7 @@ public final class Utils {
                 if (exception != null) {
                     return Mono.error(exception);
                 } else {
-                    throw new ClientLogger(Utils.class).logExceptionAsError(new IllegalStateException());
+                    return Mono.error(new ClientLogger(Utils.class).logExceptionAsError(new IllegalStateException()));
                 }
             });
     }
@@ -424,7 +424,7 @@ public final class Utils {
                 if (exception != null) {
                     return Mono.error(exception);
                 } else {
-                    throw new ClientLogger(Utils.class).logExceptionAsError(new IllegalStateException());
+                    return Mono.error(new ClientLogger(Utils.class).logExceptionAsError(new IllegalStateException()));
                 }
             }, maxConcurrency, prefetch);
     }
