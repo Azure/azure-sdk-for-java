@@ -771,30 +771,83 @@ public final class DigitalTwinsClient {
 
     //region Telemetry APIs
 
-    public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
-        TelemetryOptions telemetryOptions = new TelemetryOptions();
-        publishComponentTelemetry(digitalTwinId, componentName, payload, telemetryOptions);
-    }
-
-    public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload, TelemetryOptions telemetryOptions) {
-        publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, telemetryOptions, Context.NONE);
-    }
-
-    public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, TelemetryOptions telemetryOptions, Context context) {
-        return digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, telemetryOptions, context).block();
-    }
-
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     */
     public void publishTelemetry(String digitalTwinId, String payload) {
         TelemetryOptions telemetryOptions = new TelemetryOptions();
         publishTelemetry(digitalTwinId, payload, telemetryOptions);
     }
 
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param telemetryOptions The additional information to be used when processing a telemetry request.
+     */
     public void publishTelemetry(String digitalTwinId, String payload, TelemetryOptions telemetryOptions) {
         publishTelemetryWithResponse(digitalTwinId, payload, telemetryOptions, Context.NONE);
     }
 
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param telemetryOptions The additional information to be used when processing a telemetry request.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response}.
+     */
     public Response<Void> publishTelemetryWithResponse(String digitalTwinId, String payload, TelemetryOptions telemetryOptions, Context context) {
         return digitalTwinsAsyncClient.publishTelemetryWithResponse(digitalTwinId, payload, telemetryOptions, context).block();
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     */
+    public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
+        TelemetryOptions telemetryOptions = new TelemetryOptions();
+        publishComponentTelemetry(digitalTwinId, componentName, payload, telemetryOptions);
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param telemetryOptions The additional information to be used when processing a telemetry request.
+     */
+    public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload, TelemetryOptions telemetryOptions) {
+        publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, telemetryOptions, Context.NONE);
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param telemetryOptions The additional information to be used when processing a telemetry request.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response}.
+     */
+    public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, TelemetryOptions telemetryOptions, Context context) {
+        return digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, telemetryOptions, context).block();
     }
 
     //endregion TelemetryAPIs
