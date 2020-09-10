@@ -21,9 +21,9 @@ public class CpuLoadMonitorTest {
 
     @Test(groups = "unit")
     public void multipleInstances() throws Exception {
-        List<CpuMonitor.CpuListener> cpuMonitorList = new ArrayList<>();
+        List<CpuListener> cpuMonitorList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            CpuMonitor.CpuListener listener = new CpuMonitor.CpuListener() {
+            CpuListener listener = new CpuListener() {
             };
             CpuMonitor.register(listener);
             cpuMonitorList.add(listener);
@@ -36,7 +36,7 @@ public class CpuLoadMonitorTest {
         }
 
         for (int i = 0; i < 9; i++) {
-            CpuMonitor.CpuListener cpuListener = cpuMonitorList.remove(0);
+            CpuListener cpuListener = cpuMonitorList.remove(0);
             assertThat(cpuMonitorList).hasSizeGreaterThan(0);
 
             CpuMonitor.unregister(cpuListener);
@@ -49,7 +49,7 @@ public class CpuLoadMonitorTest {
         }
 
         // register a new one here
-        CpuMonitor.CpuListener newListener = new CpuMonitor.CpuListener() {
+        CpuListener newListener = new CpuListener() {
         };
         CpuMonitor.register(newListener);
         CpuMonitor.unregister(newListener);
@@ -59,7 +59,7 @@ public class CpuLoadMonitorTest {
         assertThat(workFuture).isNotNull();
         assertThat(workFuture.isCancelled()).isFalse();
 
-        CpuMonitor.CpuListener cpuListener = cpuMonitorList.remove(0);
+        CpuListener cpuListener = cpuMonitorList.remove(0);
         CpuMonitor.unregister(cpuListener);
 
         assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
@@ -75,13 +75,13 @@ public class CpuLoadMonitorTest {
         listener.finalize();
         listener = null;
         System.gc();
-        Thread.sleep(2000);
+        Thread.sleep(10000);
 
         assertThat(ReflectionUtils.getListeners()).hasSize(0);
         assertThat(ReflectionUtils.getFuture()).isNull();
     }
 
-    class TestListener implements CpuMonitor.CpuListener {
+    class TestListener implements CpuListener {
         @Override
         public void finalize() throws Throwable {
             super.finalize();

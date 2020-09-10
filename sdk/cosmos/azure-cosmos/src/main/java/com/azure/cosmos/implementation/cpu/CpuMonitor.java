@@ -56,12 +56,15 @@ public class CpuMonitor {
     // against changes.
     private static int clockHand = 0;
 
-
     /**
-     * Gets a singleton instance of CpuMonitor, if no instance available will initialize one. The caller needs to ensure
-     * that CPUMonitor#close() is invoked when this instance is not needed anymore.
+     * any client interested in receiving cpu info should implement {@link CpuListener}.
      *
-     * @return CpuMonitor an instance of CpuMonitor.
+     * and invoke {@link CpuMonitor#register(CpuListener)} when starting up and
+     * {@link CpuMonitor#unregister(CpuListener)} } when shutting down.
+     *
+     * This is merely is used as a singal to {@link CpuMonitor} to control whether it should keep using
+     * its internal thread or it it should shut it down in the absence of any CosmosClient.
+     * @param listener interested in cpu update.
      */
     public static void register(CpuListener listener) {
         synchronized (lifeCycleLock) {
@@ -73,6 +76,16 @@ public class CpuMonitor {
         }
     }
 
+    /**
+     * any client interested in receiving cpu info should implement {@link CpuListener}.
+     *
+     * and invoke {@link CpuMonitor#register(CpuListener)} when starting up and
+     * {@link CpuMonitor#unregister(CpuListener)} } when shutting down.
+     *
+     * This is merely is used as a singal to {@link CpuMonitor} to control whether it should keep using
+     * its internal thread or it it should shut it down in the absence of any CosmosClient.
+     * @param listener the listener which is not interested in the cpu update anymore.
+     */
     public static void unregister(CpuListener listener) {
         synchronized (lifeCycleLock) {
             Iterator<WeakReference<CpuListener>> it = cpuListeners.iterator();
@@ -92,6 +105,17 @@ public class CpuMonitor {
         }
     }
 
+    // Returns a read-only collection of CPU load measurements, or null if
+    // no results are available yet.
+    public static CpuLoadHistory getCpuLoad() {
+        rwLock.readLock().lock();
+        try {
+            return currentReading;
+        } finally {
+            rwLock.readLock().unlock();
+        }
+    }
+
     private static void closeInternal() {
         synchronized (lifeCycleLock) {
             future.cancel(false);
@@ -104,17 +128,6 @@ public class CpuMonitor {
             } finally {
                 rwLock.writeLock().unlock();
             }
-        }
-    }
-
-    // Returns a read-only collection of CPU load measurements, or null if
-    // no results are available yet.
-    public static CpuLoadHistory getCpuLoad() {
-        rwLock.readLock().lock();
-        try {
-            return currentReading;
-        } finally {
-            rwLock.readLock().unlock();
         }
     }
 
@@ -182,7 +195,5 @@ public class CpuMonitor {
             return t;
         }
     }
-    
-    public static interface CpuListener {
-    }
+
 }

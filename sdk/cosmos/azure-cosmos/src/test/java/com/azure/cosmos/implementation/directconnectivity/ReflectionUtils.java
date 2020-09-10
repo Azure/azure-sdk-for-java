@@ -13,11 +13,14 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.cpu.CpuListener;
 import com.azure.cosmos.implementation.cpu.CpuMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -69,9 +72,12 @@ public class ReflectionUtils {
     @SuppressWarnings("unchecked")
     private static <R> R getStaticField(Class<?> classType, String fieldName) {
         try {
-            return (R) FieldUtils.readStaticField(classType, fieldName, true);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            Field field = classType.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return (R) field.get(null);
+        } catch (Exception e) {
+            RuntimeException runtimeException = Utils.as(e, RuntimeException.class);
+            if (runtimeException != null) throw runtimeException; else throw new RuntimeException(e);
         }
     }
 
@@ -159,7 +165,7 @@ public class ReflectionUtils {
         return getStaticField(CpuMonitor.class, "future");
     }
 
-    public static List<WeakReference<CpuMonitor.CpuListener>> getListeners() {
+    public static List<WeakReference<CpuListener>> getListeners() {
         return getStaticField(CpuMonitor.class, "cpuListeners");
     }
 }
