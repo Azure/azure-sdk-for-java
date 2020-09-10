@@ -4,15 +4,15 @@ languages:
   - java
 products:
   - azure
-  - azure-data-schemaregistry-avro
-urlFragment: schemaregistry-avro-samples
+  - azure-data-schemaregistry
+urlFragment: schemaregistry-samples
 ---
 
-# Azure Schema Registry serializer library samples for Java
+# Azure Schema Registry library samples for Java
 
-Azure Schema Registry Avro Serializer samples are a set of self-contained Java programs that demonstrate serialization 
-and deserialization of data for which the schema is stored in Schema Registry service. Each sample focuses on a 
-specific scenario and can be executed independently.
+Azure Schema Registry samples are a set of self-contained Java programs that demonstrate using the client library to
+register schemas with Azure Schema Registry service and read from it. Each sample focuses on a specific scenario and
+can be executed independently.
 
 ## Key concepts
 Key concepts are explained in detail [here][sdk_readme_key_concepts].
@@ -40,7 +40,8 @@ This project welcomes contributions and suggestions. See [Contributing][sdk_read
 [sdk_readme_troubleshooting]: ../../README.md#troubleshooting
 [sdk_readme_next_steps]: ../../README.md#next-steps
 [sdk_readme_contributing]: ../../README.md#contributing
-[sample_avro_serialization]: ./java/com/azure/data/schemaregistry/avro/SchemaRegistryAvroSerializationSample.java
-[sample_avro_deserialization]: ./java/com/azure/data/schemaregistry/avro/SchemaRegistryAvroSerializationSample.java
+[sample_register_schema]: ./java/com/azure/data/schemaregistry/RegisterSchemaSample.java
+[sample_get_schema]: ./java/com/azure/data/schemaregistry/GetSchemaSample.java
+[sample_get_schema_id]: ./java/com/azure/data/schemaregistry/GetSchemaIdSample.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%schemaregistry%2Fazure-data-schemaregistry-avro%2Fsrc%2Fsamples%2README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%schemaregistry%2Fazure-data-schemaregistry%2Fsrc%2Fsamples%2README.png)
