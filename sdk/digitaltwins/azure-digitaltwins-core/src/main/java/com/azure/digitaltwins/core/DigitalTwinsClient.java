@@ -745,6 +745,28 @@ public final class DigitalTwinsClient {
     }
 
     /**
+     * Delete an event route.
+     * @param eventRouteId The Id of the event route to delete.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteEventRoute(String eventRouteId)
+    {
+        deleteEventRouteWithResponse(eventRouteId, Context.NONE);
+    }
+
+    /**
+     * Delete an event route.
+     * @param eventRouteId The Id of the event route to delete.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing no parsed value.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteEventRouteWithResponse(String eventRouteId, Context context)
+    {
+        return this.digitalTwinsAsyncClient.deleteEventRouteWithResponse(eventRouteId, context).block();
+    }
+
+    /**
      * List all the event routes that exist in your digital twins instance.
      * @return A {@link PagedIterable} containing all the event routes that exist in your digital twins instance.
      * This PagedIterable may take multiple service requests to iterate over all event routes.
