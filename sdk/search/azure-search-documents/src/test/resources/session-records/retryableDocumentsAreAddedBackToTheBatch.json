@@ -3,8 +3,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.search.windows.net/indexes('index')//docs/search.index?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.1.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "bd125d12-bdab-477b-af30-3a6b25a8b038",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.2.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e7b26659-1ad2-4e85-ba50-3a5a4d2e93a4",
       "Content-Type" : "application/json"
     },
     "Response" : {
