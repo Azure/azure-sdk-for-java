@@ -352,9 +352,9 @@ public final class Utils {
         return flux.materialize()
             .flatMapSequential(signal -> {
                 if ((signal.isOnNext() ? 1 : 0) + (signal.isOnComplete() ? 1 : 0) + (signal.isOnError() ? 1 : 0) != 1) {
-                    return Mono.error(new ClientLogger(Utils.class).logExceptionAsError(new IllegalStateException(
+                    return Mono.error(new IllegalStateException(
                         "Unexpected signal type, signal could only be one of the onNext, onComplete, onError"
-                    )));
+                    ));
                 }
                 if (signal.isOnNext()) {
                     if (mapperOnNext != null) {
@@ -375,7 +375,7 @@ public final class Utils {
                 if (exception != null) {
                     return Mono.error(exception);
                 } else {
-                    return Mono.error(new ClientLogger(Utils.class).logExceptionAsError(new IllegalStateException()));
+                    return Mono.error(new IllegalStateException());
                 }
             });
     }
@@ -401,9 +401,9 @@ public final class Utils {
         return flux.materialize()
             .flatMapSequentialDelayError(signal -> {
                 if ((signal.isOnNext() ? 1 : 0) + (signal.isOnComplete() ? 1 : 0) + (signal.isOnError() ? 1 : 0) != 1) {
-                    return Mono.error(new ClientLogger(Utils.class).logExceptionAsError(new IllegalStateException(
+                    return Mono.error(new IllegalStateException(
                         "Unexpected signal type, signal could only be one of the onNext, onComplete, onError"
-                    )));
+                    ));
                 }
                 if (signal.isOnNext()) {
                     if (mapperOnNext != null) {
@@ -424,7 +424,7 @@ public final class Utils {
                 if (exception != null) {
                     return Mono.error(exception);
                 } else {
-                    return Mono.error(new ClientLogger(Utils.class).logExceptionAsError(new IllegalStateException()));
+                    return Mono.error(new IllegalStateException());
                 }
             }, maxConcurrency, prefetch);
     }
