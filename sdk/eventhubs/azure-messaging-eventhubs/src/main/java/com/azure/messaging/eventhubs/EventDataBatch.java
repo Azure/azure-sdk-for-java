@@ -208,6 +208,18 @@ public final class EventDataBatch {
         Objects.requireNonNull(eventData, "'eventData' cannot be null.");
 
         final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
+        if (isCreatedByIdempotentProducer) {
+            // Pre-allocate size for system properties "com.microsoft:producer-sequence-number".
+            // EventData doesn't have this system property until it's added just before an idempotent producer
+            // sends the EventData out.
+            final MessageAnnotations messageAnnotations = (amqpMessage.getMessageAnnotations() == null)
+                ? new MessageAnnotations(new HashMap<>())
+                : amqpMessage.getMessageAnnotations();
+            amqpMessage.setMessageAnnotations(messageAnnotations);
+            messageAnnotations.getValue().put(
+                Symbol.getSymbol(
+                    AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), Integer.MAX_VALUE);
+        }
         int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
         eventSize += 16; // data section overhead
 
@@ -218,10 +230,7 @@ public final class EventDataBatch {
             amqpMessage.setDeliveryAnnotations(null);
 
             eventSize += amqpMessage.encode(this.eventBytes, 0, maxMessageSize);
-        } else if (this.isCreatedByIdempotentProducer) {
-            eventSize += 20; // TODO: to test the overhead size of idempotent producer. Should be over 20.
         }
-
         return eventSize;
     }
 
@@ -284,6 +293,13 @@ public final class EventDataBatch {
                             break;
                         case REPLY_TO_GROUP_ID:
                             message.setReplyToGroupId((String) value);
+                            break;
+                        case PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME:
+                            final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
+                                ? new MessageAnnotations(new HashMap<>())
+                                : message.getMessageAnnotations();
+                            messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
+                            message.setMessageAnnotations(messageAnnotations);
                             break;
                         default:
                             throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
