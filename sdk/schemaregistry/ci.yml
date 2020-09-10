@@ -9,6 +9,7 @@ trigger:
     include:
       - sdk/schemaregistry/
 
+
 pr:
   branches:
     include:
