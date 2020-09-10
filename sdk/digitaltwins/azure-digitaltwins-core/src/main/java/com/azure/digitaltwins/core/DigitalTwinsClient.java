@@ -779,8 +779,8 @@ public final class DigitalTwinsClient {
      * @param payload The application/json telemetry payload to be sent.
      */
     public void publishTelemetry(String digitalTwinId, String payload) {
-        TelemetryOptions telemetryOptions = new TelemetryOptions();
-        publishTelemetry(digitalTwinId, payload, telemetryOptions);
+        PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
+        publishTelemetry(digitalTwinId, payload, publishTelemetryRequestOptions);
     }
 
     /**
@@ -789,10 +789,10 @@ public final class DigitalTwinsClient {
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
      * @param payload The application/json telemetry payload to be sent.
-     * @param telemetryOptions The additional information to be used when processing a telemetry request.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
      */
-    public void publishTelemetry(String digitalTwinId, String payload, TelemetryOptions telemetryOptions) {
-        publishTelemetryWithResponse(digitalTwinId, payload, telemetryOptions, Context.NONE);
+    public void publishTelemetry(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
+        publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, Context.NONE);
     }
 
     /**
@@ -801,12 +801,12 @@ public final class DigitalTwinsClient {
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
      * @param payload The application/json telemetry payload to be sent.
-     * @param telemetryOptions The additional information to be used when processing a telemetry request.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response}.
      */
-    public Response<Void> publishTelemetryWithResponse(String digitalTwinId, String payload, TelemetryOptions telemetryOptions, Context context) {
-        return digitalTwinsAsyncClient.publishTelemetryWithResponse(digitalTwinId, payload, telemetryOptions, context).block();
+    public Response<Void> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+        return digitalTwinsAsyncClient.publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context).block();
     }
 
     /**
@@ -818,8 +818,8 @@ public final class DigitalTwinsClient {
      * @param payload The application/json telemetry payload to be sent.
      */
     public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
-        TelemetryOptions telemetryOptions = new TelemetryOptions();
-        publishComponentTelemetry(digitalTwinId, componentName, payload, telemetryOptions);
+        PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
+        publishComponentTelemetry(digitalTwinId, componentName, payload, publishTelemetryRequestOptions);
     }
 
     /**
@@ -829,10 +829,10 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the digital twin.
      * @param componentName The name of the DTDL component.
      * @param payload The application/json telemetry payload to be sent.
-     * @param telemetryOptions The additional information to be used when processing a telemetry request.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
      */
-    public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload, TelemetryOptions telemetryOptions) {
-        publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, telemetryOptions, Context.NONE);
+    public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
+        publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, Context.NONE);
     }
 
     /**
@@ -842,12 +842,12 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the digital twin.
      * @param componentName The name of the DTDL component.
      * @param payload The application/json telemetry payload to be sent.
-     * @param telemetryOptions The additional information to be used when processing a telemetry request.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response}.
      */
-    public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, TelemetryOptions telemetryOptions, Context context) {
-        return digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, telemetryOptions, context).block();
+    public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+        return digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context).block();
     }
 
     //endregion TelemetryAPIs
