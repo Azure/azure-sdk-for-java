@@ -141,7 +141,7 @@ public final class ModelData {
      *
      * @return the decommissioned value.
      */
-    public Boolean isDecommissioned() {
+    public boolean isDecommissioned() {
         return this.decommissioned;
     }
 
@@ -152,7 +152,7 @@ public final class ModelData {
      * @param decommissioned the decommissioned value to set.
      * @return the ModelData object itself.
      */
-    public ModelData setDecommissioned(Boolean decommissioned) {
+    public ModelData setDecommissioned(boolean decommissioned) {
         this.decommissioned = decommissioned;
         return this;
     }
