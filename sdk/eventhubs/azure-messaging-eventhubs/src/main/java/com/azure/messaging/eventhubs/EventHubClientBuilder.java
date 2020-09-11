@@ -659,5 +659,4 @@ public class EventHubClientBuilder {
                 coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
         }
     }
-
 }

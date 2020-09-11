@@ -235,7 +235,7 @@ class ServiceBusSenderAsyncClientTest {
         int batchSize = 1024;
 
         // Overhead when serializing an event, to figure out what the maximum size we can use for an event payload.
-        int eventOverhead = 46;
+        int eventOverhead = 75;
         int maxEventPayload = batchSize - eventOverhead;
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
