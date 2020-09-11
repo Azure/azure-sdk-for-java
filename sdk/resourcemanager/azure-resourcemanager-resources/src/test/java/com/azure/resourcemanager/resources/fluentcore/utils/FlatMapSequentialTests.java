@@ -99,4 +99,17 @@ public class FlatMapSequentialTests {
         //     .expectNext(1, 3, 7)
         //     .verifyErrorMessage("Test");
     }
+
+    @Test
+    public void testMergeOrdered() {
+        StepVerifier.create(
+            Flux.mergeOrdered(
+                Flux.just(1, 5),
+                Flux.just(4, 3),
+                Flux.just(2).mergeWith(Flux.error(new RuntimeException("Test")))
+            )
+        )
+            .expectNext(1, 2, 4, 3, 5)
+            .verifyErrorMessage("Test");
+    }
 }
