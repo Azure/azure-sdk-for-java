@@ -755,6 +755,49 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Verifies that it errors when we try a null lock token.
+     */
+    @Test
+    void autoRenewMessageLockErrorNull() {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final Duration renewalPeriod = Duration.ofSeconds(3);
+
+        when(receivedMessage.getLockToken()).thenReturn(null);
+        when(managementNode.renewMessageLock(anyString(), isNull()))
+            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+
+        // Act & Assert
+        StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
+            .expectError(NullPointerException.class)
+            .verify();
+
+        verify(managementNode, never()).renewMessageLock(anyString(), isNull());
+    }
+
+    /**
+     * Verifies that it errors when we try an empty string lock token.
+     */
+    @Test
+    void autoRenewMessageLockErrorEmptyString() {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final Duration renewalPeriod = Duration.ofSeconds(3);
+        final String lockToken = "";
+
+        when(receivedMessage.getLockToken()).thenReturn("");
+        when(managementNode.renewMessageLock(anyString(), isNull()))
+            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+
+        // Act & Assert
+        StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
+            .expectError(IllegalArgumentException.class)
+            .verify();
+
+        verify(managementNode, never()).renewMessageLock(anyString(), isNull());
+    }
+
+    /**
      * Verifies that we can auto-renew a session lock.
      */
     @Test
@@ -779,6 +822,47 @@ class ServiceBusReceiverAsyncClientTest {
             .verify(Duration.ofSeconds(5));
 
         verify(managementNode, Mockito.atMost(atMost)).renewSessionLock(sessionId, null);
+    }
+
+    /**
+     * Verifies that it errors when we try a null lock token.
+     */
+    @Test
+    void autoRenewSessionLockErrorNull() {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final Duration renewalPeriod = Duration.ofSeconds(3);
+
+        when(managementNode.renewSessionLock(anyString(), isNull()))
+            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+
+        // Act & Assert
+        StepVerifier.create(sessionReceiver.renewSessionLock(null, maxDuration))
+            .expectError(NullPointerException.class)
+            .verify();
+
+        verify(managementNode, never()).renewSessionLock(anyString(), isNull());
+    }
+
+    /**
+     * Verifies that it errors when we try an empty string session id
+     */
+    @Test
+    void autoRenewSessionLockErrorEmptyString() {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final Duration renewalPeriod = Duration.ofSeconds(3);
+        final String sessionId = "";
+
+        when(managementNode.renewSessionLock(anyString(), isNull()))
+            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+
+        // Act & Assert
+        StepVerifier.create(sessionReceiver.renewSessionLock(sessionId, maxDuration))
+            .expectError(IllegalArgumentException.class)
+            .verify();
+
+        verify(managementNode, never()).renewSessionLock(anyString(), isNull());
     }
 
     private List<Message> getMessages() {
