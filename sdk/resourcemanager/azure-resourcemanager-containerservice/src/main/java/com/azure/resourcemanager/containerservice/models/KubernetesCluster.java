@@ -5,6 +5,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -21,8 +22,7 @@ import java.util.Map;
 public interface KubernetesCluster
     extends GroupableResource<ContainerServiceManager, ManagedClusterInner>,
         Refreshable<KubernetesCluster>,
-        Updatable<KubernetesCluster.Update>,
-        OrchestratorServiceBase {
+        Updatable<KubernetesCluster.Update> {
 
     /** @return the provisioning state of the Kubernetes cluster */
     String provisioningState();
@@ -34,7 +34,7 @@ public interface KubernetesCluster
     String fqdn();
 
     /** @return the Kubernetes version */
-    KubernetesVersion version();
+    String version();
 
     /** @return the Kubernetes configuration file content with administrative privileges to the cluster */
     byte[] adminKubeConfigContent();
@@ -107,16 +107,7 @@ public interface KubernetesCluster
         interface WithVersion {
             /**
              * Specifies the version for the Kubernetes cluster.
-             *
-             * @deprecated use {@link #withVersion(String)} or {@link #withLatestVersion}
-             * @param kubernetesVersion the kubernetes version
-             * @return the next stage of the definition
-             */
-            @Deprecated
-            WithLinuxRootUsername withVersion(KubernetesVersion kubernetesVersion);
-
-            /**
-             * Specifies the version for the Kubernetes cluster.
+             * Could retrieve from {@link KubernetesClusters#listKubernetesVersions(Region)}
              *
              * @param kubernetesVersion the kubernetes version
              * @return the next stage of the definition

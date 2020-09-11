@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.containerservice.implementation;
 
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
+import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshConfiguration;
@@ -10,11 +11,9 @@ import com.azure.resourcemanager.containerservice.models.ContainerServiceSshPubl
 import com.azure.resourcemanager.containerservice.models.CredentialResult;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
-import com.azure.resourcemanager.containerservice.models.KubernetesVersion;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
-import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -60,8 +59,8 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public KubernetesVersion version() {
-        return KubernetesVersion.fromString(this.inner().kubernetesVersion());
+    public String version() {
+        return this.inner().kubernetesVersion();
     }
 
     @Override
@@ -231,12 +230,6 @@ public class KubernetesClusterImpl
                                 self.setInner(inner);
                                 return self;
                             }));
-    }
-
-    @Override
-    public KubernetesClusterImpl withVersion(KubernetesVersion kubernetesVersion) {
-        this.inner().withKubernetesVersion(kubernetesVersion.toString());
-        return this;
     }
 
     @Override
