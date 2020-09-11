@@ -717,7 +717,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void cannotRenewMessageLockInSession() {
         // Arrange
-        when(receivedMessage.getLockToken()).thenReturn(null);
+        when(receivedMessage.getLockToken()).thenReturn("lock-token");
         when(receivedMessage.getSessionId()).thenReturn("fo");
 
         // Act & Assert
