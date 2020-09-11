@@ -6,7 +6,7 @@ package com.microsoft.azure.spring.autoconfigure.aad;
 /**
  * Refs: https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens
  */
-public class AccessTokenClaims {
+public class AccessTokenClaim {
 
     /**
      * Provides a human-readable value that identifies the subject of the token. The value is not guaranteed to be
