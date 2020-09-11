@@ -292,17 +292,22 @@ public final class UrlBuilder {
     }
 
     /**
-     * Parse a UrlBuilder from the provided URL string.
+     * Parses the passed {@code url} string into a UrlBuilder.
      *
-     * @param url The string to parse.
-     * @return The UrlBuilder that was parsed from the string.
+     * @param url The URL string to parse.
+     * @return The UrlBuilder that was created from parsing the passed URL string.
      */
     public static UrlBuilder parse(String url) {
-        // to save parsing every time, we retain a parsed version in memory. We can't give this back to the caller
-        // however as the caller is free to add query string params. Because of this, we clone the parsed UrlBuilder
-        // instance returning one with a clean query string.
-        return PARSED_URLS.computeIfAbsent(url, u -> new UrlBuilder().with(u, UrlTokenizerState.SCHEME_OR_HOST))
-            .copy();
+        /*
+         * Parsing the URL string into a UrlBuilder is a non-trivial operation and many calls into RestProxy will use
+         * the same root URL string. To save CPU costs we retain a parsed version of the URL string in memory. Given
+         * that UrlBuilder is mutable we must return a cloned version of the cached UrlBuilder.
+         */
+        // ConcurrentHashMap doesn't allow for null keys, coerce it into an empty string.
+        String concurrentSafeUrl = (url == null) ? "" : url;
+
+        return PARSED_URLS.computeIfAbsent(concurrentSafeUrl, u ->
+            new UrlBuilder().with(u, UrlTokenizerState.SCHEME_OR_HOST)).copy();
     }
 
     /**
