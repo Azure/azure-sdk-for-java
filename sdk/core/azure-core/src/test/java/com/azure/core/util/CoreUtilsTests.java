@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.policy.HttpLogOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -74,20 +73,6 @@ public class CoreUtilsTests {
     @MethodSource("bomAwareToStringSupplier")
     public void bomAwareToString(byte[] bytes, String contentType, String expected) {
         assertEquals(expected, CoreUtils.bomAwareToString(bytes, contentType));
-    }
-
-    @ParameterizedTest
-    @MethodSource
-    public void testValidApplicationId(String logOptionsId, String clientOptionsId, String expected) {
-        HttpLogOptions logOptions = new HttpLogOptions().setApplicationId(logOptionsId);
-        ClientOptions clientOptions = new ClientOptions();
-
-        if (clientOptionsId !=  null) {
-            clientOptions.setApplicationId(clientOptionsId);
-        }
-
-        String actual = CoreUtils.getApplicationId(logOptions, clientOptions);
-        Assertions.assertEquals(expected, actual);
     }
 
     private static Stream<Arguments> bomAwareToStringSupplier() {

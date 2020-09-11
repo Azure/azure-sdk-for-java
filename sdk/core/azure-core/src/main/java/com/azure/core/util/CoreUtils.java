@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
@@ -249,29 +248,5 @@ public final class CoreUtils {
                 return new String(bytes, StandardCharsets.UTF_8);
             }
         }
-    }
-
-    /**
-     * Prioritize {@code applicationId} set in ClientOptions over {@link HttpLogOptions}.
-     *
-     * @param logOptions provided {@link HttpLogOptions}.
-     * @param clientOptions provided {@link ClientOptions}.
-     * @return applicationId based on rule explained above.
-     *
-     */
-    public static String getApplicationId(HttpLogOptions logOptions, ClientOptions clientOptions) {
-
-        String clientApplicationId = null;
-
-        // We prioritize application id sent in ClientOptions.
-        if (clientOptions != null) {
-            clientApplicationId = clientOptions.getApplicationId();
-        }
-
-        if (clientApplicationId == null && logOptions != null) {
-            clientApplicationId = logOptions.getApplicationId();
-        }
-
-        return clientApplicationId;
     }
 }
