@@ -524,19 +524,18 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Renews the lock on the specified message.the lock on the specified message. The lock will be renewed based on the
-     * setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is
-     * locked on the server for this receiver instance for a duration as specified during the Queue creation
-     * (LockDuration). If processing of the message requires longer than this duration, the lock needs to be renewed.
-     * For each renewal, the lock is reset to the entity's LockDuration value.
+     * Renews the lock on the specified message. The lock will be renewed based on the setting specified on the entity.
+     * When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is locked on the server for this
+     * receiver instance for a duration as specified during the Queue creation (LockDuration). If processing of the
+     * message requires longer than this duration, the lock needs to be renewed. For each renewal, the lock is reset to
+     * the entity's LockDuration value.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform lock renewal.
      *
      * @return The new expiration time for the message.
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @throws IllegalStateException if the receiver is a session receiver.
      */
     public OffsetDateTime renewMessageLock(ServiceBusReceivedMessage message) {
@@ -550,8 +549,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
      * @param onError A function to call when an error occurs during lock renewal.
      *
-     * @throws NullPointerException if {@code lockToken} or {@code maxLockRenewalDuration} is null.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty string.
+     * @throws NullPointerException if {@code message} or {@code maxLockRenewalDuration} is null.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      */
     public void renewMessageLock(ServiceBusReceivedMessage message, Duration maxLockRenewalDuration,
@@ -563,7 +561,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         asyncClient.renewMessageLock(message, maxLockRenewalDuration).subscribe(
             v -> logger.verbose("Completed renewing lock token: '{}'", lockToken),
-            throwableConsumer);
+            throwableConsumer,
+            () -> logger.verbose("Auto message lock renewal operation completed: {}", lockToken));
     }
 
     /**
@@ -572,6 +571,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Identifier of session to get.
      *
      * @return The next expiration time for the session lock.
+     * @throws NullPointerException if {@code sessionId} is null.
+     * @throws IllegalArgumentException if {@code sessionId} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
     public OffsetDateTime renewSessionLock(String sessionId) {
@@ -579,10 +580,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Starts the auto lock renewal for a session with the given lock.
+     * Starts the auto lock renewal for a session id.
      *
      * @param sessionId Id for the session to renew.
-     * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
+     * @param maxLockRenewalDuration Maximum duration to keep renewing the session.
      * @param onError A function to call when an error occurs during lock renewal.
      *
      * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
@@ -596,7 +597,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         asyncClient.renewSessionLock(sessionId, maxLockRenewalDuration).subscribe(
             v -> logger.verbose("Completed renewing session: '{}'", sessionId),
-            throwableConsumer);
+            throwableConsumer,
+            () -> logger.verbose("Auto session lock renewal operation completed: {}", sessionId));
     }
 
     /**
