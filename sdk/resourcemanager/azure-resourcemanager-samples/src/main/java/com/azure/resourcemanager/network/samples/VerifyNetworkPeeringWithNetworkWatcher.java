@@ -18,7 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.ArrayList;
@@ -181,11 +181,6 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
             System.out.println("Connectivity from B to A: " + connectivityBtoA.execute().connectionStatus());
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + resourceGroupName);
@@ -196,7 +191,6 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

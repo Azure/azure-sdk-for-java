@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.compute;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
@@ -12,42 +11,22 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.msi.MSIManager;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.ResourceManager;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
+public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManagementTest {
     private String rgName = "";
     private Region region = Region.fromName("West Central US");
     private final String vmssName = "javavmss";
-
-    private ComputeManager computeManager;
-    private MSIManager msiManager;
-    private ResourceManager resourceManager;
-    private NetworkManager networkManager;
-
-    @Override
-    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile)
-        throws IOException {
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
-        this.resourceManager = msiManager.resourceManager();
-        this.computeManager = ComputeManager.authenticate(httpPipeline, profile, sdkContext);
-        this.networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
-    }
 
     @Override
     protected void cleanUpResources() {
@@ -569,69 +548,6 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
         Assertions.assertTrue(virtualMachineScaleSet.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
-    }
-
-    private LoadBalancer createInternalLoadBalancer(
-        Region region, ResourceGroup resourceGroup, Network network, String id) throws Exception {
-        final String loadBalancerName = generateRandomResourceName("InternalLb" + id + "-", 18);
-        final String privateFrontEndName = loadBalancerName + "-FE1";
-        final String backendPoolName1 = loadBalancerName + "-BAP1";
-        final String backendPoolName2 = loadBalancerName + "-BAP2";
-        final String natPoolName1 = loadBalancerName + "-INP1";
-        final String natPoolName2 = loadBalancerName + "-INP2";
-        final String subnetName = "subnet1";
-
-        LoadBalancer loadBalancer =
-            this
-                .networkManager
-                .loadBalancers()
-                .define(loadBalancerName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                // Add two rules that uses above backend and probe
-                .defineLoadBalancingRule("httpRule")
-                .withProtocol(TransportProtocol.TCP)
-                .fromFrontend(privateFrontEndName)
-                .fromFrontendPort(1000)
-                .toBackend(backendPoolName1)
-                .withProbe("httpProbe")
-                .attach()
-                .defineLoadBalancingRule("httpsRule")
-                .withProtocol(TransportProtocol.TCP)
-                .fromFrontend(privateFrontEndName)
-                .fromFrontendPort(1001)
-                .toBackend(backendPoolName2)
-                .withProbe("httpsProbe")
-                .attach()
-
-                // Add two NAT pools to enable direct VM connectivity to port 44 and 45
-                .defineInboundNatPool(natPoolName1)
-                .withProtocol(TransportProtocol.TCP)
-                .fromFrontend(privateFrontEndName)
-                .fromFrontendPortRange(8000, 8099)
-                .toBackendPort(44)
-                .attach()
-                .defineInboundNatPool(natPoolName2)
-                .withProtocol(TransportProtocol.TCP)
-                .fromFrontend(privateFrontEndName)
-                .fromFrontendPortRange(9000, 9099)
-                .toBackendPort(45)
-                .attach()
-
-                // Explicitly define the frontend
-                .definePrivateFrontend(privateFrontEndName)
-                .withExistingSubnet(network, subnetName) // Frontend with VNET means internal load-balancer
-                .attach()
-
-                // Add two probes one per rule
-                .defineHttpProbe("httpProbe")
-                .withRequestPath("/")
-                .attach()
-                .defineHttpProbe("httpsProbe")
-                .withRequestPath("/")
-                .attach()
-                .create();
-        return loadBalancer;
     }
 
     private Mono<RoleAssignment> lookupRoleAssignmentUsingScopeAndRoleAsync(

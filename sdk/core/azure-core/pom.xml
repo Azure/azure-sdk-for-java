@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -200,22 +200,25 @@
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
-                <!-- JUnit5 and Mockito use reflection to create objects. -->
+                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+
                 --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.models.spatial=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
+                --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
 
-                <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
-                --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
-                --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
+                --add-reads com.azure.core=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

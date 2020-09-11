@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.HubIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.inner.ListVirtualHubIpConfigurationResultsInner;
 import java.nio.ByteBuffer;

@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Strategy used to handle a failed authentication attempt.
@@ -26,33 +27,37 @@ public class AADAuthenticationFailureHandler implements AuthenticationFailureHan
     private AuthenticationFailureHandler defaultHandler;
 
     public AADAuthenticationFailureHandler() {
-        this.defaultHandler = new SimpleUrlAuthenticationFailureHandler(AADConstantsHelper.FAILURE_DEFAULT_URL);
+        this.defaultHandler = new SimpleUrlAuthenticationFailureHandler(Constants.FAILURE_DEFAULT_URL);
     }
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+    public void onAuthenticationFailure(HttpServletRequest request,
+                                        HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
         final OAuth2AuthenticationException targetException = (OAuth2AuthenticationException) exception;
-        //handle conditional access policy
-        if (AADConstantsHelper.CONDITIONAL_ACCESS_POLICY.equals((targetException.getError().getErrorCode()))) {
-            //get infos
+        // Handle conditional access policy
+        if (Constants.CONDITIONAL_ACCESS_POLICY.equals((targetException.getError().getErrorCode()))) {
+            // Get infos
             final Throwable cause = targetException.getCause();
             if (cause instanceof MsalServiceException) {
-                final MsalServiceException e = (MsalServiceException) cause;
-                final String claims = e.claims();
-
-                final DefaultSavedRequest savedRequest = (DefaultSavedRequest) request.getSession()
-                        .getAttribute(AADConstantsHelper.SAVED_REQUEST);
-                final String savedRequestUrl = savedRequest.getRedirectUrl();
-                //put claims into session
-                request.getSession().setAttribute(AADConstantsHelper.CAP_CLAIMS, claims);
-                //redirect
+                // Put claims into session
+                Optional.of(cause)
+                        .map(c -> (MsalServiceException) c)
+                        .map(MsalServiceException::claims)
+                        .ifPresent(claims -> request.getSession().setAttribute(Constants.CAP_CLAIMS, claims));
+                // Redirect
+                String redirectUrl = Optional.of(request)
+                        .map(HttpServletRequest::getSession)
+                        .map(s -> s.getAttribute(Constants.SAVED_REQUEST))
+                        .map(r -> (DefaultSavedRequest) r)
+                        .map(DefaultSavedRequest::getRedirectUrl)
+                        .orElse(null);
+                response.sendRedirect(redirectUrl);
                 response.setStatus(302);
-                response.sendRedirect(savedRequestUrl);
                 return;
             }
         }
-        //default handle logic
+        // Default handle logic
         defaultHandler.onAuthenticationFailure(request, response, exception);
     }
 }

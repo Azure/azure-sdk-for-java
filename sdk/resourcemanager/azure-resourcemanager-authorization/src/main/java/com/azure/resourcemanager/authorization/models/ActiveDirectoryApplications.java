@@ -13,12 +13,14 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingByFilter;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point to application management API. */
 @Fluent
 public interface ActiveDirectoryApplications
     extends SupportsListing<ActiveDirectoryApplication>,
+        SupportsListingByFilter<ActiveDirectoryApplication>,
         SupportsGettingById<ActiveDirectoryApplication>,
         SupportsGettingByName<ActiveDirectoryApplication>,
         SupportsCreating<ActiveDirectoryApplication.DefinitionStages.Blank>,

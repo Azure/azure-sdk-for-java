@@ -248,6 +248,35 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void deleteDocumentUsingEntity(String documentId) throws InterruptedException {
+        InternalObjectNode docDefinition = getDocumentDefinition(documentId);
+
+        CosmosItemResponse<InternalObjectNode> documentResponse = container.createItem(docDefinition,
+            new CosmosItemRequestOptions()).block();
+
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        Mono<CosmosItemResponse<Object>> deleteObservable = container.deleteItem(documentResponse.getItem(), options);
+
+        CosmosItemResponseValidator validator =
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
+                .nullResource()
+                .build();
+        this.validateItemSuccess(deleteObservable, validator);
+
+        // attempt to read document which was deleted
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
+
+        Mono<CosmosItemResponse<InternalObjectNode>> readObservable = container.readItem(documentId,
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
+            options, InternalObjectNode.class);
+        FailureValidator notFoundValidator = new FailureValidator.Builder()
+            .resourceNotFound()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
+        validateItemFailure(readObservable, notFoundValidator);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void deleteDocument_undefinedPK(String documentId) throws InterruptedException {
         InternalObjectNode docDefinition = new InternalObjectNode();
         docDefinition.setId(documentId);

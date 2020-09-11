@@ -12,11 +12,12 @@ import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
@@ -40,7 +41,7 @@ public final class ManageFunctionAppSourceControl {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws GitAPIException {
         // New resources
         final String suffix         = ".azurewebsites.net";
         final String app1Name       = azure.sdkContext().randomResourceName("webapp1-", 20);
@@ -243,9 +244,6 @@ public final class ManageFunctionAppSourceControl {
             System.out.println("Square of 926 is " + Utils.post("http://" + app6Url + "/api/square", "926"));
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -257,7 +255,6 @@ public final class ManageFunctionAppSourceControl {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

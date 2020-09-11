@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -13,12 +12,10 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure Spring App. */
 @Fluent
-@Beta
 public interface SpringApp
     extends ExternalChildResource<SpringApp, SpringService>,
         HasInner<AppResourceInner>,
@@ -48,10 +45,19 @@ public interface SpringApp
     OffsetDateTime createdTime();
 
     /** @return the active deployment name */
-    String activeDeployment();
+    String activeDeploymentName();
 
-    /** @return the entry point of the spring app deployment */
-    SpringAppDeployments deployments();
+    /** @return the active deployment */
+    SpringAppDeployment getActiveDeployment();
+
+    /** @return the active deployment */
+    Mono<SpringAppDeployment> getActiveDeploymentAsync();
+
+    /**
+     * @param <T> derived type of {@link SpringAppDeployment.DefinitionStages.WithCreate}
+     * @return the entry point of the spring app deployment
+     */
+    <T extends SpringAppDeployment.DefinitionStages.WithCreate<T>> SpringAppDeployments<T> deployments();
 
     /** @return the entry point of the spring app service binding */
     SpringAppServiceBindings serviceBindings();
@@ -67,12 +73,34 @@ public interface SpringApp
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
-        extends DefinitionStages.Blank { }
+        extends DefinitionStages.Blank,
+            DefinitionStages.WithCreate { }
 
     /** Grouping of all the spring app definition stages. */
     interface DefinitionStages {
         /** The first stage of the spring app definition. */
-        interface Blank extends WithCreate { }
+        interface Blank extends WithDeployment { }
+
+        /**
+         * The stage of a spring app definition allowing to specify an active deployment.
+         */
+        interface WithDeployment {
+            /**
+             * Deploys a default package for the spring app with default scale.
+             * @return the next stage of spring app definition
+             */
+            WithCreate withDefaultActiveDeployment();
+
+            /**
+             * Starts the definition of the active deployment for the spring app.
+             * @param name the name of the deployment
+             * @param <T> derived type of {@link SpringAppDeployment.DefinitionStages.WithAttach}
+             * @return the first stage of spring app deployment definition
+             */
+            <T extends SpringAppDeployment.DefinitionStages.WithAttach
+                <? extends SpringApp.DefinitionStages.WithCreate, T>>
+                SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name);
+        }
 
         /** The stage of a spring app definition allowing to specify the endpoint. */
         interface WithEndpoint {
@@ -121,29 +149,6 @@ public interface SpringApp
              * @return the next stage of spring app definition
              */
             WithCreate withPersistentDisk(int sizeInGB, String mountPath);
-        }
-
-        /**
-         * The stage of a spring app definition allowing to specify an simple active deployment.
-         * for more operations, use {@link #deployments()}
-         */
-        interface WithDeployment {
-            /**
-             * Deploys the jar package for the spring app with default scale.
-             * @param name the name of the deployment
-             * @param jarFile the file of the jar
-             * @return the next stage of spring app definition
-             */
-            WithCreate deployJar(String name, File jarFile);
-
-            /**
-             * Deploys the source code for the spring app with default scale.
-             * @param name the name of the deployment
-             * @param sourceCodeFolder the source code folder
-             * @param targetModule the target module of the source code
-             * @return the next stage of spring app definition
-             */
-            WithCreate deploySource(String name, File sourceCodeFolder, String targetModule);
         }
 
         /** The stage of a spring app update allowing to specify the service binding. */
@@ -246,24 +251,12 @@ public interface SpringApp
             Update withTemporaryDisk(int sizeInGB, String mountPath);
 
             /**
-             * Removes the temporary disk for the spring app.
-             * @return the next stage of spring app update
-             */
-            Update withoutTemporaryDisk();
-
-            /**
              * Specifies the persistent disk for the spring app.
              * @param sizeInGB the size of the disk
              * @param mountPath the mount path of the disk
              * @return the next stage of spring app update
              */
             Update withPersistentDisk(int sizeInGB, String mountPath);
-
-            /**
-             * Removes the persistent disk for the spring app.
-             * @return the next stage of spring app update
-             */
-            Update withoutPersistentDisk();
         }
 
         /**
@@ -272,35 +265,11 @@ public interface SpringApp
          */
         interface WithDeployment {
             /**
-             * Deploys the jar package for the spring app with default scale.
-             * @param name the name of the deployment
-             * @param jarFile the file of the jar
-             * @return the next stage of spring app update
-             */
-            Update deployJar(String name, File jarFile);
-
-            /**
-             * Deploys the source code for the spring app with default scale.
-             * @param name the name of the deployment
-             * @param sourceCodeFolder the source code folder
-             * @param targetModule the target module of the source code
-             * @return the next stage of spring app update
-             */
-            Update deploySource(String name, File sourceCodeFolder, String targetModule);
-
-            /**
              * Specifies active deployment for the spring app.
              * @param name the name of the deployment
              * @return the next stage of spring app update
              */
             Update withActiveDeployment(String name);
-
-            /**
-             * Removes a deployment for the spring app.
-             * @param name the name of the deployment
-             * @return the next stage of spring app update
-             */
-            Update withoutDeployment(String name);
         }
 
         /** The stage of a spring app update allowing to specify the service binding. */

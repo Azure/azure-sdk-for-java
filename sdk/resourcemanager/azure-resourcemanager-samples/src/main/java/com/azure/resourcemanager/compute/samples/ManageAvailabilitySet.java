@@ -17,7 +17,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 /**
@@ -171,11 +171,6 @@ public final class ManageAvailabilitySet {
 
             System.out.println("Deleted availability set: " + availSet2.id());
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -188,7 +183,6 @@ public final class ManageAvailabilitySet {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

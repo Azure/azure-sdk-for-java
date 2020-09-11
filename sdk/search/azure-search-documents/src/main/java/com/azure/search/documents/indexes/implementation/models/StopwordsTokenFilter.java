@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.StopwordsList;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -48,9 +49,13 @@ public class StopwordsTokenFilter extends TokenFilter {
     @JsonProperty(value = "removeTrailing")
     private Boolean removeTrailingStopWords;
 
-    /** Creates an instance of StopwordsTokenFilter class. */
+    /**
+     * Creates an instance of StopwordsTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public StopwordsTokenFilter(@JsonProperty(value = "name") String name) {
+    public StopwordsTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -140,15 +145,5 @@ public class StopwordsTokenFilter extends TokenFilter {
     public StopwordsTokenFilter setRemoveTrailingStopWords(Boolean removeTrailingStopWords) {
         this.removeTrailingStopWords = removeTrailingStopWords;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

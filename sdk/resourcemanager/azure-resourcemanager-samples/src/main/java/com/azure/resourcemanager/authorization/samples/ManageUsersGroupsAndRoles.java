@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
@@ -70,7 +70,7 @@ public final class ManageUsersGroupsAndRoles {
                     .define(raName1)
                     .forUser(user)
                     .withBuiltInRole(BuiltInRole.READER)
-                    .withSubscriptionScope(profile.subscriptionId())
+                    .withSubscriptionScope(profile.getSubscriptionId())
                     .create();
             System.out.println("Created Role Assignment:");
             Utils.print(roleAssignment1);
@@ -85,7 +85,7 @@ public final class ManageUsersGroupsAndRoles {
             // Get role by scope and role name
 
             RoleDefinition roleDefinition = authenticated.roleDefinitions()
-                    .getByScopeAndRoleName("subscriptions/" + profile.subscriptionId(), "Contributor");
+                    .getByScopeAndRoleName("subscriptions/" + profile.getSubscriptionId(), "Contributor");
             Utils.print(roleDefinition);
 
             // ============================================================
@@ -107,7 +107,7 @@ public final class ManageUsersGroupsAndRoles {
                     .define(raName2)
                     .forServicePrincipal(sp)
                     .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-                    .withSubscriptionScope(profile.subscriptionId())
+                    .withSubscriptionScope(profile.getSubscriptionId())
                     .create();
             System.out.println("Created Role Assignment:");
             Utils.print(roleAssignment2);
@@ -143,9 +143,6 @@ public final class ManageUsersGroupsAndRoles {
             Utils.print(group2);
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Service Principal: " + spName);
@@ -155,7 +152,6 @@ public final class ManageUsersGroupsAndRoles {
                 System.out.println("Did not create Service Principal in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

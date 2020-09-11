@@ -156,7 +156,6 @@ public class ConnectionHandler extends Handler {
 
         if (connection != null) {
             notifyErrorContext(connection, condition);
-            onNext(connection.getRemoteState());
         }
 
         // onTransportError event is not handled by the global IO Handler for cleanup
@@ -176,7 +175,6 @@ public class ConnectionHandler extends Handler {
 
         if (connection != null) {
             notifyErrorContext(connection, condition);
-            onNext(connection.getRemoteState());
         }
     }
 
@@ -212,8 +210,6 @@ public class ConnectionHandler extends Handler {
                 transport.unbind(); // we proactively dispose IO even if service fails to close
             }
         }
-
-        onNext(connection.getRemoteState());
     }
 
     @Override
@@ -222,9 +218,11 @@ public class ConnectionHandler extends Handler {
         final ErrorCondition error = connection.getRemoteCondition();
 
         logErrorCondition("onConnectionRemoteClose", connection, error);
-
-        onNext(connection.getRemoteState());
-        notifyErrorContext(connection, error);
+        if (error == null) {
+            onNext(connection.getRemoteState());
+        } else {
+            notifyErrorContext(connection, error);
+        }
     }
 
     @Override
@@ -266,7 +264,7 @@ public class ConnectionHandler extends Handler {
         final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
             condition.getDescription(), getErrorContext());
 
-        onNext(exception);
+        onError(exception);
     }
 
     private void logErrorCondition(String eventName, Connection connection, ErrorCondition error) {

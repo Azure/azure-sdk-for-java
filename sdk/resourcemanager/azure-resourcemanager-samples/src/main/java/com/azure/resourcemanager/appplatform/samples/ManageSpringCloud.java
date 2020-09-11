@@ -21,7 +21,7 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
@@ -36,11 +36,15 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.Base64;
 import java.util.Collections;
 
@@ -67,7 +71,7 @@ public class ManageSpringCloud {
      * @return true if sample runs successfully
      * @throws IllegalStateException unexcepted state
      */
-    public static boolean runSample(Azure azure, String clientId) {
+    public static boolean runSample(Azure azure, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
         final String rgName = azure.sdkContext().randomResourceName("rg", 24);
         final String serviceName  = azure.sdkContext().randomResourceName("service", 24);
         final Region region = Region.US_EAST;
@@ -95,12 +99,15 @@ public class ManageSpringCloud {
             Utils.print(service);
 
             // get source code of a sample project
-            File sourceCodeFolder = new File("piggymetrics");
-            if (!sourceCodeFolder.exists() || sourceCodeFolder.isFile()) {
-                if (sourceCodeFolder.isFile() && !sourceCodeFolder.delete()) {
-                    throw new IllegalStateException("could not delete piggymetrics file");
+            File gzFile = new File("piggymetrics.tar.gz");
+            if (!gzFile.exists()) {
+                HttpURLConnection connection = (HttpURLConnection) new URL(PIGGYMETRICS_TAR_GZ_URL).openConnection();
+                connection.connect();
+                try (InputStream inputStream = connection.getInputStream();
+                     OutputStream outputStream = new FileOutputStream(gzFile)) {
+                    IOUtils.copy(inputStream, outputStream);
                 }
-                extraTarGzSource(sourceCodeFolder, new URL(PIGGYMETRICS_TAR_GZ_URL));
+                connection.disconnect();
             }
 
             //============================================================
@@ -108,9 +115,12 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app gateway in resource group %s ...%n", rgName);
             SpringApp gateway = service.apps().define("gateway")
+                .defineActiveDeployment("default")
+                    .withSourceCodeTarGzFile(gzFile)
+                    .withTargetModule("gateway")
+                    .attach()
                 .withDefaultPublicEndpoint()
                 .withHttpsOnly()
-                .deploySource("default", sourceCodeFolder, "gateway")
                 .create();
 
             System.out.println("Created spring cloud service gateway");
@@ -121,7 +131,10 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app auth-service in resource group %s ...%n", rgName);
             SpringApp authService = service.apps().define("auth-service")
-                .deploySource("default", sourceCodeFolder, "auth-service")
+                .defineActiveDeployment("default")
+                    .withSourceCodeTarGzFile(gzFile)
+                    .withTargetModule("auth-service")
+                    .attach()
                 .create();
 
             System.out.println("Created spring cloud service auth-service");
@@ -132,7 +145,10 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app account-service in resource group %s ...%n", rgName);
             SpringApp accountService = service.apps().define("account-service")
-                .deploySource("default", sourceCodeFolder, "account-service")
+                .defineActiveDeployment("default")
+                    .withSourceCodeTarGzFile(gzFile)
+                    .withTargetModule("account-service")
+                    .attach()
                 .create();
 
             System.out.println("Created spring cloud service account-service");
@@ -234,17 +250,14 @@ public class ManageSpringCloud {
                 .withCertificate(certName, vault.vaultUri(), certName)
                 .apply();
 
-            System.out.printf("Updating Spring Cloud App with domain ssl.%s ...", domainName);
+            System.out.printf("Updating Spring Cloud App with domain ssl.%s ...%n", domainName);
             gateway.update()
                 .withCustomDomain(String.format("ssl.%s", domainName), thumbprint)
                 .apply();
 
-            System.out.printf("Successfully expose domain ssl.%s", domainName);
+            System.out.printf("Successfully expose domain ssl.%s%n", domainName);
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Delete Resource Group: " + rgName);
@@ -255,7 +268,6 @@ public class ManageSpringCloud {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
@@ -287,8 +299,7 @@ public class ManageSpringCloud {
         }
     }
 
-
-    private static void extraTarGzSource(File folder, URL url) throws IOException {
+    public static void extraTarGzSource(File folder, URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         try (TarArchiveInputStream inputStream = new TarArchiveInputStream(new GzipCompressorInputStream(connection.getInputStream()))) {

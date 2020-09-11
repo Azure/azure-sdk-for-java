@@ -1,0 +1,117 @@
+package com.azure.digitaltwins.core;
+
+import com.azure.core.http.HttpClient;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
+import com.azure.digitaltwins.core.models.ModelData;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.digitaltwins.core.TestHelper.assertRestException;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * Sync client implementation of the model tests defined in {@link ModelsTestBase}
+ */
+public class ModelsTest extends ModelsTestBase {
+
+    private final ClientLogger logger = new ClientLogger(ModelsTest.class);
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void modelLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+
+        // Create some models to test the lifecycle of
+        final List<ModelData> createdModels = new ArrayList<>();
+        createModelsRunner(client, (modelsList) -> {
+            List<ModelData> createdModelsResponseList = client.createModels(modelsList);
+            createdModelsResponseList.forEach((modelData) -> {
+                createdModels.add(modelData);
+                logger.info("Created {} models successfully", createdModelsResponseList.size());
+            });
+        });
+
+        for (final ModelData expected : createdModels) {
+            // Get the model
+            getModelRunner(expected.getId(), (modelId) -> {
+                ModelData actual = client.getModel(modelId);
+                assertModelDataAreEqual(expected, actual, false);
+                logger.info("Model {} matched expectations", modelId);
+            });
+
+            // Decommission the model
+            decommissionModelRunner(expected.getId(), (modelId) -> {
+                logger.info("Decommissioning model {}", modelId);
+                client.decommissionModel(modelId);
+            });
+
+            // Get the model again to see if it was decommissioned as expected
+            getModelRunner(expected.getId(), (modelId) -> {
+                ModelData actual = client.getModel(modelId);
+                assertTrue(actual.isDecommissioned());
+                logger.info("Model {} was decommissioned successfully", modelId);
+            });
+
+            // Delete the model
+            deleteModelRunner(expected.getId(), (modelId) -> {
+                logger.info("Deleting model {}", modelId);
+                client.deleteModel(modelId);
+            });
+        }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void getModelThrowsIfModelDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+        final String nonExistentModelId = "urn:doesnotexist:fakemodel:1000";
+        getModelRunner(nonExistentModelId, (modelId) -> assertRestException(() -> client.getModel(modelId), HttpURLConnection.HTTP_NOT_FOUND));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void createModelThrowsIfModelAlreadyExists(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+
+        final List<String> modelsToCreate = new ArrayList<>();
+        final String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, client, randomIntegerStringGenerator);
+        final String wardModelPayload = TestAssetsHelper.getWardModelPayload(wardModelId);
+        modelsToCreate.add(wardModelPayload);
+
+        List<ModelData> createdModels = client.createModels(modelsToCreate);
+        createdModels.forEach(Assertions::assertNotNull);
+
+        assertRestException(
+            () -> client.createModels(modelsToCreate),
+            HttpURLConnection.HTTP_CONFLICT);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void getModelThrowsIfModelIdInvalid(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+        final String malformedModelId = "thisIsNotAValidModelId";
+        getModelRunner(malformedModelId, (modelId) -> assertRestException(() -> client.getModel(modelId), HttpURLConnection.HTTP_BAD_REQUEST));
+    }
+
+    private void createModelsRunner(DigitalTwinsClient client, Consumer<List<String>> createModelsTestRunner) {
+        String buildingModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.BUILDING_MODEL_ID, client, randomIntegerStringGenerator);
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, randomIntegerStringGenerator);
+        String hvacModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID, client, randomIntegerStringGenerator);
+        String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, client, randomIntegerStringGenerator);
+
+        createModelsRunner(buildingModelId, floorModelId, hvacModelId, wardModelId, createModelsTestRunner);
+    }
+}

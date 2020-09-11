@@ -338,7 +338,12 @@ public class ServiceBusAdministrationClientBuilder {
         final String clientName = properties.getOrDefault("name", "UnknownName");
         final String clientVersion = properties.getOrDefault("version", "UnknownVersion");
 
-        final String applicationId = CoreUtils.getApplicationId(httpLogOptions, clientOptions);
+        String applicationId = httpLogOptions.getApplicationId();
+
+        // We prioritize application id set in ClientOptions.
+        if (clientOptions != null && CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())) {
+            applicationId = clientOptions.getApplicationId();
+        }
 
         httpPolicies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
             buildConfiguration));

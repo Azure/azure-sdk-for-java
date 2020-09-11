@@ -59,12 +59,12 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-spring-boot</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
+        <version>${azure.spring.boot.jms.integration.version}</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-spring-boot-starter</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
+        <version>${azure.spring.boot.jms.integration.version}</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>

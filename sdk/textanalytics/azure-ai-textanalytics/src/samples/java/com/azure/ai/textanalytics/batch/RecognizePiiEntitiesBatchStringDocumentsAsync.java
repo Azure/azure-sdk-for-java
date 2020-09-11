@@ -5,8 +5,9 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -38,12 +39,12 @@ public class RecognizePiiEntitiesBatchStringDocumentsAsync {
             "Visa card 4111 1111 1111 1111"
         );
 
-        // Request options: show statistics and model version
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+        // Show statistics and model version
+        RecognizePiiEntityOptions options = new RecognizePiiEntityOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Recognizing Personally Identifiable Information entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.recognizePiiEntitiesBatch(documents, "en", requestOptions).subscribe(
+        client.recognizePiiEntitiesBatch(documents, "en", options).subscribe(
             recognizePiiEntitiesResultCollection -> {
                 // Model version
                 System.out.printf("Results of Azure Text Analytics \"Personally Identifiable Information Entities Recognition\" Model, version: %s%n", recognizePiiEntitiesResultCollection.getModelVersion());
@@ -60,9 +61,11 @@ public class RecognizePiiEntitiesBatchStringDocumentsAsync {
                         System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n", entitiesResult.getError().getMessage());
                     } else {
                         // Valid document
-                        entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                            "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
-                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+                        PiiEntityCollection piiEntityCollection = entitiesResult.getEntities();
+                        System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+                        piiEntityCollection.forEach(entity -> System.out.printf(
+                            "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(), entity.getLength(), entity.getConfidenceScore()));
                     }
                 }
             },

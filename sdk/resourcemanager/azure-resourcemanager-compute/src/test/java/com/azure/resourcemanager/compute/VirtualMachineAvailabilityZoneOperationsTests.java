@@ -29,7 +29,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

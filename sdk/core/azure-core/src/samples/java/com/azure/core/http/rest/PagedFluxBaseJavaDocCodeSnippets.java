@@ -136,12 +136,12 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
 
                 @Override
                 protected void hookOnNext(Integer value) {
-                    System.out.println("Processing item " + value);
+                    System.out.println("Processing item with value: " + value);
                 }
 
                 @Override
                 protected void hookOnComplete() {
-                    System.out.println("Completed processing");
+                    System.out.println("Processing complete.");
                 }
             });
         // END: com.azure.core.http.rest.pagedfluxbase.subscribe

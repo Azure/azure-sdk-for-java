@@ -11,12 +11,11 @@ import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
-import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.WarningCode;
-import com.azure.core.exception.HttpResponseException;
+import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -29,7 +28,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
-import static com.azure.ai.textanalytics.implementation.Utility.getEmptyErrorIdHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
@@ -130,18 +128,6 @@ class DetectLanguageAsyncClient {
         }
         // Document errors
         for (DocumentError documentError : languageResult.getErrors()) {
-            /*
-             *  TODO: Remove this after service update to throw exception.
-             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
-             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
-             */
-            if (documentError.getId().isEmpty()) {
-                throw logger.logExceptionAsError(
-                    new HttpResponseException(documentError.getError().getInnererror().getMessage(),
-                    getEmptyErrorIdHttpResponse(new SimpleResponse<>(response, response.getValue())),
-                        documentError.getError().getInnererror().getCode()));
-            }
-
             detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }

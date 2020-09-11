@@ -77,4 +77,15 @@ public final class EventRoute {
         this.filter = filter;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getEndpointName() == null) {
+            throw new IllegalArgumentException("Missing required property endpointName in model EventRoute");
+        }
+    }
 }

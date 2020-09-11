@@ -17,7 +17,7 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.apache.commons.lang.time.StopWatch;
 
@@ -194,11 +194,6 @@ public final class CreateVirtualMachinesInParallel {
 //            stopwatch.stop();
 //            System.out.println("Created a traffic manager profile (took " + (stopwatch.getTime() / 1000) + " seconds to create): " + trafficManagerProfile.id());
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -212,7 +207,6 @@ public final class CreateVirtualMachinesInParallel {
             }
 
         }
-        return false;
     }
     /**
      * Main entry point.

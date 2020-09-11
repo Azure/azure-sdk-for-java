@@ -11,11 +11,14 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -25,11 +28,11 @@ import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
-import com.azure.resourcemanager.resources.core.TestBase;
+import com.azure.resourcemanager.msi.MSIManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,8 +40,14 @@ import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.junit.jupiter.api.Assertions;
@@ -46,33 +55,45 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** The base for app service tests. */
-public class AppServiceTest extends TestBase {
+public class AppServiceTest extends ResourceManagerTestBase {
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;
     protected AppServiceManager appServiceManager;
+    protected MSIManager msiManager;
 
     protected AppServiceDomain domain;
     protected AppServiceCertificateOrder certificateOrder;
     protected String rgName = "";
 
-    //    private static OkHttpClient httpClient = new OkHttpClient.Builder().readTimeout(3, TimeUnit.MINUTES).build();
-
-    public AppServiceTest() {
-    }
-
-    AppServiceTest(RunCondition runCondition) {
-        super(runCondition);
+    @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
     }
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 20);
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        SdkContext sdkContext = new SdkContext();
+        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
-
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
-
+            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
+        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
         appServiceManager = AppServiceManager.authenticate(httpPipeline, profile, sdkContext);
+        msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
 
         // useExistingDomainAndCertificate();
         // createNewDomainAndCertificate();
