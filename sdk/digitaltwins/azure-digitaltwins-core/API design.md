@@ -770,16 +770,6 @@ public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwin
 ```
 </details>
 
-## Query
-<details>
-<summary><b>APIs</b></summary>
-
-
-```java
-TODO:
-```
-</details>
-
 ## Models
 <details><summary><b>Examples</b></summary>
 A model defines the properties, components, and relationships of a given digital twin. A sample model can be seen below

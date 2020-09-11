@@ -40,8 +40,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .build();
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)
-                || (configuration.contains(PROPERTY_IDENTITY_ENDPOINT) &&
-                        configuration.contains(PROPERTY_IDENTITY_HEADER))) {
+                || (configuration.contains(PROPERTY_IDENTITY_ENDPOINT)
+                        && configuration.contains(PROPERTY_IDENTITY_HEADER))) {
             appServiceMSICredential = new AppServiceMsiCredential(clientId, identityClient);
             virtualMachineMSICredential = null;
         } else {

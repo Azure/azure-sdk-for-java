@@ -18,9 +18,13 @@ import com.azure.resourcemanager.network.samples.ManageVirtualNetworkAsync;
 import com.azure.resourcemanager.network.samples.ManageVpnGatewayPoint2SiteConnection;
 import com.azure.resourcemanager.network.samples.ManageVpnGatewaySite2SiteConnection;
 import com.azure.resourcemanager.network.samples.VerifyNetworkPeeringWithNetworkWatcher;
+import com.jcraft.jsch.JSchException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public class NetworkSampleTests extends SamplesTestBase {
 
@@ -36,7 +40,7 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageApplicationGateway() {
+    public void testManageApplicationGateway() throws IOException {
         Assertions.assertTrue(ManageApplicationGateway.runSample(azure));
     }
 
@@ -66,12 +70,12 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageNetworkSecurityGroup() {
+    public void testManageNetworkSecurityGroup() throws UnsupportedEncodingException, JSchException {
         Assertions.assertTrue(ManageNetworkSecurityGroup.runSample(azure));
     }
 
     @Test
-    public void testManageSimpleApplicationGateway() {
+    public void testManageSimpleApplicationGateway() throws IOException {
         Assertions.assertTrue(ManageSimpleApplicationGateway.runSample(azure));
     }
 
@@ -97,7 +101,7 @@ public class NetworkSampleTests extends SamplesTestBase {
 
     @Test
     @Disabled("Need root certificate file and client certificate thumbprint to run the sample")
-    public void testManageVpnGatewayPoint2SiteConnection() {
+    public void testManageVpnGatewayPoint2SiteConnection() throws IOException {
         Assertions.assertTrue(ManageVpnGatewayPoint2SiteConnection.runSample(azure));
     }
 }

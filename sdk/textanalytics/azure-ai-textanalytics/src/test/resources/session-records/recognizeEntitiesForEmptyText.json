@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//entities/recognition/general",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//entities/recognition/general?stringIndexType=Utf16CodeUnit",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9586541f-0de6-4eb0-bd06-ca5049618249",
+      "x-ms-client-request-id" : "067b153d-daf2-4391-ab4f-bc599ba04380",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,11 +12,11 @@
       "x-envoy-upstream-service-time" : "2",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "7010c521-2ff1-4dd1-9b29-8eb37429fe97",
+      "apim-request-id" : "2ba0796c-2e5a-4d48-977d-49ee4cf66514",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"}}}],\"modelVersion\":\"2020-04-01\"}",
-      "Date" : "Tue, 01 Sep 2020 06:14:55 GMT",
+      "Date" : "Thu, 03 Sep 2020 19:04:04 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

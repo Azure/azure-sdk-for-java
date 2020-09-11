@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for
-// license information.
+// Licensed under the MIT License.
 
 package com.azure.messaging.eventgrid;
 
@@ -143,6 +142,7 @@ public class EventGridPublisherImplTests extends TestBase {
         for (int i = 0; i < 5; i++) {
             events.add(new HashMap<String, String>() {{
                 put("id", UUID.randomUUID().toString());
+                put("time", OffsetDateTime.now().toString());
                 put("subject", "Test");
                 put("foo", "bar");
                 put("type", "Microsoft.MockPublisher.TestEvent");

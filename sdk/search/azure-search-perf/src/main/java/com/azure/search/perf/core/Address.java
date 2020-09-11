@@ -3,7 +3,7 @@
 
 package com.azure.search.perf.core;
 
-import com.azure.search.documents.indexes.SearchableFieldProperty;
+import com.azure.search.documents.indexes.SearchableField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -11,22 +11,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Address {
     @JsonProperty("StreetAddress")
-    @SearchableFieldProperty
+    @SearchableField
     public String streetAddress;
 
     @JsonProperty("City")
-    @SearchableFieldProperty(isFilterable = true, isSortable = true, isFacetable = true)
+    @SearchableField(isFilterable = true, isSortable = true, isFacetable = true)
     public String city;
 
     @JsonProperty("StateProvince")
-    @SearchableFieldProperty(isFilterable = true, isSortable = true, isFacetable = true)
+    @SearchableField(isFilterable = true, isSortable = true, isFacetable = true)
     public String stateProvince;
 
     @JsonProperty("PostalCode")
-    @SearchableFieldProperty(isFilterable = true, isSortable = true, isFacetable = true)
+    @SearchableField(isFilterable = true, isSortable = true, isFacetable = true)
     public String postalCode;
 
     @JsonProperty("Country")
-    @SearchableFieldProperty(isFilterable = true, isSortable = true, isFacetable = true)
+    @SearchableField(isFilterable = true, isSortable = true, isFacetable = true)
     public String country;
 }

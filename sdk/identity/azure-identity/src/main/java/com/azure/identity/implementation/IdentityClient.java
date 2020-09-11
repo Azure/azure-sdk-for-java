@@ -112,6 +112,7 @@ public class IdentityClient {
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
     private static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
     private static final String MSI_ENDPOINT_VERSION = "2017-09-01";
+    private static final String ADFS_TENANT = "adfs";
     private static final String HTTP_LOCALHOST = "http://localhost";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
@@ -339,6 +340,10 @@ public class IdentityClient {
                 }
             } else if (authType.equalsIgnoreCase("DC")) {
 
+                if (isADFSTenant()) {
+                    return Mono.error(new CredentialUnavailableException("IntelliJCredential  "
+                                         + "authentication unavailable. ADFS tenant/authorities are not supported."));
+                }
                 JsonNode intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
                 String refreshToken = intelliJCredentials.get("refreshToken").textValue();
 
@@ -594,6 +599,10 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithVsCodeCredential(TokenRequestContext request, String cloud) {
 
+        if (isADFSTenant()) {
+            return Mono.error(new CredentialUnavailableException("VsCodeCredential  "
+                                         + "authentication unavailable. ADFS tenant/authorities are not supported."));
+        }
         VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
 
         String credential = accessor.getCredentials("VS Code Azure", cloud);
@@ -641,10 +650,21 @@ public class IdentityClient {
      * @param port the port on which the HTTP server is listening
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, int port) {
+    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, Integer port,
+                                                              String redirectUrl) {
         URI redirectUri;
+        String redirect;
+
+        if (port != null) {
+            redirect = HTTP_LOCALHOST + ":" + port;
+        } else if (redirectUrl != null) {
+            redirect = redirectUrl;
+        } else {
+            redirect = HTTP_LOCALHOST;
+        }
+
         try {
-            redirectUri = new URI(HTTP_LOCALHOST + ":" + port);
+            redirectUri = new URI(redirect);
         } catch (URISyntaxException e) {
             return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
         }
@@ -1002,5 +1022,9 @@ public class IdentityClient {
      */
     public String getClientId() {
         return clientId;
+    }
+
+    private boolean isADFSTenant() {
+        return this.tenantId.equals(ADFS_TENANT);
     }
 }

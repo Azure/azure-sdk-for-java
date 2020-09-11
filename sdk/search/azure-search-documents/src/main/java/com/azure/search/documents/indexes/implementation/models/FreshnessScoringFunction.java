@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.FreshnessScoringParameters;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -23,12 +24,18 @@ public final class FreshnessScoringFunction extends ScoringFunction {
     @JsonProperty(value = "freshness", required = true)
     private FreshnessScoringParameters parameters;
 
-    /** Creates an instance of FreshnessScoringFunction class. */
+    /**
+     * Creates an instance of FreshnessScoringFunction class.
+     *
+     * @param fieldName the fieldName value to set.
+     * @param boost the boost value to set.
+     * @param parameters the parameters value to set.
+     */
     @JsonCreator
     public FreshnessScoringFunction(
-            @JsonProperty(value = "fieldName") String fieldName,
-            @JsonProperty(value = "boost") double boost,
-            @JsonProperty(value = "freshness") FreshnessScoringParameters parameters) {
+            @JsonProperty(value = "fieldName", required = true) String fieldName,
+            @JsonProperty(value = "boost", required = true) double boost,
+            @JsonProperty(value = "freshness", required = true) FreshnessScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
     }
@@ -40,27 +47,5 @@ public final class FreshnessScoringFunction extends ScoringFunction {
      */
     public FreshnessScoringParameters getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: Parameter values for the freshness scoring function.
-     *
-     * @param parameters the parameters value to set.
-     * @return the FreshnessScoringFunction object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getParameters() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property parameters in model FreshnessScoringFunction");
-        } else {
-            getParameters().validate();
-        }
     }
 }

@@ -89,7 +89,7 @@ public class ManageEventHubGeoDisasterRecovery {
                 pairing = pairing.refresh();
                 SdkContext.sleep(15 * 1000);
                 if (pairing.provisioningState() == ProvisioningStateDR.FAILED) {
-                    throw new Exception("Provisioning state of the pairing is FAILED");
+                    throw new IllegalStateException("Provisioning state of the pairing is FAILED");
                 }
             }
 
@@ -137,9 +137,6 @@ public class ManageEventHubGeoDisasterRecovery {
 
             System.out.println("Fail over initiated");
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 try {
@@ -161,7 +158,6 @@ public class ManageEventHubGeoDisasterRecovery {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

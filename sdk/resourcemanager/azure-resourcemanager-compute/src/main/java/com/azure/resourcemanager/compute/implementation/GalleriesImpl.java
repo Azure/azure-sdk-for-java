@@ -10,9 +10,8 @@ import com.azure.resourcemanager.compute.models.Galleries;
 import com.azure.resourcemanager.compute.models.Gallery;
 import com.azure.resourcemanager.compute.fluent.GalleriesClient;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.BatchDeletionImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.ReactorMapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,21 +37,8 @@ public class GalleriesImpl
     }
 
     @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public Flux<String> deleteByIdsAsync(Collection<String> ids) {
-        if (ids == null || ids.isEmpty()) {
-            return Flux.empty();
-        }
-
-        Collection<Mono<String>> observables = new ArrayList<>();
-        for (String id : ids) {
-            final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
-            final String name = ResourceUtils.nameFromResourceId(id);
-            Mono<String> o = ReactorMapper.map(this.inner().deleteAsync(resourceGroupName, name), id);
-            observables.add(o);
-        }
-
-        return Flux.mergeDelayError(32, observables.toArray(new Mono[0]));
+        return BatchDeletionImpl.deleteByIdsAsync(ids, this::deleteInnerAsync);
     }
 
     @Override

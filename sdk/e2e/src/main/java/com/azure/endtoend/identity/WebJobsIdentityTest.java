@@ -66,7 +66,7 @@ class WebJobsIdentityTest {
                 && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET)))  {
             throw logger.logExceptionAsError(
                 new IllegalStateException("testMSIEndpointWithUserAssigned - MSIEndpoint and Identity Point not"
-                                              + "configured in the environment. Atleast one should be configuured"));
+                                              + "configured in the environment. At least one should be configured"));
         }
         assertConfigPresence(Configuration.PROPERTY_MSI_SECRET,
             "testMSIEndpointWithSystemAssigned - MSISecret not configured in the environment.");
