@@ -139,9 +139,6 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
             }
 
             return true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName1);
@@ -154,7 +151,6 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     private static RunCommandResult runCommandOnVM(Azure azure, VirtualMachine virtualMachine, List<String> commands) {

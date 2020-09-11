@@ -29,5 +29,5 @@
       "schema": "WIFI_MODEL_ID"
     }
   ],
-  "@context": "dtmi:dtdl:context;2"
+  "@context": ["dtmi:dtdl:context;2"]
 }

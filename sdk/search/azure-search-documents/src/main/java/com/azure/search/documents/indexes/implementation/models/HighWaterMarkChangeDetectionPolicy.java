@@ -25,10 +25,14 @@ public class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolic
     @JsonProperty(value = "highWaterMarkColumnName", required = true)
     private String highWaterMarkColumnName;
 
-    /** Creates an instance of HighWaterMarkChangeDetectionPolicy class. */
+    /**
+     * Creates an instance of HighWaterMarkChangeDetectionPolicy class.
+     *
+     * @param highWaterMarkColumnName the highWaterMarkColumnName value to set.
+     */
     @JsonCreator
     public HighWaterMarkChangeDetectionPolicy(
-            @JsonProperty(value = "highWaterMarkColumnName") String highWaterMarkColumnName) {
+            @JsonProperty(value = "highWaterMarkColumnName", required = true) String highWaterMarkColumnName) {
         this.highWaterMarkColumnName = highWaterMarkColumnName;
     }
 
@@ -39,25 +43,5 @@ public class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolic
      */
     public String getHighWaterMarkColumnName() {
         return this.highWaterMarkColumnName;
-    }
-
-    /**
-     * Set the highWaterMarkColumnName property: The name of the high water mark column.
-     *
-     * @param highWaterMarkColumnName the highWaterMarkColumnName value to set.
-     * @return the HighWaterMarkChangeDetectionPolicy object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getHighWaterMarkColumnName() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property highWaterMarkColumnName in model HighWaterMarkChangeDetectionPolicy");
-        }
     }
 }

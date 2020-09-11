@@ -8,6 +8,8 @@ import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsy
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_DUPLICATE_DETECTION_DURATION;
@@ -23,6 +25,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * @see ServiceBusAdministrationClient#createTopic(String, CreateTopicOptions)
  */
 public class CreateTopicOptions {
+    private final List<AuthorizationRule> authorizationRules;
+
     private Duration autoDeleteOnIdle;
     private Duration defaultMessageTimeToLive;
     private Duration duplicateDetectionHistoryTimeWindow;
@@ -58,6 +62,7 @@ public class CreateTopicOptions {
      * @throws IllegalArgumentException if {@code topicName} is an empty string.
      */
     public CreateTopicOptions() {
+        this.authorizationRules = new ArrayList<>();
         this.autoDeleteOnIdle = MAX_DURATION;
         this.defaultMessageTimeToLive = MAX_DURATION;
         this.duplicateDetectionHistoryTimeWindow = DEFAULT_DUPLICATE_DETECTION_DURATION;
@@ -80,6 +85,7 @@ public class CreateTopicOptions {
     public CreateTopicOptions(TopicProperties topic) {
         Objects.requireNonNull(topic, "'topic' cannot be null.");
 
+        this.authorizationRules = new ArrayList<>(topic.getAuthorizationRules());
         this.autoDeleteOnIdle = topic.getAutoDeleteOnIdle();
         this.defaultMessageTimeToLive = topic.getDefaultMessageTimeToLive();
         this.duplicateDetectionHistoryTimeWindow = topic.getDuplicateDetectionHistoryTimeWindow();
@@ -90,6 +96,15 @@ public class CreateTopicOptions {
         this.supportOrdering = topic.supportOrdering();
         this.status = topic.getStatus();
         this.userMetadata = topic.getUserMetadata();
+    }
+
+    /**
+     * Gets the authorization rules to control user access at entity level.
+     *
+     * @return The authorization rules to control user access at entity level.
+     */
+    public List<AuthorizationRule> getAuthorizationRules() {
+        return authorizationRules;
     }
 
     /**

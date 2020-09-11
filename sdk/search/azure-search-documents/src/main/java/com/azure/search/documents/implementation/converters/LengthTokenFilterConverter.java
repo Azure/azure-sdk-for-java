@@ -45,7 +45,6 @@ public final class LengthTokenFilterConverter {
 
         Integer maxLength = obj.getMaxLength();
         lengthTokenFilter.setMaxLength(maxLength);
-        lengthTokenFilter.validate();
         return lengthTokenFilter;
     }
 
