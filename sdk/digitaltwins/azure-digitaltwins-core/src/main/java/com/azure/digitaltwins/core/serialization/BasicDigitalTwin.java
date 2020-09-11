@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
-public class BasicDigitalTwin {
+public final class BasicDigitalTwin {
 
     @JsonProperty(value = "$dtId", required = true)
     private String id;

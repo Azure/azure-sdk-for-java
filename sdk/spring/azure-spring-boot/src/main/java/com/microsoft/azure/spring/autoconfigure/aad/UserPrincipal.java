@@ -14,8 +14,8 @@ import java.util.Map;
 public class UserPrincipal implements Serializable {
     private static final long serialVersionUID = -3725690847771476854L;
 
-    private JWSObject jwsObject;
-    private JWTClaimsSet jwtClaimsSet;
+    private final JWSObject jwsObject;
+    private final JWTClaimsSet jwtClaimsSet;
     private List<UserGroup> userGroups = new ArrayList<>();
 
     public UserPrincipal(JWSObject jwsObject, JWTClaimsSet jwtClaimsSet) {

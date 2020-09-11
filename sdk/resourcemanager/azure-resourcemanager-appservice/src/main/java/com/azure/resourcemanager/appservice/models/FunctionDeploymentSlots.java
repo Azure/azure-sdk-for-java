@@ -18,7 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 @Fluent
 public interface FunctionDeploymentSlots
     extends SupportsCreating<FunctionDeploymentSlot.DefinitionStages.Blank>,
-        SupportsListing<FunctionDeploymentSlot>,
+        SupportsListing<FunctionDeploymentSlotBasic>,
         SupportsGettingByName<FunctionDeploymentSlot>,
         SupportsGettingById<FunctionDeploymentSlot>,
         SupportsDeletingById,

@@ -55,10 +55,10 @@ public class TestHelper {
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
         getHttpClients()
-            .forEach(httpClient -> {
-                Arrays.stream(DigitalTwinsServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
+            .forEach(httpClient -> Arrays
+                .stream(DigitalTwinsServiceVersion.values())
+                .filter(TestHelper::shouldServiceVersionBeTested)
+                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
         return argumentsList.stream();
     }
 

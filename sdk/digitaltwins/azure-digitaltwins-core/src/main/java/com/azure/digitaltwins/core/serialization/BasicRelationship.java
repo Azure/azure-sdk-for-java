@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
-public class BasicRelationship {
+public final class BasicRelationship {
 
     @JsonProperty(value = "$relationshipId", required = true)
     private String id;
