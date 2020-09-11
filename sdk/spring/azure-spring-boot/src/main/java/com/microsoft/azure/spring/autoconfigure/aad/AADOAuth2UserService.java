@@ -28,7 +28,6 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     private static final String CONDITIONAL_ACCESS_POLICY = "conditional_access_policy";
     private static final String INVALID_REQUEST = "invalid_request";
     private static final String SERVER_ERROR = "server_error";
-    private static final String DEFAULT_USERNAME_ATTR_NAME = "name";
 
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final ServiceEndpointsProperties serviceEndpointsProperties;
@@ -82,7 +81,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                                           .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
                                           .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
                                           .filter(s -> !s.isEmpty())
-                                          .orElse(DEFAULT_USERNAME_ATTR_NAME);
+                                          .orElse(AccessTokenClaims.NAME);
         // Create a copy of oidcUser but use the mappedAuthorities instead
         return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), nameAttributeKey);
     }
