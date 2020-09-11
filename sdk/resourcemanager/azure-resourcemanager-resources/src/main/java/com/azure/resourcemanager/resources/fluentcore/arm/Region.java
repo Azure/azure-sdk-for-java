@@ -32,6 +32,7 @@ public final class Region {
     public static final Region CANADA_CENTRAL = new Region("canadacentral", "Canada Central");
     public static final Region CANADA_EAST = new Region("canadaeast", "Canada East");
     public static final Region BRAZIL_SOUTH = new Region("brazilsouth", "Brazil South");
+    public static final Region BRAZIL_SOUTHEAST = new Region("brazilsoutheast", "Brazil Southeast");
     /**************************************************
      * Azure Cloud - Europe
      **************************************************/

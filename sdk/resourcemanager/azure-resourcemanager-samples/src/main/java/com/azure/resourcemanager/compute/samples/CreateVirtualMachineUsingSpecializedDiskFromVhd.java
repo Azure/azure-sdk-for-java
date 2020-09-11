@@ -18,7 +18,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.ArrayList;
@@ -194,10 +194,6 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                 System.out.println(String.format("Data disk SAS Uri: %s", dataDiskSasUri));
             }
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -209,7 +205,6 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -21,7 +21,7 @@ import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 
 /**
@@ -137,9 +137,6 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 ex.printStackTrace();
             }
             return true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             if (azure != null) {
                 azure.resourceGroups().beginDeleteByName(rgName);
@@ -157,7 +154,6 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 e.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

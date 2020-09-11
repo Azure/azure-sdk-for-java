@@ -4,15 +4,23 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Receiver;
+import org.apache.qpid.proton.engine.Record;
+import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.reactor.Reactor;
-import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,12 +28,20 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,52 +55,61 @@ public class ReactorSessionTest {
 
     private SessionHandler handler;
     private ReactorSession reactorSession;
-    private AmqpRetryPolicy retryPolicy;
 
     @Mock
     private Session session;
     @Mock
     private Reactor reactor;
     @Mock
-    private Selectable selectable;
-    @Mock
     private Event event;
+    @Mock
+    private Receiver receiver;
+    @Mock
+    private Sender sender;
+    @Mock
+    private Record record;
     @Mock
     private ClaimsBasedSecurityNode cbsNode;
     @Mock
     private MessageSerializer serializer;
     @Mock
     private ReactorProvider reactorProvider;
+    @Mock
+    private ReactorHandlerProvider reactorHandlerProvider;
+    @Mock
+    private ReactorDispatcher reactorDispatcher;
+    @Mock
+    private TokenManagerProvider tokenManagerProvider;
+
+    private Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
 
     @BeforeEach
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
-        when(reactor.selectable()).thenReturn(selectable);
-        when(event.getSession()).thenReturn(session);
 
-        ReactorDispatcher dispatcher = new ReactorDispatcher(reactor);
-        this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, dispatcher, Duration.ofSeconds(60));
+        this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60));
+        this.cbsNodeSupplier = Mono.just(cbsNode);
 
         when(reactorProvider.getReactor()).thenReturn(reactor);
-        when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
+        when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
 
-        MockReactorHandlerProvider handlerProvider = new MockReactorHandlerProvider(reactorProvider, null, handler, null, null);
-        AzureTokenManagerProvider azureTokenManagerProvider = new AzureTokenManagerProvider(
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
-        this.retryPolicy = RetryUtil.getRetryPolicy(new AmqpRetryOptions());
-        this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
-            Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT, retryPolicy);
+        when(event.getSession()).thenReturn(session);
+        when(sender.attachments()).thenReturn(record);
+        when(receiver.attachments()).thenReturn(record);
 
+        doAnswer(invocation -> {
+            final Runnable runnable = invocation.getArgument(0);
+            runnable.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any());
+
+        AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(new AmqpRetryOptions());
+        this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, reactorHandlerProvider,
+            cbsNodeSupplier, tokenManagerProvider, serializer, TIMEOUT, retryPolicy);
     }
 
     @AfterEach
     public void teardown() {
-        session = null;
-        reactor = null;
-        selectable = null;
-        event = null;
-        cbsNode = null;
-
         Mockito.framework().clearInlineMocks();
     }
 
@@ -108,7 +133,6 @@ public class ReactorSessionTest {
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> handler.close())
             .expectNext(AmqpEndpointState.CLOSED)
-            .then(() -> reactorSession.dispose())
             .expectComplete()
             .verify(Duration.ofSeconds(10));
     }
@@ -116,6 +140,92 @@ public class ReactorSessionTest {
     @Test
     public void verifyDispose() {
         reactorSession.dispose();
-        Assertions.assertTrue(reactorSession.isDisposed());
+        assertTrue(reactorSession.isDisposed());
+    }
+
+    /**
+     * Verifies that we can create the producer.
+     */
+    @Test
+    void createProducer() {
+        // Arrange
+        final String linkName = "test-link-name";
+        final String entityPath = "test-entity-path";
+        final AmqpRetryPolicy amqpRetryPolicy = mock(AmqpRetryPolicy.class);
+        final Map<Symbol, Object> linkProperties = new HashMap<>();
+        final Duration timeout = Duration.ofSeconds(30);
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
+
+        when(session.sender(linkName)).thenReturn(sender);
+        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManager);
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults())
+            .thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.ACCEPTED)));
+        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath))
+            .thenReturn(sendLinkHandler);
+
+        StepVerifier.create(
+            reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties))
+            .then(() -> handler.onSessionRemoteOpen(event))
+            .thenAwait(Duration.ofSeconds(2))
+            .assertNext(producer -> assertTrue(producer instanceof ReactorSender))
+            .verifyComplete();
+
+        final AmqpLink sendLink = reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy,
+            linkProperties)
+            .block(TIMEOUT);
+
+        assertNotNull(sendLink);
+    }
+
+    /**
+     * Verifies that we can create the producer.
+     */
+    @Test
+    void createProducerAgainAfterException() {
+        // Arrange
+        final String linkName = "test-link-name";
+        final String entityPath = "test-entity-path";
+        final AmqpRetryPolicy amqpRetryPolicy = mock(AmqpRetryPolicy.class);
+        final Map<Symbol, Object> linkProperties = new HashMap<>();
+        final Duration timeout = Duration.ofSeconds(30);
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
+
+        final Event closeSendEvent = mock(Event.class);
+        when(closeSendEvent.getLink()).thenReturn(sender);
+
+        final ErrorCondition errorCondition = new ErrorCondition(
+            Symbol.valueOf(AmqpErrorCondition.SERVER_BUSY_ERROR.getErrorCondition()), "test-busy");
+        when(sender.getRemoteCondition()).thenReturn(errorCondition);
+
+        when(session.sender(linkName)).thenReturn(sender);
+        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManager);
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults())
+            .thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.ACCEPTED)));
+        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath))
+            .thenReturn(sendLinkHandler);
+
+        handler.onSessionRemoteOpen(event);
+
+        final AmqpLink sendLink = reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy,
+            linkProperties)
+            .block(TIMEOUT);
+
+        assertNotNull(sendLink);
+        assertTrue(sendLink instanceof AmqpSendLink);
+
+        // Act
+        sendLinkHandler.onLinkRemoteClose(closeSendEvent);
+    }
+
+    @Test
+    void createConsumer() {
+        // Arrange
+        final String linkName = "test-link-name";
+        final String entityPath = "test-entity-path";
+        final AmqpRetryPolicy amqpRetryPolicy = mock(AmqpRetryPolicy.class);
     }
 }

@@ -46,7 +46,7 @@ import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -235,7 +235,7 @@ class ServiceBusSenderAsyncClientTest {
         int batchSize = 1024;
 
         // Overhead when serializing an event, to figure out what the maximum size we can use for an event payload.
-        int eventOverhead = 46;
+        int eventOverhead = 75;
         int maxEventPayload = batchSize - eventOverhead;
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
@@ -483,7 +483,7 @@ class ServiceBusSenderAsyncClientTest {
     void scheduleMessage() {
         // Arrange
         long sequenceNumberReturned = 10;
-        Instant instant = mock(Instant.class);
+        OffsetDateTime instant = mock(OffsetDateTime.class);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
             .thenReturn(Mono.just(sendLink));
@@ -503,7 +503,7 @@ class ServiceBusSenderAsyncClientTest {
     void scheduleMessageWithTransaction() {
         // Arrange
         final long sequenceNumberReturned = 10;
-        final Instant instant = mock(Instant.class);
+        final OffsetDateTime instant = mock(OffsetDateTime.class);
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));

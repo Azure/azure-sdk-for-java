@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserGroup implements Serializable {
     private static final long serialVersionUID = 9064197572478554735L;
 
-    private String objectID;
-    private String objectType;
-    private String displayName;
+    private final String objectID;
+    private final String objectType;
+    private final String displayName;
 
     @JsonCreator
     public UserGroup(

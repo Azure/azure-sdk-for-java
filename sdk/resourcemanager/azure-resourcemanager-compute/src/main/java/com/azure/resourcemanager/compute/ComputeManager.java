@@ -5,6 +5,8 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
+import com.azure.resourcemanager.compute.fluent.ComputeManagementClientBuilder;
 import com.azure.resourcemanager.compute.implementation.AvailabilitySetsImpl;
 import com.azure.resourcemanager.compute.implementation.ComputeSkusImpl;
 import com.azure.resourcemanager.compute.implementation.ComputeUsagesImpl;
@@ -36,8 +38,8 @@ import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -133,7 +135,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
             profile,
             new ComputeManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .subscriptionId(profile.subscriptionId())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient(),
             sdkContext);
         storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);

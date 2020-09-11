@@ -14,7 +14,7 @@ import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,7 +38,7 @@ public final class DeployUsingARMTemplateWithTags {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException, IllegalAccessException {
         final String rgName = azure.sdkContext().randomResourceName("rgRSAT", 24);
         final String deploymentName = azure.sdkContext().randomResourceName("dpRSAT", 24);
         try {
@@ -96,11 +96,6 @@ public final class DeployUsingARMTemplateWithTags {
                 System.out.println(genericResource.resourceProviderNamespace() + "/" + genericResource.resourceType() + ": " + genericResource.name());
             }
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -114,7 +109,6 @@ public final class DeployUsingARMTemplateWithTags {
             }
 
         }
-        return false;
     }
 
     /**

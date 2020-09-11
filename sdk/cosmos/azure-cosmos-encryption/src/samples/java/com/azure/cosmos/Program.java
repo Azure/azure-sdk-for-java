@@ -138,7 +138,7 @@ public class Program {
         /// Generates an encryption key, wraps it using the key wrap metadata provided
         /// with the key wrapping provider configured on the client
         /// and saves the wrapped encryption key as an asynchronous operation in the Azure Cosmos service.
-        encryptor.getDataEncryptionKeyContainer().createDataEncryptionKeyAsync(
+        encryptor.getDataEncryptionKeyContainer().createDataEncryptionKey(
             dataEncryptionKeyId,
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED,
             wrapMetadata, new CosmosItemRequestOptions()).block();

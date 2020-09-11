@@ -7,10 +7,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.storage.fluent.StorageManagementClient;
+import com.azure.resourcemanager.storage.fluent.StorageManagementClientBuilder;
 import com.azure.resourcemanager.storage.implementation.BlobContainersImpl;
 import com.azure.resourcemanager.storage.implementation.BlobServicesImpl;
 import com.azure.resourcemanager.storage.implementation.ManagementPoliciesImpl;
@@ -102,8 +104,8 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
             profile,
             new StorageManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient(),
             sdkContext);
     }

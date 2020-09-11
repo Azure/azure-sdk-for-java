@@ -18,10 +18,10 @@ public class GroupsTests extends GraphRbacManagementTest {
 
     @Test
     public void canCRUDGroup() throws Exception {
-        String userName = sdkContext.randomResourceName("user", 16);
-        String spName = sdkContext.randomResourceName("sp", 16);
-        String group1Name = sdkContext.randomResourceName("group", 16);
-        String group2Name = sdkContext.randomResourceName("group", 16);
+        String userName = generateRandomResourceName("user", 16);
+        String spName = generateRandomResourceName("sp", 16);
+        String group1Name = generateRandomResourceName("group", 16);
+        String group2Name = generateRandomResourceName("group", 16);
         ActiveDirectoryUser user = null;
         ServicePrincipal servicePrincipal = null;
         ActiveDirectoryGroup group1 = null;

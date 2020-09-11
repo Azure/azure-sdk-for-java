@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
@@ -17,7 +16,6 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Spring Service. */
 @Fluent
-@Beta
 public interface SpringService
     extends GroupableResource<AppPlatformManager, ServiceResourceInner>,
         Refreshable<SpringService>,

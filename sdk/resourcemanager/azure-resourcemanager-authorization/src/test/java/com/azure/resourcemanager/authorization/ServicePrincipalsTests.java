@@ -22,7 +22,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
 
     @Test
     public void canCRUDServicePrincipal() throws Exception {
-        String name = sdkContext.randomResourceName("ssp", 21);
+        String name = generateRandomResourceName("ssp", 21);
         ServicePrincipal servicePrincipal = null;
         try {
             // Create
@@ -80,8 +80,8 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
     @Test
     @Disabled("Do not record - recorded JSON may contain auth info")
     public void canCRUDServicePrincipalWithRole() throws Exception {
-        String name = sdkContext.randomResourceName("ssp", 21);
-        String rgName = sdkContext.randomResourceName("rg", 22);
+        String name = generateRandomResourceName("ssp", 21);
+        String rgName = generateRandomResourceName("rg", 22);
         ServicePrincipal servicePrincipal = null;
         String authFile = "/Users/jianghlu/Downloads/graphtestapp.azureauth";
         String subscription = "0b1f6471-1bf0-4dda-aec3-cb9272f09590";

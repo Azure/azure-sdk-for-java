@@ -10,10 +10,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Azure network sample for managing application gateways.
@@ -59,7 +60,7 @@ public final class ManageSimpleApplicationGateway {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         final String rgName = azure.sdkContext().randomResourceName("rgNEAGS", 15);
         try {
             //=======================================================================
@@ -123,11 +124,6 @@ public final class ManageSimpleApplicationGateway {
             System.out.println("Application gateway updated: (took " + (t2 - t1) / 1000 + " seconds)");
             Utils.print(applicationGateway);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -139,7 +135,6 @@ public final class ManageSimpleApplicationGateway {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

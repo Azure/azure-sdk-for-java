@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import reactor.core.publisher.Flux;
 
@@ -251,9 +251,6 @@ public final class ManageVirtualNetworkAsync {
             }
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -265,8 +262,6 @@ public final class ManageVirtualNetworkAsync {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

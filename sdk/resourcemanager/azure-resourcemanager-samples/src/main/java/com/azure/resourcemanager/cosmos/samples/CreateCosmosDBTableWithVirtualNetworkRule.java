@@ -15,7 +15,7 @@ import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.List;
@@ -126,8 +126,6 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
             System.out.println("Deleted the CosmosDB");
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
         } finally {
             try {
                 System.out.println("Deleting resource group: " + rgName);
@@ -139,8 +137,6 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

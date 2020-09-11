@@ -48,8 +48,7 @@ public class EncryptionCosmosAsyncContainer {
     EncryptionCosmosAsyncContainer(String id, CosmosAsyncDatabase database, Encryptor encryptor) {
         this.container = BridgeInternal.createCosmosAsyncContainer(id, database);
         this.encryptor = encryptor;
-        // TODO: moderakh once EncryptionKeyWrapProvider apis are made async this should change to Schedulers.parallel()
-        this.encryptionScheduler = Schedulers.boundedElastic();
+        this.encryptionScheduler = Schedulers.parallel();
     }
 
     private Mono<CosmosItemResponse<byte[]>> createItemStream(byte[] payload,
@@ -59,7 +58,7 @@ public class EncryptionCosmosAsyncContainer {
 
         // TODO: add diagnostics
         assert encryptionItemRequestOptions != null && encryptionItemRequestOptions.getEncryptionOptions() != null;
-        Mono<byte[]> encryptedPayloadMono = EncryptionProcessor.encryptAsync(payload, encryptor,
+        Mono<byte[]> encryptedPayloadMono = EncryptionProcessor.encrypt(payload, encryptor,
             encryptionItemRequestOptions.getEncryptionOptions());
 
         return encryptedPayloadMono.flatMap(
@@ -72,7 +71,7 @@ public class EncryptionCosmosAsyncContainer {
                     .flatMap(rsp ->
                         setByteArrayContent(
                             rsp,
-                            decryptResponseAsync(
+                            decryptResponse(
                                 EncryptionModelBridgeInternal.getByteArrayContent(rsp),
                                 encryptionItemRequestOptions.getDecryptionResultHandler()))
                     );
@@ -88,7 +87,7 @@ public class EncryptionCosmosAsyncContainer {
 
         // TODO: add diagnostics
         assert encryptionItemRequestOptions != null && encryptionItemRequestOptions.getEncryptionOptions() != null;
-        Mono<byte[]> encryptedPayloadMono = EncryptionProcessor.encryptAsync(payload, encryptor,
+        Mono<byte[]> encryptedPayloadMono = EncryptionProcessor.encrypt(payload, encryptor,
             encryptionItemRequestOptions.getEncryptionOptions());
 
         return encryptedPayloadMono.flatMap(
@@ -103,7 +102,7 @@ public class EncryptionCosmosAsyncContainer {
                     .flatMap(rsp ->
                         setByteArrayContent(
                             rsp,
-                            decryptResponseAsync(
+                            decryptResponse(
                                 EncryptionModelBridgeInternal.getByteArrayContent(rsp),
                                 encryptionItemRequestOptions.getDecryptionResultHandler()))
 
@@ -121,7 +120,7 @@ public class EncryptionCosmosAsyncContainer {
         assert encryptionItemRequestOptions != null && encryptionItemRequestOptions.getEncryptionOptions() != null;
 
 
-        Mono<byte[]> encryptedPayloadMono = EncryptionProcessor.encryptAsync(payload, encryptor,
+        Mono<byte[]> encryptedPayloadMono = EncryptionProcessor.encrypt(payload, encryptor,
             encryptionItemRequestOptions.getEncryptionOptions()).subscribeOn(encryptionScheduler);
 
         return encryptedPayloadMono.flatMap(
@@ -134,7 +133,7 @@ public class EncryptionCosmosAsyncContainer {
                     .flatMap(rsp ->
                         setByteArrayContent(
                             rsp,
-                            decryptResponseAsync(
+                            decryptResponse(
                                 EncryptionModelBridgeInternal.getByteArrayContent(rsp),
                                 encryptionItemRequestOptions.getDecryptionResultHandler()))
                     );
@@ -302,7 +301,7 @@ public class EncryptionCosmosAsyncContainer {
                         decryptionErroHandler = encryptionItemRequestOptions.getDecryptionResultHandler();
                     }
 
-                    return setByteArrayContent(responseMessage, this.decryptResponseAsync(
+                    return setByteArrayContent(responseMessage, this.decryptResponse(
                         EncryptionModelBridgeInternal.getByteArrayContent(responseMessage), decryptionErroHandler));
                 }
             );
@@ -376,7 +375,7 @@ public class EncryptionCosmosAsyncContainer {
         return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase()).getItemDeserializer();
     }
 
-    private Mono<byte[]> decryptResponseAsync(
+    private Mono<byte[]> decryptResponse(
         byte[] input,
         Consumer<DecryptionResult> decryptionResultHandler) {
 
@@ -384,7 +383,7 @@ public class EncryptionCosmosAsyncContainer {
             return Mono.empty();
         }
 
-        return EncryptionProcessor.decryptAsync(
+        return EncryptionProcessor.decrypt(
             input,
             this.encryptor).onErrorResume(
             throwable -> {
@@ -423,7 +422,7 @@ public class EncryptionCosmosAsyncContainer {
                     page -> {
                         List<Mono<byte[]>> byteArrayMonoList = page.getResults().stream()
                                 .map(node -> cosmosSerializerToStream(node))
-                                .map(bytes -> decryptResponseAsync(bytes, handler))
+                                .map(bytes -> decryptResponse(bytes, handler))
                                 .collect(Collectors.toList());
 
                         return Flux.concat(byteArrayMonoList).map(

@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerinstance.ContainerInstanceManagementClient;
 import com.azure.resourcemanager.containerinstance.fluent.inner.CachedImagesListResultInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.CapabilitiesListResultInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.UsageInner;

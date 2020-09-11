@@ -16,7 +16,7 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -162,9 +162,6 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
             System.out.println("Storage account created by az cli using MSI credential");
             Utils.print(storageAccount);
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -175,7 +172,6 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
