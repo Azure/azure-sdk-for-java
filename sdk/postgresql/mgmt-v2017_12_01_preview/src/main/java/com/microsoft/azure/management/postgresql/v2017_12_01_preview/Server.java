@@ -17,18 +17,24 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.PostgreSQLManager;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.DBForPostgreSQLManager;
 import org.joda.time.DateTime;
+import java.util.List;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.ServerInner;
 
 /**
  * Type representing Server.
  */
-public interface Server extends HasInner<ServerInner>, Resource, GroupableResourceCore<PostgreSQLManager, ServerInner>, HasResourceGroup, Refreshable<Server>, Updatable<Server.Update>, HasManager<PostgreSQLManager> {
+public interface Server extends HasInner<ServerInner>, Resource, GroupableResourceCore<DBForPostgreSQLManager, ServerInner>, HasResourceGroup, Refreshable<Server>, Updatable<Server.Update>, HasManager<DBForPostgreSQLManager> {
     /**
      * @return the administratorLogin value.
      */
     String administratorLogin();
+
+    /**
+     * @return the byokEnforcement value.
+     */
+    String byokEnforcement();
 
     /**
      * @return the earliestRestoreDate value.
@@ -41,9 +47,34 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
     String fullyQualifiedDomainName();
 
     /**
+     * @return the identity value.
+     */
+    ResourceIdentity identity();
+
+    /**
+     * @return the infrastructureEncryption value.
+     */
+    InfrastructureEncryption infrastructureEncryption();
+
+    /**
      * @return the masterServerId value.
      */
     String masterServerId();
+
+    /**
+     * @return the minimalTlsVersion value.
+     */
+    MinimalTlsVersionEnum minimalTlsVersion();
+
+    /**
+     * @return the privateEndpointConnections value.
+     */
+    List<ServerPrivateEndpointConnection> privateEndpointConnections();
+
+    /**
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccessEnum publicNetworkAccess();
 
     /**
      * @return the replicaCapacity value.
@@ -137,7 +168,7 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
     /**
      * The template for a Server update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Server>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithReplicationRole, UpdateStages.WithSku, UpdateStages.WithSslEnforcement, UpdateStages.WithStorageProfile, UpdateStages.WithVersion {
+    interface Update extends Appliable<Server>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithMinimalTlsVersion, UpdateStages.WithReplicationRole, UpdateStages.WithSku, UpdateStages.WithSslEnforcement, UpdateStages.WithStorageProfile, UpdateStages.WithVersion {
     }
 
     /**
@@ -154,6 +185,18 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
              * @return the next update stage
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
+        }
+
+        /**
+         * The stage of the server update allowing to specify MinimalTlsVersion.
+         */
+        interface WithMinimalTlsVersion {
+            /**
+             * Specifies minimalTlsVersion.
+             * @param minimalTlsVersion Enforce a minimal Tls version for the server. Possible values include: 'TLS1_0', 'TLS1_1', 'TLS1_2', 'TLSEnforcementDisabled'
+             * @return the next update stage
+             */
+            Update withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion);
         }
 
         /**

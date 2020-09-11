@@ -12,14 +12,14 @@ import com.microsoft.azure.management.postgresql.v2017_12_01_preview.NameAvailab
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class NameAvailabilityImpl extends WrapperImpl<NameAvailabilityInner> implements NameAvailability {
-    private final PostgreSQLManager manager;
-    NameAvailabilityImpl(NameAvailabilityInner inner, PostgreSQLManager manager) {
+    private final DBForPostgreSQLManager manager;
+    NameAvailabilityImpl(NameAvailabilityInner inner, DBForPostgreSQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public PostgreSQLManager manager() {
+    public DBForPostgreSQLManager manager() {
         return this.manager;
     }
 
