@@ -3468,6 +3468,7 @@ class FileAPITest extends APISpec {
 
     def "Upload input stream large data"() {
         setup:
+        System.setProperty("AZURE_LOG_LEVEL", "INFO")
         def randomData = getRandomByteArray(20 * Constants.MB)
         def input = new ByteArrayInputStream(randomData)
 
@@ -3479,6 +3480,9 @@ class FileAPITest extends APISpec {
 
         then:
         notThrown(DataLakeStorageException)
+
+        cleanup:
+        System.clearProperty("AZURE_LOG_LEVEL")
     }
 
     @Unroll
@@ -3501,6 +3505,7 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Upload numAppends"() {
         setup:
+        System.setProperty("AZURE_LOG_LEVEL", "INFO")
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         def spyClient = Spy(fac)
         def randomData = getRandomByteArray(dataSize)
@@ -3514,6 +3519,9 @@ class FileAPITest extends APISpec {
         then:
         fac.getProperties().block().getFileSize() == dataSize
         numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+
+        cleanup:
+        System.clearProperty("AZURE_LOG_LEVEL")
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends
