@@ -105,7 +105,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Properties to modify on the message.
      * @param transactionContext in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
+     *     by {@link ServiceBusReceiverClient#createTransaction()} or
+     *     {@link ServiceBusSenderClient#createTransaction()}.
      *
      * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
      *     transactionContext.transactionId} is null.
@@ -136,7 +137,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param transactionContext in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
+     *     by {@link ServiceBusReceiverClient#createTransaction()} or
+     *     {@link ServiceBusSenderClient#createTransaction()}.
      *
      * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
      *     transactionContext.transactionId} is null.
@@ -184,7 +186,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Message properties to modify.
      * @param transactionContext in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
+     *     by {@link ServiceBusReceiverClient#createTransaction()} or
+     *     {@link ServiceBusSenderClient#createTransaction()}.
      *
      * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
      *     transactionContext.transactionId} is null.
@@ -234,7 +237,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
      * @param transactionContext in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
+     *     by {@link ServiceBusReceiverClient#createTransaction()} or
+     *     {@link ServiceBusSenderClient#createTransaction()}.
      *
      * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
      *     transactionContext.transactionId} is null.

@@ -329,7 +329,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Message properties to modify.
      * @param transactionContext in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverAsyncClient#createTransaction()} or {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     *     by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the Service Bus defer operation finishes.
      * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
@@ -370,7 +371,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param transactionContext in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverAsyncClient#createTransaction()} or {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     *     by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the dead letter operation finishes.
      * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
