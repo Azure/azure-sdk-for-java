@@ -45,11 +45,11 @@ class PartitionScanner extends Closable {
 
     public CompletableFuture<Boolean> scan(boolean isFirst) {
         return getAllLeaseStates()
-                .thenComposeAsync((unused) -> {
+                .thenCompose((unused) -> {
                     throwIfClosingOrClosed("PartitionScanner is shutting down");
                     int ourLeasesCount = sortLeasesAndCalculateDesiredCount(isFirst);
                     return acquireExpiredInChunksParallel(0, this.desiredCount - ourLeasesCount);
-                }, this.hostContext.getExecutor())
+                })
                 .thenApplyAsync((remainingNeeded) -> {
                     throwIfClosingOrClosed("PartitionScanner is shutting down");
                     ArrayList<BaseLease> stealThese = new ArrayList<BaseLease>();
@@ -59,10 +59,10 @@ class PartitionScanner extends Closable {
                     }
                     return stealThese;
                 }, this.hostContext.getExecutor())
-                .thenComposeAsync((stealThese) -> {
+                .thenCompose((stealThese) -> {
                     throwIfClosingOrClosed("PartitionScanner is shutting down");
                     return stealLeases(stealThese);
-                }, this.hostContext.getExecutor())
+                })
                 .handleAsync((didSteal, e) -> {
                     if ((e != null) && !(e instanceof ClosingException)) {
                         StringBuilder outAction = new StringBuilder();
@@ -181,7 +181,7 @@ class PartitionScanner extends Closable {
             final int endAt = Math.min(startAt + needed, this.allLeaseStates.size());
 
             resultFuture = findExpiredLeases(startAt, endAt)
-                    .thenComposeAsync((getThese) -> {
+                    .thenCompose((getThese) -> {
                         throwIfClosingOrClosed("PartitionScanner is shutting down");
                         CompletableFuture<Void> acquireFuture = CompletableFuture.completedFuture(null);
                         if (getThese.size() > 0) {
@@ -190,11 +190,11 @@ class PartitionScanner extends Closable {
                                 throwIfClosingOrClosed("PartitionScanner is shutting down");
                                 final AcquisitionHolder holder = new AcquisitionHolder();
                                 CompletableFuture<Void> getOneFuture = this.hostContext.getLeaseManager().getLease(info.getPartitionId())
-                                        .thenComposeAsync((lease) -> {
+                                        .thenCompose((lease) -> {
                                             throwIfClosingOrClosed("PartitionScanner is shutting down");
                                             holder.setAcquiredLease(lease);
                                             return this.hostContext.getLeaseManager().acquireLease(lease);
-                                        }, this.hostContext.getExecutor())
+                                        })
                                         .thenAcceptAsync((acquired) -> {
                                             throwIfClosingOrClosed("PartitionScanner is shutting down");
                                             if (acquired) {
@@ -215,7 +215,7 @@ class PartitionScanner extends Closable {
                             acquireFuture = CompletableFuture.allOf(getFutures.toArray(dummy));
                         }
                         return acquireFuture;
-                    }, this.hostContext.getExecutor())
+                    })
                     .handleAsync((empty, e) -> {
                         // log/notify if exception occurred, then swallow exception and continue with next chunk
                         if ((e != null) && !(e instanceof ClosingException)) {
@@ -226,7 +226,7 @@ class PartitionScanner extends Closable {
                         }
                         return null;
                     }, this.hostContext.getExecutor())
-                    .thenComposeAsync((unused) -> acquireExpiredInChunksParallel(endAt, runningNeeded.get()), this.hostContext.getExecutor());
+                    .thenCompose((unused) -> acquireExpiredInChunksParallel(endAt, runningNeeded.get()));
         } else {
             TRACE_LOGGER.debug(this.hostContext.withHost("Short circuit: needed is 0, unowned is 0, or off end"));
         }
@@ -291,11 +291,11 @@ class PartitionScanner extends Closable {
 
                 final AcquisitionHolder holder = new AcquisitionHolder();
                 CompletableFuture<Void> oneSteal = this.hostContext.getLeaseManager().getLease(info.getPartitionId())
-                    .thenComposeAsync((lease) -> {
+                    .thenCompose((lease) -> {
                         throwIfClosingOrClosed("PartitionScanner is shutting down");
                         holder.setAcquiredLease(lease);
                         return this.hostContext.getLeaseManager().acquireLease(lease);
-                    }, this.hostContext.getExecutor())
+                    })
                     .thenAcceptAsync((acquired) -> {
                         throwIfClosingOrClosed("PartitionScanner is shutting down");
                         if (acquired) {
