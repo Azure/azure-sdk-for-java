@@ -59,12 +59,30 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                 .accessToken();
             mappedAuthorities = azureADGraphClient.getGrantedAuthorities(graphApiToken);
         } catch (MalformedURLException e) {
-            throw toOAuth2AuthenticationException("invalid_request", "Failed to acquire token for Graph API.", e);
-        } catch (ServiceUnavailableException | IOException e) {
-            throw toOAuth2AuthenticationException("server_error", "Failed to acquire token for Graph API.", e);
+            throw toOAuth2AuthenticationException(
+                AADOAuth2ErrorCode.INVALID_REQUEST,
+                "Failed to acquire token for Graph API.",
+                e
+            );
+        } catch (ServiceUnavailableException e) {
+            throw toOAuth2AuthenticationException(
+                AADOAuth2ErrorCode.SERVER_SERVER,
+                "Failed to acquire token for Graph API.",
+                e
+            );
+        } catch (IOException e) {
+            throw toOAuth2AuthenticationException(
+                AADOAuth2ErrorCode.SERVER_SERVER,
+                "Failed to map group to authorities.",
+                e
+            );
         } catch (MsalServiceException e) {
             if (e.claims() != null && !e.claims().isEmpty()) {
-                throw toOAuth2AuthenticationException("conditional_access_policy", "Handle conditional access policy", e);
+                throw toOAuth2AuthenticationException(
+                    AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY,
+                    "Handle conditional access policy",
+                    e
+                );
             } else {
                 throw e;
             }

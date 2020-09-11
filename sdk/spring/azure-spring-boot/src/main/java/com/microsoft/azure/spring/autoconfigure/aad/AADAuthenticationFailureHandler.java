@@ -36,7 +36,7 @@ public class AADAuthenticationFailureHandler implements AuthenticationFailureHan
                                         AuthenticationException exception) throws IOException, ServletException {
         final OAuth2AuthenticationException targetException = (OAuth2AuthenticationException) exception;
         // Handle conditional access policy
-        if (Constants.CONDITIONAL_ACCESS_POLICY.equals((targetException.getError().getErrorCode()))) {
+        if (AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY.equals((targetException.getError().getErrorCode()))) {
             // Get infos
             final Throwable cause = targetException.getCause();
             if (cause instanceof MsalServiceException) {
