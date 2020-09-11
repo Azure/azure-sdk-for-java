@@ -12,6 +12,12 @@ import com.microsoft.azure.management.postgresql.v2017_12_01.ServerServer;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.postgresql.v2017_12_01.ResourceIdentity;
+import com.microsoft.azure.management.postgresql.v2017_12_01.InfrastructureEncryption;
+import com.microsoft.azure.management.postgresql.v2017_12_01.MinimalTlsVersionEnum;
+import java.util.List;
+import com.microsoft.azure.management.postgresql.v2017_12_01.ServerPrivateEndpointConnection;
+import com.microsoft.azure.management.postgresql.v2017_12_01.PublicNetworkAccessEnum;
 import com.microsoft.azure.management.postgresql.v2017_12_01.Sku;
 import com.microsoft.azure.management.postgresql.v2017_12_01.SslEnforcementEnum;
 import com.microsoft.azure.management.postgresql.v2017_12_01.StorageProfile;
@@ -20,15 +26,15 @@ import com.microsoft.azure.management.postgresql.v2017_12_01.ServerState;
 import com.microsoft.azure.management.postgresql.v2017_12_01.ServerVersion;
 
 class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer {
-    private final PostgreSQLManager manager;
+    private final DBForPostgreSQLManager manager;
 
-    ServerServerImpl(ServerInner inner,  PostgreSQLManager manager) {
+    ServerServerImpl(ServerInner inner,  DBForPostgreSQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public PostgreSQLManager manager() {
+    public DBForPostgreSQLManager manager() {
         return this.manager;
     }
 
@@ -37,6 +43,11 @@ class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer 
     @Override
     public String administratorLogin() {
         return this.inner().administratorLogin();
+    }
+
+    @Override
+    public String byokEnforcement() {
+        return this.inner().byokEnforcement();
     }
 
     @Override
@@ -55,6 +66,16 @@ class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer 
     }
 
     @Override
+    public ResourceIdentity identity() {
+        return this.inner().identity();
+    }
+
+    @Override
+    public InfrastructureEncryption infrastructureEncryption() {
+        return this.inner().infrastructureEncryption();
+    }
+
+    @Override
     public String location() {
         return this.inner().location();
     }
@@ -65,8 +86,23 @@ class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer 
     }
 
     @Override
+    public MinimalTlsVersionEnum minimalTlsVersion() {
+        return this.inner().minimalTlsVersion();
+    }
+
+    @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
+        return this.inner().privateEndpointConnections();
+    }
+
+    @Override
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.inner().publicNetworkAccess();
     }
 
     @Override

@@ -53,7 +53,7 @@ public class LocationBasedPerformanceTiersInner {
      */
     interface LocationBasedPerformanceTiersService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.postgresql.v2017_12_01.LocationBasedPerformanceTiers list" })
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/performanceTiers")
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSQL/locations/{locationName}/performanceTiers")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("locationName") String locationName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
