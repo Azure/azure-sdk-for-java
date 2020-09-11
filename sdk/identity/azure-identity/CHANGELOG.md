@@ -3,6 +3,7 @@
 ## 1.2.0-beta.1 (2020-09-11)
 - Added `InteractiveBrowserCredentialBuilder.redirectUrl(String)` to configure the redirect URL
 - Deprecated `InteractiveBrowserCredentialBuilder.port(int)`
+- Added support for App Service 2019 MSI Endpoint in `ManagedIdentityCredential`
 - Added Shared Token cache support for MacOS Keychain, Gnome Keyring, and plain text for other Linux environments
 - Added option to write to shared token cache from `InteractiveBrowserCredential`, `AuthorizationCodeCredential`, `UsernamePasswordCredential`, `DeviceCodeCredential` `ClientSecretCredential` and `ClientCertificateCredential`
 - Added new APIs for authenticating users with `DeviceCodeCredential`,  `InteractiveBrowserCredential` and `UsernamePasswordCredential`.
