@@ -1,6 +1,6 @@
 # Azure Spring Integration Core client library for Java
+This package is an internal package providing base classes for Azure Spring integration.
 
-## Key concepts
 ## Getting started
 ## Key concepts
 ## Examples

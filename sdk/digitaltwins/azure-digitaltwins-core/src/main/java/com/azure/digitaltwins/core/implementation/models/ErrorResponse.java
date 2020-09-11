@@ -35,4 +35,15 @@ public final class ErrorResponse {
         this.error = error;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getError() != null) {
+            getError().validate();
+        }
+    }
 }

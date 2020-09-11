@@ -9,7 +9,6 @@ import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
-import com.nimbusds.jwt.JWTParser;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jose.proc.JWSKeySelector;
 import com.nimbusds.jose.proc.JWSVerificationKeySelector;
@@ -17,11 +16,11 @@ import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.JWTParser;
 import com.nimbusds.jwt.proc.BadJWTException;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
-import com.nimbusds.jwt.proc.JWTClaimsSetVerifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +37,6 @@ import java.util.Set;
 public class UserPrincipalManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserPrincipalManager.class);
-
     private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
     private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
     private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
@@ -65,7 +63,7 @@ public class UserPrincipalManager {
      * Create a new {@link UserPrincipalManager} based of the {@link ServiceEndpoints#getAadKeyDiscoveryUri()} and
      * {@link AADAuthenticationProperties#getEnvironment()}.
      *
-     * @param serviceEndpointsProps -  used to retrieve the JWKS URL
+     * @param serviceEndpointsProps - used to retrieve the JWKS URL
      * @param aadAuthProps          - used to retrieve the environment.
      * @param resourceRetriever     - configures the {@link RemoteJWKSet} call.
      * @param explicitAudienceCheck - explicit audience check
@@ -83,12 +81,20 @@ public class UserPrincipalManager {
             this.validAudiences.add(this.aadAuthProps.getAppIdUri());
         }
         try {
-            keySource = new RemoteJWKSet<>(new URL(serviceEndpointsProps
-                .getServiceEndpoints(aadAuthProps.getEnvironment()).getAadKeyDiscoveryUri()), resourceRetriever);
+            String aadKeyDiscoveryUri = getAadKeyDiscoveryUri(serviceEndpointsProps);
+            keySource = new RemoteJWKSet<>(new URL(aadKeyDiscoveryUri), resourceRetriever);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);
             throw new IllegalStateException("Failed to parse active directory key discovery uri.", e);
         }
+    }
+
+    private String getAadKeyDiscoveryUri(ServiceEndpointsProperties serviceEndpointsProps) {
+        return Optional.of(aadAuthProps)
+                       .map(AADAuthenticationProperties::getEnvironment)
+                       .map(serviceEndpointsProps::getServiceEndpoints)
+                       .map(ServiceEndpoints::getAadKeyDiscoveryUri)
+                       .orElse("");
     }
 
     /**
@@ -116,10 +122,8 @@ public class UserPrincipalManager {
             this.validAudiences.add(this.aadAuthProps.getAppIdUri());
         }
         try {
-            keySource = new RemoteJWKSet<>(new URL(serviceEndpointsProps
-                .getServiceEndpoints(aadAuthProps.getEnvironment()).getAadKeyDiscoveryUri()),
-                resourceRetriever,
-                jwkSetCache);
+            String aadKeyDiscoveryUri = getAadKeyDiscoveryUri(serviceEndpointsProps);
+            keySource = new RemoteJWKSet<>(new URL(aadKeyDiscoveryUri), resourceRetriever, jwkSetCache);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);
             throw new IllegalStateException("Failed to parse active directory key discovery uri.", e);
@@ -128,12 +132,9 @@ public class UserPrincipalManager {
 
     public UserPrincipal buildUserPrincipal(String idToken) throws ParseException, JOSEException, BadJOSEException {
         final JWSObject jwsObject = JWSObject.parse(idToken);
-        final ConfigurableJWTProcessor<SecurityContext> validator =
-            getAadJwtTokenValidator(jwsObject.getHeader().getAlgorithm());
+        final ConfigurableJWTProcessor<SecurityContext> validator = getValidator(jwsObject.getHeader().getAlgorithm());
         final JWTClaimsSet jwtClaimsSet = validator.process(idToken, null);
-        final JWTClaimsSetVerifier<SecurityContext> verifier = validator.getJWTClaimsSetVerifier();
-        verifier.verify(jwtClaimsSet, null);
-
+        validator.getJWTClaimsSetVerifier().verify(jwtClaimsSet, null);
         return new UserPrincipal(jwsObject, jwtClaimsSet);
     }
 
@@ -151,17 +152,15 @@ public class UserPrincipalManager {
         if (issuer == null) {
             return false;
         }
-        return issuer.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER) || issuer.startsWith(STS_WINDOWS_ISSUER)
+        return issuer.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER)
+            || issuer.startsWith(STS_WINDOWS_ISSUER)
             || issuer.startsWith(STS_CHINA_CLOUD_API_ISSUER);
     }
 
-    private ConfigurableJWTProcessor<SecurityContext> getAadJwtTokenValidator(JWSAlgorithm jwsAlgorithm) {
+    private ConfigurableJWTProcessor<SecurityContext> getValidator(JWSAlgorithm jwsAlgorithm) {
         final ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
-
-        final JWSKeySelector<SecurityContext> keySelector =
-            new JWSVerificationKeySelector<>(jwsAlgorithm, keySource);
+        final JWSKeySelector<SecurityContext> keySelector = new JWSVerificationKeySelector<>(jwsAlgorithm, keySource);
         jwtProcessor.setJWSKeySelector(keySelector);
-
         //TODO: would it make sense to inject it? and make it configurable or even allow to provide own implementation
         jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<SecurityContext>() {
             @Override
@@ -172,10 +171,12 @@ public class UserPrincipalManager {
                     throw new BadJWTException("Invalid token issuer");
                 }
                 if (explicitAudienceCheck) {
-                    final Optional<String> matchedAudience = claimsSet.getAudience().stream()
-                        .filter(UserPrincipalManager.this.validAudiences::contains).findFirst();
+                    Optional<String> matchedAudience = claimsSet.getAudience()
+                                                                .stream()
+                                                                .filter(validAudiences::contains)
+                                                                .findFirst();
                     if (matchedAudience.isPresent()) {
-                        LOGGER.debug("Matched audience [{}]", matchedAudience.get());
+                        LOGGER.debug("Matched audience: [{}]", matchedAudience.get());
                     } else {
                         throw new BadJWTException("Invalid token audience. Provided value " + claimsSet.getAudience()
                             + "does not match neither client-id nor AppIdUri.");

@@ -18,16 +18,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.microsoft.azure.spring.autoconfigure.aad.Constants.ALLOW_TELEMETRY_PROPERTY;
-import static com.microsoft.azure.spring.autoconfigure.aad.Constants.CLIENT_ID_PROPERTY;
-import static com.microsoft.azure.spring.autoconfigure.aad.Constants.CLIENT_SECRET_PROPERTY;
-import static com.microsoft.azure.spring.autoconfigure.aad.Constants.TARGETED_GROUPS_PROPERTY;
+import static com.microsoft.azure.spring.autoconfigure.aad.TestConstants.ALLOW_TELEMETRY_PROPERTY;
+import static com.microsoft.azure.spring.autoconfigure.aad.TestConstants.CLIENT_ID_PROPERTY;
+import static com.microsoft.azure.spring.autoconfigure.aad.TestConstants.CLIENT_SECRET_PROPERTY;
+import static com.microsoft.azure.spring.autoconfigure.aad.TestConstants.TARGETED_GROUPS_PROPERTY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADAuthenticationFilterPropertiesTest {
     @After
     public void clearAllProperties() {
-        System.clearProperty(Constants.SERVICE_ENVIRONMENT_PROPERTY);
+        System.clearProperty(TestConstants.SERVICE_ENVIRONMENT_PROPERTY);
         System.clearProperty(CLIENT_ID_PROPERTY);
         System.clearProperty(CLIENT_SECRET_PROPERTY);
         System.clearProperty(TARGETED_GROUPS_PROPERTY);
@@ -43,17 +43,17 @@ public class AADAuthenticationFilterPropertiesTest {
 
             final AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
 
-            assertThat(properties.getClientId()).isEqualTo(Constants.CLIENT_ID);
-            assertThat(properties.getClientSecret()).isEqualTo(Constants.CLIENT_SECRET);
+            assertThat(properties.getClientId()).isEqualTo(TestConstants.CLIENT_ID);
+            assertThat(properties.getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
             assertThat(properties.getActiveDirectoryGroups()
-                    .toString()).isEqualTo(Constants.TARGETED_GROUPS.toString());
+                    .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
         }
     }
 
     @Test
     public void defaultEnvironmentIsGlobal() {
         configureAllRequiredProperties();
-        assertThat(System.getProperty(Constants.SERVICE_ENVIRONMENT_PROPERTY)).isNullOrEmpty();
+        assertThat(System.getProperty(TestConstants.SERVICE_ENVIRONMENT_PROPERTY)).isNullOrEmpty();
 
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             context.register(Config.class);
@@ -61,15 +61,15 @@ public class AADAuthenticationFilterPropertiesTest {
 
             final AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
 
-            assertThat(properties.getEnvironment()).isEqualTo(Constants.DEFAULT_ENVIRONMENT);
+            assertThat(properties.getEnvironment()).isEqualTo(TestConstants.DEFAULT_ENVIRONMENT);
         }
     }
 
     private void configureAllRequiredProperties() {
-        System.setProperty(CLIENT_ID_PROPERTY, Constants.CLIENT_ID);
-        System.setProperty(CLIENT_SECRET_PROPERTY, Constants.CLIENT_SECRET);
+        System.setProperty(CLIENT_ID_PROPERTY, TestConstants.CLIENT_ID);
+        System.setProperty(CLIENT_SECRET_PROPERTY, TestConstants.CLIENT_SECRET);
         System.setProperty(TARGETED_GROUPS_PROPERTY,
-                Constants.TARGETED_GROUPS.toString().replace("[", "").replace("]", ""));
+                TestConstants.TARGETED_GROUPS.toString().replace("[", "").replace("]", ""));
         System.setProperty(ALLOW_TELEMETRY_PROPERTY, "false");
     }
 

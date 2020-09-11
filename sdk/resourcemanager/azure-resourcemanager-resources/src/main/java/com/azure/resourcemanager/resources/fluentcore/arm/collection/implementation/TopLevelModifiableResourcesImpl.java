@@ -6,7 +6,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
@@ -14,7 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.utils.ReactorMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -60,30 +58,17 @@ public abstract class TopLevelModifiableResourcesImpl<
 
     @Override
     public Flux<String> deleteByIdsAsync(String... ids) {
-        return this.deleteByIdsAsync(new ArrayList<String>(Arrays.asList(ids)));
+        return this.deleteByIdsAsync(new ArrayList<>(Arrays.asList(ids)));
     }
 
     @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public Flux<String> deleteByIdsAsync(Collection<String> ids) {
-        if (ids == null || ids.isEmpty()) {
-            return Flux.empty();
-        }
-
-        Collection<Mono<String>> observables = new ArrayList<>();
-        for (String id : ids) {
-            final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
-            final String name = ResourceUtils.nameFromResourceId(id);
-            Mono<String> o = ReactorMapper.map(this.inner().deleteAsync(resourceGroupName, name), id);
-            observables.add(o);
-        }
-
-        return Flux.mergeDelayError(32, observables.toArray(new Mono[0]));
+        return BatchDeletionImpl.deleteByIdsAsync(ids, this::deleteInnerAsync);
     }
 
     @Override
     public void deleteByIds(String... ids) {
-        this.deleteByIds(new ArrayList<String>(Arrays.asList(ids)));
+        this.deleteByIds(new ArrayList<>(Arrays.asList(ids)));
     }
 
     @Override

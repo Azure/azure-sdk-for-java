@@ -4,6 +4,7 @@
 
 package com.azure.messaging.servicebus.administration.models;
 
+import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_DUPLICATE_DETECTION_DURATION;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
@@ -22,9 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class CreateQueueOptionsTest {
-
     /**
      * Creates an instance with the given defaults.
      */
@@ -52,12 +53,22 @@ class CreateQueueOptionsTest {
     @Test
     void constructorWithOptions() {
         // Arrange
-        final List<AuthorizationRule> rules = Arrays.asList(
-            new AuthorizationRule().setClaimType("a").setClaimValue("b").setKeyName("c").setPrimaryKey("pk")
-                .setSecondaryKey("sk").setRights(Arrays.asList(AccessRights.LISTEN, AccessRights.MANAGE)),
-            new AuthorizationRule().setClaimType("a2").setClaimValue("b2").setKeyName("c2").setPrimaryKey("pk2")
-                .setSecondaryKey("sk2").setRights(Collections.singletonList(AccessRights.LISTEN))
-        );
+        final AuthorizationRule rule1 = mock(AuthorizationRule.class);
+        when(rule1.getKeyName()).thenReturn("name1");
+        when(rule1.getClaimType()).thenReturn("claimType1");
+        when(rule1.getClaimValue()).thenReturn("claimValue1");
+        when(rule1.getPrimaryKey()).thenReturn("primaryKey1");
+        when(rule1.getSecondaryKey()).thenReturn("secondaryKey1");
+        when(rule1.getAccessRights()).thenReturn(Arrays.asList(AccessRights.LISTEN, AccessRights.MANAGE));
+
+        final AuthorizationRule rule2 = mock(AuthorizationRule.class);
+        when(rule2.getKeyName()).thenReturn("name2");
+        when(rule2.getClaimType()).thenReturn("claimType2");
+        when(rule2.getClaimValue()).thenReturn("claimValue2");
+        when(rule2.getPrimaryKey()).thenReturn("primaryKey2");
+        when(rule2.getSecondaryKey()).thenReturn("secondaryKey2");
+        when(rule2.getAccessRights()).thenReturn(Collections.singletonList(AccessRights.SEND));
+
         final QueueProperties expected = EntityHelper.toModel(new QueueDescription())
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
@@ -73,6 +84,10 @@ class CreateQueueOptionsTest {
             .setRequiresSession(true)
             .setUserMetadata("Test-queue-Metadata")
             .setStatus(EntityStatus.DISABLED);
+
+        expected.getAuthorizationRules().add(rule1);
+        expected.getAuthorizationRules().add(rule2);
+
         final String queueName = "some-queue";
 
         EntityHelper.setQueueName(expected, queueName);
@@ -96,5 +111,7 @@ class CreateQueueOptionsTest {
         assertEquals(expected.requiresSession(), actual.requiresSession());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
         assertEquals(expected.getStatus(), actual.getStatus());
+
+        TestUtils.assertAuthorizationRules(expected.getAuthorizationRules(), actual.getAuthorizationRules());
     }
 }
