@@ -56,7 +56,7 @@ public class BatchDeletionImplTests {
         Flux<String> fluxIds = BatchDeletionImpl.deleteByIdsAsync(ids, mockDeleteByGroupAndNameAsync);
 
         // reactor.core.Exceptions.CompositeException
-        Assertions.assertThrows(RuntimeException.class, () -> {
+        Assertions.assertThrows(ManagementException.class, () -> {
             fluxIds.doOnNext(id -> resultIds.put(id, id))
                 .onErrorMap(e -> e)
                 .blockLast();

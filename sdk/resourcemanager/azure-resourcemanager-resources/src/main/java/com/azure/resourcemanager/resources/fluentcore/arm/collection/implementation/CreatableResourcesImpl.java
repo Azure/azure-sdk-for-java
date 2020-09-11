@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementa
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
+import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
@@ -14,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -54,16 +56,15 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     @Override
     @SafeVarargs
     public final Flux<Indexable> createAsync(Creatable<T>... creatables) {
-        CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
-        rootResource.addCreatableDependencies(creatables);
-        return rootResource.createAsync();
+        return this.createAsync(Arrays.asList(creatables));
     }
 
     @Override
     public final Flux<Indexable> createAsync(List<Creatable<T>> creatables) {
         CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
-        return rootResource.createAsync();
+        return rootResource.createAsync()
+            .onErrorMap(AggregatedManagementException::convertToManagementException);
     }
 
     private Mono<CreatedResources<T>> createAsyncNonStream(List<Creatable<T>> creatables) {
