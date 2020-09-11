@@ -97,7 +97,7 @@ public abstract class GroupableResourcesImpl<
     @Override
     public Mono<T> getByResourceGroupAsync(String resourceGroupName, String name) {
         return this.getInnerAsync(resourceGroupName, name)
-                .map(innerT -> wrapModel(innerT));
+                .map(this::wrapModel);
     }
 
     protected abstract Mono<InnerT> getInnerAsync(String resourceGroupName, String name);

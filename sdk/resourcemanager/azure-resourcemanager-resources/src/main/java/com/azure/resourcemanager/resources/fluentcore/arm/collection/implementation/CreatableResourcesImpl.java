@@ -14,7 +14,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -55,7 +54,9 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     @Override
     @SafeVarargs
     public final Flux<Indexable> createAsync(Creatable<T>... creatables) {
-        return this.createAsync(Arrays.asList(creatables));
+        CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
+        rootResource.addCreatableDependencies(creatables);
+        return rootResource.createAsync();
     }
 
     @Override
