@@ -68,6 +68,13 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="regexp" value="true"/>
       <property name="illegalPkgs" value="^(com\.)?sun\.\w*, ^io.opentelemetry"/>
     </module>
+
+    <module name="IllegalImport">
+      <property name="illegalClasses" value="java.util.Random"/>
+      <message key="import.illegal"
+               value="Class java.util.Random is not secure random. Use java.security.SecureRandom instead."/>
+    </module>
+
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
 
@@ -402,5 +409,22 @@ page at http://checkstyle.sourceforge.net/config.html -->
 <!--    <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">-->
 <!--      <property name="avoidStartWords" value="with,set"/>-->
 <!--    </module>-->
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Blacklisted Methods Check:
+      Math.random method that should not be used in the Azure SDK. Use SecureRandom instead -->
+    <module name="com.azure.tools.checkstyle.checks.BlacklistedMethodsCheck">
+      <property name="methods" value="java.lang.Math.random, Math.random"/>
+      <property name="message" value="%s is not secure. Use java.security.SecureRandom instead."/>
+    </module>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Blacklisted Methods Check:
+      Blacklisted methods that should not be used in the Azure SDK. Such as it could avoid inherently unsafe method. -->
+    <module name="com.azure.tools.checkstyle.checks.BlacklistedMethodsCheck">
+      <property name="methods" value="java.lang.System.runFinalizersOnExit, System.runFinalizersOnExit,
+       java.lang.Runtime.runFinalizersOnExit, Runtime.runFinalizersOnExit"/>
+      <property name="message" value="Function %s is inherently unsafe and deprecated."/>
+    </module>
   </module>
 </module>

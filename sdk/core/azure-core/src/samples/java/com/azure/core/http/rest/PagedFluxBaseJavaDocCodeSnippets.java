@@ -11,6 +11,7 @@ import reactor.core.CoreSubscriber;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -183,15 +184,16 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
      */
     private Mono<PagedResponse<Integer>> getPage(String continuationToken) {
         // Given this isn't calling an actual API we will arbitrarily generate a continuation token or end paging.
-        boolean lastPage = Math.random() > 0.5;
+        SecureRandom random = new SecureRandom();
+        boolean lastPage = random.nextDouble() > 0.5;
 
         // If it is the last page there should be no additional continuation tokens returned.
         String nextContinuationToken = lastPage ? null : UUID.randomUUID().toString();
 
         // Arbitrarily begin the next page of integers.
-        int elementCount = (int) Math.ceil(Math.random() * 15);
+        int elementCount = (int) Math.ceil(random.nextDouble() * 15);
         List<Integer> elements = IntStream.range(elementCount, elementCount + elementCount)
-            .map(val -> (int) (Math.random() * val))
+            .map(val -> (int) (random.nextDouble() * val))
             .boxed()
             .collect(Collectors.toList());
 

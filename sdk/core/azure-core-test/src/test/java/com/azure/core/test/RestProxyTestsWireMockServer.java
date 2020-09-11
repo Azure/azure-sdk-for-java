@@ -188,7 +188,7 @@ public final class RestProxyTestsWireMockServer {
             Map<String, String> baseHeaders = new HashMap<>();
             baseHeaders.put("Date", new DateTimeRfc1123(OffsetDateTime.now(ZoneOffset.UTC)).toString());
             baseHeaders.put("Connection", "keep-alive");
-            baseHeaders.put("X-Processed-Time", String.valueOf(Math.random() * 10));
+            baseHeaders.put("X-Processed-Time", String.valueOf(new SecureRandom().nextDouble() * 10));
             baseHeaders.put("Access-Control-Allow-Credentials", "true");
             baseHeaders.put("Content-Type", "application/json");
 
