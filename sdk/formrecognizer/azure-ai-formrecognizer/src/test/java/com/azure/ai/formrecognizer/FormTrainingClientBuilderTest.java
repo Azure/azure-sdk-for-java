@@ -19,14 +19,16 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.INVALID_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
-import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
+import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_URL;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for Form Training client builder
@@ -84,6 +86,23 @@ public class FormTrainingClientBuilderTest extends TestBase {
             assertNotNull(clientBuilder.buildClient().getFormRecognizerClient().beginRecognizeContentFromUrl(input).getFinalResult()));
     }
 
+    /**
+     * Test for invalid endpoint.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void trainingClientBuilderInvalidEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
+            Exception exception =  assertThrows(RuntimeException.class, () ->
+                clientBuilder.endpoint(INVALID_ENDPOINT).buildClient().getFormRecognizerClient()
+                    .beginRecognizeContentFromUrl(input).getFinalResult());
+            // RECORD mode has "Max retries 3 times exceeded. Error Details: Connection refused: no further information:
+            // notreal.azure.com/23.217.138.110:443"
+            // PLAYBACK mode has Error Details: null
+            assertTrue(exception.getMessage().contains("Max retries 3 times exceeded. Error Details:"));
+        });
+    }
+
     // Client builder runner
     void clientBuilderWithInvalidApiKeyCredentialRunner(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion,
@@ -110,7 +129,7 @@ public class FormTrainingClientBuilderTest extends TestBase {
             getEndpoint(), credential);
         // Update to valid key
         credential.update(getApiKey());
-        testRunner.apply(clientBuilder).accept(getTestingSasUri(FORM_JPG));
+        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + FORM_JPG);
     }
 
     void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -119,7 +138,7 @@ public class FormTrainingClientBuilderTest extends TestBase {
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
-        testRunner.apply(clientBuilder).accept(getTestingSasUri(FORM_JPG));
+        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + FORM_JPG);
     }
 
     void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -128,7 +147,7 @@ public class FormTrainingClientBuilderTest extends TestBase {
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        testRunner.apply(clientBuilder).accept(getTestingSasUri(FORM_JPG));
+        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + FORM_JPG);
     }
 
     String getEndpoint() {
@@ -168,16 +187,5 @@ public class FormTrainingClientBuilderTest extends TestBase {
     String getApiKey() {
         return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
             : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
-    }
-
-    private String getTestingSasUri(String fileName) {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode";
-        }
-
-        final String testingFileUrl =
-            Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
-        final String[] urlParts = testingFileUrl.split("\\?");
-        return urlParts[0] + "/" + fileName + "?" + urlParts[1];
     }
 }

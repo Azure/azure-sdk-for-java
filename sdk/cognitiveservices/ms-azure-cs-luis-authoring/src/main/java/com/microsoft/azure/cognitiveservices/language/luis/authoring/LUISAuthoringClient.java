@@ -132,12 +132,6 @@ public interface LUISAuthoringClient {
     Trains trains();
 
     /**
-     * Gets the Permissions object to access its operations.
-     * @return the Permissions object.
-     */
-    Permissions permissions();
-
-    /**
      * Gets the Patterns object to access its operations.
      * @return the Patterns object.
      */

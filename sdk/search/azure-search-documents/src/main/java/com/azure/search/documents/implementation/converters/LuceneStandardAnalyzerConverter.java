@@ -27,8 +27,7 @@ public final class LuceneStandardAnalyzerConverter {
         luceneStandardAnalyzer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getStopwords() != null) {
-            List<String> stopwords = new ArrayList<>(obj.getStopwords());
-            luceneStandardAnalyzer.setStopwords(stopwords);
+            luceneStandardAnalyzer.setStopwords(obj.getStopwords());
         }
         return luceneStandardAnalyzer;
     }
@@ -51,7 +50,7 @@ public final class LuceneStandardAnalyzerConverter {
             List<String> stopwords = new ArrayList<>(obj.getStopwords());
             luceneStandardAnalyzer.setStopwords(stopwords);
         }
-        luceneStandardAnalyzer.validate();
+
         return luceneStandardAnalyzer;
     }
 

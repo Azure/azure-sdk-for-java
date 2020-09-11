@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public class AggregateDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T>{
 
@@ -57,8 +57,8 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                 .map( superList -> {
 
                     double requestCharge = 0;
-                    List<Document> aggregateResults = new ArrayList<Document>();
-                    HashMap<String, String> headers = new HashMap<String, String>();
+                    List<Document> aggregateResults = new ArrayList<>();
+                    HashMap<String, String> headers = new HashMap<>();
 
                     for(FeedResponse<T> page : superList) {
 
@@ -104,23 +104,22 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
-        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
         Collection<AggregateOperator> aggregates,
         Map<String, AggregateOperator> groupByAliasToAggregateType,
         List<String> groupByAliases,
         boolean hasSelectValue,
-        String continuationToken) {
+        String continuationToken,
+        PipelinedDocumentQueryParams<T> documentQueryParams) {
 
         return createSourceComponentFunction
-                   .apply(continuationToken)
-                   .map(component -> {
-                       return new AggregateDocumentQueryExecutionContext<T>(component,
-                                                                            new ArrayList<>(aggregates),
-                                                                            groupByAliasToAggregateType,
-                                                                            groupByAliases,
-                                                                            hasSelectValue,
-                                                                            continuationToken);
-                   });
+                   .apply(continuationToken, documentQueryParams)
+                   .map(component -> new AggregateDocumentQueryExecutionContext<T>(component,
+                                                                        new ArrayList<>(aggregates),
+                                                                        groupByAliasToAggregateType,
+                                                                        groupByAliases,
+                                                                        hasSelectValue,
+                                                                        continuationToken));
     }
 
     public IDocumentQueryExecutionComponent<T> getComponent() {

@@ -5,12 +5,14 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Encapsulates options that can be specified for a request issued to cosmos Item.
  */
-public final class CosmosItemRequestOptions {
+public class CosmosItemRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private IndexingDirective indexingDirective;
     private List<String> preTriggerInclude;
@@ -19,6 +21,22 @@ public final class CosmosItemRequestOptions {
     private PartitionKey partitionKey;
     private String ifMatchETag;
     private String ifNoneMatchETag;
+
+
+    /**
+     * copy constructor
+     */
+    CosmosItemRequestOptions(CosmosItemRequestOptions options) {
+        consistencyLevel = options.consistencyLevel;
+        indexingDirective = options.indexingDirective;
+        preTriggerInclude = options.preTriggerInclude != null ? new ArrayList<>(options.preTriggerInclude) : null;
+        postTriggerInclude = options.postTriggerInclude != null ? new ArrayList<>(options.postTriggerInclude) : null;
+        sessionToken = options.sessionToken;
+        partitionKey = options.partitionKey;
+        ifMatchETag = options.ifMatchETag;
+        ifNoneMatchETag = options.ifNoneMatchETag;
+    }
+
 
     /**
      * Constructor

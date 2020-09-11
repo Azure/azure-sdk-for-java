@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.implementation.RequestOptions;
 import org.apache.commons.lang3.RandomStringUtils;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
@@ -32,7 +32,10 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
         Flux<? extends Object> obs;
         if (i % 10 == 0 && i % 100 != 0) {
 
-            PojoizedJson data = generateDocument(uuid + i, dataFieldValue);
+            PojoizedJson data = BenchmarkHelper.generateDocument(uuid + i,
+                dataFieldValue,
+                partitionKey,
+                configuration.getDocumentDataFieldCount());
             obs = cosmosAsyncContainer.createItem(data).flux();
 
         } else if (i % 100 == 0) {

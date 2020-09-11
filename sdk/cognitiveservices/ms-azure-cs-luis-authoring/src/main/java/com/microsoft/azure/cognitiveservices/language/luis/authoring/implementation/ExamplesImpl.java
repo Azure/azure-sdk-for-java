@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementation;
 
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddExamplesOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.BatchOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListExamplesOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples;
@@ -67,15 +69,15 @@ public class ExamplesImpl implements Examples {
     interface ExamplesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples add" })
         @POST("apps/{appId}/versions/{versionId}/example")
-        Observable<Response<ResponseBody>> add(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body ExampleLabelObject exampleLabelObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> add(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("enableNestedChildren") Boolean enableNestedChildren, @Body ExampleLabelObject exampleLabelObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples batch" })
         @POST("apps/{appId}/versions/{versionId}/examples")
-        Observable<Response<ResponseBody>> batch(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<ExampleLabelObject> exampleLabelObjectArray, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> batch(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("enableNestedChildren") Boolean enableNestedChildren, @Body List<ExampleLabelObject> exampleLabelObjectArray, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples list" })
         @GET("apps/{appId}/versions/{versionId}/examples")
-        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Query("enableNestedChildren") Boolean enableNestedChildren, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples delete" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/examples/{exampleId}", method = "DELETE", hasBody = true)
@@ -83,19 +85,21 @@ public class ExamplesImpl implements Examples {
 
     }
 
+
     /**
      * Adds a labeled example utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
+     * @param addOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the LabelExampleResponse object if successful.
      */
-    public LabelExampleResponse add(UUID appId, String versionId, ExampleLabelObject exampleLabelObject) {
-        return addWithServiceResponseAsync(appId, versionId, exampleLabelObject).toBlocking().single().body();
+    public LabelExampleResponse add(UUID appId, String versionId, ExampleLabelObject exampleLabelObject, AddExamplesOptionalParameter addOptionalParameter) {
+        return addWithServiceResponseAsync(appId, versionId, exampleLabelObject, addOptionalParameter).toBlocking().single().body();
     }
 
     /**
@@ -104,12 +108,13 @@ public class ExamplesImpl implements Examples {
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
+     * @param addOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<LabelExampleResponse> addAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject, final ServiceCallback<LabelExampleResponse> serviceCallback) {
-        return ServiceFuture.fromResponse(addWithServiceResponseAsync(appId, versionId, exampleLabelObject), serviceCallback);
+    public ServiceFuture<LabelExampleResponse> addAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject, AddExamplesOptionalParameter addOptionalParameter, final ServiceCallback<LabelExampleResponse> serviceCallback) {
+        return ServiceFuture.fromResponse(addWithServiceResponseAsync(appId, versionId, exampleLabelObject, addOptionalParameter), serviceCallback);
     }
 
     /**
@@ -118,11 +123,12 @@ public class ExamplesImpl implements Examples {
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
+     * @param addOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LabelExampleResponse object
      */
-    public Observable<LabelExampleResponse> addAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject) {
-        return addWithServiceResponseAsync(appId, versionId, exampleLabelObject).map(new Func1<ServiceResponse<LabelExampleResponse>, LabelExampleResponse>() {
+    public Observable<LabelExampleResponse> addAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject, AddExamplesOptionalParameter addOptionalParameter) {
+        return addWithServiceResponseAsync(appId, versionId, exampleLabelObject, addOptionalParameter).map(new Func1<ServiceResponse<LabelExampleResponse>, LabelExampleResponse>() {
             @Override
             public LabelExampleResponse call(ServiceResponse<LabelExampleResponse> response) {
                 return response.body();
@@ -136,10 +142,40 @@ public class ExamplesImpl implements Examples {
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
+     * @param addOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LabelExampleResponse object
      */
-    public Observable<ServiceResponse<LabelExampleResponse>> addWithServiceResponseAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject) {
+    public Observable<ServiceResponse<LabelExampleResponse>> addWithServiceResponseAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject, AddExamplesOptionalParameter addOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (exampleLabelObject == null) {
+            throw new IllegalArgumentException("Parameter exampleLabelObject is required and cannot be null.");
+        }
+        Validator.validate(exampleLabelObject);
+        final Boolean enableNestedChildren = addOptionalParameter != null ? addOptionalParameter.enableNestedChildren() : null;
+
+        return addWithServiceResponseAsync(appId, versionId, exampleLabelObject, enableNestedChildren);
+    }
+
+    /**
+     * Adds a labeled example utterance in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
+     * @param enableNestedChildren Toggles nested/flat format
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LabelExampleResponse object
+     */
+    public Observable<ServiceResponse<LabelExampleResponse>> addWithServiceResponseAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject, Boolean enableNestedChildren) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -154,7 +190,7 @@ public class ExamplesImpl implements Examples {
         }
         Validator.validate(exampleLabelObject);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.add(appId, versionId, exampleLabelObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.add(appId, versionId, enableNestedChildren, exampleLabelObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LabelExampleResponse>>>() {
                 @Override
                 public Observable<ServiceResponse<LabelExampleResponse>> call(Response<ResponseBody> response) {
@@ -175,19 +211,84 @@ public class ExamplesImpl implements Examples {
                 .build(response);
     }
 
+    @Override
+    public ExamplesAddParameters add() {
+        return new ExamplesAddParameters(this);
+    }
+
+    /**
+     * Internal class implementing ExamplesAddDefinition.
+     */
+    class ExamplesAddParameters implements ExamplesAddDefinition {
+        private ExamplesImpl parent;
+        private UUID appId;
+        private String versionId;
+        private ExampleLabelObject exampleLabelObject;
+        private Boolean enableNestedChildren;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ExamplesAddParameters(ExamplesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ExamplesAddParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ExamplesAddParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ExamplesAddParameters withExampleLabelObject(ExampleLabelObject exampleLabelObject) {
+            this.exampleLabelObject = exampleLabelObject;
+            return this;
+        }
+
+        @Override
+        public ExamplesAddParameters withEnableNestedChildren(Boolean enableNestedChildren) {
+            this.enableNestedChildren = enableNestedChildren;
+            return this;
+        }
+
+        @Override
+        public LabelExampleResponse execute() {
+        return addWithServiceResponseAsync(appId, versionId, exampleLabelObject, enableNestedChildren).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<LabelExampleResponse> executeAsync() {
+            return addWithServiceResponseAsync(appId, versionId, exampleLabelObject, enableNestedChildren).map(new Func1<ServiceResponse<LabelExampleResponse>, LabelExampleResponse>() {
+                @Override
+                public LabelExampleResponse call(ServiceResponse<LabelExampleResponse> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+
     /**
      * Adds a batch of labeled example utterances to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleLabelObjectArray Array of example utterances.
+     * @param batchOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;BatchLabelExample&gt; object if successful.
      */
-    public List<BatchLabelExample> batch(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray) {
-        return batchWithServiceResponseAsync(appId, versionId, exampleLabelObjectArray).toBlocking().single().body();
+    public List<BatchLabelExample> batch(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray, BatchOptionalParameter batchOptionalParameter) {
+        return batchWithServiceResponseAsync(appId, versionId, exampleLabelObjectArray, batchOptionalParameter).toBlocking().single().body();
     }
 
     /**
@@ -196,12 +297,13 @@ public class ExamplesImpl implements Examples {
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleLabelObjectArray Array of example utterances.
+     * @param batchOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<BatchLabelExample>> batchAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray, final ServiceCallback<List<BatchLabelExample>> serviceCallback) {
-        return ServiceFuture.fromResponse(batchWithServiceResponseAsync(appId, versionId, exampleLabelObjectArray), serviceCallback);
+    public ServiceFuture<List<BatchLabelExample>> batchAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray, BatchOptionalParameter batchOptionalParameter, final ServiceCallback<List<BatchLabelExample>> serviceCallback) {
+        return ServiceFuture.fromResponse(batchWithServiceResponseAsync(appId, versionId, exampleLabelObjectArray, batchOptionalParameter), serviceCallback);
     }
 
     /**
@@ -210,11 +312,12 @@ public class ExamplesImpl implements Examples {
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleLabelObjectArray Array of example utterances.
+     * @param batchOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;BatchLabelExample&gt; object
      */
-    public Observable<List<BatchLabelExample>> batchAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray) {
-        return batchWithServiceResponseAsync(appId, versionId, exampleLabelObjectArray).map(new Func1<ServiceResponse<List<BatchLabelExample>>, List<BatchLabelExample>>() {
+    public Observable<List<BatchLabelExample>> batchAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray, BatchOptionalParameter batchOptionalParameter) {
+        return batchWithServiceResponseAsync(appId, versionId, exampleLabelObjectArray, batchOptionalParameter).map(new Func1<ServiceResponse<List<BatchLabelExample>>, List<BatchLabelExample>>() {
             @Override
             public List<BatchLabelExample> call(ServiceResponse<List<BatchLabelExample>> response) {
                 return response.body();
@@ -228,10 +331,40 @@ public class ExamplesImpl implements Examples {
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleLabelObjectArray Array of example utterances.
+     * @param batchOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;BatchLabelExample&gt; object
      */
-    public Observable<ServiceResponse<List<BatchLabelExample>>> batchWithServiceResponseAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray) {
+    public Observable<ServiceResponse<List<BatchLabelExample>>> batchWithServiceResponseAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray, BatchOptionalParameter batchOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (exampleLabelObjectArray == null) {
+            throw new IllegalArgumentException("Parameter exampleLabelObjectArray is required and cannot be null.");
+        }
+        Validator.validate(exampleLabelObjectArray);
+        final Boolean enableNestedChildren = batchOptionalParameter != null ? batchOptionalParameter.enableNestedChildren() : null;
+
+        return batchWithServiceResponseAsync(appId, versionId, exampleLabelObjectArray, enableNestedChildren);
+    }
+
+    /**
+     * Adds a batch of labeled example utterances to a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param exampleLabelObjectArray Array of example utterances.
+     * @param enableNestedChildren Toggles nested/flat format
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;BatchLabelExample&gt; object
+     */
+    public Observable<ServiceResponse<List<BatchLabelExample>>> batchWithServiceResponseAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray, Boolean enableNestedChildren) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -246,7 +379,7 @@ public class ExamplesImpl implements Examples {
         }
         Validator.validate(exampleLabelObjectArray);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.batch(appId, versionId, exampleLabelObjectArray, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.batch(appId, versionId, enableNestedChildren, exampleLabelObjectArray, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<BatchLabelExample>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<BatchLabelExample>>> call(Response<ResponseBody> response) {
@@ -266,6 +399,69 @@ public class ExamplesImpl implements Examples {
                 .register(207, new TypeToken<List<BatchLabelExample>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ExamplesBatchParameters batch() {
+        return new ExamplesBatchParameters(this);
+    }
+
+    /**
+     * Internal class implementing ExamplesBatchDefinition.
+     */
+    class ExamplesBatchParameters implements ExamplesBatchDefinition {
+        private ExamplesImpl parent;
+        private UUID appId;
+        private String versionId;
+        private List<ExampleLabelObject> exampleLabelObjectArray;
+        private Boolean enableNestedChildren;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ExamplesBatchParameters(ExamplesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ExamplesBatchParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ExamplesBatchParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ExamplesBatchParameters withExampleLabelObjectArray(List<ExampleLabelObject> exampleLabelObjectArray) {
+            this.exampleLabelObjectArray = exampleLabelObjectArray;
+            return this;
+        }
+
+        @Override
+        public ExamplesBatchParameters withEnableNestedChildren(Boolean enableNestedChildren) {
+            this.enableNestedChildren = enableNestedChildren;
+            return this;
+        }
+
+        @Override
+        public List<BatchLabelExample> execute() {
+        return batchWithServiceResponseAsync(appId, versionId, exampleLabelObjectArray, enableNestedChildren).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<BatchLabelExample>> executeAsync() {
+            return batchWithServiceResponseAsync(appId, versionId, exampleLabelObjectArray, enableNestedChildren).map(new Func1<ServiceResponse<List<BatchLabelExample>>, List<BatchLabelExample>>() {
+                @Override
+                public List<BatchLabelExample> call(ServiceResponse<List<BatchLabelExample>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -337,8 +533,9 @@ public class ExamplesImpl implements Examples {
         }
         final Integer skip = listOptionalParameter != null ? listOptionalParameter.skip() : null;
         final Integer take = listOptionalParameter != null ? listOptionalParameter.take() : null;
+        final Boolean enableNestedChildren = listOptionalParameter != null ? listOptionalParameter.enableNestedChildren() : null;
 
-        return listWithServiceResponseAsync(appId, versionId, skip, take);
+        return listWithServiceResponseAsync(appId, versionId, skip, take, enableNestedChildren);
     }
 
     /**
@@ -348,10 +545,11 @@ public class ExamplesImpl implements Examples {
      * @param versionId The version ID.
      * @param skip The number of entries to skip. Default value is 0.
      * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @param enableNestedChildren Toggles nested/flat format
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LabeledUtterance&gt; object
      */
-    public Observable<ServiceResponse<List<LabeledUtterance>>> listWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+    public Observable<ServiceResponse<List<LabeledUtterance>>> listWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take, Boolean enableNestedChildren) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -362,7 +560,7 @@ public class ExamplesImpl implements Examples {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.list(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.list(appId, versionId, skip, take, enableNestedChildren, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<LabeledUtterance>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<LabeledUtterance>>> call(Response<ResponseBody> response) {
@@ -397,6 +595,7 @@ public class ExamplesImpl implements Examples {
         private String versionId;
         private Integer skip;
         private Integer take;
+        private Boolean enableNestedChildren;
 
         /**
          * Constructor.
@@ -431,13 +630,19 @@ public class ExamplesImpl implements Examples {
         }
 
         @Override
+        public ExamplesListParameters withEnableNestedChildren(Boolean enableNestedChildren) {
+            this.enableNestedChildren = enableNestedChildren;
+            return this;
+        }
+
+        @Override
         public List<LabeledUtterance> execute() {
-        return listWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+        return listWithServiceResponseAsync(appId, versionId, skip, take, enableNestedChildren).toBlocking().single().body();
     }
 
         @Override
         public Observable<List<LabeledUtterance>> executeAsync() {
-            return listWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<LabeledUtterance>>, List<LabeledUtterance>>() {
+            return listWithServiceResponseAsync(appId, versionId, skip, take, enableNestedChildren).map(new Func1<ServiceResponse<List<LabeledUtterance>>, List<LabeledUtterance>>() {
                 @Override
                 public List<LabeledUtterance> call(ServiceResponse<List<LabeledUtterance>> response) {
                     return response.body();

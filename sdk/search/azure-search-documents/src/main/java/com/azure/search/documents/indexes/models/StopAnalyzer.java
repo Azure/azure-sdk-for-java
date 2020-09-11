@@ -5,8 +5,11 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,6 +52,18 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      * @param stopwords the stopwords value to set.
      * @return the StopAnalyzer object itself.
      */
+    public StopAnalyzer setStopwords(String... stopwords) {
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
+        return this;
+    }
+
+    /**
+     * Set the stopwords property: A list of stopwords.
+     *
+     * @param stopwords the stopwords value to set.
+     * @return the StopAnalyzer object itself.
+     */
+    @JsonSetter
     public StopAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;

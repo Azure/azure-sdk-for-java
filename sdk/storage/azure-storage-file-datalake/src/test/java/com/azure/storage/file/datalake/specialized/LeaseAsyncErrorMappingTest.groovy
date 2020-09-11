@@ -44,7 +44,7 @@ class LeaseAsyncErrorMappingTest extends APISpec {
 
     def "Change Lease"() {
         when:
-        def changeLeaseVerifier = StepVerifier.create(leaseAsyncClient.changeLeaseWithResponse(null, null))
+        def changeLeaseVerifier = StepVerifier.create(leaseAsyncClient.changeLeaseWithResponse("id", null))
         then:
         changeLeaseVerifier.verifyError(DataLakeStorageException)
     }

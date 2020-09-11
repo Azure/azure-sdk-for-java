@@ -18,6 +18,8 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -90,6 +92,37 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         result = storedProcedure.execute(null, options).block().getResponseAsString();
 
         assertThat(result).isEqualTo("\"0123456789\"");
+    }
+
+    @Test(groups = "simple", timeOut = TIMEOUT)
+    public void executeStoredProcedureWithScriptLoggingEnabled() throws Exception {
+        // Create a stored procedure
+        CosmosStoredProcedureProperties storedProcedure = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {" +
+                "        var mytext = \"x\";" +
+                "        var myval = 1;" +
+                "        try {" +
+                "            console.log(\"The value of %s is %s.\", mytext, myval);" +
+                "            getContext().getResponse().setBody(\"Success!\");" +
+                "        }" +
+                "        catch(err) {" +
+                "            getContext().getResponse().setBody(\"inline err: [\" + err.number + \"] \" + err);" +
+                "        }" +
+                "}");
+
+        createdCollection.getScripts().createStoredProcedure(storedProcedure).block();
+        CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+        options.setScriptLoggingEnabled(true);
+        options.setPartitionKey(PartitionKey.NONE);
+
+        CosmosStoredProcedureResponse executeResponse = createdCollection.getScripts()
+                                                                         .getStoredProcedure(storedProcedure.getId())
+                                                                         .execute(null, options).block();
+
+        String logResult = "The value of x is 1.";
+        assert executeResponse != null;
+        assertThat(executeResponse.getScriptLog()).isEqualTo(logResult);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

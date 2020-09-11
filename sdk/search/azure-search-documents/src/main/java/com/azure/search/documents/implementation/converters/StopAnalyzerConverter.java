@@ -22,8 +22,7 @@ public final class StopAnalyzerConverter {
         StopAnalyzer stopAnalyzer = new StopAnalyzer(obj.getName());
 
         if (obj.getStopwords() != null) {
-            List<String> stopwords = new ArrayList<>(obj.getStopwords());
-            stopAnalyzer.setStopwords(stopwords);
+            stopAnalyzer.setStopwords(obj.getStopwords());
         }
         return stopAnalyzer;
     }
@@ -42,7 +41,7 @@ public final class StopAnalyzerConverter {
             List<String> stopwords = new ArrayList<>(obj.getStopwords());
             stopAnalyzer.setStopwords(stopwords);
         }
-        stopAnalyzer.validate();
+
         return stopAnalyzer;
     }
 

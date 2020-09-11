@@ -160,6 +160,7 @@ class AzureDirectoryStreamTest extends APISpec {
     }
 
     def "Next hasNext fail after close"() {
+        setup:
         def rootName = getNonDefaultRootDir(fs)
         def dirName = generateBlobName()
         List<AzureResource> resources = []
@@ -182,6 +183,22 @@ class AzureDirectoryStreamTest extends APISpec {
 
         then:
         thrown(NoSuchElementException)
+    }
+
+    def "Has next fail after fs close"() {
+        setup:
+        def path = fs.getPath(generateBlobName())
+        putDirectoryBlob(rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(path.getFileName().toString())
+            .getBlockBlobClient())
+        def stream = fs.provider().newDirectoryStream(path, null)
+
+        when:
+        fs.close()
+        stream.iterator().hasNext()
+
+        then:
+        def e = thrown(DirectoryIteratorException)
+        e.getCause().getClass() == IOException.class
     }
 
     def "Filter"() {

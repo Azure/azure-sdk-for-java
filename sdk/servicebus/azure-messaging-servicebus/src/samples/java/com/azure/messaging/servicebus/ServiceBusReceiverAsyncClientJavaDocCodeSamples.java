@@ -11,7 +11,6 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
-import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -130,7 +129,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Received message id: %s%n", message.getMessageId());
             System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
-            return receiver.complete(message.getLockToken());
+            return receiver.complete(message);
         }).subscribe(aVoid -> System.out.println("Processed message."),
             error -> System.out.println("Error occurred: " + error));
 
@@ -138,35 +137,6 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         subscription.dispose();
         receiver.close();
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
-    }
-
-    /**
-     * Receives messages up to a time or duration.
-     */
-    public void receiveMaxTimeDuration() {
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-            .connectionString("fake-string")
-            .receiver()
-            .queueName("<< QUEUE NAME >>")
-            .buildAsyncClient();
-
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#int-duration
-        Disposable subscription = receiver.receiveMessages(15, Duration.ofSeconds(30))
-            .flatMap(context -> {
-                ServiceBusReceivedMessage message = context.getMessage();
-                System.out.printf("Received message id: %s%n", message.getMessageId());
-                System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
-                return receiver.complete(message.getLockToken());
-            }).subscribe(aVoid -> System.out.println("Processed message."),
-                error -> System.out.println("Error occurred: " + error));
-
-        // subscribe is a non-blocking call and program flow will continue before messages are fetched.
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#int-duration
-
-        // When program ends, or you're done receiving all messages.
-        subscription.dispose();
-
-        receiver.close();
     }
 
     /**
@@ -313,7 +283,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.complete(messageContext.getMessage().getLockToken(), transactionContext)
+        Disposable subscriber = receiver.complete(messageContext.getMessage(), transactionContext)
             .subscribe();
 
         // When all the messages are processed and settled, you should commit/rollback this transaction.
@@ -343,7 +313,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.abandon(messageContext.getMessage().getLockToken(), propertiesToModify,
+        Disposable subscriber = receiver.abandon(messageContext.getMessage(), propertiesToModify,
             transactionContext).subscribe();
 
         // When all the messages are processed and settled, you should commit/rollback this transaction.

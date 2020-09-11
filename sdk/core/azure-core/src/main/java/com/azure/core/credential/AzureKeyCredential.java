@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public final class AzureKeyCredential {
     private final ClientLogger logger = new ClientLogger(AzureKeyCredential.class);
-    private String key;
+    private volatile String key;
 
     /**
      * Creates a credential that authorizes request with the given key.

@@ -171,7 +171,7 @@ public class QueueSendReceiveTests extends SendReceiveTests {
             try {
                 pSender.send(message2, transaction);
             } catch (UnsupportedOperationException ex) {
-                caught = true;                
+                caught = true;
             }
 
             Assert.assertTrue(caught);

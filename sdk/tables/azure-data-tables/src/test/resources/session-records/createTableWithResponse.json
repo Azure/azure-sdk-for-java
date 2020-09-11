@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "48bc9694-d930-4c6a-a44f-59d9163e7ebb",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Fri, 21 Aug 2020 21:01:13 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename88027722')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "392d82ae-8002-006e-39fe-779f73000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "48bc9694-d930-4c6a-a44f-59d9163e7ebb",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename88027722')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "0b403ac1-1ec7-4063-a653-3369bfa73f46",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Fri, 21 Aug 2020 21:01:13 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename8274711b')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "392d82d5-8002-006e-5bfe-779f73000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "0b403ac1-1ec7-4063-a653-3369bfa73f46",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename8274711b')"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename88027722", "tablename8274711b" ]
+}

@@ -15,7 +15,7 @@
         <relativePath>../../parents/azure-arm-parent/pom.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-storage</artifactId>
-    <version>1.0.0-beta-8</version>
+    <version>1.0.0-beta-9</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Storage Management</name>
     <description>This package contains Microsoft Storage Management SDK.</description>

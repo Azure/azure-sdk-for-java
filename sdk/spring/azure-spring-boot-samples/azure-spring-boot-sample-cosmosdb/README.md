@@ -31,6 +31,12 @@ This sample project demonstrates how to use Azure CosmosDB via Spring Boot Start
    azure.cosmosdb.key=your-cosmosdb-key
    azure.cosmosdb.database=your-cosmosdb-databasename
    ```
+3. (Optional) Add Spring Boot Actuator
+   ```properties
+    management.health.azure-cosmos.enabled=true
+   ```
+    If you choose to add Spring Boot Actuator for CosmosDB, add `management.health.azure-cosmos.enabled=true` to application.properties.
+    Call `http://{hostname}:{port}/actuator/health/cosmos` to get the CosmosDB health info. 
 
 ### Run with Maven
 

@@ -1,7 +1,11 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.7 (Unreleased)
 
+
+## 1.0.0-beta.6 (2020-08-07)
+- Update `opentelemetry-api` dependency version to `0.6.0` and included `io.grpc:grpc-context[1.30.0]` external
+ dependency .
 
 ## 1.0.0-beta.5 (2020-06-08)
 

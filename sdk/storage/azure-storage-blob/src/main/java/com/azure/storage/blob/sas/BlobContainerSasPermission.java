@@ -29,6 +29,8 @@ public final class BlobContainerSasPermission {
 
     private boolean listPermission;
 
+    private boolean tagsPermission;
+
     /**
      * Initializes an {@code BlobContainerSasPermission} object with all fields set to false.
      */
@@ -41,7 +43,7 @@ public final class BlobContainerSasPermission {
      *
      * @param permString A {@code String} which represents the {@code BlobContainerSasPermission}.
      * @return A {@code BlobContainerSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, x or l.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, x, l or t.
      */
     public static BlobContainerSasPermission parse(String permString) {
         BlobContainerSasPermission permissions = new BlobContainerSasPermission();
@@ -69,6 +71,9 @@ public final class BlobContainerSasPermission {
                     break;
                 case 'l':
                     permissions.listPermission = true;
+                    break;
+                case 't':
+                    permissions.tagsPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -206,6 +211,24 @@ public final class BlobContainerSasPermission {
     }
 
     /**
+     * @return the tags permission status.
+     */
+    public boolean hasTagsPermission() {
+        return tagsPermission;
+    }
+
+    /**
+     * Sets the tags permission status.
+     *
+     * @param tagsPermission Permission status to set
+     * @return the updated BlobContainerSasPermission object.
+     */
+    public BlobContainerSasPermission setTagsPermission(boolean tagsPermission) {
+        this.tagsPermission = tagsPermission;
+        return this;
+    }
+
+    /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -243,6 +266,10 @@ public final class BlobContainerSasPermission {
 
         if (this.listPermission) {
             builder.append('l');
+        }
+
+        if (this.tagsPermission) {
+            builder.append('t');
         }
 
         return builder.toString();

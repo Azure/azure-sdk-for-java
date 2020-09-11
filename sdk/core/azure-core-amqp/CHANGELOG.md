@@ -1,7 +1,24 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
+## 1.5.1 (2020-09-10)
+- Add support for SAS when authenticating.
+
+## 1.5.0 (2020-09-10)
+- Remove unused and duplicate logic for Handlers.getErrors().
+- Close children sessions and links when a connection is disposed.
+- Added AMQP Message envelope which can be accessed using `AmqpAnnotatedMessage`.
+
+## 1.4.0 (2020-08-11)
+
+- Settles AMQP deliveries that were received after local link state changed to CLOSED
+- Add credits to AMQP link only if the receiver is not disposed.
+
+## 1.3.0 (2020-07-02)
+
+- Added `createProducer` constructor which takes an additional parameter for link properties.
+- Fixes `User-Agent` string to follow guidelines.
 
 ## 1.2.0 (2020-06-08)
 - Fixes bug where receiver would not recover after network connection loss.

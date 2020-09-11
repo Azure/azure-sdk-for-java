@@ -8,6 +8,8 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -16,6 +18,7 @@ import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.OffsetContinuationToken;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -23,11 +26,13 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,12 +54,16 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocuments(boolean qmEnabled) {
+    public void queryDocuments(Boolean qmEnabled) {
         int skipCount = 4;
         int takeCount = 10;
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setQueryMetricsEnabled(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options,
                                                                                                 InternalObjectNode.class);
@@ -128,6 +137,64 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         int takeCount = 10;
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
         this.queryWithContinuationTokensAndPageSizes(query, new int[] {1, 5, 15}, takeCount);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    public void queryDocumentsWithDistinct(Boolean qmEnabled) {
+        int skipCount = 4;
+        int takeCount = 10;
+        String query =
+            String.format("SELECT DISTINCT c.id from c OFFSET %s LIMIT %s", skipCount, takeCount);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
+        options.setMaxDegreeOfParallelism(2);
+        CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
+
+        List<String> expectedIds =
+            docs.stream().skip(4).limit(10).map(doc -> doc.getResourceId()).collect(Collectors.toList());
+
+        FeedResponseListValidator<InternalObjectNode> validator =
+            new FeedResponseListValidator.Builder<InternalObjectNode>()
+                .containsExactly(expectedIds)
+                .numberOfPages(3)
+                .hasValidQueryMetrics(qmEnabled)
+                .build();
+
+        validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    public void queryDocumentsWithAggregate(Boolean qmEnabled) {
+        int skipCount = 0;
+        int takeCount = 10;
+        String query =
+            String.format("SELECT VALUE MAX(c.%s) from c OFFSET %s LIMIT %s", field, skipCount, takeCount);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
+        CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(query, options, JsonNode.class);
+
+        // The pipeline execution sequence is Aggregrate, skip, and top/limit, hence finding the max from among the docs
+        InternalObjectNode expectedDoc = docs
+            .stream()
+            .max(Comparator.comparing(r -> ModelBridgeInternal.getIntFromJsonSerializable(r, field)))
+            .get();
+
+        FeedResponseListValidator<JsonNode> validator =
+            new FeedResponseListValidator.Builder<JsonNode>()
+                .withAggregateValue(ModelBridgeInternal.getIntFromJsonSerializable(expectedDoc, field))
+                .numberOfPages(1)
+                .hasValidQueryMetrics(qmEnabled)
+                .build();
+
+        validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
     }
 
     private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, int takeCount) {

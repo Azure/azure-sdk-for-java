@@ -1,22 +1,28 @@
 # Wrapper Script for ChangeLog Verification
 param (
-    [Parameter(Mandatory=$true)]
-    [string]$PackageName,
-    [Parameter(Mandatory=$true)]
-    [string]$ServiceName,
-    [string]$RepoRoot,
-    [ValidateSet("net","java","js","python")]
-    [string]$Language,
-    [string]$RepoName,
-    [boolean]$ForRelease=$False
+  [String]$ChangeLogLocation,
+  [String]$VersionString,
+  [string]$PackageName,
+  [string]$ServiceDirectory,
+  [boolean]$ForRelease = $False
 )
 
-Import-Module "${PSScriptRoot}/modules/common-manifest.psd1"
+. (Join-Path $PSScriptRoot common.ps1)
 
-if ([System.String]::IsNullOrEmpty($Language))
+$validChangeLog = $false
+if ($ChangeLogLocation -and $VersionString) 
 {
-    $Language = $RepoName.Substring($RepoName.LastIndexOf('-') + 1)
+  $validChangeLog = Confirm-ChangeLogEntry -ChangeLogLocation $ChangeLogLocation -VersionString $VersionString -ForRelease $ForRelease
+}
+else
+{
+  $PackageProp = Get-PkgProperties -PackageName $PackageName -ServiceDirectory $ServiceDirectory
+  $validChangeLog = Confirm-ChangeLogEntry -ChangeLogLocation $PackageProp.ChangeLogPath -VersionString $PackageProp.Version -ForRelease $ForRelease
 }
 
-$PackageProp = Get-PkgProperties -PackageName $PackageName -ServiceName $ServiceName -Language $Language -RepoRoot $RepoRoot
-Confirm-ChangeLogEntry -ChangeLogLocation $PackageProp.pkgChangeLogPath -VersionString $PackageProp.pkgVersion -ForRelease $ForRelease
+if (!$validChangeLog)
+{
+  exit 1
+}
+
+exit 0

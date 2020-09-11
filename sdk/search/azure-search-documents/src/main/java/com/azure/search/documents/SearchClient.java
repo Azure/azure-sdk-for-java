@@ -24,10 +24,14 @@ import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedIterable;
 import com.azure.search.documents.util.SuggestPagedResponse;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
- * Cognitive Search Synchronous Client to query an index and upload, merge, or delete documents
+ * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
+ * documents in an Azure Cognitive Search service.
+ *
+ * @see SearchClientBuilder
  */
 @ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchClient {
@@ -71,6 +75,42 @@ public final class SearchClient {
     }
 
     /**
+     * Creates a {@link SearchBatchClient} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
+     * <p>
+     * This will use the default configuration values for {@link SearchBatchClient}, see {@link
+     * SearchBatchClientBuilder} for more information.
+     *
+     * @return A {@link SearchBatchClient} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
+     */
+    public SearchBatchClient getSearchIndexDocumentBatchingClient() {
+        return getSearchIndexDocumentBatchingClient(null, null, null, null);
+    }
+
+    /**
+     * Creates a {@link SearchBatchClient} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
+     *
+     * @param autoFlush Flag determining whether the batching client will automatically flush its document batch. If
+     * null is passed this will be set to true.
+     * @param flushWindow Duration that the client will wait between documents being added to the batch before sending
+     * the batch to be indexed. If {@code flushWindow} is negative or zero the flush window will be disabled, if {@code
+     * flushWindow} is null a default of 60 seconds will be used.
+     * @param batchSize The number of documents in a batch that will trigger it to be indexed. If automatic batch
+     * sending is disabled this value is ignored. If {@code batchSize} is null a default value of 1000 is used.
+     * @param indexingHook An implementation of {@link IndexingHook} used to handle document callback actions.
+     * @return A {@link SearchBatchClient} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
+     * @throws IllegalArgumentException If {@code batchSize} is less than one.
+     */
+    public SearchBatchClient getSearchIndexDocumentBatchingClient(Boolean autoFlush, Duration flushWindow,
+        Integer batchSize, IndexingHook indexingHook) {
+        return new SearchBatchClient(asyncClient
+            .getSearchIndexDocumentBatchingAsyncClient(autoFlush, flushWindow, batchSize, indexingHook));
+    }
+
+    /**
      * Uploads a collection of documents to the target index.
      *
      * <p><strong>Code Sample</strong></p>
@@ -99,7 +139,7 @@ public final class SearchClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Upload dynamic SearchDocument with response. </p>
+     * <p> Upload dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context}
      *
@@ -126,10 +166,10 @@ public final class SearchClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -157,14 +197,14 @@ public final class SearchClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Merge dynamic SearchDocument with response. </p>
+     * <p> Merge dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context}
      *
@@ -182,7 +222,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<?> documents,
-            IndexDocumentsOptions options, Context context) {
+        IndexDocumentsOptions options, Context context) {
         return asyncClient.mergeDocumentsWithResponse(documents, options, context).block();
     }
 
@@ -192,10 +232,10 @@ public final class SearchClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -224,14 +264,14 @@ public final class SearchClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Merge or upload dynamic SearchDocument with response. </p>
+     * <p> Merge or upload dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context}
      *
@@ -249,7 +289,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents,
-                IndexDocumentsOptions options, Context context) {
+        IndexDocumentsOptions options, Context context) {
         return asyncClient.mergeOrUploadDocumentsWithResponse(documents, options, context).block();
     }
 
@@ -282,7 +322,7 @@ public final class SearchClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete dynamic SearchDocument with response. </p>
+     * <p> Delete dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context}
      *
@@ -333,7 +373,7 @@ public final class SearchClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Index batch operation on dynamic SearchDocument with response. </p>
+     * <p> Index batch operation on dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions-Context}
      *
@@ -386,7 +426,7 @@ public final class SearchClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get dynamic SearchDocument with response. </p>
+     * <p> Get dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.getDocumentWithResponse#String-Class-List-Context}
      *
@@ -426,7 +466,7 @@ public final class SearchClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get document count with response. </p>
+     * <p> Get document count. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.getDocumentCountWithResponse#Context}
      *
@@ -441,9 +481,9 @@ public final class SearchClient {
     /**
      * Searches for documents in the Azure Cognitive Search index.
      * <p>
-     * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
+     * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Search</a> for more information about search query syntax.
+     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -457,6 +497,7 @@ public final class SearchClient {
      * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedIterable search(String searchText) {
         return search(searchText, null, Context.NONE);
     }
@@ -464,9 +505,9 @@ public final class SearchClient {
     /**
      * Searches for documents in the Azure Cognitive Search index.
      * <p>
-     * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
+     * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Search</a> for more information about search query syntax.
+     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -482,6 +523,7 @@ public final class SearchClient {
      * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedIterable search(String searchText, SearchOptions searchOptions, Context context) {
         return new SearchPagedIterable(asyncClient.search(searchText, searchOptions, context));
     }
@@ -502,6 +544,7 @@ public final class SearchClient {
      * the {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedIterable suggest(String searchText, String suggesterName) {
         return suggest(searchText, suggesterName, null, Context.NONE);
     }
@@ -524,10 +567,10 @@ public final class SearchClient {
      * the {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedIterable suggest(String searchText, String suggesterName, SuggestOptions suggestOptions,
         Context context) {
-        return new SuggestPagedIterable(asyncClient.suggest(searchText, suggesterName, suggestOptions,
-            context));
+        return new SuggestPagedIterable(asyncClient.suggest(searchText, suggesterName, suggestOptions, context));
     }
 
     /**
@@ -543,6 +586,7 @@ public final class SearchClient {
      * @param suggesterName suggester name
      * @return auto complete result.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public AutocompletePagedIterable autocomplete(String searchText, String suggesterName) {
         return autocomplete(searchText, suggesterName, null, Context.NONE);
     }
@@ -562,6 +606,7 @@ public final class SearchClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return auto complete result.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public AutocompletePagedIterable autocomplete(String searchText, String suggesterName,
         AutocompleteOptions autocompleteOptions, Context context) {
         return new AutocompletePagedIterable(asyncClient.autocomplete(searchText, suggesterName, autocompleteOptions,

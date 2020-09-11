@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
@@ -15,8 +16,12 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 
 /**
- * Synchronous Client to manage and query indexers, as well as manage other resources, on a Cognitive Search service
+ * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting data
+ * source connections, indexers, or skillsets and running or resetting indexers in an Azure Cognitive Search service.
+ *
+ * @see SearchIndexerClientBuilder
  */
+@ServiceClient(builder = SearchIndexerClientBuilder.class)
 public class SearchIndexerClient {
     private final SearchIndexerAsyncClient asyncClient;
 
@@ -57,8 +62,7 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerDataSourceConnection createOrUpdateDataSourceConnection(
         SearchIndexerDataSourceConnection dataSourceConnection) {
-        return createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, false,
-            Context.NONE).getValue();
+        return createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, false, Context.NONE).getValue();
     }
 
     /**
@@ -66,7 +70,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create or update search indexer data source connection response named "dataSource". </p>
+     * <p> Create or update search indexer data source connection named "dataSource". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context}
      *
@@ -79,8 +83,7 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
-        SearchIndexerDataSourceConnection dataSourceConnection, boolean onlyIfUnchanged,
-        Context context) {
+        SearchIndexerDataSourceConnection dataSourceConnection, boolean onlyIfUnchanged, Context context) {
         return asyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, onlyIfUnchanged,
             context).block();
     }
@@ -108,7 +111,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create search indexer data source connection response named "dataSource". </p>
+     * <p> Create search indexer data source connection named "dataSource". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-Context}
      *
@@ -128,7 +131,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search indexer data source connection response named "dataSource". </p>
+     * <p> Get search indexer data source connection named "dataSource". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnection#String}
      *
@@ -145,7 +148,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search indexer data source connection response named "dataSource". </p>
+     * <p> Get search indexer data source connection named "dataSource". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnectionWithResponse#String-Context}
      *
@@ -165,7 +168,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer data source connection. </p>
+     * <p> List all search indexer data source connections. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnections}
      *
@@ -181,7 +184,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer data source connection. </p>
+     * <p> List all search indexer data source connections. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionsWithResponse#Context}
      *
@@ -214,7 +217,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer data source connection names with context. </p>
+     * <p> List all search indexer data source connection names. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNamesWithContext#Context}
      *
@@ -237,7 +240,7 @@ public class SearchIndexerClient {
      *
      * @param dataSourceConnectionName the name of the data source to be deleted
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDataSourceConnection(String dataSourceConnectionName) {
         deleteDataSourceConnectionWithResponse(new SearchIndexerDataSourceConnection(dataSourceConnectionName), false,
             Context.NONE);
@@ -248,7 +251,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete all search indexer data source connection named "dataSource" with response. </p>
+     * <p> Delete all search indexer data source connection named "dataSource". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context}
      *
@@ -263,8 +266,8 @@ public class SearchIndexerClient {
     public Response<Void> deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection dataSourceConnection,
         boolean onlyIfUnchanged, Context context) {
         String etag = onlyIfUnchanged ? dataSourceConnection.getETag() : null;
-        return asyncClient.deleteDataSourceConnectionWithResponse(dataSourceConnection.getName(), etag,
-            context).block();
+        return asyncClient.deleteDataSourceConnectionWithResponse(dataSourceConnection.getName(), etag, context)
+            .block();
     }
 
     /**
@@ -289,7 +292,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create search indexer named "searchIndexer" with response. </p>
+     * <p> Create search indexer named "searchIndexer". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#SearchIndexer-Context}
      *
@@ -298,8 +301,7 @@ public class SearchIndexerClient {
      * @return a response containing the created Indexer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer,
-        Context context) {
+    public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer, Context context) {
         return asyncClient.createIndexerWithResponse(indexer, context).block();
     }
 
@@ -325,7 +327,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create or update search indexer named "searchIndexer" with response. </p>
+     * <p> Create or update search indexer named "searchIndexer". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context}
      *
@@ -346,7 +348,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer. </p>
+     * <p> List all search indexers. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexers}
      *
@@ -362,7 +364,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer with response. </p>
+     * <p> List all search indexers. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexersWithResponse#Context}
      *
@@ -395,7 +397,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer names with response. </p>
+     * <p> List all search indexer names. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames#Context}
      *
@@ -429,7 +431,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search indexer response with name "searchIndexer". </p>
+     * <p> Get search indexer with name "searchIndexer". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getIndexerWithResponse#String-Context}
      *
@@ -438,8 +440,7 @@ public class SearchIndexerClient {
      * @return a response containing the indexer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexer> getIndexerWithResponse(String indexerName,
-        Context context) {
+    public Response<SearchIndexer> getIndexerWithResponse(String indexerName, Context context) {
         return asyncClient.getIndexerWithResponse(indexerName, context).block();
     }
 
@@ -464,7 +465,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete search indexer response named "searchIndexer".  </p>
+     * <p> Delete search indexe named "searchIndexer".  </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexerWithResponse#SearchIndexer-boolean-Context}
      *
@@ -475,8 +476,7 @@ public class SearchIndexerClient {
      * @return a response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
-        Context context) {
+    public Response<Void> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged, Context context) {
         String etag = onlyIfUnchanged ? indexer.getETag() : null;
         return asyncClient.deleteIndexerWithResponse(indexer.getName(), etag, context).block();
     }
@@ -502,7 +502,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Reset search indexer response named "searchIndexer".  </p>
+     * <p> Reset search indexer named "searchIndexer".  </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.resetIndexerWithResponse#String-Context}
      *
@@ -536,7 +536,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Run search indexer response named "searchIndexer".  </p>
+     * <p> Run search indexer named "searchIndexer".  </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.runIndexerWithResponse#String-Context}
      *
@@ -571,7 +571,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Run search indexer status with response.  </p>
+     * <p> Get search indexer status.  </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatusWithResponse#String-Context}
      *
@@ -580,8 +580,7 @@ public class SearchIndexerClient {
      * @return a response with the indexer execution info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerStatus> getIndexerStatusWithResponse(String indexerName,
-        Context context) {
+    public Response<SearchIndexerStatus> getIndexerStatusWithResponse(String indexerName, Context context) {
         return asyncClient.getIndexerStatusWithResponse(indexerName, context).block();
     }
 
@@ -608,7 +607,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create search indexer skillset "searchIndexerSkillset" with response. </p>
+     * <p> Create search indexer skillset "searchIndexerSkillset". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createSkillsetWithResponse#SearchIndexerSkillset-Context}
      *
@@ -617,8 +616,7 @@ public class SearchIndexerClient {
      * @return a response containing the created SearchIndexerSkillset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerSkillset> createSkillsetWithResponse(SearchIndexerSkillset skillset,
-        Context context) {
+    public Response<SearchIndexerSkillset> createSkillsetWithResponse(SearchIndexerSkillset skillset, Context context) {
         return asyncClient.createSkillsetWithResponse(skillset, context).block();
     }
 
@@ -644,7 +642,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search indexer skillset "searchIndexerSkillset" with response. </p>
+     * <p> Get search indexer skillset "searchIndexerSkillset". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getSkillsetWithResponse#String-Context}
      *
@@ -653,8 +651,7 @@ public class SearchIndexerClient {
      * @return a response containing the SearchIndexerSkillset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerSkillset> getSkillsetWithResponse(String skillsetName,
-        Context context) {
+    public Response<SearchIndexerSkillset> getSkillsetWithResponse(String skillsetName, Context context) {
         return asyncClient.getSkillsetWithResponse(skillsetName, context).block();
     }
 
@@ -679,7 +676,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer skillsets with response. </p>
+     * <p> List all search indexer skillsets. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetsWithContext#Context}
      *
@@ -746,7 +743,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create or update search indexer skillset "searchIndexerSkillset" with response. </p>
+     * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean-Context}
      *
@@ -766,6 +763,12 @@ public class SearchIndexerClient {
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillset#String}
+     *
      * @param skillsetName the name of the skillset to delete
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -775,6 +778,12 @@ public class SearchIndexerClient {
 
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean-Context}
      *
      * @param skillset the {@link SearchIndexerSkillset} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code skillset} is the same as the current service value.

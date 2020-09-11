@@ -123,7 +123,7 @@ public final class FormTrainingClientBuilder {
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link #endpoint(String) endpoint} are used to create the {@link FormTrainingClient client}. All other builder
-     * settings are ignored
+     * settings are ignored.
      * </p>
      *
      * @return A FormTrainingClient with the options set from the builder.
@@ -216,7 +216,7 @@ public final class FormTrainingClientBuilder {
      * @param endpoint The URL of the Azure Form Recognizer instance service requests to and receive responses from.
      *
      * @return The updated FormTrainingClientBuilder object.
-     * @throws NullPointerException if {@code endpoint} is null
+     * @throws NullPointerException if {@code endpoint} is null.
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
     public FormTrainingClientBuilder endpoint(String endpoint) {
@@ -241,10 +241,10 @@ public final class FormTrainingClientBuilder {
      * Sets the {@link AzureKeyCredential} to use when authenticating HTTP requests for this
      * FormTrainingClientBuilder.
      *
-     * @param apiKeyCredential {@link AzureKeyCredential} API key credential
+     * @param apiKeyCredential {@link AzureKeyCredential} API key credential.
      *
      * @return The updated FormTrainingClientBuilder object.
-     * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
+     * @throws NullPointerException If {@code apiKeyCredential} is null.
      */
     public FormTrainingClientBuilder credential(AzureKeyCredential apiKeyCredential) {
         this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
@@ -284,7 +284,7 @@ public final class FormTrainingClientBuilder {
      * @param policy The retry policy for service requests.
      *
      * @return The updated FormTrainingClientBuilder object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
+     * @throws NullPointerException If {@code policy} is null.
      */
     public FormTrainingClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
@@ -333,7 +333,7 @@ public final class FormTrainingClientBuilder {
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
-     * @param configuration The configuration store used to
+     * @param configuration The configuration store used to.
      *
      * @return The updated FormTrainingClientBuilder object.
      */

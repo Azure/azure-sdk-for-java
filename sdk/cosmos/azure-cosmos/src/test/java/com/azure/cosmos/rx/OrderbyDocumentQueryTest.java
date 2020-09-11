@@ -67,7 +67,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocumentsValidateContent(boolean qmEnabled) throws Exception {
+    public void queryDocumentsValidateContent(Boolean qmEnabled) throws Exception {
         InternalObjectNode expectedDocument = createdDocuments.get(0);
 
         String query = String.format("SELECT * from root r where r.propStr = '%s'"
@@ -75,7 +75,10 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             , ModelBridgeInternal.getStringFromJsonSerializable(expectedDocument,"propStr"));
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setQueryMetricsEnabled(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
 
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
@@ -409,6 +412,34 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         this.assertInvalidContinuationToken(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    public void queryOrderByArray(String sortOrder) throws Exception {
+        String query = String.format("SELECT * FROM r ORDER BY r.propArray %s", sortOrder);
+
+        int pageSize = 3;
+        List<InternalObjectNode> results1 = this.queryWithContinuationTokens(query, pageSize);
+        List<InternalObjectNode> results2 = this.queryWithContinuationTokens(query, this.createdDocuments.size());
+
+        // If order by item type is array (for exampel [1, 2]), we can not get a predictable ordering, only check it always return consistent order
+        // and also continuation token is not supported
+        assertThat(results1.stream().map(r -> r.getResourceId()).collect(Collectors.toList()))
+            .containsExactlyElementsOf(results2.stream().limit(pageSize).map(r -> r.getResourceId()).collect(Collectors.toList()));
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    public void queryOrderByObject(String sortOrder) throws Exception {
+        String query = String.format("SELECT * FROM r ORDER BY r.propObject %s", sortOrder);
+
+        int pageSize = 3;
+        List<InternalObjectNode> results1 = this.queryWithContinuationTokens(query, pageSize);
+        List<InternalObjectNode> results2 = this.queryWithContinuationTokens(query, this.createdDocuments.size());
+
+        // If order by item type is object (for example {"prop": "value"}, we can not get a predictable ordering, only check it always return with consistent order
+        // and also continuation token is not supported
+        assertThat(results1.stream().map(r -> r.getResourceId()).collect(Collectors.toList()))
+            .containsExactlyElementsOf(results2.stream().limit(pageSize).map(r -> r.getResourceId()).collect(Collectors.toList()));
+    }
+
     public InternalObjectNode createDocument(CosmosAsyncContainer cosmosContainer, Map<String, Object> keyValueProps) {
         InternalObjectNode docDefinition = getDocumentDefinition(keyValueProps);
         return BridgeInternal.getProperties(cosmosContainer.createItem(docDefinition).block());
@@ -446,6 +477,16 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             props = new HashMap<>();
             props.put("propInt", i);
             props.put("propStr", String.valueOf(i));
+
+            List<Integer> orderByArray = new ArrayList<Integer>();
+            Map<String, String> orderByObject = new HashMap<>();
+            for (int k = 0; k < 3; k++) {
+                orderByArray.add(k + i);
+                orderByObject.put("key1", String.valueOf(i));
+                orderByObject.put("key2", String.valueOf(orderByArray.get(k)));
+            }
+            props.put("propArray", orderByArray);
+            props.put("propObject", orderByObject);
             keyValuePropsList.add(props);
         }
 

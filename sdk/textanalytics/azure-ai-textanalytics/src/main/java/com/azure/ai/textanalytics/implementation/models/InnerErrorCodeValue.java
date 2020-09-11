@@ -4,87 +4,52 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/**
- * Defines values for InnerErrorCodeValue.
- */
-public enum InnerErrorCodeValue {
-    /**
-     * Enum value invalidParameterValue.
-     */
-    INVALID_PARAMETER_VALUE("invalidParameterValue"),
+/** Defines values for InnerErrorCodeValue. */
+public final class InnerErrorCodeValue extends ExpandableStringEnum<InnerErrorCodeValue> {
+    /** Static value InvalidParameterValue for InnerErrorCodeValue. */
+    public static final InnerErrorCodeValue INVALID_PARAMETER_VALUE = fromString("InvalidParameterValue");
 
-    /**
-     * Enum value invalidRequestBodyFormat.
-     */
-    INVALID_REQUEST_BODY_FORMAT("invalidRequestBodyFormat"),
+    /** Static value InvalidRequestBodyFormat for InnerErrorCodeValue. */
+    public static final InnerErrorCodeValue INVALID_REQUEST_BODY_FORMAT = fromString("InvalidRequestBodyFormat");
 
-    /**
-     * Enum value emptyRequest.
-     */
-    EMPTY_REQUEST("emptyRequest"),
+    /** Static value EmptyRequest for InnerErrorCodeValue. */
+    public static final InnerErrorCodeValue EMPTY_REQUEST = fromString("EmptyRequest");
 
-    /**
-     * Enum value missingInputRecords.
-     */
-    MISSING_INPUT_RECORDS("missingInputRecords"),
+    /** Static value MissingInputRecords for InnerErrorCodeValue. */
+    public static final InnerErrorCodeValue MISSING_INPUT_RECORDS = fromString("MissingInputRecords");
 
-    /**
-     * Enum value invalidDocument.
-     */
-    INVALID_DOCUMENT("invalidDocument"),
+    /** Static value InvalidDocument for InnerErrorCodeValue. */
+    public static final InnerErrorCodeValue INVALID_DOCUMENT = fromString("InvalidDocument");
 
-    /**
-     * Enum value modelVersionIncorrect.
-     */
-    MODEL_VERSION_INCORRECT("modelVersionIncorrect"),
+    /** Static value ModelVersionIncorrect for InnerErrorCodeValue. */
+    public static final InnerErrorCodeValue MODEL_VERSION_INCORRECT = fromString("ModelVersionIncorrect");
+
+    /** Static value InvalidDocumentBatch for InnerErrorCodeValue. */
+    public static final InnerErrorCodeValue INVALID_DOCUMENT_BATCH = fromString("InvalidDocumentBatch");
+
+    /** Static value UnsupportedLanguageCode for InnerErrorCodeValue. */
+    public static final InnerErrorCodeValue UNSUPPORTED_LANGUAGE_CODE = fromString("UnsupportedLanguageCode");
+
+    /** Static value InvalidCountryHint for InnerErrorCodeValue. */
+    public static final InnerErrorCodeValue INVALID_COUNTRY_HINT = fromString("InvalidCountryHint");
 
     /**
-     * Enum value invalidDocumentBatch.
-     */
-    INVALID_DOCUMENT_BATCH("invalidDocumentBatch"),
-
-    /**
-     * Enum value unsupportedLanguageCode.
-     */
-    UNSUPPORTED_LANGUAGE_CODE("unsupportedLanguageCode"),
-
-    /**
-     * Enum value invalidCountryHint.
-     */
-    INVALID_COUNTRY_HINT("invalidCountryHint");
-
-    /**
-     * The actual serialized value for a InnerErrorCodeValue instance.
-     */
-    private final String value;
-
-    InnerErrorCodeValue(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a InnerErrorCodeValue instance.
-     * 
-     * @param value the serialized value to parse.
-     * @return the parsed InnerErrorCodeValue object, or null if unable to parse.
+     * Creates or finds a InnerErrorCodeValue from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding InnerErrorCodeValue.
      */
     @JsonCreator
-    public static InnerErrorCodeValue fromString(String value) {
-        InnerErrorCodeValue[] items = InnerErrorCodeValue.values();
-        for (InnerErrorCodeValue item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static InnerErrorCodeValue fromString(String name) {
+        return fromString(name, InnerErrorCodeValue.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known InnerErrorCodeValue values. */
+    public static Collection<InnerErrorCodeValue> values() {
+        return values(InnerErrorCodeValue.class);
     }
 }

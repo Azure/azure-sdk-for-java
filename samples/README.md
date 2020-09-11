@@ -65,5 +65,5 @@ This section lists how-to guides for the most commonly used APIs and most common
 
 #### Azure.Storage.Blobs.Batch
 
-- [How to **Create Blob Client**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob-batch/src/samples/java/com/azure/storage/blob/batch/ReadmeCodeSamples.java)
-- [How to **Bulk Deleting**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob-batch/src/samples/java/com/azure/storage/blob/batch/ReadmeCodeSamples.java)
+- [How to **Create Blob Client**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob-batch/src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java)
+- [How to **Bulk Deleting**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob-batch/src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java)

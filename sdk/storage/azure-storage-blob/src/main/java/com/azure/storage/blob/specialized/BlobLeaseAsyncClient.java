@@ -17,9 +17,18 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.BlobLeaseRequestConditions;
+import com.azure.storage.blob.options.BlobAcquireLeaseOptions;
+import com.azure.storage.blob.options.BlobBreakLeaseOptions;
+import com.azure.storage.blob.options.BlobChangeLeaseOptions;
+import com.azure.storage.blob.options.BlobReleaseLeaseOptions;
+import com.azure.storage.blob.options.BlobRenewLeaseOptions;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.time.Duration;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -123,27 +132,51 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> acquireLeaseWithResponse(int duration, RequestConditions modifiedRequestConditions) {
         try {
-            return withContext(context -> acquireLeaseWithResponse(duration, modifiedRequestConditions, context));
+            return withContext(context -> acquireLeaseWithResponse(new BlobAcquireLeaseOptions(duration)
+                .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<String>> acquireLeaseWithResponse(int duration, RequestConditions modifiedRequestConditions,
+    /**
+     * Acquires a lease for write and delete operations. The lease duration must be between 15 to 60 seconds, or -1 for
+     * an infinite duration.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.acquireLeaseWithResponse#BlobAcquireLeaseOptions}
+     *
+     * @param options {@link BlobAcquireLeaseOptions}
+     * @return A reactive response containing the lease ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<String>> acquireLeaseWithResponse(BlobAcquireLeaseOptions options) {
+        try {
+            return withContext(context -> acquireLeaseWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<String>> acquireLeaseWithResponse(BlobAcquireLeaseOptions options,
         Context context) {
-        modifiedRequestConditions = (modifiedRequestConditions == null)
-            ? new RequestConditions() : modifiedRequestConditions;
+        StorageImplUtils.assertNotNull("options", options);
+        BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         if (this.isBlob) {
-            return this.client.blobs().acquireLeaseWithRestResponseAsync(null, null, null, duration, this.leaseId,
-                modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null, null,
+            return this.client.blobs().acquireLeaseWithRestResponseAsync(null, null, null,
+                options.getDuration(), this.leaseId, requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            return this.client.containers().acquireLeaseWithRestResponseAsync(null, null, duration, this.leaseId,
-                modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                null, context)
+            return this.client.containers().acquireLeaseWithRestResponseAsync(null, null,
+                options.getDuration(), this.leaseId, requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
     }
@@ -160,7 +193,7 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> renewLease() {
         try {
-            return renewLeaseWithResponse(null).flatMap(FluxUtil::toMono);
+            return renewLeaseWithResponse((RequestConditions) null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -181,26 +214,48 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedRequestConditions) {
         try {
-            return withContext(context -> renewLeaseWithResponse(modifiedRequestConditions,
+            return withContext(context -> renewLeaseWithResponse(new BlobRenewLeaseOptions()
+                    .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedRequestConditions, Context context) {
-        modifiedRequestConditions = (modifiedRequestConditions == null)
-            ? new RequestConditions() : modifiedRequestConditions;
+    /**
+     * Renews the previously acquired lease.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.renewLeaseWithResponse#BlobRenewLeaseOptions}
+     *
+     * @param options {@link BlobRenewLeaseOptions}
+     * @return A reactive response containing the renewed lease ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<String>> renewLeaseWithResponse(BlobRenewLeaseOptions options) {
+        try {
+            return withContext(context -> renewLeaseWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<String>> renewLeaseWithResponse(BlobRenewLeaseOptions options, Context context) {
+        options = (options == null) ? new BlobRenewLeaseOptions() : options;
+        BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         if (this.isBlob) {
             return this.client.blobs().renewLeaseWithRestResponseAsync(null, null, this.leaseId, null,
-                modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null, null,
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
             return this.client.containers().renewLeaseWithRestResponseAsync(null, this.leaseId, null,
-                modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
@@ -218,7 +273,7 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> releaseLease() {
         try {
-            return releaseLeaseWithResponse(null).flatMap(FluxUtil::toMono);
+            return releaseLeaseWithResponse((RequestConditions) null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -239,27 +294,49 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions) {
         try {
-            return withContext(context -> releaseLeaseWithResponse(modifiedRequestConditions,
+            return withContext(context -> releaseLeaseWithResponse(new BlobReleaseLeaseOptions()
+                    .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions, Context context) {
-        modifiedRequestConditions = (modifiedRequestConditions == null)
-            ? new RequestConditions() : modifiedRequestConditions;
+    /**
+     * Releases the previously acquired lease.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.releaseLeaseWithResponse#BlobReleaseLeaseOptions}
+     *
+     * @param options {@link BlobReleaseLeaseOptions}
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> releaseLeaseWithResponse(BlobReleaseLeaseOptions options) {
+        try {
+            return withContext(context -> releaseLeaseWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> releaseLeaseWithResponse(BlobReleaseLeaseOptions options, Context context) {
+        options = (options == null) ? new BlobReleaseLeaseOptions() : options;
+        BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
 
         if (this.isBlob) {
             return this.client.blobs().releaseLeaseWithRestResponseAsync(null, null, this.leaseId, null,
-                modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null, null,
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(response -> new SimpleResponse<>(response, null));
         } else {
             return this.client.containers().releaseLeaseWithRestResponseAsync(null, this.leaseId, null,
-                modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(response -> new SimpleResponse<>(response, null));
         }
@@ -277,7 +354,7 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Integer> breakLease() {
         try {
-            return breakLeaseWithResponse(null, null).flatMap(FluxUtil::toMono);
+            return breakLeaseWithResponse((Integer) null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -306,29 +383,56 @@ public final class BlobLeaseAsyncClient {
     public Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
         RequestConditions modifiedRequestConditions) {
         try {
-            return withContext(context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions,
+            return withContext(context -> breakLeaseWithResponse(new BlobBreakLeaseOptions()
+                .setBreakPeriod(breakPeriodInSeconds == null ? null : Duration.ofSeconds(breakPeriodInSeconds))
+                .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
-        RequestConditions modifiedRequestConditions, Context context) {
-        modifiedRequestConditions = (modifiedRequestConditions == null)
-            ? new RequestConditions() : modifiedRequestConditions;
+    /**
+     * Breaks the previously acquired lease, if it exists.
+     *
+     * <p>If {@code null} is passed for {@code breakPeriodInSeconds} a fixed duration lease will break after the
+     * remaining lease period elapses and an infinite lease will break immediately.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.breakLeaseWithResponse#BlobBreakLeaseOptions}
+     *
+     * @param options {@link BlobBreakLeaseOptions}
+     * @return A reactive response containing the remaining time in the broken lease in seconds.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Integer>> breakLeaseWithResponse(BlobBreakLeaseOptions options) {
+        try {
+            return withContext(context -> breakLeaseWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Integer>> breakLeaseWithResponse(BlobBreakLeaseOptions options, Context context) {
+        options = (options == null) ? new BlobBreakLeaseOptions() : options;
+        BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
+        Integer breakPeriod = options.getBreakPeriod() == null ? null
+            : Math.toIntExact(options.getBreakPeriod().getSeconds());
 
         if (this.isBlob) {
-            return this.client.blobs().breakLeaseWithRestResponseAsync(null, null, null, breakPeriodInSeconds,
-                modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null, null,
+            return this.client.blobs().breakLeaseWithRestResponseAsync(null, null, null,
+                breakPeriod, requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseTime()));
         } else {
-            return this.client.containers().breakLeaseWithRestResponseAsync(null, null, breakPeriodInSeconds,
-                modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                null, context)
+            return this.client.containers().breakLeaseWithRestResponseAsync(null, null,
+                breakPeriod, requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseTime()));
         }
     }
@@ -369,27 +473,50 @@ public final class BlobLeaseAsyncClient {
     public Mono<Response<String>> changeLeaseWithResponse(String proposedId,
         RequestConditions modifiedRequestConditions) {
         try {
-            return withContext(context -> changeLeaseWithResponse(proposedId, modifiedRequestConditions, context));
+            return withContext(context -> changeLeaseWithResponse(new BlobChangeLeaseOptions(proposedId)
+                .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<String>> changeLeaseWithResponse(String proposedId, RequestConditions modifiedRequestConditions,
-        Context context) {
-        modifiedRequestConditions = (modifiedRequestConditions == null)
-            ? new RequestConditions() : modifiedRequestConditions;
+    /**
+     * Changes the lease ID.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.changeLeaseWithResponse#BlobChangeLeaseOptions}
+     *
+     * @param options {@link BlobChangeLeaseOptions}
+     * @return A reactive response containing the new lease ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<String>> changeLeaseWithResponse(BlobChangeLeaseOptions options) {
+        try {
+            return withContext(context -> changeLeaseWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<String>> changeLeaseWithResponse(BlobChangeLeaseOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         if (this.isBlob) {
-            return this.client.blobs().changeLeaseWithRestResponseAsync(null, null, this.leaseId, proposedId, null,
-                modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null, null,
+            return this.client.blobs().changeLeaseWithRestResponseAsync(null, null, this.leaseId,
+                options.getProposedId(), null, requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            return this.client.containers().changeLeaseWithRestResponseAsync(null, this.leaseId, proposedId, null,
-                modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            return this.client.containers().changeLeaseWithRestResponseAsync(null, this.leaseId,
+                options.getProposedId(), null, requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
     }

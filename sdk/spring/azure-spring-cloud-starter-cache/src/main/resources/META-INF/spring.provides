@@ -1,0 +1,1 @@
+provides: spring-cloud-azure-context, spring-cloud-azure-autoconfigure

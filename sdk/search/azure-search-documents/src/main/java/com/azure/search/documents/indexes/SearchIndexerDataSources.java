@@ -12,7 +12,8 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 
 /**
- * Utility class that aids in the creation of {@link SearchIndexerDataSourceConnection SearchIndexerDataSources}.
+ * Utility class that aids in the creation of {@link SearchIndexerDataSourceConnection
+ * SearchIndexerDataSourceConnections}.
  */
 public final class SearchIndexerDataSources {
 

@@ -6,6 +6,9 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -100,6 +103,19 @@ public final class ScoringProfile {
      * @param functions the functions value to set.
      * @return the ScoringProfile object itself.
      */
+    public ScoringProfile setFunctions(ScoringFunction... functions) {
+        this.functions = (functions == null) ? null : Arrays.asList(functions);
+        return this;
+    }
+
+    /**
+     * Set the functions property: The collection of functions that influence
+     * the scoring of documents.
+     *
+     * @param functions the functions value to set.
+     * @return the ScoringProfile object itself.
+     */
+    @JsonSetter
     public ScoringProfile setFunctions(List<ScoringFunction> functions) {
         this.functions = functions;
         return this;

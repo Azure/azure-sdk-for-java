@@ -13,7 +13,6 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SynonymMap;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * This example shows how to create an index with a synonym map
@@ -59,7 +58,7 @@ public class SynonymMapsCreateExample {
                 new SearchField("HotelId", SearchFieldDataType.STRING)
                     .setKey(true),
                 new SearchField("HotelName", SearchFieldDataType.STRING)
-                    .setSynonymMapNames(Collections.singletonList(synonymMapName))
+                    .setSynonymMapNames(synonymMapName)
             ));
     }
 }

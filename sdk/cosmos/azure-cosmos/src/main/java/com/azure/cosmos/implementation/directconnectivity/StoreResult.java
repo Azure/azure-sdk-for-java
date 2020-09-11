@@ -5,10 +5,10 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.Strings;
@@ -181,7 +181,8 @@ public class StoreResult {
                 subStatusCode = storeResult.exception.getSubStatusCode();
             }
             jsonGenerator.writeStartObject();
-            jsonGenerator.writeObjectField("storePhysicalAddress", storeResult.storePhysicalAddress);
+            jsonGenerator.writeObjectField("storePhysicalAddress", storeResult.storePhysicalAddress == null ? null :
+                storeResult.storePhysicalAddress.getURIAsString());
             jsonGenerator.writeNumberField("lsn", storeResult.lsn);
             jsonGenerator.writeNumberField("globalCommittedLsn", storeResult.globalCommittedLSN);
             jsonGenerator.writeStringField("partitionKeyRangeId", storeResult.partitionKeyRangeId);

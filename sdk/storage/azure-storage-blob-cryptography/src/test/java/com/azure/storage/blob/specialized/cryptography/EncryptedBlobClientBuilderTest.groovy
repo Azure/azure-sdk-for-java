@@ -12,6 +12,8 @@ import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.DateTimeRfc1123
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.policy.RetryPolicyType
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -22,6 +24,7 @@ import java.security.SecureRandom
 class EncryptedBlobClientBuilderTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.blob.core.windows.net/"
+    static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
@@ -44,6 +47,7 @@ class EncryptedBlobClientBuilderTest extends Specification {
             .credential(credentials)
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildEncryptedBlobClient()
 
         then:

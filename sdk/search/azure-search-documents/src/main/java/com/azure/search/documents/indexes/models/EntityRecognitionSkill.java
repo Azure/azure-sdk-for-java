@@ -5,8 +5,11 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -76,6 +79,19 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      * @param categories the categories value to set.
      * @return the EntityRecognitionSkill object itself.
      */
+    public EntityRecognitionSkill setCategories(EntityCategory... categories) {
+        this.categories = (categories == null) ? null : Arrays.asList(categories);
+        return this;
+    }
+
+    /**
+     * Set the categories property: A list of entity categories that should be
+     * extracted.
+     *
+     * @param categories the categories value to set.
+     * @return the EntityRecognitionSkill object itself.
+     */
+    @JsonSetter
     public EntityRecognitionSkill setCategories(List<EntityCategory> categories) {
         this.categories = categories;
         return this;

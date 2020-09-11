@@ -30,19 +30,18 @@ import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleN
  * The configuration will not be activated if no {@literal azure.activedirectory.tenant-id} property provided.
  * <p>
  * A OAuth2 user service {@link AADOAuth2UserService} will be auto-configured by specifying
- * {@literal azure.activedirectory.active-directory-groups} property.
+ * {@literal azure.activedirectory.user-group.allowed-groups} property.
  */
 @Configuration
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(prefix = "azure.activedirectory", value = "tenant-id")
-@PropertySource("classpath:/aad-oauth2-common.properties")
-@PropertySource(value = "classpath:serviceEndpoints.properties")
-@EnableConfigurationProperties({AADAuthenticationProperties.class, ServiceEndpointsProperties.class})
+@PropertySource(value = "classpath:aad-oauth2-common.properties")
+@PropertySource(value = "classpath:service-endpoints.properties")
+@EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
 public class AADOAuth2AutoConfiguration {
 
     private final AADAuthenticationProperties aadAuthProps;
-
     private final ServiceEndpointsProperties serviceEndpointsProps;
 
     public AADOAuth2AutoConfiguration(AADAuthenticationProperties aadAuthProperties,
@@ -52,7 +51,7 @@ public class AADOAuth2AutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "azure.activedirectory", value = "active-directory-groups")
+    @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
         return new AADOAuth2UserService(aadAuthProps, serviceEndpointsProps);
     }
@@ -62,9 +61,7 @@ public class AADOAuth2AutoConfiguration {
         if (aadAuthProps.isAllowTelemetry()) {
             final Map<String, String> events = new HashMap<>();
             final TelemetrySender sender = new TelemetrySender();
-
             events.put(SERVICE_NAME, getClassPackageSimpleName(AADOAuth2AutoConfiguration.class));
-
             sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
         }
     }

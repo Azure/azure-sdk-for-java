@@ -13,6 +13,13 @@ import java.nio.ByteBuffer
 
 class FluxInputStreamTest extends Specification {
 
+    def setup() {
+        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String className = specificationContext.getCurrentSpec().getName()
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+    }
+
     /* Network tests to be performed by implementors of the FluxInputStream. */
     Flux<ByteBuffer> generateData(int num) {
         List<ByteBuffer> buffers = new ArrayList<>()
@@ -56,6 +63,40 @@ class FluxInputStreamTest extends Specification {
         100             || _
         Constants.KB    || _
         Constants.MB    || _
+    }
+
+    @Unroll
+    def "FluxIS with empty byte buffers"() {
+        setup:
+        def num = Constants.KB
+        List<ByteBuffer> buffers = new ArrayList<>()
+        for(int i = 0; i < num; i++) {
+            buffers.add(ByteBuffer.wrap(i.byteValue()))
+            buffers.add(ByteBuffer.wrap(new byte[0]))
+        }
+        def data = Flux.fromIterable(buffers)
+
+        when:
+        def is = new FluxInputStream(data)
+        def bytes = new byte[num]
+
+        def totalRead = 0
+        def bytesRead = 0
+
+        while (bytesRead != -1 && totalRead < num) {
+            bytesRead = is.read(bytes, totalRead, num)
+            if (bytesRead != -1) {
+                totalRead += bytesRead
+                num -= bytesRead
+            }
+        }
+
+        is.close()
+
+        then:
+        for (int i = 0; i < num; i++) {
+            assert bytes[i] == i.byteValue()
+        }
     }
 
     def "FluxIS error"() {

@@ -66,7 +66,8 @@ final class PayloadSizeGate {
      */
     Flux<ByteBuffer> flush() {
         if (byteBuffers != null) {
-            Flux<ByteBuffer> result = dequeuingFlux(byteBuffers);
+            // We return Flux from iterable in this case to support retries on single upload.
+            Flux<ByteBuffer> result = Flux.fromIterable(byteBuffers);
             byteBuffers = null;
             return result;
         } else {

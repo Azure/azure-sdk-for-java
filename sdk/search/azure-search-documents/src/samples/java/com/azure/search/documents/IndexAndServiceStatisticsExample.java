@@ -42,8 +42,8 @@ import java.util.Map;
 public class IndexAndServiceStatisticsExample {
 
     /**
-     * From the Azure portal, get your Azure Cognitive Search service name and API key and
-     * populate ADMIN_KEY and SEARCH_SERVICE_NAME.
+     * From the Azure portal, get your Azure Cognitive Search service name and API key and populate ADMIN_KEY and
+     * SEARCH_SERVICE_NAME.
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
@@ -286,8 +286,7 @@ public class IndexAndServiceStatisticsExample {
             .setScoringProfiles(Arrays.asList(
                 new ScoringProfile("MyProfile")
                     .setFunctionAggregation(ScoringFunctionAggregation.AVERAGE)
-                    .setFunctions(Arrays.asList(
-                        new MagnitudeScoringFunction("Rating", 2.0,
+                    .setFunctions(new MagnitudeScoringFunction("Rating", 2.0,
                             new MagnitudeScoringParameters(1, 4)
                                 .setShouldBoostBeyondRangeByConstant(true))
                             .setInterpolation(ScoringFunctionInterpolation.CONSTANT),
@@ -297,36 +296,30 @@ public class IndexAndServiceStatisticsExample {
                         new FreshnessScoringFunction("LastRenovationDate", 1.1,
                             new FreshnessScoringParameters(Duration.ofDays(365)))
                             .setInterpolation(ScoringFunctionInterpolation.LOGARITHMIC)
-                    ))
+                    )
                     .setTextWeights(new TextWeights(weights)),
                 new ScoringProfile("ProfileTwo")
                     .setFunctionAggregation(ScoringFunctionAggregation.MAXIMUM)
-                    .setFunctions(Collections.singletonList(
-                        new TagScoringFunction("Tags", 1.5, new TagScoringParameters("MyTags"))
-                            .setInterpolation(ScoringFunctionInterpolation.LINEAR)
-                    )),
+                    .setFunctions(new TagScoringFunction("Tags", 1.5, new TagScoringParameters("MyTags"))
+                        .setInterpolation(ScoringFunctionInterpolation.LINEAR)
+                    ),
                 new ScoringProfile("ProfileThree")
                     .setFunctionAggregation(ScoringFunctionAggregation.MINIMUM)
-                    .setFunctions(Collections.singletonList(
-                        new MagnitudeScoringFunction("Rating", 3.0,
-                            new MagnitudeScoringParameters(0, 10)
+                    .setFunctions(new MagnitudeScoringFunction("Rating", 3.0,
+                        new MagnitudeScoringParameters(0, 10)
                             .setShouldBoostBeyondRangeByConstant(false))
-                            .setInterpolation(ScoringFunctionInterpolation.QUADRATIC)
-                    )),
+                        .setInterpolation(ScoringFunctionInterpolation.QUADRATIC)
+                    ),
                 new ScoringProfile("ProfileFour")
                     .setFunctionAggregation(ScoringFunctionAggregation.FIRST_MATCHING)
-                    .setFunctions(Collections.singletonList(
-                        new MagnitudeScoringFunction("Rating", 3.14,
-                            new MagnitudeScoringParameters(1, 5)
+                    .setFunctions(new MagnitudeScoringFunction("Rating", 3.14,
+                        new MagnitudeScoringParameters(1, 5)
                             .setShouldBoostBeyondRangeByConstant(false))
-                            .setInterpolation(ScoringFunctionInterpolation.CONSTANT)
-                    ))
-            ))
+                        .setInterpolation(ScoringFunctionInterpolation.CONSTANT))))
             .setDefaultScoringProfile("MyProfile")
             .setCorsOptions(new CorsOptions(Arrays.asList("http://tempuri.org", "http://localhost:80"))
                 .setMaxAgeInSeconds(60L))
-            .setSuggesters(Collections.singletonList(new SearchSuggester("FancySuggester",
-                Collections.singletonList("HotelName"))));
+            .setSuggesters(new SearchSuggester("FancySuggester", Collections.singletonList("HotelName")));
     }
 
     /**

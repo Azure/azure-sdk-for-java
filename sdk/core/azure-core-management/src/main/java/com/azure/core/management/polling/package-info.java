@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing the types for Azure ARM client side http communication with a REST endpoint.
+ * Package containing the classes that handling long-running operation
+ * for Azure ARM client side http communication with a REST endpoint.
  */
 package com.azure.core.management.polling;

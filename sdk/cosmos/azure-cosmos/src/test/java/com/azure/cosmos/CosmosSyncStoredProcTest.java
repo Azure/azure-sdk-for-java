@@ -17,6 +17,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -148,19 +150,59 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     }
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void executeStoredProcedure() throws Exception {
-        CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties(
+        CosmosStoredProcedureProperties storedProcedure = new CosmosStoredProcedureProperties(
             UUID.randomUUID().toString(),
-            "function() {var x = 10;}"
-        );
+            "function() {" +
+                "        var mytext = \"x\";" +
+                "        var myval = 1;" +
+                "        try {" +
+                "            console.log(\"The value of %s is %s.\", mytext, myval);" +
+                "            getContext().getResponse().setBody(\"Success!\");" +
+                "        }" +
+                "        catch(err) {" +
+                "            getContext().getResponse().setBody(\"inline err: [\" + err.number + \"] \" + err);" +
+                "        }" +
+                "}");
 
-        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(sproc);
+        container.getScripts().createStoredProcedure(storedProcedure);
         CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
         options.setPartitionKey(PartitionKey.NONE);
         CosmosStoredProcedureResponse executeResponse = container.getScripts()
-                                                                 .getStoredProcedure(sproc.getId())
+                                                                 .getStoredProcedure(storedProcedure.getId())
                                                                  .execute(null, options);
 
         assertThat(executeResponse.getActivityId()).isNotEmpty();
+        assertThat(executeResponse.getScriptLog()).isNull();
+    }
+
+    @Test(groups = "simple", timeOut = TIMEOUT)
+    public void executeStoredProcedureWithScriptLoggingEnabled() throws Exception {
+        // Create a stored procedure
+        CosmosStoredProcedureProperties storedProcedure = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {" +
+                "        var mytext = \"x\";" +
+                "        var myval = 1;" +
+                "        try {" +
+                "            console.log(\"The value of %s is %s.\", mytext, myval);" +
+                "            getContext().getResponse().setBody(\"Success!\");" +
+                "        }" +
+                "        catch(err) {" +
+                "            getContext().getResponse().setBody(\"inline err: [\" + err.number + \"] \" + err);" +
+                "        }" +
+                "}");
+
+        container.getScripts().createStoredProcedure(storedProcedure);
+        CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+        options.setScriptLoggingEnabled(true);
+        options.setPartitionKey(PartitionKey.NONE);
+
+        CosmosStoredProcedureResponse executeResponse = container.getScripts()
+                                                                 .getStoredProcedure(storedProcedure.getId())
+                                                                 .execute(null, options);
+
+        String logResult = "The value of x is 1.";
+        assertThat(executeResponse.getScriptLog()).isEqualTo(logResult);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)

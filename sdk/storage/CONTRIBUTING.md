@@ -50,10 +50,10 @@ Merging Pull Requests (for project contributors with write access)
   - add `MAVEN_HOME` to environment variables
 
 
->**Note:** If you are on `Windows`, enable paths longer than 260 characters by: <br><br>
-1.- Run this as Administrator on a command prompt:<br> 
-`REG ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1`<br>*(might need to type `yes` to override key if it already exists)*<br><br>
-2.- Set up `git` by running:<br> `git config --system core.longpaths true`
+>**Note:** If you are on `Windows`, enable paths longer than 260 characters by:   
+1.- Run this as Administrator on a command prompt:  
+`REG ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1` *(might need to type `yes` to override key if it already exists)*  
+2.- Set up `git` by running:  `git config --system core.longpaths true`
 
 ### Building and Testing
 
@@ -79,7 +79,7 @@ mvn -f sdk/{root-projectForlderDir}/{specific-projectForlderDir}/pom.xml -Dgpg.s
 
 ## Versions and versioning
 
-Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists version text files, one for client ([version_client.txt](./eng/versioning/version_client.txt)) and one for data ([version_data.txt](./eng/versioning/version_data.txt)). The format of the version files is as follows:
+Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists version text files, one for client ([version_client.txt](https://github.com/Azure/azure-sdk-for-java/blob/master/eng/versioning/version_client.txt)) and one for data ([version_data.txt](https://github.com/Azure/azure-sdk-for-java/blob/master/eng/versioning/version_data.txt)). The format of the version files is as follows:
 
 `groupId:artifactId;dependency-version;current-version`
 

@@ -32,7 +32,7 @@ public class ChunkedDownloadUtils {
      */
     public static Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> downloadFirstChunk(
         BlobRange range, ParallelTransferOptions parallelTransferOptions, BlobRequestConditions requestConditions,
-        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloader) {
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloader, boolean eTagLock) {
         // We will scope our initial download to either be one chunk or the total size.
         long initialChunkSize = range.getCount() != null
             && range.getCount() < parallelTransferOptions.getBlockSizeLong()
@@ -46,8 +46,8 @@ public class ChunkedDownloadUtils {
                 was no etag, so we set it here. ETag locking is vital to ensure we download one, consistent view
                 of the file.
                  */
-                BlobRequestConditions newConditions = setEtag(requestConditions,
-                    response.getDeserializedHeaders().getETag());
+                BlobRequestConditions newConditions = eTagLock ? setEtag(requestConditions,
+                    response.getDeserializedHeaders().getETag()) : requestConditions;
 
                 // Extract the total length of the blob from the contentRange header. e.g. "bytes 1-6/7"
                 long totalLength = extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());

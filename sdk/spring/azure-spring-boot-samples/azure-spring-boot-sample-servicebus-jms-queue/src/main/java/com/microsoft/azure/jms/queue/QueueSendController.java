@@ -16,7 +16,7 @@ public class QueueSendController {
 
     private static final String QUEUE_NAME = "que001";
 
-    private static final Logger logger = LoggerFactory.getLogger(QueueSendController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueueSendController.class);
 
     @Autowired
     private JmsTemplate jmsTemplate;
@@ -24,7 +24,7 @@ public class QueueSendController {
     @PostMapping("/queue")
     public String postMessage(@RequestParam String message) {
 
-        logger.info("Sending message");
+        LOGGER.info("Sending message");
 
         jmsTemplate.convertAndSend(QUEUE_NAME, new User(message));
 

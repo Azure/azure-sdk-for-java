@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -26,7 +27,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -87,13 +88,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final Runnable onClientClose;
     private final String entityName;
     private final ServiceBusConnectionProcessor connectionProcessor;
+    private final String viaEntityName;
 
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
     ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions,
-        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose) {
+        ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, Runnable onClientClose, String viaEntityName) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
@@ -104,7 +106,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         this.tracerProvider = tracerProvider;
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.entityType = entityType;
-
+        this.viaEntityName = viaEntityName;
         this.onClientClose = onClientClose;
     }
 
@@ -289,7 +291,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
      * @param message Message to be sent to the Service Bus Queue.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param scheduledEnqueueTime OffsetDateTime at which the message should appear in the Service Bus queue or topic.
      * @param transactionContext to be set on message before sending to Service Bus.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
@@ -297,7 +299,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code message}, {@code scheduledEnqueueTime}, {@code transactionContext} or
      * {@code transactionContext.transactionID} is {@code null}.
      */
-    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime,
+    public Mono<Long> scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
@@ -314,13 +316,13 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
      * @param message Message to be sent to the Service Bus Queue.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param scheduledEnqueueTime OffsetDateTime at which the message should appear in the Service Bus queue or topic.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      *
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      */
-    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
+    public Mono<Long> scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime) {
         return scheduleMessageInternal(message, scheduledEnqueueTime, null);
     }
 
@@ -424,8 +426,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         });
     }
 
-    private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, Instant scheduledEnqueueTime,
-                                               ServiceBusTransactionContext transactionContext) {
+    private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
+        ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         }
@@ -552,7 +554,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     private Mono<AmqpSendLink> getSendLink() {
         return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(entityName, entityName, retryOptions))
+            .flatMap(connection -> {
+                if (!CoreUtils.isNullOrEmpty(viaEntityName)) {
+                    return connection.createSendLink("VIA-".concat(viaEntityName), viaEntityName, retryOptions,
+                        entityName);
+                } else {
+                    return connection.createSendLink(entityName, entityName, retryOptions, null);
+                }
+            })
             .doOnNext(next -> linkName.compareAndSet(null, next.getLinkName()));
     }
 

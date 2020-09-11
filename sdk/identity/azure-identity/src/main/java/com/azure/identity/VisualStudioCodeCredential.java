@@ -7,11 +7,13 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.VisualStudioCacheAccessor;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
@@ -24,6 +26,7 @@ public class VisualStudioCodeCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
     private final String cloudInstance;
+    private final ClientLogger logger = new ClientLogger(VisualStudioCodeCredential.class);
 
     /**
      * Creates a public class VisualStudioCodeCredential implements TokenCredential with the given tenant and
@@ -76,7 +79,9 @@ public class VisualStudioCodeCredential implements TokenCredential {
             Mono.defer(() -> identityClient.authenticateWithVsCodeCredential(request, cloudInstance)))
                    .map(msalToken -> {
                        cachedToken.set(msalToken);
-                       return msalToken;
-                   });
+                       return (AccessToken) msalToken;
+                   })
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }

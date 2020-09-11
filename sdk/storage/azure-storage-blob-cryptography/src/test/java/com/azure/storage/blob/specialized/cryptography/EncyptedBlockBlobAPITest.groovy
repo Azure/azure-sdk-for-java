@@ -1201,10 +1201,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         Files.deleteIfExists(file.toPath())
 
         expect:
-        def bac = new EncryptedBlobClientBuilder()
-            .key(fakeKey, "keyWrapAlgorithm")
-            .pipeline(ebc.getHttpPipeline())
-            .endpoint(ebc.getBlobUrl())
+        def bac = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+            ebc.getBlobUrl().toString())
             .buildEncryptedBlobAsyncClient()
 
         /*

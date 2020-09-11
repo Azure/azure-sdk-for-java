@@ -3,8 +3,6 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.core.http.HttpMethod;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -14,12 +12,13 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JacksonAdapterTests {
     @Test
@@ -88,111 +87,61 @@ public class JacksonAdapterTests {
     }
 
     @ParameterizedTest
-    @MethodSource("convertTextSupplier")
-    public <T> void convertText(String value, Class<T> type, T expected) throws ReflectiveOperationException {
-        assertEquals(expected, JacksonAdapter.convertText(value, type));
+    @MethodSource("deserializeJsonSupplier")
+    public void deserializeJson(String json, OffsetDateTime expected) throws IOException {
+        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(json, DateTimeWrapper.class, SerializerEncoding.JSON);
+
+        assertEquals(expected, wrapper.getOffsetDateTime());
     }
 
-    private static Stream<Arguments> convertTextSupplier() {
+    private static Stream<Arguments> deserializeJsonSupplier() {
+        final String jsonFormat = "{\"OffsetDateTime\":\"%s\"}";
+        OffsetDateTime minValue = OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime unixEpoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
         return Stream.of(
-            // byte
-            Arguments.of(null, byte.class, (byte) 0),
-            Arguments.of("", byte.class, (byte) 0),
-            Arguments.of("-128", byte.class, (byte) -128),
-
-            // Byte
-            Arguments.of(null, Byte.class, null),
-            Arguments.of("", Byte.class, null),
-            Arguments.of("-128", Byte.class, (byte) -128),
-
-            // short
-            Arguments.of(null, short.class, (short) 0),
-            Arguments.of("", short.class, (short) 0),
-            Arguments.of("128", short.class, (short) 128),
-
-            // Short
-            Arguments.of(null, Short.class, null),
-            Arguments.of("", Short.class, null),
-            Arguments.of("128", Short.class, (short) 128),
-
-            // int
-            Arguments.of(null, int.class, 0),
-            Arguments.of("", int.class, 0),
-            Arguments.of("128", int.class, 128),
-
-            // Integer
-            Arguments.of(null, Integer.class, null),
-            Arguments.of("", Integer.class, null),
-            Arguments.of("128", Integer.class, 128),
-
-            // long
-            Arguments.of(null, long.class, 0L),
-            Arguments.of("", long.class, 0L),
-            Arguments.of("128", long.class, 128L),
-
-            // Long
-            Arguments.of(null, Long.class, null),
-            Arguments.of("", Long.class, null),
-            Arguments.of("128", Long.class, 128L),
-
-            // float
-            Arguments.of(null, float.class, 0F),
-            Arguments.of("", float.class, 0F),
-            Arguments.of("128", float.class, 128F),
-
-            // Float
-            Arguments.of(null, Float.class, null),
-            Arguments.of("", Float.class, null),
-            Arguments.of("128", Float.class, 128F),
-
-            // double
-            Arguments.of(null, double.class, 0D),
-            Arguments.of("", double.class, 0D),
-            Arguments.of("128", double.class, 128D),
-
-            // Double
-            Arguments.of(null, Double.class, null),
-            Arguments.of("", Double.class, null),
-            Arguments.of("128", Double.class, 128D),
-
-            // boolean
-            Arguments.of(null, boolean.class, false),
-            Arguments.of("", boolean.class, false),
-            Arguments.of("true", boolean.class, true),
-
-            // Boolean
-            Arguments.of(null, Boolean.class, null),
-            Arguments.of("", Boolean.class, null),
-            Arguments.of("true", Boolean.class, true),
-
-            // Enum
-            Arguments.of(null, HttpMethod.class, null),
-            Arguments.of("", HttpMethod.class, null),
-            Arguments.of("GET", HttpMethod.class, HttpMethod.GET),
-            Arguments.of("POST", HttpMethod.class, HttpMethod.POST),
-
-            // ExpandableStringEnum
-            Arguments.of(null, LongRunningOperationStatus.class, null),
-            Arguments.of("", LongRunningOperationStatus.class, null),
-            Arguments.of("NOT_STARTED", LongRunningOperationStatus.class, LongRunningOperationStatus.NOT_STARTED),
-            Arguments.of("FAILED", LongRunningOperationStatus.class, LongRunningOperationStatus.FAILED),
-            Arguments.of("OTHER", LongRunningOperationStatus.class,
-                LongRunningOperationStatus.fromString("OTHER", false)),
-
-            // CharSequence
-            Arguments.of(null, String.class, null),
-            Arguments.of("", String.class, ""),
-            Arguments.of("128", String.class, "128")
+            Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00"), minValue),
+            Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00Z"), minValue),
+            Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00"), unixEpoch),
+            Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00Z"), unixEpoch)
         );
     }
 
-    @Test
-    public void convertTextUnsuportedType() {
-        assertThrows(IllegalStateException.class, () -> JacksonAdapter.convertText("a value", JacksonAdapter.class));
+    @ParameterizedTest
+    @MethodSource("deserializeXmlSupplier")
+    public void deserializeXml(String xml, OffsetDateTime expected) throws IOException {
+        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(xml, DateTimeWrapper.class, SerializerEncoding.XML);
+
+        assertEquals(expected, wrapper.getOffsetDateTime());
     }
 
-    @Test
-    public void convertTextInvalidEnumValue() {
-        assertThrows(IllegalArgumentException.class, () -> JacksonAdapter.convertText("a value", HttpMethod.class));
+    private static Stream<Arguments> deserializeXmlSupplier() {
+        final String xmlFormat = "<Wrapper><OffsetDateTime>%s</OffsetDateTime></Wrapper>";
+        OffsetDateTime minValue = OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime unixEpoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        return Stream.of(
+            Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00"), minValue),
+            Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00Z"), minValue),
+            Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00"), unixEpoch),
+            Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00Z"), unixEpoch)
+        );
+    }
+
+    @JacksonXmlRootElement(localName = "Wrapper")
+    private static class DateTimeWrapper {
+        @JsonProperty(value = "OffsetDateTime", required = true)
+        private OffsetDateTime offsetDateTime;
+
+        public DateTimeWrapper setOffsetDateTime(OffsetDateTime offsetDateTime) {
+            this.offsetDateTime = offsetDateTime;
+            return this;
+        }
+
+        public OffsetDateTime getOffsetDateTime() {
+            return offsetDateTime;
+        }
     }
 }

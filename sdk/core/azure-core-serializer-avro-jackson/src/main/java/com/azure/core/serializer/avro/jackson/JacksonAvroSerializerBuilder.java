@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.avro.jackson;
 
+import com.azure.core.experimental.serializer.AvroSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.dataformat.avro.AvroMapper;
 
@@ -28,7 +29,7 @@ public class JacksonAvroSerializerBuilder {
      * @throws NullPointerException If {@code schema} is {@code null}.
      * @throws UncheckedIOException If {@code schema} cannot be parsed.
      */
-    public JacksonAvroSerializer build() {
+    public AvroSerializer build() {
         Objects.requireNonNull(schema, "'schema' cannot be null.");
 
         AvroMapper buildAvroMapper = (avroMapper == null) ? new AvroMapper() : avroMapper;

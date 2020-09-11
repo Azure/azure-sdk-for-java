@@ -89,7 +89,12 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);
         this.remoteAddress = bootstrap.config().remoteAddress();
         this.concurrentRequests = new AtomicInteger();
-        this.lastRequestNanoTime = new AtomicLong();
+        // if no request has been sent over this endpoint we want to make sure we don't trigger a connection close
+        // due to elapsedTimeInNanos being negative.
+        // if no request has been sent initially over this endpoint, the below calculation can result in a very big difference
+        // long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime()
+        // which can cause endpoint to close unnecessary.
+        this.lastRequestNanoTime = new AtomicLong(System.nanoTime());
         this.closed = new AtomicBoolean();
         this.requestTimer = timer;
 
@@ -213,7 +218,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             if (released.isDone()) {
                 ensureSuccessWhenReleasedToPool(channel, released);
             } else {
-                this.channelPool.release(channel).addListener(ignored -> ensureSuccessWhenReleasedToPool(channel, released));
+                released.addListener(ignored -> ensureSuccessWhenReleasedToPool(channel, released));
             }
         }
     }
@@ -314,7 +319,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final RntbdRequestTimer requestTimer;
         private final RntbdTransportClient transportClient;
 
-        public Provider(final RntbdTransportClient transportClient, final Options options, final SslContext sslContext) {
+        public Provider(
+            final RntbdTransportClient transportClient,
+            final Options options,
+            final SslContext sslContext) {
 
             checkNotNull(transportClient, "expected non-null provider");
             checkNotNull(options, "expected non-null options");

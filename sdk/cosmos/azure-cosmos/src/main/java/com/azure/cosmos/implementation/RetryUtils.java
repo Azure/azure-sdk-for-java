@@ -73,7 +73,7 @@ public class RetryUtils {
                 return Mono.error(throwable);
             }
             retryPolicy.captureStartTimeIfNotSet();
-            Flux<IRetryPolicy.ShouldRetryResult> shouldRetryResultFlux = retryPolicy.shouldRetry(e).flux();
+            Mono<IRetryPolicy.ShouldRetryResult> shouldRetryResultFlux = retryPolicy.shouldRetry(e);
             return shouldRetryResultFlux.flatMap(shouldRetryResult -> {
                 CosmosException clientException = Utils.as(e, CosmosException.class);
                 if(clientException != null) {
@@ -107,7 +107,7 @@ public class RetryUtils {
                             shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest)
                             .delaySubscription(Duration.ofMillis(shouldRetryResult.backOffTime.toMillis()));
                 }
-            }).single();
+            });
         };
     }
 

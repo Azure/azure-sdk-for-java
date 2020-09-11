@@ -5,6 +5,7 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -122,6 +123,26 @@ public final class SearchOptions {
     private SearchMode searchMode;
 
     /*
+     * A value that specifies whether we want to calculate scoring statistics
+     * (such as document frequency) globally for more consistent scoring, or
+     * locally, for lower latency.
+     */
+    @JsonProperty(value = "scoringStatistics")
+    private ScoringStatistics scoringStatistics;
+
+    /*
+     * A value to be used to create a sticky session, which can help to get
+     * more consistent results. As long as the same sessionId is used, a
+     * best-effort attempt will be made to target the same replica set. Be wary
+     * that reusing the same sessionID values repeatedly can interfere with the
+     * load balancing of the requests across replicas and adversely affect the
+     * performance of the search service. The value used as sessionId cannot
+     * start with a '_' character.
+     */
+    @JsonProperty(value = "sessionId")
+    private String sessionId;
+
+    /*
      * The list of fields to retrieve. If unspecified, all fields marked as
      * retrievable in the schema are included.
      */
@@ -193,7 +214,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setFacets(String... facets) {
-        this.facets = Arrays.asList(facets);
+        this.facets = (facets == null) ? null : Arrays.asList(facets);
         return this;
     }
 
@@ -237,7 +258,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setHighlightFields(String... highlightFields) {
-        this.highlightFields = Arrays.asList(highlightFields);
+        this.highlightFields = (highlightFields == null) ? null : Arrays.asList(highlightFields);
         return this;
     }
 
@@ -347,7 +368,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setOrderBy(String... orderBy) {
-        this.orderBy = Arrays.asList(orderBy);
+        this.orderBy = (orderBy == null) ? null : Arrays.asList(orderBy);
         return this;
     }
 
@@ -399,7 +420,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setScoringParameters(ScoringParameter... scoringParameters) {
-        this.scoringParameters = Arrays.asList(scoringParameters);
+        this.scoringParameters = (scoringParameters == null) ? null : Arrays.asList(scoringParameters);
         return this;
     }
 
@@ -451,7 +472,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setSearchFields(String... searchFields) {
-        this.searchFields = Arrays.asList(searchFields);
+        this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
         return this;
     }
 
@@ -480,6 +501,56 @@ public final class SearchOptions {
     }
 
     /**
+     * Get the scoringStatistics property: A value that specifies whether we want to calculate scoring statistics (such
+     * as document frequency) globally for more consistent scoring, or locally, for lower latency.
+     *
+     * @return the scoringStatistics value.
+     */
+    public ScoringStatistics getScoringStatistics() {
+        return this.scoringStatistics;
+    }
+
+    /**
+     * Set the scoringStatistics property: A value that specifies whether we want to calculate scoring statistics (such
+     * as document frequency) globally for more consistent scoring, or locally, for lower latency.
+     *
+     * @param scoringStatistics the scoringStatistics value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setScoringStatistics(ScoringStatistics scoringStatistics) {
+        this.scoringStatistics = scoringStatistics;
+        return this;
+    }
+
+    /**
+     * Get the sessionId property: A value to be used to create a sticky session, which can help to get more consistent
+     * results. As long as the same sessionId is used, a best-effort attempt will be made to target the same replica
+     * set. Be wary that reusing the same sessionID values repeatedly can interfere with the load balancing of the
+     * requests across replicas and adversely affect the performance of the search service. The value used as sessionId
+     * cannot start with a '_' character.
+     *
+     * @return the sessionId value.
+     */
+    public String getSessionId() {
+        return this.sessionId;
+    }
+
+    /**
+     * Set the sessionId property: A value to be used to create a sticky session, which can help to get more consistent
+     * results. As long as the same sessionId is used, a best-effort attempt will be made to target the same replica
+     * set. Be wary that reusing the same sessionID values repeatedly can interfere with the load balancing of the
+     * requests across replicas and adversely affect the performance of the search service. The value used as sessionId
+     * cannot start with a '_' character.
+     *
+     * @param sessionId the sessionId value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+        return this;
+    }
+
+    /**
      * Get the select property: The list of fields to retrieve. If unspecified,
      * all fields marked as retrievable in the schema are included.
      *
@@ -497,7 +568,7 @@ public final class SearchOptions {
      * @return the SearchOptions object itself.
      */
     public SearchOptions setSelect(String... select) {
-        this.select = Arrays.asList(select);
+        this.select = (select == null) ? null : Arrays.asList(select);
         return this;
     }
 

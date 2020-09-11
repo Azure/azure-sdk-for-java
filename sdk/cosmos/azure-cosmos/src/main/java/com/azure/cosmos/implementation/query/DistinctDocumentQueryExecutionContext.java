@@ -6,11 +6,11 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.implementation.Resource;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public class DistinctDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
     private final IDocumentQueryExecutionComponent<T> component;
@@ -43,9 +43,10 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
-        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
         DistinctQueryType distinctQueryType,
-        String continuationToken) {
+        String continuationToken,
+        PipelinedDocumentQueryParams<T> documentQueryParams) {
 
         Utils.ValueHolder<DistinctContinuationToken> outDistinctcontinuationtoken = new Utils.ValueHolder<>();
         DistinctContinuationToken distinctContinuationToken = new DistinctContinuationToken(null /*lasthash*/,
@@ -70,11 +71,9 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
 
         final UInt128 continuationTokenLastHash = distinctContinuationToken.getLastHash();
 
-        return createSourceComponentFunction.apply(distinctContinuationToken.getSourceToken()).map(component -> {
-            return new DistinctDocumentQueryExecutionContext<T>(component,
-                                                                distinctQueryType,
-                                                                continuationTokenLastHash);
-        });
+        return createSourceComponentFunction
+            .apply(distinctContinuationToken.getSourceToken(), documentQueryParams)
+            .map(component -> new DistinctDocumentQueryExecutionContext<T>(component, distinctQueryType, continuationTokenLastHash));
     }
 
     IDocumentQueryExecutionComponent<T> getComponent() {
@@ -105,8 +104,9 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
             }
 
             return BridgeInternal.createFeedResponseWithQueryMetrics(distinctResults,
-                                                                     headers,
-                                                                     BridgeInternal.queryMetricsFromFeedResponse(tFeedResponse));
+                headers,
+                BridgeInternal.queryMetricsFromFeedResponse(tFeedResponse),
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(tFeedResponse));
         });
 
     }

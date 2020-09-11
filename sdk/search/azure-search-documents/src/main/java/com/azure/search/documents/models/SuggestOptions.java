@@ -248,7 +248,7 @@ public final class SuggestOptions {
      * @return the SuggestOptions object itself.
      */
     public SuggestOptions setOrderBy(String... orderBy) {
-        this.orderBy = Arrays.asList(orderBy);
+        this.orderBy = (orderBy == null) ? null : Arrays.asList(orderBy);
         return this;
     }
 
@@ -272,7 +272,7 @@ public final class SuggestOptions {
      * @return the SuggestOptions object itself.
      */
     public SuggestOptions setSearchFields(String... searchFields) {
-        this.searchFields = Arrays.asList(searchFields);
+        this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
         return this;
     }
 
@@ -294,7 +294,7 @@ public final class SuggestOptions {
      * @return the SuggestOptions object itself.
      */
     public SuggestOptions setSelect(String... select) {
-        this.select = Arrays.asList(select);
+        this.select = (select == null) ? null : Arrays.asList(select);
         return this;
     }
 

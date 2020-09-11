@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.AsyncPollResponse;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +43,8 @@ public class CopyModelAsync {
             // Start copy operation from the source client
             // The Id of the model that needs to be copied to the target resource
             .subscribe(copyAuthorization -> sourceClient.beginCopyModel(copyModelId, copyAuthorization)
-                .subscribe(copyPoller -> copyPoller.getFinalResult()
+                .filter(pollResponse -> pollResponse.getStatus().isComplete())
+                .flatMap(AsyncPollResponse::getFinalResult)
                     .subscribe(customFormModelInfo -> {
                         System.out.printf("Original model has model Id: %s, model status: %s, training started on: %s,"
                                 + " training completed on: %s.%n",
@@ -59,7 +61,7 @@ public class CopyModelAsync {
                                 customFormModel.getModelStatus(),
                                 customFormModel.getTrainingStartedOn(),
                                 customFormModel.getTrainingCompletedOn()));
-                    })));
+                    }));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

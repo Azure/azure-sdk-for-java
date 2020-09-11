@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
+import com.azure.cosmos.implementation.cpu.CpuMonitor;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
@@ -85,7 +86,7 @@ class ClientSideRequestStatistics {
         connectionMode = ConnectionMode.DIRECT;
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
-        storeResponseStatistics.requestResponseTime = responseTime;
+        storeResponseStatistics.requestResponseTimeUTC = responseTime;
         storeResponseStatistics.storeResult = storeResult;
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
@@ -161,9 +162,9 @@ class ClientSideRequestStatistics {
         String identifier = Utils.randomUUID().toString();
 
         AddressResolutionStatistics resolutionStatistics = new AddressResolutionStatistics();
-        resolutionStatistics.startTime = Instant.now();
+        resolutionStatistics.startTimeUTC = Instant.now();
         //  Very far in the future
-        resolutionStatistics.endTime = Instant.MAX;
+        resolutionStatistics.endTimeUTC = Instant.MAX;
         resolutionStatistics.targetEndpoint = targetEndpoint == null ? "<NULL>" : targetEndpoint.toString();
 
         synchronized (this) {
@@ -190,7 +191,7 @@ class ClientSideRequestStatistics {
             }
 
             AddressResolutionStatistics resolutionStatistics = this.addressResolutionStatistics.get(identifier);
-            resolutionStatistics.endTime = responseTime;
+            resolutionStatistics.endTimeUTC = responseTime;
         }
     }
 
@@ -237,15 +238,16 @@ class ClientSideRequestStatistics {
         @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
         StoreResult storeResult;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant requestResponseTime;
+        Instant requestResponseTimeUTC;
+        @JsonSerialize
         ResourceType requestResourceType;
+        @JsonSerialize
         OperationType requestOperationType;
     }
 
     private static class SystemInformation {
         String usedMemory;
         String availableMemory;
-        String processCpuLoad;
         String systemCpuLoad;
 
         public String getUsedMemory() {
@@ -254,10 +256,6 @@ class ClientSideRequestStatistics {
 
         public String getAvailableMemory() {
             return availableMemory;
-        }
-
-        public String getProcessCpuLoad() {
-            return processCpuLoad;
         }
 
         public String getSystemCpuLoad() {
@@ -279,7 +277,8 @@ class ClientSideRequestStatistics {
             IOException {
             generator.writeStartObject();
             long requestLatency = statistics.getDuration().toMillis();
-            generator.writeNumberField("requestLatency", requestLatency);
+            generator.writeStringField("userAgent", CosmosDiagnostics.USER_AGENT);
+            generator.writeNumberField("requestLatencyInMs", requestLatency);
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.formatDateTime(statistics.requestStartTimeUTC));
             generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.formatDateTime(statistics.requestEndTimeUTC));
             generator.writeObjectField("connectionMode", statistics.connectionMode);
@@ -313,10 +312,8 @@ class ClientSideRequestStatistics {
                 systemInformation.usedMemory = totalMemory - freeMemory + " KB";
                 systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
 
-                OperatingSystemMXBean mbean = (com.sun.management.OperatingSystemMXBean)
-                                                  ManagementFactory.getOperatingSystemMXBean();
-                systemInformation.processCpuLoad = mbean.getProcessCpuLoad() * 100 + " %";
-                systemInformation.systemCpuLoad = mbean.getSystemCpuLoad() * 100 + " %";
+                // TODO: other system related info also can be captured using a similar approach
+                systemInformation.systemCpuLoad = CpuMonitor.getCpuLoad().toString();
                 generator.writeObjectField("systemInformation", systemInformation);
             } catch (Exception e) {
                 // Error while evaluating system information, do nothing
@@ -327,9 +324,10 @@ class ClientSideRequestStatistics {
 
     private static class AddressResolutionStatistics {
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant startTime;
+        Instant startTimeUTC;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant endTime;
+        Instant endTimeUTC;
+        @JsonSerialize
         String targetEndpoint;
     }
 

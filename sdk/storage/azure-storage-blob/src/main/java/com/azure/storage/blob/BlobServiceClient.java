@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.FilterBlobItem;
+import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
@@ -151,7 +151,7 @@ public final class BlobServiceClient {
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> deleteBlobContainerWithResponse(String containerName, Context context) {
-        return blobServiceAsyncClient.deleteBlobContainerWithResponse(containerName).block();
+        return blobServiceAsyncClient.deleteBlobContainerWithResponse(containerName, context).block();
     }
 
     /**
@@ -195,11 +195,10 @@ public final class BlobServiceClient {
         return new PagedIterable<>(blobServiceAsyncClient.listBlobContainersWithOptionalTimeout(options, timeout));
     }
 
-    // TODO: (rickle-msft) doc links
     /**
      * Returns a lazy loaded list of blobs in this account whose tags match the query expression. The returned
      * {@link PagedIterable} can be consumed while new items are automatically retrieved as needed. For more
-     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a>.
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -208,14 +207,14 @@ public final class BlobServiceClient {
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @return The list of blobs.
      */
-    public PagedIterable<FilterBlobItem> findBlobsByTags(String query) {
+    public PagedIterable<TaggedBlobItem> findBlobsByTags(String query) {
         return this.findBlobsByTags(new FindBlobsOptions(query), null, Context.NONE);
     }
 
     /**
      * Returns a lazy loaded list of blobs in this account whose tags match the query expression. The returned
      * {@link PagedIterable} can be consumed while new items are automatically retrieved as needed. For more
-     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a>.
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -226,7 +225,7 @@ public final class BlobServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The list of blobs.
      */
-    public PagedIterable<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
+    public PagedIterable<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
         return new PagedIterable<>(blobServiceAsyncClient.findBlobsByTags(options, timeout, context));
     }
 

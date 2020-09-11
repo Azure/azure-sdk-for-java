@@ -319,6 +319,12 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "x-ms-error-code")
     private String errorCode;
 
+    /*
+     * The isSealed property.
+     */
+    @JsonProperty(value = "IsSealed")
+    private Boolean sealed;
+
     /**
      * Get the lastModified property: Returns the date and time the container
      * was last modified. Any operation that modifies the blob, including an
@@ -1249,6 +1255,26 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
+        return this;
+    }
+
+    /**
+     * Get the sealed property: The sealed property.
+     *
+     * @return the isSealed value.
+     */
+    public Boolean isSealed() {
+        return this.sealed;
+    }
+
+    /**
+     * Set the sealed property: The sealed property.
+     *
+     * @param sealed the sealed value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setSealed(Boolean sealed) {
+        this.sealed = sealed;
         return this;
     }
 }

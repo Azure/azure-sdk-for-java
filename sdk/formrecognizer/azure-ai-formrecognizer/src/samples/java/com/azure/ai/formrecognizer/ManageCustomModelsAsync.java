@@ -55,13 +55,13 @@ public class ManageCustomModelsAsync {
                             System.out.printf("Field Accuracy: %.2f%n", customFormModelField.getAccuracy());
                         });
                     }
-
                 });
             });
         });
 
         // Delete Custom Model
-        System.out.printf("Deleted model with model Id: %s%n", modelId.get(), client.deleteModelWithResponse(modelId.get()));
+        client.deleteModel(modelId.get());
+        System.out.printf("Deleted model with model Id: %s%n", modelId.get());
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

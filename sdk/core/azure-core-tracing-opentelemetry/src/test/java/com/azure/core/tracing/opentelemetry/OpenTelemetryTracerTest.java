@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opentelemetry.OpenTelemetry;
 import io.opentelemetry.common.AttributeValue;
+import io.opentelemetry.common.ReadableAttributes;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.trace.Link;
@@ -104,7 +105,7 @@ public class OpenTelemetryTracerTest {
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
         assertEquals(Span.Kind.INTERNAL, recordEventsSpan.toSpanData().getKind());
-        final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
+        final ReadableAttributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
         assertEquals(attributeMap.get(AZ_NAMESPACE_KEY),
             AttributeValue.stringAttributeValue(AZ_NAMESPACE_VALUE));
     }
@@ -151,7 +152,7 @@ public class OpenTelemetryTracerTest {
         assertEquals(Span.Kind.CLIENT, recordEventsSpan.toSpanData().getKind());
 
         // verify span attributes
-        final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
+        final ReadableAttributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
         HashMap<String, AttributeValue> expectedAttributeMap = new HashMap<String, AttributeValue>() {
             {
                 put(MESSAGE_BUS_DESTINATION, AttributeValue.stringAttributeValue(ENTITY_PATH_VALUE));
@@ -181,7 +182,7 @@ public class OpenTelemetryTracerTest {
         assertNotNull(updatedContext.getData(SPAN_CONTEXT_KEY).get());
         assertNotNull(updatedContext.getData(DIAGNOSTIC_ID_KEY).get());
 
-        final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
+        final ReadableAttributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
         HashMap<String, AttributeValue> expectedAttributeMap = new HashMap<String, AttributeValue>() {
             {
                 put(MESSAGE_BUS_DESTINATION, AttributeValue.stringAttributeValue(ENTITY_PATH_VALUE));
@@ -218,7 +219,7 @@ public class OpenTelemetryTracerTest {
         assertEquals(Span.Kind.CONSUMER, recordEventsSpan.toSpanData().getKind());
 
         // verify span attributes
-        final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
+        final ReadableAttributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
         HashMap<String, AttributeValue> expectedAttributeMap = new HashMap<String, AttributeValue>() {
             {
                 put(MESSAGE_BUS_DESTINATION, AttributeValue.stringAttributeValue(ENTITY_PATH_VALUE));
@@ -373,7 +374,7 @@ public class OpenTelemetryTracerTest {
         openTelemetryTracer.setAttribute(firstKey, firstKeyValue, spanContext);
 
         // Assert
-        final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
+        final ReadableAttributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
         assertEquals(attributeMap.get(firstKey), AttributeValue.stringAttributeValue(firstKeyValue));
     }
 
@@ -389,7 +390,7 @@ public class OpenTelemetryTracerTest {
         openTelemetryTracer.setAttribute(firstKey, firstKeyValue, Context.NONE);
 
         // Assert
-        final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
+        final ReadableAttributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
         assertEquals(attributeMap.size(), 0);
     }
 
@@ -480,7 +481,7 @@ public class OpenTelemetryTracerTest {
         assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
     }
 
-    private static void verifySpanAttributes(Map<String, AttributeValue> actualAttributeMap,
+    private static void verifySpanAttributes(ReadableAttributes actualAttributeMap,
         Map<String, AttributeValue> expectedMapValue) {
         actualAttributeMap.forEach((attributeKey, attributeValue) ->
             assertEquals(expectedMapValue.get(attributeKey), attributeValue));

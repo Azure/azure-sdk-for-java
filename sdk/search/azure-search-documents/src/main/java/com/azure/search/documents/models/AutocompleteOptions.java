@@ -254,7 +254,7 @@ public final class AutocompleteOptions {
      * @return the AutocompleteOptions object itself.
      */
     public AutocompleteOptions setSearchFields(String... searchFields) {
-        this.searchFields = Arrays.asList(searchFields);
+        this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
         return this;
     }
 

@@ -31,7 +31,7 @@ import java.util.List;
 
 /**
  * This scenario assumes an existing search solution, with index and an indexer setup (see LifecycleSetupExample)
- * For more information visit Azure Search Sample Data
+ * For more information visit Azure Cognitive Search Sample Data
  * https://docs.microsoft.com/en-us/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
  */
 public class RefineSearchCapabilitiesExample {
@@ -129,7 +129,7 @@ public class RefineSearchCapabilitiesExample {
 
         SearchIndex index = client.getIndex(INDEX_NAME);
         List<SearchField> fields = index.getFields();
-        fields.get(1).setSynonymMapNames(Collections.singletonList(synonymMapName));
+        fields.get(1).setSynonymMapNames(synonymMapName);
         index.setFields(fields);
 
         client.createOrUpdateIndex(index);

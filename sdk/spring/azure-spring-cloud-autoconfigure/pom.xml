@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>spring-cloud-azure-autoconfigure</artifactId>
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-autoconfigure;current} -->
+
+  <name>Spring Cloud Azure Autoconfigure</name>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <properties>
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>5.2.8.RELEASE</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+    </dependency>
+
+		<!-- Telemetry -->
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-telemetry</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-telemetry;current} -->
+    </dependency>
+
+		<!-- Cloud SQL -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>5.2.8.RELEASE</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>3.4.5</version> <!-- {x-version-update;com.zaxxer:HikariCP;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+		<!-- PostgreSQL -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.2.14</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+		<!-- MySQL -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.21</version> <!-- {x-version-update;mysql:mysql-connector-java;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+		<!-- SQL Server -->
+    <dependency>
+      <groupId>com.microsoft.sqlserver</groupId>
+      <artifactId>mssql-jdbc</artifactId>
+      <version>7.4.1.jre8</version> <!-- {x-version-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+		<!-- Event Hub -->
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-integration-eventhubs</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-eventhubs;current} -->
+      <optional>true</optional>
+    </dependency>
+
+		<!-- Service Bus -->
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-integration-servicebus</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-servicebus;current} -->
+      <optional>true</optional>
+    </dependency>
+
+		<!-- Redis -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-redis</artifactId>
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+		<!-- Kafka -->
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+      <version>2.5.5.RELEASE</version> <!-- {x-version-update;org.springframework.kafka:spring-kafka;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+		<!-- MongoDB -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-mongodb</artifactId>
+      <version>3.0.3.RELEASE</version> <!-- {x-version-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>5.2.8.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-context</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>6.1.5.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.11.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.3.3</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-mockito2</artifactId>
+      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-api-mockito2;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Dependencies on other modules for AutoConfiguration tests -->
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-storage</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-storage;current} -->
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.fasterxml.jackson.core:jackson-core:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.microsoft.azure:spring-cloud-azure-context:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
+                <include>com.microsoft.azure:spring-cloud-azure-telemetry:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-telemetry;current} -->
+                <include>com.microsoft.azure:spring-integration-eventhubs:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-eventhubs;current} -->
+                <include>com.microsoft.azure:spring-integration-servicebus:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-servicebus;current} -->
+                <include>com.microsoft.sqlserver:mssql-jdbc:[7.4.1.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+                <include>mysql:mysql-connector-java:[8.0.21]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
+                <include>org.hibernate.validator:hibernate-validator:[6.1.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.2.14]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.data:spring-data-mongodb:[3.0.3.RELEASE]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
+                <include>org.springframework.data:spring-data-redis:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
+                <include>org.springframework.kafka:spring-kafka:[2.5.5.RELEASE]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
+                <include>org.springframework:spring-context-support:[5.2.8.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
+                <include>org.springframework:spring-jdbc:[5.2.8.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
+                <include>org.springframework:spring-web:[5.2.8.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+
+    <resources>
+      <!-- Raw Resource -->
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>META-INF/spring.factories</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+  <profiles>
+    <!-- Generate "spring-configuration-metadata.json" by annotation process -->
+    <profile>
+      <id>annotation-process-for-java-8</id>
+      <activation>
+        <jdk>[1.8,9)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>annotation-process-for-java-8</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <compilerArgs>
+                    <arg>-proc:only</arg> <!-- Turn on annotation processing -->
+                  </compilerArgs>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>annotation-process-for-java-11</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>annotation-process-for-java-11</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <compilerArgs>
+                    <arg>-proc:only</arg> <!-- Turn on annotation processing -->
+                  </compilerArgs>
+                  <release>11</release>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

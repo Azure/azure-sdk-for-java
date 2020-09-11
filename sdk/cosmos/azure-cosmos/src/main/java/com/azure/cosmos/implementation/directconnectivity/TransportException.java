@@ -20,6 +20,9 @@ package com.azure.cosmos.implementation.directconnectivity;
 //   NOTES:
 //   We throw a derivative in one place: RntbdContextException in RntbdContext.decode. This is a special case
 //   that is handled by RntbdRequestManager.userEventTriggered.
+//   REFERENCES:
+//   * The Exceptional Performance of Lil' Exception
+//     https://shipilev.net/blog/2014/exceptional-performance/
 
 public class TransportException extends RuntimeException {
     public TransportException(String message, Throwable cause) {

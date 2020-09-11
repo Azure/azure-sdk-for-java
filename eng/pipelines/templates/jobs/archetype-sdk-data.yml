@@ -55,7 +55,7 @@ jobs:
         inputs:
           versionSpec: '3.6'
 
-      - template: tools/daily-dev-build-variable/daily-dev-build-variable.yml@azure-sdk-tools
+      - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
 
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
