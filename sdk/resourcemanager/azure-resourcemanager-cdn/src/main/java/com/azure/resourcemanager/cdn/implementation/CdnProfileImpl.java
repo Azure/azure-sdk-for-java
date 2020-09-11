@@ -44,10 +44,6 @@ class CdnProfileImpl
 
     @Override
     public Map<String, CdnEndpoint> endpoints() {
-        // This is not right, The endpoints are not inline children of profile (hence they are
-        // not cached) but CdnEndpointsImpl today is deriving from ExternalChildResourceCachedImpl
-        // instead it should derive from ExternalChildResourceNonCachedImpl
-        //
         return this.endpoints.endpointsAsMap();
     }
 
@@ -170,13 +166,6 @@ class CdnProfileImpl
     }
 
     @Override
-    public CdnProfileImpl update() {
-        this.endpoints.enableCommitMode();
-        return super.update();
-    }
-
-
-    @Override
     public Mono<CdnProfile> createResourceAsync() {
         return this.manager().inner().getProfiles().createAsync(resourceGroupName(), name(), inner())
                 .map(innerToFluentMap(this));
@@ -185,13 +174,12 @@ class CdnProfileImpl
     @Override
     public Mono<CdnProfile> updateResourceAsync() {
         final CdnProfileImpl self = this;
-        return this.endpoints.commitAndGetAllAsync()
-            .flatMap(cdnEndpoints -> this.manager().inner().getProfiles()
-                .updateAsync(this.resourceGroupName(), this.name(), inner().tags())
-                .map(inner -> {
-                    self.setInner(inner);
-                    return self;
-                }));
+        return this.manager().inner().getProfiles()
+            .updateAsync(this.resourceGroupName(), this.name(), inner().tags())
+            .map(inner -> {
+                self.setInner(inner);
+                return self;
+            });
     }
 
     @Override
@@ -208,7 +196,7 @@ class CdnProfileImpl
     public Mono<CdnProfile> refreshAsync() {
         return super.refreshAsync()
             .map(cdnProfile -> {
-                endpoints.refresh();
+                endpoints.clear();
                 return cdnProfile;
             });
     }

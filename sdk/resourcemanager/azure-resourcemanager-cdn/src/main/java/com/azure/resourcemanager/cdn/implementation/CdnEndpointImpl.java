@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -60,8 +59,8 @@ class CdnEndpointImpl
 
     CdnEndpointImpl(String name, CdnProfileImpl parent, EndpointInner inner) {
         super(name, parent, inner);
-        this.customDomainList = new ArrayList<CustomDomainInner>();
-        this.deletedCustomDomainList = new ArrayList<CustomDomainInner>();
+        this.customDomainList = new ArrayList<>();
+        this.deletedCustomDomainList = new ArrayList<>();
     }
 
     @Override
@@ -78,25 +77,24 @@ class CdnEndpointImpl
                 this.inner())
             .flatMap(inner -> {
                 self.setInner(inner);
-                for (CustomDomainInner itemToCreate : self.customDomainList) {
-                    self.parent().manager().inner().getCustomDomains().createAsync(
-                        self.parent().resourceGroupName(),
-                        self.parent().name(),
-                        self.name(),
-                        self.parent().manager().sdkContext().randomResourceName("CustomDomain", 50),
-                        itemToCreate.hostname()
-                    );
-                }
-                self.customDomainList.clear();
-                return self.parent().manager().inner().getCustomDomains().listByEndpointAsync(
-                        self.parent().resourceGroupName(),
-                        self.parent().name(),
-                        self.name()
-                    ).collectList()
-                    .map(customDomainInners -> {
-                        self.customDomainList.addAll(customDomainInners);
-                        return self;
-                    });
+                return Flux.fromIterable(self.customDomainList)
+                    .flatMapDelayError(customDomainInner -> self.parent().manager().inner()
+                        .getCustomDomains().createAsync(
+                            self.parent().resourceGroupName(),
+                            self.parent().name(),
+                            self.name(),
+                            self.parent().manager().sdkContext().randomResourceName("CustomDomain", 50),
+                            customDomainInner.hostname()), 32, 32)
+                    .then(self.parent().manager().inner()
+                        .getCustomDomains().listByEndpointAsync(
+                            self.parent().resourceGroupName(),
+                            self.parent().name(),
+                            self.name())
+                        .collectList()
+                        .map(customDomainInners -> {
+                            self.customDomainList.addAll(customDomainInners);
+                            return self;
+                        }));
             });
     }
 
@@ -134,24 +132,33 @@ class CdnEndpointImpl
                 this.name(),
                 endpointUpdateParameters);
 
-        Mono<CustomDomainInner> customDomainTask = Flux.fromIterable(this.deletedCustomDomainList)
+        Flux<CustomDomainInner> customDomainCreateTask = Flux.fromIterable(this.customDomainList)
+            .flatMapDelayError(itemToCreate -> this.parent().manager().inner().getCustomDomains().createAsync(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                this.name(),
+                self.parent().manager().sdkContext().randomResourceName("CustomDomain", 50),
+                itemToCreate.hostname()
+            ), 32, 32);
+
+        Flux<CustomDomainInner> customDomainDeleteTask = Flux.fromIterable(this.deletedCustomDomainList)
             .flatMapDelayError(itemToDelete -> this.parent().manager().inner().getCustomDomains().deleteAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
                 itemToDelete.name()
-            ), 32, 32)
-            .last();
+            ), 32, 32);
 
-        return Flux.zip(originUpdateTask, endpointUpdateTask, customDomainTask)
-            .last()
-            .map(objects -> {
-                self.setInner(objects.getT2());
+        Flux<CustomDomainInner> customDomainTask = Flux.concat(customDomainCreateTask, customDomainDeleteTask);
+
+        return customDomainTask.then(originUpdateTask).then(endpointUpdateTask)
+            .map(inner -> {
+                self.setInner(inner);
+                self.customDomainList.clear();
                 self.deletedCustomDomainList.clear();
                 return self;
             });
     }
-
 
     @Override
     public Mono<Void> deleteResourceAsync() {
@@ -198,7 +205,7 @@ class CdnEndpointImpl
 
     @Override
     public CdnProfileImpl attach() {
-        return this.parent().withEndpoint(this);
+        return this.parent();
     }
 
     @Override
@@ -298,7 +305,8 @@ class CdnEndpointImpl
     @Override
     public Set<String> customDomains() {
         Set<String> set = new HashSet<>();
-        for (CustomDomainInner customDomainInner : this.customDomainList) {
+        for (CustomDomainInner customDomainInner : this.parent().manager().inner().getCustomDomains()
+            .listByEndpoint(this.parent().resourceGroupName(), this.parent().name(), this.name())) {
             set.add(customDomainInner.hostname());
         }
         return Collections.unmodifiableSet(set);
@@ -441,7 +449,7 @@ class CdnEndpointImpl
     @Override
     public CdnEndpointImpl withContentTypeToCompress(String contentTypeToCompress) {
         if (this.inner().contentTypesToCompress() == null) {
-            this.inner().withContentTypesToCompress(new ArrayList<String>());
+            this.inner().withContentTypesToCompress(new ArrayList<>());
         }
         this.inner().contentTypesToCompress().add(contentTypeToCompress);
         return this;
@@ -491,7 +499,7 @@ class CdnEndpointImpl
         GeoFilter geoFilter = this.createGeoFiltersObject(relativePath, action);
 
         if (geoFilter.countryCodes() == null) {
-            geoFilter.withCountryCodes(new ArrayList<String>());
+            geoFilter.withCountryCodes(new ArrayList<>());
         }
         geoFilter.countryCodes().add(countryCode.toString());
 
@@ -505,7 +513,7 @@ class CdnEndpointImpl
         GeoFilter geoFilter = this.createGeoFiltersObject(relativePath, action);
 
         if (geoFilter.countryCodes() == null) {
-            geoFilter.withCountryCodes(new ArrayList<String>());
+            geoFilter.withCountryCodes(new ArrayList<>());
         } else {
             geoFilter.countryCodes().clear();
         }
@@ -520,39 +528,25 @@ class CdnEndpointImpl
 
     @Override
     public CdnEndpointImpl withoutGeoFilter(String relativePath) {
-        for (Iterator<GeoFilter> iter = this.inner().geoFilters().listIterator(); iter.hasNext();) {
-            GeoFilter geoFilter = iter.next();
-            if (geoFilter.relativePath().equals(relativePath)) {
-                iter.remove();
-            }
-        }
+        this.inner().geoFilters().removeIf(geoFilter -> geoFilter.relativePath().equals(relativePath));
         return this;
     }
 
     @Override
     public CdnEndpointImpl withCustomDomain(String hostName) {
-        if (this.customDomainList == null) {
-            this.customDomainList = new ArrayList<CustomDomainInner>();
-        }
         this.customDomainList.add(new CustomDomainInner().withHostname(hostName));
         return this;
     }
 
     @Override
     public CdnEndpointImpl withoutCustomDomain(String hostName) {
-        for (Iterator<CustomDomainInner> iter = this.customDomainList.listIterator(); iter.hasNext();) {
-            CustomDomainInner customDomain = iter.next();
-            if (hostName.equals(customDomain.hostname())) {
-                iter.remove();
-                deletedCustomDomainList.add(customDomain);
-            }
-        }
+        deletedCustomDomainList.add(new CustomDomainInner().withHostname(hostName));
         return this;
     }
 
     private GeoFilter createGeoFiltersObject(String relativePath, GeoFilterActions action) {
         if (this.inner().geoFilters() == null) {
-            this.inner().withGeoFilters(new ArrayList<GeoFilter>());
+            this.inner().withGeoFilters(new ArrayList<>());
         }
         GeoFilter geoFilter = null;
         for (GeoFilter filter : this.inner().geoFilters()) {

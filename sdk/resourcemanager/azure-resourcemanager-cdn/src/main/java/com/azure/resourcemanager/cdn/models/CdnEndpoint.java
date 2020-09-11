@@ -13,7 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -67,8 +66,7 @@ public interface CdnEndpoint extends
     /**
      * @return list of Geo filters
      */
-    //TODO: This should be Collection<GeoFilter> in the next major update
-    List<GeoFilter> geoFilters();
+    Collection<GeoFilter> geoFilters();
 
     /**
      * @return endpoint host name

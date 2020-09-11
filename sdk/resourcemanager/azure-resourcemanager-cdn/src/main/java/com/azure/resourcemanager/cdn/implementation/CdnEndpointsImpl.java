@@ -5,24 +5,22 @@ package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.resourcemanager.cdn.fluent.inner.CustomDomainInner;
 import com.azure.resourcemanager.cdn.fluent.inner.EndpointInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOrigin;
-import reactor.core.publisher.Flux;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Represents an endpoint collection associated with a CDN manager profile.
  */
 class CdnEndpointsImpl extends
-    ExternalChildResourcesCachedImpl<CdnEndpointImpl,
+    ExternalChildResourcesNonCachedImpl<CdnEndpointImpl,
         CdnEndpoint,
         EndpointInner,
         CdnProfileImpl,
@@ -30,9 +28,6 @@ class CdnEndpointsImpl extends
 
     CdnEndpointsImpl(CdnProfileImpl parent) {
         super(parent, parent.taskGroup(), "Endpoint");
-        if (parent.id() != null) {
-            this.cacheCollection();
-        }
     }
 
     /**
@@ -40,9 +35,14 @@ class CdnEndpointsImpl extends
      */
     Map<String, CdnEndpoint> endpointsAsMap() {
         Map<String, CdnEndpoint> result = new HashMap<>();
-        for (Map.Entry<String, CdnEndpointImpl> entry : this.collection().entrySet()) {
-            CdnEndpointImpl endpoint = entry.getValue();
-            result.put(entry.getKey(), endpoint);
+        for (EndpointInner endpointInner : this.getParent().manager().inner().getEndpoints()
+            .listByProfile(this.getParent().resourceGroupName(), this.getParent().name())) {
+            CdnEndpointImpl endpoint = new CdnEndpointImpl(endpointInner.name(), this.getParent(), endpointInner);
+            for (CustomDomainInner customDomainInner : this.getParent().manager().inner().getCustomDomains()
+                .listByEndpoint(this.getParent().resourceGroupName(), this.getParent().name(), endpoint.name())) {
+                endpoint.withCustomDomain(customDomainInner.hostname());
+            }
+            result.put(endpoint.name(), endpoint);
         }
         return Collections.unmodifiableMap(result);
     }
@@ -53,7 +53,7 @@ class CdnEndpointsImpl extends
      * @param name the name of the endpoint to be removed
      */
     public void remove(String name) {
-        this.prepareInlineRemove(name);
+        this.prepareInlineRemove(new CdnEndpointImpl(name, getParent(), new EndpointInner()));
     }
 
     /**
@@ -62,38 +62,7 @@ class CdnEndpointsImpl extends
      * @param endpoint the endpoint
      */
     public void addEndpoint(CdnEndpointImpl endpoint) {
-        this.addChildResource(endpoint);
-    }
-
-    @Override
-    protected List<CdnEndpointImpl> listChildResources() {
-        List<CdnEndpointImpl> childResources = new ArrayList<>();
-        for (EndpointInner innerEndpoint : this.getParent().manager().inner().getEndpoints().listByProfile(
-                                        this.getParent().resourceGroupName(),
-                                        this.getParent().name())) {
-            CdnEndpointImpl endpointResource = new CdnEndpointImpl(
-                innerEndpoint.name(), this.getParent(), innerEndpoint);
-            for (CustomDomainInner customDomain : this.getParent().manager().inner().getCustomDomains()
-                .listByEndpoint(
-                    this.getParent().resourceGroupName(),
-                    this.getParent().name(),
-                    innerEndpoint.name())) {
-                endpointResource.withCustomDomain(customDomain.hostname());
-            }
-            childResources.add(endpointResource);
-        }
-        return Collections.unmodifiableList(childResources);
-    }
-
-    @Override
-    protected Flux<CdnEndpointImpl> listChildResourcesAsync() {
-        return Flux.fromIterable(listChildResources());
-    }
-
-    @Override
-    protected CdnEndpointImpl newChildResource(String name) {
-        CdnEndpointImpl endpoint = new CdnEndpointImpl(name, this.getParent(), new EndpointInner());
-        return endpoint;
+        this.prepareInlineDefine(endpoint);
     }
 
     public CdnEndpointImpl defineNewEndpoint(String endpointName, String originName, String endpointOriginHostname) {
@@ -110,9 +79,10 @@ class CdnEndpointsImpl extends
     }
 
     public CdnEndpointImpl defineNewEndpoint(String name) {
-        CdnEndpointImpl endpoint = this.prepareInlineDefine(name);
+        CdnEndpointImpl endpoint = this.prepareInlineDefine(
+            new CdnEndpointImpl(name, this.getParent(), new EndpointInner()));
         endpoint.inner().withLocation(endpoint.parent().region().toString());
-        endpoint.inner().withOrigins(new ArrayList<DeepCreatedOrigin>());
+        endpoint.inner().withOrigins(new ArrayList<>());
         return endpoint;
     }
 
@@ -128,7 +98,10 @@ class CdnEndpointsImpl extends
     }
 
     public CdnEndpointImpl updateEndpoint(String name) {
-        CdnEndpointImpl endpoint = this.prepareInlineUpdate(name);
+        EndpointInner endpointInner = this.getParent().manager().inner().getEndpoints()
+            .get(this.getParent().resourceGroupName(), this.getParent().name(), name);
+        CdnEndpointImpl endpoint = this.prepareInlineUpdate(
+            new CdnEndpointImpl(name, this.getParent(), endpointInner));
         return endpoint;
     }
 

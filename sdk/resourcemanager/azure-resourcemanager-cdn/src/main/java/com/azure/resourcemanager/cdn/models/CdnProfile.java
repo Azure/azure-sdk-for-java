@@ -38,6 +38,8 @@ public interface CdnProfile extends
     String resourceState();
 
     /**
+     * Gets latest endpoints by sending http request.
+     *
      * @return endpoints in the CDN manager profile, indexed by name
      */
     Map<String, CdnEndpoint> endpoints();
