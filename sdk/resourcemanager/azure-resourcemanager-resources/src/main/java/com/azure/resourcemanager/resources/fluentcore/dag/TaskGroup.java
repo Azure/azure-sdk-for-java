@@ -404,8 +404,10 @@ public class TaskGroup
             (some, other) -> {
                 if (rootTaskEntry.key().endsWith(some.key())) { // rootTaskEntry will be proxy-<UUID>
                     return 1;
-                } else {
+                } else if (rootTaskEntry.key().endsWith(other.key())) {
                     return -1;
+                } else {
+                    return some.key().compareTo(other.key());
                 }
             },
             (Flux<Indexable>[]) observables.toArray(new Flux[0]));
