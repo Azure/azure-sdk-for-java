@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.trafficmanager.TrafficManagerManagementClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.DeleteOperationResultInner;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.UserMetricsModelInner;
 import reactor.core.publisher.Mono;

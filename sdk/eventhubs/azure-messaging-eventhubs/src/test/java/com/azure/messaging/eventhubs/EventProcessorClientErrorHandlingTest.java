@@ -19,6 +19,7 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -74,7 +75,7 @@ public class EventProcessorClientErrorHandlingTest {
             Assertions.assertEquals("NONE", errorContext.getPartitionContext().getPartitionId());
             Assertions.assertEquals("cg", errorContext.getPartitionContext().getConsumerGroup());
             Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
-        }, new HashMap<>(), 1, null, false);
+        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         try {
@@ -93,7 +94,9 @@ public class EventProcessorClientErrorHandlingTest {
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadProcessEventHandler(countDownLatch), new SampleCheckpointStore(), false,
-            null, errorContext -> { }, new HashMap<>(), 1, null, false);
+            null, errorContext -> {
+        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
+            LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -108,7 +111,9 @@ public class EventProcessorClientErrorHandlingTest {
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadInitHandler(countDownLatch), new SampleCheckpointStore(), false,
-            null, errorContext -> { }, new HashMap<>(), 1, null, false);
+            null, errorContext -> {
+        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
+            LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -123,7 +128,9 @@ public class EventProcessorClientErrorHandlingTest {
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadCloseHandler(countDownLatch), new SampleCheckpointStore(), false,
-            null, errorContext -> { }, new HashMap<>(), 1, null, false);
+            null, errorContext -> {
+        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
+            LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();

@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -58,12 +59,18 @@ public class WebApiSkill extends SearchIndexerSkill {
     @JsonProperty(value = "degreeOfParallelism")
     private Integer degreeOfParallelism;
 
-    /** Creates an instance of WebApiSkill class. */
+    /**
+     * Creates an instance of WebApiSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     * @param uri the uri value to set.
+     */
     @JsonCreator
     public WebApiSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs,
-            @JsonProperty(value = "uri") String uri) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs,
+            @JsonProperty(value = "uri", required = true) String uri) {
         super(inputs, outputs);
         this.uri = uri;
     }
@@ -77,12 +84,6 @@ public class WebApiSkill extends SearchIndexerSkill {
         return this.uri;
     }
 
-    /**
-     * Set the uri property: The url for the Web API.
-     *
-     * @param uri the uri value to set.
-     * @return the WebApiSkill object itself.
-     */
     /**
      * Get the httpHeaders property: The headers required to make the http request.
      *
@@ -181,18 +182,5 @@ public class WebApiSkill extends SearchIndexerSkill {
     public WebApiSkill setDegreeOfParallelism(Integer degreeOfParallelism) {
         this.degreeOfParallelism = degreeOfParallelism;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getUri() == null) {
-            throw new IllegalArgumentException("Missing required property uri in model WebApiSkill");
-        }
     }
 }

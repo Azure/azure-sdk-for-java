@@ -3,17 +3,14 @@
 
 package com.azure.security.keyvault.administration.models;
 
-import java.util.List;
-
 /**
  * A class that defines a role.
  */
 public final class KeyVaultRoleDefinition {
-    private String id;
-    private String name;
-    private String type;
-    private KeyVaultRoleDefinitionProperties properties;
-    private List<String> scopes;
+    private final String id;
+    private final String name;
+    private final String type;
+    private final KeyVaultRoleDefinitionProperties properties;
 
     /**
      * Creates a new {@link KeyVaultRoleDefinition role definition} with the specified details.

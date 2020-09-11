@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
-import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
 
 import java.util.ArrayList;
@@ -35,8 +34,7 @@ public final class AutocompleteOptionsConverter {
         autocompleteOptions.setMinimumCoverage(minimumCoverage);
 
         if (obj.getAutocompleteMode() != null) {
-            AutocompleteMode autocompleteMode = AutocompleteModeConverter.map(obj.getAutocompleteMode());
-            autocompleteOptions.setAutocompleteMode(autocompleteMode);
+            autocompleteOptions.setAutocompleteMode(obj.getAutocompleteMode());
         }
 
         Integer top = obj.getTop();
@@ -76,9 +74,7 @@ public final class AutocompleteOptionsConverter {
         autocompleteOptions.setMinimumCoverage(minimumCoverage);
 
         if (obj.getAutocompleteMode() != null) {
-            com.azure.search.documents.implementation.models.AutocompleteMode autocompleteMode =
-                AutocompleteModeConverter.map(obj.getAutocompleteMode());
-            autocompleteOptions.setAutocompleteMode(autocompleteMode);
+            autocompleteOptions.setAutocompleteMode(obj.getAutocompleteMode());
         }
 
         Integer top = obj.getTop();

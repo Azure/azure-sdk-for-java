@@ -3,19 +3,11 @@
 
 package com.microsoft.azure.spring.autoconfigure.aad;
 
-import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
-import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
-
 import com.microsoft.azure.telemetry.TelemetrySender;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.util.DefaultResourceRetriever;
 import com.nimbusds.jose.util.ResourceRetriever;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -30,8 +22,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.ClassUtils;
 
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
+import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
+
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters .
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.
  * <p>
  * The configuration will not be activated if no {@literal azure.activedirectory.client-id} property provided.
  * <p>
@@ -42,17 +42,14 @@ import org.springframework.util.ClassUtils;
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
-@ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = {"client-id"})
-@EnableConfigurationProperties({AADAuthenticationProperties.class, ServiceEndpointsProperties.class})
-@PropertySource(value = "classpath:serviceEndpoints.properties")
+@ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
+@EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
+@PropertySource(value = "classpath:service-endpoints.properties")
 public class AADAuthenticationFilterAutoConfiguration {
+    public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
-    public static final String PROPERTY_PREFIX = "azure.activedirectory";
-    private static final String PROPERTY_SESSION_STATELESS = "session-stateless";
-
     private final AADAuthenticationProperties aadAuthProps;
-
     private final ServiceEndpointsProperties serviceEndpointsProps;
 
     public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties aadAuthFilterProps,
@@ -72,27 +69,38 @@ public class AADAuthenticationFilterAutoConfiguration {
     @ConditionalOnExpression("${azure.activedirectory.session-stateless:false} == false")
     public AADAuthenticationFilter azureADJwtTokenFilter() {
         LOG.info("AzureADJwtTokenFilter Constructor.");
-        return new AADAuthenticationFilter(aadAuthProps,
-                serviceEndpointsProps,
-                getJWTResourceRetriever(),
-                getJWKSetCache());
+        return new AADAuthenticationFilter(
+            aadAuthProps,
+            serviceEndpointsProps,
+            getJWTResourceRetriever(),
+            getJWKSetCache()
+        );
     }
 
     @Bean
     @ConditionalOnMissingBean(AADAppRoleStatelessAuthenticationFilter.class)
-    @ConditionalOnProperty(prefix = PROPERTY_PREFIX, value = PROPERTY_SESSION_STATELESS, havingValue = "true")
+    @ConditionalOnExpression("${azure.activedirectory.session-stateless:false} == true")
     public AADAppRoleStatelessAuthenticationFilter azureADStatelessAuthFilter(ResourceRetriever resourceRetriever) {
         LOG.info("Creating AzureADStatelessAuthFilter bean.");
         final boolean useExplicitAudienceCheck = true;
-        return new AADAppRoleStatelessAuthenticationFilter(new UserPrincipalManager(serviceEndpointsProps, aadAuthProps,
-            resourceRetriever, useExplicitAudienceCheck));
+        return new AADAppRoleStatelessAuthenticationFilter(
+            new UserPrincipalManager(
+                serviceEndpointsProps,
+                aadAuthProps,
+                resourceRetriever,
+                useExplicitAudienceCheck
+            )
+        );
     }
 
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
     public ResourceRetriever getJWTResourceRetriever() {
-        return new DefaultResourceRetriever(aadAuthProps.getJwtConnectTimeout(), aadAuthProps.getJwtReadTimeout(),
-                aadAuthProps.getJwtSizeLimit());
+        return new DefaultResourceRetriever(
+            aadAuthProps.getJwtConnectTimeout(),
+            aadAuthProps.getJwtReadTimeout(),
+            aadAuthProps.getJwtSizeLimit()
+        );
     }
 
     @Bean
@@ -106,9 +114,7 @@ public class AADAuthenticationFilterAutoConfiguration {
         if (aadAuthProps.isAllowTelemetry()) {
             final Map<String, String> events = new HashMap<>();
             final TelemetrySender sender = new TelemetrySender();
-
             events.put(SERVICE_NAME, getClassPackageSimpleName(AADAuthenticationFilterAutoConfiguration.class));
-
             sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
         }
     }

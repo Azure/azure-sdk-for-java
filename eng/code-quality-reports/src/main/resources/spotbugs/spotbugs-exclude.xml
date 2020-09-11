@@ -2252,4 +2252,13 @@
     <Bug pattern="EI_EXPOSE_REP"/>
     <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
   </Match>
+
+  <!-- EventGrid swagger naming -->
+  <Match>
+    <Or>
+      <Class name="com.azure.messaging.eventgrid.implementation.models.CloudEvent"/>
+      <Class name="com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData"/>
+    </Or>
+  </Match>
+  <Bug pattern="NM_CONFUSING"/>
 </FindBugsFilter>

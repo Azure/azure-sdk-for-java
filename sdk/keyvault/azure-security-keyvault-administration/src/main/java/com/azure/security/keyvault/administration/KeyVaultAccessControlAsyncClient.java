@@ -19,8 +19,18 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImpl;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImplBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
-import com.azure.security.keyvault.administration.implementation.models.*;
-import com.azure.security.keyvault.administration.models.*;
+import com.azure.security.keyvault.administration.implementation.models.Permission;
+import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
+import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
+import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentProperties;
+import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentPropertiesWithScope;
+import com.azure.security.keyvault.administration.implementation.models.RoleDefinition;
+import com.azure.security.keyvault.administration.models.KeyVaultPermission;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentScope;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionProperties;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -142,7 +152,7 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnSuccess(response -> logger.info("Listed role definitions for roleScope - {}", roleScope))
                 .doOnError(error -> logger.warning(String.format("Failed to list role definitions for roleScope - %s",
                     roleScope), error))
-                .map(this::transformRoleDefinitionsPagedResponse);
+                .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionsPagedResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -168,7 +178,7 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnSuccess(response -> logger.info("Listed next role definitions page - Page {}", continuationToken))
                 .doOnError(error -> logger.warning("Failed to list next role definitions page - Page {}",
                     continuationToken, error))
-                .map(this::transformRoleDefinitionsPagedResponse);
+                .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionsPagedResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -230,7 +240,7 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnSuccess(response -> logger.info("Listed role assignments for roleScope - {}", roleScope))
                 .doOnError(error -> logger.warning(String.format("Failed to list role assignments for roleScope - %s",
                     roleScope), error))
-                .map(this::transformRoleAssignmentsPagedResponse);
+                .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentsPagedResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -256,7 +266,7 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnSuccess(response -> logger.info("Listed next role assignments page - Page {}", continuationToken))
                 .doOnError(error -> logger.warning("Failed to list next role assignments page - Page {}",
                     continuationToken, error))
-                .map(this::transformRoleAssignmentsPagedResponse);
+                .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentsPagedResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -364,7 +374,7 @@ public final class KeyVaultAccessControlAsyncClient {
             .doOnRequest(ignored -> logger.info("Creating role assignment - {}", name))
             .doOnSuccess(response -> logger.info("Created role assignment - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to create role assignment - {}", name, error))
-            .map(this::transformRoleAssignmentResponse);
+            .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentResponse);
     }
 
     /**
@@ -422,7 +432,7 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnRequest(ignored -> logger.info("Retrieving role assignment - {}", name))
                 .doOnSuccess(response -> logger.info("Retrieved role assignment - {}", response.getValue().getName()))
                 .doOnError(error -> logger.warning("Failed to retrieved role assignment - {}", name, error))
-                .map(this::transformRoleAssignmentResponse);
+                .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -483,83 +493,30 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnRequest(ignored -> logger.info("Deleting role assignment - {}", name))
                 .doOnSuccess(response -> logger.info("Deleted role assignment - {}", response.getValue().getName()))
                 .doOnError(error -> logger.warning("Failed to delete role assignment - {}", name, error))
-                .map(this::transformRoleAssignmentResponse);
+                .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
     }
 
-    private PagedResponse<KeyVaultRoleDefinition> transformRoleDefinitionsPagedResponse(PagedResponse<RoleDefinition> pagedResponse) {
+    @SuppressWarnings("BoundedWildcard")
+    private static PagedResponse<KeyVaultRoleDefinition> transformRoleDefinitionsPagedResponse(PagedResponse<RoleDefinition> pagedResponse) {
         List<KeyVaultRoleDefinition> keyVaultRoleDefinitions = new ArrayList<>();
 
         for (RoleDefinition roleDefinition : pagedResponse.getValue()) {
             keyVaultRoleDefinitions.add(roleDefinitionToKeyVaultRoleDefinition(roleDefinition));
         }
 
-        return new PagedResponse<KeyVaultRoleDefinition>() {
-            @Override
-            public void close() throws IOException {
-            }
-
-            @Override
-            public IterableStream<KeyVaultRoleDefinition> getElements() {
-                return new IterableStream<>(keyVaultRoleDefinitions);
-            }
-
-            @Override
-            public String getContinuationToken() {
-                return pagedResponse.getContinuationToken();
-            }
-
-            @Override
-            public int getStatusCode() {
-                return pagedResponse.getStatusCode();
-            }
-
-            @Override
-            public HttpHeaders getHeaders() {
-                return pagedResponse.getHeaders();
-            }
-
-            @Override
-            public HttpRequest getRequest() {
-                return pagedResponse.getRequest();
-            }
-
-            @Override
-            public List<KeyVaultRoleDefinition> getValue() {
-                return keyVaultRoleDefinitions;
-            }
-        };
+        return new TransformedPagedResponse<>(keyVaultRoleDefinitions, pagedResponse);
     }
 
-    private Response<KeyVaultRoleAssignment> transformRoleAssignmentResponse(Response<RoleAssignment> response) {
+    private static Response<KeyVaultRoleAssignment> transformRoleAssignmentResponse(Response<RoleAssignment> response) {
         KeyVaultRoleAssignment keyVaultRoleAssignment = roleAssignmentToKeyVaultRoleAssignment(response.getValue());
 
-        return new Response<KeyVaultRoleAssignment>() {
-            @Override
-            public int getStatusCode() {
-                return response.getStatusCode();
-            }
-
-            @Override
-            public HttpHeaders getHeaders() {
-                return response.getHeaders();
-            }
-
-            @Override
-            public HttpRequest getRequest() {
-                return response.getRequest();
-            }
-
-            @Override
-            public KeyVaultRoleAssignment getValue() {
-                return keyVaultRoleAssignment;
-            }
-        };
+        return new TransformedResponse<>(keyVaultRoleAssignment, response);
     }
 
-    private KeyVaultRoleDefinition roleDefinitionToKeyVaultRoleDefinition(RoleDefinition roleDefinition) {
+    private static KeyVaultRoleDefinition roleDefinitionToKeyVaultRoleDefinition(RoleDefinition roleDefinition) {
         List<KeyVaultPermission> keyVaultPermissions = new ArrayList<>();
 
         for (Permission permission : roleDefinition.getPermissions()) {
@@ -574,55 +531,95 @@ public final class KeyVaultAccessControlAsyncClient {
                 roleDefinition.getAssignableScopes()));
     }
 
-    private PagedResponse<KeyVaultRoleAssignment> transformRoleAssignmentsPagedResponse(PagedResponse<RoleAssignment> pagedResponse) {
+    private static PagedResponse<KeyVaultRoleAssignment> transformRoleAssignmentsPagedResponse(PagedResponse<RoleAssignment> pagedResponse) {
         List<KeyVaultRoleAssignment> keyVaultRoleAssignments = new ArrayList<>();
 
         for (RoleAssignment roleAssignment : pagedResponse.getValue()) {
             keyVaultRoleAssignments.add(roleAssignmentToKeyVaultRoleAssignment(roleAssignment));
         }
 
-        return new PagedResponse<KeyVaultRoleAssignment>() {
-            @Override
-            public void close() throws IOException {
-            }
-
-            @Override
-            public IterableStream<KeyVaultRoleAssignment> getElements() {
-                return new IterableStream<>(keyVaultRoleAssignments);
-            }
-
-            @Override
-            public String getContinuationToken() {
-                return pagedResponse.getContinuationToken();
-            }
-
-            @Override
-            public int getStatusCode() {
-                return pagedResponse.getStatusCode();
-            }
-
-            @Override
-            public HttpHeaders getHeaders() {
-                return pagedResponse.getHeaders();
-            }
-
-            @Override
-            public HttpRequest getRequest() {
-                return pagedResponse.getRequest();
-            }
-
-            @Override
-            public List<KeyVaultRoleAssignment> getValue() {
-                return keyVaultRoleAssignments;
-            }
-        };
+        return new TransformedPagedResponse<>(keyVaultRoleAssignments, pagedResponse);
     }
 
-    private KeyVaultRoleAssignment roleAssignmentToKeyVaultRoleAssignment(RoleAssignment roleAssignment) {
+    private static KeyVaultRoleAssignment roleAssignmentToKeyVaultRoleAssignment(RoleAssignment roleAssignment) {
         RoleAssignmentPropertiesWithScope propertiesWithScope = roleAssignment.getProperties();
 
         return new KeyVaultRoleAssignment(roleAssignment.getId(), roleAssignment.getName(), roleAssignment.getType(),
             new KeyVaultRoleAssignmentProperties(propertiesWithScope.getRoleDefinitionId(),
                 propertiesWithScope.getPrincipalId()), KeyVaultRoleAssignmentScope.fromString(propertiesWithScope.getScope()));
+    }
+
+    private static final class TransformedPagedResponse<L extends List<T>, T, U> implements PagedResponse<T> {
+        private final L output;
+        private final PagedResponse<U> pagedResponse;
+
+        TransformedPagedResponse(L output, PagedResponse<U> inputPagedResponse) {
+            this.output = output;
+            this.pagedResponse = inputPagedResponse;
+        }
+
+        @Override
+        public void close() throws IOException {
+        }
+
+        @Override
+        public IterableStream<T> getElements() {
+            return new IterableStream<>(output);
+        }
+
+        @Override
+        public String getContinuationToken() {
+            return pagedResponse.getContinuationToken();
+        }
+
+        @Override
+        public int getStatusCode() {
+            return pagedResponse.getStatusCode();
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return pagedResponse.getHeaders();
+        }
+
+        @Override
+        public HttpRequest getRequest() {
+            return pagedResponse.getRequest();
+        }
+
+        @Override
+        public List<T> getValue() {
+            return output;
+        }
+    }
+
+    private static final class TransformedResponse<T, U> implements Response<T> {
+        private final T output;
+        private final Response<U> response;
+
+        TransformedResponse(T output, Response<U> response) {
+            this.output = output;
+            this.response = response;
+        }
+
+        @Override
+        public int getStatusCode() {
+            return response.getStatusCode();
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return response.getHeaders();
+        }
+
+        @Override
+        public HttpRequest getRequest() {
+            return response.getRequest();
+        }
+
+        @Override
+        public T getValue() {
+            return output;
+        }
     }
 }

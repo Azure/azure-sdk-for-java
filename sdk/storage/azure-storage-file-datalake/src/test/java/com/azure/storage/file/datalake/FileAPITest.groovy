@@ -3291,6 +3291,23 @@ class FileAPITest extends APISpec {
         false   | true     || _
     }
 
+    def "Query error"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+
+        when:
+        fc.openQueryInputStream("SELECT * from BlobStorage") /* Don't need to call read. */
+
+        then:
+        thrown(DataLakeStorageException)
+
+        when:
+        fc.query(new ByteArrayOutputStream(), "SELECT * from BlobStorage")
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
     @Unroll
     def "Query AC"() {
         setup:

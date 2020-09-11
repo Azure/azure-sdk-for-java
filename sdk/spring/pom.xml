@@ -72,7 +72,6 @@
     <module>azure-spring-integration-storage-queue</module>
     <module>azure-spring-integration-test</module>
     <module>azure-spring-cloud-messaging</module>
-    <module>azure-spring-cloud-starter-appconfiguration-config</module>
     <module>azure-spring-cloud-starter-cache</module>
     <module>azure-spring-cloud-starter-eventhubs</module>
     <module>azure-spring-cloud-starter-eventhubs-kafka</module>

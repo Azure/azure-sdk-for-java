@@ -7,9 +7,9 @@ package com.azure.security.keyvault.administration.models;
  * A class that represents an error occurred in a Key Vault operation.
  */
 public final class KeyVaultError {
-    private String code;
-    private String message;
-    private KeyVaultError innerError;
+    private final String code;
+    private final String message;
+    private final KeyVaultError innerError;
 
     /**
      * Creates an object that represents an error occurred in a Key Vault operation.

@@ -41,6 +41,7 @@ import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.appservice.models.SslState;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.models.WebSiteBase;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
@@ -1080,6 +1081,29 @@ public final class Utils {
     }
 
     /**
+     * Print a web site.
+     *
+     * @param resource a web site
+     */
+    public static void print(WebSiteBase resource) {
+        StringBuilder builder = new StringBuilder().append("Web app: ").append(resource.id())
+            .append("\n\tName: ").append(resource.name())
+            .append("\n\tState: ").append(resource.state())
+            .append("\n\tResource group: ").append(resource.resourceGroupName())
+            .append("\n\tRegion: ").append(resource.region())
+            .append("\n\tDefault hostname: ").append(resource.defaultHostname())
+            .append("\n\tApp service plan: ").append(resource.appServicePlanId());
+        builder = builder.append("\n\tSSL bindings: ");
+        for (HostnameSslState binding : resource.hostnameSslStates().values()) {
+            builder = builder.append("\n\t\t" + binding.name() + ": " + binding.sslState());
+            if (binding.sslState() != null && binding.sslState() != SslState.DISABLED) {
+                builder = builder.append(" - " + binding.thumbprint());
+            }
+        }
+        System.out.println(builder.toString());
+    }
+
+    /**
      * Print a traffic manager profile.
      *
      * @param profile a traffic manager profile
@@ -1499,7 +1523,7 @@ public final class Utils {
      * @return a service principal client ID
      * @throws Exception exception
      */
-    public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws Exception {
+    public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws IOException {
         String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
         HashMap<String, String> auth = new HashMap<>();
 
@@ -1522,7 +1546,7 @@ public final class Utils {
      * @return a service principal secret
      * @throws Exception exception
      */
-    public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws Exception {
+    public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws IOException {
         String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
         HashMap<String, String> auth = new HashMap<>();
 
@@ -1560,7 +1584,7 @@ public final class Utils {
      * @throws IOException IO Exception
      */
     public static void createCertificate(String certPath, String pfxPath,
-                                         String alias, String password, String cnName) throws Exception {
+                                         String alias, String password, String cnName) throws IOException {
         if (new File(pfxPath).exists()) {
             return;
         }
@@ -1621,7 +1645,7 @@ public final class Utils {
      * @throws Exception exceptions thrown from the execution
      */
     public static String cmdInvocation(String[] command,
-                                       boolean ignoreErrorStream) throws Exception {
+                                       boolean ignoreErrorStream) throws IOException {
         String result = "";
         String error = "";
 
@@ -1639,11 +1663,11 @@ public final class Utils {
                 // To do - Log error message
 
                 if (!ignoreErrorStream) {
-                    throw new Exception(error, null);
+                    throw new IOException(error, null);
                 }
             }
         } catch (Exception e) {
-            throw new Exception("Exception occurred while invoking command", e);
+            throw new RuntimeException("Exception occurred while invoking command", e);
         }
         return result;
     }

@@ -10,7 +10,7 @@ The Spring Cloud Stream Kafka binder for Azure Event Hubs helps developers to fi
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # "{x-version-update-start;com.microsoft.azure:spring-cloud-starter-azure-eventhubs-kafka;current}"
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-starter-azure-eventhubs-kafka;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
@@ -18,7 +18,7 @@ The Spring Cloud Stream Kafka binder for Azure Event Hubs helps developers to fi
     <version>1.2.8-beta.1</version>
 </dependency>
 ```
-[//]: # "{x-version-update-end}"
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 Event Hubs provides a Kafka endpoint that can be used by your existing Kafka based applications as an alternative to running your own Kafka cluster. Event Hubs supports Apache Kafka protocol 1.0 and later, and works with your existing Kafka applications, including MirrorMaker.
