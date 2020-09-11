@@ -30,14 +30,14 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     private static final String SERVER_ERROR = "server_error";
     private static final String DEFAULT_USERNAME_ATTR_NAME = "name";
 
-    private AADAuthenticationProperties aadAuthProps;
-    private ServiceEndpointsProperties serviceEndpointsProps;
-    private OidcUserService oidcUserService;
+    private final AADAuthenticationProperties aadAuthenticationProperties;
+    private final ServiceEndpointsProperties serviceEndpointsProperties;
+    private final OidcUserService oidcUserService;
 
-    public AADOAuth2UserService(AADAuthenticationProperties aadAuthProps,
-                                ServiceEndpointsProperties serviceEndpointsProps) {
-        this.aadAuthProps = aadAuthProps;
-        this.serviceEndpointsProps = serviceEndpointsProps;
+    public AADOAuth2UserService(AADAuthenticationProperties aadAuthenticationProperties,
+                                ServiceEndpointsProperties serviceEndpointsProperties) {
+        this.aadAuthenticationProperties = aadAuthenticationProperties;
+        this.serviceEndpointsProperties = serviceEndpointsProperties;
         this.oidcUserService = new OidcUserService();
     }
 
@@ -53,11 +53,14 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             final AzureADGraphClient graphClient = new AzureADGraphClient(
                 registration.getClientId(),
                 registration.getClientSecret(),
-                aadAuthProps,
-                serviceEndpointsProps
+                aadAuthenticationProperties,
+                serviceEndpointsProperties
             );
             String graphApiToken = graphClient
-                .acquireTokenForGraphApi(userRequest.getIdToken().getTokenValue(), aadAuthProps.getTenantId())
+                .acquireTokenForGraphApi(
+                    userRequest.getIdToken().getTokenValue(),
+                    aadAuthenticationProperties.getTenantId()
+                )
                 .accessToken();
             mappedAuthorities = graphClient.getGrantedAuthorities(graphApiToken);
         } catch (MalformedURLException e) {
