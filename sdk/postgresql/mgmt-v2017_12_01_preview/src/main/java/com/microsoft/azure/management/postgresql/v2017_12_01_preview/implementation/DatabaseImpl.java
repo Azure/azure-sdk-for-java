@@ -13,12 +13,12 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class DatabaseImpl extends CreatableUpdatableImpl<Database, DatabaseInner, DatabaseImpl> implements Database, Database.Definition, Database.Update {
-    private final PostgreSQLManager manager;
+    private final DBForPostgreSQLManager manager;
     private String resourceGroupName;
     private String serverName;
     private String databaseName;
 
-    DatabaseImpl(String name, PostgreSQLManager manager) {
+    DatabaseImpl(String name, DBForPostgreSQLManager manager) {
         super(name, new DatabaseInner());
         this.manager = manager;
         // Set resource name
@@ -26,7 +26,7 @@ class DatabaseImpl extends CreatableUpdatableImpl<Database, DatabaseInner, Datab
         //
     }
 
-    DatabaseImpl(DatabaseInner inner, PostgreSQLManager manager) {
+    DatabaseImpl(DatabaseInner inner, DBForPostgreSQLManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -39,7 +39,7 @@ class DatabaseImpl extends CreatableUpdatableImpl<Database, DatabaseInner, Datab
     }
 
     @Override
-    public PostgreSQLManager manager() {
+    public DBForPostgreSQLManager manager() {
         return this.manager;
     }
 
