@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.compute.RunCommandInput;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.test.management.ClientSecretAccess;
@@ -20,7 +19,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,7 +136,7 @@ public class KeyVaultIT {
 
         final String host = vm.getPrimaryPublicIPAddress().ipAddress();
 
-        // Upload app.jar to virtual machine
+        // Upload app.jar to virtual machine and
         final MavenBasedProject app = new MavenBasedProject("../azure-spring-boot-test-application");
         app.packageUp();
 
@@ -147,13 +145,7 @@ public class KeyVaultIT {
         if (!file.exists()) {
             throw new FileNotFoundException("There's no app.jar file found.");
         }
-        try (SSHShell sshShell = SSHShell.open(host, 22, VM_USER_USERNAME, VM_USER_PASSWORD);
-            FileInputStream fis = new FileInputStream(file)) {
-            LOGGER.info("Uploading jar file...");
-            sshShell.upload(fis, "app.jar", "", true, "4095");
-        }
 
-        // run java application
         final List<String> commands = new ArrayList<>();
         commands.add(String.format("cd /home/%s", VM_USER_USERNAME));
         commands.add(String.format("nohup java -jar -Xdebug "
@@ -163,7 +155,11 @@ public class KeyVaultIT {
             AZURE_KEYVAULT_URI,
             "app.jar"));
 
-        try (SSHShell sshShell = SSHShell.open(host, 22, VM_USER_USERNAME, VM_USER_PASSWORD)) {
+        try (SSHShell sshShell = SSHShell.open(host, 22, VM_USER_USERNAME, VM_USER_PASSWORD);
+             FileInputStream fis = new FileInputStream(file)) {
+            LOGGER.info("Uploading jar file...");
+            sshShell.upload(fis, "app.jar", "", true, "4095");
+            LOGGER.info("Running commands");
             sshShell.runCommands(commands);
         }
 
