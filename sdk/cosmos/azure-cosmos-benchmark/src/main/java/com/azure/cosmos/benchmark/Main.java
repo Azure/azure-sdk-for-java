@@ -8,6 +8,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.fusesource.jansi.AnsiConsole;
 
 import static com.azure.cosmos.benchmark.Configuration.Operation.CtlWorkload;
 import static com.azure.cosmos.benchmark.Configuration.Operation.ReadThroughputWithMultipleClients;
@@ -18,6 +19,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         try {
+            AnsiConsole.systemInstall();
             LOGGER.debug("Parsing the arguments ...");
             Configuration cfg = new Configuration();
             cfg.tryGetValuesFromSystem();
