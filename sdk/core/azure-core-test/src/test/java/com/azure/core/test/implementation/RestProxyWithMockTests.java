@@ -23,10 +23,8 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.implementation.UnixTime;
 import com.azure.core.test.http.MockHttpClient;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
@@ -84,10 +82,6 @@ public class RestProxyWithMockTests extends RestProxyTests {
         @Get("DateTimeRfc1123")
         @ReturnValueWireType(DateTimeRfc1123.class)
         OffsetDateTime getDateTimeRfc1123();
-
-        @Get("UnixTime")
-        @ReturnValueWireType(UnixTime.class)
-        OffsetDateTime getDateTimeUnix();
     }
 
     @Test
@@ -166,15 +160,6 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertEquals(OffsetDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC), dateTime);
     }
 
-    @Test
-    public void service1GetDateTimeUnix() {
-        final OffsetDateTime dateTime = createService(Service1.class)
-            .getDateTimeUnix();
-        assertNotNull(dateTime);
-        assertEquals(OffsetDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC), dateTime);
-    }
-
-
     @Host("http://localhost")
     @ServiceInterface(name = "ServiceErrorWithCharsetService")
     interface ServiceErrorWithCharsetService {
@@ -193,7 +178,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
                     HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json");
 
                     HttpResponse response = new MockHttpResponse(request, 200, headers,
-                        "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(StandardCharsets.UTF_8));
+                        "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(
+                            StandardCharsets.UTF_8));
                     return Mono.just(response);
                 }
             }).build());
@@ -202,7 +188,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
             service.get();
             fail();
         } catch (RuntimeException ex) {
-            assertEquals(ex.getMessage(), "Status code 200, \"{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}\"");
+            assertEquals(ex.getMessage(),
+                "Status code 200, \"{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}\"");
         }
     }
 
@@ -215,7 +202,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
                 public Mono<HttpResponse> send(HttpRequest request) {
                     HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json");
 
-                    HttpResponse response = new MockHttpResponse(request, 200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
+                    HttpResponse response =
+                        new MockHttpResponse(request, 200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
                     return Mono.just(response);
                 }
             }).build());
@@ -239,7 +227,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
                     HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json; charset=UTF-8");
 
                     HttpResponse response = new MockHttpResponse(request, 200, headers,
-                        "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(StandardCharsets.UTF_8));
+                        "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(
+                            StandardCharsets.UTF_8));
                     return Mono.just(response);
                 }
             }).build());
@@ -248,7 +237,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
             service.get();
             fail();
         } catch (RuntimeException ex) {
-            assertEquals(ex.getMessage(), "Status code 200, \"{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}\"");
+            assertEquals(ex.getMessage(),
+                "Status code 200, \"{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}\"");
         }
     }
 
@@ -261,7 +251,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
                 public Mono<HttpResponse> send(HttpRequest request) {
                     HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json; charset=UTF-8");
 
-                    HttpResponse response = new MockHttpResponse(request, 200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
+                    HttpResponse response =
+                        new MockHttpResponse(request, 200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
                     return Mono.just(response);
                 }
             }).build());
@@ -336,17 +327,11 @@ public class RestProxyWithMockTests extends RestProxyTests {
         ResponseBase<HeaderCollectionTypePackagePrivateFields, Void> packagePrivateFields();
     }
 
-    private static final HttpClient HEADER_COLLECTION_HTTP_CLIENT = new NoOpHttpClient() {
-        @Override
-        public Mono<HttpResponse> send(HttpRequest request) {
-            final HttpHeaders headers = new HttpHeaders().put("name", "Phillip")
-                .put("header-collection-prefix-one", "1")
-                .put("header-collection-prefix-two", "2")
-                .put("header-collection-prefix-three", "3");
-            final MockHttpResponse response = new MockHttpResponse(request, 200, headers);
-            return Mono.just(response);
-        }
-    };
+    private static final HttpClient HEADER_COLLECTION_HTTP_CLIENT = (request) ->
+        Mono.just(new MockHttpResponse(request, 200, new HttpHeaders().put("name", "Phillip")
+            .put("header-collection-prefix-one", "1")
+            .put("header-collection-prefix-two", "2")
+            .put("header-collection-prefix-three", "3")));
 
     private ServiceHeaderCollections createHeaderCollectionsService() {
         return createService(ServiceHeaderCollections.class, HEADER_COLLECTION_HTTP_CLIENT);
@@ -426,7 +411,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     private static void assertContains(String value, String expectedSubstring) {
-        assertTrue(value.contains(expectedSubstring), "Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".");
+        assertTrue(value.contains(expectedSubstring),
+            "Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".");
     }
 
     private abstract static class SimpleMockHttpClient implements HttpClient {
