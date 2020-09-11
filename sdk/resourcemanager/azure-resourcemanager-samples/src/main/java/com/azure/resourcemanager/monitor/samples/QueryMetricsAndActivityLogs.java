@@ -18,7 +18,7 @@ import com.azure.resourcemanager.monitor.models.MetricValue;
 import com.azure.resourcemanager.monitor.models.TimeSeriesElement;
 import com.azure.resourcemanager.monitor.fluent.inner.MetadataValueInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.AccessTier;
@@ -59,7 +59,7 @@ public final class QueryMetricsAndActivityLogs {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         final String storageAccountName = azure.sdkContext().randomResourceName("saMonitor", 20);
         final String rgName = azure.sdkContext().randomResourceName("rgMonitor", 20);
 
@@ -87,7 +87,7 @@ public final class QueryMetricsAndActivityLogs {
             // Add some blob transaction events
             addBlobTransactions(storageConnectionString, storageAccount.manager().httpPipeline().getHttpClient());
 
-            OffsetDateTime recordDateTime = azure.sdkContext().dateTimeNow();
+            OffsetDateTime recordDateTime = OffsetDateTime.now();
             // get metric definitions for storage account.
             for (MetricDefinition metricDefinition : azure.metricDefinitions().listByResource(storageAccount.id())) {
                 // find metric definition for Transactions
@@ -155,9 +155,6 @@ public final class QueryMetricsAndActivityLogs {
             }
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             if (azure.resourceGroups().getByName(rgName) != null) {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -167,7 +164,6 @@ public final class QueryMetricsAndActivityLogs {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

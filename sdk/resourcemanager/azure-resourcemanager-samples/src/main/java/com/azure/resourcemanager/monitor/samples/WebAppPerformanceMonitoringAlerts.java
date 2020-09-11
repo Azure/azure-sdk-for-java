@@ -16,7 +16,7 @@ import com.azure.resourcemanager.monitor.models.MetricAlert;
 import com.azure.resourcemanager.monitor.models.MetricAlertRuleCondition;
 import com.azure.resourcemanager.monitor.models.MetricAlertRuleTimeAggregation;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.time.Duration;
@@ -88,9 +88,6 @@ public final class WebAppPerformanceMonitoringAlerts {
             Utils.print(ma);
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             if (azure.resourceGroups().getByName(rgName) != null) {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -100,7 +97,6 @@ public final class WebAppPerformanceMonitoringAlerts {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

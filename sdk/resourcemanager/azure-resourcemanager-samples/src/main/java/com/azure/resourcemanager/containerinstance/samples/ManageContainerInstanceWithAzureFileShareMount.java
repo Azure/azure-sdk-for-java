@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -103,9 +103,6 @@ public class ManageContainerInstanceWithAzureFileShareMount {
             azure.containerGroups().deleteById(containerGroup.id());
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -117,7 +114,6 @@ public class ManageContainerInstanceWithAzureFileShareMount {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

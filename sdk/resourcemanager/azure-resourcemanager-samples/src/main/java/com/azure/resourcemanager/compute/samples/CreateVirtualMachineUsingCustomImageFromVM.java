@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.jcraft.jsch.JSchException;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -207,10 +207,6 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
 
             System.out.println("Deleted custom image");
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -223,7 +219,6 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
             }
 
         }
-        return false;
     }
 
     /**

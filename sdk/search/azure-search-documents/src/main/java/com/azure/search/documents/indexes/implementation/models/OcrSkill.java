@@ -8,6 +8,8 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.OcrSkillLanguage;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -33,11 +35,16 @@ public class OcrSkill extends SearchIndexerSkill {
     @JsonProperty(value = "detectOrientation")
     private Boolean shouldDetectOrientation;
 
-    /** Creates an instance of OcrSkill class. */
+    /**
+     * Creates an instance of OcrSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public OcrSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 
@@ -81,15 +88,5 @@ public class OcrSkill extends SearchIndexerSkill {
     public OcrSkill setShouldDetectOrientation(Boolean shouldDetectOrientation) {
         this.shouldDetectOrientation = shouldDetectOrientation;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

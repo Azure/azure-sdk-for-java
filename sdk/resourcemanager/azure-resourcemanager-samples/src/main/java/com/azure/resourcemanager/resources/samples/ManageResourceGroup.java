@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 
 /**
  * Azure Resource sample for managing resource groups -
@@ -89,11 +89,6 @@ public final class ManageResourceGroup {
 
             azure.resourceGroups().beginDeleteByName(rgName2);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -105,7 +100,6 @@ public final class ManageResourceGroup {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -1321,7 +1321,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "3a7d2071-f333-4200-93e9-58e5f793102c",
-      "Body" : "{\"primaryMasterKey\":\"Ft9wEIb1dqTQPu2PdB5K0alJAe0BFcqFgu065FfnIMQGfv29qYZdOeplfSljBjcr4F4lr0fSFfKBYGpbgVuYxQ==\",\"secondaryMasterKey\":\"Y9M7eEctE74ywFXdwzzf5mU2bLFma71CH8PcVPI7bPM0sq0Jm5V7oa0jEfbcmFzwJB5FoprSZSj9c6dE6ojbkQ==\",\"primaryReadonlyMasterKey\":\"83gsYDOdzlKm2Ze37wgy3oPXq2awjM0T6nrpraHqGgk4dUoz2dRjNUAL4qxPGdhIuWcKcOpQ39Sd2GGsZ6qz1g==\",\"secondaryReadonlyMasterKey\":\"XyifKTgU00Dey4JeUBCr8jtMx3DfuKJcxiSPR9sRk3f4lqQcFVOgDKtY3MMQjlcxn5sXGI6vWlseEkhCFuDLAg==\"}"
+      "Body" : "{\"primaryMasterKey\":\"***REMOVED***\",\"secondaryMasterKey\":\"***REMOVED***\",\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -1348,7 +1348,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "d4ce7efc-c556-43d5-adcd-576747a5eddc",
-      "Body" : "{\"primaryReadonlyMasterKey\":\"83gsYDOdzlKm2Ze37wgy3oPXq2awjM0T6nrpraHqGgk4dUoz2dRjNUAL4qxPGdhIuWcKcOpQ39Sd2GGsZ6qz1g==\",\"secondaryReadonlyMasterKey\":\"XyifKTgU00Dey4JeUBCr8jtMx3DfuKJcxiSPR9sRk3f4lqQcFVOgDKtY3MMQjlcxn5sXGI6vWlseEkhCFuDLAg==\"}"
+      "Body" : "{\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "PUT",
@@ -17001,7 +17001,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "e80265e0-4eae-4a6d-bfa7-7302a7271d9e",
-      "Body" : "{\"primaryMasterKey\":\"Ft9wEIb1dqTQPu2PdB5K0alJAe0BFcqFgu065FfnIMQGfv29qYZdOeplfSljBjcr4F4lr0fSFfKBYGpbgVuYxQ==\",\"secondaryMasterKey\":\"Y9M7eEctE74ywFXdwzzf5mU2bLFma71CH8PcVPI7bPM0sq0Jm5V7oa0jEfbcmFzwJB5FoprSZSj9c6dE6ojbkQ==\",\"primaryReadonlyMasterKey\":\"83gsYDOdzlKm2Ze37wgy3oPXq2awjM0T6nrpraHqGgk4dUoz2dRjNUAL4qxPGdhIuWcKcOpQ39Sd2GGsZ6qz1g==\",\"secondaryReadonlyMasterKey\":\"XyifKTgU00Dey4JeUBCr8jtMx3DfuKJcxiSPR9sRk3f4lqQcFVOgDKtY3MMQjlcxn5sXGI6vWlseEkhCFuDLAg==\"}"
+      "Body" : "{\"primaryMasterKey\":\"***REMOVED***\",\"secondaryMasterKey\":\"***REMOVED***\",\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -17028,7 +17028,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "4d6835c1-2133-476d-8b31-d37b9f71fba5",
-      "Body" : "{\"primaryReadonlyMasterKey\":\"83gsYDOdzlKm2Ze37wgy3oPXq2awjM0T6nrpraHqGgk4dUoz2dRjNUAL4qxPGdhIuWcKcOpQ39Sd2GGsZ6qz1g==\",\"secondaryReadonlyMasterKey\":\"XyifKTgU00Dey4JeUBCr8jtMx3DfuKJcxiSPR9sRk3f4lqQcFVOgDKtY3MMQjlcxn5sXGI6vWlseEkhCFuDLAg==\"}"
+      "Body" : "{\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -17055,7 +17055,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "cb5912e7-9650-4834-9c3e-300aaca9ad89",
-      "Body" : "{\"primaryMasterKey\":\"Ft9wEIb1dqTQPu2PdB5K0alJAe0BFcqFgu065FfnIMQGfv29qYZdOeplfSljBjcr4F4lr0fSFfKBYGpbgVuYxQ==\",\"secondaryMasterKey\":\"Y9M7eEctE74ywFXdwzzf5mU2bLFma71CH8PcVPI7bPM0sq0Jm5V7oa0jEfbcmFzwJB5FoprSZSj9c6dE6ojbkQ==\",\"primaryReadonlyMasterKey\":\"83gsYDOdzlKm2Ze37wgy3oPXq2awjM0T6nrpraHqGgk4dUoz2dRjNUAL4qxPGdhIuWcKcOpQ39Sd2GGsZ6qz1g==\",\"secondaryReadonlyMasterKey\":\"XyifKTgU00Dey4JeUBCr8jtMx3DfuKJcxiSPR9sRk3f4lqQcFVOgDKtY3MMQjlcxn5sXGI6vWlseEkhCFuDLAg==\"}"
+      "Body" : "{\"primaryMasterKey\":\"***REMOVED***\",\"secondaryMasterKey\":\"***REMOVED***\",\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "DELETE",

@@ -20,7 +20,7 @@ import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.ArrayList;
@@ -210,11 +210,6 @@ public final class ManageZonalVirtualMachineScaleSet {
             System.out.println("Created zone aware virtual machine scale set: " + virtualMachineScaleSet2.id());
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -226,7 +221,6 @@ public final class ManageZonalVirtualMachineScaleSet {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

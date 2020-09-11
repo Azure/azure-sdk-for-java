@@ -3,12 +3,18 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.PiiEntityDomainType;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -248,7 +254,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizePiiEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String
-        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 859-98-0987")) {
+        PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities("My SSN is 859-98-0987");
+        System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+        for (PiiEntity entity : piiEntityCollection) {
             System.out.printf(
                 "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
                     + " entity subcategory: %s, confidence score: %f.%n",
@@ -262,8 +270,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizePiiEntitiesWithLanguage() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String
-        textAnalyticsClient.recognizePiiEntities("My SSN is 859-98-0987", "en")
-            .forEach(entity -> System.out.printf(
+        PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities(
+            "My SSN is 859-98-0987", "en");
+        System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+        piiEntityCollection.forEach(entity -> System.out.printf(
                 "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
                     + " entity subcategory: %s, confidence score: %f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
@@ -271,36 +281,55 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
+     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntities(String, String, RecognizePiiEntityOptions)}
+     */
+    public void recognizePiiEntitiesWithRecognizePiiEntityOptions() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-RecognizePiiEntityOptions
+        PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities(
+            "My SSN is 859-98-0987", "en",
+            new RecognizePiiEntityOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION));
+        System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+        piiEntityCollection.forEach(entity -> System.out.printf(
+            "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
+                + " entity subcategory: %s, confidence score: %f.%n",
+            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-RecognizePiiEntityOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesBatch(Iterable, String, RecognizePiiEntityOptions)}
      */
     public void recognizePiiEntitiesStringListWithOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-RecognizePiiEntityOptions
         List<String> documents = Arrays.asList(
             "My SSN is 859-98-0987",
             "Visa card 4111 1111 1111 1111"
         );
 
         RecognizePiiEntitiesResultCollection resultCollection = textAnalyticsClient.recognizePiiEntitiesBatch(
-            documents, "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true));
+            documents, "en", new RecognizePiiEntityOptions().setIncludeStatistics(true));
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
         System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        resultCollection.forEach(recognizePiiEntitiesResult ->
-            recognizePiiEntitiesResult.getEntities().forEach(entity -> System.out.printf(
+        resultCollection.forEach(recognizePiiEntitiesResult -> {
+            PiiEntityCollection piiEntityCollection = recognizePiiEntitiesResult.getEntities();
+            System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+            piiEntityCollection.forEach(entity -> System.out.printf(
                 "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
                     + " entity subcategory: %s, confidence score: %f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())));
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
+                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+        });
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-RecognizePiiEntityOptions
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
+     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesBatchWithResponse(Iterable, RecognizePiiEntityOptions, Context)}
      */
     public void recognizeBatchPiiEntitiesMaxOverload() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-RecognizePiiEntityOptions-Context
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
             new TextDocumentInput("0", "My SSN is 859-98-0987"),
             new TextDocumentInput("1", "Visa card 4111 1111 1111 1111")
@@ -308,7 +337,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         Response<RecognizePiiEntitiesResultCollection> response =
             textAnalyticsClient.recognizePiiEntitiesBatchWithResponse(textDocumentInputs,
-                new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE);
+                new RecognizePiiEntityOptions().setIncludeStatistics(true), Context.NONE);
 
         RecognizePiiEntitiesResultCollection resultCollection = response.getValue();
 
@@ -317,12 +346,15 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        resultCollection.forEach(recognizePiiEntitiesResult ->
-            recognizePiiEntitiesResult.getEntities().forEach(entity -> System.out.printf(
+        resultCollection.forEach(recognizePiiEntitiesResult -> {
+            PiiEntityCollection piiEntityCollection = recognizePiiEntitiesResult.getEntities();
+            System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+            piiEntityCollection.forEach(entity -> System.out.printf(
                 "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
                     + " entity subcategory: %s, confidence score: %f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())));
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
+                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+        });
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-RecognizePiiEntityOptions-Context
     }
 
     // Linked Entity
@@ -577,6 +609,29 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link TextAnalyticsClient#analyzeSentiment(String, String, AnalyzeSentimentOptions)}
+     */
+    public void analyzeSentimentWithLanguageWithOpinionMining() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String-AnalyzeSentimentOptions
+        final DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(
+            "The hotel was dark and unclean.", "en",
+            new AnalyzeSentimentOptions().setIncludeOpinionMining(true));
+        for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
+            System.out.printf("\tSentence sentiment: %s%n", sentenceSentiment.getSentiment());
+            sentenceSentiment.getMinedOpinions().forEach(minedOpinions -> {
+                AspectSentiment aspectSentiment = minedOpinions.getAspect();
+                System.out.printf("\tAspect sentiment: %s, aspect text: %s%n", aspectSentiment.getSentiment(),
+                    aspectSentiment.getText());
+                for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
+                    System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the opinion negated: %s.%n",
+                        opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+                }
+            });
+        }
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String-AnalyzeSentimentOptions
+    }
+
+    /**
      * Code snippet for {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     public void analyzeSentimentStringListWithOptions() {
@@ -587,8 +642,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         // Analyzing batch sentiments
-        AnalyzeSentimentResultCollection resultCollection =
-            textAnalyticsClient.analyzeSentimentBatch(documents, "en", null);
+        AnalyzeSentimentResultCollection resultCollection = textAnalyticsClient.analyzeSentimentBatch(
+            documents, "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true));
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
@@ -616,6 +671,40 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 sentenceSentiment.getConfidenceScores().getNegative()));
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String-TextAnalyticsRequestOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, String, AnalyzeSentimentOptions)}
+     */
+    public void analyzeSentimentStringListWithOptionsAndOpinionMining() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String-AnalyzeSentimentOptions
+        List<String> documents = Arrays.asList(
+            "The hotel was dark and unclean. The restaurant had amazing gnocchi.",
+            "The restaurant had amazing gnocchi. The hotel was dark and unclean."
+        );
+
+        // Analyzing batch sentiments
+        AnalyzeSentimentResultCollection resultCollection = textAnalyticsClient.analyzeSentimentBatch(
+            documents, "en", new AnalyzeSentimentOptions().setIncludeOpinionMining(true));
+
+        // Analyzed sentiment for each of documents from a batch of documents
+        resultCollection.forEach(analyzeSentimentResult -> {
+            System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
+            DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+            documentSentiment.getSentences().forEach(sentenceSentiment -> {
+                System.out.printf("\tSentence sentiment: %s%n", sentenceSentiment.getSentiment());
+                sentenceSentiment.getMinedOpinions().forEach(minedOpinions -> {
+                    AspectSentiment aspectSentiment = minedOpinions.getAspect();
+                    System.out.printf("\tAspect sentiment: %s, aspect text: %s%n", aspectSentiment.getSentiment(),
+                        aspectSentiment.getText());
+                    for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
+                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the opinion negated: %s.%n",
+                            opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+                    }
+                });
+            });
+        });
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String-AnalyzeSentimentOptions
     }
 
     /**
@@ -667,5 +756,53 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             });
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-TextAnalyticsRequestOptions-Context
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsClient#analyzeSentimentBatchWithResponse(Iterable, AnalyzeSentimentOptions, Context)}
+     */
+    public void analyzeBatchSentimentMaxOverloadWithOpinionMining() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions-Context
+        List<TextDocumentInput> textDocumentInputs = Arrays.asList(
+            new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi.")
+                .setLanguage("en"),
+            new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.")
+                .setLanguage("en")
+        );
+
+        AnalyzeSentimentOptions options = new AnalyzeSentimentOptions().setIncludeOpinionMining(true)
+            .setIncludeStatistics(true);
+
+        // Analyzing batch sentiments
+        Response<AnalyzeSentimentResultCollection> response =
+            textAnalyticsClient.analyzeSentimentBatchWithResponse(textDocumentInputs, options, Context.NONE);
+
+        // Response's status code
+        System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+        AnalyzeSentimentResultCollection resultCollection = response.getValue();
+
+        // Batch statistics
+        TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
+        System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
+            batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+        // Analyzed sentiment for each of documents from a batch of documents
+        resultCollection.forEach(analyzeSentimentResult -> {
+            System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
+            DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+            documentSentiment.getSentences().forEach(sentenceSentiment -> {
+                System.out.printf("\tSentence sentiment: %s%n", sentenceSentiment.getSentiment());
+                sentenceSentiment.getMinedOpinions().forEach(minedOpinions -> {
+                    AspectSentiment aspectSentiment = minedOpinions.getAspect();
+                    System.out.printf("\tAspect sentiment: %s, aspect text: %s%n", aspectSentiment.getSentiment(),
+                        aspectSentiment.getText());
+                    for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
+                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the opinion negated: %s.%n",
+                            opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+                    }
+                });
+            });
+        });
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions-Context
     }
 }

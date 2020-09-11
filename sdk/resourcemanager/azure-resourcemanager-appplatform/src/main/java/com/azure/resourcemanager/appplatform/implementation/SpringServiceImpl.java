@@ -4,21 +4,22 @@
 package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
+import com.azure.resourcemanager.appplatform.fluent.inner.ConfigServerResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.inner.MonitoringSettingResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.CertificateProperties;
-import com.azure.resourcemanager.appplatform.models.ClusterResourceProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerSettings;
+import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
 import com.azure.resourcemanager.appplatform.models.Sku;
 import com.azure.resourcemanager.appplatform.models.SpringApps;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServiceCertificates;
 import com.azure.resourcemanager.appplatform.models.TestKeyType;
 import com.azure.resourcemanager.appplatform.models.TestKeys;
-import com.azure.resourcemanager.appplatform.models.TraceProperties;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import reactor.core.publisher.Mono;
 
 public class SpringServiceImpl
@@ -26,23 +27,17 @@ public class SpringServiceImpl
     implements SpringService, SpringService.Definition, SpringService.Update {
     private final SpringServiceCertificatesImpl certificates = new SpringServiceCertificatesImpl(this);
     private final SpringAppsImpl apps = new SpringAppsImpl(this);
+    private FunctionalTaskItem configServerTask = null;
+    private FunctionalTaskItem monitoringSettingTask = null;
+    private boolean needUpdate = false;
 
     SpringServiceImpl(String name, ServiceResourceInner innerObject, AppPlatformManager manager) {
         super(name, innerObject, manager);
     }
+
     @Override
     public Sku sku() {
         return inner().sku();
-    }
-
-    @Override
-    public TraceProperties traceProperties() {
-        return inner().properties().trace();
-    }
-
-    @Override
-    public ConfigServerProperties serverProperties() {
-        return inner().properties().configServerProperties();
     }
 
     @Override
@@ -53,6 +48,28 @@ public class SpringServiceImpl
     @Override
     public SpringServiceCertificates certificates() {
         return certificates;
+    }
+
+    @Override
+    public MonitoringSettingProperties getMonitoringSetting() {
+        return getMonitoringSettingAsync().block();
+    }
+
+    @Override
+    public Mono<MonitoringSettingProperties> getMonitoringSettingAsync() {
+        return manager().inner().getMonitoringSettings().getAsync(resourceGroupName(), name())
+            .map(MonitoringSettingResourceInner::properties);
+    }
+
+    @Override
+    public ConfigServerProperties getServerProperties() {
+        return getServerPropertiesAsync().block();
+    }
+
+    @Override
+    public Mono<ConfigServerProperties> getServerPropertiesAsync() {
+        return manager().inner().getConfigServers().getAsync(resourceGroupName(), name())
+            .map(ConfigServerResourceInner::properties);
     }
 
     @Override
@@ -107,71 +124,88 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withSku(Sku sku) {
+        needUpdate = true;
         inner().withSku(sku);
         return this;
     }
 
     @Override
     public SpringServiceImpl withTracing(String appInsightInstrumentationKey) {
-        if (inner().properties() == null) {
-            inner().withProperties(new ClusterResourceProperties());
-        }
-        inner().properties().withTrace(
-            new TraceProperties().withAppInsightInstrumentationKey(appInsightInstrumentationKey).withEnabled(true));
+        monitoringSettingTask =
+            context -> manager().inner().getMonitoringSettings()
+                .updatePatchAsync(resourceGroupName(), name(), new MonitoringSettingProperties()
+                    .withAppInsightsInstrumentationKey(appInsightInstrumentationKey)
+                    .withTraceEnabled(true))
+                .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withoutTracing() {
-        if (inner().properties() == null) {
-            inner().withProperties(new ClusterResourceProperties());
-        }
-        inner().properties().withTrace(new TraceProperties().withEnabled(false));
+        monitoringSettingTask =
+            context -> manager().inner().getMonitoringSettings()
+                .updatePatchAsync(
+                    resourceGroupName(), name(), new MonitoringSettingProperties().withTraceEnabled(false))
+                .then(context.voidMono());
         return this;
-    }
-
-    private void ensureGitConfig() {
-        if (inner().properties() == null) {
-            inner().withProperties(new ClusterResourceProperties());
-        }
-        if (inner().properties().configServerProperties() == null) {
-            inner().properties().withConfigServerProperties(new ConfigServerProperties());
-        }
-        if (inner().properties().configServerProperties().configServer() == null) {
-            inner().properties().configServerProperties().withConfigServer(new ConfigServerSettings());
-        }
-        if (inner().properties().configServerProperties().configServer().gitProperty() == null) {
-            inner().properties().configServerProperties().configServer().withGitProperty(new ConfigServerGitProperty());
-        }
     }
 
     @Override
     public SpringServiceImpl withGitUri(String uri) {
-        ensureGitConfig();
-        inner().properties().configServerProperties().configServer().gitProperty().withUri(uri);
+        configServerTask =
+            context -> manager().inner().getConfigServers()
+                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
+                    .withConfigServer(new ConfigServerSettings().withGitProperty(
+                        new ConfigServerGitProperty().withUri(uri)
+                    )))
+                .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withGitUriAndCredential(String uri, String username, String password) {
-        ensureGitConfig();
-        inner().properties().configServerProperties().configServer().gitProperty()
-            .withUri(uri).withUsername(username).withPassword(password);
+        configServerTask =
+            context -> manager().inner().getConfigServers()
+                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
+                    .withConfigServer(new ConfigServerSettings().withGitProperty(
+                        new ConfigServerGitProperty()
+                            .withUri(uri)
+                            .withUsername(username)
+                            .withPassword(password)
+                    )))
+                .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withGitConfig(ConfigServerGitProperty gitConfig) {
-        ensureGitConfig();
-        inner().properties().configServerProperties().configServer().withGitProperty(gitConfig);
+        configServerTask =
+            context -> manager().inner().getConfigServers()
+                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
+                    .withConfigServer(new ConfigServerSettings().withGitProperty(gitConfig)))
+                .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withoutGitConfig() {
-        ensureGitConfig();
-        inner().properties().configServerProperties().configServer().withGitProperty(null);
+        configServerTask =
+            context -> manager().inner().getConfigServers()
+                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties())
+                .then(context.voidMono());
         return this;
+    }
+
+    @Override
+    public void beforeGroupCreateOrUpdate() {
+        if (configServerTask != null) {
+            this.addPostRunDependent(configServerTask);
+        }
+        if (monitoringSettingTask != null) {
+            this.addPostRunDependent(monitoringSettingTask);
+        }
+        configServerTask = null;
+        monitoringSettingTask = null;
     }
 
     @Override
@@ -179,8 +213,11 @@ public class SpringServiceImpl
         Mono<ServiceResourceInner> createOrUpdate;
         if (isInCreateMode()) {
             createOrUpdate = manager().inner().getServices().createOrUpdateAsync(resourceGroupName(), name(), inner());
-        } else {
+        } else if (needUpdate) {
+            needUpdate = false;
             createOrUpdate = manager().inner().getServices().updateAsync(resourceGroupName(), name(), inner());
+        } else {
+            return Mono.just(this);
         }
         return createOrUpdate
             .map(inner -> {
@@ -196,11 +233,9 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withCertificate(String name, String keyVaultUri, String certNameInKeyVault) {
-        this.addPostRunDependent(
-            context -> certificates.createOrUpdateAsync(
-                name,
-                new CertificateProperties().withVaultUri(keyVaultUri).withKeyVaultCertName(certNameInKeyVault)
-            ).cast(Indexable.class)
+        certificates.prepareCreateOrUpdate(
+            name,
+            new CertificateProperties().withVaultUri(keyVaultUri).withKeyVaultCertName(certNameInKeyVault)
         );
         return this;
     }
@@ -208,24 +243,19 @@ public class SpringServiceImpl
     @Override
     public SpringServiceImpl withCertificate(String name, String keyVaultUri,
                                              String certNameInKeyVault, String certVersion) {
-        this.addPostRunDependent(
-            context -> certificates.createOrUpdateAsync(
-                name,
-                new CertificateProperties()
-                    .withVaultUri(keyVaultUri)
-                    .withKeyVaultCertName(certNameInKeyVault)
-                    .withCertVersion(certVersion)
-            ).cast(Indexable.class)
+        certificates.prepareCreateOrUpdate(
+            name,
+            new CertificateProperties()
+                .withVaultUri(keyVaultUri)
+                .withKeyVaultCertName(certNameInKeyVault)
+                .withCertVersion(certVersion)
         );
         return this;
     }
 
     @Override
     public SpringServiceImpl withoutCertificate(String name) {
-        this.addPostRunDependent(
-            context -> certificates.deleteByNameAsync(name)
-                .then(context.voidMono())
-        );
+        certificates.prepareDelete(name);
         return this;
     }
 }

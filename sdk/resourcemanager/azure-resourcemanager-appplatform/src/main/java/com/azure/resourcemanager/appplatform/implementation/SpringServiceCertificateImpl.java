@@ -13,10 +13,9 @@ import reactor.core.publisher.Mono;
 
 public class SpringServiceCertificateImpl
     extends ExternalChildResourceImpl<
-    SpringServiceCertificate, CertificateResourceInner, SpringServiceImpl, SpringService>
+        SpringServiceCertificate, CertificateResourceInner, SpringServiceImpl, SpringService>
     implements SpringServiceCertificate {
-    SpringServiceCertificateImpl(String name, SpringServiceImpl parent,
-                            CertificateResourceInner innerObject) {
+    SpringServiceCertificateImpl(String name, SpringServiceImpl parent, CertificateResourceInner innerObject) {
         super(name, parent, innerObject);
     }
 

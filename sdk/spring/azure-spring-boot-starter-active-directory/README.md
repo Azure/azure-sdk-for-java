@@ -28,14 +28,29 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 
 ## Key concepts
 This package provides 2 ways to integrate with Spring Security and authenticate with Azure Active Directory.
-* Authenticate in backend, auto configuration for common Azure Active Directory OAuth2 properties and `OAuth2UserService` to map authorities are provided.
-* Authenticate in frontend, sends bearer authorization code to backend, in backend a Spring Security filter validates the Jwt token from Azure AD and save authentication. The Jwt token is also used to acquire a On-Behalf-Of token for Azure AD Graph API so that authenticated user's membership information is available for authorization of access of API resources. Below is a diagram that shows the layers and typical flow for Single Page Application with Spring Boot web API backend that uses the filter for Authentication and Authorization.
-![Single Page Application + Spring Boot Web API + Azure AD](resource/spring-aad.png)
 
 The authorization flow is composed of 3 phrases:
 * Login with credentials and validate id_token from Azure AD 
 * Get On-Behalf-Of token and membership info from Azure AD Graph API
 * Evaluate the permission based on membership info to grant or deny access
+
+### Authenticate in frontend
+Sends bearer authorization code to backend, in backend a Spring Security filter `AADAuthenticationFilter` validates the Jwt token from Azure AD and save authentication. The Jwt token is also used to acquire a On-Behalf-Of token for Azure AD Graph API so that authenticated user's membership information is available for authorization of access of API resources. 
+Below is a diagram that shows the layers and typical flow for Single Page Application with Spring Boot web API backend that uses the filter for Authentication and Authorization.
+![Single Page Application + Spring Boot Web API + Azure AD](resource/auth-in-frontend-with-aad-filter.png)
+
+
+### Authenticate in backend
+Auto configuration for common Azure Active Directory OAuth2 properties and `OAuth2UserService` to map authorities are provided.
+
+#### Authorization Code mode usage
+![Single Page Application + Spring Boot Web API + Azure AD](resource/auth-in-backend-code-mode.png)
+
+#### ID Token mode usage(Stateless implicit)
+
+![Single Page Application + Spring Boot Web API + Azure AD](resource/auth-in-backend-id-token-mode.png)
+When the session is stateless, use `AADAppRoleStatelessAuthenticationFilter` as a Spring Security filter to validate the Jwt token from Azure AD and save authentication
+
 ## Examples
 
 Refer to different samples for different authentication ways. 
@@ -227,7 +242,7 @@ public class AADOAuth2LoginConditionalPolicyConfigSample extends WebSecurityConf
 
 ## Troubleshooting
 ### Enable client logging
-Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Enable Spring logging
 Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
@@ -240,7 +255,7 @@ logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
  
 
 ## Next steps

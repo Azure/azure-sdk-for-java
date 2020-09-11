@@ -15,12 +15,13 @@ import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
@@ -45,7 +46,7 @@ public final class ManageWebAppSourceControl {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws GitAPIException {
         // New resources
         final String suffix         = ".azurewebsites.net";
         final String app1Name       = azure.sdkContext().randomResourceName("webapp1-", 20);
@@ -317,9 +318,6 @@ public final class ManageWebAppSourceControl {
             System.out.println("Warming up " + app7Url);
             Utils.curl("http://" + app7Url);
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -332,7 +330,6 @@ public final class ManageWebAppSourceControl {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

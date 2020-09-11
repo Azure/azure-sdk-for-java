@@ -536,7 +536,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             .flatMapMany(
                 redisCache ->
                     Mono
-                        .delay(SdkContext.getDelayDuration(Duration.ofSeconds(30)))
+                        .delay(SdkContext.getDelayDuration(manager().inner().getDefaultPollInterval()))
                         .flatMap(o -> manager().inner().getRedis().getByResourceGroupAsync(resourceGroupName(), name()))
                         .doOnNext(this::setInner)
                         .repeat()

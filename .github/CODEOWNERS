@@ -16,7 +16,7 @@
 ####
 # Service teams
 ####
-# PRLabel: %AzConfig
+# PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
 /sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 
@@ -37,7 +37,10 @@
 /sdk/cosmos/azure-spring-data-2-3-cosmos/           @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai @mbhaskar
 
 # PRLabel: %DigitalTwins
-/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @prmathur-microsoft @bikamani @barustum
+/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum
+
+# PRLabel: %Event Grid
+/sdk/eventgrid/                                     @srnagar @yijunxiems
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang @yijunxiems
@@ -67,7 +70,7 @@
 /sdk/textanalytics/                                 @samvaity @mssfang
 
 # PRLabel: %azure-spring
-/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai  
+/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 
 # end to end tests
 # PRLabel: %Azure.Identity
@@ -85,7 +88,8 @@
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
-/parent/                                            @JimSuplizio
+/eng/versioning/                                    @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity
+/parent/                                            @JimSuplizio @alzimmermsft
 
 /**/tests.yml                                       @danieljurek
 /**/ci.yml                                          @mitchdenny

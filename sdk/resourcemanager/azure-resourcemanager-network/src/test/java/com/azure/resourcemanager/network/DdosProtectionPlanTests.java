@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.models.DdosProtectionPlan;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ public class DdosProtectionPlanTests extends NetworkManagementTest {
 
     @Test
     public void canCRUDDdosProtectionPlan() throws Exception {
-        String ppName = sdkContext.randomResourceName("ddosplan", 15);
+        String ppName = generateRandomResourceName("ddosplan", 15);
 
         DdosProtectionPlan pPlan =
             networkManager

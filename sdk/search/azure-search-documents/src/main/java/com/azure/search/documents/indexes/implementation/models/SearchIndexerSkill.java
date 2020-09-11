@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -78,11 +79,16 @@ public class SearchIndexerSkill {
     @JsonProperty(value = "outputs", required = true)
     private List<OutputFieldMappingEntry> outputs;
 
-    /** Creates an instance of SearchIndexerSkill class. */
+    /**
+     * Creates an instance of SearchIndexerSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public SearchIndexerSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         this.inputs = inputs;
         this.outputs = outputs;
     }
@@ -166,13 +172,6 @@ public class SearchIndexerSkill {
     }
 
     /**
-     * Set the inputs property: Inputs of the skills could be a column in the source data set, or the output of an
-     * upstream skill.
-     *
-     * @param inputs the inputs value to set.
-     * @return the SearchIndexerSkill object itself.
-     */
-    /**
      * Get the outputs property: The output of a skill is either a field in a search index, or a value that can be
      * consumed as an input by another skill.
      *
@@ -180,30 +179,5 @@ public class SearchIndexerSkill {
      */
     public List<OutputFieldMappingEntry> getOutputs() {
         return this.outputs;
-    }
-
-    /**
-     * Set the outputs property: The output of a skill is either a field in a search index, or a value that can be
-     * consumed as an input by another skill.
-     *
-     * @param outputs the outputs value to set.
-     * @return the SearchIndexerSkill object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getInputs() == null) {
-            throw new IllegalArgumentException("Missing required property inputs in model SearchIndexerSkill");
-        } else {
-            getInputs().forEach(e -> e.validate());
-        }
-        if (getOutputs() == null) {
-            throw new IllegalArgumentException("Missing required property outputs in model SearchIndexerSkill");
-        } else {
-            getOutputs().forEach(e -> e.validate());
-        }
     }
 }

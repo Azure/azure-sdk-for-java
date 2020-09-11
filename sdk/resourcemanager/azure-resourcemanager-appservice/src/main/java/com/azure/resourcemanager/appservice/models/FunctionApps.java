@@ -22,8 +22,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 public interface FunctionApps
     extends SupportsCreating<FunctionApp.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsListing<FunctionApp>,
-        SupportsListingByResourceGroup<FunctionApp>,
+        SupportsListing<FunctionAppBasic>,
+        SupportsListingByResourceGroup<FunctionAppBasic>,
         SupportsGettingByResourceGroup<FunctionApp>,
         SupportsGettingById<FunctionApp>,
         SupportsDeletingByResourceGroup,

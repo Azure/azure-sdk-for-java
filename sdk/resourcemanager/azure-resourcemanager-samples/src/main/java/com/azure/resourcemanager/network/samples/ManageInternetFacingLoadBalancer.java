@@ -21,7 +21,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import org.apache.commons.lang.time.StopWatch;
 
@@ -472,11 +472,6 @@ public final class ManageInternetFacingLoadBalancer {
             System.out.println("Deleted load balancer" + loadBalancerName2);
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -487,7 +482,6 @@ public final class ManageInternetFacingLoadBalancer {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

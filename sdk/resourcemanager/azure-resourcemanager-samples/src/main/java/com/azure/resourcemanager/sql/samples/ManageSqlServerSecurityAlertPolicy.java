@@ -8,7 +8,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
@@ -102,9 +102,6 @@ public class ManageSqlServerSecurityAlertPolicy {
             System.out.println("Deleting the Sql Servers");
             azure.sqlServers().deleteById(sqlServer.id());
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -114,7 +111,6 @@ public class ManageSqlServerSecurityAlertPolicy {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

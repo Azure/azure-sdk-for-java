@@ -32,6 +32,7 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
     private final EncryptionKeyWrapProvider encryptionKeyWrapProvider;
     private CosmosAsyncContainer container;
 
+    // TODO: change to package private
     public CosmosDataEncryptionKeyProvider(EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
         this(encryptionKeyWrapProvider, null);
     }
@@ -68,7 +69,7 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
      * Gets Container for data encryption keys.
      * @return DataEncryptionKeyContainer
      */
-    DataEncryptionKeyContainer getDataEncryptionKeyContainer() {
+    public DataEncryptionKeyContainer getDataEncryptionKeyContainer() {
         return dataEncryptionKeyContainerCore;
     }
 
@@ -76,13 +77,14 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
         return dekCache;
     }
 
+    // TODO: can this be changed to package private?
     // TODO: @moderakh look into if this method needs to be async.
     /**
      * Initialize Cosmos DB container for CosmosDataEncryptionKeyProvider to store wrapped DEKs
      * @param database Database
      * @param containerId ontainer id
      */
-    void initialize(CosmosAsyncDatabase database,
+    public void initialize(CosmosAsyncDatabase database,
                     String containerId) {
         Preconditions.checkNotNull(database, "database");
         Preconditions.checkNotNull(containerId, "containerId");
@@ -106,7 +108,7 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
     public Mono<DataEncryptionKey> getDataEncryptionKey(String id,
                                                   String encryptionAlgorithm) {
         Mono<Tuple2<DataEncryptionKeyProperties, InMemoryRawDek>> fetchUnwrapMono = this
-            .dataEncryptionKeyContainerCore.fetchUnwrappedAsync(id);
+            .dataEncryptionKeyContainerCore.fetchUnwrapped(id);
 
         return fetchUnwrapMono
             .map(fetchUnwrap -> fetchUnwrap.getT2().getDataEncryptionKey());

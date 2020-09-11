@@ -21,7 +21,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import reactor.core.publisher.Flux;
@@ -257,9 +257,6 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             System.out.println(String.format("Remaining availability sets (should be %d): %d", actualVMCount, actualAvailabilitySetCount));
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Starting the deletion of resource group: " + resourceGroupName);
@@ -270,7 +267,6 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -23,7 +23,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.ArrayList;
@@ -328,11 +328,6 @@ public final class ManageVirtualMachineScaleSet {
             System.out.println("re-started virtual machine scale set");
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -344,7 +339,6 @@ public final class ManageVirtualMachineScaleSet {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -17,7 +17,12 @@
   <version>3.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
 
   <name>Microsoft Azure SDK for Event Hubs</name>
-  <description>Libraries built on Microsoft Azure Event Hubs</description>
+  <description>Libraries built on Microsoft Azure Event Hubs.${line.separator}
+    This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure Event Hubs service are:${line.separator}
+    1. https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs${line.separator}
+    2. https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob${line.separator}
+    It is recommended that you move to the new package.
+  </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -76,7 +81,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.6.2</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

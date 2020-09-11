@@ -11,7 +11,7 @@ import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -34,7 +34,7 @@ public final class DeployUsingARMTemplateWithProgress {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException, IllegalAccessException {
         final String rgName = azure.sdkContext().randomResourceName("rgRSAP", 24);
         final String deploymentName = azure.sdkContext().randomResourceName("dpRSAP", 24);
         try {
@@ -78,11 +78,6 @@ public final class DeployUsingARMTemplateWithProgress {
                 System.out.println("Current deployment status : " + deployment.provisioningState());
             }
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -95,7 +90,6 @@ public final class DeployUsingARMTemplateWithProgress {
             }
 
         }
-        return false;
     }
 
     /**

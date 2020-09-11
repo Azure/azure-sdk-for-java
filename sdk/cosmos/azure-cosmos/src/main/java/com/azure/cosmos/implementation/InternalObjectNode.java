@@ -65,6 +65,23 @@ public class InternalObjectNode extends Resource {
     }
 
     /**
+     * fromObjectToInternalObjectNode returns InternalObjectNode
+     */
+    public static InternalObjectNode fromObjectToInternalObjectNode(Object cosmosItem) {
+        if (cosmosItem instanceof InternalObjectNode) {
+            return (InternalObjectNode) cosmosItem;
+        } else if (cosmosItem instanceof byte[]) {
+            return new InternalObjectNode((byte[]) cosmosItem);
+        } else {
+            try {
+                return new InternalObjectNode(InternalObjectNode.MAPPER.writeValueAsString(cosmosItem));
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Can't serialize the object into the json string", e);
+            }
+        }
+    }
+
+    /**
      * fromObject returns Document for compatibility with V2 sdk
      */
     public static Document fromObject(Object cosmosItem) {

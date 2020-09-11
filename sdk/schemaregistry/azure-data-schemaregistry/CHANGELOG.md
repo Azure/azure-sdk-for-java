@@ -1,6 +1,8 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2020-09-10)
+- Removed `SchemaRegistryCodec` and `SchemaRegistrySerializer` 
+- Updated Schema Registry client APIs to use `SchemaProperties`
 
 ## 1.0.0-beta.2 (2020-06-19)
 - Fix 4xx HTTP response handling

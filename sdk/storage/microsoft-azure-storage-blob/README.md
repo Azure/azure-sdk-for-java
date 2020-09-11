@@ -185,7 +185,7 @@ When sending pull requests, please send non-breaking PRs to the dev branch and b
 * [Quick Start with the Azure Storage SDK v11 for Java](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-java-v10)
 * [Java API Reference](https://docs.microsoft.com/en-us/java/api/overview/azure/storage/client?view=azure-java-preview)
 * [Azure Storage Service](http://azure.microsoft.com/en-us/documentation/services/storage/)
-* [Azure Storage Team Blog](http://blogs.msdn.com/b/windowsazurestorage/)
+* [Azure Storage Team Blog](https://docs.microsoft.com/en-us/archive/blogs/windowsazurestorage/)
 * [Javadoc](http://azure.github.io/azure-storage-java/)
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fmicrosoft-azure-storage-blob%2FREADME.png)

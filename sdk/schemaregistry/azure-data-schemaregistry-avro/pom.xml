@@ -9,6 +9,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
@@ -73,6 +74,12 @@
       <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -90,6 +97,27 @@
             </bannedDependencies>
           </rules>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro-maven-plugin</artifactId>
+        <version>1.9.2</version> <!-- {x-version-update;org.apache.avro:avro-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>schema</goal>
+            </goals>
+            <configuration>
+              <testSourceDirectory>src/samples/resources/avro/</testSourceDirectory>
+              <testOutputDirectory>${project.basedir}/src/samples/java/</testOutputDirectory>
+              <testIncludes>
+                <testInclude>**/*.avro</testInclude>
+              </testIncludes>
+              <stringType>String</stringType>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

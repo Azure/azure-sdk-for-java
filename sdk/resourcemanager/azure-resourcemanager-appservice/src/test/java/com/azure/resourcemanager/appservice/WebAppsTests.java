@@ -6,14 +6,16 @@ package com.azure.resourcemanager.appservice;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.LogLevel;
 import com.azure.resourcemanager.appservice.models.NetFrameworkVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RemoteVisualStudioVersion;
 import com.azure.resourcemanager.appservice.models.WebApp;
+import com.azure.resourcemanager.appservice.models.WebAppBasic;
 import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +41,9 @@ public class WebAppsTests extends AppServiceTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName2);
+        if (rgName2 != null) {
+            resourceManager.resourceGroups().beginDeleteByName(rgName2);
+        }
         resourceManager.resourceGroups().beginDeleteByName(rgName1);
     }
 
@@ -81,7 +85,7 @@ public class WebAppsTests extends AppServiceTest {
         Assertions.assertEquals(webApp2.name(), webApp.name());
 
         // List
-        PagedIterable<WebApp> webApps = appServiceManager.webApps().listByResourceGroup(rgName1);
+        PagedIterable<WebAppBasic> webApps = appServiceManager.webApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(1, TestUtilities.getSize(webApps));
         webApps = appServiceManager.webApps().listByResourceGroup(rgName2);
         Assertions.assertEquals(1, TestUtilities.getSize(webApps));
@@ -126,5 +130,43 @@ public class WebAppsTests extends AppServiceTest {
                     .listMetadata(webApp3.resourceGroupName(), webApp3.name())
                     .properties()
                     .get("CURRENT_STACK"));
+    }
+
+    @Test
+    public void canListWebApp() throws Exception {
+        rgName2 = null;
+
+        WebApp webApp1 =
+            appServiceManager
+                .webApps()
+                .define(webappName1)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName1)
+                .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
+                .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
+                .withHttpsOnly(true)
+                .defineDiagnosticLogsConfiguration()
+                    .withApplicationLogging()
+                    .withLogLevel(LogLevel.VERBOSE)
+                    .withApplicationLogsStoredOnFileSystem()
+                    .attach()
+                .create();
+
+        PagedIterable<WebAppBasic> webApps = appServiceManager.webApps()
+            .listByResourceGroup(rgName1);
+        Assertions.assertEquals(1, TestUtilities.getSize(webApps));
+
+        WebAppBasic webAppBasic1 = webApps.iterator().next();
+        // verify basic info
+        Assertions.assertEquals(webApp1.id(), webAppBasic1.id());
+        Assertions.assertEquals(webApp1.name(), webAppBasic1.name());
+        Assertions.assertEquals(webApp1.appServicePlanId(), webAppBasic1.appServicePlanId());
+        Assertions.assertEquals(webApp1.operatingSystem(), webAppBasic1.operatingSystem());
+        Assertions.assertEquals(webApp1.httpsOnly(), webAppBasic1.httpsOnly());
+        // verify detailed info after refresh
+        WebApp webAppBasic1Refreshed = webAppBasic1.refresh();
+        Assertions.assertEquals(webApp1.remoteDebuggingVersion(), webAppBasic1Refreshed.remoteDebuggingVersion());
+        Assertions.assertEquals(webApp1.diagnosticLogsConfig().applicationLoggingStorageBlobLogLevel(),
+            webAppBasic1Refreshed.diagnosticLogsConfig().applicationLoggingStorageBlobLogLevel());
     }
 }
