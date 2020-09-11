@@ -10,14 +10,15 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Properties;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class KubernetesClustersTests extends ContainerServiceManagementTest {
     private static final String SSH_KEY =
@@ -55,7 +56,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .define(aksName)
                 .withRegion(Region.US_CENTRAL)
                 .withExistingResourceGroup(rgName)
-                .withLatestVersion()
+                .withDefaultVersion()
                 .withRootUsername("testaks")
                 .withSshKey(SSH_KEY)
                 .withServicePrincipalClientId(servicePrincipalClientId)

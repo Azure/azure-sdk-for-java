@@ -56,7 +56,7 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
                 .define(newName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
-                .withLatestVersion()
+                .withDefaultVersion()
                 .withRootUsername("aksadmin")
                 .withSshKey(sshKeyData)
                 .withServicePrincipalClientId(clientId)

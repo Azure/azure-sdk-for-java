@@ -113,7 +113,7 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
             KubernetesCluster kubernetesCluster = azure.kubernetesClusters().define(aksName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
-                .withLatestVersion()
+                .withDefaultVersion()
                 .withRootUsername(rootUserName)
                 .withSshKey(sshKeys.getSshPublicKey())
                 .withServicePrincipalClientId(servicePrincipalClientId)

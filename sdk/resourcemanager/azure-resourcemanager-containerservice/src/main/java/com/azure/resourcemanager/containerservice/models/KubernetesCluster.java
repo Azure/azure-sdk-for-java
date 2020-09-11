@@ -115,11 +115,11 @@ public interface KubernetesCluster
             WithLinuxRootUsername withVersion(String kubernetesVersion);
 
             /**
-             * Uses the latest version for the Kubernetes cluster.
+             * Uses the default version for the Kubernetes cluster.
              *
              * @return the next stage of the definition
              */
-            WithLinuxRootUsername withLatestVersion();
+            WithLinuxRootUsername withDefaultVersion();
         }
 
         /** The stage of the Kubernetes cluster definition allowing to specific the Linux root username. */
@@ -339,12 +339,12 @@ public interface KubernetesCluster
         /** The stage of the Kubernetes cluster definition allowing to specify the cluster's add-on's profiles. */
         interface WithAddOnProfiles {
             /**
-             * Updates the cluster's add-on's profiles.
+             * Specifies the cluster's add-on's profiles.
              *
              * @param addOnProfileMap the cluster's add-on's profiles
-             * @return the next stage of the update
+             * @return the next stage of the definition
              */
-            KubernetesCluster.Update withAddOnProfiles(Map<String, ManagedClusterAddonProfile> addOnProfileMap);
+            WithCreate withAddOnProfiles(Map<String, ManagedClusterAddonProfile> addOnProfileMap);
         }
 
         /**
@@ -353,6 +353,7 @@ public interface KubernetesCluster
          */
         interface WithCreate
             extends Creatable<KubernetesCluster>,
+                WithAgentPool,
                 WithNetworkProfile,
                 WithDnsPrefix,
                 WithAddOnProfiles,

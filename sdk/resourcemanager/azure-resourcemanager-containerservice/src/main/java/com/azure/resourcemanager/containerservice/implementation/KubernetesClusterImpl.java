@@ -239,7 +239,7 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public KubernetesClusterImpl withLatestVersion() {
+    public KubernetesClusterImpl withDefaultVersion() {
         this.inner().withKubernetesVersion("");
         return this;
     }
