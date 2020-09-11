@@ -308,7 +308,7 @@ public class IdentityClientTests {
         // test
         IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
-        StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567))
+        StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567, null))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
                 && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
