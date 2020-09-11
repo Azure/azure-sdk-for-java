@@ -136,7 +136,7 @@ public class KeyVaultIT {
 
         final String host = vm.getPrimaryPublicIPAddress().ipAddress();
 
-        // Upload app.jar to virtual machine and
+        // Upload app.jar to virtual machine and run java application
         final MavenBasedProject app = new MavenBasedProject("../azure-spring-boot-test-application");
         app.packageUp();
 
