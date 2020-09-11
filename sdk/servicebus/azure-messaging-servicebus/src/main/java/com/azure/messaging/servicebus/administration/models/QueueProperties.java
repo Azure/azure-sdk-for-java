@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
 import com.azure.messaging.servicebus.implementation.models.EntityAvailabilityStatus;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
@@ -14,6 +15,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimitive;
 
@@ -54,10 +56,9 @@ public final class QueueProperties {
         // This is used by classes in different packages to get access to private and package-private methods.
         EntityHelper.setQueueAccessor(new EntityHelper.QueueAccessor() {
             @Override
-            public QueueDescription toImplementation(QueueProperties queue) {
-                return new QueueDescription()
+            public QueueDescription toImplementation(QueueProperties queue, List<AuthorizationRuleImpl> rules) {
+                final QueueDescription description = new QueueDescription()
                     .setAccessedAt(queue.getAccessedAt())
-                    .setAuthorizationRules(queue.getAuthorizationRules())
                     .setAutoDeleteOnIdle(queue.getAutoDeleteOnIdle())
                     .setCreatedAt(queue.getCreatedAt())
                     .setDeadLetteringOnMessageExpiration(queue.isDeadLetteringOnMessageExpiration())
@@ -82,6 +83,12 @@ public final class QueueProperties {
                     .setRequiresDuplicateDetection(queue.requiresDuplicateDetection())
                     .setUpdatedAt(queue.getUpdatedAt())
                     .setUserMetadata(queue.getUserMetadata());
+
+                if (!rules.isEmpty()) {
+                    description.setAuthorizationRules(rules);
+                }
+
+                return description;
             }
 
             @Override
@@ -104,7 +111,9 @@ public final class QueueProperties {
     QueueProperties(QueueDescription description) {
         this.accessedAt = description.getAccessedAt();
         this.autoDeleteOnIdle = description.getAutoDeleteOnIdle();
-        this.authorizationRules = description.getAuthorizationRules();
+        this.authorizationRules = description.getAuthorizationRules().stream()
+            .map(SharedAccessAuthorizationRule::new)
+            .collect(Collectors.toList());
         this.createdAt = description.getCreatedAt();
         this.defaultMessageTimeToLive = description.getDefaultMessageTimeToLive();
         this.deadLetteringOnMessageExpiration = toPrimitive(description.isDeadLetteringOnMessageExpiration());

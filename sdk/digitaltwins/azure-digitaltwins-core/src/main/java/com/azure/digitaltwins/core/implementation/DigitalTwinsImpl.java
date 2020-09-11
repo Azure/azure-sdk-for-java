@@ -244,6 +244,13 @@ public final class DigitalTwinsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsGetByIdResponse> getByIdWithResponseAsync(String id, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
         return service.getById(this.client.getHost(), id, this.client.getApiVersion(), context);
     }
 
@@ -262,6 +269,16 @@ public final class DigitalTwinsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsAddResponse> addWithResponseAsync(String id, Object twin, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (twin == null) {
+            return Mono.error(new IllegalArgumentException("Parameter twin is required and cannot be null."));
+        }
         final String ifNoneMatch = "*";
         return service.add(this.client.getHost(), id, ifNoneMatch, this.client.getApiVersion(), twin, context);
     }
@@ -282,6 +299,13 @@ public final class DigitalTwinsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id, String ifMatch, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
         return service.delete(this.client.getHost(), id, ifMatch, this.client.getApiVersion(), context);
     }
 
@@ -302,6 +326,16 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsUpdateResponse> updateWithResponseAsync(
             String id, List<Object> patchDocument, String ifMatch, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (patchDocument == null) {
+            return Mono.error(new IllegalArgumentException("Parameter patchDocument is required and cannot be null."));
+        }
         return service.update(this.client.getHost(), id, ifMatch, this.client.getApiVersion(), patchDocument, context);
     }
 
@@ -320,6 +354,16 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsGetRelationshipByIdResponse> getRelationshipByIdWithResponseAsync(
             String id, String relationshipId, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (relationshipId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter relationshipId is required and cannot be null."));
+        }
         return service.getRelationshipById(
                 this.client.getHost(), id, relationshipId, this.client.getApiVersion(), context);
     }
@@ -341,6 +385,16 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsAddRelationshipResponse> addRelationshipWithResponseAsync(
             String id, String relationshipId, Object relationship, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (relationshipId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter relationshipId is required and cannot be null."));
+        }
         final String ifNoneMatch = "*";
         return service.addRelationship(
                 this.client.getHost(),
@@ -369,6 +423,16 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRelationshipWithResponseAsync(
             String id, String relationshipId, String ifMatch, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (relationshipId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter relationshipId is required and cannot be null."));
+        }
         return service.deleteRelationship(
                 this.client.getHost(), id, relationshipId, ifMatch, this.client.getApiVersion(), context);
     }
@@ -392,6 +456,16 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsUpdateRelationshipResponse> updateRelationshipWithResponseAsync(
             String id, String relationshipId, String ifMatch, List<Object> patchDocument, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (relationshipId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter relationshipId is required and cannot be null."));
+        }
         return service.updateRelationship(
                 this.client.getHost(),
                 id,
@@ -417,6 +491,13 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Object>> listRelationshipsSinglePageAsync(
             String id, String relationshipName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
         return service.listRelationships(
                         this.client.getHost(), id, relationshipName, this.client.getApiVersion(), context)
                 .map(
@@ -444,6 +525,13 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsSinglePageAsync(
             String id, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
         return service.listIncomingRelationships(this.client.getHost(), id, this.client.getApiVersion(), context)
                 .map(
                         res ->
@@ -474,6 +562,19 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendTelemetryWithResponseAsync(
             String id, String dtId, Object telemetry, String dtTimestamp, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (dtId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter dtId is required and cannot be null."));
+        }
+        if (telemetry == null) {
+            return Mono.error(new IllegalArgumentException("Parameter telemetry is required and cannot be null."));
+        }
         return service.sendTelemetry(
                 this.client.getHost(), id, dtId, dtTimestamp, this.client.getApiVersion(), telemetry, context);
     }
@@ -498,6 +599,22 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendComponentTelemetryWithResponseAsync(
             String id, String componentPath, String dtId, Object telemetry, String dtTimestamp, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (componentPath == null) {
+            return Mono.error(new IllegalArgumentException("Parameter componentPath is required and cannot be null."));
+        }
+        if (dtId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter dtId is required and cannot be null."));
+        }
+        if (telemetry == null) {
+            return Mono.error(new IllegalArgumentException("Parameter telemetry is required and cannot be null."));
+        }
         return service.sendComponentTelemetry(
                 this.client.getHost(),
                 id,
@@ -524,6 +641,16 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsGetComponentResponse> getComponentWithResponseAsync(
             String id, String componentPath, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (componentPath == null) {
+            return Mono.error(new IllegalArgumentException("Parameter componentPath is required and cannot be null."));
+        }
         return service.getComponent(this.client.getHost(), id, componentPath, this.client.getApiVersion(), context);
     }
 
@@ -545,6 +672,16 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsUpdateComponentResponse> updateComponentWithResponseAsync(
             String id, String componentPath, String ifMatch, List<Object> patchDocument, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (componentPath == null) {
+            return Mono.error(new IllegalArgumentException("Parameter componentPath is required and cannot be null."));
+        }
         return service.updateComponent(
                 this.client.getHost(), id, componentPath, ifMatch, this.client.getApiVersion(), patchDocument, context);
     }
@@ -561,6 +698,9 @@ public final class DigitalTwinsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Object>> listRelationshipsNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return service.listRelationshipsNext(nextLink, context)
                 .map(
                         res ->
@@ -586,6 +726,9 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(
             String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return service.listIncomingRelationshipsNext(nextLink, context)
                 .map(
                         res ->

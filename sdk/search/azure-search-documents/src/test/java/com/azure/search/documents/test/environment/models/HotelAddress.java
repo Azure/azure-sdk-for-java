@@ -2,28 +2,28 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.indexes.SearchableFieldProperty;
-import com.azure.search.documents.indexes.SimpleFieldProperty;
+import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class HotelAddress {
-    @SimpleFieldProperty(isFacetable = true)
+    @SimpleField(isFacetable = true)
     @JsonProperty(value = "StreetAddress")
     private String streetAddress;
 
-    @SearchableFieldProperty(isFilterable = true)
+    @SearchableField(isFilterable = true)
     @JsonProperty(value = "City")
     private String city;
 
-    @SearchableFieldProperty
+    @SearchableField
     @JsonProperty(value = "StateProvince")
     private String stateProvince;
 
-    @SearchableFieldProperty(synonymMapNames = {"fieldbuilder"})
+    @SearchableField(synonymMapNames = {"fieldbuilder"})
     @JsonProperty(value = "Country")
     private String country;
 
-    @SimpleFieldProperty
+    @SimpleField
     @JsonProperty(value = "PostalCode")
     private String postalCode;
 

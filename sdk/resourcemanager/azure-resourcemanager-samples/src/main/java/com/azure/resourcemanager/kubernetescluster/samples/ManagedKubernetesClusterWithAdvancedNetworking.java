@@ -16,7 +16,9 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.SSHShell;
 import com.azure.resourcemanager.samples.Utils;
+import com.jcraft.jsch.JSchException;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -38,7 +40,7 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
      * @param secret secondary service principal secret
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId, String secret) {
+    public static boolean runSample(Azure azure, String clientId, String secret) throws IOException, JSchException {
         final String rgName = azure.sdkContext().randomResourceName("rgaks", 15);
         final String vnetName = azure.sdkContext().randomResourceName("vnetaks", 20);
         final String aksName = azure.sdkContext().randomResourceName("akssample", 30);
@@ -150,9 +152,6 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
             Utils.print(kubernetesCluster);
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -164,7 +163,6 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
