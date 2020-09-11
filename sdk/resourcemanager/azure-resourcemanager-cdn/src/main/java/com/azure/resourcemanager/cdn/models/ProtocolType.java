@@ -14,7 +14,7 @@ public final class ProtocolType extends ExpandableStringEnum<ProtocolType> {
     public static final ProtocolType SERVER_NAME_INDICATION = fromString("ServerNameIndication");
 
     /** Static value IPBased for ProtocolType. */
-    public static final ProtocolType IPBASED = fromString("IPBased");
+    public static final ProtocolType IP_BASED = fromString("IPBased");
 
     /**
      * Creates or finds a ProtocolType from its string representation.

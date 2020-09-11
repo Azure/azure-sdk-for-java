@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.inner.EdgeNodeInner;
-import com.azure.resourcemanager.cdn.fluent.inner.EdgenodeResultInner;
+import com.azure.resourcemanager.cdn.models.EdgenodeResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EdgeNodes. */
@@ -44,7 +44,7 @@ public final class EdgeNodesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public EdgeNodesClient(CdnManagementClient client) {
+    EdgeNodesClient(CdnManagementClient client) {
         this.service =
             RestProxy.create(EdgeNodesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -61,14 +61,14 @@ public final class EdgeNodesClient {
         @Get("/providers/Microsoft.Cdn/edgenodes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EdgenodeResultInner>> list(
+        Mono<Response<EdgenodeResult>> list(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EdgenodeResultInner>> listNext(
+        Mono<Response<EdgenodeResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

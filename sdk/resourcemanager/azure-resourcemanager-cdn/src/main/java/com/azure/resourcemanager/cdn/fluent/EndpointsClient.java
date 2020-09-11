@@ -34,13 +34,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.inner.EndpointInner;
-import com.azure.resourcemanager.cdn.fluent.inner.EndpointListResultInner;
 import com.azure.resourcemanager.cdn.fluent.inner.ResourceUsageInner;
-import com.azure.resourcemanager.cdn.fluent.inner.ResourceUsageListResultInner;
 import com.azure.resourcemanager.cdn.fluent.inner.ValidateCustomDomainOutputInner;
+import com.azure.resourcemanager.cdn.models.EndpointListResult;
 import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.LoadParameters;
 import com.azure.resourcemanager.cdn.models.PurgeParameters;
+import com.azure.resourcemanager.cdn.models.ResourceUsageListResult;
 import com.azure.resourcemanager.cdn.models.ValidateCustomDomainInput;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -62,7 +62,7 @@ public final class EndpointsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public EndpointsClient(CdnManagementClient client) {
+    EndpointsClient(CdnManagementClient client) {
         this.service =
             RestProxy.create(EndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -81,7 +81,7 @@ public final class EndpointsClient {
                 + "/{profileName}/endpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointListResultInner>> listByProfile(
+        Mono<Response<EndpointListResult>> listByProfile(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
@@ -117,7 +117,7 @@ public final class EndpointsClient {
             @PathParam("endpointName") String endpointName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") EndpointInner endpointInner,
+            @BodyParam("application/json") EndpointInner endpoint,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -235,7 +235,7 @@ public final class EndpointsClient {
                 + "/{profileName}/endpoints/{endpointName}/checkResourceUsage")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceUsageListResultInner>> listResourceUsage(
+        Mono<Response<ResourceUsageListResult>> listResourceUsage(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
@@ -248,14 +248,14 @@ public final class EndpointsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointListResultInner>> listByProfileNext(
+        Mono<Response<EndpointListResult>> listByProfileNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceUsageListResultInner>> listResourceUsageNext(
+        Mono<Response<ResourceUsageListResult>> listResourceUsageNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

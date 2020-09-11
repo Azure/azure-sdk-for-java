@@ -31,7 +31,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.inner.OriginInner;
-import com.azure.resourcemanager.cdn.fluent.inner.OriginListResultInner;
+import com.azure.resourcemanager.cdn.models.OriginListResult;
 import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -52,7 +52,7 @@ public final class OriginsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public OriginsClient(CdnManagementClient client) {
+    OriginsClient(CdnManagementClient client) {
         this.service = RestProxy.create(OriginsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -70,7 +70,7 @@ public final class OriginsClient {
                 + "/{profileName}/endpoints/{endpointName}/origins")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OriginListResultInner>> listByEndpoint(
+        Mono<Response<OriginListResult>> listByEndpoint(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
@@ -116,7 +116,7 @@ public final class OriginsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OriginListResultInner>> listByEndpointNext(
+        Mono<Response<OriginListResult>> listByEndpointNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

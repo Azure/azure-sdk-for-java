@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.inner.OperationInner;
-import com.azure.resourcemanager.cdn.fluent.inner.OperationsListResultInner;
+import com.azure.resourcemanager.cdn.models.OperationsListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Operations. */
@@ -44,7 +44,7 @@ public final class OperationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public OperationsClient(CdnManagementClient client) {
+    OperationsClient(CdnManagementClient client) {
         this.service =
             RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -61,14 +61,14 @@ public final class OperationsClient {
         @Get("/providers/Microsoft.Cdn/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationsListResultInner>> list(
+        Mono<Response<OperationsListResult>> list(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationsListResultInner>> listNext(
+        Mono<Response<OperationsListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

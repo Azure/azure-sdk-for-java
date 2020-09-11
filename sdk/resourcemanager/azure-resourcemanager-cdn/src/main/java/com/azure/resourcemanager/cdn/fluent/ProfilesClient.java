@@ -34,12 +34,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.inner.ProfileInner;
-import com.azure.resourcemanager.cdn.fluent.inner.ProfileListResultInner;
 import com.azure.resourcemanager.cdn.fluent.inner.ResourceUsageInner;
-import com.azure.resourcemanager.cdn.fluent.inner.ResourceUsageListResultInner;
 import com.azure.resourcemanager.cdn.fluent.inner.SsoUriInner;
 import com.azure.resourcemanager.cdn.fluent.inner.SupportedOptimizationTypesListResultInner;
+import com.azure.resourcemanager.cdn.models.ProfileListResult;
 import com.azure.resourcemanager.cdn.models.ProfileUpdateParameters;
+import com.azure.resourcemanager.cdn.models.ResourceUsageListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -64,7 +64,7 @@ public final class ProfilesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ProfilesClient(CdnManagementClient client) {
+    ProfilesClient(CdnManagementClient client) {
         this.service = RestProxy.create(ProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -80,7 +80,7 @@ public final class ProfilesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileListResultInner>> list(
+        Mono<Response<ProfileListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -90,7 +90,7 @@ public final class ProfilesClient
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileListResultInner>> listByResourceGroup(
+        Mono<Response<ProfileListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -189,7 +189,7 @@ public final class ProfilesClient
                 + "/{profileName}/checkResourceUsage")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceUsageListResultInner>> listResourceUsage(
+        Mono<Response<ResourceUsageListResult>> listResourceUsage(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
@@ -201,21 +201,21 @@ public final class ProfilesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileListResultInner>> listNext(
+        Mono<Response<ProfileListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileListResultInner>> listByResourceGroupNext(
+        Mono<Response<ProfileListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceUsageListResultInner>> listResourceUsageNext(
+        Mono<Response<ResourceUsageListResult>> listResourceUsageNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
