@@ -42,7 +42,7 @@ public class BatchDeletionImplTests {
     }
 
     @Test
-    public void testBatchDeletion2() {
+    public void testBatchDeletionMultipleException() {
         BiFunction<String, String, Mono<Void>> mockDeleteByGroupAndNameAsync =
             (rgName, name) -> name.startsWith("invalid") ? Mono.error(new ManagementException("fail on " + name, null)) : Mono.empty();
 

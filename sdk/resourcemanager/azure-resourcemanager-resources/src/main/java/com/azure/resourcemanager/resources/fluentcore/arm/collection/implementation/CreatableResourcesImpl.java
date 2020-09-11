@@ -5,7 +5,6 @@ package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementa
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
-import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
@@ -63,8 +62,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     public final Flux<Indexable> createAsync(List<Creatable<T>> creatables) {
         CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
-        return rootResource.createAsync()
-            .onErrorMap(AggregatedManagementException::convertToManagementException);
+        return rootResource.createAsync();
     }
 
     private Mono<CreatedResources<T>> createAsyncNonStream(List<Creatable<T>> creatables) {
