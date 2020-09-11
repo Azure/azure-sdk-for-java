@@ -16,7 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 public class KubernetesClusterAgentPoolImpl
     extends ChildResourceImpl<ManagedClusterAgentPoolProfile, KubernetesClusterImpl, KubernetesCluster>
     implements KubernetesClusterAgentPool,
-    KubernetesClusterAgentPool.Definition<KubernetesCluster.DefinitionStages.WithCreate> {
+    KubernetesClusterAgentPool.Definition<KubernetesClusterImpl>,
+    KubernetesClusterAgentPool.Update<KubernetesClusterImpl> {
 
     private String subnetName;
 
@@ -54,6 +55,11 @@ public class KubernetesClusterAgentPoolImpl
     @Override
     public AgentPoolType type() {
         return this.inner().type();
+    }
+
+    @Override
+    public AgentPoolMode mode() {
+        return this.inner().mode();
     }
 
     @Override
@@ -123,9 +129,6 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public KubernetesClusterImpl attach() {
-        if (inner().mode() == null) {
-            inner().withMode(AgentPoolMode.SYSTEM);
-        }
         this.parent().inner().agentPoolProfiles().add(this.inner());
         return this.parent();
     }

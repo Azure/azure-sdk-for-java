@@ -174,8 +174,7 @@ public interface KubernetesCluster
              * @param name the name for the agent pool profile
              * @return the stage representing configuration for the agent pool profile
              */
-            KubernetesClusterAgentPool.DefinitionStages.Blank<KubernetesCluster.DefinitionStages.WithCreate>
-                defineAgentPool(String name);
+            KubernetesClusterAgentPool.DefinitionStages.Blank<? extends WithCreate> defineAgentPool(String name);
         }
 
         /** The stage of the Kubernetes cluster definition allowing to specify a network profile. */
@@ -363,7 +362,7 @@ public interface KubernetesCluster
 
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update
-        extends KubernetesCluster.UpdateStages.WithUpdateAgentPoolCount,
+        extends KubernetesCluster.UpdateStages.WithAgentPool,
             KubernetesCluster.UpdateStages.WithAddOnProfiles,
             KubernetesCluster.UpdateStages.WithNetworkProfile,
             KubernetesCluster.UpdateStages.WithRBAC,
@@ -374,26 +373,24 @@ public interface KubernetesCluster
     /** Grouping of the Kubernetes cluster update stages. */
     interface UpdateStages {
         /**
-         * The stage of the Kubernetes cluster update definition allowing to specify the number of agents in the
-         * specified pool.
+         * The stage of the Kubernetes cluster update definition allowing to specify the agent poll in the cluster.
          */
-        interface WithUpdateAgentPoolCount {
+        interface WithAgentPool {
             /**
-             * Updates the agent pool virtual machine count.
+             * Begins the definition of an agent pool profile to be attached to the Kubernetes cluster.
              *
-             * @param agentPoolName the name of the agent pool to be updated
-             * @param agentCount the number of agents (virtual machines) to host docker containers.
-             * @return the next stage of the update
+             * @param name the name for the agent pool profile
+             * @return the stage representing configuration for the agent pool profile
              */
-            KubernetesCluster.Update withAgentPoolVirtualMachineCount(String agentPoolName, int agentCount);
+            KubernetesClusterAgentPool.DefinitionStages.Blank<? extends Update> defineAgentPool(String name);
 
             /**
-             * Updates all the agent pools virtual machine count.
+             * Begins the definition of an agent pool profile to be attached to the Kubernetes cluster.
              *
-             * @param agentCount the number of agents (virtual machines) to host docker containers.
-             * @return the next stage of the update
+             * @param name the name for the agent pool profile
+             * @return the stage representing configuration for the agent pool profile
              */
-            KubernetesCluster.Update withAgentPoolVirtualMachineCount(int agentCount);
+            KubernetesClusterAgentPool.Update<? extends Update> updateAgentPool(String name);
         }
 
         /**

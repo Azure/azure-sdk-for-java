@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerservice.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
@@ -29,6 +30,7 @@ public class KubernetesClusterImpl
     extends GroupableResourceImpl<
         KubernetesCluster, ManagedClusterInner, KubernetesClusterImpl, ContainerServiceManager>
     implements KubernetesCluster, KubernetesCluster.Definition, KubernetesCluster.Update {
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     private List<CredentialResult> adminKubeConfigs;
     private List<CredentialResult> userKubeConfigs;
@@ -292,26 +294,16 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public KubernetesClusterImpl withAgentPoolVirtualMachineCount(String agentPoolName, int agentCount) {
-        if (this.inner().agentPoolProfiles() != null && this.inner().agentPoolProfiles().size() > 0) {
-            for (ManagedClusterAgentPoolProfile agentPoolProfile : this.inner().agentPoolProfiles()) {
-                if (agentPoolProfile.name().equals(agentPoolName)) {
-                    agentPoolProfile.withCount(agentCount);
-                    break;
+    public KubernetesClusterAgentPoolImpl updateAgentPool(String name) {
+        if (inner().agentPoolProfiles() != null) {
+            for (ManagedClusterAgentPoolProfile agentPoolProfile : inner().agentPoolProfiles()) {
+                if (agentPoolProfile.name().equals(name)) {
+                    return new KubernetesClusterAgentPoolImpl(agentPoolProfile, this);
                 }
             }
         }
-        return this;
-    }
-
-    @Override
-    public KubernetesClusterImpl withAgentPoolVirtualMachineCount(int agentCount) {
-        if (this.inner().agentPoolProfiles() != null && this.inner().agentPoolProfiles().size() > 0) {
-            for (ManagedClusterAgentPoolProfile agentPoolProfile : this.inner().agentPoolProfiles()) {
-                agentPoolProfile.withCount(agentCount);
-            }
-        }
-        return this;
+        throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+            "Cannot get agent pool named %s", name)));
     }
 
     @Override
