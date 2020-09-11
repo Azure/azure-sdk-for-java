@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.postgresql.v2017_12_01.implementation.PostgreSQLManager;
+import com.microsoft.azure.management.postgresql.v2017_12_01.implementation.DBForPostgreSQLManager;
 
 /**
  * Type representing FirewallRule.
  */
-public interface FirewallRule extends HasInner<FirewallRuleInner>, Indexable, Refreshable<FirewallRule>, Updatable<FirewallRule.Update>, HasManager<PostgreSQLManager> {
+public interface FirewallRule extends HasInner<FirewallRuleInner>, Indexable, Refreshable<FirewallRule>, Updatable<FirewallRule.Update>, HasManager<DBForPostgreSQLManager> {
     /**
      * @return the endIpAddress value.
      */
@@ -69,7 +69,7 @@ public interface FirewallRule extends HasInner<FirewallRuleInner>, Indexable, Re
         interface WithServer {
            /**
             * Specifies resourceGroupName, serverName.
-            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param resourceGroupName The name of the resource group. The name is case insensitive
             * @param serverName The name of the server
             * @return the next definition stage
             */
