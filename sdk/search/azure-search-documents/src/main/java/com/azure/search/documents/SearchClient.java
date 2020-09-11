@@ -24,6 +24,7 @@ import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedIterable;
 import com.azure.search.documents.util.SuggestPagedResponse;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -71,6 +72,42 @@ public final class SearchClient {
      */
     public String getEndpoint() {
         return asyncClient.getEndpoint();
+    }
+
+    /**
+     * Creates a {@link SearchBatchClient} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
+     * <p>
+     * This will use the default configuration values for {@link SearchBatchClient}, see {@link
+     * SearchBatchClientBuilder} for more information.
+     *
+     * @return A {@link SearchBatchClient} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
+     */
+    public SearchBatchClient getSearchIndexDocumentBatchingClient() {
+        return getSearchIndexDocumentBatchingClient(null, null, null, null);
+    }
+
+    /**
+     * Creates a {@link SearchBatchClient} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
+     *
+     * @param autoFlush Flag determining whether the batching client will automatically flush its document batch. If
+     * null is passed this will be set to true.
+     * @param flushWindow Duration that the client will wait between documents being added to the batch before sending
+     * the batch to be indexed. If {@code flushWindow} is negative or zero the flush window will be disabled, if {@code
+     * flushWindow} is null a default of 60 seconds will be used.
+     * @param batchSize The number of documents in a batch that will trigger it to be indexed. If automatic batch
+     * sending is disabled this value is ignored. If {@code batchSize} is null a default value of 1000 is used.
+     * @param indexingHook An implementation of {@link IndexingHook} used to handle document callback actions.
+     * @return A {@link SearchBatchClient} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
+     * @throws IllegalArgumentException If {@code batchSize} is less than one.
+     */
+    public SearchBatchClient getSearchIndexDocumentBatchingClient(Boolean autoFlush, Duration flushWindow,
+        Integer batchSize, IndexingHook indexingHook) {
+        return new SearchBatchClient(asyncClient
+            .getSearchIndexDocumentBatchingAsyncClient(autoFlush, flushWindow, batchSize, indexingHook));
     }
 
     /**
@@ -129,10 +166,10 @@ public final class SearchClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -160,10 +197,10 @@ public final class SearchClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -195,10 +232,10 @@ public final class SearchClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -227,10 +264,10 @@ public final class SearchClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -444,7 +481,7 @@ public final class SearchClient {
     /**
      * Searches for documents in the Azure Cognitive Search index.
      * <p>
-     * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
+     * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
      * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *
@@ -468,7 +505,7 @@ public final class SearchClient {
     /**
      * Searches for documents in the Azure Cognitive Search index.
      * <p>
-     * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
+     * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
      * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *

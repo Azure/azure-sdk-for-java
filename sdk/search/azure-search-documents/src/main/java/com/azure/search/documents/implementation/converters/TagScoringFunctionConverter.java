@@ -3,9 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.ScoringFunctionInterpolation;
 import com.azure.search.documents.indexes.models.TagScoringFunction;
-import com.azure.search.documents.indexes.models.TagScoringParameters;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.TagScoringFunction} and
@@ -21,14 +19,11 @@ public final class TagScoringFunctionConverter {
             return null;
         }
 
-        TagScoringParameters parameters = obj.getParameters() == null ? null
-            : TagScoringParametersConverter.map(obj.getParameters());
-        TagScoringFunction tagScoringFunction = new TagScoringFunction(obj.getFieldName(), obj.getBoost(), parameters);
+        TagScoringFunction tagScoringFunction = new TagScoringFunction(obj.getFieldName(), obj.getBoost(),
+            obj.getParameters());
 
         if (obj.getInterpolation() != null) {
-            ScoringFunctionInterpolation interpolation =
-                ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            tagScoringFunction.setInterpolation(interpolation);
+            tagScoringFunction.setInterpolation(obj.getInterpolation());
         }
 
         return tagScoringFunction;
@@ -43,19 +38,14 @@ public final class TagScoringFunctionConverter {
             return null;
         }
 
-        com.azure.search.documents.indexes.implementation.models.TagScoringParameters parameters =
-            obj.getParameters() == null ? null
-                : TagScoringParametersConverter.map(obj.getParameters());
         com.azure.search.documents.indexes.implementation.models.TagScoringFunction tagScoringFunction =
             new com.azure.search.documents.indexes.implementation.models.TagScoringFunction(
-                obj.getFieldName(), obj.getBoost(), parameters);
+                obj.getFieldName(), obj.getBoost(), obj.getParameters());
 
         if (obj.getInterpolation() != null) {
-            com.azure.search.documents.indexes.implementation.models.ScoringFunctionInterpolation interpolation =
-                ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            tagScoringFunction.setInterpolation(interpolation);
+            tagScoringFunction.setInterpolation(obj.getInterpolation());
         }
-        tagScoringFunction.validate();
+
         return tagScoringFunction;
     }
 

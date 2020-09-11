@@ -41,6 +41,7 @@ import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.appservice.models.SslState;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.models.WebSiteBase;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
@@ -1075,6 +1076,29 @@ public final class Utils {
         builder = builder.append("\n\tConnection strings: ");
         for (ConnectionString conn : resource.getConnectionStrings().values()) {
             builder = builder.append("\n\t\t" + conn.name() + ": " + conn.value() + " - " + conn.type() + (conn.sticky() ? " - slot setting" : ""));
+        }
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print a web site.
+     *
+     * @param resource a web site
+     */
+    public static void print(WebSiteBase resource) {
+        StringBuilder builder = new StringBuilder().append("Web app: ").append(resource.id())
+            .append("\n\tName: ").append(resource.name())
+            .append("\n\tState: ").append(resource.state())
+            .append("\n\tResource group: ").append(resource.resourceGroupName())
+            .append("\n\tRegion: ").append(resource.region())
+            .append("\n\tDefault hostname: ").append(resource.defaultHostname())
+            .append("\n\tApp service plan: ").append(resource.appServicePlanId());
+        builder = builder.append("\n\tSSL bindings: ");
+        for (HostnameSslState binding : resource.hostnameSslStates().values()) {
+            builder = builder.append("\n\t\t" + binding.name() + ": " + binding.sslState());
+            if (binding.sslState() != null && binding.sslState() != SslState.DISABLED) {
+                builder = builder.append(" - " + binding.thumbprint());
+            }
         }
         System.out.println(builder.toString());
     }

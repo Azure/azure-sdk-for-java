@@ -427,7 +427,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
-                                               ServiceBusTransactionContext transactionContext) {
+        ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         }

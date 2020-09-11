@@ -25,11 +25,15 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.serializer.SerializationUtil;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public final class Utility {
     // Type reference that used across many places. Have one copy here to minimize the memory.
@@ -95,6 +99,11 @@ public final class Utility {
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
+    }
+
+    public static Stream<IndexAction<?>> createDocumentActions(Iterable<?> documents, IndexActionType actionType) {
+        return StreamSupport.stream(documents.spliterator(), false)
+            .map(document -> new IndexAction<>().setActionType(actionType).setDocument(document));
     }
 
     private Utility() {

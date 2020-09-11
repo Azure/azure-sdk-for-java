@@ -17,8 +17,11 @@ import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
+import com.azure.digitaltwins.core.models.EventRoute;
+import com.azure.digitaltwins.core.models.EventRoutesListOptions;
 import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.serialization.BasicRelationship;
 import com.azure.digitaltwins.core.util.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -88,6 +91,8 @@ public final class DigitalTwinsAsyncClient {
     public HttpPipeline getHttpPipeline() {
         return this.protocolLayer.getHttpPipeline();
     }
+
+    //region Digital twin APIs
 
     /**
      * Creates a digital twin.
@@ -323,6 +328,10 @@ public final class DigitalTwinsAsyncClient {
             .getDigitalTwins()
             .deleteWithResponseAsync(digitalTwinId, ifMatch, context);
     }
+
+    //endregion Digital twin APIs
+
+    //region Relationship APIs
 
     /**
      * Creates a relationship on a digital twin.
@@ -647,7 +656,7 @@ public final class DigitalTwinsAsyncClient {
      * Gets all the relationships on a digital twin by iterating through a collection.
      *
      * @param digitalTwinId The Id of the source digital twin.
-     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link com.azure.digitaltwins.core.implementation.serialization.BasicRelationship}.
+     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link BasicRelationship}.
      * @param <T> The generic type to convert the relationship to.
      * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
      */
@@ -737,10 +746,9 @@ public final class DigitalTwinsAsyncClient {
             nextLink -> protocolLayer.getDigitalTwins().listIncomingRelationshipsNextSinglePageAsync(nextLink, context));
     }
 
+    //endregion Relationship APIs
 
-    //==================================================================================================================================================
-    // Models APIs
-    //==================================================================================================================================================
+    //region Model APIs
 
     /**
      * Creates one or many models.
@@ -929,6 +937,7 @@ public final class DigitalTwinsAsyncClient {
      * @param modelId The Id of the model to decommission.
      * @return an empty Mono
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> decommissionModel(String modelId) {
         return decommissionModelWithResponse(modelId)
             .flatMap(voidResponse -> Mono.empty());
@@ -939,6 +948,7 @@ public final class DigitalTwinsAsyncClient {
      * @param modelId The Id of the model to decommission.
      * @return The http response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> decommissionModelWithResponse(String modelId) {
         return withContext(context -> decommissionModelWithResponse(modelId, context));
     }
@@ -951,9 +961,9 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(modelId, updateOperation, context);
     }
 
-    //==================================================================================================================================================
-    // Component APIs
-    //==================================================================================================================================================
+    //endregion Model APIs
+
+    //region Component APIs
 
     /**
      * Get a component of a digital twin.
@@ -1065,6 +1075,10 @@ public final class DigitalTwinsAsyncClient {
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null, twinHeaders));
             });
     }
+
+    //endregion Component APIs
+
+    //region Query APIs
 
     /**
      * Query digital twins.
@@ -1189,4 +1203,243 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getValue().getContinuationToken(),
                 objectPagedResponse.getDeserializedHeaders()));
     }
+
+    //endregion Query APIs
+
+    //region Event Route APIs
+
+    /**
+     * Create an event route.
+     * @param eventRouteId The Id of the event route to create.
+     * @param eventRoute The event route to create.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createEventRoute(String eventRouteId, EventRoute eventRoute)
+    {
+        return createEventRouteWithResponse(eventRouteId, eventRoute)
+            .flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Create an event route.
+     * @param eventRouteId The Id of the event route to create.
+     * @param eventRoute The event route to create.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute)
+    {
+        return withContext(context -> createEventRouteWithResponse(eventRouteId, eventRoute, context));
+    }
+
+    Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, Context context)
+    {
+        return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, eventRoute, context);
+    }
+
+    /**
+     * Get an event route.
+     * @param eventRouteId The Id of the event route to get.
+     * @return The retrieved event route.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EventRoute> getEventRoute(String eventRouteId)
+    {
+        return getEventRouteWithResponse(eventRouteId)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Get an event route.
+     * @param eventRouteId The Id of the event route to get.
+     * @return A {@link Response} containing the retrieved event route.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId)
+    {
+        return withContext(context -> getEventRouteWithResponse(eventRouteId, context));
+    }
+
+    Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId, Context context)
+    {
+        return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(eventRouteId, context);
+    }
+
+    /**
+     * Delete an event route.
+     * @param eventRouteId The Id of the event route to delete.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteEventRoute(String eventRouteId)
+    {
+        return deleteEventRouteWithResponse(eventRouteId)
+            .flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Delete an event route.
+     * @param eventRouteId The Id of the event route to delete.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId)
+    {
+        return withContext(context -> deleteEventRouteWithResponse(eventRouteId, context));
+    }
+
+    Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId, Context context)
+    {
+        return this.protocolLayer.getEventRoutes().deleteWithResponseAsync(eventRouteId, context);
+    }
+
+    /**
+     * List all the event routes that exist in your digital twins instance.
+     * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
+     * This PagedFlux may take multiple service requests to iterate over all event routes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<EventRoute> listEventRoutes()
+    {
+        return listEventRoutes(new EventRoutesListOptions());
+    }
+
+    /**
+     * List all the event routes that exist in your digital twins instance.
+     * @param options The optional parameters to use when listing event routes. See {@link EventRoutesListOptions} for more details
+     * on what optional parameters can be set.
+     * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
+     * This PagedFlux may take multiple service requests to iterate over all event routes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<EventRoute> listEventRoutes(EventRoutesListOptions options)
+    {
+        return new PagedFlux<>(
+            () -> withContext(context -> listEventRoutesFirstPage(options, context)),
+            nextLink -> withContext(context -> listEventRoutesNextPage(nextLink, context)));
+    }
+
+    PagedFlux<EventRoute> listEventRoutes(EventRoutesListOptions options, Context context)
+    {
+        return new PagedFlux<>(
+            () -> listEventRoutesFirstPage(options, context),
+            nextLink -> listEventRoutesNextPage(nextLink, context));
+    }
+
+    Mono<PagedResponse<EventRoute>> listEventRoutesFirstPage(EventRoutesListOptions options, Context context) {
+        return protocolLayer
+            .getEventRoutes()
+            .listSinglePageAsync(options, context);
+    }
+
+    Mono<PagedResponse<EventRoute>> listEventRoutesNextPage(String nextLink, Context context) {
+        return protocolLayer
+            .getEventRoutes()
+            .listNextSinglePageAsync(nextLink, context);
+    }
+
+    //endregion Event Route APIs
+
+    //region Telemetry APIs
+
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> publishTelemetry(String digitalTwinId, String payload) {
+        PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
+        return withContext(context -> publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context))
+            .flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
+        return withContext(context -> publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context));
+    }
+
+    Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+        Object payloadObject = null;
+        try {
+            payloadObject = mapper.readValue(payload, Object.class);
+        }
+        catch (JsonProcessingException e) {
+            logger.error("Could not parse the payload [%s]: %s", payload, e);
+            return Mono.error(e);
+        }
+
+        return protocolLayer.getDigitalTwins().sendTelemetryWithResponseAsync(
+            digitalTwinId,
+            publishTelemetryRequestOptions.getMessageId(),
+            payloadObject,
+            publishTelemetryRequestOptions.getTimestamp().toString(),
+            context);
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
+        PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
+        return withContext(context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context))
+            .flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
+        return withContext(context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context));
+    }
+
+    Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+
+        Object payloadObject = null;
+        try {
+            payloadObject = mapper.readValue(payload, Object.class);
+        }
+        catch (JsonProcessingException e) {
+            logger.error("Could not parse the payload [%s]: %s", payload, e);
+            return Mono.error(e);
+        }
+
+        return protocolLayer.getDigitalTwins().sendComponentTelemetryWithResponseAsync(
+            digitalTwinId,
+            componentName,
+            publishTelemetryRequestOptions.getMessageId(),
+            payloadObject,
+            publishTelemetryRequestOptions.getTimestamp().toString(),
+            context);
+    }
+
+    //endregion Telemetry APIs
 }
