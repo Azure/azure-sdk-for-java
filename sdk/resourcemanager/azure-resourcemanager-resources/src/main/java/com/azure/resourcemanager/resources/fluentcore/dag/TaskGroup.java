@@ -403,6 +403,9 @@ public class TaskGroup
         return Flux.mergeOrdered(32,
             (some, other) -> {
                 if (rootTaskEntry.key().endsWith(some.key())) { // rootTaskEntry will be proxy-<UUID>
+                    if (rootTaskEntry.key().endsWith(other.key())) {
+                        return 0;
+                    }
                     return 1;
                 } else if (rootTaskEntry.key().endsWith(other.key())) {
                     return -1;
