@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.fluentcore.dag;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -443,7 +444,8 @@ public class TaskGroup
                 } else {
                     taskObservable = entry.invokeTaskAsync(ignoreCachedResult, context);
                 }
-                return taskObservable.flatMapMany((indexable) -> Flux.just(indexable),
+                return Utils.flatMapSequential(taskObservable.flux(),
+                    (indexable) -> Flux.just(indexable),
                     (throwable) -> processFaultedTaskAsync(entry, throwable, context),
                     () -> processCompletedTaskAsync(entry, context));
             }
@@ -471,24 +473,23 @@ public class TaskGroup
             }
             final boolean isFaulted = entry.hasFaultedDescentDependencyTasks() || isGroupCancelled.get();
 
-            return proxyTaskItem.invokeAfterPostRunAsync(isFaulted)
-                    .flatMapMany(indexable -> Flux.error(
-                        new IllegalStateException("This onNext should never be called")),
-                        (error) -> processFaultedTaskAsync(entry, error, context),
-                        () -> {
-                            if (isFaulted) {
-                                if (entry.hasFaultedDescentDependencyTasks()) {
-                                    return processFaultedTaskAsync(entry,
-                                        new ErroredDependencyTaskException(), context);
-                                } else {
-                                    return processFaultedTaskAsync(entry, taskCancelledException, context);
-                                }
-                            } else {
-                                return Flux.concat(Flux.just(proxyTaskItem.result()),
-                                        processCompletedTaskAsync(entry, context));
-                            }
-                        });
-
+            return Utils.flatMapSequential(proxyTaskItem.invokeAfterPostRunAsync(isFaulted).flux(),
+                indexable -> Flux.error(
+                    new IllegalStateException("This onNext should never be called")),
+                (error) -> processFaultedTaskAsync(entry, error, context),
+                () -> {
+                    if (isFaulted) {
+                        if (entry.hasFaultedDescentDependencyTasks()) {
+                            return processFaultedTaskAsync(entry,
+                                new ErroredDependencyTaskException(), context);
+                        } else {
+                            return processFaultedTaskAsync(entry, taskCancelledException, context);
+                        }
+                    } else {
+                        return Flux.concat(Flux.just(proxyTaskItem.result()),
+                                processCompletedTaskAsync(entry, context));
+                    }
+                });
         });
     }
 
