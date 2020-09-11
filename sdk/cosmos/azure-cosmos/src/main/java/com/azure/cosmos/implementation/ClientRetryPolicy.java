@@ -199,7 +199,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
         this.isReadRequest = request.isReadOnlyRequest();
         this.canUseMultipleWriteLocations = this.globalEndpointManager.canUseMultipleWriteLocations(request);
-        if (request.requestContext != null) {
+        if (request.requestContext != null && request.requestContext.cosmosDiagnostics == null) {
             request.requestContext.cosmosDiagnostics = this.cosmosDiagnostics;
         }
 

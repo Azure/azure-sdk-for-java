@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.batch.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -25,6 +27,7 @@ public abstract class ServerBatchRequest {
     private List<ItemBatchOperation<?>> operations;
     private boolean isAtomicBatch = false;
     private boolean shouldContinueOnError = false;
+    private CosmosDiagnostics cosmosDiagnostics;
 
     /**
      * Initializes a new {@link ServerBatchRequest request} instance.
@@ -35,6 +38,7 @@ public abstract class ServerBatchRequest {
     protected ServerBatchRequest(int maxBodyLength, int maxOperationCount) {
         this.maxBodyLength = maxBodyLength;
         this.maxOperationCount = maxOperationCount;
+        this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
     }
 
     /**
@@ -133,5 +137,9 @@ public abstract class ServerBatchRequest {
 
     public void setShouldContinueOnError(boolean shouldContinueOnError) {
         this.shouldContinueOnError = shouldContinueOnError;
+    }
+
+    public CosmosDiagnostics getCosmosDiagnostics() {
+        return cosmosDiagnostics;
     }
 }

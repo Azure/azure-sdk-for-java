@@ -35,16 +35,17 @@ public class CosmosItemBulkTests extends BatchTestBase {
         CosmosAsyncContainer container = this.bulkContainer;
 
         List<Mono<CosmosItemResponse<TestDoc>>> responseMonos = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             responseMonos.add(executeCreateAsync(container, this.populateTestDoc(String.valueOf(i), String.valueOf(i))));
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             CosmosItemResponse<TestDoc> response = responseMonos.get(i).block();
             assertEquals(HttpResponseStatus.CREATED.code(), response.getStatusCode());
             assertTrue(response.getRequestCharge() > 0);
-            assertFalse(Strings.isNullOrEmpty(response.getDiagnostics().toString()));
-
+            String diagnostic = response.getDiagnostics().toString();
+            assertFalse(Strings.isNullOrEmpty(diagnostic));
+            assertTrue(diagnostic.contains("bulkSemaphoreStatistics"));
             TestDoc document = response.getItem();
             assertEquals(String.valueOf(i), document.getId());
         }
@@ -66,8 +67,9 @@ public class CosmosItemBulkTests extends BatchTestBase {
             CosmosItemResponse<TestDoc> response = responseMonos.get(i).block();
             assertEquals(HttpResponseStatus.CREATED.code(), response.getStatusCode());
             assertTrue(response.getRequestCharge() > 0);
-            assertFalse(Strings.isNullOrEmpty(response.getDiagnostics().toString()));
-        }
+            String diagnostic = response.getDiagnostics().toString();
+            assertFalse(Strings.isNullOrEmpty(diagnostic));
+            assertTrue(diagnostic.contains("bulkSemaphoreStatistics"));        }
     }
 
 
@@ -84,7 +86,9 @@ public class CosmosItemBulkTests extends BatchTestBase {
             CosmosItemResponse<TestDoc> response = responseMonos.get(i - 100).block();
             assertEquals(HttpResponseStatus.CREATED.code(), response.getStatusCode());
             assertTrue(response.getRequestCharge() > 0);
-            assertFalse(Strings.isNullOrEmpty(response.getDiagnostics().toString()));
+            String diagnostic = response.getDiagnostics().toString();
+            assertFalse(Strings.isNullOrEmpty(diagnostic));
+            assertTrue(diagnostic.contains("bulkSemaphoreStatistics"));
 
             TestDoc document = response.getItem();
             assertEquals(String.valueOf(i), document.getId());
@@ -116,8 +120,9 @@ public class CosmosItemBulkTests extends BatchTestBase {
             CosmosItemResponse<Object> response = deletedMonos.get(i - 200).block();
             assertEquals(HttpResponseStatus.NO_CONTENT.code(), response.getStatusCode());
             assertTrue(response.getRequestCharge() > 0);
-            assertFalse(Strings.isNullOrEmpty(response.getDiagnostics().toString()));
-        }
+            String diagnostic = response.getDiagnostics().toString();
+            assertFalse(Strings.isNullOrEmpty(diagnostic));
+            assertTrue(diagnostic.contains("bulkSemaphoreStatistics"));        }
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -145,7 +150,9 @@ public class CosmosItemBulkTests extends BatchTestBase {
             CosmosItemResponse<TestDoc> response = readMonos.get(i - 300).block();
             assertEquals(HttpResponseStatus.OK.code(), response.getStatusCode());
             assertTrue(response.getRequestCharge() > 0);
-            assertFalse(Strings.isNullOrEmpty(response.getDiagnostics().toString()));
+            String diagnostic = response.getDiagnostics().toString();
+            assertFalse(Strings.isNullOrEmpty(diagnostic));
+            assertTrue(diagnostic.contains("bulkSemaphoreStatistics"));
 
             TestDoc document = response.getItem();
             assertEquals(String.valueOf(i), document.getId());
@@ -178,7 +185,9 @@ public class CosmosItemBulkTests extends BatchTestBase {
             CosmosItemResponse<TestDoc> response = replaceMonos.get(i - 400).block();
             assertEquals(HttpResponseStatus.OK.code(), response.getStatusCode());
             assertTrue(response.getRequestCharge() > 0);
-            assertFalse(Strings.isNullOrEmpty(response.getDiagnostics().toString()));
+            String diagnostic = response.getDiagnostics().toString();
+            assertFalse(Strings.isNullOrEmpty(diagnostic));
+            assertTrue(diagnostic.contains("bulkSemaphoreStatistics"));
 
             TestDoc document = response.getItem();
             assertEquals(String.valueOf(i), document.getId());

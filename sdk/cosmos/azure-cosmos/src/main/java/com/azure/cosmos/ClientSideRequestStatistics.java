@@ -60,6 +60,7 @@ class ClientSideRequestStatistics {
     private RequestTimeline transportRequestTimeline;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
+    private BulkSemaphoreStatistics bulkSemaphoreStatistics;
 
     ClientSideRequestStatistics() {
         this.requestStartTimeUTC = Instant.now();
@@ -194,6 +195,18 @@ class ClientSideRequestStatistics {
         }
     }
 
+    void recordBulkSemaphoreStatisticsStart() {
+        this.bulkSemaphoreStatistics = new BulkSemaphoreStatistics();
+        this.bulkSemaphoreStatistics.startTimeUTC = Instant.now();
+        this.bulkSemaphoreStatistics.endTimeUTC = Instant.now();
+    }
+
+    void recordBulkSemaphoreStatisticsEnd() {
+        if(this.bulkSemaphoreStatistics != null) {
+            this.bulkSemaphoreStatistics.endTimeUTC = Instant.now();
+        }
+    }
+
     List<URI> getContactedReplicas() {
         return contactedReplicas;
     }
@@ -308,6 +321,11 @@ class ClientSideRequestStatistics {
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
 
+            if (statistics.bulkSemaphoreStatistics != null) {
+                // Only put bulk wait time if request is of type bulk i.e. recordBulkSemaphoreStatisticsStart is called.
+                generator.writeObjectField("bulkSemaphoreStatistics", statistics.bulkSemaphoreStatistics);
+            }
+
             try {
                 SystemInformation systemInformation = new SystemInformation();
                 long totalMemory = Runtime.getRuntime().totalMemory() / 1024;
@@ -368,5 +386,13 @@ class ClientSideRequestStatistics {
         public RequestTimeline getRequestTimeline() {
             return requestTimeline;
         }
+    }
+
+    private static class BulkSemaphoreStatistics {
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
+        Instant startTimeUTC;
+
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
+        Instant endTimeUTC;
     }
 }

@@ -1183,10 +1183,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private RxDocumentServiceRequest getBatchDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
-                                                                   String documentCollectionLink,
-                                                                   ServerBatchRequest serverBatchRequest,
-                                                                   RequestOptions options,
-                                                                   boolean disableAutomaticIdGeneration) {
+                                                             String documentCollectionLink,
+                                                             ServerBatchRequest serverBatchRequest,
+                                                             RequestOptions options,
+                                                             boolean disableAutomaticIdGeneration) {
 
         checkArgument(StringUtils.isNotEmpty(documentCollectionLink), "expected non empty documentCollectionLink");
         checkNotNull(serverBatchRequest, "expected non null serverBatchRequest");
@@ -1209,6 +1209,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestHeaders,
             options,
             content);
+
+        if (request.requestContext != null && request.requestContext.cosmosDiagnostics == null) {
+            request.requestContext.cosmosDiagnostics = serverBatchRequest.getCosmosDiagnostics();
+        }
+
         if (requestRetryPolicy != null) {
             requestRetryPolicy.onBeforeSendRequest(request);
         }

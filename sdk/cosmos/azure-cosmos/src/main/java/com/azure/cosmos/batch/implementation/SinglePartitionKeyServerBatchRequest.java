@@ -19,8 +19,7 @@ public final class SinglePartitionKeyServerBatchRequest extends ServerBatchReque
      *
      * @param partitionKey Partition key that applies to all operations in this request.
      */
-    private SinglePartitionKeyServerBatchRequest(
-        final PartitionKey partitionKey) {
+    private SinglePartitionKeyServerBatchRequest(final PartitionKey partitionKey) {
         super(Integer.MAX_VALUE, Integer.MAX_VALUE);
         this.partitionKey = partitionKey;
     }

@@ -416,6 +416,16 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void recordBulkSemaphoreStatisticsStart(CosmosDiagnostics cosmosDiagnostics) {
+        cosmosDiagnostics.clientSideRequestStatistics().recordBulkSemaphoreStatisticsStart();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void recordBulkSemaphoreStatisticsEnd(CosmosDiagnostics cosmosDiagnostics) {
+        cosmosDiagnostics.clientSideRequestStatistics().recordBulkSemaphoreStatisticsEnd();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<URI> getContactedReplicas(CosmosDiagnostics cosmosDiagnostics) {
         return cosmosDiagnostics.clientSideRequestStatistics().getContactedReplicas();
     }

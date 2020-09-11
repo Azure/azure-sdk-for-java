@@ -121,6 +121,7 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
         request.setAtomicBatch(false);
         request.setShouldContinueOnError(true);
 
+        BridgeInternal.recordBulkSemaphoreStatisticsStart(request.getCosmosDiagnostics());
         final Semaphore limiter = this.getOrAddLimiterForPartitionKeyRange(request.getPartitionKeyRangeId());
 
         try {
@@ -128,6 +129,8 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
         } catch (Exception ex) {
             return Mono.error(ex);
         }
+
+        BridgeInternal.recordBulkSemaphoreStatisticsEnd(request.getCosmosDiagnostics());
 
         Mono<TransactionalBatchResponse> transactionalBatchResponse = this.docClientWrapper
             .executeBatchRequest(BridgeInternal.getLink(container), request, new RequestOptions(), false);
