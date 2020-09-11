@@ -93,7 +93,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                                           .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
                                           .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
                                           .filter(s -> !s.isEmpty())
-                                          .orElse(AccessTokenClaim.NAME);
+                                          .orElse(AADAccessTokenClaim.NAME);
         // Create a copy of oidcUser but use the mappedAuthorities instead
         return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), nameAttributeKey);
     }
