@@ -25,10 +25,6 @@ import java.util.Set;
  * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link GrantedAuthority}.
  */
 public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
-    private static final String CONDITIONAL_ACCESS_POLICY = "conditional_access_policy";
-    private static final String INVALID_REQUEST = "invalid_request";
-    private static final String SERVER_ERROR = "server_error";
-
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final ServiceEndpointsProperties serviceEndpointsProperties;
     private final OidcUserService oidcUserService;
@@ -49,28 +45,44 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             // https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
             // In AAD App Registration configure oauth2AllowImplicitFlow to true
             final ClientRegistration registration = userRequest.getClientRegistration();
-            final AzureADGraphClient graphClient = new AzureADGraphClient(
+            final AzureADGraphClient azureADGraphClient = new AzureADGraphClient(
                 registration.getClientId(),
                 registration.getClientSecret(),
                 aadAuthenticationProperties,
                 serviceEndpointsProperties
             );
-            String graphApiToken = graphClient
+            String graphApiToken = azureADGraphClient
                 .acquireTokenForGraphApi(
                     userRequest.getIdToken().getTokenValue(),
                     aadAuthenticationProperties.getTenantId()
                 )
                 .accessToken();
-            mappedAuthorities = graphClient.getGrantedAuthorities(graphApiToken);
+            mappedAuthorities = azureADGraphClient.getGrantedAuthorities(graphApiToken);
         } catch (MalformedURLException e) {
-            throw wrapException(INVALID_REQUEST, "Failed to acquire token for Graph API.", null, e);
+            throw toOAuth2AuthenticationException(
+                ErrorCode.INVALID_REQUEST,
+                "Failed to acquire token for Graph API.",
+                e
+            );
         } catch (ServiceUnavailableException e) {
-            throw wrapException(SERVER_ERROR, "Failed to acquire token for Graph API.", null, e);
+            throw toOAuth2AuthenticationException(
+                ErrorCode.SERVER_ERROR,
+                "Failed to acquire token for Graph API.",
+                e
+            );
         } catch (IOException e) {
-            throw wrapException(SERVER_ERROR, "Failed to map group to authorities.", null, e);
+            throw toOAuth2AuthenticationException(
+                ErrorCode.SERVER_ERROR,
+                "Failed to map group to authorities.",
+                e
+            );
         } catch (MsalServiceException e) {
             if (e.claims() != null && !e.claims().isEmpty()) {
-                throw wrapException(CONDITIONAL_ACCESS_POLICY, "Handle conditional access policy", null, e);
+                throw toOAuth2AuthenticationException(
+                    ErrorCode.CONDITIONAL_ACCESS_POLICY,
+                    "Handle conditional access policy",
+                    e
+                );
             } else {
                 throw e;
             }
@@ -86,8 +98,16 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), nameAttributeKey);
     }
 
-    private OAuth2AuthenticationException wrapException(String errorCode, String errDesc, String uri, Exception e) {
-        final OAuth2Error oAuth2Error = new OAuth2Error(errorCode, errDesc, uri);
-        throw new OAuth2AuthenticationException(oAuth2Error, e);
+    private OAuth2AuthenticationException toOAuth2AuthenticationException(String errorCode,
+                                                                          String description,
+                                                                          Exception cause) {
+        OAuth2Error oAuth2Error = new OAuth2Error(errorCode, description, null);
+        return new OAuth2AuthenticationException(oAuth2Error, cause);
+    }
+
+    private static final class ErrorCode {
+        private static final String CONDITIONAL_ACCESS_POLICY = "conditional_access_policy";
+        private static final String INVALID_REQUEST = "invalid_request";
+        private static final String SERVER_ERROR = "server_error";
     }
 }
