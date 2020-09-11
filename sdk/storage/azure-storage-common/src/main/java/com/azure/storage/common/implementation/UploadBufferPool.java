@@ -62,7 +62,7 @@ public final class UploadBufferPool {
         We only need one overflow buffer because the max size of a ByteBuffer is assumed to be the size as a buffer in
         the pool.
          */
-        logger.info("Thread %d: Creating UploadBufferPool with numBuffs %d, buffSize %d, maxBuffSize %d ", Thread.currentThread().getId(), numBuffs, buffSize, maxBuffSize);
+        logger.info(String.format("Thread %d: Creating UploadBufferPool with numBuffs %d, buffSize %d, maxBuffSize %d ", Thread.currentThread().getId(), numBuffs, buffSize, maxBuffSize));
         StorageImplUtils.assertInBounds("numBuffs", numBuffs, 2, Integer.MAX_VALUE);
         this.maxBuffs = numBuffs;
         buffers = new LinkedBlockingQueue<>(numBuffs);
@@ -89,26 +89,26 @@ public final class UploadBufferPool {
      * @return The {@code Flux<BufferAggregator>}
      */
     public Flux<BufferAggregator> write(ByteBuffer buf) {
-        logger.info("Thread %d: Writing bytebuffer of length %d", Thread.currentThread().getId(), buf.remaining());
+        logger.info(String.format("Thread %d: Writing bytebuffer of length %d", Thread.currentThread().getId(), buf.remaining()));
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
         if (this.currentBuf == null) {
-            logger.info("Thread %d: Current buff is null, getting buffer.", Thread.currentThread().getId());
+            logger.info(String.format("Thread %d: Current buff is null, getting buffer.", Thread.currentThread().getId()));
             this.currentBuf = this.getBuffer();
         }
 
         Flux<BufferAggregator> result;
         // We can fit this whole write in the buffer we currently have.
         if (this.currentBuf.remainingCapacity() >= buf.remaining()) {
-            logger.info("Thread %d: Current buff remaining capacity can fit the buffers data, appending it.", Thread.currentThread().getId());
+            logger.info(String.format("Thread %d: Current buff remaining capacity can fit the buffers data, appending it.", Thread.currentThread().getId()));
             this.currentBuf.append(buf);
-            logger.info("Thread %d: Appended 1.", Thread.currentThread().getId());
+            logger.info(String.format("Thread %d: Appended 1.", Thread.currentThread().getId()));
             if (this.currentBuf.remainingCapacity() == 0) {
-                logger.info("Thread %d: Reached max capacity, emit it.", Thread.currentThread().getId());
+                logger.info(String.format("Thread %d: Reached max capacity, emit it.", Thread.currentThread().getId()));
                 result = Flux.just(this.currentBuf);
                 // This will force us to get a new buffer next time we try to write.
                 this.currentBuf = null;
             } else {
-                logger.info("Thread %d: Not reached max capacity, wait.", Thread.currentThread().getId());
+                logger.info(String.format("Thread %d: Not reached max capacity, wait.", Thread.currentThread().getId()));
                 /*
                 We are still filling the current buffer, so we have no data to return. We will return the buffer once it
                 is filled
@@ -116,19 +116,19 @@ public final class UploadBufferPool {
                 result = Flux.empty();
             }
         } else {
-            logger.info("Thread %d: Current buff remaining capacity cannot fit the buffers data, split buffer and append it.", Thread.currentThread().getId());
+            logger.info(String.format("Thread %d: Current buff remaining capacity cannot fit the buffers data, split buffer and append it.", Thread.currentThread().getId()));
             // We will overflow the current buffer and require another one.
             // Duplicate and adjust the window of buf so that we fill up currentBuf without going out of bounds.
             ByteBuffer duplicate = buf.duplicate();
             int newLimit = buf.position() + (int) this.currentBuf.remainingCapacity();
             duplicate.limit(newLimit);
-            logger.info("Thread %d: Split the buffer.", Thread.currentThread().getId());
+            logger.info(String.format("Thread %d: Split the buffer.", Thread.currentThread().getId()));
             this.currentBuf.append(duplicate);
-            logger.info("Thread %d: Appended 2.", Thread.currentThread().getId());
+            logger.info(String.format("Thread %d: Appended 2.", Thread.currentThread().getId()));
             // Adjust the window of original buffer to represent remaining part.
             buf.position(newLimit);
 
-            logger.info("Thread %d: Emitting it.", Thread.currentThread().getId());
+            logger.info(String.format("Thread %d: Emitting it.", Thread.currentThread().getId()));
             result = Flux.just(this.currentBuf);
 
             /*
@@ -139,7 +139,7 @@ public final class UploadBufferPool {
              */
             this.currentBuf = this.getBuffer();
             this.currentBuf.append(buf);
-            logger.info("Thread %d: Got new buffer and filled it", Thread.currentThread().getId());
+            logger.info(String.format("Thread %d: Got new buffer and filled it", Thread.currentThread().getId()));
         }
         return result;
     }
@@ -149,7 +149,7 @@ public final class UploadBufferPool {
     and calling write. Hence there is only one worker calling getBuffer at any time.
      */
     private BufferAggregator getBuffer() {
-        logger.info("Thread %d: Getting new buffer", Thread.currentThread().getId());
+        logger.info(String.format("Thread %d: Getting new buffer", Thread.currentThread().getId()));
         BufferAggregator result;
         /*
          There are no buffers in the queue and we have space to allocate one. We do not add the new buffer to the queue
@@ -158,12 +158,12 @@ public final class UploadBufferPool {
          we just created. The new buffer will be added to buffers when it is returned to the pool.
          */
         if (this.buffers.isEmpty() && this.numBuffs < this.maxBuffs) {
-            logger.info("Thread %d: Need to create a new buffer", Thread.currentThread().getId());
+            logger.info(String.format("Thread %d: Need to create a new buffer", Thread.currentThread().getId()));
             result = new BufferAggregator(this.buffSize);
             this.numBuffs++;
         } else {
             try {
-                logger.info("Thread %d: Need to take from existing buffer size %d", Thread.currentThread().getId(), this.buffers.size());
+                logger.info(String.format("Thread %d: Need to take from existing buffer size %d", Thread.currentThread().getId(), this.buffers.size()));
                 // If empty, this will wait for an upload to finish and return a buffer.
                 result = this.buffers.take();
 
@@ -181,7 +181,7 @@ public final class UploadBufferPool {
      * @return the flushed buffer
      */
     public Flux<BufferAggregator> flush() {
-        logger.info("Thread %d: Flushing the buffer.", Thread.currentThread().getId());
+        logger.info(String.format("Thread %d: Flushing the buffer.", Thread.currentThread().getId()));
         /*
         Prep and return any data left in the pool. It is important to set the limit so that we don't read beyond the
         actual data as this buffer may have been used before and therefore may have some garbage at the end.
@@ -200,12 +200,12 @@ public final class UploadBufferPool {
      * @param b The ByteBuffer to reset and return
      */
     public void returnBuffer(BufferAggregator b) {
-        logger.info("Thread %d: Returning the buffer.", Thread.currentThread().getId());
+        logger.info(String.format("Thread %d: Returning the buffer.", Thread.currentThread().getId()));
         // Reset the buffer aggregator.
         b.reset();
 
         try {
-            logger.info("Thread %d: Put new buffer.", Thread.currentThread().getId());
+            logger.info(String.format("Thread %d: Put new buffer.", Thread.currentThread().getId()));
             this.buffers.put(new BufferAggregator(this.buffSize));
         } catch (InterruptedException e) {
             throw logger.logExceptionAsError(new IllegalStateException("UploadFromStream thread interrupted."));
