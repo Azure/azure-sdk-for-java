@@ -158,12 +158,12 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
             throw new IllegalArgumentException("EventData cannot be empty.");
         }
 
-        return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
+        return this.createInternalSender().thenCompose(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClientImpl.this.sender.send(((EventDataImpl) data).toAmqpMessage());
             }
-        }, this.executor);
+        });
     }
 
     @Override
@@ -172,12 +172,12 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
             throw new IllegalArgumentException("Empty batch of EventData cannot be sent.");
         }
 
-        return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
+        return this.createInternalSender().thenCompose(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClientImpl.this.sender.send(EventDataUtil.toAmqpMessages(eventDatas));
             }
-        }, this.executor);
+        });
     }
 
     @Override
@@ -202,12 +202,12 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
             throw new IllegalArgumentException("partitionKey cannot be null.");
         }
 
-        return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
+        return this.createInternalSender().thenCompose(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClientImpl.this.sender.send(((EventDataImpl) eventData).toAmqpMessage(partitionKey));
             }
-        }, this.executor);
+        });
     }
 
     @Override
@@ -225,12 +225,12 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
                     String.format(Locale.US, "PartitionKey exceeds the maximum allowed length of partitionKey: %s", ClientConstants.MAX_PARTITION_KEY_LENGTH));
         }
 
-        return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
+        return this.createInternalSender().thenCompose(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClientImpl.this.sender.send(EventDataUtil.toAmqpMessages(eventDatas, partitionKey));
             }
-        }, this.executor);
+        });
     }
 
     @Override
@@ -268,12 +268,12 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         if (this.underlyingFactory != null) {
             synchronized (this.senderCreateSync) {
                 final CompletableFuture<Void> internalSenderClose = this.sender != null
-                        ? this.sender.close().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
+                        ? this.sender.close().thenCompose(new Function<Void, CompletableFuture<Void>>() {
                                 @Override
                                 public CompletableFuture<Void> apply(Void voidArg) {
                                     return EventHubClientImpl.this.underlyingFactory.close();
                                 }
-                            }, this.executor)
+                            })
                         : this.underlyingFactory.close();
 
                 return internalSenderClose;
@@ -311,7 +311,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         request.put(ClientConstants.MANAGEMENT_ENTITY_TYPE_KEY, ClientConstants.MANAGEMENT_EVENTHUB_ENTITY_TYPE);
         request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
         request.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
-        return addManagementToken(request).thenComposeAsync((requestWithToken) -> managementWithRetry(requestWithToken), this.executor).
+        return addManagementToken(request).thenCompose((requestWithToken) -> managementWithRetry(requestWithToken)).
                 thenApplyAsync((rawdata) -> {
                     return new EventHubRuntimeInformation(
                             (String) rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
@@ -330,7 +330,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
         request.put(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY, partitionId);
         request.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
-        return addManagementToken(request).thenComposeAsync((requestWithToken) -> managementWithRetry(requestWithToken), this.executor).
+        return addManagementToken(request).thenCompose((requestWithToken) -> managementWithRetry(requestWithToken)).
                 thenApplyAsync((rawdata) -> {
                     return new PartitionRuntimeInformation(
                             (String) rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
