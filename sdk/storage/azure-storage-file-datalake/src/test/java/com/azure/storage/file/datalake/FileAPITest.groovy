@@ -3472,7 +3472,7 @@ class FileAPITest extends APISpec {
         def randomData = getRandomByteArray(20 * Constants.MB)
         def input = new ByteArrayInputStream(randomData)
 
-        def pto = new ParallelTransferOptions().setMaxSingleUploadSizeLong(Constants.MB)
+        def pto = new ParallelTransferOptions().setMaxSingleUploadSizeLong(Constants.MB).setMaxConcurrency(2)
 
         when:
         // Uses blob output stream under the hood.
@@ -3511,7 +3511,7 @@ class FileAPITest extends APISpec {
         def randomData = getRandomByteArray(dataSize)
         def input = new ByteArrayInputStream(randomData)
 
-        def pto = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize)
+        def pto = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize).setMaxConcurrency(2)
 
         when:
         spyClient.uploadWithResponse(new FileParallelUploadOptions(input, dataSize).setParallelTransferOptions(pto)).block()
