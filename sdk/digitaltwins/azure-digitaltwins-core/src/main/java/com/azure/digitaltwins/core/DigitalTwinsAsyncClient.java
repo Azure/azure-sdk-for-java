@@ -937,6 +937,7 @@ public final class DigitalTwinsAsyncClient {
      * @param modelId The Id of the model to decommission.
      * @return an empty Mono
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> decommissionModel(String modelId) {
         return decommissionModelWithResponse(modelId)
             .flatMap(voidResponse -> Mono.empty());
@@ -947,6 +948,7 @@ public final class DigitalTwinsAsyncClient {
      * @param modelId The Id of the model to decommission.
      * @return The http response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> decommissionModelWithResponse(String modelId) {
         return withContext(context -> decommissionModelWithResponse(modelId, context));
     }
@@ -1338,4 +1340,106 @@ public final class DigitalTwinsAsyncClient {
     }
 
     //endregion Event Route APIs
+
+    //region Telemetry APIs
+
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> publishTelemetry(String digitalTwinId, String payload) {
+        PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
+        return withContext(context -> publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context))
+            .flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
+        return withContext(context -> publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context));
+    }
+
+    Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+        Object payloadObject = null;
+        try {
+            payloadObject = mapper.readValue(payload, Object.class);
+        }
+        catch (JsonProcessingException e) {
+            logger.error("Could not parse the payload [%s]: %s", payload, e);
+            return Mono.error(e);
+        }
+
+        return protocolLayer.getDigitalTwins().sendTelemetryWithResponseAsync(
+            digitalTwinId,
+            publishTelemetryRequestOptions.getMessageId(),
+            payloadObject,
+            publishTelemetryRequestOptions.getTimestamp().toString(),
+            context);
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
+        PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
+        return withContext(context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context))
+            .flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
+        return withContext(context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context));
+    }
+
+    Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+
+        Object payloadObject = null;
+        try {
+            payloadObject = mapper.readValue(payload, Object.class);
+        }
+        catch (JsonProcessingException e) {
+            logger.error("Could not parse the payload [%s]: %s", payload, e);
+            return Mono.error(e);
+        }
+
+        return protocolLayer.getDigitalTwins().sendComponentTelemetryWithResponseAsync(
+            digitalTwinId,
+            componentName,
+            publishTelemetryRequestOptions.getMessageId(),
+            payloadObject,
+            publishTelemetryRequestOptions.getTimestamp().toString(),
+            context);
+    }
+
+    //endregion Telemetry APIs
 }

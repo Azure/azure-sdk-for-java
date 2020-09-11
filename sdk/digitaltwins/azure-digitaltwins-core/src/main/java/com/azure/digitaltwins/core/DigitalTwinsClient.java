@@ -561,6 +561,7 @@ public final class DigitalTwinsClient {
      * Decommissions a model.
      * @param modelId The Id of the model to decommission.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void decommissionModel(String modelId) {
         decommissionModelWithResponse(modelId, Context.NONE);
     }
@@ -571,6 +572,7 @@ public final class DigitalTwinsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The http response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> decommissionModelWithResponse(String modelId, Context context) {
         return digitalTwinsAsyncClient.decommissionModelWithResponse(modelId, context).block();
     }
@@ -728,10 +730,11 @@ public final class DigitalTwinsClient {
      * @param eventRouteId The id of the event route to create.
      * @param eventRoute The event route to create.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, Context context) {
-        this.digitalTwinsAsyncClient.createEventRouteWithResponse(eventRouteId, eventRoute, context).block();
+    public Response<Void> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, Context context) {
+        return this.digitalTwinsAsyncClient.createEventRouteWithResponse(eventRouteId, eventRoute, context).block();
     }
 
     /**
@@ -801,4 +804,66 @@ public final class DigitalTwinsClient {
     }
 
     //endregion Event Route APIs
+
+    //region Telemetry APIs
+
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void publishTelemetry(String digitalTwinId, String payload) {
+        PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
+        publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, Context.NONE);
+    }
+
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+        return digitalTwinsAsyncClient.publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context).block();
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
+        PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
+        publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, Context.NONE);
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+        return digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context).block();
+    }
+
+    //endregion TelemetryAPIs
 }
