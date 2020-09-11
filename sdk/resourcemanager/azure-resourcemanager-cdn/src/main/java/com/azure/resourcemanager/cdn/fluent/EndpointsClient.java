@@ -117,7 +117,7 @@ public final class EndpointsClient {
             @PathParam("endpointName") String endpointName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") EndpointInner endpoint,
+            @BodyParam("application/json") EndpointInner endpointInner,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
