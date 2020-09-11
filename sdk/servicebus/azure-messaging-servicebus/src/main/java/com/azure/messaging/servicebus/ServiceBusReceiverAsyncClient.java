@@ -233,8 +233,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the Service Bus operation finishes.
-     * @throws NullPointerException if {@code message}, {@code transactionContext}
-     * or {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
+     *     transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
@@ -250,8 +250,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the
-     * service.
+     * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the service.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
@@ -291,8 +290,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Defers a {@link ServiceBusReceivedMessage message}. This will move message into the deferred
-     * subqueue.
+     * Defers a {@link ServiceBusReceivedMessage message}. This will move message into the deferred subqueue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
@@ -307,8 +305,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will
-     * move message into the deferred subqueue.
+     * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will move message into
+     * the deferred subqueue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Message properties to modify.
@@ -325,18 +323,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will
-     * move message into the deferred subqueue.
+     * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will move message into
+     * the deferred subqueue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Message properties to modify.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first
+     *     by {@link ServiceBusReceiverAsyncClient#createTransaction()} or {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the Service Bus defer operation finishes.
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
+     *     transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
@@ -372,13 +369,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first
+     *     by {@link ServiceBusReceiverAsyncClient#createTransaction()} or {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the dead letter operation finishes.
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
+     *     transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
@@ -750,16 +746,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Asynchronously renews the lock on the message. The lock will be renewed based on the setting specified
-     * on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is locked on the
-     * server for this receiver instance for a duration as specified during the entity creation (LockDuration). If
-     * processing of the message requires longer than this duration, the lock needs to be renewed. For each renewal, the
-     * lock is reset to the entity's LockDuration value.
+     * Asynchronously renews the lock on the message. The lock will be renewed based on the setting specified on the
+     * entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is locked on the server for
+     * this receiver instance for a duration as specified during the entity creation (LockDuration). If processing of
+     * the message requires longer than this duration, the lock needs to be renewed. For each renewal, the lock is reset
+     * to the entity's LockDuration value.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform auto-lock renewal.
      *
      * @return The new expiration time for the message.
-     * @throws NullPointerException if {@code message} is null.
+     * @throws NullPointerException if {@code message} or {@code message.getLockToken()} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalStateException if the receiver is a session receiver.
@@ -771,6 +767,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewMessageLock")));
         } else if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
+        } else if (Objects.isNull(message.getLockToken())) {
+            return monoError(logger, new NullPointerException("'message.getLockToken()' cannot be null."));
         } else if (message.getLockToken().isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
         } else if (receiverOptions.isSessionReceiver()) {
@@ -787,13 +785,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Starts the auto lock renewal for a message with the given lock.
+     * Starts the auto lock renewal for a {@link ServiceBusReceivedMessage message}.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
      *
      * @return A lock renewal operation for the message.
-     * @throws NullPointerException if {@code message} or {@code maxLockRenewalDuration} is null.
+     * @throws NullPointerException if {@code message}, {@code message.getLockToken()} or {@code
+     *     maxLockRenewalDuration} is null.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
      */
@@ -803,6 +802,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewMessageLock")));
         } else if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
+        } else if (Objects.isNull(message.getLockToken())) {
+            return monoError(logger, new NullPointerException("'message.getLockToken()' cannot be null."));
         } else if (message.getLockToken().isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
         } else if (receiverOptions.isSessionReceiver()) {
@@ -848,14 +849,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Starts the auto lock renewal for a session with the given lock.
+     * Starts the auto lock renewal for a session id.
      *
      * @param sessionId Id for the session to renew.
-     * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
+     * @param maxLockRenewalDuration Maximum duration to keep renewing the session lock.
      *
      * @return A lock renewal operation for the message.
      * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty string.
+     * @throws IllegalArgumentException if {@code sessionId} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
      */
     public Mono<Void> renewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
