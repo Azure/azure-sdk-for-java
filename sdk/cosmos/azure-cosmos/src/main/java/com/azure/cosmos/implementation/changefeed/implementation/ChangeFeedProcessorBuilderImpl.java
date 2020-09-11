@@ -494,8 +494,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
             throw new IllegalArgumentException("Observer was not specified");
         }
 
-        if (this.changeFeedProcessorOptions.getLeaseAcquireInterval().compareTo(ChangeFeedProcessorOptions.DEFAULT_ACQUIRE_INTERVAL) < 0) {
-            logger.warn("Found lower than expected setting for leaseAcquireInterval; lease acquiring and other lease management operations will be s");
+        if (this.changeFeedProcessorOptions != null && this.changeFeedProcessorOptions.getLeaseAcquireInterval().compareTo(ChangeFeedProcessorOptions.DEFAULT_ACQUIRE_INTERVAL) < 0) {
+            logger.warn("Found lower than expected setting for leaseAcquireInterval");
         }
 
         if (this.scheduler == null) {
