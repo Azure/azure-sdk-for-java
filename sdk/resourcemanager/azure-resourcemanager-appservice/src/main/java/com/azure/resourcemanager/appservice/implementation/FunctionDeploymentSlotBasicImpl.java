@@ -32,7 +32,8 @@ class FunctionDeploymentSlotBasicImpl extends WebSiteBaseImpl
 
     @Override
     public Mono<FunctionDeploymentSlot> refreshAsync() {
-        return this.parent().deploymentSlots().getByIdAsync(this.id());
+        return this.parent().deploymentSlots().getByIdAsync(this.id())
+            .doOnNext(site -> this.setInner(site.inner()));
     }
 
     @Override

@@ -31,7 +31,8 @@ class WebDeploymentSlotBasicImpl extends WebSiteBaseImpl implements WebDeploymen
 
     @Override
     public Mono<DeploymentSlot> refreshAsync() {
-        return this.parent().deploymentSlots().getByIdAsync(this.id());
+        return this.parent().deploymentSlots().getByIdAsync(this.id())
+            .doOnNext(site -> this.setInner(site.inner()));
     }
 
     @Override

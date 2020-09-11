@@ -30,56 +30,19 @@ import java.util.UUID;
 class WebSiteBaseImpl implements WebSiteBase {
 
     private final String key;
-    private final SiteInner innerObject;
+    private SiteInner innerObject;
 
-    private final Set<String> hostNamesSet;
-    private final Set<String> enabledHostNamesSet;
-    private final Set<String> trafficManagerHostNamesSet;
-    private final Set<String> outboundIPAddressesSet;
-    private final Set<String> possibleOutboundIPAddressesSet;
-    private final Map<String, HostnameSslState> hostNameSslStateMap;
-    private final Set<String> clientCertExclusionPathSet;
+    private final Set<String> hostNamesSet = new HashSet<>();
+    private final Set<String> enabledHostNamesSet = new HashSet<>();
+    private final Set<String> trafficManagerHostNamesSet = new HashSet<>();
+    private final Set<String> outboundIPAddressesSet = new HashSet<>();
+    private final Set<String> possibleOutboundIPAddressesSet = new HashSet<>();
+    private final Map<String, HostnameSslState> hostNameSslStateMap = new HashMap<>();
+    private final Set<String> clientCertExclusionPathSet = new HashSet<>();
 
     WebSiteBaseImpl(SiteInner innerObject) {
         this.key = UUID.randomUUID().toString();
-        this.innerObject = innerObject;
-
-        this.hostNamesSet = new HashSet<>();
-        if (inner().hostNames() != null) {
-            this.hostNamesSet.addAll(inner().hostNames());
-        }
-        this.enabledHostNamesSet = new HashSet<>();
-        if (inner().enabledHostNames() != null) {
-            this.enabledHostNamesSet.addAll(inner().enabledHostNames());
-        }
-        this.trafficManagerHostNamesSet = new HashSet<>();
-        if (inner().trafficManagerHostNames() != null) {
-            this.trafficManagerHostNamesSet.addAll(inner().trafficManagerHostNames());
-        }
-        this.outboundIPAddressesSet = new HashSet<>();
-        if (inner().outboundIpAddresses() != null) {
-            this.outboundIPAddressesSet.addAll(Arrays.asList(inner().outboundIpAddresses().split(",[ ]*")));
-        }
-        this.possibleOutboundIPAddressesSet = new HashSet<>();
-        if (inner().possibleOutboundIpAddresses() != null) {
-            this.possibleOutboundIPAddressesSet.addAll(Arrays.asList(
-                inner().possibleOutboundIpAddresses().split(",[ ]*")));
-        }
-        this.hostNameSslStateMap = new HashMap<>();
-        if (inner().hostnameSslStates() != null) {
-            for (HostnameSslState hostNameSslState : inner().hostnameSslStates()) {
-                // Server returns null sometimes, invalid on update, so we set default
-                if (hostNameSslState.sslState() == null) {
-                    hostNameSslState.withSslState(SslState.DISABLED);
-                }
-                hostNameSslStateMap.put(hostNameSslState.name(), hostNameSslState);
-            }
-        }
-        this.clientCertExclusionPathSet = new HashSet<>();
-        if (inner().clientCertExclusionPaths() != null) {
-            this.clientCertExclusionPathSet.addAll(Arrays.asList(
-                inner().clientCertExclusionPaths().split(",[ ]*")));
-        }
+        this.setInner(innerObject);
     }
 
     @Override
@@ -289,6 +252,47 @@ class WebSiteBaseImpl implements WebSiteBase {
     @Override
     public SiteInner inner() {
         return innerObject;
+    }
+
+    protected void setInner(SiteInner innerObject) {
+        this.innerObject = innerObject;
+        
+        this.hostNamesSet.clear();
+        if (inner().hostNames() != null) {
+            this.hostNamesSet.addAll(inner().hostNames());
+        }
+        this.enabledHostNamesSet.clear();
+        if (inner().enabledHostNames() != null) {
+            this.enabledHostNamesSet.addAll(inner().enabledHostNames());
+        }
+        this.trafficManagerHostNamesSet.clear();
+        if (inner().trafficManagerHostNames() != null) {
+            this.trafficManagerHostNamesSet.addAll(inner().trafficManagerHostNames());
+        }
+        this.outboundIPAddressesSet.clear();
+        if (inner().outboundIpAddresses() != null) {
+            this.outboundIPAddressesSet.addAll(Arrays.asList(inner().outboundIpAddresses().split(",[ ]*")));
+        }
+        this.possibleOutboundIPAddressesSet.clear();
+        if (inner().possibleOutboundIpAddresses() != null) {
+            this.possibleOutboundIPAddressesSet.addAll(Arrays.asList(
+                inner().possibleOutboundIpAddresses().split(",[ ]*")));
+        }
+        this.hostNameSslStateMap.clear();
+        if (inner().hostnameSslStates() != null) {
+            for (HostnameSslState hostNameSslState : inner().hostnameSslStates()) {
+                // Server returns null sometimes, invalid on update, so we set default
+                if (hostNameSslState.sslState() == null) {
+                    hostNameSslState.withSslState(SslState.DISABLED);
+                }
+                hostNameSslStateMap.put(hostNameSslState.name(), hostNameSslState);
+            }
+        }
+        this.clientCertExclusionPathSet.clear();
+        if (inner().clientCertExclusionPaths() != null) {
+            this.clientCertExclusionPathSet.addAll(Arrays.asList(
+                inner().clientCertExclusionPaths().split(",[ ]*")));
+        }
     }
 
     @Override
