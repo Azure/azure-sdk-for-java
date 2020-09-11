@@ -52,6 +52,7 @@ public class AADAuthenticationFailureHandler implements AuthenticationFailureHan
                     .map(MsalServiceException::claims)
                     .ifPresent(claims -> request.getSession().setAttribute(Constants.CAP_CLAIMS, claims));
             // Redirect
+            response.setStatus(302);
             String redirectUrl = Optional.of(request)
                                          .map(HttpServletRequest::getSession)
                                          .map(s -> s.getAttribute(Constants.SAVED_REQUEST))
@@ -59,7 +60,6 @@ public class AADAuthenticationFailureHandler implements AuthenticationFailureHan
                                          .map(DefaultSavedRequest::getRedirectUrl)
                                          .orElse(null);
             response.sendRedirect(redirectUrl);
-            response.setStatus(302);
         }
     }
 }
