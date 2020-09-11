@@ -1,4 +1,4 @@
-package com.azure.digitaltwins.core.serialization;
+package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;

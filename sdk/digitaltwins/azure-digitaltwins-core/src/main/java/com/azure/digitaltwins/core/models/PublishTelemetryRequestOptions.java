@@ -1,4 +1,4 @@
-package com.azure.digitaltwins.core.util;
+package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 
