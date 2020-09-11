@@ -59,30 +59,12 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                 .accessToken();
             mappedAuthorities = azureADGraphClient.getGrantedAuthorities(graphApiToken);
         } catch (MalformedURLException e) {
-            throw toOAuth2AuthenticationException(
-                ErrorCode.INVALID_REQUEST,
-                "Failed to acquire token for Graph API.",
-                e
-            );
-        } catch (ServiceUnavailableException e) {
-            throw toOAuth2AuthenticationException(
-                ErrorCode.SERVER_ERROR,
-                "Failed to acquire token for Graph API.",
-                e
-            );
-        } catch (IOException e) {
-            throw toOAuth2AuthenticationException(
-                ErrorCode.SERVER_ERROR,
-                "Failed to map group to authorities.",
-                e
-            );
+            throw toOAuth2AuthenticationException("invalid_request", "Failed to acquire token for Graph API.", e);
+        } catch (ServiceUnavailableException | IOException e) {
+            throw toOAuth2AuthenticationException("server_error", "Failed to acquire token for Graph API.", e);
         } catch (MsalServiceException e) {
             if (e.claims() != null && !e.claims().isEmpty()) {
-                throw toOAuth2AuthenticationException(
-                    ErrorCode.CONDITIONAL_ACCESS_POLICY,
-                    "Handle conditional access policy",
-                    e
-                );
+                throw toOAuth2AuthenticationException("conditional_access_policy", "Handle conditional access policy", e);
             } else {
                 throw e;
             }
@@ -103,11 +85,5 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                                                                           Exception cause) {
         OAuth2Error oAuth2Error = new OAuth2Error(errorCode, description, null);
         return new OAuth2AuthenticationException(oAuth2Error, cause);
-    }
-
-    private static final class ErrorCode {
-        private static final String CONDITIONAL_ACCESS_POLICY = "conditional_access_policy";
-        private static final String INVALID_REQUEST = "invalid_request";
-        private static final String SERVER_ERROR = "server_error";
     }
 }
