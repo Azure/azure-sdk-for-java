@@ -198,7 +198,7 @@ class ClientSideRequestStatistics {
     void recordBulkSemaphoreStatisticsStart() {
         this.bulkSemaphoreStatistics = new BulkSemaphoreStatistics();
         this.bulkSemaphoreStatistics.startTimeUTC = Instant.now();
-        this.bulkSemaphoreStatistics.endTimeUTC = Instant.now();
+        this.bulkSemaphoreStatistics.endTimeUTC = Instant.MAX;
     }
 
     void recordBulkSemaphoreStatisticsEnd() {
@@ -391,8 +391,15 @@ class ClientSideRequestStatistics {
     private static class BulkSemaphoreStatistics {
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         Instant startTimeUTC;
-
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         Instant endTimeUTC;
+
+        public Instant getStartTimeUTC() {
+            return startTimeUTC;
+        }
+
+        public Instant getEndTimeUTC() {
+            return endTimeUTC;
+        }
     }
 }
