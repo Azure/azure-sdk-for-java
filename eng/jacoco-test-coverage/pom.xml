@@ -119,7 +119,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.1.5</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -134,7 +134,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-tables</artifactId>
-      <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+      <version>12.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -144,7 +144,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
+      <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -164,7 +164,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
-      <version>11.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+      <version>11.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

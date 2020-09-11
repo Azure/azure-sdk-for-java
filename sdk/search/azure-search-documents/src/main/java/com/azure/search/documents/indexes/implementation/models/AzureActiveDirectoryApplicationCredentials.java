@@ -28,9 +28,14 @@ public final class AzureActiveDirectoryApplicationCredentials {
     @JsonProperty(value = "applicationSecret")
     private String applicationSecret;
 
-    /** Creates an instance of AzureActiveDirectoryApplicationCredentials class. */
+    /**
+     * Creates an instance of AzureActiveDirectoryApplicationCredentials class.
+     *
+     * @param applicationId the applicationId value to set.
+     */
     @JsonCreator
-    public AzureActiveDirectoryApplicationCredentials(@JsonProperty(value = "applicationId") String applicationId) {
+    public AzureActiveDirectoryApplicationCredentials(
+            @JsonProperty(value = "applicationId", required = true) String applicationId) {
         this.applicationId = applicationId;
     }
 
@@ -45,14 +50,6 @@ public final class AzureActiveDirectoryApplicationCredentials {
         return this.applicationId;
     }
 
-    /**
-     * Set the applicationId property: An AAD Application ID that was granted the required access permissions to the
-     * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused
-     * with the Object ID for your AAD Application.
-     *
-     * @param applicationId the applicationId value to set.
-     * @return the AzureActiveDirectoryApplicationCredentials object itself.
-     */
     /**
      * Get the applicationSecret property: The authentication key of the specified AAD application.
      *
@@ -71,17 +68,5 @@ public final class AzureActiveDirectoryApplicationCredentials {
     public AzureActiveDirectoryApplicationCredentials setApplicationSecret(String applicationSecret) {
         this.applicationSecret = applicationSecret;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getApplicationId() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property applicationId in model AzureActiveDirectoryApplicationCredentials");
-        }
     }
 }

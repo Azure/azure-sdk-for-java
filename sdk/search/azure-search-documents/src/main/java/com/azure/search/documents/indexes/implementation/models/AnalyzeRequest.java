@@ -7,6 +7,10 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.CharFilterName;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalTokenizerName;
+import com.azure.search.documents.indexes.models.TokenFilterName;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -50,9 +54,13 @@ public final class AnalyzeRequest {
     @JsonProperty(value = "charFilters")
     private List<CharFilterName> charFilters;
 
-    /** Creates an instance of AnalyzeRequest class. */
+    /**
+     * Creates an instance of AnalyzeRequest class.
+     *
+     * @param text the text value to set.
+     */
     @JsonCreator
-    public AnalyzeRequest(@JsonProperty(value = "text") String text) {
+    public AnalyzeRequest(@JsonProperty(value = "text", required = true) String text) {
         this.text = text;
     }
 
@@ -65,12 +73,6 @@ public final class AnalyzeRequest {
         return this.text;
     }
 
-    /**
-     * Set the text property: The text to break into tokens.
-     *
-     * @param text the text value to set.
-     * @return the AnalyzeRequest object itself.
-     */
     /**
      * Get the analyzer property: The name of the analyzer to use to break the given text. If this parameter is not
      * specified, you must specify a tokenizer instead. The tokenizer and analyzer parameters are mutually exclusive.
@@ -157,16 +159,5 @@ public final class AnalyzeRequest {
     public AnalyzeRequest setCharFilters(List<CharFilterName> charFilters) {
         this.charFilters = charFilters;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getText() == null) {
-            throw new IllegalArgumentException("Missing required property text in model AnalyzeRequest");
-        }
     }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @Fluent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ModelProperties {
+public final class ModelProperties {
 
     /**
      * Information about the model a component conforms to. This field is present on every digital twin.

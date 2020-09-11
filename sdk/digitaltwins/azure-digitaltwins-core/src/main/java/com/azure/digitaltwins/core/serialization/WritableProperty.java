@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
-public class WritableProperty {
+public final class WritableProperty {
 
     @JsonProperty(value = "desiredValue")
     private Object desiredValue;

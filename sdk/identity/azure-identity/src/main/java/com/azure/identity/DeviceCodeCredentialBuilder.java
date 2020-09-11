@@ -4,7 +4,6 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
@@ -37,8 +36,8 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder.
      */
-    DeviceCodeCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.allowUnencryptedCache();
+    public DeviceCodeCredentialBuilder allowUnencryptedCache() {
+        this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
 
@@ -49,7 +48,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    DeviceCodeCredentialBuilder enablePersistentCache() {
+    public DeviceCodeCredentialBuilder enablePersistentCache() {
         this.identityClientOptions.enablePersistentCache();
         return this;
     }
@@ -61,7 +60,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with the configured authentication record.
      */
-    DeviceCodeCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+    public DeviceCodeCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
         return this;
     }
@@ -76,7 +75,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with automatic authentication disabled.
      */
-    DeviceCodeCredentialBuilder disableAutomaticAuthentication() {
+    public DeviceCodeCredentialBuilder disableAutomaticAuthentication() {
         this.automaticAuthentication = false;
         return this;
     }

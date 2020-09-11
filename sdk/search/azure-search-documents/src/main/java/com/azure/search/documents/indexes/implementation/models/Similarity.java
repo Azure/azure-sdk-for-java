@@ -25,11 +25,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @JsonFlatten
 @Immutable
-public class Similarity {
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
-}
+public class Similarity {}
