@@ -153,9 +153,9 @@ public final class UploadBufferPool {
                 result = this.buffers.take();
 
             } catch (InterruptedException e) {
-                System.out.println(e.toString());
-                throw logger.logExceptionAsError(new IllegalStateException("BufferedUpload thread interrupted. Thread:"
-                    + Thread.currentThread().getId()));
+                throw logger.logExceptionAsError(new RuntimeException(e));
+//                throw logger.logExceptionAsError(new IllegalStateException("BufferedUpload thread interrupted. Thread:"
+//                    + Thread.currentThread().getId()));
             }
         }
         return result;
