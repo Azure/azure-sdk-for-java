@@ -141,17 +141,19 @@ class ServiceBusReceiverClientTest {
         final Duration maxDuration = Duration.ofSeconds(8);
         final TestPublisher<Void> publisher = TestPublisher.create();
 
+        when(message.getLockToken()).thenReturn(LOCK_TOKEN);
+
         doAnswer(answer -> {
             fail("On error should not have been invoked.");
             return null;
         }).when(onErrorConsumer).accept(any());
-        when(asyncClient.renewMessageLock(LOCK_TOKEN, maxDuration)).thenReturn(publisher.mono());
+        when(asyncClient.renewMessageLock(message, maxDuration)).thenReturn(publisher.mono());
 
         // Act
-        client.renewMessageLock(LOCK_TOKEN, maxDuration, onErrorConsumer);
+        client.renewMessageLock(message, maxDuration, onErrorConsumer);
 
         // Assert
-        verify(asyncClient).renewMessageLock(LOCK_TOKEN, maxDuration);
+        verify(asyncClient).renewMessageLock(message, maxDuration);
     }
 
     /**
@@ -164,15 +166,17 @@ class ServiceBusReceiverClientTest {
         final TestPublisher<Void> publisher = TestPublisher.create();
         final Throwable testError = new IllegalAccessException("Some exception");
 
-        when(asyncClient.renewMessageLock(LOCK_TOKEN, maxDuration)).thenReturn(publisher.mono());
+        when(message.getLockToken()).thenReturn(LOCK_TOKEN);
 
-        client.renewMessageLock(LOCK_TOKEN, maxDuration, onErrorConsumer);
+        when(asyncClient.renewMessageLock(message, maxDuration)).thenReturn(publisher.mono());
+
+        client.renewMessageLock(message, maxDuration, onErrorConsumer);
 
         // Act
         publisher.error(testError);
 
         // Assert
-        verify(asyncClient).renewMessageLock(LOCK_TOKEN, maxDuration);
+        verify(asyncClient).renewMessageLock(message, maxDuration);
         verify(onErrorConsumer).accept(testError);
     }
 
@@ -186,15 +190,15 @@ class ServiceBusReceiverClientTest {
         final TestPublisher<Void> publisher = TestPublisher.create();
         final Throwable testError = new IllegalAccessException("Some exception");
 
-        when(asyncClient.renewMessageLock(LOCK_TOKEN, maxDuration)).thenReturn(publisher.mono());
+        when(asyncClient.renewMessageLock(message, maxDuration)).thenReturn(publisher.mono());
 
-        client.renewMessageLock(LOCK_TOKEN, maxDuration, null);
+        client.renewMessageLock(message, maxDuration, null);
 
         // Act
         publisher.error(testError);
 
         // Assert
-        verify(asyncClient).renewMessageLock(LOCK_TOKEN, maxDuration);
+        verify(asyncClient).renewMessageLock(message, maxDuration);
         verify(onErrorConsumer, never()).accept(testError);
     }
 
@@ -747,10 +751,10 @@ class ServiceBusReceiverClientTest {
     void renewMessageLock() {
         // Arrange
         final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
-        when(asyncClient.renewMessageLock(LOCK_TOKEN)).thenReturn(Mono.just(response));
+        when(asyncClient.renewMessageLock(message)).thenReturn(Mono.just(response));
 
         // Act
-        final OffsetDateTime actual = client.renewMessageLock(LOCK_TOKEN);
+        final OffsetDateTime actual = client.renewMessageLock(message);
 
         // Assert
         assertEquals(response, actual);

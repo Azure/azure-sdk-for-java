@@ -717,10 +717,11 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void cannotRenewMessageLockInSession() {
         // Arrange
-        final String lockToken = UUID.randomUUID().toString();
+        when(receivedMessage.getLockToken()).thenReturn(null);
+        when(receivedMessage.getSessionId()).thenReturn("fo");
 
         // Act & Assert
-        StepVerifier.create(sessionReceiver.renewMessageLock(lockToken))
+        StepVerifier.create(sessionReceiver.renewMessageLock(receivedMessage))
             .expectError(IllegalStateException.class)
             .verify();
     }
@@ -739,11 +740,12 @@ class ServiceBusReceiverAsyncClientTest {
         final int atMost = 5;
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
+        when(receivedMessage.getLockToken()).thenReturn(lockToken);
         when(managementNode.renewMessageLock(lockToken, null))
             .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
 
         // Act & Assert
-        StepVerifier.create(receiver.renewMessageLock(lockToken, maxDuration))
+        StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
             .thenAwait(totalSleepPeriod)
             .then(() -> logger.info("Finished renewals for first sleep."))
             .expectComplete()

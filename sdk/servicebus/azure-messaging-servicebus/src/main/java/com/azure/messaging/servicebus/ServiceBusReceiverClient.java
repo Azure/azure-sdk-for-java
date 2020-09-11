@@ -534,7 +534,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * message requires longer than this duration, the lock needs to be renewed. For each renewal, the lock is reset to
      * the entity's LockDuration value.
      *
-     * @param lockToken Lock token of the message to renew.
+     * @param message The {@link ServiceBusReceivedMessage} to perform lock renewal.
      *
      * @return The new expiration time for the message.
      * @throws NullPointerException if {@code lockToken} is null.
@@ -543,26 +543,28 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @throws IllegalStateException if the receiver is a session receiver.
      */
-    public OffsetDateTime renewMessageLock(String lockToken) {
-        return asyncClient.renewMessageLock(lockToken).block(operationTimeout);
+    public OffsetDateTime renewMessageLock(ServiceBusReceivedMessage message) {
+        return asyncClient.renewMessageLock(message).block(operationTimeout);
     }
 
     /**
      * Starts the auto lock renewal for a message with the given lock.
      *
-     * @param lockToken Lock token of the message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform auto-lock renewal.
      * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
      * @param onError A function to call when an error occurs during lock renewal.
      * @throws NullPointerException if {@code lockToken} or {@code maxLockRenewalDuration} is null.
      * @throws IllegalArgumentException if {@code lockToken} is an empty string.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      */
-    public void renewMessageLock(String lockToken, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
+    public void renewMessageLock(ServiceBusReceivedMessage message, Duration maxLockRenewalDuration,
+        Consumer<Throwable> onError) {
+        final String lockToken = message != null ? message.getLockToken() : "null";
         final Consumer<Throwable> throwableConsumer = onError != null
             ? onError
-            : error -> logger.warning("Exception occurred while renewing lock token: '{}'.", lockToken, error);
+            : error -> logger.warning("Exception occurred while renewing lock token '{}'.", lockToken, error);
 
-        asyncClient.renewMessageLock(lockToken, maxLockRenewalDuration).subscribe(
+        asyncClient.renewMessageLock(message, maxLockRenewalDuration).subscribe(
             v -> logger.verbose("Completed renewing lock token: '{}'", lockToken),
             throwableConsumer);
     }
