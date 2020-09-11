@@ -306,7 +306,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return defer(message, null);
     }
 
-
     /**
      * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will
      * move message into the deferred subqueue.
@@ -436,78 +435,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return updateDisposition(message, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
             deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify(),
             transactionContext);
-    }
-
-    /**
-     * Gets and starts the auto lock renewal for a message with the given lock.
-     *
-     * @param lockToken Lock token of the message.
-     * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
-     *
-     * @return A lock renewal operation for the message.
-     * @throws NullPointerException if {@code lockToken} or {@code maxLockRenewalDuration} is null.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty string.
-     * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
-     */
-    public Mono<Void> getAutoRenewMessageLock(String lockToken, Duration maxLockRenewalDuration) {
-        if (isDisposed.get()) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewMessageLock")));
-        } else if (Objects.isNull(lockToken)) {
-            throw logger.logExceptionAsError(new NullPointerException("'lockToken' cannot be null."));
-        } else if (lockToken.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'lockToken' cannot be empty."));
-        } else if (receiverOptions.isSessionReceiver()) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                String.format("Cannot renew message lock [%s] for a session receiver.", lockToken)));
-        } else if (maxLockRenewalDuration == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'maxLockRenewalDuration' cannot be null."));
-        } else if (maxLockRenewalDuration.isNegative()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "'maxLockRenewalDuration' cannot be negative."));
-        }
-
-        final LockRenewalOperation operation = new LockRenewalOperation(lockToken, maxLockRenewalDuration, false,
-            this::renewMessageLock);
-        renewalContainer.addOrUpdate(lockToken, Instant.now().plus(maxLockRenewalDuration), operation);
-
-        return operation.getCompletionOperation();
-    }
-
-    /**
-     * Gets and starts the auto lock renewal for a session with the given lock.
-     *
-     * @param sessionId Id for the session to renew.
-     * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
-     *
-     * @return A lock renewal operation for the message.
-     * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty string.
-     * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
-     */
-    public Mono<Void> getAutoRenewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
-        if (isDisposed.get()) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewSessionLock")));
-        } else if (!receiverOptions.isSessionReceiver()) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "Cannot renew session lock on a non-session receiver."));
-        } else if (maxLockRenewalDuration == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'maxLockRenewalDuration' cannot be null."));
-        } else if (maxLockRenewalDuration.isNegative()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "'maxLockRenewalDuration' cannot be negative."));
-        } else if (Objects.isNull(sessionId)) {
-            throw logger.logExceptionAsError(new NullPointerException("'sessionId' cannot be null."));
-        } else if (sessionId.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'sessionId' cannot be empty."));
-        }
-
-        final LockRenewalOperation operation = new LockRenewalOperation(sessionId, maxLockRenewalDuration, true,
-            this::renewSessionLock);
-
-        renewalContainer.addOrUpdate(sessionId, Instant.now().plus(maxLockRenewalDuration), operation);
-        return operation.getCompletionOperation();
     }
 
     /**
@@ -860,7 +787,43 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Sets the state of a session given its identifier.
+     * Starts the auto lock renewal for a message with the given lock.
+     *
+     * @param lockToken Lock token of the message.
+     * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
+     *
+     * @return A lock renewal operation for the message.
+     * @throws NullPointerException if {@code lockToken} or {@code maxLockRenewalDuration} is null.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty string.
+     * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
+     */
+    public Mono<Void> renewMessageLock(String lockToken, Duration maxLockRenewalDuration) {
+        if (isDisposed.get()) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewMessageLock")));
+        } else if (Objects.isNull(lockToken)) {
+            throw logger.logExceptionAsError(new NullPointerException("'lockToken' cannot be null."));
+        } else if (lockToken.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'lockToken' cannot be empty."));
+        } else if (receiverOptions.isSessionReceiver()) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format("Cannot renew message lock [%s] for a session receiver.", lockToken)));
+        } else if (maxLockRenewalDuration == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'maxLockRenewalDuration' cannot be null."));
+        } else if (maxLockRenewalDuration.isNegative()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'maxLockRenewalDuration' cannot be negative."));
+        }
+
+        final LockRenewalOperation operation = new LockRenewalOperation(lockToken, maxLockRenewalDuration, false,
+            this::renewMessageLock);
+        renewalContainer.addOrUpdate(lockToken, Instant.now().plus(maxLockRenewalDuration), operation);
+
+        return operation.getCompletionOperation();
+    }
+
+    /**
+     * Renews the session lock.
      *
      * @param sessionId Identifier of session to get.
      *
@@ -883,6 +846,42 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(channel -> channel.renewSessionLock(sessionId, linkName)
                 .map(instant -> instant.atOffset(ZoneOffset.UTC)));
+    }
+
+    /**
+     * Starts the auto lock renewal for a session with the given lock.
+     *
+     * @param sessionId Id for the session to renew.
+     * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
+     *
+     * @return A lock renewal operation for the message.
+     * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty string.
+     * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
+     */
+    public Mono<Void> renewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
+        if (isDisposed.get()) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewSessionLock")));
+        } else if (!receiverOptions.isSessionReceiver()) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Cannot renew session lock on a non-session receiver."));
+        } else if (maxLockRenewalDuration == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'maxLockRenewalDuration' cannot be null."));
+        } else if (maxLockRenewalDuration.isNegative()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'maxLockRenewalDuration' cannot be negative."));
+        } else if (Objects.isNull(sessionId)) {
+            throw logger.logExceptionAsError(new NullPointerException("'sessionId' cannot be null."));
+        } else if (sessionId.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'sessionId' cannot be empty."));
+        }
+
+        final LockRenewalOperation operation = new LockRenewalOperation(sessionId, maxLockRenewalDuration, true,
+            this::renewSessionLock);
+
+        renewalContainer.addOrUpdate(sessionId, Instant.now().plus(maxLockRenewalDuration), operation);
+        return operation.getCompletionOperation();
     }
 
     /**

@@ -743,7 +743,7 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
 
         // Act & Assert
-        StepVerifier.create(receiver.getAutoRenewMessageLock(lockToken, maxDuration))
+        StepVerifier.create(receiver.renewMessageLock(lockToken, maxDuration))
             .thenAwait(totalSleepPeriod)
             .then(() -> logger.info("Finished renewals for first sleep."))
             .expectComplete()
@@ -770,7 +770,7 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
 
         // Act & Assert
-        StepVerifier.create(sessionReceiver.getAutoRenewSessionLock(sessionId, maxDuration))
+        StepVerifier.create(sessionReceiver.renewSessionLock(sessionId, maxDuration))
             .thenAwait(totalSleepPeriod)
             .then(() -> logger.info("Finished renewals for first sleep."))
             .expectComplete()

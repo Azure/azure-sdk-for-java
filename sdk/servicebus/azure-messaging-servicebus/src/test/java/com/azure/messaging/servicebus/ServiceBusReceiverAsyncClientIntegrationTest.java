@@ -948,7 +948,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(lockedUntil);
 
         // Assert & Act
-        StepVerifier.create(receiver.getAutoRenewMessageLock(receivedMessage.getLockToken(), maximumDuration))
+        StepVerifier.create(receiver.renewMessageLock(receivedMessage.getLockToken(), maximumDuration))
             .thenAwait(sleepDuration)
             .then(() -> {
                 logger.info("Completing message.");
