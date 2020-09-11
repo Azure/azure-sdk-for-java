@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-module come.azure.digitaltwins.core {
+module com.azure.digitaltwins.core {
     requires transitive com.azure.core;
 
     exports com.azure.digitaltwins.core;
