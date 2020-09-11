@@ -3,6 +3,7 @@
 ## 12.9.0-beta.1 (Unreleased)
 - Added support for the 2019-02-10 service version.
 - Added support to specify Arrow Output Serialization when querying a blob. 
+- Fixed a bug where BlockBlobOutputStream would not handle certain errors.
 
 ## 12.8.0 (2020-08-13)
 - Fixed a bug that, when the data length parameter did not match the actual length of the data in BlobClient.upload, caused a zero length blob to be uploaded rather than throwing an exception.

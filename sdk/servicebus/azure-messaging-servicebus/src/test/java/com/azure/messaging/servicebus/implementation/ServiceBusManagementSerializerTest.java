@@ -3,6 +3,9 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.messaging.servicebus.TestUtils;
+import com.azure.messaging.servicebus.administration.models.AccessRights;
+import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
@@ -11,7 +14,9 @@ import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
+import com.azure.messaging.servicebus.administration.models.SharedAccessAuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
+import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
 import com.azure.messaging.servicebus.implementation.models.CorrelationFilterImpl;
 import com.azure.messaging.servicebus.implementation.models.EmptyRuleActionImpl;
 import com.azure.messaging.servicebus.implementation.models.FalseFilterImpl;
@@ -65,6 +70,48 @@ class ServiceBusManagementSerializerTest {
     private static final String TITLE_KEY = "";
 
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
+
+    /**
+     * Verify we can deserialize XML request when creating a queue.
+     */
+    @Test
+    void deserializeCreateQueueDescription() throws IOException {
+        // Arrange
+        final String contents = getContents("CreateQueueEntry.xml");
+        final AuthorizationRule rule = new SharedAccessAuthorizationRule("test-name",
+            "/4jWkzKBFwO0VemXmUYtBnXJ3Me+saF8hQPE5HzJ/hg=",
+            "NsNSEwj//k4ShF7wHsRHj54HsjnyWvyjmfCd3tfXR2Y=",
+            Collections.singletonList(AccessRights.SEND));
+        final CreateQueueOptions expected = new CreateQueueOptions()
+            .setAutoDeleteOnIdle(null)
+            .setDefaultMessageTimeToLive(null)
+            .setDuplicateDetectionHistoryTimeWindow(null)
+            .setLockDuration(Duration.ofMinutes(10))
+            .setMaxSizeInMegabytes(1028)
+            .setRequiresDuplicateDetection(false)
+            .setRequiresSession(true)
+            .setDeadLetteringOnMessageExpiration(false)
+            .setMaxDeliveryCount(5)
+            .setEnableBatchedOperations(true)
+            .setEnablePartitioning(false);
+
+        expected.getAuthorizationRules().add(rule);
+
+        // Act
+        final QueueDescriptionEntry entry = serializer.deserialize(contents, QueueDescriptionEntry.class);
+
+        // Assert
+        assertNotNull(entry);
+        assertNotNull(entry.getContent());
+
+        final QueueDescription actual = entry.getContent().getQueueDescription();
+        assertQueueEquals(expected, EntityStatus.ACTIVE, actual);
+
+        final List<AuthorizationRule> actualRules = actual.getAuthorizationRules().stream()
+            .map(TestAuthorizationRule::new)
+            .collect(Collectors.toList());
+        TestUtils.assertAuthorizationRules(expected.getAuthorizationRules(), actualRules);
+    }
 
     /**
      * Verify we can deserialize XML from a GET queue request.
@@ -845,5 +892,67 @@ class ServiceBusManagementSerializerTest {
         map.put("", entityName);
         map.put("type", "text");
         return map;
+    }
+
+    private static class TestAuthorizationRule implements AuthorizationRule {
+        private final List<AccessRights> accessRights;
+        private final String claimType;
+        private final String claimValue;
+        private final String keyName;
+        private final OffsetDateTime createdAt;
+        private final OffsetDateTime modifiedAt;
+        private final String primaryKey;
+        private final String secondaryKey;
+
+        TestAuthorizationRule(AuthorizationRuleImpl rule) {
+            this.accessRights = rule.getRights();
+            this.claimType = rule.getClaimType();
+            this.claimValue = rule.getClaimValue();
+            this.createdAt = rule.getCreatedTime();
+            this.keyName = rule.getKeyName();
+            this.modifiedAt = rule.getModifiedTime();
+            this.primaryKey = rule.getPrimaryKey();
+            this.secondaryKey = rule.getSecondaryKey();
+        }
+
+        @Override
+        public List<AccessRights> getAccessRights() {
+            return accessRights;
+        }
+
+        @Override
+        public String getClaimType() {
+            return claimType;
+        }
+
+        @Override
+        public String getClaimValue() {
+            return claimValue;
+        }
+
+        @Override
+        public OffsetDateTime getCreatedAt() {
+            return createdAt;
+        }
+
+        @Override
+        public String getKeyName() {
+            return keyName;
+        }
+
+        @Override
+        public OffsetDateTime getModifiedAt() {
+            return modifiedAt;
+        }
+
+        @Override
+        public String getPrimaryKey() {
+            return primaryKey;
+        }
+
+        @Override
+        public String getSecondaryKey() {
+            return secondaryKey;
+        }
     }
 }

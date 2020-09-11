@@ -71,6 +71,16 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueriesQueryTwinsResponse> queryTwinsWithResponseAsync(
             QuerySpecification querySpecification, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (querySpecification == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter querySpecification is required and cannot be null."));
+        } else {
+            querySpecification.validate();
+        }
         return service.queryTwins(this.client.getHost(), this.client.getApiVersion(), querySpecification, context);
     }
 }

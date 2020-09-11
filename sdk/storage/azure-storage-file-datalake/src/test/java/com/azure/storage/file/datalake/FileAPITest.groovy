@@ -3616,6 +3616,7 @@ class FileAPITest extends APISpec {
         20 * Constants.KB || _  /* Greater than copyToOutputStream buffer size, Less than maxSingleUploadSize */
     }
 
+    @Requires({ liveMode() }) /* Flaky in playback. */
     def "Upload input stream large data"() {
         setup:
         def randomData = getRandomByteArray(20 * Constants.MB)
@@ -3649,6 +3650,7 @@ class FileAPITest extends APISpec {
 
     /* Due to the inability to spy on a private method, we are just calling the async client with the input stream constructor */
     @Unroll
+    @Requires({ liveMode() }) /* Flaky in playback. */
     def "Upload numAppends"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
