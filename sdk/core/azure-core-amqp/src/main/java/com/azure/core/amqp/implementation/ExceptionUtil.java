@@ -63,6 +63,8 @@ public final class ExceptionUtil {
             case PARTITION_NOT_OWNED_ERROR:
             case STORE_LOCK_LOST_ERROR:
             case RESOURCE_LIMIT_EXCEEDED:
+            case PRODUCER_EPOCH_STOLEN:
+            case OUT_OF_ORDER_SEQUENCE:
                 isTransient = false;
                 break;
             case NOT_IMPLEMENTED:
