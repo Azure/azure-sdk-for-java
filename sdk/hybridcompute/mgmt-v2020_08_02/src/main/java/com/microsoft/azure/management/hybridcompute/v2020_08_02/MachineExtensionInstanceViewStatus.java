@@ -18,31 +18,31 @@ public class MachineExtensionInstanceViewStatus {
     /**
      * The status code.
      */
-    @JsonProperty(value = "code")
+    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /**
      * The level code. Possible values include: 'Info', 'Warning', 'Error'.
      */
-    @JsonProperty(value = "level")
+    @JsonProperty(value = "level", access = JsonProperty.Access.WRITE_ONLY)
     private StatusLevelTypes level;
 
     /**
      * The short localizable label for the status.
      */
-    @JsonProperty(value = "displayStatus")
+    @JsonProperty(value = "displayStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String displayStatus;
 
     /**
      * The detailed status message, including for alerts and error messages.
      */
-    @JsonProperty(value = "message")
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
      * The time of the status.
      */
-    @JsonProperty(value = "time")
+    @JsonProperty(value = "time", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime time;
 
     /**
@@ -55,34 +55,12 @@ public class MachineExtensionInstanceViewStatus {
     }
 
     /**
-     * Set the status code.
-     *
-     * @param code the code value to set
-     * @return the MachineExtensionInstanceViewStatus object itself.
-     */
-    public MachineExtensionInstanceViewStatus withCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
      * Get the level code. Possible values include: 'Info', 'Warning', 'Error'.
      *
      * @return the level value
      */
     public StatusLevelTypes level() {
         return this.level;
-    }
-
-    /**
-     * Set the level code. Possible values include: 'Info', 'Warning', 'Error'.
-     *
-     * @param level the level value to set
-     * @return the MachineExtensionInstanceViewStatus object itself.
-     */
-    public MachineExtensionInstanceViewStatus withLevel(StatusLevelTypes level) {
-        this.level = level;
-        return this;
     }
 
     /**
@@ -95,17 +73,6 @@ public class MachineExtensionInstanceViewStatus {
     }
 
     /**
-     * Set the short localizable label for the status.
-     *
-     * @param displayStatus the displayStatus value to set
-     * @return the MachineExtensionInstanceViewStatus object itself.
-     */
-    public MachineExtensionInstanceViewStatus withDisplayStatus(String displayStatus) {
-        this.displayStatus = displayStatus;
-        return this;
-    }
-
-    /**
      * Get the detailed status message, including for alerts and error messages.
      *
      * @return the message value
@@ -115,34 +82,12 @@ public class MachineExtensionInstanceViewStatus {
     }
 
     /**
-     * Set the detailed status message, including for alerts and error messages.
-     *
-     * @param message the message value to set
-     * @return the MachineExtensionInstanceViewStatus object itself.
-     */
-    public MachineExtensionInstanceViewStatus withMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    /**
      * Get the time of the status.
      *
      * @return the time value
      */
     public DateTime time() {
         return this.time;
-    }
-
-    /**
-     * Set the time of the status.
-     *
-     * @param time the time value to set
-     * @return the MachineExtensionInstanceViewStatus object itself.
-     */
-    public MachineExtensionInstanceViewStatus withTime(DateTime time) {
-        this.time = time;
-        return this;
     }
 
 }
