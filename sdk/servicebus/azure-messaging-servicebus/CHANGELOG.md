@@ -1,5 +1,8 @@
 # Release History
 
+## 7.0.0-beta.7 (Unreleased)
+
+
 ## 7.0.0-beta.6 (2020-09-11)
 - Add Amqp Message envelope in form of `AmqpAnnotatedMessage` as a property of `ServiceBusReceivedMessage` and
   `ServiceBusMessage`.
