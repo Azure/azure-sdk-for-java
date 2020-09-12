@@ -18,6 +18,20 @@ public class SamplesConstants {
     public static final String COMPONENT_ID = "COMPONENT_ID";
     public static final String MODEL_ID = "MODEL_ID";
 
+    public static final String TEMPORARY_TWIN_PAYLOAD =
+        "{" +
+            "\"$metadata\" {" +
+                "\"$model\": \""+ MODEL_ID + "\"" +
+            "}," +
+            "\"Prop1\": \"Value\"," +
+            "\"Prop2\": 987," +
+            "\"Component1\":{" +
+                "\"$metadata\":{}" +
+                "\"ComponentProp1\": \"Value\"," +
+                "\"ComponentProp2\": 123" +
+            "}" +
+        "}";
+
     public static final String TEMPORARY_COMPONENT_MODEL_PAYLOAD =
         "{" +
             "\"@id\": \"" + COMPONENT_ID + "\","+
