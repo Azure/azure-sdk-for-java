@@ -22,6 +22,8 @@ import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -213,7 +215,7 @@ public class EventData {
     }
 
     /**
-     * Gets the sequence number that was assigned during publishing, if the event was successfully
+     * Gets the producer sequence number that was assigned during publishing, if the event was successfully
      * published by a sequence-aware producer.  If the producer was not configured to apply
      * sequence numbering or if the event has not yet been successfully published, this member
      * will be {@code null}.
@@ -226,6 +228,38 @@ public class EventData {
      */
     public Integer getPublishedSequenceNumber() {
         return systemProperties.getPublishedSequenceNumber();
+    }
+
+    /**
+     * Gets the producer group id that was assigned during publishing, if the event was successfully
+     * published by a sequence-aware producer.  If the producer was not configured to apply
+     * sequence numbering or if the event has not yet been successfully published, this member
+     * will be {@code null}.
+     *
+     * The producer group id is only populated and relevant when certain features
+     * of the producer are enabled. For example, it is used by idempotent publishing.
+     *
+     * @return The producer group id assigned to the event at the time it was successfully published.
+     * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
+     */
+    public Long getPublishedGroupId() {
+        return systemProperties.getPublishedGroupId();
+    }
+
+    /**
+     * Gets the producer owner level that was assigned during publishing, if the event was successfully
+     * published by a sequence-aware producer.  If the producer was not configured to apply
+     * sequence numbering or if the event has not yet been successfully published, this member
+     * will be {@code null}.
+     *
+     * The producer owner level is only populated and relevant when certain features
+     * of the producer are enabled. For example, it is used by idempotent publishing.
+     *
+     * @return The producer owner level assigned to the event at the time it was successfully published.
+     * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
+     */
+    public Short getPublishedOwnerLevel() {
+        return systemProperties.getPublishedOwnerLevel();
     }
 
     /**
@@ -286,7 +320,6 @@ public class EventData {
         private final String partitionKey;
         private final Instant enqueuedTime;
         private final Long sequenceNumber;
-        private final Integer publishedSequenceNumber;
 
         SystemProperties() {
             super();
@@ -294,7 +327,6 @@ public class EventData {
             partitionKey = null;
             enqueuedTime = null;
             sequenceNumber = null;
-            publishedSequenceNumber = null;
         }
 
         SystemProperties(final Map<String, Object> map) {
@@ -324,10 +356,6 @@ public class EventData {
             }
             this.sequenceNumber = sequenceNumber;
             put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.sequenceNumber);
-
-            this.publishedSequenceNumber = removeSystemProperty(
-                PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
-            put(PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.publishedSequenceNumber);
         }
 
         /**
@@ -371,7 +399,15 @@ public class EventData {
         }
 
         private Integer getPublishedSequenceNumber() {
-            return publishedSequenceNumber;
+            return (Integer) this.get(PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+        }
+
+        private Long getPublishedGroupId() {
+            return (Long) this.get(PRODUCER_ID_ANNOTATION_NAME.getValue());
+        }
+
+        private Short getPublishedOwnerLevel() {
+            return (Short) this.get(PRODUCER_EPOCH_ANNOTATION_NAME.getValue());
         }
 
         @SuppressWarnings("unchecked")

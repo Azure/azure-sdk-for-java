@@ -68,7 +68,7 @@ public final class PartitionPublishingState {
      * {@link EventHubProducerClient} is unable to publish events to the
      * Event Hub partition for the given producer group id. In this case, the errorCondition of
      * {@link com.azure.core.amqp.exception.AmqpException} will be set to
-     * {@link com.azure.core.amqp.exception.AmqpErrorCondition#PRODUCER_DISCONNECTED}.
+     * {@link com.azure.core.amqp.exception.AmqpErrorCondition#PRODUCER_EPOCH_STOLEN}.
      *
      * @see EventHubClientBuilder#enableIdempotentPartitionPublishing()
      *

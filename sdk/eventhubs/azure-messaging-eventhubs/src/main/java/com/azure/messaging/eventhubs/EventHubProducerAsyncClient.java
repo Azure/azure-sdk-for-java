@@ -445,6 +445,9 @@ public class EventHubProducerAsyncClient implements Closeable {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         } else if (options == null) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
+        } else if (options.getPartitionId() == null && this.isIdempotentProducer()) {
+            return monoError(logger, new IllegalArgumentException("Please set the partition id in `options` "
+                + "because this producer client is an idempotent producer"));
         }
 
         return sendInternal(events, options).publishOn(scheduler);
@@ -494,16 +497,18 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }
                 tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, event.getContext()));
             }
-            final Message message = messageSerializer.serialize(event);
+            if (!enableIdempotentPartitions) {
+                final Message message = messageSerializer.serialize(event);
 
-            if (!CoreUtils.isNullOrEmpty(partitionKey)) {
-                final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
-                    ? new MessageAnnotations(new HashMap<>())
-                    : message.getMessageAnnotations();
-                messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
-                message.setMessageAnnotations(messageAnnotations);
+                if (!CoreUtils.isNullOrEmpty(partitionKey)) {
+                    final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
+                        ? new MessageAnnotations(new HashMap<>())
+                        : message.getMessageAnnotations();
+                    messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
+                    message.setMessageAnnotations(messageAnnotations);
+                }
+                messages.add(message);
             }
-            messages.add(message);
         }
 
         if (isTracingEnabled) {
@@ -518,13 +523,15 @@ public class EventHubProducerAsyncClient implements Closeable {
         }
         if (this.enableIdempotentPartitions) {
             PartitionPublishingState publishingState = this.getClientPartitionPublishingState(batch.getPartitionId());
-            try {
-                // Ensure only one EventDataBatch of a partition is being sent at a time.
-                publishingState.getSendingSemaphore().acquire();
-            } catch (InterruptedException e) {
-                return monoError(logger, new RuntimeException(e));
-            }
-            return withRetry(
+            return Mono.fromRunnable(() -> {
+                try {
+                    // Ensure only one EventDataBatch of a partition is being sent at a time.
+                    publishingState.getSendingSemaphore().acquire();
+                } catch (InterruptedException e) {
+                    throw logger.logExceptionAsError(new RuntimeException(e));
+                }
+            }).then(
+                withRetry(
                 getSendLink(batch.getPartitionId())
                 .map(link -> {
                     int seqNumber = publishingState.getSequenceNumber();
@@ -533,7 +540,25 @@ public class EventHubProducerAsyncClient implements Closeable {
                         eventData.getSystemProperties().put(
                             AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
                             seqNumber);
+                        eventData.getSystemProperties().put(
+                            AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue(),
+                            publishingState.getOwnerLevel()
+                        );
+                        eventData.getSystemProperties().put(
+                            AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue(),
+                            publishingState.getProducerGroupId()
+                        );
                         seqNumber = PartitionPublishingUtils.incrementSequenceNumber(seqNumber);
+                        final Message message = messageSerializer.serialize(eventData);
+
+                        if (!CoreUtils.isNullOrEmpty(partitionKey)) {
+                            final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
+                                ? new MessageAnnotations(new HashMap<>())
+                                : message.getMessageAnnotations();
+                            messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
+                            message.setMessageAnnotations(messageAnnotations);
+                        }
+                        messages.add(message);
                     }
                     return link;
                 })
@@ -552,8 +577,10 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }))
                 // Release the partition state semaphore
                 .doFinally(
-                    signal -> publishingState.getSendingSemaphore().release()
-                ).then();
+                    signal -> {
+                        publishingState.getSendingSemaphore().release();
+                    }
+                )).then();
         } else {
             return withRetry(getSendLink(batch.getPartitionId())
                 .flatMap(link -> messages.size() == 1
@@ -650,7 +677,8 @@ public class EventHubProducerAsyncClient implements Closeable {
     private void setPartitionPublishingState(
         String partitionId, Long producerGroupId, Short ownerLevel, Integer sequenceNumber) {
         PartitionPublishingState publishingState = getClientPartitionPublishingState(partitionId);
-        if (publishingState != null && publishingState.getSequenceNumber() <= sequenceNumber) {
+        if (publishingState != null
+            && (publishingState.getSequenceNumber() == null || publishingState.getSequenceNumber() <= sequenceNumber)) {
             publishingState.setOwnerLevel(ownerLevel);
             publishingState.setProducerGroupId(producerGroupId);
             publishingState.setSequenceNumber(sequenceNumber);
@@ -668,7 +696,8 @@ public class EventHubProducerAsyncClient implements Closeable {
                     linkName, entityPath, retryOptions, true, getClientPartitionPublishingState(partitionId))
                 : connection.createSendLink(
                     linkName, entityPath, retryOptions))
-            .flatMap(amqpSendLink -> this.updatePublishingState(partitionId, amqpSendLink));
+            .flatMap(amqpSendLink ->
+                this.updatePublishingState(partitionId, amqpSendLink));
     }
 
     /**

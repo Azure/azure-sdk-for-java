@@ -98,6 +98,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             desiredCapabilities = new Symbol[]{ENABLE_IDEMPOTENT_PRODUCER};
 
             properties = new HashMap<>();
+            // TODO: confirming with service team whether we should pass null or don't pass anything when value is null.
             properties.put(PRODUCER_EPOCH, publishingState.getOwnerLevel());
             properties.put(PRODUCER_ID, publishingState.getProducerGroupId());
             properties.put(PRODUCER_SEQUENCE_NUMBER, publishingState.getSequenceNumber());

@@ -219,6 +219,12 @@ public final class EventDataBatch {
             messageAnnotations.getValue().put(
                 Symbol.getSymbol(
                     AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), Integer.MAX_VALUE);
+            messageAnnotations.getValue().put(
+                Symbol.getSymbol(
+                    AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue()), Short.MAX_VALUE);
+            messageAnnotations.getValue().put(
+                Symbol.getSymbol(
+                    AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue()), Long.MAX_VALUE);
         }
         int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
         eventSize += 16; // data section overhead
@@ -294,6 +300,8 @@ public final class EventDataBatch {
                         case REPLY_TO_GROUP_ID:
                             message.setReplyToGroupId((String) value);
                             break;
+                        case PRODUCER_EPOCH_ANNOTATION_NAME:
+                        case PRODUCER_ID_ANNOTATION_NAME:
                         case PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME:
                             final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
                                 ? new MessageAnnotations(new HashMap<>())

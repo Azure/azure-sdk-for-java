@@ -461,6 +461,10 @@ public class EventHubClientBuilder {
      *     proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubProducerAsyncClient buildAsyncProducerClient() {
+        if (initialPartitionPublishingStates != null && !enableIdempotentPartitionPublishing) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'initialPartitionPublishingStates' "
+                + "shouldn't be set if 'enableIdempotentPartitionPublishing' is not set."));
+        }
         return buildAsyncClient().createProducer();
     }
 

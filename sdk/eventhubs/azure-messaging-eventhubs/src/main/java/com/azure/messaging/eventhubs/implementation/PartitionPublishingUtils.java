@@ -17,7 +17,7 @@ public class PartitionPublishingUtils {
         if (Integer.MAX_VALUE - delta >= value) {
             return value + delta;
         } else {
-            return delta - (Integer.MAX_VALUE - value);
+            return delta - (Integer.MAX_VALUE - value) - 1;
         }
     }
 
