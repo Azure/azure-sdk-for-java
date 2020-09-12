@@ -13,7 +13,8 @@
 - Add ability to authenticate using SAS.
 - Add support for `AuthorizationRules` during management operations.
 - Rename `ServiceBusManagementClient` to `ServiceBusAdministrationClient`.
-- Remove `ServiceBusDeadletterReceiverBuilder` and replaced with `SubQueue` type to access transfer, deadletter queue.
+- Remove `ServiceBusDeadletterReceiverBuilder` and replaced with `SubQueue` type to access transfer deadletter and 
+  deadletter queue.
 - Remove settlement operations that take `String lockToken`, replaced with `ServiceBusReceivedMessage`.
 
 ## 7.0.0-beta.5 (2020-08-11)
