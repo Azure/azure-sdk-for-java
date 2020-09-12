@@ -50,7 +50,7 @@ public class PublishTelemetrySyncSamples {
 
     public static void runPublishTelemetrySample() throws JsonProcessingException {
 
-        ConsoleLogger.printHeader("COMPONENT SAMPLES");
+        ConsoleLogger.printHeader("Telemetry Samples");
 
         // For the purpose of this example we will create temporary models using a random model Ids.
         // We have to make sure these model Ids are unique within the DT instance.
@@ -76,18 +76,22 @@ public class PublishTelemetrySyncSamples {
             ConsoleLogger.print("Created model: " + model.getId());
         }
 
+        ConsoleLogger.printHeader("Create DigitalTwin");
+
         String twinPayload = SamplesConstants.TEMPORARY_TWIN_PAYLOAD
             .replace(SamplesConstants.MODEL_ID, modelId);
 
         client.createDigitalTwin(digitalTwinId, twinPayload);
 
-        ConsoleLogger.print("Created digital twin " + digitalTwinId);
+        ConsoleLogger.printSuccess("Created digital twin " + digitalTwinId);
         try
         {
+            ConsoleLogger.printHeader("Publish Telemetry");
             // construct your json telemetry payload by hand.
             client.publishTelemetry(digitalTwinId, "{\"Telemetry1\": 5}");
             ConsoleLogger.print("Published telemetry message to twin " + digitalTwinId);
 
+            ConsoleLogger.printHeader("Publish Component Telemetry");
             PublishTelemetryRequestOptions componentTelemetryRequestOptions = new PublishTelemetryRequestOptions();
 
             // construct your json telemetry payload using a hashtable.
@@ -102,7 +106,7 @@ public class PublishTelemetrySyncSamples {
                 componentTelemetryRequestOptions,
                 Context.NONE);
 
-            ConsoleLogger.print("Published component telemetry message to twin " + digitalTwinId);
+            ConsoleLogger.printSuccess("Published component telemetry message to twin " + digitalTwinId);
         }
         catch (Exception ex)
         {
