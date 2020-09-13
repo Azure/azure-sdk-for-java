@@ -1,5 +1,8 @@
 # Release History
 
+## 4.5.0-beta.1 (Unreleased)
+
+
 ## 4.4.0 (2020-09-12)
 ### Key Bug Fixes
 * Fixed RequestTimeoutException when enabling `netty-tcnative-boringssl` dependency.
