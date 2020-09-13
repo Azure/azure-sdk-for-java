@@ -535,19 +535,10 @@ public class EventHubProducerAsyncClient implements Closeable {
                 getSendLink(batch.getPartitionId())
                 .map(link -> {
                     int seqNumber = publishingState.getSequenceNumber();
-                    batch.setStartingPublishedSequenceNumber(seqNumber);
                     for (EventData eventData : batch.getEvents()) {
-                        eventData.getSystemProperties().put(
-                            AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
-                            seqNumber);
-                        eventData.getSystemProperties().put(
-                            AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue(),
-                            publishingState.getOwnerLevel()
-                        );
-                        eventData.getSystemProperties().put(
-                            AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue(),
-                            publishingState.getProducerGroupId()
-                        );
+                        eventData.setInternalProducerGroupId(publishingState.getProducerGroupId());
+                        eventData.setInternalPublishedSequenceNumber(seqNumber);
+                        eventData.setInternalProducerOwnerLevel(publishingState.getOwnerLevel());
                         seqNumber = PartitionPublishingUtils.incrementSequenceNumber(seqNumber);
                         final Message message = messageSerializer.serialize(eventData);
 
@@ -573,6 +564,11 @@ public class EventHubProducerAsyncClient implements Closeable {
                     }
                 })
                 .then(Mono.fromRunnable(() -> {
+                    // Update back if send is successful
+                    batch.setStartingPublishedSequenceNumber(publishingState.getSequenceNumber());
+                    for (EventData eventData : batch.getEvents()) {
+                        eventData.commitInternalProducerData();
+                    }
                     publishingState.increaseSequenceNumber(batch.getCount());
                 }))
                 // Release the partition state semaphore

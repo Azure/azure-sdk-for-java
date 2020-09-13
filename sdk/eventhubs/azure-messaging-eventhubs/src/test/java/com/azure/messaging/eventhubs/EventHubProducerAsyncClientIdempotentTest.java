@@ -41,8 +41,8 @@ class EventHubProducerAsyncClientIdempotentTest {
         + "SharedAccessKey=anAccessKey;EntityPath=anEventHub";
 
     private static final Long PRODUCER_GROUP_ID = 1L;
-    private static final Short PRODUCER_OWNER_LEVEL = (short) 1;
-    private static final Integer PRODUCER_SEQ_NUMBER = 1;
+    private static final Short PRODUCER_OWNER_LEVEL = (short) 10;
+    private static final Integer PRODUCER_SEQ_NUMBER = 100;
 
     @Mock
     private AmqpSendLink sendLink;
@@ -243,10 +243,22 @@ class EventHubProducerAsyncClientIdempotentTest {
         EventData eventData2 = new EventData("This is a test event");
         batch2.tryAdd(eventData2);
 
+        assertNull(eventData1.getPublishedSequenceNumber());
+        assertNull(eventData1.getPublishedGroupId());
+        assertNull(eventData1.getPublishedOwnerLevel());
+        assertNull(batch1.getStartingPublishedSequenceNumber());
+
         StepVerifier.create(Mono.when(producer.send(batch1), producer.send(batch2))).verifyComplete();
 
         assertEquals(eventData1.getPublishedSequenceNumber(), PRODUCER_SEQ_NUMBER);
+        assertEquals(eventData1.getPublishedGroupId(), PRODUCER_GROUP_ID);
+        assertEquals(eventData1.getPublishedOwnerLevel(), PRODUCER_OWNER_LEVEL);
+        assertEquals(batch1.getStartingPublishedSequenceNumber(), PRODUCER_SEQ_NUMBER);
+
         assertEquals(eventData2.getPublishedSequenceNumber(), PRODUCER_SEQ_NUMBER + 1);
+        assertEquals(eventData2.getPublishedGroupId(), PRODUCER_GROUP_ID);
+        assertEquals(eventData2.getPublishedOwnerLevel(), PRODUCER_OWNER_LEVEL);
+        assertEquals(batch2.getStartingPublishedSequenceNumber(), PRODUCER_SEQ_NUMBER + 1);
 
         StepVerifier.create(producer.getPartitionPublishingState(PARTITION_0))
             .assertNext(state -> {

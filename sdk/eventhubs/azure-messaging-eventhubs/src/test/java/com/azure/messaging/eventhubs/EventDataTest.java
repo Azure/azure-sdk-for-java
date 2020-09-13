@@ -88,7 +88,7 @@ public class EventDataTest {
     @Test
     public void testSystemProperties() {
         EventData eventData = constructMessage(5);
-        Assertions.assertEquals(4, eventData.getSystemProperties().size());
+        Assertions.assertEquals(3, eventData.getSystemProperties().size());
         Assertions.assertEquals(OFFSET, eventData.getSystemProperties().get(OFFSET_ANNOTATION_NAME.getValue()));
         Assertions.assertEquals(5L, eventData.getSystemProperties().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
         Assertions.assertEquals(ENQUEUED_TIME,

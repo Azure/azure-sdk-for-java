@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.util.Context;
 
 import java.nio.ByteBuffer;
@@ -58,6 +59,10 @@ public class EventData {
     private final byte[] body;
     private final SystemProperties systemProperties;
     private Context context;
+
+    private Long publishedGroupId;
+    private Short publishedOwnerLevel;
+    private Integer publishedSequenceNumber;
 
     static {
         final Set<String> properties = new HashSet<>();
@@ -227,7 +232,7 @@ public class EventData {
      * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
      */
     public Integer getPublishedSequenceNumber() {
-        return systemProperties.getPublishedSequenceNumber();
+        return publishedSequenceNumber;
     }
 
     /**
@@ -243,7 +248,7 @@ public class EventData {
      * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
      */
     public Long getPublishedGroupId() {
-        return systemProperties.getPublishedGroupId();
+        return publishedGroupId;
     }
 
     /**
@@ -259,7 +264,33 @@ public class EventData {
      * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
      */
     public Short getPublishedOwnerLevel() {
-        return systemProperties.getPublishedOwnerLevel();
+        return publishedOwnerLevel;
+    }
+
+    void setInternalProducerGroupId(Long internalProducerGroupId) {
+        this.getSystemProperties().put(
+            AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue(),
+            internalProducerGroupId
+        );
+    }
+
+    void setInternalProducerOwnerLevel(Short internalProducerOwnerLevel) {
+        this.getSystemProperties().put(
+            AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue(),
+            internalProducerOwnerLevel
+        );
+    }
+
+    void setInternalPublishedSequenceNumber(Integer internalPublishedSequenceNumber) {
+        this.getSystemProperties().put(
+            AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+            internalPublishedSequenceNumber);
+    }
+
+    void commitInternalProducerData() {
+        this.publishedGroupId = this.systemProperties.getPublishedGroupId();
+        this.publishedOwnerLevel = this.systemProperties.getPublishedOwnerLevel();
+        this.publishedSequenceNumber = this.systemProperties.getPublishedSequenceNumber();
     }
 
     /**
@@ -356,6 +387,9 @@ public class EventData {
             }
             this.sequenceNumber = sequenceNumber;
             put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.sequenceNumber);
+
+            // TODO: confirm with Connie why we remove a value from this SystemProperty and then add it back?
+            // Do we need to do the same for publishedGroupId, publishedOwnerLevel, and publishedSequenceNumber
         }
 
         /**
