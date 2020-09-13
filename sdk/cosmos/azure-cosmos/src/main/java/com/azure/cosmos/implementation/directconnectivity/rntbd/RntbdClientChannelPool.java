@@ -37,7 +37,9 @@ import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -349,9 +351,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 this.acquireChannel(promise);
             } else {
 
-//                this.executor.execute(() -> this.acquireChannel(promise));
+                // TODO: moderakh ensure/validate in all conditions we run the tasks
 
-                if (channels() > 0) {
+
+                if (channels() > 0 && pendingAcquisitions.size() > 1000) {
                     addTaskToPendingAcquisitionQueue(promise);
                 } else {
                     // TODO: moderakh if the endpoint is bad the timer, health check has to cancel all the pending requests
@@ -637,6 +640,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     }
 
     private double computeLoadFactor() {
+        // TODO: moderakh improve logic and use in acquire?
         ensureInEventLoop();
 
         long pendingRequestCountMin = Long.MAX_VALUE;
@@ -761,22 +765,36 @@ public final class RntbdClientChannelPool implements ChannelPool {
         // NOTE: we must dispatch this request on another thread--the closer thread--as this.doClose is called on
         // this.executor and we need to ensure we will not block it.
 
-        closer.submit(() -> {
+        this.executor.submit(() -> {
 
+            // TODO: moderakh how can we ensure no one else is creating connections right now ???
+            // validate race condition
             ensureInEventLoop();
 
             this.availableChannels.addAll(this.acquiredChannels.values());
             this.acquiredChannels.clear();
 
+            List<Channel> channelList = new ArrayList<>();
+
             for (; ; ) {
+                // will remove from available channels
                 final Channel channel = this.pollChannel();
                 if (channel == null) {
                     break;
                 }
-                channel.close().awaitUninterruptibly(); // block and ignore errors reported back from channel.close
+
+                channelList.add(channel);
             }
 
             assert this.acquiredChannels.isEmpty() && this.availableChannels.isEmpty();
+
+            closer.submit(() -> {
+                    for (Channel channel : channelList) {
+                        channel.close().awaitUninterruptibly(); // block and ignore errors reported back from channel
+                        // .close
+                    }
+                }
+            );
 
         }).addListener(closed -> {
             if (!closed.isSuccess()) {
@@ -1373,7 +1391,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
     // endregion
 
-
+    @SuppressWarnings("unchecked")
     private void monitoring() {
         ex.scheduleAtFixedRate(() -> {
             int i = getTaskCount();
