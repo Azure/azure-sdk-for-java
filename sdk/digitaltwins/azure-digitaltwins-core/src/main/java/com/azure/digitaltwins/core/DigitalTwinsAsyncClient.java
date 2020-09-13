@@ -17,12 +17,7 @@ import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
-import com.azure.digitaltwins.core.models.EventRoute;
-import com.azure.digitaltwins.core.models.EventRoutesListOptions;
-import com.azure.digitaltwins.core.models.IncomingRelationship;
-import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.serialization.BasicRelationship;
-import com.azure.digitaltwins.core.util.*;
+import com.azure.digitaltwins.core.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -1042,7 +1037,7 @@ public final class DigitalTwinsAsyncClient {
      * Patch a component on a digital twin.
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
-     * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+     * @param componentUpdateOperations The application json patch to apply to the component. See {@link UpdateOperationUtility} for building
      *                                  this argument.
      * @return An empty Mono.
      */
@@ -1056,7 +1051,7 @@ public final class DigitalTwinsAsyncClient {
      * Patch a component on a digital twin.
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
-     * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+     * @param componentUpdateOperations The application json patch to apply to the component. See {@link UpdateOperationUtility} for building
      *                                  this argument.
      * @param options The optional parameters for this request.
      * @return A {@link DigitalTwinsResponse} containing an empty Mono.
