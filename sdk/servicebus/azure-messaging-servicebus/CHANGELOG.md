@@ -1,19 +1,30 @@
 # Release History
-## 7.0.0-beta.6 (Unreleased)
-- Exposing Amqp Message envelope in form of `AmqpAnnotatedMessage` as a property of `ServiceBusReceivedMessage` and `ServiceBusMessage`.
-- Removed `ServiceBusReceiverClientBuilder.maxAutoLockRenewalDuration`. Use method `getAutoRenewMessageLock` of classes `ServiceBusReceiverClient`
-  and `ServiceBusReceiverAsyncClient` to lock messages and sessions.
-- Updated datetime related APIs to use `java.time.OffsetDateTime` instead of `java.time.Instant`.
-- Removed `scheduledMessageCount` from `SubscriptionRuntimeInfo` and added it to `TopicRuntimeInfo`.
-- Changed `QueueRuntimeInfo`, `TopicRuntimeInfo` and `SubscriptionRuntimeInfo` to `QueueRuntimeProperties`, `TopicRuntimeProperties`
-  and `SubscriptionRuntimeProperties` respectively.
- 
+
+## 7.0.0-beta.7 (Unreleased)
+
+
+## 7.0.0-beta.6 (2020-09-11)
+- Add Amqp Message envelope in form of `AmqpAnnotatedMessage` as a property of `ServiceBusReceivedMessage` and
+  `ServiceBusMessage`.
+- Remove `ServiceBusReceiverClientBuilder.maxAutoLockRenewalDuration`. Use method `renewMessageLock` and
+  `renewSessionLock` of classes `ServiceBusReceiverClient` and `ServiceBusReceiverAsyncClient` to lock messages and
+  sessions.
+- Update datetime related APIs to use `java.time.OffsetDateTime` instead of `java.time.Instant`.
+- Remove `scheduledMessageCount` from `SubscriptionRuntimeInfo` and added it to `TopicRuntimeInfo`.
+- Change `QueueRuntimeInfo`, `TopicRuntimeInfo` and `SubscriptionRuntimeInfo` to `QueueRuntimeProperties`,
+  `TopicRuntimeProperties` and `SubscriptionRuntimeProperties` respectively.
+- Add ability to authenticate using SAS.
+- Add support for `AuthorizationRules` during management operations.
+- Rename `ServiceBusManagementClient` to `ServiceBusAdministrationClient`.
+- Remove `ServiceBusDeadletterReceiverBuilder` and replaced with `SubQueue` type to access transfer deadletter and 
+  deadletter queue.
+- Remove settlement operations that take `String lockToken`, replaced with `ServiceBusReceivedMessage`.
 
 ## 7.0.0-beta.5 (2020-08-11)
 - Remove public constructor for QueueDescription, TopicDescription, SubscriptionDescription.
 - Expose CreateQueueOptions, CreateTopicOptions, CreateSubscriptionOptions to create entities.
 - Flatten and remove MessageCountDetails in QueueRuntimeInfo, TopicRuntimeInfo, and SubscriptionRuntimeInfo.
-- Limiting visibility of properties on QueueDescription, TopicDescription, SubscriptionDescription to only those that 
+- Limiting visibility of properties on QueueDescription, TopicDescription, SubscriptionDescription to only those that
   can be updated.
 - Added a short timeout of 1 second in between messages for sync receive only.
 
@@ -27,7 +38,7 @@
 ## 7.0.0-beta.3 (2020-06-08)
 - Add support for transaction feature in all the clients.
 - Add support for management operations on a Queue.
- 
+
 ## 7.0.0-beta.2 (2020-05-07)
 
 - Add support for receiving messages from specific sessions

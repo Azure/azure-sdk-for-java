@@ -3,8 +3,8 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes?api-version=2020-05-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_201; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d04b9f73-4c2c-41f9-9356-a7e2ad9564f3"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_265; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "18b673e0-ee36-4e61-a493-7c2034c19ac0"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
@@ -12,16 +12,16 @@
       "Content-Length" : "28",
       "StatusCode" : "200",
       "Body" : "{\"value\":[],\"nextLink\":null}",
-      "Date" : "Thu, 10 Sep 2020 22:19:54 GMT",
+      "Date" : "Fri, 11 Sep 2020 23:07:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/02fa4dc7-77b5-4d10-8beb-085f2fb24c82?api-version=2020-05-31-preview",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/588dbb17-9ad6-4a54-aea0-4ce1f12b9050?api-version=2020-05-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_201; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cc695a93-8016-4295-964c-0d03b3b63a85",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_265; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9938be80-754f-4309-8e14-3ea4d8e56b80",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -29,23 +29,23 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Thu, 10 Sep 2020 22:19:54 GMT"
+      "Date" : "Fri, 11 Sep 2020 23:07:09 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/02fa4dc7-77b5-4d10-8beb-085f2fb24c82?api-version=2020-05-31-preview",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/588dbb17-9ad6-4a54-aea0-4ce1f12b9050?api-version=2020-05-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_201; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c0cf94ce-229d-4ba5-8773-4594a931af67"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_265; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "72284eb4-d333-4614-9553-130d438ffabb"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "189",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"02fa4dc7-77b5-4d10-8beb-085f2fb24c82\",\"endpointName\":\"someEventHubEndpoint\",\"filter\":\"$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'\"}",
-      "Date" : "Thu, 10 Sep 2020 22:19:54 GMT",
+      "Body" : "{\"id\":\"588dbb17-9ad6-4a54-aea0-4ce1f12b9050\",\"endpointName\":\"someEventHubEndpoint\",\"filter\":\"$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'\"}",
+      "Date" : "Fri, 11 Sep 2020 23:07:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -53,34 +53,34 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes?api-version=2020-05-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_201; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e532cf3d-bc10-4fe2-8c33-b9561790ddd7"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_265; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "da03b369-5c6f-4958-aa37-d1be683de6d4"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"id\":\"02fa4dc7-77b5-4d10-8beb-085f2fb24c82\",\"endpointName\":\"someEventHubEndpoint\",\"filter\":\"$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'\"}],\"nextLink\":null}",
-      "Date" : "Thu, 10 Sep 2020 22:19:55 GMT",
+      "Body" : "{\"value\":[{\"id\":\"588dbb17-9ad6-4a54-aea0-4ce1f12b9050\",\"endpointName\":\"someEventHubEndpoint\",\"filter\":\"$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'\"}],\"nextLink\":null}",
+      "Date" : "Fri, 11 Sep 2020 23:07:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/02fa4dc7-77b5-4d10-8beb-085f2fb24c82?api-version=2020-05-31-preview",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/588dbb17-9ad6-4a54-aea0-4ce1f12b9050?api-version=2020-05-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_201; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9e103606-053c-4e82-8d27-ee6643abfc74"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_265; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "052e3b51-786b-4039-b578-717980de58a8"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Thu, 10 Sep 2020 22:19:55 GMT"
+      "Date" : "Fri, 11 Sep 2020 23:07:09 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "02fa4dc7-77b5-4d10-8beb-085f2fb24c82" ]
+  "variables" : [ "588dbb17-9ad6-4a54-aea0-4ce1f12b9050" ]
 }
