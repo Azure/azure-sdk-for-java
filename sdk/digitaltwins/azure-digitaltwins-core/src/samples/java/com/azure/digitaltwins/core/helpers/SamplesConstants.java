@@ -4,21 +4,23 @@
 package com.azure.digitaltwins.core.helpers;
 
 public class SamplesConstants {
-    public static final String RoomModelId = "dtmi:samples:Room;1";
-    public static final String WifiModelId = "dtmi:samples:Wifi;1";
-    public static final String BuildingModelId = "dtmi:samples:Building;1";
-    public static final String FloorModelId = "dtmi:samples:Floor;1";
-    public static final String HvacModelId = "dtmi:samples:HVAC;1";
+    public static final String ROOM_MODEL_ID = "dtmi:samples:Room;1";
+    public static final String WIFI_MODEL_ID = "dtmi:samples:Wifi;1";
+    public static final String BUILDING_MODEL_ID = "dtmi:samples:Building;1";
+    public static final String FLOOR_MODEL_ID = "dtmi:samples:Floor;1";
+    public static final String HVAC_MODEL_ID = "dtmi:samples:HVAC;1";
 
-    public static final String TemporaryComponentModelPrefix = "dtmi:samples:ComponentModel;";
-    public static final String TemporaryModelPrefix = "dtmi:samples:TempModel;";
+    public static final String TEMPORARY_COMPONENT_MODEL_PREFIX = "dtmi:samples:ComponentModel;";
+    public static final String TEMPORARY_MODEL_PREFIX = "dtmi:samples:TempModel;";
 
-    public static final String ComponentId = "COMPONENT_ID";
-    public static final String ModelId = "MODEL_ID";
+    public static final String TEMPORARY_TWIN_PREFIX = "sampleTwin";
 
-    public static final String TemporaryComponentModelPayload =
+    public static final String COMPONENT_ID = "COMPONENT_ID";
+    public static final String MODEL_ID = "MODEL_ID";
+
+    public static final String TEMPORARY_COMPONENT_MODEL_PAYLOAD =
         "{" +
-            "\"@id\": \"" + ComponentId + "\","+
+            "\"@id\": \"" + COMPONENT_ID + "\","+
             "\"@type\": \"Interface\"," +
             "\"@context\": \"dtmi:dtdl:context;2\"," +
             "\"displayName\": \"Component1\"," +
@@ -41,9 +43,9 @@ public class SamplesConstants {
             "]" +
         "}";
 
-    public static final String TemporaryModelWithComponentPayload =
+    public static final String TEMPORARY_MODEL_WITH_COMPONENT_PAYLOAD =
         "{" +
-            "\"@id\": \""+ ModelId + "\"," +
+            "\"@id\": \""+ MODEL_ID + "\"," +
             "\"@type\": \"Interface\"," +
             "\"@context\": \"dtmi:dtdl:context;2\"," +
             "\"displayName\": \"TempModel\"," +
@@ -61,7 +63,7 @@ public class SamplesConstants {
                 "{" +
                     "\"@type\": \"Component\"," +
                     "\"name\": \"Component1\"," +
-                    "\"schema\": \"" + ComponentId + "\"" +
+                    "\"schema\": \"" + COMPONENT_ID + "\"" +
                 "}," +
                 "{" +
                     "\"@type\": \"Telemetry\"," +

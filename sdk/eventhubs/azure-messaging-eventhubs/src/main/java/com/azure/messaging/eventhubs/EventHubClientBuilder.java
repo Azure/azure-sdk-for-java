@@ -180,11 +180,20 @@ public class EventHubClientBuilder {
      *     connection string.
      */
     public EventHubClientBuilder connectionString(String connectionString) {
-        final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        final TokenCredential tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
-            properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-
+        ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+        TokenCredential tokenCredential = getTokenCredential(properties);
         return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
+    }
+
+    private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
+        TokenCredential tokenCredential;
+        if (properties.getSharedAccessSignature() == null) {
+            tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
+                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+        } else {
+            tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessSignature());
+        }
+        return tokenCredential;
     }
 
     /**
@@ -215,8 +224,7 @@ public class EventHubClientBuilder {
         }
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        final TokenCredential tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
-            properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+        TokenCredential tokenCredential = getTokenCredential(properties);
 
         if (!CoreUtils.isNullOrEmpty(properties.getEntityPath())
             && !eventHubName.equals(properties.getEntityPath())) {
@@ -706,5 +714,4 @@ public class EventHubClientBuilder {
                 coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
         }
     }
-
 }

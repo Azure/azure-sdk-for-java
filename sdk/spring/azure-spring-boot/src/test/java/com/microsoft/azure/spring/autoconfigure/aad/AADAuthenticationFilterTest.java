@@ -51,24 +51,24 @@ public class AADAuthenticationFilterTest {
 
     @Ignore
     public void beforeEveryMethod() {
-        Assume.assumeTrue(!Constants.CLIENT_ID.contains("real_client_id"));
-        Assume.assumeTrue(!Constants.CLIENT_SECRET.contains("real_client_secret"));
-        Assume.assumeTrue(!Constants.BEARER_TOKEN.contains("real_jtw_bearer_token"));
+        Assume.assumeTrue(!TestConstants.CLIENT_ID.contains("real_client_id"));
+        Assume.assumeTrue(!TestConstants.CLIENT_SECRET.contains("real_client_secret"));
+        Assume.assumeTrue(!TestConstants.BEARER_TOKEN.contains("real_jtw_bearer_token"));
     }
 
     //TODO (Zhou Liu): current test case is out of date, a new test case need to cover here, do it later.
     @Test
     @Ignore
     public void doFilterInternal() {
-        this.contextRunner.withPropertyValues(Constants.CLIENT_ID_PROPERTY, Constants.CLIENT_ID)
-                .withPropertyValues(Constants.CLIENT_SECRET_PROPERTY, Constants.CLIENT_SECRET)
-                .withPropertyValues(Constants.TARGETED_GROUPS_PROPERTY,
-                        Constants.TARGETED_GROUPS.toString()
-                                .replace("[", "").replace("]", ""));
+        this.contextRunner.withPropertyValues(TestConstants.CLIENT_ID_PROPERTY, TestConstants.CLIENT_ID)
+                .withPropertyValues(TestConstants.CLIENT_SECRET_PROPERTY, TestConstants.CLIENT_SECRET)
+                .withPropertyValues(TestConstants.TARGETED_GROUPS_PROPERTY,
+                        TestConstants.TARGETED_GROUPS.toString()
+                                                     .replace("[", "").replace("]", ""));
 
         this.contextRunner.run(context -> {
             final HttpServletRequest request = mock(HttpServletRequest.class);
-            when(request.getHeader(Constants.TOKEN_HEADER)).thenReturn(Constants.BEARER_TOKEN);
+            when(request.getHeader(TestConstants.TOKEN_HEADER)).thenReturn(TestConstants.BEARER_TOKEN);
 
             final HttpServletResponse response = mock(HttpServletResponse.class);
             final FilterChain filterChain = mock(FilterChain.class);

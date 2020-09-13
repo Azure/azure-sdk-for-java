@@ -162,11 +162,6 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
             Utils.print(linuxVM3);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -180,7 +175,6 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
             }
 
         }
-        return false;
     }
     /**
      * Main entry point.

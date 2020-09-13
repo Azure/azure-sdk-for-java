@@ -85,4 +85,18 @@ public final class Error {
         this.innererror = innererror;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getDetails() != null) {
+            getDetails().forEach(e -> e.validate());
+        }
+        if (getInnererror() != null) {
+            getInnererror().validate();
+        }
+    }
 }

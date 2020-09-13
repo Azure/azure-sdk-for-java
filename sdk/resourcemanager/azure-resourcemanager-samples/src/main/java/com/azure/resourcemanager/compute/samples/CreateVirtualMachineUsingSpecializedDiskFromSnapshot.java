@@ -239,10 +239,6 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                 System.out.println(String.format("Data disk (lun: %d) SAS Uri: %s", disk.lun(), dataDiskSasUri));
             }
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -254,7 +250,6 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
