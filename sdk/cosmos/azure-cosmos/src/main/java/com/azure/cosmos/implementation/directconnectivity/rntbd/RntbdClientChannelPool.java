@@ -26,11 +26,13 @@ import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.FutureListener;
 import io.netty.util.concurrent.Promise;
+import io.netty.util.concurrent.SingleThreadEventExecutor;
 import io.netty.util.internal.ThrowableUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.time.Duration;
@@ -40,6 +42,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -96,6 +100,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final Runnable acquisitionTimeoutTask;
     private final PooledByteBufAllocatorMetric allocatorMetric;
     private final Bootstrap bootstrap;
+    private final ScheduledExecutorService ex;
     private final EventExecutor executor;
     private final ChannelHealthChecker healthChecker;
     // private final ScheduledFuture<?> idleStateDetectionScheduledFuture;
@@ -192,6 +197,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
 //                this.runTasksInPendingAcquisitionQueue();
 //
 //            }, requestTimerResolutionInNanos, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
+
+        ex = Executors.newScheduledThreadPool(1);
+
+        monitoring();
     }
 
     // region Accessors
@@ -206,6 +215,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * @return the current channel count.
      */
     public int channels() {
+//        ensureInEventLoop();
         return this.acquiredChannels.size() + this.availableChannels.size() + (this.connecting.get() ? 1 : 0);
     }
 
@@ -215,6 +225,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * @return the current acquired channel count.
      */
     public int channelsAcquired() {
+        ensureInEventLoop();
         return this.acquiredChannels.size();
     }
 
@@ -224,6 +235,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * @return the current available channel count.
      */
     public int channelsAvailable() {
+        ensureInEventLoop();
         return this.availableChannels.size();
     }
 
@@ -336,7 +348,15 @@ public final class RntbdClientChannelPool implements ChannelPool {
             if (this.executor.inEventLoop()) {
                 this.acquireChannel(promise);
             } else {
-                this.executor.execute(() -> this.acquireChannel(promise)); // fire and forget
+
+//                this.executor.execute(() -> this.acquireChannel(promise));
+
+                if (channels() > 0) {
+                    addTaskToPendingAcquisitionQueue(promise);
+                } else {
+                    // TODO: moderakh if the endpoint is bad the timer, health check has to cancel all the pending requests
+                    this.executor.execute(() -> this.acquireChannel(promise));
+                }
             }
         } catch (Throwable cause) {
             promise.setFailure(cause);
@@ -508,15 +528,15 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     final ChannelFuture future = this.bootstrap.clone().attr(POOL_KEY, this).connect();
 
                     if (future.isDone()) {
-                        this.notifyChannelConnect(future, anotherPromise);
+                        this.safeNotifyChannelConnect(future, anotherPromise);
                     } else {
-                        future.addListener(ignored -> this.notifyChannelConnect(future, anotherPromise));
+                        future.addListener(ignored -> this.safeNotifyChannelConnect(future, anotherPromise));
                     }
 
                     return;
                 }
 
-            } else if (this.computeLoadFactor() > 0.90D) {
+            } else if (true || this.computeLoadFactor() > 0.90D) {
 
                 // All channels are swamped and we'll pick the one with the lowest pending request count
 
@@ -525,20 +545,22 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 for (Channel channel : this.availableChannels) {
 
                     final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
-                    final long pendingRequestCount = manager.pendingRequestCount();
 
-                    if (pendingRequestCount < pendingRequestCountMin) {
-                        pendingRequestCountMin = pendingRequestCount;
-                        candidate = channel;
+                    if (manager == null) {
+                        logger.warn("Channel({}) closed", channel);
+                    } else {
+                        final long pendingRequestCount = manager.pendingRequestCount();
+                        if (pendingRequestCount < pendingRequestCountMin) {
+                            pendingRequestCountMin = pendingRequestCount;
+                            candidate = channel;
+                        }
                     }
                 }
 
-                assert candidate != null;
-
-                this.availableChannels.remove(candidate);
-                doAcquireChannel(promise, candidate);
-
-                return;
+                if (candidate != null && this.availableChannels.remove(candidate)) {
+                    this.doAcquireChannel(promise, candidate);
+                    return;
+                }
             }
 
             this.addTaskToPendingAcquisitionQueue(promise);
@@ -561,7 +583,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     private void addTaskToPendingAcquisitionQueue(Promise<Channel> promise) {
 
-        this.ensureInEventLoop();
+//        this.ensureInEventLoop();
 
         if (logger.isDebugEnabled()) {
             logger.debug("{}, {}, {}, {}, {}, {}",
@@ -615,6 +637,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     }
 
     private double computeLoadFactor() {
+        ensureInEventLoop();
 
         long pendingRequestCountMin = Long.MAX_VALUE;
         long pendingRequestCountTotal = 0L;
@@ -740,6 +763,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         closer.submit(() -> {
 
+            ensureInEventLoop();
+
             this.availableChannels.addAll(this.acquiredChannels.values());
             this.acquiredChannels.clear();
 
@@ -763,6 +788,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
     }
 
     private void ensureInEventLoop() {
+        if (!this.executor.inEventLoop()) {
+            logger.error("bad");
+        }
+
         reportIssueUnless(logger, this.executor.inEventLoop(), this,
             "expected to be in event loop {}, not thread {}",
             this.executor,
@@ -839,7 +868,17 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS));
     }
 
+    private void safeNotifyChannelConnect(final ChannelFuture future, final Promise<Channel> promise) {
+
+        if (this.executor.inEventLoop()) {
+            notifyChannelConnect(future, promise);
+        } else {
+            this.executor.submit(() ->  notifyChannelConnect(future, promise));
+        }
+    }
+
     private void notifyChannelConnect(final ChannelFuture future, final Promise<Channel> promise) {
+        ensureInEventLoop();
 
         reportIssueUnless(logger, this.connecting.get(), this, "connecting: false");
 
@@ -855,6 +894,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }
 
             if (promise.trySuccess(channel)) {
+
                 this.acquiredChannels.compute(channel, (k, v) -> {
                     reportIssueUnless(logger, v == null, this, "expected null channel, not {}", v);
                     this.connecting.set(false);
@@ -875,7 +915,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final Future<Boolean> future,
         final Channel channel,
         final Promise<Channel> promise) {
-
         checkState(channel.eventLoop().inEventLoop());
 
         if (future.isSuccess()) {
@@ -936,6 +975,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * @see #acquire(Promise)
      */
     private Channel pollChannel() {
+        ensureInEventLoop();
 
         final Channel first = this.availableChannels.pollLast();
 
@@ -1044,7 +1084,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * promise} completes with an {@link IllegalStateException}.
      */
     private void releaseChannel(final Channel channel, final Promise<Void> promise) {
-
         checkState(channel.eventLoop().inEventLoop());
 
         final ChannelPool pool = channel.attr(POOL_KEY).getAndSet(null);
@@ -1088,6 +1127,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * {@link #acquire}.
      */
     private void runTasksInPendingAcquisitionQueue() {
+        ensureInEventLoop();
 
         this.ensureInEventLoop();
         int channelsAvailable = this.availableChannels.size();
@@ -1309,8 +1349,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
             generator.writeNumberField("writeDelayLimit", healthChecker.writeDelayLimitInNanos());
             generator.writeEndObject();
             generator.writeObjectFieldStart("state");
-            generator.writeNumberField("channelsAcquired", value.channelsAcquired());
-            generator.writeNumberField("channelsAvailable", value.channelsAvailable());
+//            generator.writeNumberField("channelsAcquired", value.channelsAcquired());
+//            generator.writeNumberField("channelsAvailable", value.channelsAvailable());
             generator.writeNumberField("requestQueueLength", value.requestQueueLength());
             generator.writeEndObject();
             generator.writeEndObject();
@@ -1332,4 +1372,27 @@ public final class RntbdClientChannelPool implements ChannelPool {
     }
 
     // endregion
+
+
+    private void monitoring() {
+        ex.scheduleAtFixedRate(() -> {
+            int i = getTaskCount();
+            logger.warn("{} total number of tasks on the executor [{}]", this.hashCode(), i);
+
+        }, 0, 10, TimeUnit.SECONDS);
+    }
+
+    public int getTaskCount() {
+
+        try {
+            Field f = SingleThreadEventExecutor.class.getDeclaredField("taskQueue");
+            f.setAccessible(true);
+            Queue<Runnable> queue = (Queue<Runnable>) (f.get(this.executor));
+            return queue.size();
+
+        } catch (Exception e) {
+
+        }
+        return -1;
+    }
 }

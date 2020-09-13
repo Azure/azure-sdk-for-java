@@ -59,6 +59,8 @@ import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
@@ -85,6 +87,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     private final CompletableFuture<RntbdContext> contextFuture = new CompletableFuture<>();
     private final CompletableFuture<RntbdContextRequest> contextRequestFuture = new CompletableFuture<>();
+    private final ExecutorService executorService;
     private final ChannelHealthChecker healthChecker;
     private final int pendingRequestLimit;
     private final ConcurrentHashMap<Long, RntbdRequestRecord> pendingRequests;
@@ -103,6 +106,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.pendingRequests = new ConcurrentHashMap<>(pendingRequestLimit);
         this.pendingRequestLimit = pendingRequestLimit;
         this.healthChecker = healthChecker;
+
+        // TODO: this needs to be released
+        this.executorService = Executors.newSingleThreadExecutor();
     }
 
     // region ChannelHandler methods
@@ -567,13 +573,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
 
                 // We don't wish to complete on the timeout thread, but rather on a thread doled out by our executor
-                final EventExecutor executor = context.executor();
-
-                if (executor.inEventLoop()) {
-                    record.expire();
-                } else {
-                    executor.next().execute(record::expire);
-                }
+                executorService.execute(record::expire);
             });
 
             record.whenComplete((response, error) -> {
