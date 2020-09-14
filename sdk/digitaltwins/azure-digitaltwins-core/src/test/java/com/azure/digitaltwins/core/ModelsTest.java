@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ModelsTest extends ModelsTestBase {
 
-    private final ClientLogger logger = new ClientLogger(ModelsTestBase.class);
+    private final ClientLogger logger = new ClientLogger(ModelsTest.class);
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")

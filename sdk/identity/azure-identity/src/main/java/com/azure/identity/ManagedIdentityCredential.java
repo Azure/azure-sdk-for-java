@@ -24,6 +24,10 @@ public final class ManagedIdentityCredential implements TokenCredential {
     private final VirtualMachineMsiCredential virtualMachineMSICredential;
     private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
 
+    // TODO: Migrate to Configuration class in Core (https://github.com/Azure/azure-sdk-for-java/issues/14720)
+    static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
+    static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
+
     /**
      * Creates an instance of the ManagedIdentityCredential.
      * @param clientId the client id of user assigned or system assigned identity
@@ -35,7 +39,9 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .identityClientOptions(identityClientOptions)
             .build();
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
+        if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)
+                || (configuration.contains(PROPERTY_IDENTITY_ENDPOINT)
+                        && configuration.contains(PROPERTY_IDENTITY_HEADER))) {
             appServiceMSICredential = new AppServiceMsiCredential(clientId, identityClient);
             virtualMachineMSICredential = null;
         } else {

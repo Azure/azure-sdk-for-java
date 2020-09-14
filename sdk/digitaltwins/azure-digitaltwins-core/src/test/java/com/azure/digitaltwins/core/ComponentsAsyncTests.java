@@ -3,11 +3,10 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
-import com.azure.digitaltwins.core.util.UpdateComponentRequestOptions;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
+import com.azure.digitaltwins.core.models.UpdateComponentRequestOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.opentest4j.AssertionFailedError;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
