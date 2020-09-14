@@ -18,7 +18,7 @@ import java.util.Objects;
 public final class ClientOptions {
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
     private final ClientLogger logger = new ClientLogger(ClientOptions.class);
-    private Iterable<Header> headers = new ArrayList<>();
+    private Iterable<Header> headers;
 
     private String applicationId;
 
@@ -39,6 +39,7 @@ public final class ClientOptions {
     public ClientOptions setApplicationId(String applicationId) {
 
         if (CoreUtils.isNullOrEmpty(applicationId)) {
+            this.applicationId = applicationId;
             return this;
         }
 
@@ -57,7 +58,7 @@ public final class ClientOptions {
     }
 
     /**
-     * Sets the provided headers.
+     * Sets the provided headers, overwriting all previously-set headers in the process.
      * @param headers headers to be set.
      *
      * @return updated {@link ClientOptions}.
@@ -73,6 +74,9 @@ public final class ClientOptions {
      * @return the headers.
      */
     public Iterable<Header> getHeaders() {
+        if (headers == null) {
+            headers = new ArrayList<>();
+        }
         return headers;
     }
 }

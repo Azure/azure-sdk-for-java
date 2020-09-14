@@ -98,7 +98,8 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Sets various options on the client for example applicationId.
+     * Sets the {@link ClientOptions}. This would allow various options on the client for example
+     * {@link ClientOptions#setApplicationId(String) applicationId}.
      *
      * @param clientOptions to be set on the client.
      *
