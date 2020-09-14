@@ -454,26 +454,6 @@ class Transforms {
         return blobServiceSasSignatureValues;
     }
 
-    static com.azure.storage.blob.models.ParallelTransferOptions toBlobParallelTransferOptions(
-        ParallelTransferOptions pto) {
-        if (pto == null) {
-            return null;
-        }
-
-        return new com.azure.storage.blob.models.ParallelTransferOptions()
-            .setBlockSizeLong(pto.getBlockSizeLong())
-            .setMaxConcurrency(pto.getMaxConcurrency())
-            .setProgressReceiver(Transforms.toBlobProgressReceiver(pto.getProgressReceiver()))
-            .setMaxSingleUploadSizeLong(pto.getMaxSingleUploadSizeLong());
-    }
-
-    static com.azure.storage.blob.ProgressReceiver toBlobProgressReceiver(ProgressReceiver pr) {
-        if (pr == null) {
-            return null;
-        }
-        return pr::reportProgress;
-    }
-
     static BlobQuerySerialization toBlobQuerySerialization(FileQuerySerialization ser) {
         if (ser == null) {
             return null;

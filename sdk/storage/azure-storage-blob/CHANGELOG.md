@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.9.0-beta.1 (Unreleased)
+- Fixed a bug where users could not download more than 5000MB of data in one shot in the downloadToFile API.
 - Fixed a bug where BlockBlobOutputStream would not handle certain errors.
 
 ## 12.8.0 (2020-08-13)
