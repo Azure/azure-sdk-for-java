@@ -1432,6 +1432,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 //        return remoteAddress().toString().contains("14048");
     }
 
+    @SuppressWarnings("unchecked")
     public int getTaskCount() {
 
         try {
