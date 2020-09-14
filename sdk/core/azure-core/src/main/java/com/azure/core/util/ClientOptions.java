@@ -37,7 +37,7 @@ public final class ClientOptions {
     }
 
     /**
-     * Sets the applicationId provided.
+     * Sets the applicationId provided. It is used for setting {@code applicationId} in the {@link UserAgentPolicy}.
      * @param applicationId to be set.
      *
      * @return updated {@link ClientOptions}.
@@ -64,7 +64,8 @@ public final class ClientOptions {
     }
 
     /**
-     * Sets the provided headers, overwriting all previously-set headers in the process.
+     * Sets the provided headers, overwriting all previously-set headers in the process. It will be applied on the
+     * request being sent to Azure Service.
      * @param headers headers to be set.
      *
      * @return updated {@link ClientOptions}.
