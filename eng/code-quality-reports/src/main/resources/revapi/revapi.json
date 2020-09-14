@@ -129,6 +129,12 @@
         "justification": "perf-test classes are allowed to be exposed."
       },
       {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(interface|class|enum) com\\.azure\\.cosmos.*",
+        "justification": "azure-cosmos classes are allowed to be exposed by dependencies using them."
+      },
+      {
         "code": "java.method.finalMethodAddedToNonFinalClass",
         "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.http.rest.PagedFlux<T>",
         "justification": "Reactor added new final APIs to Flux."
