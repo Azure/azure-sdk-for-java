@@ -96,21 +96,6 @@ public enum AmqpMessageConstant {
     PUBLISHER_ANNOTATION_NAME("x-opt-publisher"),
 
     /**
-     * The published sequence number when a message was sent from an idempotent producer.
-     */
-    PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME("com.microsoft:producer-sequence-number"),
-
-    /**
-     * The published epoch when a message was sent from an idempotent producer.
-     */
-    PRODUCER_EPOCH_ANNOTATION_NAME("com.microsoft:producer-epoch"),
-
-    /**
-     * The published producer id when a message was sent from an idempotent producer.
-     */
-    PRODUCER_ID_ANNOTATION_NAME("com.microsoft:producer-id");
-
-    /**
      * The name representing scheduled enqueue time.
      */
     SCHEDULED_ENQUEUE_UTC_TIME_NAME("x-opt-scheduled-enqueue-time"),
@@ -138,7 +123,22 @@ public enum AmqpMessageConstant {
     /**
      * The identifier for deadletter reason.
      */
-    DEAD_LETTER_REASON_ANNOTATION_NAME("DeadLetterReason");
+    DEAD_LETTER_REASON_ANNOTATION_NAME("DeadLetterReason"),
+
+    /**
+     * The published sequence number when a message was sent from an idempotent producer.
+     */
+    PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME("com.microsoft:producer-sequence-number"),
+
+    /**
+     * The published epoch when a message was sent from an idempotent producer.
+     */
+    PRODUCER_EPOCH_ANNOTATION_NAME("com.microsoft:producer-epoch"),
+
+    /**
+     * The published producer id when a message was sent from an idempotent producer.
+     */
+    PRODUCER_ID_ANNOTATION_NAME("com.microsoft:producer-id");
 
     private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;
