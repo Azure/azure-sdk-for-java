@@ -1,5 +1,8 @@
 # Release History
 
+## 2.4.0-beta.1 (Unreleased)
+
+
 ## 2.3.5 (2020-09-14)
 _Bug Fixes_
 - Get full list of groups the user belongs to from Graph API
