@@ -71,7 +71,7 @@ public interface KubernetesClusterAgentPool
              * @param vmSize the size of each virtual machine in the agent pool
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withVirtualMachineSize(ContainerServiceVMSizeTypes vmSize);
+            WithAgentPoolVirtualMachineCount<ParentT> withVirtualMachineSize(ContainerServiceVMSizeTypes vmSize);
         }
 
         /**

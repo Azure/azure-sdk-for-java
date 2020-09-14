@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerservice.implementation;
 
+import com.azure.resourcemanager.containerservice.fluent.inner.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
@@ -129,8 +130,35 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public KubernetesClusterImpl attach() {
-        this.parent().inner().agentPoolProfiles().add(this.inner());
-        return this.parent();
+        return this.parent().addNewAgentPool(this);
+    }
+
+    public AgentPoolInner getAgentPoolInner() {
+        AgentPoolInner agentPoolInner = new AgentPoolInner();
+        agentPoolInner.withCount(inner().count());
+        agentPoolInner.withVmSize(inner().vmSize());
+        agentPoolInner.withOsDiskSizeGB(inner().osDiskSizeGB());
+        agentPoolInner.withVnetSubnetId(inner().vnetSubnetId());
+        agentPoolInner.withMaxPods(inner().maxPods());
+        agentPoolInner.withOsType(inner().osType());
+        agentPoolInner.withMaxCount(inner().maxCount());
+        agentPoolInner.withMinCount(inner().minCount());
+        agentPoolInner.withEnableAutoScaling(inner().enableAutoScaling());
+        agentPoolInner.withTypePropertiesType(inner().type());
+        agentPoolInner.withMode(inner().mode());
+        agentPoolInner.withOrchestratorVersion(inner().orchestratorVersion());
+        agentPoolInner.withNodeImageVersion(inner().nodeImageVersion());
+        agentPoolInner.withUpgradeSettings(inner().upgradeSettings());
+        agentPoolInner.withAvailabilityZones(inner().availabilityZones());
+        agentPoolInner.withEnableNodePublicIp(inner().enableNodePublicIp());
+        agentPoolInner.withScaleSetPriority(inner().scaleSetPriority());
+        agentPoolInner.withScaleSetEvictionPolicy(inner().scaleSetEvictionPolicy());
+        agentPoolInner.withSpotMaxPrice(inner().spotMaxPrice());
+        agentPoolInner.withTags(inner().tags());
+        agentPoolInner.withNodeLabels(inner().nodeLabels());
+        agentPoolInner.withNodeTaints(inner().nodeTaints());
+        agentPoolInner.withProximityPlacementGroupId(inner().proximityPlacementGroupId());
+        return agentPoolInner;
     }
 
     @Override

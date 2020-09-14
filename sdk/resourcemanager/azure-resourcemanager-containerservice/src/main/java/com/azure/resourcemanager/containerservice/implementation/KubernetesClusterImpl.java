@@ -38,7 +38,7 @@ public class KubernetesClusterImpl
     protected KubernetesClusterImpl(String name, ManagedClusterInner innerObject, ContainerServiceManager manager) {
         super(name, innerObject, manager);
         if (this.inner().agentPoolProfiles() == null) {
-            this.inner().withAgentPoolProfiles(new ArrayList<ManagedClusterAgentPoolProfile>());
+            this.inner().withAgentPoolProfiles(new ArrayList<>());
         }
 
         this.adminKubeConfigs = null;
@@ -295,11 +295,9 @@ public class KubernetesClusterImpl
 
     @Override
     public KubernetesClusterAgentPoolImpl updateAgentPool(String name) {
-        if (inner().agentPoolProfiles() != null) {
-            for (ManagedClusterAgentPoolProfile agentPoolProfile : inner().agentPoolProfiles()) {
-                if (agentPoolProfile.name().equals(name)) {
-                    return new KubernetesClusterAgentPoolImpl(agentPoolProfile, this);
-                }
+        for (ManagedClusterAgentPoolProfile agentPoolProfile : inner().agentPoolProfiles()) {
+            if (agentPoolProfile.name().equals(name)) {
+                return new KubernetesClusterAgentPoolImpl(agentPoolProfile, this);
             }
         }
         throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
@@ -334,6 +332,17 @@ public class KubernetesClusterImpl
     @Override
     public KubernetesClusterImpl withRBACDisabled() {
         this.inner().withEnableRbac(false);
+        return this;
+    }
+
+    public KubernetesClusterImpl addNewAgentPool(KubernetesClusterAgentPoolImpl agentPool) {
+        if (!isInCreateMode()) {
+            this.addDependency(context ->
+                manager().inner().getAgentPools().createOrUpdateAsync(
+                    resourceGroupName(), name(), agentPool.name(), agentPool.getAgentPoolInner())
+                    .then(context.voidMono()));
+        }
+        inner().agentPoolProfiles().add(agentPool.inner());
         return this;
     }
 }
