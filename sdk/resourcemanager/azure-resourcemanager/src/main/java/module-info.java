@@ -3,26 +3,19 @@
 
 module com.azure.resourcemanager {
     requires transitive com.azure.resourcemanager.resources;
-
     requires transitive com.azure.resourcemanager.appplatform;
     requires transitive com.azure.resourcemanager.appservice;
-    requires transitive com.azure.resourcemanager.authorization;
     requires transitive com.azure.resourcemanager.compute;
     requires transitive com.azure.resourcemanager.containerinstance;
     requires transitive com.azure.resourcemanager.containerregistry;
     requires transitive com.azure.resourcemanager.containerservice;
     requires transitive com.azure.resourcemanager.cosmos;
-    requires transitive com.azure.resourcemanager.dns;
     requires transitive com.azure.resourcemanager.eventhubs;
-    requires transitive com.azure.resourcemanager.keyvault;
     requires transitive com.azure.resourcemanager.monitor;
-    requires transitive com.azure.resourcemanager.msi;
-    requires transitive com.azure.resourcemanager.network;
     requires transitive com.azure.resourcemanager.privatedns;
     requires transitive com.azure.resourcemanager.redis;
     requires transitive com.azure.resourcemanager.servicebus;
     requires transitive com.azure.resourcemanager.sql;
-    requires transitive com.azure.resourcemanager.storage;
     requires transitive com.azure.resourcemanager.trafficmanager;
 
     exports com.azure.resourcemanager;

@@ -18,6 +18,7 @@ module com.azure.resourcemanager.resources {
     exports com.azure.resourcemanager.resources.fluentcore.arm.models;
     exports com.azure.resourcemanager.resources.fluentcore.collection;
     exports com.azure.resourcemanager.resources.fluentcore.dag;
+    exports com.azure.resourcemanager.resources.fluentcore.exception;
     exports com.azure.resourcemanager.resources.fluentcore.model;
     exports com.azure.resourcemanager.resources.fluentcore.policy;
     exports com.azure.resourcemanager.resources.fluentcore.rest;

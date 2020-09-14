@@ -3,8 +3,7 @@
 
 module com.azure.resourcemanager.containerinstance {
     requires transitive com.azure.resourcemanager.resources;
-    requires com.azure.resourcemanager.authorization;
-    requires com.azure.resourcemanager.msi;
+    requires transitive com.azure.resourcemanager.msi;
     requires com.azure.resourcemanager.storage;
     requires com.azure.resourcemanager.network;
     requires com.azure.storage.file.share;

@@ -3,10 +3,9 @@
 
 module com.azure.resourcemanager.compute {
     requires transitive com.azure.resourcemanager.resources;
-    requires com.azure.resourcemanager.authorization;
-    requires com.azure.resourcemanager.msi;
-    requires com.azure.resourcemanager.network;
-    requires com.azure.resourcemanager.storage;
+    requires transitive com.azure.resourcemanager.msi;
+    requires transitive com.azure.resourcemanager.network;
+    requires transitive com.azure.resourcemanager.storage;
 
     // export public APIs of compute
     exports com.azure.resourcemanager.compute;

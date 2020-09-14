@@ -3,7 +3,7 @@
 
 module com.azure.resourcemanager.msi {
     requires transitive com.azure.resourcemanager.resources;
-    requires com.azure.resourcemanager.authorization;
+    requires transitive com.azure.resourcemanager.authorization;
 
     // export public APIs of storage
     exports com.azure.resourcemanager.msi;

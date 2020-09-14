@@ -3,11 +3,10 @@
 
 module com.azure.resourcemanager.appservice {
     requires transitive com.azure.resourcemanager.resources;
-    requires com.azure.resourcemanager.authorization;
-    requires com.azure.resourcemanager.dns;
-    requires com.azure.resourcemanager.keyvault;
-    requires com.azure.resourcemanager.msi;
-    requires com.azure.resourcemanager.storage;
+    requires transitive com.azure.resourcemanager.dns;
+    requires transitive com.azure.resourcemanager.keyvault;
+    requires transitive com.azure.resourcemanager.msi;
+    requires transitive com.azure.resourcemanager.storage;
 
     // export public APIs of appservice
     exports com.azure.resourcemanager.appservice;
