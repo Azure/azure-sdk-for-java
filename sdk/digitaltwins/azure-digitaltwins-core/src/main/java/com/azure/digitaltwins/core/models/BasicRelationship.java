@@ -4,10 +4,7 @@
 package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +31,7 @@ public final class BasicRelationship {
     @JsonProperty(value = "$relationshipName", required = true)
     private String name;
 
+    @JsonIgnore
     private final Map<String, Object> customProperties = new HashMap<>();
 
     /**
@@ -118,13 +116,13 @@ public final class BasicRelationship {
     }
 
     /**
-     * Sets the additional properties defined in the model. This field will contain any properties of the relationship that are not already defined by the other strong types of this class.
+     * Adds an additional property to this model. This field will contain any properties of the relationship that are not already defined by the other strong types of this class.
      * @param key The key of the additional property to be added to the relationship.
      * @param value The value of the additional property to be added to the relationship.
      * @return The BasicRelationship object itself.
      */
     @JsonAnySetter
-    public BasicRelationship setCustomProperties(String key, Object value) {
+    public BasicRelationship addCustomProperty(String key, Object value) {
         this.customProperties.put(key, value);
         return this;
     }

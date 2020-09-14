@@ -5,6 +5,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -21,8 +22,7 @@ import java.util.Map;
 public interface KubernetesCluster
     extends GroupableResource<ContainerServiceManager, ManagedClusterInner>,
         Refreshable<KubernetesCluster>,
-        Updatable<KubernetesCluster.Update>,
-        OrchestratorServiceBase {
+        Updatable<KubernetesCluster.Update> {
 
     /** @return the provisioning state of the Kubernetes cluster */
     String provisioningState();
@@ -34,7 +34,7 @@ public interface KubernetesCluster
     String fqdn();
 
     /** @return the Kubernetes version */
-    KubernetesVersion version();
+    String version();
 
     /** @return the Kubernetes configuration file content with administrative privileges to the cluster */
     byte[] adminKubeConfigContent();
@@ -107,16 +107,7 @@ public interface KubernetesCluster
         interface WithVersion {
             /**
              * Specifies the version for the Kubernetes cluster.
-             *
-             * @deprecated use {@link #withVersion(String)} or {@link #withLatestVersion}
-             * @param kubernetesVersion the kubernetes version
-             * @return the next stage of the definition
-             */
-            @Deprecated
-            WithLinuxRootUsername withVersion(KubernetesVersion kubernetesVersion);
-
-            /**
-             * Specifies the version for the Kubernetes cluster.
+             * Could retrieve from {@link KubernetesClusters#listKubernetesVersions(Region)}
              *
              * @param kubernetesVersion the kubernetes version
              * @return the next stage of the definition
@@ -124,11 +115,11 @@ public interface KubernetesCluster
             WithLinuxRootUsername withVersion(String kubernetesVersion);
 
             /**
-             * Uses the latest version for the Kubernetes cluster.
+             * Uses the default version for the Kubernetes cluster.
              *
              * @return the next stage of the definition
              */
-            WithLinuxRootUsername withLatestVersion();
+            WithLinuxRootUsername withDefaultVersion();
         }
 
         /** The stage of the Kubernetes cluster definition allowing to specific the Linux root username. */
@@ -183,8 +174,7 @@ public interface KubernetesCluster
              * @param name the name for the agent pool profile
              * @return the stage representing configuration for the agent pool profile
              */
-            KubernetesClusterAgentPool.DefinitionStages.Blank<KubernetesCluster.DefinitionStages.WithCreate>
-                defineAgentPool(String name);
+            KubernetesClusterAgentPool.DefinitionStages.Blank<? extends WithCreate> defineAgentPool(String name);
         }
 
         /** The stage of the Kubernetes cluster definition allowing to specify a network profile. */
@@ -348,12 +338,12 @@ public interface KubernetesCluster
         /** The stage of the Kubernetes cluster definition allowing to specify the cluster's add-on's profiles. */
         interface WithAddOnProfiles {
             /**
-             * Updates the cluster's add-on's profiles.
+             * Specifies the cluster's add-on's profiles.
              *
              * @param addOnProfileMap the cluster's add-on's profiles
-             * @return the next stage of the update
+             * @return the next stage of the definition
              */
-            KubernetesCluster.Update withAddOnProfiles(Map<String, ManagedClusterAddonProfile> addOnProfileMap);
+            WithCreate withAddOnProfiles(Map<String, ManagedClusterAddonProfile> addOnProfileMap);
         }
 
         /**
@@ -362,6 +352,7 @@ public interface KubernetesCluster
          */
         interface WithCreate
             extends Creatable<KubernetesCluster>,
+                WithAgentPool,
                 WithNetworkProfile,
                 WithDnsPrefix,
                 WithAddOnProfiles,
@@ -371,7 +362,7 @@ public interface KubernetesCluster
 
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update
-        extends KubernetesCluster.UpdateStages.WithUpdateAgentPoolCount,
+        extends KubernetesCluster.UpdateStages.WithAgentPool,
             KubernetesCluster.UpdateStages.WithAddOnProfiles,
             KubernetesCluster.UpdateStages.WithNetworkProfile,
             KubernetesCluster.UpdateStages.WithRBAC,
@@ -382,26 +373,24 @@ public interface KubernetesCluster
     /** Grouping of the Kubernetes cluster update stages. */
     interface UpdateStages {
         /**
-         * The stage of the Kubernetes cluster update definition allowing to specify the number of agents in the
-         * specified pool.
+         * The stage of the Kubernetes cluster update definition allowing to specify the agent poll in the cluster.
          */
-        interface WithUpdateAgentPoolCount {
+        interface WithAgentPool {
             /**
-             * Updates the agent pool virtual machine count.
+             * Begins the definition of an agent pool profile to be attached to the Kubernetes cluster.
              *
-             * @param agentPoolName the name of the agent pool to be updated
-             * @param agentCount the number of agents (virtual machines) to host docker containers.
-             * @return the next stage of the update
+             * @param name the name for the agent pool profile
+             * @return the stage representing configuration for the agent pool profile
              */
-            KubernetesCluster.Update withAgentPoolVirtualMachineCount(String agentPoolName, int agentCount);
+            KubernetesClusterAgentPool.DefinitionStages.Blank<? extends Update> defineAgentPool(String name);
 
             /**
-             * Updates all the agent pools virtual machine count.
+             * Begins the definition of an agent pool profile to be attached to the Kubernetes cluster.
              *
-             * @param agentCount the number of agents (virtual machines) to host docker containers.
-             * @return the next stage of the update
+             * @param name the name for the agent pool profile
+             * @return the stage representing configuration for the agent pool profile
              */
-            KubernetesCluster.Update withAgentPoolVirtualMachineCount(int agentCount);
+            KubernetesClusterAgentPool.Update<? extends Update> updateAgentPool(String name);
         }
 
         /**
