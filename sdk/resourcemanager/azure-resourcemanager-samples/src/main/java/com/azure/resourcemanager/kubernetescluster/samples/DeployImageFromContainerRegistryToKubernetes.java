@@ -137,7 +137,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
             KubernetesCluster kubernetesCluster = azure.kubernetesClusters().define(aksName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withLatestVersion()
+                .withDefaultVersion()
                 .withRootUsername(rootUserName)
                 .withSshKey(sshKeys.getSshPublicKey())
                 .withServicePrincipalClientId(servicePrincipalClientId)
