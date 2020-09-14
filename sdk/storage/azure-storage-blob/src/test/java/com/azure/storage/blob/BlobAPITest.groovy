@@ -41,6 +41,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
+import org.junit.Ignore
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
@@ -906,8 +907,10 @@ class BlobAPITest extends APISpec {
         8 * 1026 * 1024 + 10 | _
     }
 
+    @Unroll
+    @Ignore("Very large data sizes.") /* Enable once we have ability to run large resource heavy tests in CI. */
     def "Download to file blockSize"() {
-        def file = getRandomFile(5000 * Constants.MB)
+        def file = getRandomFile(sizeOfData)
         bc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(testName + "")
         if (outFile.exists()) {
@@ -916,11 +919,17 @@ class BlobAPITest extends APISpec {
 
         when:
         bc.downloadToFileWithResponse(new BlobDownloadToFileOptions(outFile.toPath().toString())
-            .setParallelTransferOptions(new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(5000L * Constants.MB))
+            .setParallelTransferOptions(new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(downloadBlockSize))
             .setDownloadRetryOptions(new DownloadRetryOptions().setMaxRetryRequests(3)), null, null)
 
         then:
         notThrown(BlobStorageException)
+
+        where:
+        sizeOfData           | downloadBlockSize   || _
+        5000 * Constants.MB  | 5000 * Constants.MB || _ /* This was the default before. */
+        6000 * Constants.MB  | 6000 * Constants.MB || _ /* Trying to see if we can set it to a number greater than previous default. */
+        6000 * Constants.MB  | 5100 * Constants.MB || _ /* Testing chunking with a large size */
     }
 
 
