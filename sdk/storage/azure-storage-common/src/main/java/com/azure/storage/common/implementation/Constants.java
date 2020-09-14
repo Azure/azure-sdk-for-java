@@ -30,6 +30,11 @@ public final class Constants {
     public static final int GB = 1024 * MB;
 
     /**
+     * Represents a non-SI terabyte.
+     */
+    public static final long TB = 1024L * GB;
+
+    /**
      * Represents the value for {@link SasProtocol#HTTPS_ONLY}.
      */
     public static final String HTTPS = "https";
