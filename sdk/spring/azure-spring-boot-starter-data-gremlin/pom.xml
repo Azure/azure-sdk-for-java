@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-spring-boot-starter-data-gremlin</artifactId>
-  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-gremlin-spring-boot-starter;current} -->
+  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot-starter-data-gremlin;current} -->
 
   <name>Spring Data Gremlin Boot Starter</name>
   <description>Spring Boot Starter for Spring Data Gremlin</description>
