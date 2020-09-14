@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TwinAsyncTests extends TwinTestBase
@@ -25,7 +26,7 @@ public class TwinAsyncTests extends TwinTestBase
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void DigitalTwins_Lifecycle(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+    public void digitalTwinLifecycle(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
     {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
@@ -68,18 +69,31 @@ public class TwinAsyncTests extends TwinTestBase
                     logger.info("Updated the twin successfully");
                 })
                 .verifyComplete();
+
+            // Get Twin and verify update was successful
+            StepVerifier.create(asyncClient.getDigitalTwin(roomTwinId, BasicDigitalTwin.class))
+                .assertNext(response -> {
+                    assertThat(response.getCustomProperties().get("Humidity"))
+                        .as("Humidity is added")
+                        .isEqualTo(30);
+                    assertThat(response.getCustomProperties().get("Temperature"))
+                        .as("Temperature is updated")
+                        .isEqualTo(70);
+                    })
+                .verifyComplete();
         }
+
         // clean up
         finally {
             try
             {
                 if (roomTwinId != null)
                 {
-                    asyncClient.deleteDigitalTwin(roomTwinId);
+                    asyncClient.deleteDigitalTwin(roomTwinId).block();
                 }
                 if (roomModelId != null)
                 {
-                    asyncClient.deleteModel(roomModelId);
+                    asyncClient.deleteModel(roomModelId).block();
                 }
             }
             catch (Exception ex)
@@ -92,7 +106,7 @@ public class TwinAsyncTests extends TwinTestBase
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void DigitalTwins_TwinNotExist_ThrowsNotFoundException(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+    public void twinNotExistThrowsNotFoundException(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
     {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
         String twinId = testResourceNamer.randomUuid();

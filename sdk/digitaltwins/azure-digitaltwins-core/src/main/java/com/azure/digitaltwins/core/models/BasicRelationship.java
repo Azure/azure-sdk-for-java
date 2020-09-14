@@ -4,10 +4,7 @@
 package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +31,7 @@ public final class BasicRelationship {
     @JsonProperty(value = "$relationshipName", required = true)
     private String name;
 
+    @JsonIgnore
     private final Map<String, Object> customProperties = new HashMap<>();
 
     /**

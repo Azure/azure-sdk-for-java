@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import com.azure.core.http.HttpClient;
 import org.opentest4j.AssertionFailedError;
+import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TwinTests extends TwinTestBase{
@@ -25,7 +27,7 @@ public class TwinTests extends TwinTestBase{
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void DigitalTwins_Lifecycle(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+    public void digitalTwinLifecycle(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
     {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
@@ -60,6 +62,17 @@ public class TwinTests extends TwinTestBase{
                 Context.NONE);
 
             assertEquals(updateTwinResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+
+            BasicDigitalTwin getTwinObject = client.getDigitalTwin(roomTwinId, BasicDigitalTwin.class);
+
+            assertThat(getTwinObject.getCustomProperties().get("Humidity"))
+                .as("Humidity is added")
+                .isEqualTo(30);
+
+            assertThat(getTwinObject.getCustomProperties().get("Temperature"))
+                .as("Temperature is updated")
+                .isEqualTo(70);
+
         }
         // clean up
         finally {
@@ -84,7 +97,7 @@ public class TwinTests extends TwinTestBase{
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void DigitalTwins_TwinNotExist_ThrowsNotFoundException(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+    public void twinNotExistThrowsNotFoundException(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
     {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         String twinId = testResourceNamer.randomUuid();
