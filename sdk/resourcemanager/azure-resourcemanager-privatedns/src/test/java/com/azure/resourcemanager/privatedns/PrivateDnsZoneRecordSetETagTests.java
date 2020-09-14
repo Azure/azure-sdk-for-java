@@ -192,7 +192,7 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestBase {
                         .withETagCheck()
                         .attach()
                     .create();
-        } catch (Exception exception) {
+        } catch (ManagementException exception) {
             compositeException = exception;
         }
         Assertions.assertNotNull(compositeException);

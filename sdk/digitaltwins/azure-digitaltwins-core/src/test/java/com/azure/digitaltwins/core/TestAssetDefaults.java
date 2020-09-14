@@ -7,6 +7,8 @@ public class TestAssetDefaults {
 
     public static final String HVAC_TWIN_ID_PREFIX = "hvacTwin";
 
+    public static final String WIFI_COMPONENT_NAME = "wifiAccessPoint";
+
     public static final String ROOM_WITH_WIFI_TWIN_ID_PREFIX = "roomWithWifiTwin";
 
     public static final String WIFI_MODEL_ID_PREFIX = "dtmi:example:wifi;1";
