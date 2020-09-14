@@ -923,7 +923,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                 if (promise.trySuccess(channel)) {
 
-                    logger.info("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
+                    }
                     this.acquiredChannels.compute(channel, (ignored, acquiredChannel) -> {
                         //                    reportIssueUnless(logger, v == null, this, "expected null channel, not {}", v);
 
@@ -937,16 +939,17 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         return channel;
                     });
                 } else {
-
-                    logger.info("notifyChannelConnect promise.trySuccess(channel)=false");
-
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("notifyChannelConnect promise.trySuccess(channel)=false");
+                    }
                     // Promise was completed in the meantime (like cancelled), just close the channel
                     this.closeChannel(channel);
                 }
 
             } else {
-                logger.info("notifyChannelConnect future was not successful");
-
+                if (logger.isDebugEnabled()) {
+                    logger.debug("notifyChannelConnect future was not successful");
+                }
                 promise.tryFailure(future.cause());
             }
         } finally {
