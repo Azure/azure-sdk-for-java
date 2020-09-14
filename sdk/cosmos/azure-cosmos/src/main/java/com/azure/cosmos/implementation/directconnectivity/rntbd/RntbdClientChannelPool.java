@@ -1432,7 +1432,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 logger.info("{} total number of tasks on the executor [{}], connecting [{}], acquiredChannel [{}], availableChannel [{}], pending acquasition [{}]",
                     this.hashCode(), i, connecting.get(), acquiredChannels.size(), availableChannels.size(), pendingAcquisitions.size());
             }
-        }, 0, 10, TimeUnit.SECONDS);
+        }, 0, 60, TimeUnit.SECONDS);
     }
 
 
