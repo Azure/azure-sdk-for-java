@@ -275,10 +275,10 @@ public class AsyncCtlWorkload {
                 }).flux();
                 createDocumentObservables.add(obs);
             }
-            logger.info("Finished pre-populating {} documents for container {}",
-                numberOfPreCreatedDocuments, container.getId());
             docsToRead.put(container.getId(),
                 Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block());
+            logger.info("Finished pre-populating {} documents for container {}",
+                numberOfPreCreatedDocuments, container.getId());
         }
     }
 
