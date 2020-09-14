@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.9.0-beta.1 (Unreleased)
-
+- Fixed a bug where BlockBlobOutputStream would not handle certain errors.
 
 ## 12.8.0 (2020-08-13)
 - Fixed a bug that, when the data length parameter did not match the actual length of the data in BlobClient.upload, caused a zero length blob to be uploaded rather than throwing an exception.
