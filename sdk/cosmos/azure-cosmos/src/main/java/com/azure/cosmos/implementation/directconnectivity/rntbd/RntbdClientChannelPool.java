@@ -565,8 +565,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     } else {
                         final long pendingRequestCount = manager.pendingRequestCount();
 
-                        // we accept the risk of reusing the channel even if more than maxPendingRequests are queued - by picking
-                        // the channel with the least number of outstanding requests we load balance reasonably
+                        // we accept the risk of reusing the channel even if more than maxPendingRequests are
+                        // queued - by picking the channel with the least number of outstanding requests we load
+                        // balance reasonably
                         if (isChannelServiceable(channel, true) && pendingRequestCount < pendingRequestCountMin) {
                             pendingRequestCountMin = pendingRequestCount;
                             candidate = channel;
@@ -581,7 +582,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             } else {
                 for (Channel channel : this.availableChannels) {
 
-                    // we pick the first available channel to avoid the additional cost of laod balancing
+                    // we pick the first available channel to avoid the additional cost of load balancing
                     // as long as the load is lower than the load factor threshold above.
                     if (isChannelServiceable(channel, true)) {
                         if (this.availableChannels.remove(channel)) {
@@ -1072,7 +1073,26 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private void releaseAndOfferChannel(final Channel channel, final Promise<Void> promise) {
         this.ensureInEventLoop();
         try {
-            this.acquiredChannels.remove(channel);
+
+            // NOTE: The check below is just defense in-depth. We would only ever
+            // try to remove a channel from acquiredChannels unsuccessfully if releaseChannel
+            // is called concurrently on the same channel instance.
+            //
+            // We grab the channel from acquiredChannels optimistically - so
+            // could end-up retrieving the same channel multiple times
+            // before switching to event loop thread and removing it here
+            // so we need to make sure that we only move the channel
+            // back to availableChannels once
+            if (this.acquiredChannels.remove(channel) == null) {
+                logger.warn(
+                    "Unexpected race condition - releaseChannel called twice for the same channel [{} -> {}]",
+                    channel.id(),
+                    this.remoteAddress());
+                promise.setSuccess(null);
+
+                return;
+            }
+
             if (this.offerChannel(channel)) {
                 this.poolHandler.channelReleased(channel);
                 promise.setSuccess(null);
