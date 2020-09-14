@@ -546,10 +546,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         return this.contextFuture.getNow(null) != null;
     }
 
-    boolean isServiceable(final int demand) {
+    boolean isServiceable(final int demand, boolean ignoreMaxRequestPerChannel) {
         reportIssueUnless(this.hasRequestedRntbdContext(), this, "Direct TCP context request was not issued");
         final int limit = this.hasRntbdContext() ? this.pendingRequestLimit : Math.min(this.pendingRequestLimit, demand);
-        return this.pendingRequests.size() < limit;
+        return ignoreMaxRequestPerChannel || this.pendingRequests.size() < limit;
     }
 
     void pendWrite(final ByteBuf out, final ChannelPromise promise) {

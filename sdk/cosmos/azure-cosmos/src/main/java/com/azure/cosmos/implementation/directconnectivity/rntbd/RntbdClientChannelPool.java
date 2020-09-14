@@ -502,7 +502,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      *
      * @param promise the promise of a {@link Channel channel}.
      *
-     * @see #isChannelServiceable(Channel)
+     * @see #isChannelServiceable(Channel, boolean)
      * @see AcquireTimeoutTask
      */
     private void acquireChannel(final Promise<Channel> promise) {
@@ -547,7 +547,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     return;
                 }
 
-            } else if (true || this.computeLoadFactor() > 0.90D) {
+            } else if (this.computeLoadFactor() > 0.90D) {
 
                 // All channels are swamped and we'll pick the one with the lowest pending request count
 
@@ -561,7 +561,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         logger.warn("Channel({}) closed", channel);
                     } else {
                         final long pendingRequestCount = manager.pendingRequestCount();
-                        if (pendingRequestCount < pendingRequestCountMin) {
+                        if (isChannelServiceable(channel, true) && pendingRequestCount < pendingRequestCountMin) {
                             pendingRequestCountMin = pendingRequestCount;
                             candidate = channel;
                         }
@@ -571,6 +571,15 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 if (candidate != null && this.availableChannels.remove(candidate)) {
                     this.doAcquireChannel(promise, candidate);
                     return;
+                }
+            } else {
+                for (Channel channel : this.availableChannels) {
+                    if (isChannelServiceable(channel, true)) {
+                        if (this.availableChannels.remove(channel)) {
+                            this.doAcquireChannel(promise, channel);
+                            return;
+                        }
+                    }
                 }
             }
 
@@ -829,9 +838,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
      *
      * @return {@code true} if the given {@link Channel channel} is serviceable; {@code false} otherwise.
      */
-    private boolean isChannelServiceable(final Channel channel) {
+    private boolean isChannelServiceable(final Channel channel, boolean ignoreMaxRequestLimit) {
         final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
-        return manager != null && manager.isServiceable(this.maxRequestsPerChannel) && channel.isOpen();
+        return manager != null && manager.isServiceable(this.maxRequestsPerChannel, ignoreMaxRequestLimit) && channel.isOpen();
     }
 
     /**
@@ -1021,7 +1030,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             return first;  // because this.close -> this.close0 -> this.pollChannel
         }
 
-        if (this.isChannelServiceable(first)) {
+        if (this.isChannelServiceable(first, false)) {
             return first;
         }
 
@@ -1031,7 +1040,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             assert next != null : "impossible";
 
             if (next.isActive()) {
-                if (this.isChannelServiceable(next)) {
+                if (this.isChannelServiceable(next, false)) {
                     return next;
                 }
                 this.availableChannels.offer(next);
