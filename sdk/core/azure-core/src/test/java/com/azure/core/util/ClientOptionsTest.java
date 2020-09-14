@@ -11,7 +11,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -39,12 +38,6 @@ public class ClientOptionsTest {
 
         // Act & Assert
         assertEquals(expected, new ClientOptions().setApplicationId(expected).getApplicationId());
-    }
-
-    @Test
-    public void testSetApplicationIdEmpty() {
-        // Arrange, Act & Assert
-        assertNull(new ClientOptions().setApplicationId("").getApplicationId());
     }
 
     private static Stream<Arguments> invalidApplicationId() {
