@@ -116,6 +116,11 @@ class FileAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null, null, null, null), 201)
     }
 
+    def "Create file 4TB"() {
+        expect:
+        FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(4 * Constants.TB, null, null, null, null, null, null), 201)
+    }
+
     def "Create file error"() {
         when:
         primaryFileClient.create(-1)
@@ -230,6 +235,22 @@ class FileAPITests extends APISpec {
         downloadResponse.getDeserializedHeaders().getContentLength() == dataLength
 
         data == stream.toByteArray()
+    }
+
+    def "Upload Range 4TB"() {
+        given:
+        def fileSize = 4 * Constants.TB
+        primaryFileClient.create(fileSize)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, fileSize - dataLength, null, null) /* Upload to end of file. */
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new ShareFileRange(fileSize - dataLength, fileSize), true, null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(uploadResponse, 201)
+        FileTestHelper.assertResponseStatusCode(downloadResponse, 206)
+        downloadResponse.getDeserializedHeaders().getContentLength() == dataLength
     }
 
     def "Upload data error"() {
