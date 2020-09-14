@@ -31,6 +31,7 @@ import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.options.BlobBeginCopyOptions
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions
+import com.azure.storage.blob.options.BlobDownloadToFileOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
@@ -904,6 +905,24 @@ class BlobAPITest extends APISpec {
         100                  | _
         8 * 1026 * 1024 + 10 | _
     }
+
+    def "Download to file blockSize"() {
+        def file = getRandomFile(5000 * Constants.MB)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        bc.downloadToFileWithResponse(new BlobDownloadToFileOptions(outFile.toPath().toString())
+            .setParallelTransferOptions(new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(5000L * Constants.MB))
+            .setDownloadRetryOptions(new DownloadRetryOptions().setMaxRetryRequests(3)), null, null)
+
+        then:
+        notThrown(BlobStorageException)
+    }
+
 
     def "Get properties default"() {
         when:
