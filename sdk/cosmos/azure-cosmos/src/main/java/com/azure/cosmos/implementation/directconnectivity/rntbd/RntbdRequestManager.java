@@ -84,7 +84,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     private static final ClosedChannelException ON_DEREGISTER =
         ThrowableUtil.unknownStackTrace(new ClosedChannelException(), RntbdRequestManager.class, "deregister");
 
-    private static final EventExecutor requestExpirator = new DefaultEventExecutor(new RntbdThreadFactory(
+    private static final EventExecutor requestExpirationExecutor = new DefaultEventExecutor(new RntbdThreadFactory(
         "request-expirator",
         true,
         Thread.NORM_PRIORITY));
@@ -575,7 +575,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
 
                 // We don't wish to complete on the timeout thread, but rather on a thread doled out by our executor
-                requestExpirator.execute(record::expire);
+                requestExpirationExecutor.execute(record::expire);
             });
 
             record.whenComplete((response, error) -> {
