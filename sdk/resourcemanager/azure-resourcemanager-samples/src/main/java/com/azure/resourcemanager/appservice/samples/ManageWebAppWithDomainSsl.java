@@ -15,11 +15,12 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
 
 
@@ -40,7 +41,7 @@ public final class ManageWebAppWithDomainSsl {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         // New resources
         final String app1Name       = azure.sdkContext().randomResourceName("webapp1-", 20);
         final String app2Name       = azure.sdkContext().randomResourceName("webapp2-", 20);
@@ -161,9 +162,6 @@ public final class ManageWebAppWithDomainSsl {
             Utils.print(app2);
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -175,8 +173,6 @@ public final class ManageWebAppWithDomainSsl {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
     /**
      * Main entry point.

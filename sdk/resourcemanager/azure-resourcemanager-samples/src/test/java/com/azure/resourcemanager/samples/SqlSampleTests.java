@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 
 public class SqlSampleTests extends SamplesTestBase {
 
@@ -82,7 +83,7 @@ public class SqlSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testGettingSqlServerMetrics() {
+    public void testGettingSqlServerMetrics() throws SQLException, ClassNotFoundException {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(GettingSqlServerMetrics.runSample(azure));
@@ -90,7 +91,7 @@ public class SqlSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageSqlServerDnsAliases() {
+    public void testManageSqlServerDnsAliases() throws SQLException, ClassNotFoundException {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(ManageSqlServerDnsAliases.runSample(azure));

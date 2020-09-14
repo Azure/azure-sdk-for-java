@@ -3,7 +3,12 @@
 
 package com.azure.resourcemanager.eventhubs;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationKey;
@@ -18,25 +23,29 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorization
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceSkuType;
 import com.azure.resourcemanager.eventhubs.models.ProvisioningStateDR;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.Exceptions;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
-public class EventHubTests extends TestBase {
+public class EventHubTests extends ResourceManagerTestBase {
     protected EventHubsManager eventHubsManager;
     protected StorageManager storageManager;
     protected ResourceManager resourceManager;
@@ -44,7 +53,26 @@ public class EventHubTests extends TestBase {
     private final Region region = Region.US_EAST;
 
     @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
+    }
+
+    @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         eventHubsManager = EventHubsManager.authenticate(httpPipeline, profile);
         storageManager = StorageManager.authenticate(httpPipeline, profile);
         resourceManager = ResourceManager

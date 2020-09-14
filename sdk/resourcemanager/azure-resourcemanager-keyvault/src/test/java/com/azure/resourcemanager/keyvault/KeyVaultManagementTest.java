@@ -3,26 +3,47 @@
 
 package com.azure.resourcemanager.keyvault;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 /** The base for KeyVault manager tests. */
-public class KeyVaultManagementTest extends TestBase {
+public class KeyVaultManagementTest extends ResourceManagerTestBase {
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;
     protected AuthorizationManager authorizationManager;
     protected String rgName = "";
     protected String vaultName = "";
 
-    public KeyVaultManagementTest() {
-        super();
-    }
-
-    public KeyVaultManagementTest(RunCondition runCondition) {
-        super(runCondition);
+    @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
     }
 
     @Override
@@ -30,12 +51,11 @@ public class KeyVaultManagementTest extends TestBase {
         rgName = generateRandomResourceName("javacsmrg", 15);
         vaultName = generateRandomResourceName("java-keyvault-", 20);
 
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
-
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
-
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
+            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
+        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
     }
 
     @Override

@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -20,7 +19,6 @@ import java.util.List;
 
 /** An immutable client-side representation of an Azure Spring App Deployment. */
 @Fluent
-@Beta
 public interface SpringAppDeployment
     extends ExternalChildResource<SpringAppDeployment, SpringApp>,
         HasInner<DeploymentResourceInner>,

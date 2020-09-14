@@ -14,7 +14,7 @@ import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListConnectionStringsResult;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 /**
@@ -69,8 +69,6 @@ public final class CreateCosmosDBWithKindMongoDB {
             System.out.println("Deleted the CosmosDB");
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
         } finally {
             try {
                 System.out.println("Deleting resource group: " + rgName);
@@ -82,8 +80,6 @@ public final class CreateCosmosDBWithKindMongoDB {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

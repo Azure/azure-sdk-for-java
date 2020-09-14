@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 
 /**
  * Azure Network sample for managing express route circuits.
@@ -106,9 +106,6 @@ public final class ManageExpressRoute {
             System.out.println("Created virtual network gateway connection");
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -119,7 +116,6 @@ public final class ManageExpressRoute {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

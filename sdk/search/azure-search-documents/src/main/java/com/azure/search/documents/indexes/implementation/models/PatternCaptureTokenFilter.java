@@ -33,10 +33,16 @@ public class PatternCaptureTokenFilter extends TokenFilter {
     @JsonProperty(value = "preserveOriginal")
     private Boolean preserveOriginal;
 
-    /** Creates an instance of PatternCaptureTokenFilter class. */
+    /**
+     * Creates an instance of PatternCaptureTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param patterns the patterns value to set.
+     */
     @JsonCreator
     public PatternCaptureTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "patterns") List<String> patterns) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "patterns", required = true) List<String> patterns) {
         super(name);
         this.patterns = patterns;
     }
@@ -50,12 +56,6 @@ public class PatternCaptureTokenFilter extends TokenFilter {
         return this.patterns;
     }
 
-    /**
-     * Set the patterns property: A list of patterns to match against each token.
-     *
-     * @param patterns the patterns value to set.
-     * @return the PatternCaptureTokenFilter object itself.
-     */
     /**
      * Get the preserveOriginal property: A value indicating whether to return the original token even if one of the
      * patterns matches. Default is true.
@@ -76,18 +76,5 @@ public class PatternCaptureTokenFilter extends TokenFilter {
     public PatternCaptureTokenFilter setPreserveOriginal(Boolean preserveOriginal) {
         this.preserveOriginal = preserveOriginal;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getPatterns() == null) {
-            throw new IllegalArgumentException("Missing required property patterns in model PatternCaptureTokenFilter");
-        }
     }
 }

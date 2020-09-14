@@ -16,7 +16,7 @@
 ####
 # Service teams
 ####
-# PRLabel: %AzConfig
+# PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
 /sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 
@@ -37,7 +37,10 @@
 /sdk/cosmos/azure-spring-data-2-3-cosmos/           @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai @mbhaskar
 
 # PRLabel: %DigitalTwins
-/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @prmathur-microsoft @bikamani @barustum
+/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum
+
+# PRLabel: %Event Grid
+/sdk/eventgrid/                                     @srnagar @yijunxiems
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang @yijunxiems

@@ -18,7 +18,7 @@ import com.azure.resourcemanager.monitor.models.ScaleDirection;
 import com.azure.resourcemanager.monitor.models.ScaleType;
 import com.azure.resourcemanager.monitor.models.TimeAggregationType;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -117,9 +117,6 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
             // 7. Under the chart, you see the activity log entries for each scale action taken by this autoscale setting.
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             if (azure.resourceGroups().getByName(rgName) != null) {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -129,7 +126,6 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

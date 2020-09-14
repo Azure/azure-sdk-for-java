@@ -14,6 +14,9 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.PiiEntityDomainType;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -36,7 +39,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -48,6 +50,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TestUtils.AZURE_TEXT_ANALYTICS_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
@@ -63,11 +66,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
-    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when %s returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
-    static final String INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE = "Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code. ErrorCodeValue: {invalidCountryHint}";
+    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when %s returned with an error: Document text is empty. ErrorCodeValue: {InvalidDocument}";
     static final String INVALID_DOCUMENT_BATCH_NPE_MESSAGE = "'documents' cannot be null.";
     static final String INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE = "'documents' cannot be empty.";
-    static final String INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE = "Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
     static final String WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE = "The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.";
 
@@ -157,6 +158,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizePiiEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizePiiEntitiesForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizePiiEntitiesForBatchInputStringForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizePiiEntitiesForBatchInputForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Linked Entities
     @Test
@@ -370,6 +380,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(PII_ENTITY_INPUTS.get(0));
     }
 
+    void recognizePiiDomainFilterRunner(BiConsumer<String, RecognizePiiEntityOptions> testRunner) {
+        testRunner.accept(PII_ENTITY_INPUTS.get(0),
+            new RecognizePiiEntityOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION));
+    }
+
     void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS, "en");
     }
@@ -392,16 +407,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     void recognizeBatchPiiEntitiesShowStatsRunner(
-        BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
+        BiConsumer<List<TextDocumentInput>, RecognizePiiEntityOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(PII_ENTITY_INPUTS);
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
+        RecognizePiiEntityOptions options = new RecognizePiiEntityOptions().setIncludeStatistics(true);
 
         testRunner.accept(textDocumentInputs, options);
     }
 
     void recognizeStringBatchPiiEntitiesShowStatsRunner(
-        BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(PII_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
+        BiConsumer<List<String>, RecognizePiiEntityOptions> testRunner) {
+        testRunner.accept(PII_ENTITY_INPUTS, new RecognizePiiEntityOptions().setIncludeStatistics(true));
     }
 
     // Linked Entity runner
@@ -440,7 +455,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     // Key Phrases runner
     void extractKeyPhrasesForSingleTextInputRunner(Consumer<String> testRunner) {
         testRunner.accept(KEY_PHRASE_INPUTS.get(1));
-    };
+    }
 
     void extractBatchStringKeyPhrasesShowStatsRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(KEY_PHRASE_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
@@ -535,13 +550,50 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(Arrays.asList(new TextDocumentInput("", CATEGORIZED_ENTITY_INPUTS.get(0))));
     }
 
-    void tooManyDocumentsRunner(
-        Consumer<List<String>> testRunner) {
+    void tooManyDocumentsRunner(Consumer<List<String>> testRunner) {
         final String documentInput = CATEGORIZED_ENTITY_INPUTS.get(0);
         // max num of document size is 10
         testRunner.accept(Arrays.asList(
             documentInput, documentInput, documentInput, documentInput, documentInput, documentInput,
             documentInput, documentInput, documentInput, documentInput, documentInput, documentInput));
+    }
+
+    // offset runners
+    void emojiRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("👩 " + text); // count as 3 units
+    }
+
+    void emojiWithSkinToneModifierRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("👩🏻 " + text); // count as 5 units
+    }
+
+    void emojiFamilyRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("👩‍👩‍👧‍👧 " + text); // count as 12 units
+    }
+
+    void emojiFamilyWithSkinToneModifierRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("👩🏻‍👩🏽‍👧🏾‍👦🏿 " + text); // count as 20 units
+    }
+
+    void diacriticsNfcRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("año " + text); // count as 4 units
+    }
+
+    void diacriticsNfdRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("año " + text); // count as 5 units
+    }
+
+    void koreanNfcRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("아가 " + text); // count as 3 units
+    }
+
+    void koreanNfdRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("아가 " + text); // count as 3 units
+    }
+
+    void zalgoTextRunner(Consumer<String> testRunner, String text) {
+        // count as 116 units
+        testRunner.accept("ơ̵̧̧̢̳̘̘͕͔͕̭̟̙͎͈̞͔̈̇̒̃͋̇̅͛̋͛̎́͑̄̐̂̎͗͝m̵͍͉̗̄̏͌̂̑̽̕͝͠g̵̢̡̢̡̨̡̧̛͉̞̯̠̤̣͕̟̫̫̼̰͓̦͖̣̣͎̋͒̈́̓̒̈̍̌̓̅͑̒̓̅̅͒̿̏́͗̀̇͛̏̀̈́̀̊̾̀̔͜͠͝ͅ " + text);
     }
 
     String getEndpoint() {
@@ -563,7 +615,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(FAKE_API_KEY));
         } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_API_KEY)));
         }
         return builder;
     }
@@ -608,10 +660,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     static void validatePiiEntitiesResultCollection(boolean showStatistics,
         RecognizePiiEntitiesResultCollection expected, RecognizePiiEntitiesResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
+            final PiiEntityCollection expectedPiiEntityCollection = expectedItem.getEntities();
+            final PiiEntityCollection actualPiiEntityCollection = actualItem.getEntities();
+            assertEquals(expectedPiiEntityCollection.getRedactedText(), actualPiiEntityCollection.getRedactedText());
             validatePiiEntities(
-                expectedItem.getEntities().stream().collect(Collectors.toList()),
-                actualItem.getEntities().stream().collect(Collectors.toList())));
+                expectedPiiEntityCollection.stream().collect(Collectors.toList()),
+                actualPiiEntityCollection.stream().collect(Collectors.toList()));
+        });
     }
 
     static void validateLinkedEntitiesResultCollectionWithResponse(boolean showStatistics,
@@ -716,6 +772,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedLinkedEntity.getLanguage(), actualLinkedEntity.getLanguage());
         assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
         assertEquals(expectedLinkedEntity.getDataSourceEntityId(), actualLinkedEntity.getDataSourceEntityId());
+        assertEquals(expectedLinkedEntity.getBingEntitySearchApiId(), actualLinkedEntity.getBingEntitySearchApiId());
         validateLinkedEntityMatches(expectedLinkedEntity.getMatches().stream().collect(Collectors.toList()),
             actualLinkedEntity.getMatches().stream().collect(Collectors.toList()));
     }
@@ -817,6 +874,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateSentenceSentiment(boolean includeOpinionMining, SentenceSentiment expectedSentiment, SentenceSentiment actualSentiment) {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
         assertEquals(expectedSentiment.getText(), actualSentiment.getText());
+        assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
+        assertEquals(expectedSentiment.getLength(), actualSentiment.getLength());
+
         if (includeOpinionMining) {
             validateSentenceMinedOpinions(expectedSentiment.getMinedOpinions().stream().collect(Collectors.toList()),
                 actualSentiment.getMinedOpinions().stream().collect(Collectors.toList()));

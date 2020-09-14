@@ -17,7 +17,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -187,11 +187,6 @@ public final class ManageVirtualMachineAsync {
                     .singleOrEmpty().block();
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -204,7 +199,6 @@ public final class ManageVirtualMachineAsync {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     private static boolean isWindowsVM(VirtualMachine vm) {

@@ -6,7 +6,7 @@ package com.azure.resourcemanager.network;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.RouteFilter;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ public class RouteFilterTests extends NetworkManagementTest {
 
     @Test
     public void canCRUDRouteFilter() throws Exception {
-        String rfName = sdkContext.randomResourceName("rf", 15);
+        String rfName = generateRandomResourceName("rf", 15);
 
         RouteFilter routeFilter =
             networkManager
@@ -40,7 +40,7 @@ public class RouteFilterTests extends NetworkManagementTest {
 
     @Test
     public void canCreateRouteFilterRule() throws Exception {
-        String rfName = sdkContext.randomResourceName("rf", 15);
+        String rfName = generateRandomResourceName("rf", 15);
         String ruleName = "mynewrule";
         RouteFilter routeFilter =
             networkManager

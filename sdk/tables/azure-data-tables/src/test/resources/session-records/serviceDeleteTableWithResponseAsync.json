@@ -5,7 +5,7 @@
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
-      "x-ms-client-request-id" : "71d1228d-1969-4fb4-b8c4-99d646e29e9c",
+      "x-ms-client-request-id" : "3563cce2-594c-4b54-8b6f-cd37113418f3",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -14,23 +14,23 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Fri, 21 Aug 2020 21:09:08 GMT",
+      "Date" : "Wed, 09 Sep 2020 00:13:06 GMT",
       "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test76417a6582')",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test34181d181b')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "55377bf8-8002-008a-15ff-7791ed000000",
+      "x-ms-request-id" : "e019abfc-c002-00a4-1a3d-86c3fa000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "71d1228d-1969-4fb4-b8c4-99d646e29e9c",
-      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test76417a6582')"
+      "x-ms-client-request-id" : "3563cce2-594c-4b54-8b6f-cd37113418f3",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test34181d181b')"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test76417a6582')",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test34181d181b')",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
-      "x-ms-client-request-id" : "cbad353e-9b15-4f51-bdc5-6609eac7505f"
+      "x-ms-client-request-id" : "f451e6e5-a385-4bf6-8c69-d14bac41bbfb"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -40,11 +40,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "55377bfc-8002-008a-17ff-7791ed000000",
-      "Date" : "Fri, 21 Aug 2020 21:09:08 GMT",
-      "x-ms-client-request-id" : "cbad353e-9b15-4f51-bdc5-6609eac7505f"
+      "x-ms-request-id" : "e019ac39-c002-00a4-553d-86c3fa000000",
+      "Date" : "Wed, 09 Sep 2020 00:13:07 GMT",
+      "x-ms-client-request-id" : "f451e6e5-a385-4bf6-8c69-d14bac41bbfb"
     },
     "Exception" : null
   } ],
-  "variables" : [ "test76417a6582" ]
+  "variables" : [ "test34181d181b" ]
 }

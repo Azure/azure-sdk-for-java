@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.models;
 
-import com.azure.data.tables.implementation.TablesModelHelper;
+import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 
 /**
@@ -16,7 +16,7 @@ public class TableItem {
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        TablesModelHelper.setItemCreator(TableItem::new);
+        ModelHelper.setItemCreator(TableItem::new);
     }
 
     /**

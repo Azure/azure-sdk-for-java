@@ -3,14 +3,25 @@
 
 package com.azure.resourcemanager.redis;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 /** The base for Redis cache manager tests. */
-public class RedisManagementTest extends TestBase {
+public class RedisManagementTest extends ResourceManagerTestBase {
     protected ResourceManager resourceManager;
     protected RedisManager redisManager;
     protected StorageManager storageManager;
@@ -22,6 +33,24 @@ public class RedisManagementTest extends TestBase {
     protected String saName = "";
 
     @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
+    }
+
+    @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
         rrName = generateRandomResourceName("javacsmrc", 15);
@@ -30,12 +59,11 @@ public class RedisManagementTest extends TestBase {
         rrNameThird = rrName + "Third";
         saName = generateRandomResourceName("javacsmsa", 15);
 
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
-
-        redisManager = RedisManager.authenticate(httpPipeline, profile, sdkContext);
-
-        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
+            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
+        redisManager = RedisManager.authenticate(httpPipeline, profile);
+        storageManager = StorageManager.authenticate(httpPipeline, profile);
     }
 
     @Override

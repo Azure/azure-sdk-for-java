@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.io.ByteStreams;
@@ -40,7 +40,7 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
      * @param defaultPollingInterval polling interval in seconds
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final Azure azure, int defaultPollingInterval) {
+    public static boolean runSample(final Azure azure, int defaultPollingInterval) throws InterruptedException {
         final String rgPrefix = azure.sdkContext().randomResourceName("rgJavaTest", 16);
         final String deploymentPrefix = azure.sdkContext().randomResourceName("javaTest", 16);
         final String sshKey = getSSHPublicKey();
@@ -150,11 +150,6 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
                     String.join(", ", succeeded), String.join(", ", failed)));
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 for (int i = 1; i != numDeployments; i++) {
@@ -170,7 +165,6 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
             }
 
         }
-        return false;
     }
 
     /**

@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterSide;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -39,9 +40,13 @@ public class EdgeNGramTokenFilterV2 extends TokenFilter {
     @JsonProperty(value = "side")
     private EdgeNGramTokenFilterSide side;
 
-    /** Creates an instance of EdgeNGramTokenFilterV2 class. */
+    /**
+     * Creates an instance of EdgeNGramTokenFilterV2 class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public EdgeNGramTokenFilterV2(@JsonProperty(value = "name") String name) {
+    public EdgeNGramTokenFilterV2(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -105,15 +110,5 @@ public class EdgeNGramTokenFilterV2 extends TokenFilter {
     public EdgeNGramTokenFilterV2 setSide(EdgeNGramTokenFilterSide side) {
         this.side = side;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

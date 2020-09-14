@@ -18,7 +18,7 @@ import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.ArrayList;
@@ -139,9 +139,6 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
             }
 
             return true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName1);
@@ -154,7 +151,6 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     private static RunCommandResult runCommandOnVM(Azure azure, VirtualMachine virtualMachine, List<String> commands) {

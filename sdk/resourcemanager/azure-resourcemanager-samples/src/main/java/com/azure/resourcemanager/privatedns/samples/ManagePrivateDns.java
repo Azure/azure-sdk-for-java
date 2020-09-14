@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -162,9 +162,6 @@ public class ManagePrivateDns {
                 System.out.println(status.message());
             }
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -176,7 +173,6 @@ public class ManagePrivateDns {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

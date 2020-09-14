@@ -4,6 +4,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -13,6 +14,7 @@ import com.azure.data.tables.models.ListTablesOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -24,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Tests methods for {@link TableServiceAsyncClient}.
  */
 public class TableServiceAsyncClientTest extends TestBase {
-    private static final Duration TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration TIMEOUT = Duration.ofSeconds(100);
     private TableServiceAsyncClient serviceClient;
 
     @BeforeAll
@@ -47,9 +49,12 @@ public class TableServiceAsyncClientTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else {
-            builder.httpClient(HttpClient.createDefault())
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy());
+            builder.httpClient(HttpClient.createDefault());
+            if (!interceptorManager.isLiveMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
+                Duration.ofSeconds(100))));
         }
 
         serviceClient = builder.buildAsyncClient();
@@ -177,17 +182,59 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
+    @Tag("ListTables")
+    void serviceListTablesAsync() {
+        // Arrange
+        final String tableName = testResourceNamer.randomName("test", 20);
+        final String tableName2 = testResourceNamer.randomName("test", 20);
+        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName2).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(serviceClient.listTables())
+            .expectNextCount(2)
+            .thenConsumeWhile(x -> true)
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    @Tag("ListTables")
     void serviceListTablesWithFilterAsync() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
+        final String tableName2 = testResourceNamer.randomName("test", 20);
         ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq '" + tableName + "'");
         serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName2).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(serviceClient.listTables(options))
             .assertNext(table -> {
                 assertEquals(tableName, table.getName());
             })
+            .expectNextCount(0)
+            .thenConsumeWhile(x -> true)
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    @Tag("ListTables")
+    void serviceListTablesWithTopAsync() {
+        // Arrange
+        final String tableName = testResourceNamer.randomName("test", 20);
+        final String tableName2 = testResourceNamer.randomName("test", 20);
+        final String tableName3 = testResourceNamer.randomName("test", 20);
+        ListTablesOptions options = new ListTablesOptions().setTop(2);
+        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName2).block(TIMEOUT);
+        serviceClient.createTable(tableName3).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(serviceClient.listTables(options))
+            .expectNextCount(2)
+            .thenConsumeWhile(x -> true)
             .expectComplete()
             .verify();
     }

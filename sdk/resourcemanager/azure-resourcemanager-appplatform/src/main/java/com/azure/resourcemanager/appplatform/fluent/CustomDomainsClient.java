@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceCollectionInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceInner;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;

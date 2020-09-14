@@ -38,7 +38,7 @@ public final class UniqueTokenFilterConverter {
 
         Boolean onlyOnSamePosition = obj.isOnlyOnSamePosition();
         uniqueTokenFilter.setOnlyOnSamePosition(onlyOnSamePosition);
-        uniqueTokenFilter.validate();
+
         return uniqueTokenFilter;
     }
 

@@ -20,8 +20,8 @@ VERSION_UPDATE_ITEMS = 'version_update_items'
 config = {
     'cosmos': {
         'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml': {
-            ARTIFACT_ID_PAIRS: (
-                ArtifactIdPair('azure-spring-data-2-3-cosmos', 'azure-spring-data-2-2-cosmos'),
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
             )
         }
     },

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairin
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.ProvisioningStateDR;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.samples.Utils;
@@ -89,7 +89,7 @@ public class ManageEventHubGeoDisasterRecovery {
                 pairing = pairing.refresh();
                 SdkContext.sleep(15 * 1000);
                 if (pairing.provisioningState() == ProvisioningStateDR.FAILED) {
-                    throw new Exception("Provisioning state of the pairing is FAILED");
+                    throw new IllegalStateException("Provisioning state of the pairing is FAILED");
                 }
             }
 
@@ -137,9 +137,6 @@ public class ManageEventHubGeoDisasterRecovery {
 
             System.out.println("Fail over initiated");
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 try {
@@ -161,7 +158,6 @@ public class ManageEventHubGeoDisasterRecovery {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

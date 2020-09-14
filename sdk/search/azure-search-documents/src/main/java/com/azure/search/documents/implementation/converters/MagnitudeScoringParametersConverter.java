@@ -40,7 +40,7 @@ public final class MagnitudeScoringParametersConverter {
 
         Boolean shouldBoostBeyondRangeByConstant = obj.shouldBoostBeyondRangeByConstant();
         magnitudeScoringParameters.setShouldBoostBeyondRangeByConstant(shouldBoostBeyondRangeByConstant);
-        magnitudeScoringParameters.validate();
+
         return magnitudeScoringParameters;
     }
 

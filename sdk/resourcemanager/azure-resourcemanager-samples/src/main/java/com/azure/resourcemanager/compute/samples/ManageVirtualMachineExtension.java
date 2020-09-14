@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.ArrayList;
@@ -274,11 +274,6 @@ public final class ManageVirtualMachineExtension {
             System.out.println("Removed the VM Access extensions from Windows VM");
             Utils.print(windowsVM);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -290,7 +285,6 @@ public final class ManageVirtualMachineExtension {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

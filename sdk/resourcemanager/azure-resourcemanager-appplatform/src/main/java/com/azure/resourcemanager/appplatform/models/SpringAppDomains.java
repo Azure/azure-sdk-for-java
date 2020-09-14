@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.CustomDomainsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -19,7 +18,6 @@ import reactor.core.publisher.Mono;
 
 /** Entry point for Spring App Custom Domains API. */
 @Fluent
-@Beta
 public interface SpringAppDomains
     extends HasManager<AppPlatformManager>,
     HasInner<CustomDomainsClient>,

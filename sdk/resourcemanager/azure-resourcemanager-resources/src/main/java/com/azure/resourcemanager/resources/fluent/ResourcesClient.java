@@ -34,7 +34,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.inner.GenericResourceExpandedInner;
 import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceListResultInner;

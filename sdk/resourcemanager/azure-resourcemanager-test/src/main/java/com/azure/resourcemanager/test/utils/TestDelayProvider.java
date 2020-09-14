@@ -24,6 +24,6 @@ public class TestDelayProvider implements DelayProvider {
 
     @Override
     public Duration getDelayDuration(Duration delay) {
-        return isLiveMode ? delay : Duration.ofSeconds(1);
+        return isLiveMode ? delay : Duration.ofMillis(1);
     }
 }

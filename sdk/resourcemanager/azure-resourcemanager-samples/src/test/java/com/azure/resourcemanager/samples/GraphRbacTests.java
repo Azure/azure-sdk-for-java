@@ -3,25 +3,37 @@
 
 package com.azure.resourcemanager.samples;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.authorization.samples.ManageServicePrincipalCredentials;
 import com.azure.resourcemanager.authorization.samples.ManageUsersGroupsAndRoles;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class GraphRbacTests extends TestBase {
+import java.io.IOException;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+public class GraphRbacTests extends ResourceManagerTestBase {
     private Azure.Authenticated authenticated;
     private AzureProfile profile;
 
-    public GraphRbacTests() {
-        super(TestBase.RunCondition.LIVE_ONLY);
-    }
-
     @Test
+    @DoNotRecord
     public void testManageUsersGroupsAndRoles() {
+        if (skipInPlayback()) {
+            return;
+        }
+
         Assertions.assertTrue(ManageUsersGroupsAndRoles.runSample(authenticated, profile));
     }
 
@@ -31,8 +43,31 @@ public class GraphRbacTests extends TestBase {
 //    }
 
     @Test
-    public void testManageServicePrincipalCredentials() {
+    @DoNotRecord
+    public void testManageServicePrincipalCredentials() throws IOException {
+        if (skipInPlayback()) {
+            return;
+        }
+
         Assertions.assertTrue(ManageServicePrincipalCredentials.runSample(authenticated, profile));
+    }
+
+    @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
     }
 
     @Override

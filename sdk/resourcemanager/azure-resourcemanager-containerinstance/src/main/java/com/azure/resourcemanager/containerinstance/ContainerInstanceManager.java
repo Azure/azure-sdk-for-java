@@ -6,13 +6,15 @@ package com.azure.resourcemanager.containerinstance;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.containerinstance.fluent.ContainerInstanceManagementClient;
+import com.azure.resourcemanager.containerinstance.fluent.ContainerInstanceManagementClientBuilder;
 import com.azure.resourcemanager.containerinstance.implementation.ContainerGroupsImpl;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -97,8 +99,8 @@ public final class ContainerInstanceManager
             profile,
             new ContainerInstanceManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient(),
             sdkContext);
 

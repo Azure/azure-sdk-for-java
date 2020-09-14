@@ -34,7 +34,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.keyvault.KeyVaultManagementClient;
 import com.azure.resourcemanager.keyvault.fluent.inner.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultListResultInner;

@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class UserGroupTest {
-    private static final UserGroup GROUP_1 = new UserGroup("12345", "Group", "test");
+    private static final UserGroup GROUP_1 = new UserGroup("12345", Constants.OBJECT_TYPE_GROUP, "test");
 
     @Test
     public void getDisplayName() {
@@ -16,7 +16,7 @@ public class UserGroupTest {
 
     @Test
     public void getObjectType() {
-        Assert.assertEquals("Group", GROUP_1.getObjectType());
+        Assert.assertEquals(Constants.OBJECT_TYPE_GROUP, GROUP_1.getObjectType());
     }
 
     @Test
@@ -26,13 +26,13 @@ public class UserGroupTest {
 
     @Test
     public void equals() {
-        final UserGroup group2 = new UserGroup("12345", "Group", "test");
+        final UserGroup group2 = new UserGroup("12345", Constants.OBJECT_TYPE_GROUP, "test");
         Assert.assertEquals(GROUP_1, group2);
     }
 
     @Test
     public void hashCodeTest() {
-        final UserGroup group2 = new UserGroup("12345", "Group", "test");
+        final UserGroup group2 = new UserGroup("12345", Constants.OBJECT_TYPE_GROUP, "test");
         Assert.assertEquals(GROUP_1.hashCode(), group2.hashCode());
     }
 }
