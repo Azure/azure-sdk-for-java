@@ -87,6 +87,17 @@ public interface BlobContainers {
     Observable<LegalHold> clearLegalHoldAsync(String resourceGroupName, String accountName, String containerName, List<String> tags);
 
     /**
+     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<LeaseContainerResponse> leaseAsync(String resourceGroupName, String accountName, String containerName);
+
+    /**
      * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
