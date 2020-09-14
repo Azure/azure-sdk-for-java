@@ -58,11 +58,11 @@ public final class EventDataBatch {
     private final TracerProvider tracerProvider;
     private final String entityPath;
     private final String hostname;
-    private final boolean requiresSequenceNumber;
+    private final boolean publishingSequenceNumberRequired;
     private Integer startingPublishedSequenceNumber;
 
     EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
-        TracerProvider tracerProvider, String entityPath, String hostname, boolean requiresSequenceNumber) {
+        TracerProvider tracerProvider, String entityPath, String hostname, boolean publishingSequenceNumberRequired) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.partitionId = partitionId;
@@ -73,7 +73,7 @@ public final class EventDataBatch {
         this.tracerProvider = tracerProvider;
         this.entityPath = entityPath;
         this.hostname = hostname;
-        this.requiresSequenceNumber = requiresSequenceNumber;
+        this.publishingSequenceNumberRequired = publishingSequenceNumberRequired;
     }
 
     EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
@@ -208,7 +208,7 @@ public final class EventDataBatch {
         Objects.requireNonNull(eventData, "'eventData' cannot be null.");
 
         final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
-        if (requiresSequenceNumber) {
+        if (publishingSequenceNumberRequired) {
             // Pre-allocate size for system properties "com.microsoft:producer-sequence-number".
             // EventData doesn't have this system property until it's added just before an idempotent producer
             // sends the EventData out.
@@ -303,22 +303,14 @@ public final class EventDataBatch {
                         case PRODUCER_EPOCH_ANNOTATION_NAME:
                         case PRODUCER_ID_ANNOTATION_NAME:
                         case PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME:
-                            final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-                                ? new MessageAnnotations(new HashMap<>())
-                                : message.getMessageAnnotations();
-                            messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
-                            message.setMessageAnnotations(messageAnnotations);
+                            EventHubMessageSerializer.setMessageAnnotation(message, key, value);
                             break;
                         default:
                             throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
                                 "Property is not a recognized reserved property name: %s", key)));
                     }
                 } else {
-                    final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-                        ? new MessageAnnotations(new HashMap<>())
-                        : message.getMessageAnnotations();
-                    messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
-                    message.setMessageAnnotations(messageAnnotations);
+                    EventHubMessageSerializer.setMessageAnnotation(message, key, value);
                 }
             });
         }

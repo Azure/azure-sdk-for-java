@@ -491,16 +491,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, event.getContext()));
             }
             if (!isIdempotentPartitionPublishing) {
-                final Message message = messageSerializer.serialize(event);
-
-                if (!CoreUtils.isNullOrEmpty(partitionKey)) {
-                    final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
-                        ? new MessageAnnotations(new HashMap<>())
-                        : message.getMessageAnnotations();
-                    messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
-                    message.setMessageAnnotations(messageAnnotations);
-                }
-                messages.add(message);
+                messages.add(this.createMessageFromEvent(event, partitionKey));
             }
         }
 
@@ -533,16 +524,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                         eventData.setInternalPublishedSequenceNumber(seqNumber);
                         eventData.setInternalProducerOwnerLevel(publishingState.getOwnerLevel());
                         seqNumber = PartitionPublishingUtils.incrementSequenceNumber(seqNumber);
-                        final Message message = messageSerializer.serialize(eventData);
-
-                        if (!CoreUtils.isNullOrEmpty(partitionKey)) {
-                            final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
-                                ? new MessageAnnotations(new HashMap<>())
-                                : message.getMessageAnnotations();
-                            messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
-                            message.setMessageAnnotations(messageAnnotations);
-                        }
-                        messages.add(message);
+                        messages.add(this.createMessageFromEvent(eventData, partitionKey));
                     }
                     return link;
                 })
@@ -582,6 +564,18 @@ public class EventHubProducerAsyncClient implements Closeable {
                     }
                 });
         }
+    }
+
+    private Message createMessageFromEvent(EventData event, String partitionKey) {
+        final Message message = messageSerializer.serialize(event);
+        if (!CoreUtils.isNullOrEmpty(partitionKey)) {
+            final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
+                ? new MessageAnnotations(new HashMap<>())
+                : message.getMessageAnnotations();
+            messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
+            message.setMessageAnnotations(messageAnnotations);
+        }
+        return message;
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
