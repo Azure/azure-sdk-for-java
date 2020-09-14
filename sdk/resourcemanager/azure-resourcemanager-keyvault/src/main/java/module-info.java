@@ -5,7 +5,7 @@ module com.azure.resourcemanager.keyvault {
     requires transitive com.azure.resourcemanager.resources;
     requires transitive com.azure.security.keyvault.keys;
     requires transitive com.azure.security.keyvault.secrets;
-    requires com.azure.resourcemanager.authorization;
+    requires transitive com.azure.resourcemanager.authorization;
 
     // export public APIs of keyvault
     exports com.azure.resourcemanager.keyvault;
