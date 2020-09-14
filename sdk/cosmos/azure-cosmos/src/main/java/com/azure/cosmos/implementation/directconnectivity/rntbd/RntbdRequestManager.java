@@ -45,6 +45,7 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCounted;
 import io.netty.util.Timeout;
+import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
 import io.netty.util.internal.ThrowableUtil;
@@ -83,11 +84,15 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     private static final ClosedChannelException ON_DEREGISTER =
         ThrowableUtil.unknownStackTrace(new ClosedChannelException(), RntbdRequestManager.class, "deregister");
 
+    private static final EventExecutor requestExpirator = new DefaultEventExecutor(new RntbdThreadFactory(
+        "request-expirator",
+        true,
+        Thread.NORM_PRIORITY));
+
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestManager.class);
 
     private final CompletableFuture<RntbdContext> contextFuture = new CompletableFuture<>();
     private final CompletableFuture<RntbdContextRequest> contextRequestFuture = new CompletableFuture<>();
-    private final ExecutorService executorService;
     private final ChannelHealthChecker healthChecker;
     private final int pendingRequestLimit;
     private final ConcurrentHashMap<Long, RntbdRequestRecord> pendingRequests;
@@ -106,9 +111,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.pendingRequests = new ConcurrentHashMap<>(pendingRequestLimit);
         this.pendingRequestLimit = pendingRequestLimit;
         this.healthChecker = healthChecker;
-
-        // TODO: this needs to be released
-        this.executorService = Executors.newSingleThreadExecutor();
     }
 
     // region ChannelHandler methods
@@ -573,7 +575,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
 
                 // We don't wish to complete on the timeout thread, but rather on a thread doled out by our executor
-                executorService.execute(record::expire);
+                requestExpirator.execute(record::expire);
             });
 
             record.whenComplete((response, error) -> {

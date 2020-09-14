@@ -38,7 +38,6 @@ import java.nio.channels.ClosedChannelException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.Queue;
@@ -52,8 +51,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -93,6 +90,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
         true,
         Thread.NORM_PRIORITY));
 
+    // this is only for debugging monitoring of the health of RNTBD
+    // TODO: once we are certain no task gets stuck in the rntbd queue remove this
+    private static final EventExecutor monitoringRntbdChannelPool = new DefaultEventExecutor(new RntbdThreadFactory(
+        "monitoring-rntbd-channel-pool",
+        true,
+        Thread.MIN_PRIORITY));
+
     private static final HashedWheelTimer acquisitionAndIdleEndpointDetectionTimer =
         new HashedWheelTimer(new RntbdThreadFactory(
             "channel-acquisition-timer",
@@ -105,7 +109,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final Runnable acquisitionTimeoutTask;
     private final PooledByteBufAllocatorMetric allocatorMetric;
     private final Bootstrap bootstrap;
-    private final ScheduledExecutorService ex;
     private final EventExecutor executor;
     private final ChannelHealthChecker healthChecker;
     // private final ScheduledFuture<?> idleStateDetectionScheduledFuture;
@@ -124,6 +127,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final AtomicBoolean closed = new AtomicBoolean();
     private final AtomicBoolean connecting = new AtomicBoolean();
     private final Queue<AcquireTask> pendingAcquisitions = new ConcurrentLinkedQueue<>();
+
+    // this is only for debugging monitoring of the health of RNTBD
+    // TODO: once we are certain no task gets stuck in the rntbd queue remove this
+    private final ScheduledFuture<?> monitoringFuture;
 
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
@@ -203,10 +210,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 //                this.runTasksInPendingAcquisitionQueue();
 //
 //            }, requestTimerResolutionInNanos, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
-
-        ex = Executors.newScheduledThreadPool(1);
-
-        monitoring();
+        monitoringFuture = startMonitoring();
     }
 
     // region Accessors
@@ -385,6 +389,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 this.executor.submit(this::doClose).awaitUninterruptibly(); // block until complete
             }
         }
+
+        this.monitoringFuture.cancel(false);
     }
 
     /**
@@ -1402,8 +1408,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
             generator.writeNumberField("writeDelayLimit", healthChecker.writeDelayLimitInNanos());
             generator.writeEndObject();
             generator.writeObjectFieldStart("state");
-//            generator.writeNumberField("channelsAcquired", value.channelsAcquired());
-//            generator.writeNumberField("channelsAvailable", value.channelsAvailable());
+            generator.writeNumberField("channelsAcquired", value.channelsAcquiredMetrics());
+            generator.writeNumberField("channelsAvailable", value.channelsAvailableMetrics());
             generator.writeNumberField("requestQueueLength", value.requestQueueLength());
             generator.writeEndObject();
             generator.writeEndObject();
@@ -1426,27 +1432,26 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
     // endregion
 
+    // TODO: remove when we are confident of RNTBD OOM bug
     @SuppressWarnings("unchecked")
-    private void monitoring() {
-        ex.scheduleAtFixedRate(() -> {
+    private ScheduledFuture<?> startMonitoring() {
+        return monitoringRntbdChannelPool.scheduleAtFixedRate(() -> {
             int i = getTaskCount();
             if (isInterestingEndpoint()) {
-
-                logger.info("{} total number of tasks on the executor [{}], connecting [{}], acquiredChannel [{}], availableChannel [{}], pending acquasition [{}]",
+                logger.debug("{} total number of tasks on the executor [{}], connecting [{}], acquiredChannel [{}], availableChannel [{}], pending acquisition [{}]",
                     this.hashCode(), i, connecting.get(), acquiredChannels.size(), availableChannels.size(), pendingAcquisitions.size());
             }
         }, 0, 60, TimeUnit.SECONDS);
     }
 
-
+    // TODO: remove when we are confident of RNTBD OOM bug
     private boolean isInterestingEndpoint() {
         return true;
-//        return remoteAddress().toString().contains("14048");
     }
 
+    // TODO: remove when we are confident of RNTBD OOM bug
     @SuppressWarnings("unchecked")
     public int getTaskCount() {
-
         try {
             Field f = SingleThreadEventExecutor.class.getDeclaredField("taskQueue");
             f.setAccessible(true);
