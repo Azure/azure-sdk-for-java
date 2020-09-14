@@ -49,7 +49,6 @@ public class RelationshipsSyncSamples {
         runRelationshipsSample();
     }
 
-    @SuppressWarnings("rawtypes")
     public static void runRelationshipsSample() throws JsonProcessingException {
 
         ConsoleLogger.printHeader("RELATIONSHIP SAMPLE");
@@ -117,14 +116,14 @@ public class RelationshipsSyncSamples {
         ConsoleLogger.printSuccess("Created a digital twin relationship "+ buildingFloorRelationshipId + " from twin: " + buildingTwinId + " to twin: " + floorTwinId);
 
         ConsoleLogger.printHeader("Get Relationship");
-        Response<BasicRelationship> getRelationshipRepsonse = client.getRelationshipWithResponse(
+        Response<BasicRelationship> getRelationshipResponse = client.getRelationshipWithResponse(
             buildingTwinId,
             buildingFloorRelationshipId,
             BasicRelationship.class,
             Context.NONE);
 
-        if (getRelationshipRepsonse.getStatusCode() == HttpURLConnection.HTTP_OK) {
-            BasicRelationship retrievedRelationship = getRelationshipRepsonse.getValue();
+        if (getRelationshipResponse.getStatusCode() == HttpURLConnection.HTTP_OK) {
+            BasicRelationship retrievedRelationship = getRelationshipResponse.getValue();
             ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getId() + " from twin: " + retrievedRelationship.getSourceId() + "\n\t" +
                 "Prop1: " + retrievedRelationship.getCustomProperties().get("Prop1") + "\n\t" +
                 "Prop2: " + retrievedRelationship.getCustomProperties().get("Prop2"));
