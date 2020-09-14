@@ -46,7 +46,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -58,7 +58,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.5.4</version>
+  <version>1.6.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -322,7 +322,7 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[docs]: http://azure.github.io/azure-sdk-for-java/
+[docs]: http://azure.github.io/azure-sdk-for-java/resourcemanager.html
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: ../identity/azure-identity

@@ -82,7 +82,7 @@ public final class SearchResult {
                 String serializedJson = searchJacksonAdapter.serialize(additionalProperties, SerializerEncoding.JSON);
                 return searchJacksonAdapter.deserialize(serializedJson, modelClass, SerializerEncoding.JSON);
             } catch (IOException ex) {
-                throw logger.logExceptionAsError(new RuntimeException("Something wrong with the serialization."));
+                throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize search result.", ex));
             }
         }
         ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();

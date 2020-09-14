@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainAvailabilityCheckResultInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainControlCenterSsoRequestInner;

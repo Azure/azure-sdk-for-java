@@ -9,7 +9,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.security.keyvault.administration.models.*;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentScope;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -170,6 +173,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
      * @param name The name of the {@link KeyVaultRoleAssignment}.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link UUID name} are
      * {@code null}.
@@ -198,6 +202,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
      * @param name The name of the {@link KeyVaultRoleAssignment}.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link UUID name} are
      * {@code null}.

@@ -6,6 +6,8 @@ package com.azure.resourcemanager.keyvault;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.keyvault.fluent.KeyVaultManagementClient;
+import com.azure.resourcemanager.keyvault.fluent.KeyVaultManagementClientBuilder;
 import com.azure.resourcemanager.keyvault.implementation.VaultsImpl;
 import com.azure.resourcemanager.keyvault.models.Vaults;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;

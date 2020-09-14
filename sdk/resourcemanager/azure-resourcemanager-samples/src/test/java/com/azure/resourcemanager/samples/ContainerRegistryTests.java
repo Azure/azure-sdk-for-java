@@ -9,11 +9,13 @@ import com.azure.resourcemanager.containerregistry.samples.ManageContainerRegist
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 public class ContainerRegistryTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageContainerRegistry() {
+    public void testManageContainerRegistry() throws IOException {
         if (skipInPlayback()) {
             return;
         }
@@ -23,7 +25,7 @@ public class ContainerRegistryTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageContainerRegistryWithWebhooks() {
+    public void testManageContainerRegistryWithWebhooks() throws IOException, InterruptedException {
         if (skipInPlayback()) {
             return;
         }

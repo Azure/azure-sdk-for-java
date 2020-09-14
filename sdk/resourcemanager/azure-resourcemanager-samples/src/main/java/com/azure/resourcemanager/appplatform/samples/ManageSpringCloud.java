@@ -41,7 +41,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.Base64;
 import java.util.Collections;
 
@@ -68,7 +71,7 @@ public class ManageSpringCloud {
      * @return true if sample runs successfully
      * @throws IllegalStateException unexcepted state
      */
-    public static boolean runSample(Azure azure, String clientId) {
+    public static boolean runSample(Azure azure, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
         final String rgName = azure.sdkContext().randomResourceName("rg", 24);
         final String serviceName  = azure.sdkContext().randomResourceName("service", 24);
         final Region region = Region.US_EAST;
@@ -255,9 +258,6 @@ public class ManageSpringCloud {
             System.out.printf("Successfully expose domain ssl.%s%n", domainName);
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Delete Resource Group: " + rgName);
@@ -268,7 +268,6 @@ public class ManageSpringCloud {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

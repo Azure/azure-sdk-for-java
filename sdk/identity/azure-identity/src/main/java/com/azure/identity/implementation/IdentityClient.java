@@ -110,6 +110,9 @@ public class IdentityClient {
     private static final String DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME = DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT;
     private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
+    private static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
+    private static final String MSI_ENDPOINT_VERSION = "2017-09-01";
+    private static final String ADFS_TENANT = "adfs";
     private static final String HTTP_LOCALHOST = "http://localhost";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
@@ -337,6 +340,10 @@ public class IdentityClient {
                 }
             } else if (authType.equalsIgnoreCase("DC")) {
 
+                if (isADFSTenant()) {
+                    return Mono.error(new CredentialUnavailableException("IntelliJCredential  "
+                                         + "authentication unavailable. ADFS tenant/authorities are not supported."));
+                }
                 JsonNode intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
                 String refreshToken = intelliJCredentials.get("refreshToken").textValue();
 
@@ -592,6 +599,10 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithVsCodeCredential(TokenRequestContext request, String cloud) {
 
+        if (isADFSTenant()) {
+            return Mono.error(new CredentialUnavailableException("VsCodeCredential  "
+                                         + "authentication unavailable. ADFS tenant/authorities are not supported."));
+        }
         VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
 
         String credential = accessor.getCredentials("VS Code Azure", cloud);
@@ -639,10 +650,21 @@ public class IdentityClient {
      * @param port the port on which the HTTP server is listening
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, int port) {
+    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, Integer port,
+                                                              String redirectUrl) {
         URI redirectUri;
+        String redirect;
+
+        if (port != null) {
+            redirect = HTTP_LOCALHOST + ":" + port;
+        } else if (redirectUrl != null) {
+            redirect = redirectUrl;
+        } else {
+            redirect = HTTP_LOCALHOST;
+        }
+
         try {
-            redirectUri = new URI(HTTP_LOCALHOST + ":" + port);
+            redirectUri = new URI(redirect);
         } catch (URISyntaxException e) {
             return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
         }
@@ -709,14 +731,31 @@ public class IdentityClient {
     /**
      * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
      *
-     * @param msiEndpoint the endpoint to acquire token from
-     * @param msiSecret the secret to acquire token with
+     * @param identityEndpoint the Identity endpoint to acquire token from
+     * @param identityHeader the identity header to acquire token with
+     * @param msiEndpoint the MSI endpoint to acquire token from
+     * @param msiSecret the msi secret to acquire token with
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String msiEndpoint, String msiSecret,
+    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String identityEndpoint, String identityHeader,
+                                                                   String msiEndpoint, String msiSecret,
                                                                    TokenRequestContext request) {
         return Mono.fromCallable(() -> {
+            String endpoint;
+            String headerValue;
+            String endpointVersion;
+
+            if (identityEndpoint != null) {
+                endpoint = identityEndpoint;
+                headerValue = identityHeader;
+                endpointVersion = IDENTITY_ENDPOINT_VERSION;
+            } else {
+                endpoint = msiEndpoint;
+                headerValue = msiSecret;
+                endpointVersion = MSI_ENDPOINT_VERSION;
+            }
+
             String resource = ScopeUtil.scopesToResource(request.getScopes());
             HttpURLConnection connection = null;
             StringBuilder payload = new StringBuilder();
@@ -724,18 +763,26 @@ public class IdentityClient {
             payload.append("resource=");
             payload.append(URLEncoder.encode(resource, "UTF-8"));
             payload.append("&api-version=");
-            payload.append(URLEncoder.encode("2017-09-01", "UTF-8"));
+            payload.append(URLEncoder.encode(endpointVersion, "UTF-8"));
             if (clientId != null) {
-                payload.append("&clientid=");
+                if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
+                    payload.append("&client_id=");
+                } else {
+                    payload.append("&clientid=");
+                }
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
             try {
-                URL url = new URL(String.format("%s?%s", msiEndpoint, payload));
+                URL url = new URL(String.format("%s?%s", endpoint, payload));
                 connection = (HttpURLConnection) url.openConnection();
 
                 connection.setRequestMethod("GET");
-                if (msiSecret != null) {
-                    connection.setRequestProperty("Secret", msiSecret);
+                if (headerValue != null) {
+                    if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
+                        connection.setRequestProperty("X-IDENTITY-HEADER", headerValue);
+                    } else {
+                        connection.setRequestProperty("Secret", headerValue);
+                    }
                 }
                 connection.setRequestProperty("Metadata", "true");
 
@@ -975,5 +1022,9 @@ public class IdentityClient {
      */
     public String getClientId() {
         return clientId;
+    }
+
+    private boolean isADFSTenant() {
+        return this.tenantId.equals(ADFS_TENANT);
     }
 }

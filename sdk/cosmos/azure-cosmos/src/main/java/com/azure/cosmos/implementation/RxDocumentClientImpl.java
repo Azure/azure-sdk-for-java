@@ -8,10 +8,11 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.cpu.CpuListener;
+import com.azure.cosmos.implementation.cpu.CpuMonitor;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
@@ -30,6 +31,7 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -77,7 +79,7 @@ import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider {
+public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuListener {
 
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutioncontext, but not used";
@@ -258,6 +260,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
             this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
+            CpuMonitor.register(this);
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -1539,7 +1542,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public <T> Mono<FeedResponse<T>> readMany(
-        List<Pair<String, PartitionKey>> itemKeyList,
+        List<CosmosItemIdentity> itemIdentityList,
         String collectionLink,
         CosmosQueryRequestOptions options,
         Class<T> klass) {
@@ -1569,18 +1572,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             null,
                             null);
                     return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
-                        Map<PartitionKeyRange, List<Pair<String, PartitionKey>>> partitionRangeItemKeyMap =
+                        Map<PartitionKeyRange, List<CosmosItemIdentity>> partitionRangeItemKeyMap =
                             new HashMap<>();
                         CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
                         if (routingMap == null) {
                             throw new IllegalStateException("Failed to get routing map.");
                         }
-                        itemKeyList
-                            .forEach(stringPartitionKeyPair -> {
+                        itemIdentityList
+                            .forEach(itemIdentity -> {
 
                                 String effectivePartitionKeyString =  PartitionKeyInternalHelper
                                     .getEffectivePartitionKeyString(
-                                        BridgeInternal.getPartitionKeyInternal(stringPartitionKeyPair.getRight()),
+                                        BridgeInternal.getPartitionKeyInternal(
+                                            itemIdentity.getPartitionKey()),
                                         pkDefinition);
 
                                 //use routing map to find the partitionKeyRangeId of each
@@ -1590,13 +1594,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 //group the itemKeyList based on partitionKeyRangeId
                                 if (partitionRangeItemKeyMap.get(range) == null) {
-                                    List<Pair<String, PartitionKey>> list = new ArrayList<>();
-                                    list.add(stringPartitionKeyPair);
+                                    List<CosmosItemIdentity> list = new ArrayList<>();
+                                    list.add(itemIdentity);
                                     partitionRangeItemKeyMap.put(range, list);
                                 } else {
-                                    List<Pair<String, PartitionKey>> pairs =
+                                    List<CosmosItemIdentity> pairs =
                                         partitionRangeItemKeyMap.get(range);
-                                    pairs.add(stringPartitionKeyPair);
+                                    pairs.add(itemIdentity);
                                     partitionRangeItemKeyMap.put(range, pairs);
                                 }
 
@@ -1655,14 +1659,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Map<PartitionKeyRange, SqlQuerySpec> getRangeQueryMap(
-        Map<PartitionKeyRange, List<Pair<String, PartitionKey>>> partitionRangeItemKeyMap,
+        Map<PartitionKeyRange, List<CosmosItemIdentity>> partitionRangeItemKeyMap,
         PartitionKeyDefinition partitionKeyDefinition) {
         //TODO: Optimise this to include all types of partitionkeydefinitions. ex: c["prop1./ab"]["key1"]
 
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = new HashMap<>();
         String partitionKeySelector = createPkSelector(partitionKeyDefinition);
 
-        for(Map.Entry<PartitionKeyRange, List<Pair<String, PartitionKey>>> entry: partitionRangeItemKeyMap.entrySet()) {
+        for(Map.Entry<PartitionKeyRange, List<CosmosItemIdentity>> entry: partitionRangeItemKeyMap.entrySet()) {
 
             SqlQuerySpec sqlQuerySpec;
             if (partitionKeySelector.equals("[\"id\"]")) {
@@ -1679,7 +1683,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private SqlQuerySpec createReadManyQuerySpecPartitionKeyIdSame(
-        List<Pair<String, PartitionKey>> idPartitionKeyPairList,
+        List<CosmosItemIdentity> idPartitionKeyPairList,
         String partitionKeySelector) {
 
         StringBuilder queryStringBuilder = new StringBuilder();
@@ -1687,12 +1691,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         queryStringBuilder.append("SELECT * FROM c WHERE c.id IN ( ");
         for (int i = 0; i < idPartitionKeyPairList.size(); i++) {
-            Pair<String, PartitionKey> pair = idPartitionKeyPairList.get(i);
+            CosmosItemIdentity itemIdentity = idPartitionKeyPairList.get(i);
 
-            String idValue = pair.getLeft();
+            String idValue = itemIdentity.getId();
             String idParamName = "@param" + i;
 
-            PartitionKey pkValueAsPartitionKey = pair.getRight();
+            PartitionKey pkValueAsPartitionKey = itemIdentity.getPartitionKey();
             Object pkValue = ModelBridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
 
             if (!Objects.equals(idValue, pkValue)) {
@@ -1712,20 +1716,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
     }
 
-    private SqlQuerySpec createReadManyQuerySpec(List<Pair<String, PartitionKey>> idPartitionKeyPairList, String partitionKeySelector) {
+    private SqlQuerySpec createReadManyQuerySpec(List<CosmosItemIdentity> itemIdentities, String partitionKeySelector) {
         StringBuilder queryStringBuilder = new StringBuilder();
         List<SqlParameter> parameters = new ArrayList<>();
 
         queryStringBuilder.append("SELECT * FROM c WHERE ( ");
-        for (int i = 0; i < idPartitionKeyPairList.size(); i++) {
-            Pair<String, PartitionKey> pair = idPartitionKeyPairList.get(i);
+        for (int i = 0; i < itemIdentities.size(); i++) {
+            CosmosItemIdentity itemIdentity = itemIdentities.get(i);
 
-            PartitionKey pkValueAsPartitionKey = pair.getRight();
+            PartitionKey pkValueAsPartitionKey = itemIdentity.getPartitionKey();
             Object pkValue = ModelBridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
             String pkParamName = "@param" + (2 * i);
             parameters.add(new SqlParameter(pkParamName, pkValue));
 
-            String idValue = pair.getLeft();
+            String idValue = itemIdentity.getId();
             String idParamName = "@param" + (2 * i + 1);
             parameters.add(new SqlParameter(idParamName, idValue));
 
@@ -1740,7 +1744,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             queryStringBuilder.append(pkParamName);
             queryStringBuilder.append(" )");
 
-            if (i < idPartitionKeyPairList.size() - 1) {
+            if (i < itemIdentities.size() - 1) {
                 queryStringBuilder.append(" OR ");
             }
         }
@@ -3334,6 +3338,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         LifeCycleUtils.closeQuietly(this.storeClientFactory);
         logger.info("Shutting down reactorHttpClient ...");
         LifeCycleUtils.closeQuietly(this.reactorHttpClient);
+        logger.info("Shutting down CpuMonitor ...");
+        CpuMonitor.unregister(this);
         logger.info("Shutting down completed.");
     }
 

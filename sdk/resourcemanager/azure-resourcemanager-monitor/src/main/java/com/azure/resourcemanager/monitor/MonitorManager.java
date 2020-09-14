@@ -5,6 +5,8 @@ package com.azure.resourcemanager.monitor;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.monitor.fluent.MonitorClient;
+import com.azure.resourcemanager.monitor.fluent.MonitorClientBuilder;
 import com.azure.resourcemanager.monitor.implementation.ActionGroupsImpl;
 import com.azure.resourcemanager.monitor.implementation.ActivityLogsImpl;
 import com.azure.resourcemanager.monitor.implementation.AlertRulesImpl;

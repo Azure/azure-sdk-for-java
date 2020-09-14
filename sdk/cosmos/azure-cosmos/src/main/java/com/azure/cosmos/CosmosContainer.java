@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -312,36 +312,36 @@ public class CosmosContainer {
      * Reads many documents.
      *
      * @param <T> the type parameter
-     * @param itemKeyList document id and partition key pair that needs to be read
+     * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
     @Beta(Beta.SinceVersion.V4_4_0)
     public <T> FeedResponse<T> readMany(
-        List<Pair<String, PartitionKey>> itemKeyList,
+        List<CosmosItemIdentity> itemIdentityList,
         Class<T> classType) {
 
-        return this.readMany(itemKeyList, null, classType);
+        return this.readMany(itemIdentityList, null, classType);
     }
 
     /**
      * Reads many documents.
      *
      * @param <T> the type parameter
-     * @param itemKeyList document id and partition key pair that needs to be read
+     * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param sessionToken the optional Session token - null if the read can be made without specific session token
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
     @Beta(Beta.SinceVersion.V4_4_0)
     public <T> FeedResponse<T> readMany(
-        List<Pair<String, PartitionKey>> itemKeyList,
+        List<CosmosItemIdentity> itemIdentityList,
         String sessionToken,
         Class<T> classType) {
 
         return this.blockFeedResponse(
             this.asyncContainer.readMany(
-                itemKeyList,
+                itemIdentityList,
                 sessionToken,
                 classType));
     }
@@ -354,7 +354,6 @@ public class CosmosContainer {
      * @param classType the class type.
      * @return the {@link CosmosPagedIterable}.
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
     public <T> CosmosPagedIterable<T> readAllItems(
         PartitionKey partitionKey,
         Class<T> classType) {
@@ -372,7 +371,6 @@ public class CosmosContainer {
      * @param classType the class type.
      * @return the {@link CosmosPagedIterable}.
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
     public <T> CosmosPagedIterable<T> readAllItems(
         PartitionKey partitionKey,
         CosmosQueryRequestOptions options,

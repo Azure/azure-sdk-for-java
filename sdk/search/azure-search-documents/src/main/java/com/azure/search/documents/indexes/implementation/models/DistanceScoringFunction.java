@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.DistanceScoringParameters;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -23,12 +24,18 @@ public final class DistanceScoringFunction extends ScoringFunction {
     @JsonProperty(value = "distance", required = true)
     private DistanceScoringParameters parameters;
 
-    /** Creates an instance of DistanceScoringFunction class. */
+    /**
+     * Creates an instance of DistanceScoringFunction class.
+     *
+     * @param fieldName the fieldName value to set.
+     * @param boost the boost value to set.
+     * @param parameters the parameters value to set.
+     */
     @JsonCreator
     public DistanceScoringFunction(
-            @JsonProperty(value = "fieldName") String fieldName,
-            @JsonProperty(value = "boost") double boost,
-            @JsonProperty(value = "distance") DistanceScoringParameters parameters) {
+            @JsonProperty(value = "fieldName", required = true) String fieldName,
+            @JsonProperty(value = "boost", required = true) double boost,
+            @JsonProperty(value = "distance", required = true) DistanceScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
     }
@@ -40,26 +47,5 @@ public final class DistanceScoringFunction extends ScoringFunction {
      */
     public DistanceScoringParameters getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: Parameter values for the distance scoring function.
-     *
-     * @param parameters the parameters value to set.
-     * @return the DistanceScoringFunction object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getParameters() == null) {
-            throw new IllegalArgumentException("Missing required property parameters in model DistanceScoringFunction");
-        } else {
-            getParameters().validate();
-        }
     }
 }

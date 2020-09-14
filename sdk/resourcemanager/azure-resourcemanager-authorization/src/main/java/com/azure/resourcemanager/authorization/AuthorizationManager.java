@@ -5,6 +5,10 @@ package com.azure.resourcemanager.authorization;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.authorization.fluent.AuthorizationManagementClient;
+import com.azure.resourcemanager.authorization.fluent.AuthorizationManagementClientBuilder;
+import com.azure.resourcemanager.authorization.fluent.GraphRbacManagementClient;
+import com.azure.resourcemanager.authorization.fluent.GraphRbacManagementClientBuilder;
 import com.azure.resourcemanager.authorization.implementation.ActiveDirectoryApplicationsImpl;
 import com.azure.resourcemanager.authorization.implementation.ActiveDirectoryGroupsImpl;
 import com.azure.resourcemanager.authorization.implementation.ActiveDirectoryUsersImpl;

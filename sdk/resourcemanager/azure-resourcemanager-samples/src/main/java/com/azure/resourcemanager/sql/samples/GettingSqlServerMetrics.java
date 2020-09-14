@@ -30,6 +30,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -50,7 +51,7 @@ public class GettingSqlServerMetrics {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws ClassNotFoundException, SQLException {
         final String sqlServerName = azure.sdkContext().randomResourceName("sqltest", 20);
         final String dbName = "dbSample";
         final String epName = "epSample";
@@ -312,9 +313,6 @@ public class GettingSqlServerMetrics {
             System.out.println("Deleting the Sql Server");
             azure.sqlServers().deleteById(sqlServer.id());
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -324,7 +322,6 @@ public class GettingSqlServerMetrics {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

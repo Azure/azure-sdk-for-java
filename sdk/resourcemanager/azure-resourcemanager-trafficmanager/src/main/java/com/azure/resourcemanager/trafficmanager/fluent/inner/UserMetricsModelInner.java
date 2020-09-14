@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.trafficmanager.fluent.inner;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UserMetricsModel model. */
 @JsonFlatten
+@Fluent
 public class UserMetricsModelInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserMetricsModelInner.class);
 

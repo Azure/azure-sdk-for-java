@@ -315,11 +315,6 @@ public final class ManageVirtualMachineScaleSetAsync {
                         })).singleOrEmpty().block();
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -331,7 +326,6 @@ public final class ManageVirtualMachineScaleSetAsync {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
