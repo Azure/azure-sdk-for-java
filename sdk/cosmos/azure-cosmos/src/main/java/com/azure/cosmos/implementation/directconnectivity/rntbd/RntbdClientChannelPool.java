@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -1449,14 +1450,18 @@ public final class RntbdClientChannelPool implements ChannelPool {
     // TODO: remove when we are confident of RNTBD OOM bug
     @SuppressWarnings("unchecked")
     public int getTaskCount() {
+
         try {
-            Field f = SingleThreadEventExecutor.class.getDeclaredField("taskQueue");
-            f.setAccessible(true);
-            Queue<Runnable> queue = (Queue<Runnable>) (f.get(this.executor));
-            return queue.size();
+            SingleThreadEventExecutor singleThreadEventExecutor = Utils.as(this.executor,
+                SingleThreadEventExecutor.class);
 
-        } catch (Exception e) {
-
+            if (singleThreadEventExecutor != null) {
+                return singleThreadEventExecutor.pendingTasks();
+            }
+        } catch (RuntimeException e) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("task-queue unexpected monitoring failure", e);
+            }
         }
         return -1;
     }
