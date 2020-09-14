@@ -89,9 +89,9 @@ public class ComponentSyncSamples {
                 new DigitalTwinMetadata()
                     .setModelId(modelId)
             )
-            .setCustomProperties("Prop1", "Value1")
-            .setCustomProperties("Prop2", 987)
-            .setCustomProperties(
+            .addCustomProperty("Prop1", "Value1")
+            .addCustomProperty("Prop2", 987)
+            .addCustomProperty(
                 "Component1",
                 new ModelProperties()
                     .setCustomProperties("ComponentProp1", "Component value 1")

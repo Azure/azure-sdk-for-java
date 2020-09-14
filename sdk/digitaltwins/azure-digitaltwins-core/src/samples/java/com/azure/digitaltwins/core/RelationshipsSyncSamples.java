@@ -108,8 +108,8 @@ public class RelationshipsSyncSamples {
             .setSourceId(buildingTwinId)
             .setTargetId(floorTwinId)
             .setName("contains")
-            .setCustomProperties("Prop1", "Prop1 value")
-            .setCustomProperties("Prop2", 6);
+            .addCustomProperty("Prop1", "Prop1 value")
+            .addCustomProperty("Prop2", 6);
 
         client.createRelationship(buildingTwinId, buildingFloorRelationshipId, mapper.writeValueAsString(buildingFloorRelationshipPayload));
 
