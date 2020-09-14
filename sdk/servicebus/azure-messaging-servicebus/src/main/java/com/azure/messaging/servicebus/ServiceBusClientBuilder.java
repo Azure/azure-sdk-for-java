@@ -98,12 +98,12 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Sets the {@link ClientOptions}. This would allow various options on the client for example
-     * {@link ClientOptions#setApplicationId(String) applicationId}.
+     * Sets the {@link ClientOptions}. It enables various options to be set on the client.
      *
      * @param clientOptions to be set on the client.
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
+     * @see ClientOptions
      */
     public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;

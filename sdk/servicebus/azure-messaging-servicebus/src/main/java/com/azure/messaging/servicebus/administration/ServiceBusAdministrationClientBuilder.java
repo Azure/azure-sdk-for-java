@@ -338,12 +338,24 @@ public class ServiceBusAdministrationClientBuilder {
         final String clientName = properties.getOrDefault("name", "UnknownName");
         final String clientVersion = properties.getOrDefault("version", "UnknownVersion");
 
-        String applicationId = httpLogOptions.getApplicationId();
-
-        // We prioritize application id set in ClientOptions.
-        if (clientOptions != null && CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())) {
-            applicationId = clientOptions.getApplicationId();
+        // File applicationId to use
+        String logApplicationId = null;
+        if (httpLogOptions != null) {
+            logApplicationId = httpLogOptions.getApplicationId();
         }
+
+        String clientApplicationId = null;
+        if (clientOptions != null && clientOptions.getApplicationId() != null) {
+            clientApplicationId = clientOptions.getApplicationId();
+        }
+
+        if (logApplicationId != null && clientApplicationId != null
+            && !logApplicationId.equalsIgnoreCase(clientApplicationId)) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "'httpLogOptions.getApplicationId() and clientOptions.getApplicationId()' cannot be different."));
+        }
+        // We prioritize application id set in ClientOptions.
+        final String applicationId = clientApplicationId != null ? clientApplicationId : logApplicationId;
 
         httpPolicies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
             buildConfiguration));

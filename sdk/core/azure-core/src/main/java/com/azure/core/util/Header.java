@@ -6,7 +6,7 @@ package com.azure.core.util;
 import java.util.Objects;
 
 /**
- * It represents a single header for a request.
+ * It represents a single header for a request being sent to Azure Service.
  *
  * If multiple header values are added to a request or response with the same name (case-insensitive), then the values
  * will be appended at the end of the same {@link Header} with commas separating them.

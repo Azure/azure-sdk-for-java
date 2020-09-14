@@ -5,14 +5,20 @@ package com.azure.core.util;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.http.policy.UserAgentPolicy;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Client Options for setting common properties for example applicationId. Most of these properties are applied on
- * request being send to Azure Service but some could be used for other purpose also for example applicationId could be
- * used for telemetry. This class is used by user to set these properties at the time of building the client.
+ * Client Options for setting various properties on the client. It is set at the time of building the client using
+ * client's builder.
+ * <p>
+ * The {@link Header} could be set using {@link ClientOptions#setHeaders(Iterable) setHeaders}. The {@link Header} will
+ * be applied on the request being sent to Azure Service.
+ * <p>
+ * The {@code applicationId} could be set using {@link ClientOptions#setApplicationId(String) setApplicationId} which
+ * is used setting  {@code applicationId} in {@link UserAgentPolicy}.
  */
 @Fluent
 public final class ClientOptions {
