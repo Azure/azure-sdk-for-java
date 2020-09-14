@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<parent>
-		<groupId>com.azure</groupId>
-		<artifactId>azure-client-sdk-parent</artifactId>
-		<version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-		<relativePath>../../parents/azure-client-sdk-parent</relativePath>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>spring-cloud-azure-context</artifactId>
   <version>1.2.8</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
 
-	<name>Spring Cloud Azure Context</name>
-	<url>https://github.com/Azure/azure-sdk-for-java</url>
+  <name>Spring Cloud Azure Context</name>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-	<properties>
-		<jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-		<jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
-	</properties>
+  <properties>
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -34,17 +32,17 @@
       <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
     </dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>5.2.8.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.5</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
-		</dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>5.2.8.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.5</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
+    </dependency>
 
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -64,10 +62,10 @@
     </dependency>
 
     <dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-core-management</artifactId>
-			<version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-management;external_dependency} -->
-		</dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-management</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-management;external_dependency} -->
+    </dependency>
 
 
     <!-- test -->
@@ -80,7 +78,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.3.3</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.3.3</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -90,15 +88,16 @@
       <scope>test</scope>
     </dependency>
 
-		<!-- Added this dependency to include necessary annotations used by reactor 
+    <!-- Added this dependency to include necessary annotations used by reactor 
 			core. Without this dependency, javadoc throws a warning as it cannot find 
 			enum When.MAYBE which is used in @Nullable annotation in reactor core classes -->
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
-			<scope>provided</scope>
-		</dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
