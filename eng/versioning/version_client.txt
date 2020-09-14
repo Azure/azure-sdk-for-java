@@ -129,7 +129,6 @@ com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;1.2.8-bet
 # Format;
 # unreleased_<groupId>:<artifactId>;dependency-version
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
-unreleased_com.azure:azure-security-keyvault-keys;4.3.0-beta.2
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
@@ -138,3 +137,4 @@ unreleased_com.azure:azure-security-keyvault-keys;4.3.0-beta.2
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
+beta_com.azure:azure-security-keyvault-keys;4.3.0-beta.1
