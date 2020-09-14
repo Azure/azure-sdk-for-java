@@ -144,11 +144,6 @@ class EventHubProducerAsyncClientIdempotentTest {
     }
 
     @Test
-    void isIdempotentProducer() {
-        assertTrue(producer.isIdempotentProducer());
-    }
-
-    @Test
     void getPartitionPublishingState() {
         StepVerifier.create(producer.getPartitionPublishingState(PARTITION_0))
             .assertNext(state -> {

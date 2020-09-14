@@ -122,7 +122,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
-    private final boolean enableIdempotentPartitions;
+    private final boolean isIdempotentPartitionPublishing;
     private final Map<String, PartitionPublishingState> partitionPublishingStates;
 
     /**
@@ -134,7 +134,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
-        boolean enableIdempotentPartitions, Map<String, PartitionPublishingState> initialPartitionPublishingStates
+        boolean isIdempotentPartitionPublishing, Map<String, PartitionPublishingState> initialPartitionPublishingStates
     ) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
@@ -149,8 +149,8 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
-        this.enableIdempotentPartitions = enableIdempotentPartitions;
-        if (enableIdempotentPartitions) {
+        this.isIdempotentPartitionPublishing = isIdempotentPartitionPublishing;
+        if (isIdempotentPartitionPublishing) {
             this.partitionPublishingStates = new HashMap<>();
             if (initialPartitionPublishingStates != null) {
                 initialPartitionPublishingStates.forEach((partitionId, state) -> {
@@ -226,14 +226,6 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     /**
-     * Indicate whether this client is an idempotent producer.
-     * @return Whether this client is an idempotent producer.
-     */
-    public boolean isIdempotentProducer() {
-        return this.enableIdempotentPartitions;
-    }
-
-    /**
      * Get the idempotent producer's publishing state of a partition.
      * @param partitionId The partition id of the publishing state
      * @return A mono that has the {@link PartitionPublishingState}.
@@ -271,7 +263,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         if (options == null) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
-        if (this.enableIdempotentPartitions) {
+        if (this.isIdempotentPartitionPublishing) {
             if (CoreUtils.isNullOrEmpty(options.getPartitionId())) {
                 return monoError(logger, new IllegalArgumentException(
                     "An idempotent producer can not create an EventDataBatch without partition id"));
@@ -313,7 +305,8 @@ public class EventHubProducerAsyncClient implements Closeable {
                         : maximumLinkSize;
 
                     return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext,
-                        tracerProvider, link.getEntityPath(), link.getHostname(), this.enableIdempotentPartitions));
+                        tracerProvider, link.getEntityPath(), link.getHostname(),
+                        this.isIdempotentPartitionPublishing));
                 }));
     }
 
@@ -445,7 +438,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         } else if (options == null) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
-        } else if (options.getPartitionId() == null && this.isIdempotentProducer()) {
+        } else if (options.getPartitionId() == null && this.isIdempotentPartitionPublishing) {
             return monoError(logger, new IllegalArgumentException("Please set the partition id in `options` "
                 + "because this producer client is an idempotent producer"));
         }
@@ -497,7 +490,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }
                 tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, event.getContext()));
             }
-            if (!enableIdempotentPartitions) {
+            if (!isIdempotentPartitionPublishing) {
                 final Message message = messageSerializer.serialize(event);
 
                 if (!CoreUtils.isNullOrEmpty(partitionKey)) {
@@ -521,7 +514,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             // Start send span and store updated context
             parentContext.set(tracerProvider.startSpan(finalSharedContext, ProcessKind.SEND));
         }
-        if (this.enableIdempotentPartitions) {
+        if (this.isIdempotentPartitionPublishing) {
             PartitionPublishingState publishingState = this.getClientPartitionPublishingState(batch.getPartitionId());
             return Mono.fromRunnable(() -> {
                 try {
@@ -612,7 +605,8 @@ public class EventHubProducerAsyncClient implements Closeable {
                         .setPartitionId(options.getPartitionId())
                         .setMaximumSizeInBytes(batchSize);
                     return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext,
-                        tracerProvider, link.getEntityPath(), link.getHostname(), this.enableIdempotentPartitions));
+                        tracerProvider, link.getEntityPath(), link.getHostname(),
+                        this.isIdempotentPartitionPublishing));
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list))));
     }
@@ -633,7 +627,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     private Mono<AmqpSendLink> updatePublishingState(String partitionId, AmqpSendLink amqpSendLink) {
-        if (this.enableIdempotentPartitions) {
+        if (this.isIdempotentPartitionPublishing) {
             return amqpSendLink.getRemoteProperties().map(properties -> {
                 this.setPartitionPublishingState(
                     partitionId, (Long) properties.get(PRODUCER_ID),
@@ -651,7 +645,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * It doesn't create a link to get state from the service.
      */
     private PartitionPublishingState getClientPartitionPublishingState(String partitionId) {
-        if (!this.enableIdempotentPartitions) {
+        if (!this.isIdempotentPartitionPublishing) {
             throw logger.logExceptionAsWarning(
                 new IllegalStateException("getPartitionPublishingState() shouldn't be called if the producer"
                     + " is not an idempotent producer."));
@@ -687,7 +681,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String linkName = getEntityPath(partitionId);
 
         return connectionProcessor
-            .flatMap(connection -> enableIdempotentPartitions
+            .flatMap(connection -> isIdempotentPartitionPublishing
                 ? connection.createSendLink(
                     linkName, entityPath, retryOptions, true, getClientPartitionPublishingState(partitionId))
                 : connection.createSendLink(

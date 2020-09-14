@@ -58,11 +58,11 @@ public final class EventDataBatch {
     private final TracerProvider tracerProvider;
     private final String entityPath;
     private final String hostname;
-    private final boolean isCreatedByIdempotentProducer;
+    private final boolean requiresSequenceNumber;
     private Integer startingPublishedSequenceNumber;
 
     EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
-        TracerProvider tracerProvider, String entityPath, String hostname, boolean isCreatedByIdempotentProducer) {
+        TracerProvider tracerProvider, String entityPath, String hostname, boolean requiresSequenceNumber) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.partitionId = partitionId;
@@ -73,7 +73,7 @@ public final class EventDataBatch {
         this.tracerProvider = tracerProvider;
         this.entityPath = entityPath;
         this.hostname = hostname;
-        this.isCreatedByIdempotentProducer = isCreatedByIdempotentProducer;
+        this.requiresSequenceNumber = requiresSequenceNumber;
     }
 
     EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
@@ -208,7 +208,7 @@ public final class EventDataBatch {
         Objects.requireNonNull(eventData, "'eventData' cannot be null.");
 
         final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
-        if (isCreatedByIdempotentProducer) {
+        if (requiresSequenceNumber) {
             // Pre-allocate size for system properties "com.microsoft:producer-sequence-number".
             // EventData doesn't have this system property until it's added just before an idempotent producer
             // sends the EventData out.

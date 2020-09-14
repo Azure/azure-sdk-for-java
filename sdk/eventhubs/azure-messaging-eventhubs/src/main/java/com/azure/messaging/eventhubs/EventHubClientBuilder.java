@@ -139,7 +139,7 @@ public class EventHubClientBuilder {
     private String consumerGroup;
     private EventHubConnectionProcessor eventHubConnectionProcessor;
     private Integer prefetchCount;
-    private boolean enableIdempotentPartitionPublishing;
+    private boolean idempotentPartitionPublishing;
     private Map<String, PartitionPublishingState> initialPartitionPublishingStates;
 
     /**
@@ -383,8 +383,8 @@ public class EventHubClientBuilder {
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder enableIdempotentPartitionPublishing() {
-        this.enableIdempotentPartitionPublishing = true;
+    public EventHubClientBuilder idempotentPartitionPublishing() {
+        this.idempotentPartitionPublishing = true;
         return this;
     }
 
@@ -469,9 +469,9 @@ public class EventHubClientBuilder {
      *     proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubProducerAsyncClient buildAsyncProducerClient() {
-        if (initialPartitionPublishingStates != null && !enableIdempotentPartitionPublishing) {
+        if (initialPartitionPublishingStates != null && !idempotentPartitionPublishing) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'initialPartitionPublishingStates' "
-                + "shouldn't be set if 'enableIdempotentPartitionPublishing' is not set."));
+                + "shouldn't be set if 'idempotentPartitionPublishing' is not true."));
         }
         return buildAsyncClient().createProducer();
     }
@@ -548,7 +548,7 @@ public class EventHubClientBuilder {
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
             isSharedConnection.get(), this::onClientClose,
-            enableIdempotentPartitionPublishing, initialPartitionPublishingStates);
+            idempotentPartitionPublishing, initialPartitionPublishingStates);
     }
 
     /**

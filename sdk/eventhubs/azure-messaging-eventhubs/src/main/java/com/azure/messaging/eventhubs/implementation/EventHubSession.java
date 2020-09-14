@@ -48,6 +48,6 @@ public interface EventHubSession extends AmqpSession {
      * @return A newly created AMQP link.
      */
     Mono<AmqpSendLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
-                                  boolean enableIdempotentPartitions, PartitionPublishingState publishingState);
+                                  boolean idempotentPartitionPublishing, PartitionPublishingState publishingState);
 
 }

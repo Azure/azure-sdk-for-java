@@ -85,8 +85,8 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      */
     @Override
     public Mono<AmqpSendLink> createProducer(
-        String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry, boolean enableIdempotentPartitions,
-        PartitionPublishingState publishingState) {
+        String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
+        boolean idempotentPartitionPublishing, PartitionPublishingState publishingState) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
@@ -94,7 +94,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
 
         Symbol[] desiredCapabilities = null;
         Map<Symbol, Object> properties = null;
-        if (enableIdempotentPartitions) {
+        if (idempotentPartitionPublishing) {
             desiredCapabilities = new Symbol[]{ENABLE_IDEMPOTENT_PRODUCER};
 
             properties = new HashMap<>();
