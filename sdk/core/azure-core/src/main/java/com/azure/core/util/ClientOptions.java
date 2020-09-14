@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Client Options for setting various properties on the client. The {@link ClientOptions} is set on the builder at the
- * time of building the client.
+ * This class represents various options to be set on the client. It is set on the builder at the time of building the
+ * client.
  * <p>
  * The {@link Header} could be set using {@link ClientOptions#setHeaders(Iterable) setHeaders}. The {@link Header} will
  * be applied on the request being sent to Azure Service.

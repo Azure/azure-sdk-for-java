@@ -259,12 +259,11 @@ public class ServiceBusAdministrationClientBuilder {
     }
 
     /**
-     * Sets various options on the client. For example application-id which will be used in user-agent while creating
-     * connection with Azure Service Bus.
-     *
+     * Sets the {@link ClientOptions}. It enables various options to be set on the client.
      * @param clientOptions to be set on the client.
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
+     * @see ClientOptions
      */
     public ServiceBusAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
@@ -338,7 +337,7 @@ public class ServiceBusAdministrationClientBuilder {
         final String clientName = properties.getOrDefault("name", "UnknownName");
         final String clientVersion = properties.getOrDefault("version", "UnknownVersion");
 
-        // File applicationId to use
+        // Find applicationId to use
         String logApplicationId = null;
         if (httpLogOptions != null) {
             logApplicationId = httpLogOptions.getApplicationId();
