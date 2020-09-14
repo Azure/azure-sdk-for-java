@@ -362,13 +362,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
             if (this.executor.inEventLoop()) {
                 this.acquireChannel(promise);
             } else {
-
-                // TODO: moderakh ensure/validate in all conditions we run the tasks
-                // if the replica endpoint is not reachable don't queue up on executor
                 if (pendingAcquisitions.size() > 1000) {
                     addTaskToPendingAcquisitionQueue(promise);
                 } else {
-                    // TODO: moderakh if the endpoint is bad the timer, health check has to cancel all the pending requests
                     this.executor.execute(() -> this.acquireChannel(promise));
                 }
             }
@@ -531,6 +527,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 return;
             }
 
+            // make sure to retrieve the actual channel count to avoid establishing more
+            // TCP connections than allowed. 
             final int channelCount = this.channels(false);
 
             if (channelCount < this.maxChannels) {
@@ -563,9 +561,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
 
                     if (manager == null) {
-                        logger.warn("Channel({}) closed", channel);
+                        logger.warn("Channel({} --> {}) closed", channel, this.remoteAddress());
                     } else {
                         final long pendingRequestCount = manager.pendingRequestCount();
+
+                        // we accept the risk of reusing the channel even if more than maxPendingRequests are queued - by picking
+                        // the channel with the least number of outstanding requests we load balance reasonably
                         if (isChannelServiceable(channel, true) && pendingRequestCount < pendingRequestCountMin) {
                             pendingRequestCountMin = pendingRequestCount;
                             candidate = channel;
@@ -579,6 +580,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 }
             } else {
                 for (Channel channel : this.availableChannels) {
+
+                    // we pick the first available channel to avoid the additional cost of laod balancing
+                    // as long as the load is lower than the load factor threshold above.
                     if (isChannelServiceable(channel, true)) {
                         if (this.availableChannels.remove(channel)) {
                             this.doAcquireChannel(promise, channel);
@@ -607,9 +611,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * @see #runTasksInPendingAcquisitionQueue
      */
     private void addTaskToPendingAcquisitionQueue(Promise<Channel> promise) {
-
-//        this.ensureInEventLoop();
-
         if (logger.isDebugEnabled()) {
             logger.debug("{}, {}, {}, {}, {}, {}",
                 Instant.now(),
@@ -621,11 +622,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
 
         if (this.pendingAcquisitions.size() >= this.maxPendingAcquisitions) {
-
             promise.setFailure(TOO_MANY_PENDING_ACQUISITIONS);
-
         } else {
-
             final AcquireTask acquireTask = new AcquireTask(this, promise);
 
             if (this.pendingAcquisitions.offer(acquireTask)) {
@@ -707,6 +705,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     }
 
     private void doAcquireChannel(final Promise<Channel> promise, final Channel candidate) {
+        this.ensureInEventLoop();
         acquiredChannels.put(candidate, candidate);
 
         final Promise<Channel> anotherPromise = this.newChannelPromise(promise);
@@ -931,9 +930,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     if (logger.isDebugEnabled()) {
                         logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
                     }
-                    this.acquiredChannels.compute(channel, (ignored, acquiredChannel) -> {
-                        //                    reportIssueUnless(logger, v == null, this, "expected null channel, not {}", v);
 
+                    this.acquiredChannels.compute(channel, (ignored, acquiredChannel) -> {
                         reportIssueUnless(logger, acquiredChannel == null, this,
                             "Channel({}) to be acquired has already been acquired",
                             channel);
@@ -947,6 +945,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     if (logger.isDebugEnabled()) {
                         logger.debug("notifyChannelConnect promise.trySuccess(channel)=false");
                     }
+
                     // Promise was completed in the meantime (like cancelled), just close the channel
                     this.closeChannel(channel);
                 }
@@ -975,7 +974,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     channel.attr(POOL_KEY).set(this);
                     this.poolHandler.channelAcquired(channel);
                     promise.setSuccess(channel);
-
                 } catch (Throwable cause) {
                     if (this.executor.inEventLoop()) {
                         this.closeChannelAndFail(channel, cause, promise);
@@ -1038,6 +1036,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
             return first;  // because this.close -> this.close0 -> this.pollChannel
         }
 
+        // Only return channels as servicable here if less than maxPendingRequests 
+        // are queued on them
         if (this.isChannelServiceable(first, false)) {
             return first;
         }
@@ -1048,6 +1048,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
             assert next != null : "impossible";
 
             if (next.isActive()) {
+
+                // Only return channels as servicable here if less than maxPendingRequests 
+                // are queued on them
                 if (this.isChannelServiceable(next, false)) {
                     return next;
                 }
@@ -1069,8 +1072,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private void releaseAndOfferChannel(final Channel channel, final Promise<Void> promise) {
         this.ensureInEventLoop();
         try {
-
-            // TODO: moderakh is this right?!!!!!
             this.acquiredChannels.remove(channel);
             if (this.offerChannel(channel)) {
                 this.poolHandler.channelReleased(channel);
@@ -1138,7 +1139,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private void releaseChannel(final Channel channel, final Promise<Void> promise) {
         checkState(channel.eventLoop().inEventLoop());
 
-        // TODO: moderakh what is ChannelPool
         final ChannelPool pool = channel.attr(POOL_KEY).getAndSet(null);
         final boolean acquired = this.acquiredChannels.get(channel) != null;
 
@@ -1180,8 +1180,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * {@link #acquire}.
      */
     private void runTasksInPendingAcquisitionQueue() {
-        ensureInEventLoop();
-
         this.ensureInEventLoop();
         int channelsAvailable = this.availableChannels.size();
 
@@ -1206,7 +1204,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             task.acquired(true);
             this.acquire(task.promise);
-        } while (--channelsAvailable> 0);
+        } while (--channelsAvailable > 0);
     }
 
     private void throwIfClosed() {
@@ -1437,8 +1435,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
         return monitoringRntbdChannelPool.scheduleAtFixedRate(() -> {
             int i = getTaskCount();
             if (isInterestingEndpoint()) {
-                logger.debug("{} total number of tasks on the executor [{}], connecting [{}], acquiredChannel [{}], availableChannel [{}], pending acquisition [{}]",
-                    this.hashCode(), i, connecting.get(), acquiredChannels.size(), availableChannels.size(), pendingAcquisitions.size());
+                logger.debug("{} total number of tasks on the executor [{}], remote address: [{}], connecting [{}], acquiredChannel [{}], availableChannel [{}], pending acquisition [{}]",
+                    this.hashCode(), i, this.remoteAddress(), connecting.get(), acquiredChannels.size(), availableChannels.size(), pendingAcquisitions.size());
             }
         }, 0, 60, TimeUnit.SECONDS);
     }
