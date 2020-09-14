@@ -21,13 +21,10 @@ public class TestDataCreationHelper {
     private static final int SIZE = (1024 * 1024 * 1024) + 1;
 
     static {
-        Random random = new Random();
+        Random random = new Random(0);
         RANDOM_BYTES = new byte[RANDOM_BYTES_LENGTH];
         random.nextBytes(RANDOM_BYTES);
         RANDOM_BYTE_BUFFER = ByteBuffer.wrap(TestDataCreationHelper.RANDOM_BYTES).asReadOnlyBuffer();
-
-//        SIZE_BYTES = new byte[SIZE];
-//        random.nextBytes(SIZE_BYTES);
     }
 
     /**
@@ -44,7 +41,6 @@ public class TestDataCreationHelper {
         int quotient = (int) size / remaining;
         int remainder = (int) size % remaining;
 
-
         return Flux.range(0, quotient)
             .map(i -> byteBuffer.duplicate())
             .concatWithValues((ByteBuffer) byteBuffer.duplicate().limit(remainder));
@@ -52,6 +48,7 @@ public class TestDataCreationHelper {
 
     /**
      * Creates a random flux of specified size.
+     *
      * @param size the size of the stream
      * @return the {@link Flux} of {@code size}
      */
@@ -61,10 +58,10 @@ public class TestDataCreationHelper {
 
     /**
      * Creates a random stream of specified size.
-     * @param size the size of the stream
      *
-     * @throws IllegalArgumentException if {@code size} is more than {@link #SIZE}
+     * @param size the size of the stream
      * @return the {@link InputStream} of {@code size}
+     * @throws IllegalArgumentException if {@code size} is more than {@link #SIZE}
      */
     public static InputStream createRandomInputStream(long size) {
         if (size > SIZE) {

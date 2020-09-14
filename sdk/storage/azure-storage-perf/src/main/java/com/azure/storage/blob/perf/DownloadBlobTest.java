@@ -15,6 +15,8 @@ import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBu
 
 public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
     private static final int BUFFER_SIZE = 16 * 1024 * 1024;
+    private static final OutputStream DEV_NULL = new NullOutputStream();
+
     private final BlobClient blobClient;
     private final BlobAsyncClient blobAsyncClient;
 
@@ -37,7 +39,7 @@ public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
     // Perform the API call to be tested here
     @Override
     public void run() {
-        blobClient.download(new NullOutputStream());
+        blobClient.download(DEV_NULL);
     }
 
     static class NullOutputStream extends OutputStream {

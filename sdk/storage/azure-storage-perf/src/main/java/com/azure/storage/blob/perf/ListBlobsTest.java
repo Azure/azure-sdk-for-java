@@ -32,7 +32,6 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return blobContainerAsyncClient.listBlobs()
-            .ignoreElements()
             .then();
     }
 }
