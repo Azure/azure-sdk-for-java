@@ -43,7 +43,7 @@ public final class ModelData {
      * be referenced by newly created digital twins.
      */
     @JsonProperty(value = "decommissioned")
-    private Boolean decommissioned;
+    private boolean decommissioned;
 
     /*
      * The model definition.
