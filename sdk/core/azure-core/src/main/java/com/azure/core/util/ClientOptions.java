@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Client Options for setting various properties on the client. It is set at the time of building the client using
- * client's builder.
+ * Client Options for setting various properties on the client. The {@link ClientOptions} is set on the builder at the
+ * time of building the client.
  * <p>
  * The {@link Header} could be set using {@link ClientOptions#setHeaders(Iterable) setHeaders}. The {@link Header} will
  * be applied on the request being sent to Azure Service.
  * <p>
  * The {@code applicationId} could be set using {@link ClientOptions#setApplicationId(String) setApplicationId} which
- * is used setting  {@code applicationId} in {@link UserAgentPolicy}.
+ * is used for setting {@code applicationId} in the {@link UserAgentPolicy}.
  */
 @Fluent
 public final class ClientOptions {
