@@ -30,7 +30,7 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-spring-boot-starter</artifactId>
+      <artifactId>azure-spring-boot-starter-cosmosdb</artifactId>
       <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot-starter-cosmosdb;current} -->
     </dependency>
     <dependency>
