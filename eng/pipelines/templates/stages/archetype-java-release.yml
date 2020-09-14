@@ -286,12 +286,13 @@ stages:
         - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 
         - ${{ each artifact in parameters.Artifacts }}:
-          - template: /eng/pipelines/templates/steps/java-publishing.yml
-            parameters:
-              ArtifactID: ${{artifact.name}}
-              GroupID: ${{artifact.groupId}}
-              ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-              RepositoryUrl: $(RepositoryUrl)
-              Target: JavaDevFeed
-              BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-              JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+          - ${{if ne(artifact.skipPublishDevFeed, 'true')}}:
+            - template: /eng/pipelines/templates/steps/java-publishing.yml
+              parameters:
+                ArtifactID: ${{artifact.name}}
+                GroupID: ${{artifact.groupId}}
+                ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                RepositoryUrl: $(RepositoryUrl)
+                Target: JavaDevFeed
+                BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
