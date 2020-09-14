@@ -112,7 +112,9 @@ public class ManageKubernetesCluster {
             t1 = new Date();
 
             kubernetesCluster.update()
-                .withAgentPoolVirtualMachineCount(2)
+                .updateAgentPool("agentpool")
+                    .withAgentPoolVirtualMachineCount(2)
+                    .parent()
                 .apply();
 
             t2 = new Date();
