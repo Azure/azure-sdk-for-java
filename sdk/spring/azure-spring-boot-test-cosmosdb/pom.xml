@@ -57,7 +57,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-spring-boot-starter-cosmosdb:[3.0.0-beta.1]</include> <!-- {x-include-update;com.azure:azure-spring-boot-starter-cosmosdb;current} -->
+                <include>com.azure:azure-spring-boot-starter-cosmosdb:[3.0.0-beta.1]</include> <!-- {x-include-update;com.azure:azure-spring-boot-starter-cosmosdb;current} -->
                 <include>org.springframework.boot:spring-boot-starter-web:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-actuator:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
               </includes>
