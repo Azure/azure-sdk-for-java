@@ -111,12 +111,12 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     @Override
     public int channelsAcquired() {
-        return this.channelPool.channelsAcquired();
+        return this.channelPool.channelsAcquiredMetrics();
     }
 
     @Override
     public int channelsAvailable() {
-        return this.channelPool.channelsAvailable();
+        return this.channelPool.channelsAvailableMetrics();
     }
 
     @Override
