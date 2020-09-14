@@ -364,9 +364,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
             } else {
 
                 // TODO: moderakh ensure/validate in all conditions we run the tasks
-
-
-                if (channels(true) > 0 && pendingAcquisitions.size() > 1000) {
+                // if the replica endpoint is not reachable don't queue up on executor
+                if (pendingAcquisitions.size() > 1000) {
                     addTaskToPendingAcquisitionQueue(promise);
                 } else {
                     // TODO: moderakh if the endpoint is bad the timer, health check has to cancel all the pending requests
