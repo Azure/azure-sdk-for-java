@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
+import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
@@ -209,7 +210,8 @@ public abstract class CreatableUpdatableImpl<
 
     @Override
     public Flux<Indexable> createAsync() {
-        return taskGroup.invokeAsync(this.taskGroup.newInvocationContext());
+        return taskGroup.invokeAsync(this.taskGroup.newInvocationContext())
+            .onErrorMap(AggregatedManagementException::convertToManagementException);
     }
 
     @Override

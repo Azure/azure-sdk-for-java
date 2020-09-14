@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerservice.implementation;
 
+import com.azure.resourcemanager.containerservice.fluent.inner.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
@@ -9,15 +10,15 @@ import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.OrchestratorServiceBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /** The implementation for KubernetesClusterAgentPool and its create and update interfaces. */
 public class KubernetesClusterAgentPoolImpl
-    extends ChildResourceImpl<ManagedClusterAgentPoolProfile, KubernetesClusterImpl, OrchestratorServiceBase>
+    extends ChildResourceImpl<ManagedClusterAgentPoolProfile, KubernetesClusterImpl, KubernetesCluster>
     implements KubernetesClusterAgentPool,
-    KubernetesClusterAgentPool.Definition<KubernetesCluster.DefinitionStages.WithCreate> {
+    KubernetesClusterAgentPool.Definition<KubernetesClusterImpl>,
+    KubernetesClusterAgentPool.Update<KubernetesClusterImpl> {
 
     private String subnetName;
 
@@ -55,6 +56,11 @@ public class KubernetesClusterAgentPoolImpl
     @Override
     public AgentPoolType type() {
         return this.inner().type();
+    }
+
+    @Override
+    public AgentPoolMode mode() {
+        return this.inner().mode();
     }
 
     @Override
@@ -124,11 +130,35 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public KubernetesClusterImpl attach() {
-        if (inner().mode() == null) {
-            inner().withMode(AgentPoolMode.SYSTEM);
-        }
-        this.parent().inner().agentPoolProfiles().add(this.inner());
-        return this.parent();
+        return this.parent().addNewAgentPool(this);
+    }
+
+    public AgentPoolInner getAgentPoolInner() {
+        AgentPoolInner agentPoolInner = new AgentPoolInner();
+        agentPoolInner.withCount(inner().count());
+        agentPoolInner.withVmSize(inner().vmSize());
+        agentPoolInner.withOsDiskSizeGB(inner().osDiskSizeGB());
+        agentPoolInner.withVnetSubnetId(inner().vnetSubnetId());
+        agentPoolInner.withMaxPods(inner().maxPods());
+        agentPoolInner.withOsType(inner().osType());
+        agentPoolInner.withMaxCount(inner().maxCount());
+        agentPoolInner.withMinCount(inner().minCount());
+        agentPoolInner.withEnableAutoScaling(inner().enableAutoScaling());
+        agentPoolInner.withTypePropertiesType(inner().type());
+        agentPoolInner.withMode(inner().mode());
+        agentPoolInner.withOrchestratorVersion(inner().orchestratorVersion());
+        agentPoolInner.withNodeImageVersion(inner().nodeImageVersion());
+        agentPoolInner.withUpgradeSettings(inner().upgradeSettings());
+        agentPoolInner.withAvailabilityZones(inner().availabilityZones());
+        agentPoolInner.withEnableNodePublicIp(inner().enableNodePublicIp());
+        agentPoolInner.withScaleSetPriority(inner().scaleSetPriority());
+        agentPoolInner.withScaleSetEvictionPolicy(inner().scaleSetEvictionPolicy());
+        agentPoolInner.withSpotMaxPrice(inner().spotMaxPrice());
+        agentPoolInner.withTags(inner().tags());
+        agentPoolInner.withNodeLabels(inner().nodeLabels());
+        agentPoolInner.withNodeTaints(inner().nodeTaints());
+        agentPoolInner.withProximityPlacementGroupId(inner().proximityPlacementGroupId());
+        return agentPoolInner;
     }
 
     @Override
