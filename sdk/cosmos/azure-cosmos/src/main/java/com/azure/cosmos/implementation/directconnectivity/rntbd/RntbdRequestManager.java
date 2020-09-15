@@ -45,6 +45,7 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCounted;
 import io.netty.util.Timeout;
+import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
 import io.netty.util.internal.ThrowableUtil;
@@ -59,6 +60,8 @@ import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
@@ -80,6 +83,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     private static final ClosedChannelException ON_DEREGISTER =
         ThrowableUtil.unknownStackTrace(new ClosedChannelException(), RntbdRequestManager.class, "deregister");
+
+    private static final EventExecutor requestExpirationExecutor = new DefaultEventExecutor(new RntbdThreadFactory(
+        "request-expirator",
+        true,
+        Thread.NORM_PRIORITY));
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestManager.class);
 
@@ -540,10 +548,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         return this.contextFuture.getNow(null) != null;
     }
 
-    boolean isServiceable(final int demand) {
+    boolean isServiceable(final int demand, boolean ignoreMaxRequestPerChannel) {
         reportIssueUnless(this.hasRequestedRntbdContext(), this, "Direct TCP context request was not issued");
         final int limit = this.hasRntbdContext() ? this.pendingRequestLimit : Math.min(this.pendingRequestLimit, demand);
-        return this.pendingRequests.size() < limit;
+        return ignoreMaxRequestPerChannel || this.pendingRequests.size() < limit;
     }
 
     void pendWrite(final ByteBuf out, final ChannelPromise promise) {
@@ -567,13 +575,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
 
                 // We don't wish to complete on the timeout thread, but rather on a thread doled out by our executor
-                final EventExecutor executor = context.executor();
-
-                if (executor.inEventLoop()) {
-                    record.expire();
-                } else {
-                    executor.next().execute(record::expire);
-                }
+                requestExpirationExecutor.execute(record::expire);
             });
 
             record.whenComplete((response, error) -> {
