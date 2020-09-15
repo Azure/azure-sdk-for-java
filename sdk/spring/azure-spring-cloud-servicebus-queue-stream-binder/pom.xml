@@ -12,7 +12,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>spring-cloud-azure-servicebus-queue-stream-binder</artifactId>
-  <version>1.2.8</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-queue-stream-binder;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-queue-stream-binder;current} -->
 
   <name>Azure Spring Cloud Stream Service Bus Queue Binder</name>
   <description>Azure Service Bus Queue binder for Spring Cloud Stream</description>
@@ -27,7 +27,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-servicebus-stream-binder-core</artifactId>
-      <version>1.2.8</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core;current} -->
     </dependency>
 
     <dependency>
@@ -40,7 +40,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-stream-binder-test</artifactId>
-      <version>1.2.8</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-stream-binder-test;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-stream-binder-test;current} -->
       <scope>test</scope>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -64,7 +64,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core:[1.2.8]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core;current} -->
+                <include>com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core;current} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
               </includes>
             </bannedDependencies>

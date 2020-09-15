@@ -13,6 +13,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
+import com.azure.digitaltwins.core.implementation.converters.ContinuationTokenSerializer;
 import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
@@ -43,7 +44,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * the digital twin models and event routes tied to your Azure Digital Twins instance.
  * </p>
  */
-@ServiceClient(builder = DigitalTwinsClientBuilder.class)
+@ServiceClient(builder = DigitalTwinsClientBuilder.class, isAsync = true)
 public final class DigitalTwinsAsyncClient {
     private static final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -58,12 +59,13 @@ public final class DigitalTwinsAsyncClient {
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
         jacksonAdapter.serializer().registerModule(stringModule);
 
+        this.serviceVersion = serviceVersion;
+
         this.protocolLayer = new AzureDigitalTwinsAPIImplBuilder()
             .host(host)
             .pipeline(pipeline)
             .serializerAdapter(jacksonAdapter)
             .buildClient();
-        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -75,16 +77,6 @@ public final class DigitalTwinsAsyncClient {
      */
     public DigitalTwinsServiceVersion getServiceVersion() {
         return this.serviceVersion;
-    }
-
-    /**
-     * Gets the {@link HttpPipeline} that this client is configured to use for all service requests. This pipeline can
-     * be customized while building this client through {@link DigitalTwinsClientBuilder#httpPipeline(HttpPipeline)}.
-     *
-     * @return The {@link HttpPipeline} that this client uses for all service requests.
-     */
-    public HttpPipeline getHttpPipeline() {
-        return this.protocolLayer.getHttpPipeline();
     }
 
     //region Digital twin APIs
@@ -615,7 +607,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         stringList,
-                        objectPagedResponse.getContinuationToken(),
+                        ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -642,7 +634,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    objectPagedResponse.getContinuationToken(),
+                    ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -691,7 +683,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         list,
-                        objectPagedResponse.getContinuationToken(),
+                        ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -711,7 +703,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    objectPagedResponse.getContinuationToken(),
+                    ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -891,7 +883,7 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(),
                 objectPagedResponse.getHeaders(),
                 convertedList,
-                objectPagedResponse.getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                 ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
         });
     }
@@ -1134,7 +1126,7 @@ public final class DigitalTwinsAsyncClient {
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                objectPagedResponse.getValue().getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1152,7 +1144,7 @@ public final class DigitalTwinsAsyncClient {
                     .map(object -> mapper.convertValue(object, clazz))
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                objectPagedResponse.getValue().getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1177,7 +1169,7 @@ public final class DigitalTwinsAsyncClient {
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                objectPagedResponse.getValue().getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1195,7 +1187,7 @@ public final class DigitalTwinsAsyncClient {
                     .map(object -> mapper.convertValue(object, clazz))
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                objectPagedResponse.getValue().getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1368,19 +1360,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
-        Object payloadObject = null;
-        try {
-            payloadObject = mapper.readValue(payload, Object.class);
-        }
-        catch (JsonProcessingException e) {
-            logger.error("Could not parse the payload [%s]: %s", payload, e);
-            return Mono.error(e);
-        }
-
         return protocolLayer.getDigitalTwins().sendTelemetryWithResponseAsync(
             digitalTwinId,
             publishTelemetryRequestOptions.getMessageId(),
-            payloadObject,
+            payload,
             publishTelemetryRequestOptions.getTimestamp().toString(),
             context);
     }
@@ -1417,21 +1400,11 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
-
-        Object payloadObject = null;
-        try {
-            payloadObject = mapper.readValue(payload, Object.class);
-        }
-        catch (JsonProcessingException e) {
-            logger.error("Could not parse the payload [%s]: %s", payload, e);
-            return Mono.error(e);
-        }
-
         return protocolLayer.getDigitalTwins().sendComponentTelemetryWithResponseAsync(
             digitalTwinId,
             componentName,
             publishTelemetryRequestOptions.getMessageId(),
-            payloadObject,
+            payload,
             publishTelemetryRequestOptions.getTimestamp().toString(),
             context);
     }
