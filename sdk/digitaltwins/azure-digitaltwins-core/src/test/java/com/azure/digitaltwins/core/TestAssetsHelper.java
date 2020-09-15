@@ -1,6 +1,6 @@
 package com.azure.digitaltwins.core;
 
-import com.azure.digitaltwins.core.util.UpdateOperationUtility;
+import com.azure.digitaltwins.core.models.UpdateOperationUtility;
 
 import java.io.IOException;
 import java.io.InputStream;
