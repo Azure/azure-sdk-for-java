@@ -10,13 +10,13 @@ package com.microsoft.azure.management.mysql.v2017_12_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.MySQLManager;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.DBForMySQLManager;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.NameAvailabilityInner;
 
 /**
  * Type representing NameAvailability.
  */
-public interface NameAvailability extends HasInner<NameAvailabilityInner>, HasManager<MySQLManager> {
+public interface NameAvailability extends HasInner<NameAvailabilityInner>, HasManager<DBForMySQLManager> {
     /**
      * @return the message value.
      */

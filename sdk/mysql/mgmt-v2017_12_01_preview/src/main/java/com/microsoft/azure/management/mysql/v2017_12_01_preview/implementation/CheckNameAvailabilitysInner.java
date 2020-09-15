@@ -55,7 +55,7 @@ public class CheckNameAvailabilitysInner {
      */
     interface CheckNameAvailabilitysService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mysql.v2017_12_01_preview.CheckNameAvailabilitys execute" })
-        @POST("subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/checkNameAvailability")
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.DBForMySQL/checkNameAvailability")
         Observable<Response<ResponseBody>> execute(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body NameAvailabilityRequest nameAvailabilityRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
