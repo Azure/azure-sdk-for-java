@@ -4,7 +4,6 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
-import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
