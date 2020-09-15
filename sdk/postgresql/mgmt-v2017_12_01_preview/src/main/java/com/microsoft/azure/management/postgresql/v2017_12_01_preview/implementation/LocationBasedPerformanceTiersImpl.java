@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.PerformanceTierProperties;
 
 class LocationBasedPerformanceTiersImpl extends WrapperImpl<LocationBasedPerformanceTiersInner> implements LocationBasedPerformanceTiers {
-    private final PostgreSQLManager manager;
+    private final DBForPostgreSQLManager manager;
 
-    LocationBasedPerformanceTiersImpl(PostgreSQLManager manager) {
+    LocationBasedPerformanceTiersImpl(DBForPostgreSQLManager manager) {
         super(manager.inner().locationBasedPerformanceTiers());
         this.manager = manager;
     }
 
-    public PostgreSQLManager manager() {
+    public DBForPostgreSQLManager manager() {
         return this.manager;
     }
 
