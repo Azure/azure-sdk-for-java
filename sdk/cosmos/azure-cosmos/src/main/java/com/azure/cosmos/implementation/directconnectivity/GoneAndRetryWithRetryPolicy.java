@@ -5,21 +5,28 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.Quadruple;
+import com.azure.cosmos.implementation.ResourceTokenAuthorizationHelper;
 import com.azure.cosmos.implementation.RetryPolicyWithDiagnostics;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
+import com.azure.cosmos.implementation.guava25.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.Duration;
 
 public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
@@ -30,6 +37,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
     private final static int BACK_OFF_MULTIPLIER = 2;
 
     private final RxDocumentServiceRequest request;
+    private IAuthorizationTokenProvider authorizationTokenProvider;
     private volatile int attemptCount = 1;
     private volatile int attemptCountInvalidPartition = 1;
     private volatile int currentBackoffSeconds = GoneAndRetryWithRetryPolicy.INITIAL_BACKOFF_TIME;
@@ -41,6 +49,11 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             Duration.ofSeconds(60), 0);
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
+        this(request, null, waitTimeInSeconds);
+    }
+
+    public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, IAuthorizationTokenProvider authorizationTokenProvider, Integer waitTimeInSeconds) {
+        this.authorizationTokenProvider = authorizationTokenProvider;
         this.request = request;
         startStopWatch(this.durationTimer);
         if (waitTimeInSeconds != null) {
@@ -172,8 +185,38 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             // from refreshing any caches.
             forceRefreshAddressCache = false;
         }
+
+        refreshAuthorizationHeader(request);
+
         return Mono.just(ShouldRetryResult.retryAfter(backoffTime,
                 Quadruple.with(forceRefreshAddressCache, true, timeout, currentRetryAttemptCount)));
+    }
+
+    private void refreshAuthorizationHeader(RxDocumentServiceRequest request) {
+        if (this.authorizationTokenProvider != null && request != null &&
+                request.getRequestVerb() != null && request.getResourceAddress() != null &&
+                request.getOperationType() != null && request.getHeaders() != null) {
+
+            String oldAuthToken = request.getHeaders().get(HttpConstants.HttpHeaders.AUTHORIZATION);
+            if (Strings.isNullOrEmpty(oldAuthToken) || ResourceTokenAuthorizationHelper.isResourceToken(oldAuthToken)) {
+                // Resource tokens do not need to be refreshed
+                return;
+            }
+
+            request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
+            String authorization = this.authorizationTokenProvider.getUserAuthorizationToken(request.getResourceAddress(),
+                request.getResourceType(),
+                request.getRequestVerb(),
+                request.getHeaders(),
+                AuthorizationTokenType.PrimaryMasterKey,
+                request.properties);
+            try {
+                authorization = URLEncoder.encode(authorization, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new IllegalStateException("Failed to encode authtoken.", e);
+            }
+            request.getHeaders().put(HttpConstants.HttpHeaders.AUTHORIZATION, authorization);
+        }
     }
 
     private void stopStopWatch(StopWatch stopwatch) {

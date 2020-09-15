@@ -41,6 +41,7 @@ public class ReplicatedResourceClient {
     private final boolean enableReadRequestsFallback;
     private final GatewayServiceConfigurationReader serviceConfigReader;
     private final Configs configs;
+    private IAuthorizationTokenProvider authorizationTokenProvider;
 
     public ReplicatedResourceClient(
             Configs configs,
@@ -60,6 +61,7 @@ public class ReplicatedResourceClient {
 
         this.transportClient = transportClient;
         this.serviceConfigReader = serviceConfigReader;
+        this.authorizationTokenProvider = authorizationTokenProvider;
 
         this.consistencyReader = new ConsistencyReader(configs,
             this.addressSelector,
@@ -149,7 +151,7 @@ public class ReplicatedResourceClient {
                 ReplicatedResourceClient.STRONG_GONE_AND_RETRY_WITH_RETRY_TIMEOUT_SECONDS :
                 ReplicatedResourceClient.GONE_AND_RETRY_WITH_TIMEOUT_IN_SECONDS;
 
-        return BackoffRetryUtility.executeAsync(funcDelegate, new GoneAndRetryWithRetryPolicy(request, retryTimeout),
+        return BackoffRetryUtility.executeAsync(funcDelegate, new GoneAndRetryWithRetryPolicy(request, authorizationTokenProvider, retryTimeout),
                                                 inBackoffFuncDelegate, Duration.ofSeconds(
                         ReplicatedResourceClient.MIN_BACKOFF_FOR_FAILLING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS), request);
     }
