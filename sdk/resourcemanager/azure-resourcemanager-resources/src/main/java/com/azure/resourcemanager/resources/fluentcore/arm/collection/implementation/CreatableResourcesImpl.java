@@ -34,7 +34,6 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
         extends CreatableWrappersImpl<T, ImplT, InnerT>
         implements
         SupportsBatchCreation<T> {
-    CreatableUpdatableResourcesRootImpl<T> rootResource;
 
     protected CreatableResourcesImpl() {
     }
@@ -43,7 +42,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     @SafeVarargs
     public final CreatedResources<T> create(Creatable<T>... creatables) {
         return createAsyncNonStream(creatables)
-                .block();
+            .block();
     }
 
     @Override
@@ -60,26 +59,27 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
 
     @Override
     public final Flux<T> createAsync(List<Creatable<T>> creatables) {
-        rootResource = new CreatableUpdatableResourcesRootImpl<>();
         if (creatables == null) {
             return Flux.empty();
         }
-        rootResource.addCreatableDependencies(creatables);
-        return rootResource.createAsync()
-            .thenMany(Flux.fromIterable(rootResource.createdTopLevelResources()));
+        return createWithRootResourceAsync(creatables)
+            .flatMapMany(rootResource -> Flux.fromIterable(rootResource.createdTopLevelResources()));
     }
 
     private Mono<CreatedResources<T>> createAsyncNonStream(List<Creatable<T>> creatables) {
-        return this.createAsync(creatables)
-                .then(Mono.just(rootResource))
+        return createWithRootResourceAsync(creatables)
                 .map(CreatedResourcesImpl::new);
     }
 
     @SuppressWarnings("unchecked")
     private Mono<CreatedResources<T>> createAsyncNonStream(Creatable<T>... creatables) {
-        return this.createAsync(creatables)
-            .then(Mono.just(rootResource))
-            .map(CreatedResourcesImpl::new);
+        return createAsyncNonStream(Arrays.asList(creatables));
+    }
+
+    private Mono<CreatableUpdatableResourcesRoot<T>> createWithRootResourceAsync(List<Creatable<T>> creatables) {
+        CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
+        rootResource.addCreatableDependencies(creatables);
+        return rootResource.createAsync();
     }
 
     /**

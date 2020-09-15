@@ -207,14 +207,18 @@ public abstract class CreatableUpdatableImpl<
 
     @Override
     public Mono<FluentModelT> createAsync() {
-        return applyAsync();
+        return createOrUpdateAsync();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Mono<FluentModelT> applyAsync() {
-        return taskGroup.invokeAsync(this.taskGroup.newInvocationContext())
-                .then(Mono.just((FluentModelT) taskGroup.taskResult(taskGroup.key())));
+        return createOrUpdateAsync();
+    }
+
+    @SuppressWarnings("unchecked")
+    public Mono<FluentModelT> createOrUpdateAsync() {
+        return taskGroup.invokeAsync()
+            .map(indexable -> (FluentModelT) indexable);
     }
 
     @Override

@@ -315,7 +315,7 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
 
     @Override
     public Mono<FluentModelT> createAsync() {
-        return applyAsync();
+        return createOrUpdateAsync();
     }
 
     @Override
@@ -324,15 +324,19 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Mono<FluentModelT> applyAsync() {
-        return taskGroup().invokeAsync(this.taskGroup().newInvocationContext())
-            .then(Mono.just((FluentModelT) taskGroup().taskResult(taskGroup().key())));
+        return createOrUpdateAsync();
     }
 
     @Override
     public FluentModelT apply() {
         return applyAsync().block();
+    }
+
+    @SuppressWarnings("unchecked")
+    private Mono<FluentModelT> createOrUpdateAsync() {
+        return taskGroup().invokeAsync()
+            .map(indexable -> (FluentModelT) indexable);
     }
 
     protected abstract Mono<InnerModelT> getInnerAsync();

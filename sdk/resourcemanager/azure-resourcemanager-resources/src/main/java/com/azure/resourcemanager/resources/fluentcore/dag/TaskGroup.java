@@ -272,6 +272,21 @@ public class TaskGroup
     }
 
     /**
+     * Invokes tasks in the group.
+     *
+     * @return the root result of task group.
+     */
+    public Mono<Indexable> invokeAsync() {
+        return invokeAsync(this.newInvocationContext())
+            .then(Mono.defer(() -> {
+                if (proxyTaskGroupWrapper.isActive()) {
+                    return Mono.just(proxyTaskGroupWrapper.taskGroup().root().taskResult());
+                }
+                return Mono.just(root().taskResult());
+            }));
+    }
+
+    /**
      * Invokes dependency tasks in the group, but not.
      *
      * @param context group level shared context that need be passed to invokeAsync(cxt)

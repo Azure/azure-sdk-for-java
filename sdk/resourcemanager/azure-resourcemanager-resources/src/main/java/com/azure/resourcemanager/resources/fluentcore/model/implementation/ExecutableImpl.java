@@ -202,9 +202,8 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
     @Override
     @SuppressWarnings("unchecked")
     public Mono<FluentModelT> executeAsync() {
-        return taskGroup.invokeAsync(taskGroup.newInvocationContext())
-                .last()
-                .map(indexable -> (FluentModelT) indexable);
+        return taskGroup.invokeAsync()
+            .map(indexable -> (FluentModelT) indexable);
     }
 
     @Override
