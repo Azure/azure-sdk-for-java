@@ -1003,8 +1003,8 @@ public class BlobAsyncClientBase {
             ? new BlobRequestConditions() : options.getRequestConditions();
 
         // Default behavior is not to overwrite
-        Set<OpenOption> openOptions = null;
-        if (options.getOpenOptions() == null) {
+        Set<OpenOption> openOptions = options.getOpenOptions();
+        if (openOptions == null) {
             openOptions = new HashSet<>();
             openOptions.add(StandardOpenOption.CREATE_NEW);
             openOptions.add(StandardOpenOption.WRITE);
