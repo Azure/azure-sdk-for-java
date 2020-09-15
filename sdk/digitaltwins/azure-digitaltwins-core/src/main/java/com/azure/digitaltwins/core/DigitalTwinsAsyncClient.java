@@ -1339,7 +1339,7 @@ public final class DigitalTwinsAsyncClient {
      * @return An empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> publishTelemetry(String digitalTwinId, String payload) {
+    public Mono<Void> publishTelemetry(String digitalTwinId, Object payload) {
         PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
         return withContext(context -> publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context))
             .flatMap(voidResponse -> Mono.empty());
@@ -1355,11 +1355,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing an empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
+    public Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, Object payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
         return withContext(context -> publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context));
     }
 
-    Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+    Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, Object payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
         return protocolLayer.getDigitalTwins().sendTelemetryWithResponseAsync(
             digitalTwinId,
             publishTelemetryRequestOptions.getMessageId(),
@@ -1378,7 +1378,7 @@ public final class DigitalTwinsAsyncClient {
      * @return An empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
+    public Mono<Void> publishComponentTelemetry(String digitalTwinId, String componentName, Object payload) {
         PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
         return withContext(context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context))
             .flatMap(voidResponse -> Mono.empty());
@@ -1395,11 +1395,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing an empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
+    public Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, Object payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
         return withContext(context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context));
     }
 
-    Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+    Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, Object payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
         return protocolLayer.getDigitalTwins().sendComponentTelemetryWithResponseAsync(
             digitalTwinId,
             componentName,

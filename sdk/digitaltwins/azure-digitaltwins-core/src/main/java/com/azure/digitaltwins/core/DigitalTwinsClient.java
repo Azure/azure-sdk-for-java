@@ -800,7 +800,7 @@ public final class DigitalTwinsClient {
      * @param payload The application/json telemetry payload to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void publishTelemetry(String digitalTwinId, String payload) {
+    public void publishTelemetry(String digitalTwinId, Object payload) {
         PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
         publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, Context.NONE);
     }
@@ -816,7 +816,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+    public Response<Void> publishTelemetryWithResponse(String digitalTwinId, Object payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
         return digitalTwinsAsyncClient.publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context).block();
     }
 
@@ -829,7 +829,7 @@ public final class DigitalTwinsClient {
      * @param payload The application/json telemetry payload to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
+    public void publishComponentTelemetry(String digitalTwinId, String componentName, Object payload) {
         PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
         publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, Context.NONE);
     }
@@ -846,7 +846,7 @@ public final class DigitalTwinsClient {
      * @return A {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+    public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, Object payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
         return digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context).block();
     }
 
