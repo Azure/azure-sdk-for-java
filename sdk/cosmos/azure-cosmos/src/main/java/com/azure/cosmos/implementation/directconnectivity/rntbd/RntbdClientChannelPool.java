@@ -1409,9 +1409,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     // * https://github.com/netty/netty/issues/3705
                     if (expiryTime - currentNanoTime < 0) {
                         this.onTimeout(removedTask);
-
                     } else {
-                        if (!this.pendingAcquisitions.offer(removedTask)) {
+                        if (!this.pool.pendingAcquisitions.offer(removedTask)) {
                             logger.error("Unexpected failure when returning the removed task"
                                     + " to pending acquisition queue. current size [{}]",
                                 this.pool.pendingAcquisitions.size());
