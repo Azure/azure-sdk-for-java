@@ -11,12 +11,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.models.EventRoute;
-import com.azure.digitaltwins.core.models.EventRoutesListOptions;
-import com.azure.digitaltwins.core.models.IncomingRelationship;
-import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.serialization.BasicRelationship;
-import com.azure.digitaltwins.core.util.*;
+import com.azure.digitaltwins.core.models.*;
 
 import java.util.List;
 
@@ -38,16 +33,6 @@ public final class DigitalTwinsClient {
 
     DigitalTwinsClient(DigitalTwinsAsyncClient digitalTwinsAsyncClient) {
         this.digitalTwinsAsyncClient = digitalTwinsAsyncClient;
-    }
-
-    /**
-     * Gets the {@link HttpPipeline} that this client is configured to use for all service requests. This pipeline can
-     * be customized while building this client through {@link DigitalTwinsClientBuilder#httpPipeline(HttpPipeline)}.
-     *
-     * @return The {@link HttpPipeline} that this client uses for all service requests.
-     */
-    public HttpPipeline getHttpPipeline() {
-        return digitalTwinsAsyncClient.getHttpPipeline();
     }
 
     /**
@@ -635,7 +620,7 @@ public final class DigitalTwinsClient {
      * Patch a component on a digital twin.
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
-     * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+     * @param componentUpdateOperations The application json patch to apply to the component. See {@link UpdateOperationUtility} for building
      *                                  this argument.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -647,7 +632,7 @@ public final class DigitalTwinsClient {
      * Patch a component on a digital twin.
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
-     * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+     * @param componentUpdateOperations The application json patch to apply to the component. See {@link UpdateOperationUtility} for building
      *                                  this argument.
      * @param options The optional parameters for this request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
