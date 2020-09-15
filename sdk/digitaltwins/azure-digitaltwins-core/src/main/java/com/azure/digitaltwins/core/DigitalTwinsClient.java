@@ -36,16 +36,6 @@ public final class DigitalTwinsClient {
     }
 
     /**
-     * Gets the {@link HttpPipeline} that this client is configured to use for all service requests. This pipeline can
-     * be customized while building this client through {@link DigitalTwinsClientBuilder#httpPipeline(HttpPipeline)}.
-     *
-     * @return The {@link HttpPipeline} that this client uses for all service requests.
-     */
-    public HttpPipeline getHttpPipeline() {
-        return digitalTwinsAsyncClient.getHttpPipeline();
-    }
-
-    /**
      * Gets the Azure Digital Twins service API version that this client is configured to use for all service requests.
      * Unless configured while building this client through {@link DigitalTwinsClientBuilder#serviceVersion(DigitalTwinsServiceVersion)},
      * this value will be equal to the latest service API version supported by this client.
