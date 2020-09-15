@@ -48,6 +48,7 @@ import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
@@ -76,6 +77,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
     private static final String TRANSACTION_LINK_NAME = "coordinator";
+    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    private static final String AZ_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
 
     private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateBatchOptions();
 
@@ -572,17 +576,19 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             messages.add(message);
         }
 
-        final Context finalSharedContext = sharedContext != null ? sharedContext : Context.NONE;
+        if (isTracingEnabled) {
+            final Context finalSharedContext = sharedContext == null
+                ? Context.NONE
+                : sharedContext
+                    .addData(ENTITY_PATH_KEY, "entityPath")
+                    .addData(HOST_NAME_KEY, "hostName")
+                    .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
+            // Start send span and store updated context
+            parentContext.set(tracerProvider.startSpan(finalSharedContext, ProcessKind.SEND));
+        }
 
         return withRetry(
             getSendLink().flatMap(link -> {
-                if (isTracingEnabled) {
-                    Context entityContext = finalSharedContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
-                    // Start send span and store updated context
-                    parentContext.set(tracerProvider.startSpan(
-                        entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
-                }
-
                 if (transactionContext != null && transactionContext.getTransactionId() != null) {
                     final TransactionalState deliveryState = new TransactionalState();
                     deliveryState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
