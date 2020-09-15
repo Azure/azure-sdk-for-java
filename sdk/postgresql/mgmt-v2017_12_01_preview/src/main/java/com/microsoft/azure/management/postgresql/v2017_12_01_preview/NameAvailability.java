@@ -10,13 +10,13 @@ package com.microsoft.azure.management.postgresql.v2017_12_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.PostgreSQLManager;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.DBForPostgreSQLManager;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation.NameAvailabilityInner;
 
 /**
  * Type representing NameAvailability.
  */
-public interface NameAvailability extends HasInner<NameAvailabilityInner>, HasManager<PostgreSQLManager> {
+public interface NameAvailability extends HasInner<NameAvailabilityInner>, HasManager<DBForPostgreSQLManager> {
     /**
      * @return the message value.
      */
