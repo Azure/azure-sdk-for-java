@@ -95,6 +95,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
         true,
         Thread.NORM_PRIORITY));
 
+    private static final EventExecutor acquisitionTaskCompletionExecutor = new DefaultEventExecutor(
+        new RntbdThreadFactory(
+            "acquisition-task-completion",
+            true,
+            Thread.NORM_PRIORITY));
+
     // this is only for debugging monitoring of the health of RNTBD
     // TODO: once we are certain no task gets stuck in the rntbd queue remove this
     private static final EventExecutor monitoringRntbdChannelPool = new DefaultEventExecutor(new RntbdThreadFactory(
@@ -132,9 +138,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final AtomicBoolean closed = new AtomicBoolean();
     private final AtomicBoolean connecting = new AtomicBoolean();
 
-    private final Queue<AcquireTask> pendingAcquisitions = new PriorityBlockingQueue<>(
+    private final Queue<AcquireListener> pendingAcquisitions = new PriorityBlockingQueue<>(
         100,
-        Comparator.<AcquireTask>comparingLong((task) -> task.promise.getExpiryTimeInNanos()));
+        Comparator.<AcquireListener>comparingLong((task) -> task.originalPromise.getExpiryTimeInNanos()));
 
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
 
@@ -192,11 +198,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
             /**
              * Fails a request due to a channel acquisition timeout.
              *
-             * @param task a {@link AcquireTask channel acquisition task} that has timed out.
+             * @param task a {@link AcquireListener channel acquisition task} that has timed out.
              */
             @Override
-            public void onTimeout(AcquireTask task) {
-                task.promise.setFailure(ACQUISITION_TIMEOUT);
+            public void onTimeout(AcquireListener task) {
+                task.originalPromise.setFailure(ACQUISITION_TIMEOUT);
             }
         };
 
@@ -653,7 +659,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         if (this.pendingAcquisitions.size() >= this.maxPendingAcquisitions) {
             promise.setFailure(TOO_MANY_PENDING_ACQUISITIONS);
         } else {
-            final AcquireTask acquireTask = new AcquireTask(this, promise);
+            final AcquireListener acquireTask = new AcquireListener(this, promise);
 
             if (!this.pendingAcquisitions.offer(acquireTask)) {
                 promise.setFailure(TOO_MANY_PENDING_ACQUISITIONS);
@@ -792,11 +798,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
 
         for (; ; ) {
-            final AcquireTask task = this.pendingAcquisitions.poll();
+            final AcquireListener task = this.pendingAcquisitions.poll();
             if (task == null) {
                 break;
             }
-            task.promise.setFailure(new ClosedChannelException());
+            task.originalPromise.setFailure(new ClosedChannelException());
         }
 
         // NOTE: we must dispatch this request on another thread--the closer thread--as this.doClose is called on
@@ -866,18 +872,19 @@ public final class RntbdClientChannelPool implements ChannelPool {
     }
 
     /**
-     * Creates a new {@link Channel channel} {@link Promise promise} that completes on this {@link
-     * RntbdClientChannelPool pool}'s {@link EventExecutor executor}.
+     * Creates a new {@link Channel channel} {@link Promise promise} that completes on a dedicated
+     * {@link EventExecutor executor} to avoid spamming the {@link RntbdClientChannelPool pool}'s
+     * {@link EventExecutor executor}.
      *
-     * @return a newly created {@link Promise promise} that completes on this {@link RntbdClientChannelPool pool}'s
+     * @return a newly created {@link Promise promise} that completes on a dedicated
+     * {@link EventExecutor executor} to avoid spamming the {@link RntbdClientChannelPool pool}'s
      * {@link EventExecutor executor}.
      */
     private ChannelPromiseWithExpiryTime newChannelPromise(final ChannelPromiseWithExpiryTime promise) {
-
         checkNotNull(promise, "expected non-null promise");
 
         final AcquireListener listener = new AcquireListener(this, promise);
-        final Promise<Channel> anotherPromise = this.executor.newPromise();
+        final Promise<Channel> anotherPromise = acquisitionTaskCompletionExecutor.newPromise();
 
         listener.acquired(true);
         anotherPromise.addListener(listener);
@@ -1226,14 +1233,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
         do {
 
             // translate a pending acquisition item to a task
-            final AcquireTask task = this.pendingAcquisitions.poll();
+            final AcquireListener task = this.pendingAcquisitions.poll();
 
             if (task == null) {
                 break;
             }
 
             task.acquired(true);
-            this.acquire(task.promise);
+            this.acquire(task.originalPromise);
         } while (--channelsAvailable > 0);
     }
 
@@ -1247,11 +1254,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
     private static class AcquireListener implements FutureListener<Channel> {
 
-        private final Promise<Channel> originalPromise;
+        private final ChannelPromiseWithExpiryTime originalPromise;
         private final RntbdClientChannelPool pool;
         private boolean acquired;
 
-        AcquireListener(RntbdClientChannelPool pool, Promise<Channel> originalPromise) {
+        AcquireListener(RntbdClientChannelPool pool, ChannelPromiseWithExpiryTime originalPromise) {
             this.originalPromise = originalPromise;
             this.pool = pool;
         }
@@ -1289,8 +1296,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
         @Override
         public final void operationComplete(Future<Channel> future) {
 
-            this.pool.ensureInEventLoop();
-
             if (this.pool.isClosed()) {
                 if (future.isSuccess()) {
                     // Since the pool is closed, we have no choice but to close the channel
@@ -1303,7 +1308,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
             if (future.isSuccess()) {
 
                 // Ensure that the channel is active and ready to receive requests
-
                 final Channel channel = future.getNow();
 
                 channel.eventLoop().execute(() -> {
@@ -1324,7 +1328,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     } else {
                         channel.writeAndFlush(RntbdHealthCheckRequest.MESSAGE).addListener(completed -> {
                             if (completed.isSuccess()) {
-                                reportIssueUnless(logger, this.acquired && requestManager.hasRntbdContext(), this,
+                                reportIssueUnless(
+                                    logger,
+                                    this.acquired && requestManager.hasRntbdContext(),
+                                    this,
                                     "acquired: {}, rntbdContext: {}",
                                     this.acquired,
                                     requestManager.rntbdContext());
@@ -1344,31 +1351,18 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }
         }
 
+        public long getAcquisitionTimeoutInNanos() {
+            return this.originalPromise.getExpiryTimeInNanos();
+        }
+
         private void fail(Throwable cause) {
+            this.originalPromise.setFailure(cause);
+
             if (this.pool.executor.inEventLoop()) {
                 this.pool.runTasksInPendingAcquisitionQueue();
             } else {
                 this.pool.executor.submit(this.pool::runTasksInPendingAcquisitionQueue);
             }
-            this.originalPromise.setFailure(cause);
-        }
-    }
-
-    private static final class AcquireTask extends AcquireListener {
-
-        // AcquireTask extends AcquireListener to reduce object creations and so GC pressure
-
-        private final ChannelPromiseWithExpiryTime promise;
-
-        AcquireTask(RntbdClientChannelPool pool, ChannelPromiseWithExpiryTime promise) {
-            // We need to create a new promise to ensure the AcquireListener runs in the correct event loop
-            super(pool, promise);
-            this.promise = new ChannelPromiseWithExpiryTime(
-                pool.executor.<Channel>newPromise().addListener(this), promise.getExpiryTimeInNanos());
-        }
-
-        public long getAcquisitionTimeoutInNanos() {
-            return this.promise.getExpiryTimeInNanos();
         }
     }
 
@@ -1380,7 +1374,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             this.pool = pool;
         }
 
-        public abstract void onTimeout(AcquireTask task);
+        public abstract void onTimeout(AcquireListener task);
 
         /**
          * Runs the {@link #onTimeout} method on each expired task in {@link
@@ -1395,7 +1389,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             while (true) {
                 try {
-                    AcquireTask removedTask = this.pool.pendingAcquisitions.poll();
+                    AcquireListener removedTask = this.pool.pendingAcquisitions.poll();
                     if (removedTask == null) {
                         // queue is empty
                         break;
