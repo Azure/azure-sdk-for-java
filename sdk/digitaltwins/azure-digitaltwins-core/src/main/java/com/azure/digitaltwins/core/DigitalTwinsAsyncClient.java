@@ -13,6 +13,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
+import com.azure.digitaltwins.core.implementation.converters.ContinuationTokenSerializer;
 import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
@@ -606,7 +607,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         stringList,
-                        objectPagedResponse.getContinuationToken(),
+                        ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -633,7 +634,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    objectPagedResponse.getContinuationToken(),
+                    ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -682,7 +683,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         list,
-                        objectPagedResponse.getContinuationToken(),
+                        ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -702,7 +703,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    objectPagedResponse.getContinuationToken(),
+                    ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -882,7 +883,7 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(),
                 objectPagedResponse.getHeaders(),
                 convertedList,
-                objectPagedResponse.getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                 ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
         });
     }
@@ -1125,7 +1126,7 @@ public final class DigitalTwinsAsyncClient {
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                objectPagedResponse.getValue().getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1143,7 +1144,7 @@ public final class DigitalTwinsAsyncClient {
                     .map(object -> mapper.convertValue(object, clazz))
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                objectPagedResponse.getValue().getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1168,7 +1169,7 @@ public final class DigitalTwinsAsyncClient {
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                objectPagedResponse.getValue().getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1186,7 +1187,7 @@ public final class DigitalTwinsAsyncClient {
                     .map(object -> mapper.convertValue(object, clazz))
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                objectPagedResponse.getValue().getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
