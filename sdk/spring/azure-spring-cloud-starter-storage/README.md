@@ -14,7 +14,7 @@ The project provides a Spring Boot Starter `spring-cloud-starter-azure-storage` 
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>spring-starter-azure-storage</artifactId>
-    <version>1.2.8-beta.1</version>
+    <version>1.2.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

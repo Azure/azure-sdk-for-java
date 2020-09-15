@@ -3,6 +3,7 @@ package com.azure.digitaltwins.core.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public final class ComponentMetadata {
     /**
      * Model-defined writable properties' request state.
      */
+    @JsonIgnore
     private final Map<String, Object> writeableProperties = new HashMap<>();
 
     public ComponentMetadata() {}

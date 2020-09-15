@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerservice.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
+import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshConfiguration;
@@ -10,11 +12,9 @@ import com.azure.resourcemanager.containerservice.models.ContainerServiceSshPubl
 import com.azure.resourcemanager.containerservice.models.CredentialResult;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
-import com.azure.resourcemanager.containerservice.models.KubernetesVersion;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
-import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,6 +30,7 @@ public class KubernetesClusterImpl
     extends GroupableResourceImpl<
         KubernetesCluster, ManagedClusterInner, KubernetesClusterImpl, ContainerServiceManager>
     implements KubernetesCluster, KubernetesCluster.Definition, KubernetesCluster.Update {
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     private List<CredentialResult> adminKubeConfigs;
     private List<CredentialResult> userKubeConfigs;
@@ -37,7 +38,7 @@ public class KubernetesClusterImpl
     protected KubernetesClusterImpl(String name, ManagedClusterInner innerObject, ContainerServiceManager manager) {
         super(name, innerObject, manager);
         if (this.inner().agentPoolProfiles() == null) {
-            this.inner().withAgentPoolProfiles(new ArrayList<ManagedClusterAgentPoolProfile>());
+            this.inner().withAgentPoolProfiles(new ArrayList<>());
         }
 
         this.adminKubeConfigs = null;
@@ -60,8 +61,8 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public KubernetesVersion version() {
-        return KubernetesVersion.fromString(this.inner().kubernetesVersion());
+    public String version() {
+        return this.inner().kubernetesVersion();
     }
 
     @Override
@@ -234,19 +235,13 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public KubernetesClusterImpl withVersion(KubernetesVersion kubernetesVersion) {
-        this.inner().withKubernetesVersion(kubernetesVersion.toString());
-        return this;
-    }
-
-    @Override
     public KubernetesClusterImpl withVersion(String kubernetesVersion) {
         this.inner().withKubernetesVersion(kubernetesVersion);
         return this;
     }
 
     @Override
-    public KubernetesClusterImpl withLatestVersion() {
+    public KubernetesClusterImpl withDefaultVersion() {
         this.inner().withKubernetesVersion("");
         return this;
     }
@@ -299,26 +294,14 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public KubernetesClusterImpl withAgentPoolVirtualMachineCount(String agentPoolName, int agentCount) {
-        if (this.inner().agentPoolProfiles() != null && this.inner().agentPoolProfiles().size() > 0) {
-            for (ManagedClusterAgentPoolProfile agentPoolProfile : this.inner().agentPoolProfiles()) {
-                if (agentPoolProfile.name().equals(agentPoolName)) {
-                    agentPoolProfile.withCount(agentCount);
-                    break;
-                }
+    public KubernetesClusterAgentPoolImpl updateAgentPool(String name) {
+        for (ManagedClusterAgentPoolProfile agentPoolProfile : inner().agentPoolProfiles()) {
+            if (agentPoolProfile.name().equals(name)) {
+                return new KubernetesClusterAgentPoolImpl(agentPoolProfile, this);
             }
         }
-        return this;
-    }
-
-    @Override
-    public KubernetesClusterImpl withAgentPoolVirtualMachineCount(int agentCount) {
-        if (this.inner().agentPoolProfiles() != null && this.inner().agentPoolProfiles().size() > 0) {
-            for (ManagedClusterAgentPoolProfile agentPoolProfile : this.inner().agentPoolProfiles()) {
-                agentPoolProfile.withCount(agentCount);
-            }
-        }
-        return this;
+        throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+            "Cannot get agent pool named %s", name)));
     }
 
     @Override
@@ -349,6 +332,17 @@ public class KubernetesClusterImpl
     @Override
     public KubernetesClusterImpl withRBACDisabled() {
         this.inner().withEnableRbac(false);
+        return this;
+    }
+
+    public KubernetesClusterImpl addNewAgentPool(KubernetesClusterAgentPoolImpl agentPool) {
+        if (!isInCreateMode()) {
+            this.addDependency(context ->
+                manager().inner().getAgentPools().createOrUpdateAsync(
+                    resourceGroupName(), name(), agentPool.name(), agentPool.getAgentPoolInner())
+                    .then(context.voidMono()));
+        }
+        inner().agentPoolProfiles().add(agentPool.inner());
         return this;
     }
 }
