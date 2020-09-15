@@ -95,12 +95,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
         true,
         Thread.NORM_PRIORITY));
 
-    private static final EventExecutor acquisitionTaskCompletionExecutor = new DefaultEventExecutor(
-        new RntbdThreadFactory(
-            "acquisition-task-completion",
-            true,
-            Thread.NORM_PRIORITY));
-
     // this is only for debugging monitoring of the health of RNTBD
     // TODO: once we are certain no task gets stuck in the rntbd queue remove this
     private static final EventExecutor monitoringRntbdChannelPool = new DefaultEventExecutor(new RntbdThreadFactory(
@@ -140,14 +134,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
     private final Queue<AcquireListener> pendingAcquisitions = new PriorityBlockingQueue<>(
         100,
-        Comparator.<AcquireListener>comparingLong((task) -> task.originalPromise.getExpiryTimeInNanos()));
+        Comparator.comparingLong((task) -> task.originalPromise.getExpiryTimeInNanos()));
 
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
 
     // this is only for debugging monitoring of the health of RNTBD
     // TODO: once we are certain no task gets stuck in the rntbd queue remove this
     private final ScheduledFuture<?> monitoringFuture;
-    private ChannelPromiseWithExpiryTime promiseWithExpiryTime;
 
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
@@ -913,7 +906,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final AcquireListener listener = new AcquireListener(this, promise);
         final Promise<Channel> anotherPromise = eventLoop.newPromise();
 
-        listener.acquired(true);
+        listener.acquired();
         anotherPromise.addListener(listener);
 
         return new ChannelPromiseWithExpiryTime(anotherPromise, promise.getExpiryTimeInNanos());
@@ -1266,7 +1259,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 break;
             }
 
-            task.acquired(true);
+            task.acquired();
             this.acquire(task.originalPromise);
         } while (--channelsAvailable > 0);
     }
@@ -1290,11 +1283,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
             this.pool = pool;
         }
 
-        public final boolean acquired() {
+        public final boolean isAcquired() {
             return this.acquired;
         }
 
-        public final AcquireListener acquired(boolean value) {
+        public final AcquireListener acquired() {
 
             if (this.acquired) {
                 return this;
@@ -1499,7 +1492,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     // endregion
 
     // TODO: remove when we are confident of RNTBD OOM bug
-    @SuppressWarnings("unchecked")
     private ScheduledFuture<?> startMonitoring() {
         return monitoringRntbdChannelPool.scheduleAtFixedRate(() -> {
             int i = getTaskCount();
@@ -1516,7 +1508,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     }
 
     // TODO: remove when we are confident of RNTBD OOM bug
-    @SuppressWarnings("unchecked")
     public int getTaskCount() {
 
         try {
