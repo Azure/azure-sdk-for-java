@@ -67,7 +67,7 @@ public class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Gets a recommented elastic pool.
+     * Gets a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -82,7 +82,7 @@ public class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Gets a recommented elastic pool.
+     * Gets a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -96,7 +96,7 @@ public class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Gets a recommented elastic pool.
+     * Gets a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -114,7 +114,7 @@ public class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Gets a recommented elastic pool.
+     * Gets a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -251,7 +251,7 @@ public class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns recommented elastic pool metrics.
+     * Returns recommended elastic pool metrics.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -266,7 +266,7 @@ public class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns recommented elastic pool metrics.
+     * Returns recommended elastic pool metrics.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -280,7 +280,7 @@ public class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns recommented elastic pool metrics.
+     * Returns recommended elastic pool metrics.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -298,7 +298,7 @@ public class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns recommented elastic pool metrics.
+     * Returns recommended elastic pool metrics.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.

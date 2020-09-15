@@ -49,6 +49,15 @@ public final class DatabaseEdition extends ExpandableStringEnum<DatabaseEdition>
     /** Static value System2 for DatabaseEdition. */
     public static final DatabaseEdition SYSTEM2 = fromString("System2");
 
+    /** Static value GeneralPurpose for DatabaseEdition. */
+    public static final DatabaseEdition GENERAL_PURPOSE = fromString("GeneralPurpose");
+
+    /** Static value BusinessCritical for DatabaseEdition. */
+    public static final DatabaseEdition BUSINESS_CRITICAL = fromString("BusinessCritical");
+
+    /** Static value Hyperscale for DatabaseEdition. */
+    public static final DatabaseEdition HYPERSCALE = fromString("Hyperscale");
+
     /**
      * Creates or finds a DatabaseEdition from its string representation.
      * @param name a name to look for

@@ -54,10 +54,14 @@ class ServiceTierAdvisorsImpl extends WrapperImpl<ServiceTierAdvisorsInner> impl
     public Observable<ServiceTierAdvisor> getAsync(String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName) {
         ServiceTierAdvisorsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName)
-        .map(new Func1<ServiceTierAdvisorInner, ServiceTierAdvisor>() {
+        .flatMap(new Func1<ServiceTierAdvisorInner, Observable<ServiceTierAdvisor>>() {
             @Override
-            public ServiceTierAdvisor call(ServiceTierAdvisorInner inner) {
-                return wrapModel(inner);
+            public Observable<ServiceTierAdvisor> call(ServiceTierAdvisorInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServiceTierAdvisor)wrapModel(inner));
+                }
             }
        });
     }

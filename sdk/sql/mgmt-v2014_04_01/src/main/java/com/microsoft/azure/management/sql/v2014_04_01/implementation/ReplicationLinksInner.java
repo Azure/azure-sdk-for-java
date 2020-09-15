@@ -11,12 +11,14 @@ package com.microsoft.azure.management.sql.v2014_04_01.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.sql.v2014_04_01.UnlinkParameters;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -77,6 +79,14 @@ public class ReplicationLinksInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.ReplicationLinks beginFailoverAllowDataLoss" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss")
         Observable<Response<ResponseBody>> beginFailoverAllowDataLoss(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.ReplicationLinks unlink" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/unlink")
+        Observable<Response<ResponseBody>> unlink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UnlinkParameters parameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.ReplicationLinks beginUnlink" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/unlink")
+        Observable<Response<ResponseBody>> beginUnlink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UnlinkParameters parameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.ReplicationLinks listByDatabase" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks")
@@ -641,6 +651,379 @@ public class ReplicationLinksInner {
     }
 
     private ServiceResponse<Void> beginFailoverAllowDataLossDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void unlink(String resourceGroupName, String serverName, String databaseName, String linkId) {
+        unlinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> unlinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(unlinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> unlinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
+        return unlinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> unlinkWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (linkId == null) {
+            throw new IllegalArgumentException("Parameter linkId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Boolean forcedTermination = null;
+        UnlinkParameters parameters = new UnlinkParameters();
+        parameters.withForcedTermination(null);
+        Observable<Response<ResponseBody>> observable = service.unlink(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, linkId, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void unlink(String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
+        unlinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> unlinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(unlinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination), serviceCallback);
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> unlinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
+        return unlinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> unlinkWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (linkId == null) {
+            throw new IllegalArgumentException("Parameter linkId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        UnlinkParameters parameters = new UnlinkParameters();
+        parameters.withForcedTermination(forcedTermination);
+        Observable<Response<ResponseBody>> observable = service.unlink(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, linkId, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginUnlink(String resourceGroupName, String serverName, String databaseName, String linkId) {
+        beginUnlinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginUnlinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUnlinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId), serviceCallback);
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginUnlinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
+        return beginUnlinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginUnlinkWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (linkId == null) {
+            throw new IllegalArgumentException("Parameter linkId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Boolean forcedTermination = null;
+        UnlinkParameters parameters = new UnlinkParameters();
+        parameters.withForcedTermination(null);
+        return service.beginUnlink(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, linkId, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginUnlinkDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginUnlink(String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
+        beginUnlinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginUnlinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUnlinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination), serviceCallback);
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginUnlinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
+        return beginUnlinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginUnlinkWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (linkId == null) {
+            throw new IllegalArgumentException("Parameter linkId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        UnlinkParameters parameters = new UnlinkParameters();
+        parameters.withForcedTermination(forcedTermination);
+        return service.beginUnlink(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, linkId, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginUnlinkDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginUnlinkDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
