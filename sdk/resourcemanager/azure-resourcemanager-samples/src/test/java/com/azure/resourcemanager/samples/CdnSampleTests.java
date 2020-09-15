@@ -3,14 +3,14 @@
 
 package com.azure.resourcemanager.samples;
 
-import com.azure.resourcemanager.cdn.samples.ManageCdnProfile;
+import com.azure.resourcemanager.cdn.samples.ManageCdnProfileWithCustomDomain;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class CdnSampleTests extends SamplesTestBase {
 
     @Test
-    public void testManageCdnProfile() {
-        Assertions.assertTrue(ManageCdnProfile.runSample(azure));
+    public void testManageCdnProfileWithCustomDomain() {
+        Assertions.assertTrue(ManageCdnProfileWithCustomDomain.runSample(azure));
     }
 }
