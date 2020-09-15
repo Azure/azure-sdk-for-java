@@ -30,7 +30,7 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
                 .withTag("mytag", "testtag")
                 .createAsync();
 
-        resourceStream.subscribe(sqlServer -> future.set((SqlServer) sqlServer));
+        resourceStream.subscribe(sqlServer -> future.set(sqlServer));
 
         sqlServers[0] = future.get();
 

@@ -72,7 +72,7 @@ public final class ManageWebAppSourceControlAsync {
                     .createAsync()
                     .flatMapMany(indexable -> {
                         if (indexable instanceof WebApp) {
-                            WebApp app = (WebApp) indexable;
+                            WebApp app = indexable;
                             System.out.println("Created web app " + app.name());
                             return Flux.merge(
                                     Flux.just(indexable),
@@ -127,7 +127,7 @@ public final class ManageWebAppSourceControlAsync {
                                         .createAsync());
                     }).flatMap(indexable -> {
                         if (indexable instanceof WebApp) {
-                            WebApp app = (WebApp) indexable;
+                            WebApp app = indexable;
                             System.out.println("Created web app " + app.name());
                             if (!app.name().equals(app2Name)) {
                                 return Flux.just(indexable);

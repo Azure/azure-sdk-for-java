@@ -102,7 +102,7 @@ public final class ManageVirtualNetworkAsync {
                             .createAsync()
                             .flatMapMany(indexable -> {
                                 if (indexable instanceof NetworkSecurityGroup) {
-                                    NetworkSecurityGroup backEndNsg = (NetworkSecurityGroup) indexable;
+                                    NetworkSecurityGroup backEndNsg = indexable;
                                     System.out.println("Creating virtual network #1...");
                                     return Flux.merge(
                                             Flux.just(indexable),

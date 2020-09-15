@@ -38,7 +38,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
                 .createAsync();
 
-        resourceStream.doOnSuccess(vm -> future.set((VirtualMachine) vm));
+        resourceStream.doOnSuccess(vm -> future.set(vm));
         vms[0] = future.get();
 
         Assertions.assertEquals(1, vms[0].dataDisks().size());

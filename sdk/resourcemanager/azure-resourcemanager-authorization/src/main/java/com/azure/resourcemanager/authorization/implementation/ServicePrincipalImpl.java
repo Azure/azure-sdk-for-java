@@ -199,7 +199,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                                 .createAsync())
                     .doOnNext(
                         indexable ->
-                            cachedRoleAssignments.put(((RoleAssignment) indexable).id(), (RoleAssignment) indexable))
+                            cachedRoleAssignments.put((indexable).id(), indexable))
                     .last()
                     .map(
                         indexable -> {

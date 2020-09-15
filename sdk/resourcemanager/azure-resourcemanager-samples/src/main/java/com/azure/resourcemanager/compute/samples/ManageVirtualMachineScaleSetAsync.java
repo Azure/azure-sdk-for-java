@@ -221,7 +221,7 @@ public final class ManageVirtualMachineScaleSetAsync {
 
             final Date t1 = new Date();
 
-            VirtualMachineScaleSet virtualMachineScaleSet = (VirtualMachineScaleSet) azure.virtualMachineScaleSets()
+            VirtualMachineScaleSet virtualMachineScaleSet = azure.virtualMachineScaleSets()
                     .define(vmssName)
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)

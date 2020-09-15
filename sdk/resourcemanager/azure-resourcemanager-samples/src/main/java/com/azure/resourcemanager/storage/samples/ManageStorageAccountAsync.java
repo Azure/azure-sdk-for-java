@@ -52,7 +52,7 @@ public final class ManageStorageAccountAsync {
                             .createAsync())
                     .map(indexable -> {
                         if (indexable instanceof StorageAccount) {
-                            StorageAccount storageAccount = (StorageAccount) indexable;
+                            StorageAccount storageAccount = indexable;
 
                             System.out.println("Created a Storage Account:");
                             Utils.print(storageAccount);

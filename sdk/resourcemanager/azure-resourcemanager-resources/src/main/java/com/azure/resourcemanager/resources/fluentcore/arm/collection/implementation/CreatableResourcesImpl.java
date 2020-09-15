@@ -52,7 +52,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     }
 
     @Override
-    @SafeVarargs
+    @SuppressWarnings("unchecked")
     public final Flux<T> createAsync(Creatable<T>... creatables) {
         return createAsync(Arrays.asList(creatables));
     }
