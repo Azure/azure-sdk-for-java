@@ -6,8 +6,8 @@ package com.azure.core.util;
 import java.util.Objects;
 
 /**
- * It represents a single header for a request being sent to Azure Service.
- *
+ * Represents a single header for a request.
+ *<p>
  * If multiple header values are added to a request or response with the same name (case-insensitive), then the values
  * will be appended at the end of the same {@link Header} with commas separating them.
  */
@@ -59,11 +59,13 @@ public class Header {
      * Add a new value to the end of the Header.
      *
      * @param value the value to add
-     * @throws NullPointerException if {@code value} is null.
      */
     public void addValue(String value) {
-        Objects.requireNonNull(value, "'value' cannot be null.");
-        this.value += "," + value;
+        if (this.value != null) {
+            this.value += "," + value;
+        } else {
+            this.value = value;
+        }
     }
 
     /**

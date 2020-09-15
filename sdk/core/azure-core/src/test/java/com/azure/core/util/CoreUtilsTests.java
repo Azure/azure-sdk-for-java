@@ -91,16 +91,6 @@ public class CoreUtilsTests {
         );
     }
 
-    private static Stream<Arguments> testValidApplicationId() {
-        return Stream.of(
-            //                 logOptions, clientOptions, expected
-            Arguments.arguments("a", "b", "b"),
-            Arguments.arguments("a", "a", "a"),
-            Arguments.arguments("a", null, "a"),
-            Arguments.arguments(null, "a", "a")
-        );
-    }
-
     private static byte[] addBom(byte[] arr1) {
         byte[] mergedArray = new byte[arr1.length + BYTES.length];
 

@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -20,8 +21,16 @@ public class ClientOptionsTest {
 
     @Test
     public void testNullHeaders() {
-        // Arrange, Act & Assert
-        assertThrows(NullPointerException.class, () -> new ClientOptions().setHeaders(null));
+        // Arrange
+        final int expectedTotal = 0;
+        final ClientOptions clientOptions = new ClientOptions().setHeaders(null);
+
+        // Act
+        final Iterable<Header> headers = clientOptions.getHeaders();
+
+        // Assert
+        assertNotNull(headers);
+        assertEquals(expectedTotal, Stream.of(headers).count());
     }
 
     @ParameterizedTest

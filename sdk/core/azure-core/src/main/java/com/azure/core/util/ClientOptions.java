@@ -7,12 +7,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.http.policy.UserAgentPolicy;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Collections;
 
 /**
- * This class represents various options to be set on the client. It is set on the builder at the time of building the
- * client.
+ * This class represents various options to be set on the client.
  * <p>
  * The {@link Header} could be set using {@link ClientOptions#setHeaders(Iterable) setHeaders}. The {@link Header} will
  * be applied on the request being sent to Azure Service.
@@ -23,7 +21,8 @@ import java.util.Objects;
 @Fluent
 public final class ClientOptions {
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private final ClientLogger logger = new ClientLogger(ClientOptions.class);
+    private final ClientLogger logger = new
+        ClientLogger(ClientOptions.class);
     private Iterable<Header> headers;
 
     private String applicationId;
@@ -41,6 +40,7 @@ public final class ClientOptions {
      * @param applicationId to be set.
      *
      * @return updated {@link ClientOptions}.
+     * @throws IllegalArgumentException If {@code applicationId} contains space or larger than 24 in length.
      */
     public ClientOptions setApplicationId(String applicationId) {
 
@@ -64,15 +64,15 @@ public final class ClientOptions {
     }
 
     /**
-     * Sets the provided headers, overwriting all previously-set headers in the process. It will be applied on the
-     * request being sent to Azure Service.
+     * Sets the headers, overwriting all previously set headers in the process.
+     * <p>
+     * It will be applied on the request being sent to Azure Service.
      * @param headers headers to be set.
      *
      * @return updated {@link ClientOptions}.
-     * @throws NullPointerException if {@code headers} is null.
      */
     public ClientOptions setHeaders(Iterable<Header> headers) {
-        this.headers = Objects.requireNonNull(headers, "'headers' cannot be null.");
+        this.headers = headers;
         return this;
     }
 
@@ -82,7 +82,7 @@ public final class ClientOptions {
      */
     public Iterable<Header> getHeaders() {
         if (headers == null) {
-            headers = new ArrayList<>();
+            return Collections.emptyList();
         }
         return headers;
     }
