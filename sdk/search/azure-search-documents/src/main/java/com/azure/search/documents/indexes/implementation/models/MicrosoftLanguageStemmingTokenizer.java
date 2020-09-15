@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.MicrosoftStemmingTokenizerLanguage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -43,9 +44,13 @@ public class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
     @JsonProperty(value = "language")
     private MicrosoftStemmingTokenizerLanguage language;
 
-    /** Creates an instance of MicrosoftLanguageStemmingTokenizer class. */
+    /**
+     * Creates an instance of MicrosoftLanguageStemmingTokenizer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public MicrosoftLanguageStemmingTokenizer(@JsonProperty(value = "name") String name) {
+    public MicrosoftLanguageStemmingTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -113,15 +118,5 @@ public class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
     public MicrosoftLanguageStemmingTokenizer setLanguage(MicrosoftStemmingTokenizerLanguage language) {
         this.language = language;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

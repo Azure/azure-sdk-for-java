@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 public class AppServiceSampleTests extends SamplesTestBase {
     @Test
     public void testManageWebAppBasic() {
@@ -35,7 +37,7 @@ public class AppServiceSampleTests extends SamplesTestBase {
 
     @Test
     @Disabled("Stops in between for user input")
-    public void testManageWebAppSqlConnection() {
+    public void testManageWebAppSqlConnection() throws IOException {
         Assertions.assertTrue(ManageWebAppSqlConnection.runSample(azure));
     }
 
@@ -46,7 +48,7 @@ public class AppServiceSampleTests extends SamplesTestBase {
 
     @Test
     @Disabled("Stops in between for user input")
-    public void testManageLinuxWebAppSqlConnection() {
+    public void testManageLinuxWebAppSqlConnection() throws IOException {
         Assertions.assertTrue(ManageLinuxWebAppSqlConnection.runSample(azure));
     }
 

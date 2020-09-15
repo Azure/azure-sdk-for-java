@@ -329,7 +329,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 activationResponse,
                 client.getSerializerAdapter(),
                 client.getHttpPipeline(),
-                client.getDefaultPollInterval(),
+                SdkContext.getDelayDuration(client.getDefaultPollInterval()),
                 innerType, innerType,
                 convertOperation);
 

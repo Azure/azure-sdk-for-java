@@ -89,11 +89,6 @@ public final class ManageResourceGroup {
 
             azure.resourceGroups().beginDeleteByName(rgName2);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -105,7 +100,6 @@ public final class ManageResourceGroup {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

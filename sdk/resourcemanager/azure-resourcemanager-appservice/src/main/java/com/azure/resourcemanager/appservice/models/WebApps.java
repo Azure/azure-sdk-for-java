@@ -21,8 +21,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 public interface WebApps
     extends SupportsCreating<WebApp.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsListing<WebApp>,
-        SupportsListingByResourceGroup<WebApp>,
+        SupportsListing<WebAppBasic>,
+        SupportsListingByResourceGroup<WebAppBasic>,
         SupportsGettingByResourceGroup<WebApp>,
         SupportsGettingById<WebApp>,
         SupportsDeletingByResourceGroup,

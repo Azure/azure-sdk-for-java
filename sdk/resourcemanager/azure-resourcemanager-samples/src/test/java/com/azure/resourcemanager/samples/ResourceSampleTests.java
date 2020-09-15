@@ -15,9 +15,11 @@ import com.azure.resourcemanager.resources.samples.ManageResourceGroup;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 public class ResourceSampleTests extends SamplesTestBase {
     @Test
-    public void testDeployUsingARMTemplate() {
+    public void testDeployUsingARMTemplate() throws IOException, IllegalAccessException {
         if (isPlaybackMode()) {
             return;
         }
@@ -25,17 +27,17 @@ public class ResourceSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testDeployUsingARMTemplateWithProgress() {
+    public void testDeployUsingARMTemplateWithProgress() throws IOException, IllegalAccessException {
         Assertions.assertTrue(DeployUsingARMTemplateWithProgress.runSample(azure));
     }
 
     @Test
-    public void testDeployUsingARMTemplateAsync() {
+    public void testDeployUsingARMTemplateAsync() throws InterruptedException {
         Assertions.assertTrue(DeployUsingARMTemplateAsync.runSample(azure));
     }
 
     @Test()
-    public void testDeployUsingARMTemplateWithDeploymentOperations() {
+    public void testDeployUsingARMTemplateWithDeploymentOperations() throws InterruptedException {
         if (isPlaybackMode()) {
             Assertions.assertTrue(DeployUsingARMTemplateWithDeploymentOperations.runSample(azure, 0));
         } else {
@@ -44,7 +46,7 @@ public class ResourceSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testDeployUsingARMTemplateWithTags() {
+    public void testDeployUsingARMTemplateWithTags() throws IOException, IllegalAccessException {
         Assertions.assertTrue(DeployUsingARMTemplateWithTags.runSample(azure));
     }
 
@@ -59,7 +61,7 @@ public class ResourceSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testDeployVirtualMachineUsingARMTemplate() {
+    public void testDeployVirtualMachineUsingARMTemplate() throws IOException, IllegalAccessException {
         Assertions.assertTrue(DeployVirtualMachineUsingARMTemplate.runSample(azure));
     }
 }

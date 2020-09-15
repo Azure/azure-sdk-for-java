@@ -5,12 +5,7 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.CharFilterName;
-import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.TokenFilterName;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.AnalyzeRequest} and
@@ -24,27 +19,21 @@ public final class AnalyzeRequestConverter {
         if (obj == null) {
             return null;
         }
-        AnalyzeTextOptions analyzeTextOptions = null;
+        AnalyzeTextOptions analyzeTextOptions;
 
         if (obj.getTokenizer() != null) {
-            LexicalTokenizerName tokenizer = LexicalTokenizerNameConverter.map(obj.getTokenizer());
-            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), tokenizer);
+            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), obj.getTokenizer());
         } else {
-            LexicalAnalyzerName analyzer = LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
-            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), analyzer);
+            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), obj.getAnalyzer());
         }
 
         if (obj.getCharFilters() != null) {
-            analyzeTextOptions.setCharFilters(obj.getCharFilters().stream()
-                .map(CharFilterNameConverter::map)
-                .toArray(CharFilterName[]::new));
+            analyzeTextOptions.setCharFilters(obj.getCharFilters().toArray(new CharFilterName[]{}));
         }
 
 
         if (obj.getTokenFilters() != null) {
-            analyzeTextOptions.setTokenFilters(obj.getTokenFilters().stream()
-                .map(TokenFilterNameConverter::map)
-                .toArray(TokenFilterName[]::new));
+            analyzeTextOptions.setTokenFilters(obj.getTokenFilters().toArray(new TokenFilterName[0]));
         }
 
 
@@ -62,29 +51,21 @@ public final class AnalyzeRequestConverter {
             new com.azure.search.documents.indexes.implementation.models.AnalyzeRequest(obj.getText());
 
         if (obj.getCharFilters() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.CharFilterName> charFilters =
-                obj.getCharFilters().stream().map(CharFilterNameConverter::map).collect(Collectors.toList());
-            analyzeRequest.setCharFilters(charFilters);
+            analyzeRequest.setCharFilters(obj.getCharFilters());
         }
 
         if (obj.getAnalyzerName() != null) {
-            com.azure.search.documents.indexes.implementation.models.LexicalAnalyzerName analyzer =
-                LexicalAnalyzerNameConverter.map(obj.getAnalyzerName());
-            analyzeRequest.setAnalyzer(analyzer);
+            analyzeRequest.setAnalyzer(obj.getAnalyzerName());
         }
 
         if (obj.getTokenFilters() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.TokenFilterName> tokenFilters =
-                obj.getTokenFilters().stream().map(TokenFilterNameConverter::map).collect(Collectors.toList());
-            analyzeRequest.setTokenFilters(tokenFilters);
+            analyzeRequest.setTokenFilters(obj.getTokenFilters());
         }
 
         if (obj.getTokenizerName() != null) {
-            com.azure.search.documents.indexes.implementation.models.LexicalTokenizerName tokenizer =
-                LexicalTokenizerNameConverter.map(obj.getTokenizerName());
-            analyzeRequest.setTokenizer(tokenizer);
+            analyzeRequest.setTokenizer(obj.getTokenizerName());
         }
-        analyzeRequest.validate();
+
         return analyzeRequest;
     }
 

@@ -17,7 +17,7 @@ The Spring Cloud Service Bus starter helps developers to finish the auto-configu
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>spring-cloud-starter-azure-servicebus</artifactId>
-    <version>1.2.8-beta.1</version>
+    <version>1.2.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

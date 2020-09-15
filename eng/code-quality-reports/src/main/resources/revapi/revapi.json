@@ -10,6 +10,7 @@
             "com\\.azure\\..+\\.samples(\\..+)?",
             "com\\.fasterxml\\.jackson\\..+",
             "reactor\\.netty\\..+",
+            "reactor\\.util\\..+",
             "io\\.netty\\..+",
             "com\\.nimbusds(\\..+)?",
             "com\\.microsoft\\.azure\\..+",
@@ -19,7 +20,8 @@
             "io\\.micrometer(\\..+)?",
             "com\\.azure\\.data\\.cosmos(\\..+)?",
             "com\\.azure\\.spring\\.data\\.cosmos\\..+",
-            "org\\.springframework\\.data\\..+"
+            "org\\.springframework\\.data\\..+",
+            "org\\.apache\\.avro\\..+"
           ]
         }
       }
@@ -127,6 +129,12 @@
         "justification": "perf-test classes are allowed to be exposed."
       },
       {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(interface|class|enum) com\\.azure\\.cosmos.*",
+        "justification": "azure-cosmos classes are allowed to be exposed by dependencies using them."
+      },
+      {
         "code": "java.method.finalMethodAddedToNonFinalClass",
         "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.http.rest.PagedFlux<T>",
         "justification": "Reactor added new final APIs to Flux."
@@ -165,6 +173,18 @@
         "code": "java.method.finalMethodAddedToNonFinalClass",
         "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.util.paging.ContinuablePagedFluxCore<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
         "justification": "Reactor added new final APIs to Flux."
+      },
+      {
+        "regex": true,
+        "code": "java\\.annotation\\.added",
+        "new": "^(method|parameter)\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(FacetResult|SearchServiceStatistics)::.+$",
+        "justification": "Annotations better indicate which parameters are required when handling service requests and responses."
+      },
+      {
+        "regex": true,
+        "code": "java\\.annotation\\.attributeAdded",
+        "new": "^parameter\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(AnalyzedTokenInfo|CorsOptions|FieldMapping|IndexerExecutionResult|SearchIndexerStatus|SearchServiceCounters|TextWeights|AutocompleteResult)::<init>\\(.+\\)$",
+        "justification": "Annotations attributes better indicate which parameters are required when handling service requests and responses."
       }
     ]
   }

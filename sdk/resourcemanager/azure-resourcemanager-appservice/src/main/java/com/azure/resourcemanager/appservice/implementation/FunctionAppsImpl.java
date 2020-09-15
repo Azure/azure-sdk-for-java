@@ -11,18 +11,23 @@ import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner
 import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
+import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
 import com.azure.resourcemanager.appservice.models.FunctionApps;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.BatchDeletionImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 /** The implementation for WebApps. */
 public class FunctionAppsImpl
-    extends TopLevelModifiableResourcesImpl<FunctionApp, FunctionAppImpl, SiteInner, WebAppsClient, AppServiceManager>
-    implements FunctionApps {
+    extends GroupableResourcesImpl<FunctionApp, FunctionAppImpl, SiteInner, WebAppsClient, AppServiceManager>
+    implements FunctionApps, SupportsBatchDeletion {
 
     public FunctionAppsImpl(final AppServiceManager manager) {
         super(manager.inner().getWebApps(), manager);
@@ -44,8 +49,7 @@ public class FunctionAppsImpl
     public Mono<FunctionApp> getByResourceGroupAsync(final String groupName, final String name) {
         final FunctionAppsImpl self = this;
         return this
-            .inner()
-            .getByResourceGroupAsync(groupName, name)
+            .getInnerAsync(groupName, name)
             .flatMap(
                 siteInner ->
                     Mono
@@ -54,6 +58,11 @@ public class FunctionAppsImpl
                             self.inner().getDiagnosticLogsConfigurationAsync(groupName, name),
                             (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) ->
                                 wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
+    }
+
+    @Override
+    protected Mono<SiteInner> getInnerAsync(String resourceGroupName, String name) {
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override
@@ -93,29 +102,6 @@ public class FunctionAppsImpl
     }
 
     @Override
-    protected PagedFlux<FunctionApp> wrapPageAsync(PagedFlux<SiteInner> innerPage) {
-        return PagedConverter
-            .flatMapPage(
-                innerPage,
-                siteInner -> {
-                    if (siteInner.kind() != null
-                        && Arrays.asList(siteInner.kind().split(",")).contains("functionapp")) {
-                        return Mono
-                            .zip(
-                                this.inner().getConfigurationAsync(siteInner.resourceGroup(), siteInner.name()),
-                                this
-                                    .inner()
-                                    .getDiagnosticLogsConfigurationAsync(
-                                        siteInner.resourceGroup(), siteInner.name()),
-                                (siteConfigResourceInner, logsConfigInner) ->
-                                    this.wrapModel(siteInner, siteConfigResourceInner, logsConfigInner));
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    @Override
     public FunctionAppImpl define(String name) {
         return wrapModel(name);
     }
@@ -123,5 +109,49 @@ public class FunctionAppsImpl
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name);
+    }
+
+    @Override
+    public Flux<String> deleteByIdsAsync(Collection<String> ids) {
+        return BatchDeletionImpl.deleteByIdsAsync(ids, this::deleteInnerAsync);
+    }
+
+    @Override
+    public Flux<String> deleteByIdsAsync(String... ids) {
+        return this.deleteByIdsAsync(new ArrayList<>(Arrays.asList(ids)));
+    }
+
+    @Override
+    public void deleteByIds(Collection<String> ids) {
+        if (ids != null && !ids.isEmpty()) {
+            this.deleteByIdsAsync(ids).blockLast();
+        }
+    }
+
+    @Override
+    public void deleteByIds(String... ids) {
+        this.deleteByIds(new ArrayList<>(Arrays.asList(ids)));
+    }
+
+    @Override
+    public PagedIterable<FunctionAppBasic> listByResourceGroup(String resourceGroupName) {
+        return new PagedIterable<>(this.listByResourceGroupAsync(resourceGroupName));
+    }
+
+    @Override
+    public PagedFlux<FunctionAppBasic> listByResourceGroupAsync(String resourceGroupName) {
+        return inner().listByResourceGroupAsync(resourceGroupName)
+            .mapPage(inner -> new FunctionAppBasicImpl(inner, this.manager()));
+    }
+
+    @Override
+    public PagedIterable<FunctionAppBasic> list() {
+        return new PagedIterable<>(this.listAsync());
+    }
+
+    @Override
+    public PagedFlux<FunctionAppBasic> listAsync() {
+        return inner().listAsync()
+            .mapPage(inner -> new FunctionAppBasicImpl(inner, this.manager()));
     }
 }
