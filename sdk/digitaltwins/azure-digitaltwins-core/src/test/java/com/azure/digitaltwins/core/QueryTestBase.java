@@ -1,0 +1,9 @@
+package com.azure.digitaltwins.core;
+
+import com.azure.core.http.HttpClient;
+import org.junit.jupiter.api.Test;
+
+public abstract class QueryTestBase extends DigitalTwinsTestBase {
+    @Test
+    public abstract void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+}
