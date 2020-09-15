@@ -72,7 +72,7 @@ public class UserPrincipalAzureADGraphTest {
 
     @Before
     public void setup() {
-        accessToken = Constants.ACCESS_TOKEN;
+        accessToken = TestConstants.ACCESS_TOKEN;
         aadAuthProps = new AADAuthenticationProperties();
         endpointsProps = new ServiceEndpointsProperties();
         final ServiceEndpoints serviceEndpoints = new ServiceEndpoints();
@@ -94,8 +94,8 @@ public class UserPrincipalAzureADGraphTest {
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withBody(userGroupsJson)));
 
-        assertThat(graphClientMock.getGrantedAuthorities(Constants.ACCESS_TOKEN)).isNotEmpty()
-                .extracting(GrantedAuthority::getAuthority).containsExactly("ROLE_group1");
+        assertThat(graphClientMock.getGrantedAuthorities(TestConstants.ACCESS_TOKEN)).isNotEmpty()
+                                                                                     .extracting(GrantedAuthority::getAuthority).containsExactly("ROLE_group1");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
             .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
@@ -116,7 +116,7 @@ public class UserPrincipalAzureADGraphTest {
                 .withBody(userGroupsJson)));
 
         final Collection<? extends GrantedAuthority> authorities = graphClientMock
-            .getGrantedAuthorities(Constants.ACCESS_TOKEN);
+            .getGrantedAuthorities(TestConstants.ACCESS_TOKEN);
 
         assertThat(authorities).isNotEmpty().extracting(GrantedAuthority::getAuthority)
             .containsExactly("ROLE_group1", "ROLE_group2", "ROLE_group3");
@@ -136,7 +136,7 @@ public class UserPrincipalAzureADGraphTest {
              FileInputStream fileInputStream = new FileInputStream(tmpOutputFile);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
 
-            final JWSObject jwsObject = JWSObject.parse(Constants.JWT_TOKEN);
+            final JWSObject jwsObject = JWSObject.parse(TestConstants.JWT_TOKEN);
             final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder().subject("fake-subject").build();
             final UserPrincipal principal = new UserPrincipal(jwsObject, jwtClaimsSet);
 

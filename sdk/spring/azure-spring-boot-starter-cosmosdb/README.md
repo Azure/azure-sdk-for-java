@@ -16,7 +16,7 @@
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
-    <version>2.3.3</version>
+    <version>2.3.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
