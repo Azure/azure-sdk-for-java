@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.core.util.polling.SyncPoller
@@ -107,7 +106,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.exists()
 
         then:
-        def e = thrown(HttpResponseException)
+        def e = thrown(ShareStorageException)
         e.getResponse().getStatusCode() == 403
     }
 
@@ -626,7 +625,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.getProperties()
 
         then:
-        thrown(HttpResponseException)
+        thrown(ShareStorageException)
     }
 
     def "Set httpHeaders fpk"() {

@@ -306,7 +306,6 @@ directive:
         op.get.responses["206"].headers["x-ms-content-md5"]["x-ms-client-name"] = "FileContentMd5";
         op.head.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.head.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete op.head.responses.default.schema;
         op.delete.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.delete.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete $["/{shareName}/{directory}/{fileName}"];
