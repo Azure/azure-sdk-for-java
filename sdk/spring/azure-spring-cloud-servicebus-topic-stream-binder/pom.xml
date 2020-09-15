@@ -27,7 +27,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-servicebus-stream-binder-core</artifactId>
-      <version>1.2.8</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core;current} -->
     </dependency>
 
     <dependency>
@@ -64,7 +64,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core:[1.2.8]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core;current} -->
+                <include>com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core;current} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
               </includes>
             </bannedDependencies>
