@@ -3,13 +3,9 @@
 
 package com.azure.spring.data.cosmos.config;
 
-import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.ExpressionResolver;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -19,14 +15,15 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A support class for cosmos configuration to scan beans and get initial entities
  */
 public abstract class CosmosConfigurationSupport {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosConfigurationSupport.class);
 
     /**
      * Return the name of the database to connect to
@@ -42,13 +39,6 @@ public abstract class CosmosConfigurationSupport {
      */
     @Bean
     public ExpressionResolver expressionResolver(BeanFactory beanFactory) {
-        LOGGER.info("bean factory: {}", beanFactory.getClass().getName());
-        if (beanFactory instanceof ListableBeanFactory) {
-            String[] beanDefinitionNames = ((ListableBeanFactory) beanFactory).getBeanDefinitionNames();
-            for (String beanName : beanDefinitionNames) {
-                LOGGER.info("has bean {}", beanName);
-            }
-        }
         return new ExpressionResolver(beanFactory);
     }
 

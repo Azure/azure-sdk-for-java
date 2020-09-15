@@ -23,14 +23,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.BeanExpressionContext;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.EmbeddedValueResolver;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.lang.reflect.Field;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -72,7 +77,23 @@ public class SpELCosmosAnnotationIT {
         EmbeddedValueResolver embeddedResolver = expressionResolver != null ?
             ExpressionResolver.getEmbeddedValueResolver() : null;
         LOGGER.info("Getting expression resolver: {}, embedded: {}", expressionResolver, embeddedResolver);
-        embeddedResolver.resolveStringValue("#{@dynamicContainer.getContainerName()}");
+
+        try {
+            final Field exprContext = embeddedResolver.getClass().getDeclaredField("exprContext");
+            exprContext.setAccessible(true);
+            BeanExpressionContext context = (BeanExpressionContext) exprContext.get(embeddedResolver);
+            ConfigurableBeanFactory beanFactory = context.getBeanFactory();
+            LOGGER.info("bean factory: {}", beanFactory.getClass().getName());
+            if (beanFactory instanceof ListableBeanFactory) {
+                String[] beanDefinitionNames = ((ListableBeanFactory) beanFactory).getBeanDefinitionNames();
+                for (String beanName : beanDefinitionNames) {
+                    LOGGER.info("has bean {}", beanName);
+                }
+            }
+            embeddedResolver.resolveStringValue("#{@dynamicContainer.getContainerName()}");
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     @AfterClass
