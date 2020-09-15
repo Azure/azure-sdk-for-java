@@ -5,7 +5,7 @@ package com.azure.spring.data.cosmos.repository.integration;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.CosmosFactory;
-import com.azure.spring.data.cosmos.common.DynamicContainer;
+import com.azure.spring.data.cosmos.common.ExpressionResolver;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.EmbeddedValueResolver;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
@@ -58,7 +59,7 @@ public class SpELCosmosAnnotationIT {
     private CosmosConfig cosmosConfig;
 
     @Autowired
-    private DynamicContainer dynamicContainer;
+    private ExpressionResolver expressionResolver;
 
     private static CosmosTemplate staticTemplate;
     private static CosmosEntityInformation<SpELPropertyStudent, String> cosmosEntityInformation;
@@ -68,7 +69,10 @@ public class SpELCosmosAnnotationIT {
         if (staticTemplate == null) {
             staticTemplate = cosmosTemplate;
         }
-        LOGGER.info("Getting dynamic container: {}", dynamicContainer);
+        EmbeddedValueResolver embeddedResolver = expressionResolver != null ?
+            ExpressionResolver.getEmbeddedValueResolver() : null;
+        LOGGER.info("Getting expression resolver: {}, embedded: {}", expressionResolver, embeddedResolver);
+        embeddedResolver.resolveStringValue("#{@dynamicContainer.getContainerName()}");
     }
 
     @AfterClass
