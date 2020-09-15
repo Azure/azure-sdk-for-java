@@ -14,6 +14,12 @@ import rx.Observable;
 import com.microsoft.azure.management.mysql.v2017_12_01.ServerUpdateParameters;
 import com.microsoft.azure.management.mysql.v2017_12_01.ServerForCreate;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.mysql.v2017_12_01.ResourceIdentity;
+import com.microsoft.azure.management.mysql.v2017_12_01.InfrastructureEncryption;
+import com.microsoft.azure.management.mysql.v2017_12_01.MinimalTlsVersionEnum;
+import java.util.List;
+import com.microsoft.azure.management.mysql.v2017_12_01.ServerPrivateEndpointConnection;
+import com.microsoft.azure.management.mysql.v2017_12_01.PublicNetworkAccessEnum;
 import com.microsoft.azure.management.mysql.v2017_12_01.Sku;
 import com.microsoft.azure.management.mysql.v2017_12_01.SslEnforcementEnum;
 import com.microsoft.azure.management.mysql.v2017_12_01.StorageProfile;
@@ -22,10 +28,10 @@ import com.microsoft.azure.management.mysql.v2017_12_01.ServerVersion;
 import com.microsoft.azure.management.mysql.v2017_12_01.ServerPropertiesForCreate;
 import rx.functions.Func1;
 
-class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerImpl, MySQLManager> implements Server, Server.Definition, Server.Update {
+class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerImpl, DBForMySQLManager> implements Server, Server.Definition, Server.Update {
     private ServerForCreate createParameter;
     private ServerUpdateParameters updateParameter;
-    ServerImpl(String name, ServerInner inner, MySQLManager manager) {
+    ServerImpl(String name, ServerInner inner, DBForMySQLManager manager) {
         super(name, inner, manager);
         this.createParameter = new ServerForCreate();
         this.updateParameter = new ServerUpdateParameters();
@@ -83,6 +89,11 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     }
 
     @Override
+    public String byokEnforcement() {
+        return this.inner().byokEnforcement();
+    }
+
+    @Override
     public DateTime earliestRestoreDate() {
         return this.inner().earliestRestoreDate();
     }
@@ -93,8 +104,33 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     }
 
     @Override
+    public ResourceIdentity identity() {
+        return this.inner().identity();
+    }
+
+    @Override
+    public InfrastructureEncryption infrastructureEncryption() {
+        return this.inner().infrastructureEncryption();
+    }
+
+    @Override
     public String masterServerId() {
         return this.inner().masterServerId();
+    }
+
+    @Override
+    public MinimalTlsVersionEnum minimalTlsVersion() {
+        return this.inner().minimalTlsVersion();
+    }
+
+    @Override
+    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
+        return this.inner().privateEndpointConnections();
+    }
+
+    @Override
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.inner().publicNetworkAccess();
     }
 
     @Override
@@ -145,6 +181,18 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     }
 
     @Override
+    public ServerImpl withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
+        this.updateParameter.withMinimalTlsVersion(minimalTlsVersion);
+        return this;
+    }
+
+    @Override
+    public ServerImpl withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
+        this.updateParameter.withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    @Override
     public ServerImpl withReplicationRole(String replicationRole) {
         this.updateParameter.withReplicationRole(replicationRole);
         return this;
@@ -165,6 +213,16 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     @Override
     public ServerImpl withVersion(ServerVersion version) {
         this.updateParameter.withVersion(version);
+        return this;
+    }
+
+    @Override
+    public ServerImpl withIdentity(ResourceIdentity identity) {
+        if (isInCreateMode()) {
+            this.createParameter.withIdentity(identity);
+        } else {
+            this.updateParameter.withIdentity(identity);
+        }
         return this;
     }
 

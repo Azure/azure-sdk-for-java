@@ -11,13 +11,13 @@ package com.microsoft.azure.management.mysql.v2017_12_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.mysql.v2017_12_01.implementation.PerformanceTierPropertiesInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mysql.v2017_12_01.implementation.MySQLManager;
+import com.microsoft.azure.management.mysql.v2017_12_01.implementation.DBForMySQLManager;
 import java.util.List;
 
 /**
  * Type representing PerformanceTierProperties.
  */
-public interface PerformanceTierProperties extends HasInner<PerformanceTierPropertiesInner>, HasManager<MySQLManager> {
+public interface PerformanceTierProperties extends HasInner<PerformanceTierPropertiesInner>, HasManager<DBForMySQLManager> {
     /**
      * @return the id value.
      */
