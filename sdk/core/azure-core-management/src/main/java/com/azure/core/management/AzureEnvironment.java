@@ -139,7 +139,7 @@ public final class AzureEnvironment {
     /**
      * @return the list of known environments to Azure SDK.
      */
-    public static List<AzureEnvironment> getKnownEnvironments() {
+    public static List<AzureEnvironment> knownEnvironments() {
         return Arrays.asList(AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT);
     }
 
