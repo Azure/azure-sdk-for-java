@@ -163,8 +163,7 @@ class ClientSideRequestStatistics {
 
         AddressResolutionStatistics resolutionStatistics = new AddressResolutionStatistics();
         resolutionStatistics.startTimeUTC = Instant.now();
-        //  Very far in the future
-        resolutionStatistics.endTimeUTC = Instant.MAX;
+        resolutionStatistics.endTimeUTC = null;
         resolutionStatistics.targetEndpoint = targetEndpoint == null ? "<NULL>" : targetEndpoint.toString();
 
         synchronized (this) {
@@ -192,6 +191,8 @@ class ClientSideRequestStatistics {
 
             AddressResolutionStatistics resolutionStatistics = this.addressResolutionStatistics.get(identifier);
             resolutionStatistics.endTimeUTC = responseTime;
+            resolutionStatistics.errorMessage = null;
+            resolutionStatistics.inflightRequest = false;
         }
     }
 
@@ -329,6 +330,14 @@ class ClientSideRequestStatistics {
         Instant endTimeUTC;
         @JsonSerialize
         String targetEndpoint;
+        @JsonSerialize
+        String errorMessage;
+
+        // If one replica return error we start address call in parallel,
+        // on other replica  valid response, we end the current user request,
+        // indicating background addressResolution is still inflight
+        @JsonSerialize
+        boolean inflightRequest = true;
     }
 
     private static class GatewayStatistics {
