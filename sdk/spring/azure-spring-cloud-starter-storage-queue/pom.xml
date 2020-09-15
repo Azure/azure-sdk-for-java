@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-storage</artifactId>
-      <version>1.2.8</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-storage;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-storage;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -47,7 +47,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:spring-cloud-azure-context:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
-                <include>com.microsoft.azure:spring-cloud-azure-storage:[1.2.8]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-storage;current} -->
+                <include>com.microsoft.azure:spring-cloud-azure-storage:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-storage;current} -->
                 <include>com.microsoft.azure:spring-integration-storage-queue:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-storage-queue;current} -->
               </includes>
             </bannedDependencies>
