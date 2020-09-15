@@ -68,9 +68,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canCRUDSqlSyncMember() throws Exception {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         final String dbName = "dbSample";
         final String dbSyncName = "dbSync";
         final String dbMemberName = "dbMember";
@@ -152,9 +149,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canCRUDSqlSyncGroup() throws Exception {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         final String dbName = "dbSample";
         final String dbSyncName = "dbSync";
         final String syncGroupName = "groupName";
@@ -875,9 +869,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canUseCoolShortcutsForResourceCreation() throws Exception {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         String database2Name = "database2";
         String database1InEPName = "database1InEP";
         String database2InEPName = "database2InEP";
