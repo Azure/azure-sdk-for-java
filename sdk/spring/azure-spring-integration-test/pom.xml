@@ -12,7 +12,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>spring-integration-azure-test</artifactId>
-  <version>1.2.8</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-azure-test;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-azure-test;current} -->
 
   <name>Azure Spring Integration Test</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>

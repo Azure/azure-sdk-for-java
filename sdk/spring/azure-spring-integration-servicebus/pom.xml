@@ -36,7 +36,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-integration-azure-test</artifactId>
-      <version>1.2.8</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-azure-test;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-azure-test;current} -->
       <scope>test</scope>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
