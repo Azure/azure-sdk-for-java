@@ -41,12 +41,12 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
-import org.junit.Ignore
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
+import spock.lang.Ignore
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
