@@ -71,22 +71,34 @@ class ChannelPromiseWithExpiryTime implements Promise<Channel> {
     }
 
     @Override
-    public Promise<Channel> addListener(GenericFutureListener<? extends Future<? super Channel>> listener) {
+    public Promise<Channel> addListener(
+        GenericFutureListener<? extends Future<? super Channel>> listener) {
+
         return this.channelPromise.addListener(listener);
     }
 
+    @SafeVarargs
     @Override
-    public Promise<Channel> addListeners(GenericFutureListener<? extends Future<? super Channel>>... listeners) {
+    @SuppressWarnings("varargs")
+    public final Promise<Channel> addListeners(
+        GenericFutureListener<? extends Future<? super Channel>>... listeners) {
+
         return this.channelPromise.addListeners(listeners);
     }
 
     @Override
-    public Promise<Channel> removeListener(GenericFutureListener<? extends Future<? super Channel>> listener) {
+    public Promise<Channel> removeListener(
+        GenericFutureListener<? extends Future<? super Channel>> listener) {
+
         return this.channelPromise.removeListener(listener);
     }
 
+    @SafeVarargs
     @Override
-    public Promise<Channel> removeListeners(GenericFutureListener<? extends Future<? super Channel>>... listeners) {
+    @SuppressWarnings("varargs")
+    public final Promise<Channel> removeListeners(
+        GenericFutureListener<? extends Future<? super Channel>>... listeners) {
+
         return this.channelPromise.removeListeners(listeners);
     }
 
@@ -145,6 +157,7 @@ class ChannelPromiseWithExpiryTime implements Promise<Channel> {
         return this.channelPromise.get();
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public Channel get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
         return this.channelPromise.get(timeout, unit);

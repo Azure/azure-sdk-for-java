@@ -203,10 +203,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
         newTimeout(endpoint, config.idleEndpointTimeoutInNanos(), config.requestTimerResolutionInNanos());
 
         if (this.acquisitionTimeoutTask != null) {
-            this.pendingAcquisitionExpirationFuture = this.pendingAcquisitionExpirationExecutor.scheduleAtFixedRate(this.acquisitionTimeoutTask,
-                this.acquisitionTimeoutInNanos,
-                this.acquisitionTimeoutInNanos,
-                TimeUnit.NANOSECONDS);
+            this.pendingAcquisitionExpirationFuture =
+                pendingAcquisitionExpirationExecutor.scheduleAtFixedRate(
+                    this.acquisitionTimeoutTask,
+                    this.acquisitionTimeoutInNanos,
+                    this.acquisitionTimeoutInNanos,
+                    TimeUnit.NANOSECONDS);
         } else {
             this.pendingAcquisitionExpirationFuture = null;
         }
