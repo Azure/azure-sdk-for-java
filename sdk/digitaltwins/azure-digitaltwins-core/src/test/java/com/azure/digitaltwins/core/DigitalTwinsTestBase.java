@@ -4,6 +4,8 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
@@ -51,6 +53,7 @@ public class DigitalTwinsTestBase extends TestBase
 
         builder.httpClient(httpClient);
         builder.endpoint(DIGITALTWINS_URL);
+        builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         // Only get valid live token when running live tests.
         builder.credential(new ClientSecretCredentialBuilder()

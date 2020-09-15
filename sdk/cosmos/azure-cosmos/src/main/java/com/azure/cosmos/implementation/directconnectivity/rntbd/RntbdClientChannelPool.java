@@ -145,7 +145,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
      *
-     * @param bootstrap the {@link Bootstrap} that is used for connections.
+     * @param bootstrap the {@link Bootstrap} that is used for connections.
      * @param config the {@link Config} that is used for the channel pool instance created.
      */
     RntbdClientChannelPool(final RntbdServiceEndpoint endpoint, final Bootstrap bootstrap, final Config config) {
