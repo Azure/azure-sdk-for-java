@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager;
 
+import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
@@ -12,8 +13,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
-
-import java.util.concurrent.atomic.AtomicInteger;
+import org.junit.jupiter.api.Assertions;
 
 public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualMachines> {
     private final StorageAccounts storageAccounts;
@@ -43,8 +43,6 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgCreatable);
 
-        final AtomicInteger resourceCount = new AtomicInteger(0);
-
         VirtualMachine virtualMachine =
             virtualMachines
                 .define(vmName)
@@ -62,6 +60,13 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
                 .withNewAvailabilitySet(virtualMachines.manager().sdkContext().randomResourceName("avset", 10))
                 .createAsync()
                 .block();
+
+        ComputeManager manager = virtualMachines.manager();
+        Assertions.assertEquals(1, manager.storageManager().storageAccounts().listByResourceGroup(rgCreatable.name()).stream().count());
+        Assertions.assertEquals(1, manager.networkManager().publicIpAddresses().listByResourceGroup(rgCreatable.name()).stream().count());
+        Assertions.assertEquals(1, manager.networkManager().networks().listByResourceGroup(rgCreatable.name()).stream().count());
+        Assertions.assertEquals(1, manager.networkManager().networkInterfaces().listByResourceGroup(rgCreatable.name()).stream().count());
+        Assertions.assertEquals(1, manager.availabilitySets().listByResourceGroup(rgCreatable.name()).stream().count());
 
         return virtualMachine;
     }

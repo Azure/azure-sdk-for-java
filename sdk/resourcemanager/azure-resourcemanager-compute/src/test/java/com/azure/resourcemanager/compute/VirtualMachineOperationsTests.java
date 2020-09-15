@@ -648,8 +648,18 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     resourceCount.incrementAndGet();
                     return createdResource;
                 })
-            .collectList()
-            .block();
+            .blockLast();
+
+        networkNames.forEach(name -> {
+            Assertions.assertNotNull(networkManager.networks().getByResourceGroup(rgName, name));
+        });
+
+        publicIPAddressNames.forEach(name -> {
+            Assertions.assertNotNull(networkManager.publicIpAddresses().getByResourceGroup(rgName, name));
+        });
+
+        Assertions.assertEquals(1, storageManager.storageAccounts().listByResourceGroup(rgName).stream().count());
+        Assertions.assertEquals(count, networkManager.networkInterfaces().listByResourceGroup(rgName).stream().count());
 
         Assertions.assertEquals(count, resourceCount.get());
     }
