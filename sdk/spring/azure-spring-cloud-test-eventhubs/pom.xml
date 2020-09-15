@@ -27,7 +27,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-eventhubs-stream-binder</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder;current} -->
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
@@ -59,7 +59,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder;current} -->
+                <include>com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder;current} -->
                 <include>com.google.code.gson:gson:[2.8.6]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
               </includes>
             </bannedDependencies>

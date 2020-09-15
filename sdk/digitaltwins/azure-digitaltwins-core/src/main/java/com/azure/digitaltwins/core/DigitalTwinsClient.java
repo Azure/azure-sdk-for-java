@@ -11,12 +11,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.implementation.models.EventRoutesListOptions;
-import com.azure.digitaltwins.core.models.EventRoute;
-import com.azure.digitaltwins.core.models.IncomingRelationship;
-import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.serialization.BasicRelationship;
-import com.azure.digitaltwins.core.util.*;
+import com.azure.digitaltwins.core.models.*;
 
 import java.util.List;
 
@@ -38,16 +33,6 @@ public final class DigitalTwinsClient {
 
     DigitalTwinsClient(DigitalTwinsAsyncClient digitalTwinsAsyncClient) {
         this.digitalTwinsAsyncClient = digitalTwinsAsyncClient;
-    }
-
-    /**
-     * Gets the {@link HttpPipeline} that this client is configured to use for all service requests. This pipeline can
-     * be customized while building this client through {@link DigitalTwinsClientBuilder#httpPipeline(HttpPipeline)}.
-     *
-     * @return The {@link HttpPipeline} that this client uses for all service requests.
-     */
-    public HttpPipeline getHttpPipeline() {
-        return digitalTwinsAsyncClient.getHttpPipeline();
     }
 
     /**
@@ -450,6 +435,17 @@ public final class DigitalTwinsClient {
      * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
      *
      * @param digitalTwinId The Id of the target digital twin.
+     * @return A {@link PagedIterable} of application/json relationships directed towards the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IncomingRelationship> listIncomingRelationships(String digitalTwinId) {
+        return listIncomingRelationships(digitalTwinId, Context.NONE);
+    }
+
+    /**
+     * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the target digital twin.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of application/json relationships directed towards the specified digital twin and the http response.
      */
@@ -550,6 +546,7 @@ public final class DigitalTwinsClient {
      * Decommissions a model.
      * @param modelId The Id of the model to decommission.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void decommissionModel(String modelId) {
         decommissionModelWithResponse(modelId, Context.NONE);
     }
@@ -560,6 +557,7 @@ public final class DigitalTwinsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The http response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> decommissionModelWithResponse(String modelId, Context context) {
         return digitalTwinsAsyncClient.decommissionModelWithResponse(modelId, context).block();
     }
@@ -622,7 +620,7 @@ public final class DigitalTwinsClient {
      * Patch a component on a digital twin.
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
-     * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+     * @param componentUpdateOperations The application json patch to apply to the component. See {@link UpdateOperationUtility} for building
      *                                  this argument.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -634,7 +632,7 @@ public final class DigitalTwinsClient {
      * Patch a component on a digital twin.
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
-     * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+     * @param componentUpdateOperations The application json patch to apply to the component. See {@link UpdateOperationUtility} for building
      *                                  this argument.
      * @param options The optional parameters for this request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -717,10 +715,11 @@ public final class DigitalTwinsClient {
      * @param eventRouteId The id of the event route to create.
      * @param eventRoute The event route to create.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, Context context) {
-        this.digitalTwinsAsyncClient.createEventRouteWithResponse(eventRouteId, eventRoute, context).block();
+    public Response<Void> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, Context context) {
+        return this.digitalTwinsAsyncClient.createEventRouteWithResponse(eventRouteId, eventRoute, context).block();
     }
 
     /**
@@ -742,6 +741,28 @@ public final class DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventRoute> getEventRouteWithResponse(String eventRouteId, Context context) {
         return this.digitalTwinsAsyncClient.getEventRouteWithResponse(eventRouteId, context).block();
+    }
+
+    /**
+     * Delete an event route.
+     * @param eventRouteId The Id of the event route to delete.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteEventRoute(String eventRouteId)
+    {
+        deleteEventRouteWithResponse(eventRouteId, Context.NONE);
+    }
+
+    /**
+     * Delete an event route.
+     * @param eventRouteId The Id of the event route to delete.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing no parsed value.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteEventRouteWithResponse(String eventRouteId, Context context)
+    {
+        return this.digitalTwinsAsyncClient.deleteEventRouteWithResponse(eventRouteId, context).block();
     }
 
     /**
@@ -768,4 +789,66 @@ public final class DigitalTwinsClient {
     }
 
     //endregion Event Route APIs
+
+    //region Telemetry APIs
+
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void publishTelemetry(String digitalTwinId, String payload) {
+        PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
+        publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, Context.NONE);
+    }
+
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+        return digitalTwinsAsyncClient.publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context).block();
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
+        PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
+        publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, Context.NONE);
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+        return digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context).block();
+    }
+
+    //endregion TelemetryAPIs
 }

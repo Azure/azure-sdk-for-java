@@ -67,7 +67,7 @@ public class ModelsLifecycleSyncSamples {
         ConsoleLogger.printHeader("Create models");
 
         try {
-            client.createModels(new ArrayList<String>(Arrays.asList(newComponentModelPayload, newModelPayload)));
+            client.createModels(new ArrayList<>(Arrays.asList(newComponentModelPayload, newModelPayload)));
 
             ConsoleLogger.print("Created models " + componentModelId + " and " + sampleModelId);
         }

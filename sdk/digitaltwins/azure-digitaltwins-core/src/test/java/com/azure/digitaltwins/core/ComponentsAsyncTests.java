@@ -3,11 +3,10 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
-import com.azure.digitaltwins.core.util.UpdateComponentRequestOptions;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
+import com.azure.digitaltwins.core.models.UpdateComponentRequestOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.opentest4j.AssertionFailedError;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.*;
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 
@@ -64,7 +64,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
             StepVerifier.create(asyncClient.updateComponentWithResponse(roomWithWifiTwinId, wifiComponentName, TestAssetsHelper.getWifiComponentUpdatePayload(), new UpdateComponentRequestOptions()))
                 .assertNext(updateResponse -> {
                     assertEquals(updateResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
-                    logger.info("Updated component successfully");
+                    logger.info("Updated the component successfully");
                 })
                 .verifyComplete();
         }
@@ -86,7 +86,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
             }
             catch (Exception ex)
             {
-                throw new AssertionFailedError("Test celanup failed", ex);
+                fail("Test cleanup failed", ex);
             }
         }
     }

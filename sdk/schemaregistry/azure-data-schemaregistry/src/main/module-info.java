@@ -5,7 +5,7 @@ module com.azure.data.schemaregistry {
     requires transitive com.azure.core;
 
     exports com.azure.data.schemaregistry;
-    exports com.azure.data.schemaregistry.client;
+    exports com.azure.data.schemaregistry.models;
 
     opens com.azure.data.schemaregistry to com.fasterxml.jackson.databind, com.azure.core;
 }

@@ -609,7 +609,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         try {
-            OffsetDateTime lockedUntil = receiver.renewMessageLock(receivedMessage.getLockToken());
+            OffsetDateTime lockedUntil = receiver.renewMessageLock(receivedMessage);
             assertTrue(lockedUntil.isAfter(initialLock),
                 String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
                     lockedUntil, initialLock));

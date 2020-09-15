@@ -11,6 +11,7 @@ import com.nimbusds.jose.util.ResourceRetriever;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.ParseException;
+import java.util.Optional;
 
 /**
  * A stateful authentication filter which uses Microsoft Graph groups to authorize. Both ID token and access token are
@@ -36,7 +38,6 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final String CURRENT_USER_PRINCIPAL = "CURRENT_USER_PRINCIPAL";
     private static final String CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN = "CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN";
     private static final String CURRENT_USER_PRINCIPAL_JWT_TOKEN = "CURRENT_USER_PRINCIPAL_JWT_TOKEN";
-
     private static final String TOKEN_HEADER = "Authorization";
     private static final String TOKEN_TYPE = "Bearer ";
 
@@ -47,21 +48,33 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthProps,
                                    ServiceEndpointsProperties serviceEndpointsProps,
                                    ResourceRetriever resourceRetriever) {
-        this(aadAuthProps, serviceEndpointsProps, new UserPrincipalManager(serviceEndpointsProps,
+        this(
+            aadAuthProps,
+            serviceEndpointsProps,
+            new UserPrincipalManager(
+                serviceEndpointsProps,
                 aadAuthProps,
                 resourceRetriever,
-                false));
+                false
+            )
+        );
     }
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthProps,
                                    ServiceEndpointsProperties serviceEndpointsProps,
                                    ResourceRetriever resourceRetriever,
                                    JWKSetCache jwkSetCache) {
-        this(aadAuthProps, serviceEndpointsProps, new UserPrincipalManager(serviceEndpointsProps,
+        this(
+            aadAuthProps,
+            serviceEndpointsProps,
+            new UserPrincipalManager(
+                serviceEndpointsProps,
                 aadAuthProps,
                 resourceRetriever,
                 false,
-                jwkSetCache));
+                jwkSetCache
+            )
+        );
     }
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthProps,
@@ -73,20 +86,21 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader(TOKEN_HEADER);
-
         if (!alreadyAuthenticated() && authHeader != null && authHeader.startsWith(TOKEN_TYPE)) {
             verifyToken(request.getSession(), authHeader.replace(TOKEN_TYPE, ""));
         }
-
         filterChain.doFilter(request, response);
     }
 
     private boolean alreadyAuthenticated() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && authentication.isAuthenticated();
+        return Optional.of(SecurityContextHolder.getContext())
+                       .map(SecurityContext::getAuthentication)
+                       .map(Authentication::isAuthenticated)
+                       .orElse(false);
     }
 
     private void verifyToken(HttpSession session, String token) throws IOException, ServletException {
@@ -94,32 +108,30 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
             LOGGER.info("Token {} is not issued by AAD", token);
             return;
         }
-
         try {
             final String currentToken = (String) session.getAttribute(CURRENT_USER_PRINCIPAL_JWT_TOKEN);
             UserPrincipal principal = (UserPrincipal) session.getAttribute(CURRENT_USER_PRINCIPAL);
             String graphApiToken = (String) session.getAttribute(CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN);
-
-            final AzureADGraphClient client = new AzureADGraphClient(aadAuthProps.getClientId(),
-                aadAuthProps.getClientSecret(), aadAuthProps, serviceEndpointsProps);
-
+            final AzureADGraphClient client = new AzureADGraphClient(
+                aadAuthProps.getClientId(),
+                aadAuthProps.getClientSecret(),
+                aadAuthProps,
+                serviceEndpointsProps
+            );
             if (principal == null || graphApiToken == null || graphApiToken.isEmpty() || !token.equals(currentToken)) {
                 principal = principalManager.buildUserPrincipal(token);
-
                 final String tenantId = principal.getClaim().toString();
                 graphApiToken = client.acquireTokenForGraphApi(token, tenantId).accessToken();
-
                 principal.setUserGroups(client.getGroups(graphApiToken));
-
                 session.setAttribute(CURRENT_USER_PRINCIPAL, principal);
                 session.setAttribute(CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN, graphApiToken);
                 session.setAttribute(CURRENT_USER_PRINCIPAL_JWT_TOKEN, token);
             }
-
             final Authentication authentication = new PreAuthenticatedAuthenticationToken(
-                principal, null, client.convertGroupsToGrantedAuthorities(principal.getUserGroups()));
-
-            authentication.setAuthenticated(true);
+                principal,
+                null,
+                client.convertGroupsToGrantedAuthorities(principal.getUserGroups())
+            );
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (MalformedURLException | ParseException | BadJOSEException | JOSEException ex) {

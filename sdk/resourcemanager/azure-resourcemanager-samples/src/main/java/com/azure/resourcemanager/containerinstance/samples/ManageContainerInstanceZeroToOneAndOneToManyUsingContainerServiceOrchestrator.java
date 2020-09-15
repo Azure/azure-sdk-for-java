@@ -264,7 +264,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             KubernetesCluster azureKubernetesCluster = azure.kubernetesClusters().define(acsName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withLatestVersion()
+                .withDefaultVersion()
                 .withRootUsername(rootUserName)
                 .withSshKey(sshKeys.getSshPublicKey())
                 .withServicePrincipalClientId(servicePrincipalClientId)

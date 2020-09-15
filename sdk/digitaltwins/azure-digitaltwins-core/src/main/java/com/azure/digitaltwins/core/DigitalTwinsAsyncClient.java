@@ -13,16 +13,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
+import com.azure.digitaltwins.core.implementation.converters.ContinuationTokenSerializer;
 import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
-import com.azure.digitaltwins.core.implementation.models.EventRoutesListOptions;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
-import com.azure.digitaltwins.core.models.EventRoute;
-import com.azure.digitaltwins.core.models.IncomingRelationship;
-import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.serialization.BasicRelationship;
-import com.azure.digitaltwins.core.util.*;
+import com.azure.digitaltwins.core.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -48,7 +44,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * the digital twin models and event routes tied to your Azure Digital Twins instance.
  * </p>
  */
-@ServiceClient(builder = DigitalTwinsClientBuilder.class)
+@ServiceClient(builder = DigitalTwinsClientBuilder.class, isAsync = true)
 public final class DigitalTwinsAsyncClient {
     private static final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -63,12 +59,13 @@ public final class DigitalTwinsAsyncClient {
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
         jacksonAdapter.serializer().registerModule(stringModule);
 
+        this.serviceVersion = serviceVersion;
+
         this.protocolLayer = new AzureDigitalTwinsAPIImplBuilder()
             .host(host)
             .pipeline(pipeline)
             .serializerAdapter(jacksonAdapter)
             .buildClient();
-        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -80,16 +77,6 @@ public final class DigitalTwinsAsyncClient {
      */
     public DigitalTwinsServiceVersion getServiceVersion() {
         return this.serviceVersion;
-    }
-
-    /**
-     * Gets the {@link HttpPipeline} that this client is configured to use for all service requests. This pipeline can
-     * be customized while building this client through {@link DigitalTwinsClientBuilder#httpPipeline(HttpPipeline)}.
-     *
-     * @return The {@link HttpPipeline} that this client uses for all service requests.
-     */
-    public HttpPipeline getHttpPipeline() {
-        return this.protocolLayer.getHttpPipeline();
     }
 
     //region Digital twin APIs
@@ -620,7 +607,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         stringList,
-                        objectPagedResponse.getContinuationToken(),
+                        ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -647,7 +634,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    objectPagedResponse.getContinuationToken(),
+                    ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -696,7 +683,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         list,
-                        objectPagedResponse.getContinuationToken(),
+                        ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -716,7 +703,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    objectPagedResponse.getContinuationToken(),
+                    ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -896,7 +883,7 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(),
                 objectPagedResponse.getHeaders(),
                 convertedList,
-                objectPagedResponse.getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
                 ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
         });
     }
@@ -937,6 +924,7 @@ public final class DigitalTwinsAsyncClient {
      * @param modelId The Id of the model to decommission.
      * @return an empty Mono
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> decommissionModel(String modelId) {
         return decommissionModelWithResponse(modelId)
             .flatMap(voidResponse -> Mono.empty());
@@ -947,6 +935,7 @@ public final class DigitalTwinsAsyncClient {
      * @param modelId The Id of the model to decommission.
      * @return The http response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> decommissionModelWithResponse(String modelId) {
         return withContext(context -> decommissionModelWithResponse(modelId, context));
     }
@@ -1040,7 +1029,7 @@ public final class DigitalTwinsAsyncClient {
      * Patch a component on a digital twin.
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
-     * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+     * @param componentUpdateOperations The application json patch to apply to the component. See {@link UpdateOperationUtility} for building
      *                                  this argument.
      * @return An empty Mono.
      */
@@ -1054,7 +1043,7 @@ public final class DigitalTwinsAsyncClient {
      * Patch a component on a digital twin.
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
-     * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+     * @param componentUpdateOperations The application json patch to apply to the component. See {@link UpdateOperationUtility} for building
      *                                  this argument.
      * @param options The optional parameters for this request.
      * @return A {@link DigitalTwinsResponse} containing an empty Mono.
@@ -1137,7 +1126,7 @@ public final class DigitalTwinsAsyncClient {
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                objectPagedResponse.getValue().getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1155,7 +1144,7 @@ public final class DigitalTwinsAsyncClient {
                     .map(object -> mapper.convertValue(object, clazz))
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                objectPagedResponse.getValue().getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1180,7 +1169,7 @@ public final class DigitalTwinsAsyncClient {
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                objectPagedResponse.getValue().getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1198,7 +1187,7 @@ public final class DigitalTwinsAsyncClient {
                     .map(object -> mapper.convertValue(object, clazz))
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                objectPagedResponse.getValue().getContinuationToken(),
+                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1338,4 +1327,87 @@ public final class DigitalTwinsAsyncClient {
     }
 
     //endregion Event Route APIs
+
+    //region Telemetry APIs
+
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> publishTelemetry(String digitalTwinId, String payload) {
+        PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
+        return withContext(context -> publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context))
+            .flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Publishes telemetry from a digital twin
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
+        return withContext(context -> publishTelemetryWithResponse(digitalTwinId, payload, publishTelemetryRequestOptions, context));
+    }
+
+    Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+        return protocolLayer.getDigitalTwins().sendTelemetryWithResponseAsync(
+            digitalTwinId,
+            publishTelemetryRequestOptions.getMessageId(),
+            payload,
+            publishTelemetryRequestOptions.getTimestamp().toString(),
+            context);
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> publishComponentTelemetry(String digitalTwinId, String componentName, String payload) {
+        PublishTelemetryRequestOptions publishTelemetryRequestOptions = new PublishTelemetryRequestOptions();
+        return withContext(context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context))
+            .flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Publishes telemetry from a digital twin's component
+     * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
+     * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
+     * @param digitalTwinId The Id of the digital twin.
+     * @param componentName The name of the DTDL component.
+     * @param payload The application/json telemetry payload to be sent.
+     * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions) {
+        return withContext(context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, payload, publishTelemetryRequestOptions, context));
+    }
+
+    Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String payload, PublishTelemetryRequestOptions publishTelemetryRequestOptions, Context context) {
+        return protocolLayer.getDigitalTwins().sendComponentTelemetryWithResponseAsync(
+            digitalTwinId,
+            componentName,
+            publishTelemetryRequestOptions.getMessageId(),
+            payload,
+            publishTelemetryRequestOptions.getTimestamp().toString(),
+            context);
+    }
+
+    //endregion Telemetry APIs
 }

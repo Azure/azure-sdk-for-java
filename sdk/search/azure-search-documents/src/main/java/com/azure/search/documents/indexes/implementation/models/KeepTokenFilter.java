@@ -33,10 +33,16 @@ public class KeepTokenFilter extends TokenFilter {
     @JsonProperty(value = "keepWordsCase")
     private Boolean lowerCaseKeepWords;
 
-    /** Creates an instance of KeepTokenFilter class. */
+    /**
+     * Creates an instance of KeepTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param keepWords the keepWords value to set.
+     */
     @JsonCreator
     public KeepTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "keepWords") List<String> keepWords) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "keepWords", required = true) List<String> keepWords) {
         super(name);
         this.keepWords = keepWords;
     }
@@ -50,12 +56,6 @@ public class KeepTokenFilter extends TokenFilter {
         return this.keepWords;
     }
 
-    /**
-     * Set the keepWords property: The list of words to keep.
-     *
-     * @param keepWords the keepWords value to set.
-     * @return the KeepTokenFilter object itself.
-     */
     /**
      * Get the lowerCaseKeepWords property: A value indicating whether to lower case all words first. Default is false.
      *
@@ -74,18 +74,5 @@ public class KeepTokenFilter extends TokenFilter {
     public KeepTokenFilter setLowerCaseKeepWords(Boolean lowerCaseKeepWords) {
         this.lowerCaseKeepWords = lowerCaseKeepWords;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getKeepWords() == null) {
-            throw new IllegalArgumentException("Missing required property keepWords in model KeepTokenFilter");
-        }
     }
 }

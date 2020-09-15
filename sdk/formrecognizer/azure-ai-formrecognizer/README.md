@@ -23,7 +23,7 @@ from form documents. It includes the following main functionalities:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -247,7 +247,7 @@ for (int i = 0; i < contentPageResults.size(); i++) {
 ```
 
 ### Recognize receipts
-Recognize data from a USA sales receipts using a prebuilt model. Receipt fields recognized by the service 
+Recognize data from a USA sales receipts using a prebuilt model. Receipt fields recognized by the service
 can be found [here][service_recognize_receipt].
 See [StronglyTypedRecognizedForm][strongly_typed_sample] for a suggested approach to extract
 information from receipts.
