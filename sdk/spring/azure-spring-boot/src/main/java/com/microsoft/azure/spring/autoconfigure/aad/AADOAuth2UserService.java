@@ -65,7 +65,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         } catch (MalformedURLException e) {
             throw toOAuth2AuthenticationException(INVALID_REQUEST, "Failed to acquire token for Graph API.", e);
         } catch (ServiceUnavailableException e) {
-            throw toOAuth2AuthenticationException(SERVER_SERVER, "Failed to acquire token for Graph API.",e);
+            throw toOAuth2AuthenticationException(SERVER_SERVER, "Failed to acquire token for Graph API.", e);
         } catch (IOException e) {
             throw toOAuth2AuthenticationException(SERVER_SERVER, "Failed to map group to authorities.", e);
         } catch (MsalServiceException e) {
