@@ -954,6 +954,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
     }
 
+    private void safeCloseChannel(final Channel channel) {
+        if (this.executor.inEventLoop()) {
+            this.closeChannel(channel);
+        } else {
+            this.executor.submit(() -> this.closeChannel(channel));
+        }
+    }
+
     private void notifyChannelConnect(final ChannelFuture future, final Promise<Channel> promise) {
         ensureInEventLoop();
 
@@ -962,6 +970,33 @@ public final class RntbdClientChannelPool implements ChannelPool {
         try {
             if (future.isSuccess()) {
                 final Channel channel = future.channel();
+
+                channel.closeFuture().addListener((ChannelFuture f) -> {
+
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Channel to endpoint {} is closed. " +
+                                "isInAvailableChannels={}, " +
+                                "isInAcquiredChannels={}, " +
+                                "isOnChannelEventLoop={}, " +
+                                "isActive={}, " +
+                                "isOpen={}, " +
+                                "isRegistered={}, " +
+                                "isWritable={}, " +
+                                "threadName={}",
+                            channel.remoteAddress(),
+                            availableChannels.contains(channel),
+                            acquiredChannels.contains(channel),
+                            channel.eventLoop().inEventLoop(),
+                            channel.isActive(),
+                            channel.isOpen(),
+                            channel.isRegistered(),
+                            channel.isWritable(),
+                            Thread.currentThread().getName()
+                        );
+                    }
+
+                    this.safeCloseChannel(channel);
+                });
 
                 try {
                     this.poolHandler.channelAcquired(channel);
