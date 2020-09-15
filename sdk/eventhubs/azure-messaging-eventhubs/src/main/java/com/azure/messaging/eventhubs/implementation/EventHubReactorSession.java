@@ -17,7 +17,6 @@ import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.PartitionPublishingState;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -98,7 +97,6 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             desiredCapabilities = new Symbol[]{ENABLE_IDEMPOTENT_PRODUCER};
 
             properties = new HashMap<>();
-            // TODO: confirming with service team whether we should pass null or don't pass anything when value is null.
             properties.put(PRODUCER_EPOCH, publishingState.getOwnerLevel());
             properties.put(PRODUCER_ID, publishingState.getProducerGroupId());
             properties.put(PRODUCER_SEQUENCE_NUMBER, publishingState.getSequenceNumber());

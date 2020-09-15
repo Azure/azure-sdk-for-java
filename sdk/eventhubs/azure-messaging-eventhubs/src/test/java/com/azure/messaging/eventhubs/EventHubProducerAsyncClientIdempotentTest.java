@@ -9,6 +9,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
+import com.azure.messaging.eventhubs.implementation.PartitionPublishingState;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -72,8 +73,8 @@ class EventHubProducerAsyncClientIdempotentTest {
     private ConnectionOptions connectionOptions;
     private final Scheduler testScheduler = Schedulers.newElastic("test");
 
-    PartitionPublishingState p0InitialState;
-    Map<String, PartitionPublishingState> initialStates = new HashMap<>();
+    PartitionPublishingProperties p0InitialState;
+    Map<String, PartitionPublishingProperties> initialStates = new HashMap<>();
 
     @BeforeAll
     static void beforeAll() {
@@ -101,12 +102,15 @@ class EventHubProducerAsyncClientIdempotentTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 EVENT_HUB_NAME, connectionOptions.getRetry()));
 
-        p0InitialState = new PartitionPublishingState(PRODUCER_GROUP_ID, PRODUCER_OWNER_LEVEL, PRODUCER_SEQ_NUMBER);
+        p0InitialState = new PartitionPublishingProperties(PRODUCER_GROUP_ID, PRODUCER_OWNER_LEVEL, PRODUCER_SEQ_NUMBER);
         initialStates = new HashMap<>();
         initialStates.put(PARTITION_0, p0InitialState);
+
+        Map<String, PartitionPublishingState> internalStates = new HashMap<>();
+        initialStates.forEach((k, v) -> internalStates.put(k, new PartitionPublishingState(v)));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer, testScheduler, false, onClientClosed,
-            true, initialStates);
+            true, internalStates);
 
         Map<Symbol, Object> remoteProperties = new HashMap<>();
         remoteProperties.put(
@@ -144,12 +148,12 @@ class EventHubProducerAsyncClientIdempotentTest {
     }
 
     @Test
-    void getPartitionPublishingState() {
-        StepVerifier.create(producer.getPartitionPublishingState(PARTITION_0))
-            .assertNext(state -> {
-                assertEquals(state.getOwnerLevel(), p0InitialState.getOwnerLevel());
-                assertEquals(state.getProducerGroupId(), p0InitialState.getProducerGroupId());
-                assertEquals(state.getSequenceNumber(), p0InitialState.getSequenceNumber());
+    void getPartitionPublishingProperties() {
+        StepVerifier.create(producer.getPartitionPublishingProperties(PARTITION_0))
+            .assertNext(properties -> {
+                assertEquals(properties.getOwnerLevel(), p0InitialState.getOwnerLevel());
+                assertEquals(properties.getProducerGroupId(), p0InitialState.getProducerGroupId());
+                assertEquals(properties.getSequenceNumber(), p0InitialState.getSequenceNumber());
             })
             .verifyComplete();
     }

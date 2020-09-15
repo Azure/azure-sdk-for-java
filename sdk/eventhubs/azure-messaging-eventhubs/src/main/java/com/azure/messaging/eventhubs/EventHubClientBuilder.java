@@ -29,7 +29,11 @@ import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
+
+import java.util.HashMap;
 import java.util.regex.Pattern;
+
+import com.azure.messaging.eventhubs.implementation.PartitionPublishingState;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -409,8 +413,13 @@ public class EventHubClientBuilder {
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder initialPartitionPublishingStates(Map<String,
-        PartitionPublishingState> states) {
-        this.initialPartitionPublishingStates = states;
+        PartitionPublishingProperties> states) {
+        if (states != null) {
+            this.initialPartitionPublishingStates = new HashMap<>();
+            states.forEach((partitionId, state) -> {
+                this.initialPartitionPublishingStates.put(partitionId, new PartitionPublishingState(state));
+            });
+        }
         return this;
     }
 

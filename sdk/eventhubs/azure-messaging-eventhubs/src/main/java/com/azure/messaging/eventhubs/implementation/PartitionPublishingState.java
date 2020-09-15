@@ -1,11 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.messaging.eventhubs.implementation.PartitionPublishingUtils;
+import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
+import com.azure.messaging.eventhubs.EventHubProducerClient;
+import com.azure.messaging.eventhubs.PartitionPublishingProperties;
 
 import java.util.concurrent.Semaphore;
+
 
 /**
  * Store the starting and running state of a partition, which an idempotent producer sends events to.
@@ -21,16 +26,21 @@ public final class PartitionPublishingState {
      */
     private boolean fromLink = false;
     // Idempotent producer requires all event data batches of a partition are sent out sequentially.
-    private final Semaphore sendingSemaphore = new Semaphore(1);
+    private final Semaphore semaphore = new Semaphore(1);
 
     /**
      * Create a PartitionPublishingState with producer group id, owner level and starting sequence number
      * being {@code null}.
      */
-    PartitionPublishingState() {
+    public PartitionPublishingState() {
     }
 
-    PartitionPublishingState(PartitionPublishingState that) {
+    public PartitionPublishingState(PartitionPublishingProperties partitionPublishingProperties) {
+        this(partitionPublishingProperties.getProducerGroupId(),
+            partitionPublishingProperties.getOwnerLevel(), partitionPublishingProperties.getSequenceNumber());
+    }
+
+    public PartitionPublishingState(PartitionPublishingState that) {
         this(that.getProducerGroupId(), that.getOwnerLevel(), that.getSequenceNumber());
     }
 
@@ -75,6 +85,11 @@ public final class PartitionPublishingState {
      * @return The relative priority to associate with an exclusive publisher; if {@code null},
      * the Event Hubs service will control the value.
      */
+
+    public PartitionPublishingProperties toPartitionPublishingProperties() {
+        return new PartitionPublishingProperties(producerGroupId, ownerLevel, sequenceNumber);
+    }
+
     public Short getOwnerLevel() {
         return ownerLevel;
     }
@@ -115,7 +130,7 @@ public final class PartitionPublishingState {
      * Set the owner level.
      * @param ownerLevel The owner level of the idempotent producer.
      */
-    void setOwnerLevel(Short ownerLevel) {
+    public void setOwnerLevel(Short ownerLevel) {
         this.ownerLevel = ownerLevel;
     }
 
@@ -123,7 +138,7 @@ public final class PartitionPublishingState {
      * Set the producer group id.
      * @param producerGroupId The producer group id of the idempotent producer.
      */
-    void setProducerGroupId(Long producerGroupId) {
+    public void setProducerGroupId(Long producerGroupId) {
         this.producerGroupId = producerGroupId;
     }
 
@@ -132,31 +147,33 @@ public final class PartitionPublishingState {
      * @param sequenceNumber The next publishing sequence number of a partition when an idempotent producer send
      * an {@link EventData} to.
      */
-    void setSequenceNumber(Integer sequenceNumber) {
+    public void setSequenceNumber(Integer sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
     }
 
-    void increaseSequenceNumber(int delta) {
+
+    public void increaseSequenceNumber(int delta) {
         this.setSequenceNumber(PartitionPublishingUtils.incrementSequenceNumber(this.sequenceNumber, delta));
     }
+
 
     /**
      * An idempotent producer must sequentially send events to an EventHubs partition. This {@link Semaphore}
      * is used to send sequentially.
      * @return The {@link Semaphore} used to ensure the send to the partition sequentially.
      */
-    Semaphore getSendingSemaphore() {
-        return sendingSemaphore;
+    public Semaphore getSemaphore() {
+        return semaphore;
     }
 
     /**
      * @return whether the state has ever been retrieved from the link, or it's just a pure client created object.
      */
-    boolean isFromLink() {
+    public boolean isFromLink() {
         return fromLink;
     }
 
-    void setFromLink(boolean fromLink) {
+    public void setFromLink(boolean fromLink) {
         this.fromLink = fromLink;
     }
 
