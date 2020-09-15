@@ -248,6 +248,7 @@ public class TaskGroup
 
     /**
      * Invokes tasks in the group.
+     * It is not guaranteed to return indexable in topological order.
      *
      * @param context group level shared context that need be passed to invokeAsync(cxt)
      *                method of each task item in the group when it is selected for invocation.
@@ -397,6 +398,8 @@ public class TaskGroup
      *                method of each entry in the group when it is selected for execution
      * @return a {@link Flux} that emits the result of tasks in the order they finishes.
      */
+    // Due to it takes approximate 3ms in flux for returning, it cannot be guaranteed to return in topological order.
+    // One simply fix for guaranteeing the last element could be https://github.com/Azure/azure-sdk-for-java/pull/15074
     @SuppressWarnings({"unchecked", "rawtypes"})
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST_OF_RETURN_VALUE", justification = "Incorrect spot bugs")
     private Flux<Indexable> invokeReadyTasksAsync(final InvocationContext context) {
