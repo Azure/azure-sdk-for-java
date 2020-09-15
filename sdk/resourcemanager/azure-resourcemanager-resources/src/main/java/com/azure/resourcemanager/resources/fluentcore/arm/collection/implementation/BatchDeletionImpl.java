@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
+import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -34,6 +35,7 @@ public class BatchDeletionImpl {
                     final String name = ResourceUtils.nameFromResourceId(id);
                     return deleteByGroupAndNameAsync.apply(resourceGroupName, name).then(Mono.just(id));
                 }, 32, 32)
+                .onErrorMap(AggregatedManagementException::convertToManagementException)
                 .subscribeOn(SdkContext.getReactorScheduler());
         }
     }

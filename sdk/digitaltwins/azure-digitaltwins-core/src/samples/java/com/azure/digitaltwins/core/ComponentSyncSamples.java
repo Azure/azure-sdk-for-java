@@ -9,10 +9,10 @@ import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
-import com.azure.digitaltwins.core.serialization.DigitalTwinMetadata;
-import com.azure.digitaltwins.core.serialization.ModelProperties;
-import com.azure.digitaltwins.core.util.UpdateOperationUtility;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
+import com.azure.digitaltwins.core.models.DigitalTwinMetadata;
+import com.azure.digitaltwins.core.models.ModelProperties;
+import com.azure.digitaltwins.core.models.UpdateOperationUtility;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -89,9 +89,9 @@ public class ComponentSyncSamples {
                 new DigitalTwinMetadata()
                     .setModelId(modelId)
             )
-            .setCustomProperties("Prop1", "Value1")
-            .setCustomProperties("Prop2", 987)
-            .setCustomProperties(
+            .addCustomProperty("Prop1", "Value1")
+            .addCustomProperty("Prop2", 987)
+            .addCustomProperty(
                 "Component1",
                 new ModelProperties()
                     .setCustomProperties("ComponentProp1", "Component value 1")
@@ -100,7 +100,7 @@ public class ComponentSyncSamples {
 
         String basicDigitalTwinPayload = mapper.writeValueAsString(basicTwin);
 
-        client.createDigitalTwin(basicDigitalTwinId, basicDigitalTwinPayload);
+        client.createDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);
 
         ConsoleLogger.print("Created digital twin " + basicDigitalTwinId);
 
