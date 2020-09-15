@@ -73,10 +73,10 @@ function GetAdjustedReadmeContent($pkgInfo, $lang){
 
     # only replace the version if the formatted header can be found
     $titleRegex = "(\#.*(?<filetitle>Azure .+? (?:client|plugin|shared) library for (?:JavaScript|Java|Python|\.NET|C)))"
-    $fileTitle = ""
+    $foundTitle = ""
     if ($pkgInfo.ReadmeContent -match $titleRegex) {
       $fileContent = $fileContent -replace $titleRegex, "`${0} - Version $($pkgInfo.PackageVersion) `n"
-      $fileTitle = $matches["filetitle"]
+      $foundTitle = $matches["filetitle"]
     }
     # Replace github master link with release tag.
     $ReplacementPattern = "`${1}$($pkgInfo.Tag)"
