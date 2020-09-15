@@ -1415,7 +1415,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
                                     + " to pending acquisition queue. current size [{}]",
                                 this.pool.pendingAcquisitions.size());
                         }
-                        this.pool.pendingAcquisitions.offer(removedTask);
                         break;
                     }
                 } catch (Exception e) {
