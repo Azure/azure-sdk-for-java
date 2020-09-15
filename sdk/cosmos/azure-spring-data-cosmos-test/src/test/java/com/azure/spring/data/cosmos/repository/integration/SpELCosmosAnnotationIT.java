@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.repository.integration;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.common.DynamicContainer;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
@@ -20,6 +21,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
@@ -34,9 +37,10 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class SpELCosmosAnnotationIT {
-    private static final SpELPropertyStudent TEST_PROPERTY_STUDENT =
-            new SpELPropertyStudent(TestConstants.ID_1, TestConstants.FIRST_NAME,
-            TestConstants.LAST_NAME);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpELCosmosAnnotationIT.class);
+    private static final SpELPropertyStudent TEST_PROPERTY_STUDENT = new SpELPropertyStudent(TestConstants.ID_1,
+        TestConstants.FIRST_NAME, TestConstants.LAST_NAME);
 
     @Value("${cosmos.uri}")
     private String dbUri;
@@ -53,6 +57,9 @@ public class SpELCosmosAnnotationIT {
     @Autowired
     private CosmosConfig cosmosConfig;
 
+    @Autowired
+    private DynamicContainer dynamicContainer;
+
     private static CosmosTemplate staticTemplate;
     private static CosmosEntityInformation<SpELPropertyStudent, String> cosmosEntityInformation;
 
@@ -61,6 +68,7 @@ public class SpELCosmosAnnotationIT {
         if (staticTemplate == null) {
             staticTemplate = cosmosTemplate;
         }
+        LOGGER.info("Getting dynamic container: {}", dynamicContainer);
     }
 
     @AfterClass
