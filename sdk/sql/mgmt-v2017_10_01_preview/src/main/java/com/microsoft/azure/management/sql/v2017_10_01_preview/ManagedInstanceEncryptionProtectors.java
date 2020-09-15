@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.sql.v2017_10_01_preview;
 
+import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.implementation.ManagedInstanceEncryptionProtectorInner;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.implementation.ManagedInstanceEncryptionProtectorsInner;
@@ -17,6 +18,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing ManagedInstanceEncryptionProtectors.
  */
 public interface ManagedInstanceEncryptionProtectors extends HasInner<ManagedInstanceEncryptionProtectorsInner> {
+    /**
+     * Revalidates an existing encryption protector.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable revalidateAsync(String resourceGroupName, String managedInstanceName);
+
     /**
      * Gets a list of managed instance encryption protectors.
      *
