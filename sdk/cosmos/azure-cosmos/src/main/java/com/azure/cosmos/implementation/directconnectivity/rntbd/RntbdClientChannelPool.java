@@ -1411,6 +1411,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         this.onTimeout(removedTask);
 
                     } else {
+                        if (!this.pendingAcquisitions.offer(removedTask)) {
+                            logger.error("Unexpected failure when returning the removed task"
+                                    + " to pending acquisition queue. current size [{}]",
+                                this.pool.pendingAcquisitions.size());
+                        }
                         this.pool.pendingAcquisitions.offer(removedTask);
                         break;
                     }
