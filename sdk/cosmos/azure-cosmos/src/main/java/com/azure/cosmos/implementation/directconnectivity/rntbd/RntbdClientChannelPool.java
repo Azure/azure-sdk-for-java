@@ -572,7 +572,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     // Fulfill this request with a new channel, assuming we can connect one
                     // If our connection attempt fails, notifyChannelConnect will call us again
 
-                    final Promise<Channel> anotherPromise = this.newChannelPromise(promise);
+                    final Promise<Channel> anotherPromise = this.newChannelPromiseForToBeEstablishedChannel(promise);
                     final ChannelFuture future = this.bootstrap.clone().attr(POOL_KEY, this).connect();
 
                     if (future.isDone()) {
@@ -736,7 +736,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.ensureInEventLoop();
         acquiredChannels.put(candidate, candidate);
 
-        final ChannelPromiseWithExpiryTime anotherPromise = this.newChannelPromise(promise);
+        final ChannelPromiseWithExpiryTime anotherPromise =
+            this.newChannelPromiseForAvailableChannel(promise, candidate);
+
         final EventLoop loop = candidate.eventLoop();
 
         if (loop.inEventLoop()) {
@@ -880,11 +882,36 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * {@link EventExecutor executor} to avoid spamming the {@link RntbdClientChannelPool pool}'s
      * {@link EventExecutor executor}.
      */
-    private ChannelPromiseWithExpiryTime newChannelPromise(final ChannelPromiseWithExpiryTime promise) {
+    private ChannelPromiseWithExpiryTime newChannelPromiseForAvailableChannel(
+        final ChannelPromiseWithExpiryTime promise,
+        final Channel candidate) {
+
+        return this.createNewChannelPromise(promise, candidate.eventLoop());
+    }
+
+    /**
+     * Creates a new {@link Channel channel} {@link Promise promise} that completes on a dedicated
+     * {@link EventExecutor executor} to avoid spamming the {@link RntbdClientChannelPool pool}'s
+     * {@link EventExecutor executor}.
+     *
+     * @return a newly created {@link Promise promise} that completes on a dedicated
+     * {@link EventExecutor executor} to avoid spamming the {@link RntbdClientChannelPool pool}'s
+     * {@link EventExecutor executor}.
+     */
+    private ChannelPromiseWithExpiryTime newChannelPromiseForToBeEstablishedChannel(
+        final ChannelPromiseWithExpiryTime promise) {
+
+        return this.createNewChannelPromise(promise, this.executor);
+    }
+
+    private ChannelPromiseWithExpiryTime createNewChannelPromise(
+        final ChannelPromiseWithExpiryTime promise,
+        final EventExecutor eventLoop) {
+
         checkNotNull(promise, "expected non-null promise");
 
         final AcquireListener listener = new AcquireListener(this, promise);
-        final Promise<Channel> anotherPromise = acquisitionTaskCompletionExecutor.newPromise();
+        final Promise<Channel> anotherPromise = eventLoop.newPromise();
 
         listener.acquired(true);
         anotherPromise.addListener(listener);
