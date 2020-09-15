@@ -4,9 +4,7 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.ImageAnalysisSkill;
-import com.azure.search.documents.indexes.models.ImageAnalysisSkillLanguage;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,10 +25,8 @@ public final class ImageAnalysisSkillConverter {
 
         List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
             : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
-            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        ImageAnalysisSkill imageAnalysisSkill = new ImageAnalysisSkill(inputs, outputs);
+        ImageAnalysisSkill imageAnalysisSkill = new ImageAnalysisSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         imageAnalysisSkill.setName(name);
@@ -42,21 +38,15 @@ public final class ImageAnalysisSkillConverter {
         imageAnalysisSkill.setDescription(description);
 
         if (obj.getVisualFeatures() != null) {
-            imageAnalysisSkill.setVisualFeatures(obj.getVisualFeatures().stream()
-                .map(VisualFeatureConverter::map)
-                .collect(Collectors.toList()));
+            imageAnalysisSkill.setVisualFeatures(obj.getVisualFeatures());
         }
 
         if (obj.getDefaultLanguageCode() != null) {
-            ImageAnalysisSkillLanguage defaultLanguageCode =
-                ImageAnalysisSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            imageAnalysisSkill.setDefaultLanguageCode(defaultLanguageCode);
+            imageAnalysisSkill.setDefaultLanguageCode(obj.getDefaultLanguageCode());
         }
 
         if (obj.getDetails() != null) {
-            imageAnalysisSkill.setDetails(obj.getDetails().stream()
-                .map(ImageDetailConverter::map)
-                .collect(Collectors.toList()));
+            imageAnalysisSkill.setDetails(obj.getDetails());
         }
         return imageAnalysisSkill;
     }
@@ -74,11 +64,8 @@ public final class ImageAnalysisSkillConverter {
             obj.getInputs() == null ? null
                 : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-            obj.getOutputs() == null ? null
-                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkill imageAnalysisSkill =
-            new com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkill(inputs, outputs);
+            new com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         imageAnalysisSkill.setName(name);
@@ -90,23 +77,17 @@ public final class ImageAnalysisSkillConverter {
         imageAnalysisSkill.setDescription(description);
 
         if (obj.getVisualFeatures() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.VisualFeature> visualFeatures =
-                obj.getVisualFeatures().stream().map(VisualFeatureConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setVisualFeatures(visualFeatures);
+            imageAnalysisSkill.setVisualFeatures(obj.getVisualFeatures());
         }
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkillLanguage defaultLanguageCode =
-                ImageAnalysisSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            imageAnalysisSkill.setDefaultLanguageCode(defaultLanguageCode);
+            imageAnalysisSkill.setDefaultLanguageCode(obj.getDefaultLanguageCode());
         }
 
         if (obj.getDetails() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.ImageDetail> details =
-                obj.getDetails().stream().map(ImageDetailConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setDetails(details);
+            imageAnalysisSkill.setDetails(obj.getDetails());
         }
-        imageAnalysisSkill.validate();
+
         return imageAnalysisSkill;
     }
 

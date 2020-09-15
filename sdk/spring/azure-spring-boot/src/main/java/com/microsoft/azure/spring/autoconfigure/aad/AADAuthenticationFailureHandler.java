@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Strategy used to handle a failed authentication attempt.
@@ -22,37 +23,43 @@ import java.io.IOException;
  * configured on Azure Active Directory.
  */
 public class AADAuthenticationFailureHandler implements AuthenticationFailureHandler {
-
-    private AuthenticationFailureHandler defaultHandler;
+    private static final String DEFAULT_FAILURE_URL = "/login?error";
+    private final AuthenticationFailureHandler defaultHandler;
 
     public AADAuthenticationFailureHandler() {
-        this.defaultHandler = new SimpleUrlAuthenticationFailureHandler(AADConstantsHelper.FAILURE_DEFAULT_URL);
+        this.defaultHandler = new SimpleUrlAuthenticationFailureHandler(DEFAULT_FAILURE_URL);
     }
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+    public void onAuthenticationFailure(HttpServletRequest request,
+                                        HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        final OAuth2AuthenticationException targetException = (OAuth2AuthenticationException) exception;
-        //handle conditional access policy
-        if (AADConstantsHelper.CONDITIONAL_ACCESS_POLICY.equals((targetException.getError().getErrorCode()))) {
-            //get infos
-            final Throwable cause = targetException.getCause();
-            if (cause instanceof MsalServiceException) {
-                final MsalServiceException e = (MsalServiceException) cause;
-                final String claims = e.claims();
-
-                final DefaultSavedRequest savedRequest = (DefaultSavedRequest) request.getSession()
-                        .getAttribute(AADConstantsHelper.SAVED_REQUEST);
-                final String savedRequestUrl = savedRequest.getRedirectUrl();
-                //put claims into session
-                request.getSession().setAttribute(AADConstantsHelper.CAP_CLAIMS, claims);
-                //redirect
-                response.setStatus(302);
-                response.sendRedirect(savedRequestUrl);
-                return;
-            }
+        // Handle conditional access policy
+        MsalServiceException msalServiceException = (MsalServiceException)
+            Optional.of(exception)
+                    .filter(e -> e instanceof OAuth2AuthenticationException)
+                    .map(e -> (OAuth2AuthenticationException) e)
+                    .filter(e -> AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY.equals((e.getError().getErrorCode())))
+                    .map(Throwable::getCause)
+                    .filter(cause -> cause instanceof MsalServiceException)
+                    .orElse(null);
+        if (msalServiceException == null) {
+            // Default handle logic
+            defaultHandler.onAuthenticationFailure(request, response, exception);
+        } else {
+            // Put claims into session
+            Optional.of(msalServiceException)
+                    .map(MsalServiceException::claims)
+                    .ifPresent(claims -> request.getSession().setAttribute(Constants.CAP_CLAIMS, claims));
+            // Redirect
+            response.setStatus(302);
+            String redirectUrl = Optional.of(request)
+                                         .map(HttpServletRequest::getSession)
+                                         .map(s -> s.getAttribute(Constants.SAVED_REQUEST))
+                                         .map(r -> (DefaultSavedRequest) r)
+                                         .map(DefaultSavedRequest::getRedirectUrl)
+                                         .orElse(null);
+            response.sendRedirect(redirectUrl);
         }
-        //default handle logic
-        defaultHandler.onAuthenticationFailure(request, response, exception);
     }
 }

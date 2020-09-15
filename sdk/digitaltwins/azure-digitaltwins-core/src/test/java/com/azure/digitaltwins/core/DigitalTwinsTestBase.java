@@ -4,6 +4,8 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
@@ -31,6 +33,9 @@ public class DigitalTwinsTestBase extends TestBase
 
     protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClientBuilder builder = new DigitalTwinsClientBuilder();
+
+        builder.serviceVersion(serviceVersion);
+
         if (interceptorManager.isPlaybackMode()){
             builder.httpClient(interceptorManager.getPlaybackClient());
             // Use fake credentials for playback mode.
@@ -40,15 +45,15 @@ public class DigitalTwinsTestBase extends TestBase
             return builder;
         }
 
-        // TODO: investigate whether or not we need to add a retry policy.
-
         // If it is record mode, we add record mode policies to the builder.
         // There is no isRecordMode method on interceptorManger.
         if (!interceptorManager.isLiveMode()){
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        builder.httpClient(httpClient);
         builder.endpoint(DIGITALTWINS_URL);
+        builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         // Only get valid live token when running live tests.
         builder.credential(new ClientSecretCredentialBuilder()
@@ -94,17 +99,16 @@ public class DigitalTwinsTestBase extends TestBase
         // since our e2e tests need a random version number for our models. This function will convert the random
         // string of characters into a random string of integers.
         char[] randomCharactersString = testResourceNamer.randomName("", maxLength).toCharArray();
-        String randomIntegersString = "";
+        StringBuilder randomIntegersString = new StringBuilder();
 
         // Convert the random string of characters into a random string of integers. A given random string of characters will always
         // be converted into the same random string of integers which is important since a recorded test and its replay
         // need to use the same random model version number so that the service calls match the session records.
-        for (int i = 0; i < randomCharactersString.length; i++)
-        {
-            randomIntegersString += ((int) randomCharactersString[i]) % 10;
+        for (char c : randomCharactersString) {
+            randomIntegersString.append(((int) c) % 10);
         }
 
-        return randomIntegersString;
+        return randomIntegersString.toString();
     };
 
     // This should only be used when running tests in playback mode. Our client library requires that some token provider

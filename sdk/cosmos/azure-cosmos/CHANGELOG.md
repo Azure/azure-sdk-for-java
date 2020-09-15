@@ -1,8 +1,14 @@
 # Release History
 
-## 4.4.0-beta.2 (Unreleased)
+## 4.5.0-beta.1 (Unreleased)
+
+
+## 4.4.0 (2020-09-12)
 ### Key Bug Fixes
-* Fixed RequestTimeoutException when enable tcnative.
+* Fixed RequestTimeoutException when enabling `netty-tcnative-boringssl` dependency.
+* Fixed memory leak issue on `Delete` operations in `GATEWAY` mode.
+* Fixed a leak in `CosmosClient` instantiation when endpoint uri is invalid.
+* Improved `CPU History` diagnostics.
 
 ## 4.4.0-beta.1 (2020-08-27)
 ### New Features

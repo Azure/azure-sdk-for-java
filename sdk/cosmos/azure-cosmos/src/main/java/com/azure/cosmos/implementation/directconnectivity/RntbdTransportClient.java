@@ -340,7 +340,7 @@ public final class RntbdTransportClient extends TransportClient {
 
         private Options(final ConnectionPolicy connectionPolicy) {
             this.bufferPageSize = 8192;
-            this.connectionAcquisitionTimeout = Duration.ZERO;
+            this.connectionAcquisitionTimeout = Duration.ofSeconds(5L);
             this.connectTimeout = connectionPolicy.getConnectTimeout();
             this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
             this.idleChannelTimerResolution = Duration.ofMillis(100);
