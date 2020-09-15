@@ -203,10 +203,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
         newTimeout(endpoint, config.idleEndpointTimeoutInNanos(), config.requestTimerResolutionInNanos());
 
         if (this.acquisitionTimeoutTask != null) {
-            this.pendingAcquisitionExpirationFuture = this.pendingAcquisitionExpirationExecutor.scheduleAtFixedRate(this.acquisitionTimeoutTask,
-                this.acquisitionTimeoutInNanos,
-                this.acquisitionTimeoutInNanos,
-                TimeUnit.NANOSECONDS);
+            this.pendingAcquisitionExpirationFuture =
+                pendingAcquisitionExpirationExecutor.scheduleAtFixedRate(
+                    this.acquisitionTimeoutTask,
+                    this.acquisitionTimeoutInNanos,
+                    this.acquisitionTimeoutInNanos,
+                    TimeUnit.NANOSECONDS);
         } else {
             this.pendingAcquisitionExpirationFuture = null;
         }
@@ -1407,9 +1409,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     // * https://github.com/netty/netty/issues/3705
                     if (expiryTime - currentNanoTime < 0) {
                         this.onTimeout(removedTask);
-
                     } else {
-                        this.pool.pendingAcquisitions.offer(removedTask);
+                        if (!this.pool.pendingAcquisitions.offer(removedTask)) {
+                            logger.error("Unexpected failure when returning the removed task"
+                                    + " to pending acquisition queue. current size [{}]",
+                                this.pool.pendingAcquisitions.size());
+                        }
                         break;
                     }
                 } catch (Exception e) {
