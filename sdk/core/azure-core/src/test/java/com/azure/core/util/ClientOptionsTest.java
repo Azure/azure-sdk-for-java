@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +31,12 @@ public class ClientOptionsTest {
 
         // Assert
         assertNotNull(headers);
-        assertEquals(expectedTotal, Stream.of(headers).count());
+        AtomicInteger actualCount = new AtomicInteger();
+        headers.forEach(header -> {
+            actualCount.incrementAndGet();
+        });
+
+        assertEquals(expectedTotal, actualCount.get());
     }
 
     @ParameterizedTest
