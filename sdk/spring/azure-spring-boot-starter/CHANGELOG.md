@@ -8,7 +8,7 @@
 - Unify spring-boot-starter version
 
 ## 2.3.4 (2020-08-20)
-###Key Bug Fixes
+### Key Bug Fixes
 - Replace underpinning JMS library for Service Bus of Service Bus JMS Starter to Apache Qpid to support all tiers of Service Bus.
 
 ## 2.3.3 (2020-08-13)
