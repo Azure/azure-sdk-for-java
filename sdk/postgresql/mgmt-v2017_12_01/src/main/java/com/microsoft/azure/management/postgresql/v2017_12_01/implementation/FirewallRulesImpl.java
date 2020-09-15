@@ -18,14 +18,14 @@ import java.util.List;
 import com.microsoft.azure.management.postgresql.v2017_12_01.FirewallRule;
 
 class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements FirewallRules {
-    private final PostgreSQLManager manager;
+    private final DBForPostgreSQLManager manager;
 
-    FirewallRulesImpl(PostgreSQLManager manager) {
+    FirewallRulesImpl(DBForPostgreSQLManager manager) {
         super(manager.inner().firewallRules());
         this.manager = manager;
     }
 
-    public PostgreSQLManager manager() {
+    public DBForPostgreSQLManager manager() {
         return this.manager;
     }
 
@@ -64,10 +64,14 @@ class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements Firew
     public Observable<FirewallRule> getAsync(String resourceGroupName, String serverName, String firewallRuleName) {
         FirewallRulesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, firewallRuleName)
-        .map(new Func1<FirewallRuleInner, FirewallRule>() {
+        .flatMap(new Func1<FirewallRuleInner, Observable<FirewallRule>>() {
             @Override
-            public FirewallRule call(FirewallRuleInner inner) {
-                return wrapModel(inner);
+            public Observable<FirewallRule> call(FirewallRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((FirewallRule)wrapModel(inner));
+                }
             }
        });
     }
