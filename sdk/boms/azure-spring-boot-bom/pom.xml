@@ -38,6 +38,7 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.spring.boot.integration.version>${project.version}</azure.spring.boot.integration.version>
+    <azure.spring.boot.storage.integration.version>1.2.8</azure.spring.boot.storage.integration.version>
   </properties>
 
   <issueManagement>
@@ -99,7 +100,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>spring-starter-azure-storage</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
+        <version>${azure.spring.boot.storage.integration.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
