@@ -588,7 +588,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
 
                     if (manager == null) {
-                        logger.warn("Channel({} --> {}) closed", channel, this.remoteAddress());
+                        logger.debug("Channel({} --> {}) closed", channel, this.remoteAddress());
                     } else {
                         final long pendingRequestCount = manager.pendingRequestCount();
 
@@ -1331,6 +1331,40 @@ public final class RntbdClientChannelPool implements ChannelPool {
             this.acquired = true;
             return this;
         }
+        
+        private void doOperationComplete(Channel channel) {
+            if (!channel.isActive()) {
+                this.fail(CHANNEL_CLOSED_ON_ACQUIRE);
+                return;
+            }
+
+            final ChannelPipeline pipeline = channel.pipeline();
+            checkState(pipeline != null, "expected non-null channel pipeline");
+
+            final RntbdRequestManager requestManager = pipeline.get(RntbdRequestManager.class);
+            checkState(requestManager != null, "expected non-null request manager");
+
+            if (requestManager.hasRequestedRntbdContext()) {
+                this.originalPromise.setSuccess(channel);
+            } else {
+                channel.writeAndFlush(RntbdHealthCheckRequest.MESSAGE).addListener(completed -> {
+                    if (completed.isSuccess()) {
+                        reportIssueUnless(
+                            logger,
+                            this.acquired && requestManager.hasRntbdContext(),
+                            this,
+                            "acquired: {}, rntbdContext: {}",
+                            this.acquired,
+                            requestManager.rntbdContext());
+                        this.originalPromise.setSuccess(channel);
+                    } else {
+                        final Throwable cause = completed.cause();
+                        logger.warn("Channel({}) health check request failed due to:", channel, cause);
+                        this.fail(cause);
+                    }
+                });
+            }
+        }
 
         /**
          * Ensures that a channel in the {@link RntbdClientChannelPool pool} is ready to receive requests.
@@ -1365,40 +1399,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 // Ensure that the channel is active and ready to receive requests
                 final Channel channel = future.getNow();
 
-                channel.eventLoop().execute(() -> {
-
-                    if (!channel.isActive()) {
-                        this.fail(CHANNEL_CLOSED_ON_ACQUIRE);
-                        return;
-                    }
-
-                    final ChannelPipeline pipeline = channel.pipeline();
-                    checkState(pipeline != null, "expected non-null channel pipeline");
-
-                    final RntbdRequestManager requestManager = pipeline.get(RntbdRequestManager.class);
-                    checkState(requestManager != null, "expected non-null request manager");
-
-                    if (requestManager.hasRequestedRntbdContext()) {
-                        this.originalPromise.setSuccess(channel);
-                    } else {
-                        channel.writeAndFlush(RntbdHealthCheckRequest.MESSAGE).addListener(completed -> {
-                            if (completed.isSuccess()) {
-                                reportIssueUnless(
-                                    logger,
-                                    this.acquired && requestManager.hasRntbdContext(),
-                                    this,
-                                    "acquired: {}, rntbdContext: {}",
-                                    this.acquired,
-                                    requestManager.rntbdContext());
-                                this.originalPromise.setSuccess(channel);
-                            } else {
-                                final Throwable cause = completed.cause();
-                                logger.warn("Channel({}) health check request failed due to:", channel, cause);
-                                this.fail(cause);
-                            }
-                        });
-                    }
-                });
+                if (channel.eventLoop().inEventLoop()) {
+                    doOperationComplete(channel);
+                } else {
+                    channel.eventLoop().execute(() -> doOperationComplete(channel));
+                }
 
             } else {
                 logger.warn("channel acquisition failed due to ", future.cause());
