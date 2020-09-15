@@ -20,9 +20,13 @@ public final class IndexBatch {
     @JsonProperty(value = "value", required = true)
     private List<IndexAction> actions;
 
-    /** Creates an instance of IndexBatch class. */
+    /**
+     * Creates an instance of IndexBatch class.
+     *
+     * @param actions the actions value to set.
+     */
     @JsonCreator
-    public IndexBatch(@JsonProperty(value = "value") List<IndexAction> actions) {
+    public IndexBatch(@JsonProperty(value = "value", required = true) List<IndexAction> actions) {
         this.actions = actions;
     }
 
@@ -33,24 +37,5 @@ public final class IndexBatch {
      */
     public List<IndexAction> getActions() {
         return this.actions;
-    }
-
-    /**
-     * Set the actions property: The actions in the batch.
-     *
-     * @param actions the actions value to set.
-     * @return the IndexBatch object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getActions() == null) {
-            throw new IllegalArgumentException("Missing required property actions in model IndexBatch");
-        } else {
-            getActions().forEach(e -> e.validate());
-        }
     }
 }

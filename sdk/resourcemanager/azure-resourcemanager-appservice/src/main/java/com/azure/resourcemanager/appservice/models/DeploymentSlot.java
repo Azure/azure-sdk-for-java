@@ -10,7 +10,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.io.File;
 import java.io.InputStream;
@@ -20,8 +19,8 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface DeploymentSlot
     extends IndependentChildResource<AppServiceManager, SiteInner>,
+        WebDeploymentSlotBasic,
         WebAppBase,
-        Refreshable<DeploymentSlot>,
         Updatable<DeploymentSlot.Update>,
         HasParent<WebApp> {
 

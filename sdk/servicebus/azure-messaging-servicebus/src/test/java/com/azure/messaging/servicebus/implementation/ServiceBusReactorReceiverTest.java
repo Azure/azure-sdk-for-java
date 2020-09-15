@@ -102,7 +102,6 @@ class ServiceBusReactorReceiverTest {
         when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor);
         when(receiveLinkHandler.getLinkName()).thenReturn(LINK_NAME);
         when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStates);
-        when(receiveLinkHandler.getErrors()).thenReturn(Flux.never());
 
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
 

@@ -274,11 +274,6 @@ public final class ManageVirtualMachineExtension {
             System.out.println("Removed the VM Access extensions from Windows VM");
             Utils.print(windowsVM);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -290,7 +285,6 @@ public final class ManageVirtualMachineExtension {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

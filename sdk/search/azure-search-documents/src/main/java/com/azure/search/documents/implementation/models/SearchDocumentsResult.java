@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.search.documents.models.FacetResult;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -65,9 +66,15 @@ public final class SearchDocumentsResult {
     @JsonProperty(value = "@odata.nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SearchDocumentsResult class. */
+    /**
+     * Creates an instance of SearchDocumentsResult class.
+     *
+     * @param results the results value to set.
+     */
     @JsonCreator
-    public SearchDocumentsResult(@JsonProperty(value = "value") List<SearchResult> results) {
+    public SearchDocumentsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchResult> results) {
         this.results = results;
     }
 
@@ -133,29 +140,5 @@ public final class SearchDocumentsResult {
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getFacets() != null) {
-            getFacets()
-                    .values()
-                    .forEach(
-                            e -> {
-                                if (e != null) {
-                                    e.forEach(e1 -> e1.validate());
-                                }
-                            });
-        }
-        if (getNextPageParameters() != null) {
-            getNextPageParameters().validate();
-        }
-        if (getResults() != null) {
-            getResults().forEach(e -> e.validate());
-        }
     }
 }

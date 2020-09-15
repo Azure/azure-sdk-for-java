@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.TokenCharacterKind;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -39,9 +40,13 @@ public class NGramTokenizer extends LexicalTokenizer {
     @JsonProperty(value = "tokenChars")
     private List<TokenCharacterKind> tokenChars;
 
-    /** Creates an instance of NGramTokenizer class. */
+    /**
+     * Creates an instance of NGramTokenizer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public NGramTokenizer(@JsonProperty(value = "name") String name) {
+    public NGramTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -105,15 +110,5 @@ public class NGramTokenizer extends LexicalTokenizer {
     public NGramTokenizer setTokenChars(List<TokenCharacterKind> tokenChars) {
         this.tokenChars = tokenChars;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

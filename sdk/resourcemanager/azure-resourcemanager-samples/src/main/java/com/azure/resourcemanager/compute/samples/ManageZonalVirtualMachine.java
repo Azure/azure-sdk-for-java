@@ -133,11 +133,6 @@ public final class ManageZonalVirtualMachine {
             Utils.print(virtualMachine2);
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -150,7 +145,6 @@ public final class ManageZonalVirtualMachine {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
