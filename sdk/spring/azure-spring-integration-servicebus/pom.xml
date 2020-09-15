@@ -12,7 +12,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>spring-integration-servicebus</artifactId>
-  <version>1.2.8</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-servicebus;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-servicebus;current} -->
 
   <name>Azure Spring Integration Service Bus</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>

@@ -93,7 +93,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-integration-servicebus</artifactId>
-      <version>1.2.8</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-servicebus;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-servicebus;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -213,7 +213,7 @@
                 <include>com.microsoft.azure:spring-cloud-azure-context:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
                 <include>com.microsoft.azure:spring-cloud-azure-telemetry:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-telemetry;current} -->
                 <include>com.microsoft.azure:spring-integration-eventhubs:[1.2.8]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-eventhubs;current} -->
-                <include>com.microsoft.azure:spring-integration-servicebus:[1.2.8]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-servicebus;current} -->
+                <include>com.microsoft.azure:spring-integration-servicebus:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-servicebus;current} -->
                 <include>com.microsoft.sqlserver:mssql-jdbc:[7.4.1.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
                 <include>mysql:mysql-connector-java:[8.0.21]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.1.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
