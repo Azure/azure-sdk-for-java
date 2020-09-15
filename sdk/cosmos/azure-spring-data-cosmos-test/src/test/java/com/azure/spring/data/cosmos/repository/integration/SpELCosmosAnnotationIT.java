@@ -5,7 +5,6 @@ package com.azure.spring.data.cosmos.repository.integration;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.CosmosFactory;
-import com.azure.spring.data.cosmos.common.ExpressionResolver;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
@@ -14,37 +13,28 @@ import com.azure.spring.data.cosmos.core.convert.ObjectMapperFactory;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.domain.SpELBeanStudent;
 import com.azure.spring.data.cosmos.domain.SpELPropertyStudent;
-import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
+import com.azure.spring.data.cosmos.repository.TestRepositorySpELConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanExpressionContext;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.beans.factory.config.EmbeddedValueResolver;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.lang.reflect.Field;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestRepositoryConfig.class)
+@ContextConfiguration(classes = TestRepositorySpELConfig.class)
 public class SpELCosmosAnnotationIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpELCosmosAnnotationIT.class);
     private static final SpELPropertyStudent TEST_PROPERTY_STUDENT = new SpELPropertyStudent(TestConstants.ID_1,
         TestConstants.FIRST_NAME, TestConstants.LAST_NAME);
 
@@ -63,9 +53,6 @@ public class SpELCosmosAnnotationIT {
     @Autowired
     private CosmosConfig cosmosConfig;
 
-    @Autowired
-    private ExpressionResolver expressionResolver;
-
     private static CosmosTemplate staticTemplate;
     private static CosmosEntityInformation<SpELPropertyStudent, String> cosmosEntityInformation;
 
@@ -73,26 +60,6 @@ public class SpELCosmosAnnotationIT {
     public void setUp() {
         if (staticTemplate == null) {
             staticTemplate = cosmosTemplate;
-        }
-        EmbeddedValueResolver embeddedResolver = expressionResolver != null ?
-            ExpressionResolver.getEmbeddedValueResolver() : null;
-        LOGGER.info("Getting expression resolver: {}, embedded: {}", expressionResolver, embeddedResolver);
-
-        try {
-            final Field exprContext = embeddedResolver.getClass().getDeclaredField("exprContext");
-            exprContext.setAccessible(true);
-            BeanExpressionContext context = (BeanExpressionContext) exprContext.get(embeddedResolver);
-            ConfigurableBeanFactory beanFactory = context.getBeanFactory();
-            LOGGER.info("bean factory: {}", beanFactory.getClass().getName());
-            if (beanFactory instanceof ListableBeanFactory) {
-                String[] beanDefinitionNames = ((ListableBeanFactory) beanFactory).getBeanDefinitionNames();
-                for (String beanName : beanDefinitionNames) {
-                    LOGGER.info("has bean {}", beanName);
-                }
-            }
-            embeddedResolver.resolveStringValue("#{@dynamicContainer.getContainerName()}");
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
         }
     }
 

@@ -41,7 +41,4 @@ public class ExpressionResolver {
         ExpressionResolver.embeddedValueResolver = embeddedValueResolver;
     }
 
-    public static EmbeddedValueResolver getEmbeddedValueResolver() {
-        return embeddedValueResolver;
-    }
 }
