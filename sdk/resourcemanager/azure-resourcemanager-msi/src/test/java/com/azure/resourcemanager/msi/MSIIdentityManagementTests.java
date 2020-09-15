@@ -202,7 +202,7 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
                 .withAccessTo(anotherResourceGroup, BuiltInRole.CONTRIBUTOR)
                 .createAsync()
                 .doOnNext(indexable -> createdResosurces.add(indexable))
-                .blockLast();
+                .block();
 
         int roleAssignmentResourcesCount = 0;
         int identityResourcesCount = 0;

@@ -400,8 +400,7 @@ class VirtualNetworkGatewayImpl
         if (defaultIPConfig.publicIpAddressId() == null) {
             // If public ip not specified, then create a default PIP
             pipObservable =
-                Utils
-                    .<PublicIpAddress>rootResource(ensureDefaultPipDefinition().createAsync().last())
+                ensureDefaultPipDefinition().createAsync()
                     .map(
                         publicIPAddress -> {
                             defaultIPConfig.withExistingPublicIpAddress(publicIPAddress);
@@ -420,8 +419,7 @@ class VirtualNetworkGatewayImpl
         } else if (creatableNetwork != null) {
             // But if default IP config does not have a subnet specified, then create a VNet
             networkObservable =
-                Utils
-                    .<Network>rootResource(creatableNetwork.createAsync().last())
+                creatableNetwork.createAsync()
                     .map(
                         network -> {
                             // ... and assign the created VNet to the default IP config

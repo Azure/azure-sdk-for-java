@@ -100,7 +100,7 @@ public final class ManageVirtualNetworkAsync {
                             .withAnyProtocol()
                             .attach()
                             .createAsync()
-                            .flatMap(indexable -> {
+                            .flatMapMany(indexable -> {
                                 if (indexable instanceof NetworkSecurityGroup) {
                                     NetworkSecurityGroup backEndNsg = (NetworkSecurityGroup) indexable;
                                     System.out.println("Creating virtual network #1...");

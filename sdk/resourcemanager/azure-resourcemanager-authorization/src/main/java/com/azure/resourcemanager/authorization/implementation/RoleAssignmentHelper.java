@@ -94,7 +94,7 @@ public class RoleAssignmentHelper {
                     .withBuiltInRole(asRole)
                     .withScope(resourceScope)
                     .createAsync()
-                    .last()
+                    .cast(Indexable.class)
                     .onErrorResume(
                         throwable -> {
                             if (isRoleAssignmentExists(throwable)) {
@@ -147,7 +147,7 @@ public class RoleAssignmentHelper {
                     .withRoleDefinition(roleDefinitionId)
                     .withScope(resourceScope)
                     .createAsync()
-                    .last()
+                    .cast(Indexable.class)
                     .onErrorResume(
                         throwable -> {
                             if (isRoleAssignmentExists(throwable)) {

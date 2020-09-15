@@ -7,9 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.azure.resourcemanager.sql.models.AutomaticTuningMode;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeActual;
@@ -50,14 +48,15 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryption;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivity;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
 
 public class SqlServerOperationsTests extends SqlServerTest {
     private static final String SQL_DATABASE_NAME = "myTestDatabase2";
@@ -972,10 +971,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void canCRUDSqlDatabase() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
-        Flux<Indexable> resourceStream =
+        Mono<SqlDatabase> resourceStream =
             sqlServer.databases().define(SQL_DATABASE_NAME).withEdition(DatabaseEdition.STANDARD).createAsync();
 
-        SqlDatabase sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream.last()).block();
+        SqlDatabase sqlDatabase = resourceStream.block();
 
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
         Assertions.assertTrue(sqlServer.databases().list().size() > 0);
@@ -1056,7 +1055,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withCollation(COLLATION)
                 .createAsync();
 
-        sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream.last()).block();
+        sqlDatabase = resourceStream.block();
 
         // Rename the database
         sqlDatabase = sqlDatabase.rename("renamedDatabase");
@@ -1075,7 +1074,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         SqlServer sqlServer1 = createSqlServer();
         SqlServer sqlServer2 = createSqlServer(anotherSqlServerName);
 
-        Flux<Indexable> resourceStream =
+        Mono<SqlDatabase> resourceStream =
             sqlServer1
                 .databases()
                 .define(SQL_DATABASE_NAME)
@@ -1083,7 +1082,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withCollation(COLLATION)
                 .createAsync();
 
-        SqlDatabase databaseInServer1 = Utils.<SqlDatabase>rootResource(resourceStream.last()).block();
+        SqlDatabase databaseInServer1 = resourceStream.block();
 
         validateSqlDatabase(databaseInServer1, SQL_DATABASE_NAME);
         SqlDatabase databaseInServer2 =
@@ -1142,7 +1141,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // List usages for the server.
         Assertions.assertNotNull(sqlServer.listUsageMetrics());
 
-        Flux<Indexable> resourceStream =
+        Mono<SqlDatabase> resourceStream =
             sqlServer
                 .databases()
                 .define(SQL_DATABASE_NAME)
@@ -1151,7 +1150,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withCollation(COLLATION)
                 .createAsync();
 
-        SqlDatabase sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream.last()).block();
+        SqlDatabase sqlDatabase = resourceStream.block();
         Assertions.assertNotNull(sqlDatabase);
 
         sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
@@ -1194,7 +1193,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withEdition(ElasticPoolEdition.STANDARD)
                 .withTag("tag1", "value1");
 
-        Flux<Indexable> resourceStream =
+        Mono<SqlDatabase> resourceStream =
             sqlServer
                 .databases()
                 .define(SQL_DATABASE_NAME)
@@ -1202,7 +1201,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withCollation(COLLATION)
                 .createAsync();
 
-        SqlDatabase sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream.last()).block();
+        SqlDatabase sqlDatabase = resourceStream.block();
 
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
 
@@ -1289,7 +1288,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withCollation(COLLATION)
                 .createAsync();
 
-        sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream.last()).block();
+        sqlDatabase = resourceStream.block();
         sqlServer.databases().delete(sqlDatabase.name());
         validateSqlDatabaseNotFound("newDatabase");
 
@@ -1306,14 +1305,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
         sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
         validateSqlServer(sqlServer);
 
-        Flux<Indexable> resourceStream =
+        Mono<SqlElasticPool> resourceStream =
             sqlServer
                 .elasticPools()
                 .define(SQL_ELASTIC_POOL_NAME)
                 .withEdition(ElasticPoolEdition.STANDARD)
                 .withTag("tag1", "value1")
                 .createAsync();
-        SqlElasticPool sqlElasticPool = Utils.<SqlElasticPool>rootResource(resourceStream.last()).block();
+        SqlElasticPool sqlElasticPool = resourceStream.block();
         validateSqlElasticPool(sqlElasticPool);
         Assertions.assertEquals(sqlElasticPool.listDatabases().size(), 0);
 
@@ -1347,7 +1346,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         resourceStream =
             sqlServer.elasticPools().define("newElasticPool").withEdition(ElasticPoolEdition.STANDARD).createAsync();
 
-        sqlElasticPool = Utils.<SqlElasticPool>rootResource(resourceStream.last()).block();
+        sqlElasticPool = resourceStream.block();
 
         sqlServer.elasticPools().delete(sqlElasticPool.name());
         validateSqlElasticPoolNotFound(sqlServer, "newElasticPool");
@@ -1364,14 +1363,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
         sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
         validateSqlServer(sqlServer);
 
-        Flux<Indexable> resourceStream =
+        Mono<SqlFirewallRule> resourceStream =
             sqlServer
                 .firewallRules()
                 .define(SQL_FIREWALLRULE_NAME)
                 .withIpAddressRange(START_IPADDRESS, END_IPADDRESS)
                 .createAsync();
 
-        SqlFirewallRule sqlFirewallRule = Utils.<SqlFirewallRule>rootResource(resourceStream.last()).block();
+        SqlFirewallRule sqlFirewallRule = resourceStream.block();
 
         validateSqlFirewallRule(sqlFirewallRule, SQL_FIREWALLRULE_NAME);
         validateSqlFirewallRule(sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);

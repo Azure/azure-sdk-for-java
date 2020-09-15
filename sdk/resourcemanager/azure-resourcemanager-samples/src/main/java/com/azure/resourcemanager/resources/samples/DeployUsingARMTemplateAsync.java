@@ -85,7 +85,7 @@ public final class DeployUsingARMTemplateAsync {
                                     .withTemplateLink(templateUri, templateContentVersion)
                                     .withParameters(params)
                                     .withMode(DeploymentMode.COMPLETE)
-                                    .createAsync().last();
+                                    .createAsync();
                         } catch (IOException e) {
                             return Flux.error(e);
                         }

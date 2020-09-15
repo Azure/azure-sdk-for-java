@@ -7,14 +7,15 @@ import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Assertions;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualMachines> {
     private final StorageAccounts storageAccounts;
@@ -70,7 +71,7 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
                             System.out.println("Created :" + createdResource.id());
                             return createdResource;
                         })
-                    .blockLast();
+                    .block();
 
         Assertions.assertTrue(resourceCount.get() == 7);
         return virtualMachine;

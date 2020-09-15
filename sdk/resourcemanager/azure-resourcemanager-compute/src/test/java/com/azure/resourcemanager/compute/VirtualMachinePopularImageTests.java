@@ -6,11 +6,12 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
+import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,9 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
         }
 
         rgName = generateRandomResourceName("rg", 10);
-        List<Flux<Indexable>> vmFluxes = new ArrayList<>();
+        List<Mono<VirtualMachine>> vmFluxes = new ArrayList<>();
         for (KnownWindowsVirtualMachineImage image : KnownWindowsVirtualMachineImage.values()) {
-            Flux<Indexable> flux = computeManager.virtualMachines()
+            Mono<VirtualMachine> flux = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))
                 .withRegion(Region.US_SOUTH_CENTRAL)
                 .withNewResourceGroup(rgName)
@@ -44,7 +45,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
         }
 
         for (KnownLinuxVirtualMachineImage image : KnownLinuxVirtualMachineImage.values()) {
-            Flux<Indexable> flux = computeManager.virtualMachines()
+            Mono<VirtualMachine> flux = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))
                 .withRegion(Region.US_SOUTH_CENTRAL)
                 .withNewResourceGroup(rgName)

@@ -5,14 +5,11 @@ package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
-import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -209,17 +206,15 @@ public abstract class CreatableUpdatableImpl<
     }
 
     @Override
-    public Flux<Indexable> createAsync() {
-        return taskGroup.invokeAsync(this.taskGroup.newInvocationContext())
-            .onErrorMap(AggregatedManagementException::convertToManagementException);
+    public Mono<FluentModelT> createAsync() {
+        return applyAsync();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public Mono<FluentModelT> applyAsync() {
         return taskGroup.invokeAsync(this.taskGroup.newInvocationContext())
-                .last()
-                .map(indexable -> (FluentModelT) indexable);
+                .then(Mono.just((FluentModelT) taskGroup.taskResult(taskGroup.key())));
     }
 
     @Override
@@ -231,7 +226,7 @@ public abstract class CreatableUpdatableImpl<
 
     @Override
     public FluentModelT create() {
-        return Utils.<FluentModelT>rootResource(createAsync().last()).block();
+        return createAsync().block();
     }
 
     @Override
