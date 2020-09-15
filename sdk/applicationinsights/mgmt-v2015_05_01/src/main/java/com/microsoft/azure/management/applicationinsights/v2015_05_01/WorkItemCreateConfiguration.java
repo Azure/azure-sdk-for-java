@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.applicationinsights.v2015_05_01;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -21,7 +22,7 @@ public class WorkItemCreateConfiguration {
     private String connectorId;
 
     /**
-     * Serialized JSON object for detaile d properties.
+     * Serialized JSON object for detailed properties.
      */
     @JsonProperty(value = "ConnectorDataConfiguration")
     private String connectorDataConfiguration;
@@ -36,7 +37,7 @@ public class WorkItemCreateConfiguration {
      * Custom work item properties.
      */
     @JsonProperty(value = "WorkItemProperties")
-    private String workItemProperties;
+    private Map<String, String> workItemProperties;
 
     /**
      * Get unique connector id.
@@ -59,7 +60,7 @@ public class WorkItemCreateConfiguration {
     }
 
     /**
-     * Get serialized JSON object for detaile d properties.
+     * Get serialized JSON object for detailed properties.
      *
      * @return the connectorDataConfiguration value
      */
@@ -68,7 +69,7 @@ public class WorkItemCreateConfiguration {
     }
 
     /**
-     * Set serialized JSON object for detaile d properties.
+     * Set serialized JSON object for detailed properties.
      *
      * @param connectorDataConfiguration the connectorDataConfiguration value to set
      * @return the WorkItemCreateConfiguration object itself.
@@ -103,7 +104,7 @@ public class WorkItemCreateConfiguration {
      *
      * @return the workItemProperties value
      */
-    public String workItemProperties() {
+    public Map<String, String> workItemProperties() {
         return this.workItemProperties;
     }
 
@@ -113,7 +114,7 @@ public class WorkItemCreateConfiguration {
      * @param workItemProperties the workItemProperties value to set
      * @return the WorkItemCreateConfiguration object itself.
      */
-    public WorkItemCreateConfiguration withWorkItemProperties(String workItemProperties) {
+    public WorkItemCreateConfiguration withWorkItemProperties(Map<String, String> workItemProperties) {
         this.workItemProperties = workItemProperties;
         return this;
     }

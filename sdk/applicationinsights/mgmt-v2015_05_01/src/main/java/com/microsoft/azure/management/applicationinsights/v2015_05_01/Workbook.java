@@ -9,44 +9,31 @@
 package com.microsoft.azure.management.applicationinsights.v2015_05_01;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.applicationinsights.v2015_05_01.implementation.WorkbookInner;
-import com.microsoft.azure.arm.model.Indexable;
-import com.microsoft.azure.arm.model.Creatable;
+import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
+import com.microsoft.azure.arm.resources.models.HasResourceGroup;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
+import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.implementation.InsightsManager;
 import java.util.List;
-import java.util.Map;
+import com.microsoft.azure.management.applicationinsights.v2015_05_01.implementation.WorkbookInner;
 
 /**
  * Type representing Workbook.
  */
-public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<Workbook.Update>, HasManager<InsightsManager> {
+public interface Workbook extends HasInner<WorkbookInner>, Resource, GroupableResourceCore<InsightsManager, WorkbookInner>, HasResourceGroup, Refreshable<Workbook>, Updatable<Workbook.Update>, HasManager<InsightsManager> {
     /**
      * @return the category value.
      */
     String category();
 
     /**
-     * @return the id value.
-     */
-    String id();
-
-    /**
      * @return the kind value.
      */
     SharedTypeKind kind();
-
-    /**
-     * @return the location value.
-     */
-    String location();
-
-    /**
-     * @return the name value.
-     */
-    String name();
 
     /**
      * @return the serializedData value.
@@ -64,19 +51,9 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
     String sourceResourceId();
 
     /**
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
      * @return the timeModified value.
      */
     String timeModified();
-
-    /**
-     * @return the type value.
-     */
-    String type();
 
     /**
      * @return the userId value.
@@ -106,7 +83,7 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
     /**
      * The entirety of the Workbook definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithResourceGroupName, DefinitionStages.WithCategory, DefinitionStages.WithLocation, DefinitionStages.WithSerializedData, DefinitionStages.WithSharedTypeKind, DefinitionStages.WithUserId, DefinitionStages.WithWorkbookId, DefinitionStages.WithWorkbookName, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCategory, DefinitionStages.WithSerializedData, DefinitionStages.WithSharedTypeKind, DefinitionStages.WithUserId, DefinitionStages.WithWorkbookId, DefinitionStages.WithWorkbookName, DefinitionStages.WithCreate {
     }
 
     /**
@@ -116,17 +93,13 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         /**
          * The first stage of a Workbook definition.
          */
-        interface Blank extends WithResourceGroupName {
+        interface Blank extends GroupableResourceCore.DefinitionWithRegion<WithGroup> {
         }
 
         /**
-         * The stage of the workbook definition allowing to specify ResourceGroupName.
+         * The stage of the Workbook definition allowing to specify the resource group.
          */
-        interface WithResourceGroupName {
-           /**
-            * Specifies resourceGroupName.
-            */
-            WithCategory withResourceGroupName(String resourceGroupName);
+        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCategory> {
         }
 
         /**
@@ -135,18 +108,10 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithCategory {
            /**
             * Specifies category.
-            */
-            WithLocation withCategory(String category);
-        }
-
-        /**
-         * The stage of the workbook definition allowing to specify Location.
-         */
-        interface WithLocation {
-           /**
-            * Specifies location.
-            */
-            WithSerializedData withLocation(String location);
+            * @param category Workbook category, as defined by the user at creation time
+            * @return the next definition stage
+*/
+            WithSerializedData withCategory(String category);
         }
 
         /**
@@ -155,7 +120,9 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithSerializedData {
            /**
             * Specifies serializedData.
-            */
+            * @param serializedData Configuration of this particular workbook. Configuration data is a string containing valid JSON
+            * @return the next definition stage
+*/
             WithSharedTypeKind withSerializedData(String serializedData);
         }
 
@@ -165,7 +132,9 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithSharedTypeKind {
            /**
             * Specifies sharedTypeKind.
-            */
+            * @param sharedTypeKind Enum indicating if this workbook definition is owned by a specific user or is shared between all users with access to the Application Insights component. Possible values include: 'user', 'shared'
+            * @return the next definition stage
+*/
             WithUserId withSharedTypeKind(SharedTypeKind sharedTypeKind);
         }
 
@@ -175,7 +144,9 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithUserId {
            /**
             * Specifies userId.
-            */
+            * @param userId Unique user id of the specific user that owns this workbook
+            * @return the next definition stage
+*/
             WithWorkbookId withUserId(String userId);
         }
 
@@ -185,7 +156,9 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithWorkbookId {
            /**
             * Specifies workbookId.
-            */
+            * @param workbookId Internally assigned unique id of the workbook definition
+            * @return the next definition stage
+*/
             WithWorkbookName withWorkbookId(String workbookId);
         }
 
@@ -195,7 +168,9 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithWorkbookName {
            /**
             * Specifies workbookName.
-            */
+            * @param workbookName The user-defined name of the workbook
+            * @return the next definition stage
+*/
             WithCreate withWorkbookName(String workbookName);
         }
 
@@ -205,6 +180,8 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind The kind of workbook. Choices are user and shared. Possible values include: 'user', 'shared'
+             * @return the next definition stage
              */
             WithCreate withKind(SharedTypeKind kind);
         }
@@ -215,18 +192,10 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithSourceResourceId {
             /**
              * Specifies sourceResourceId.
+             * @param sourceResourceId Optional resourceId for a source resource
+             * @return the next definition stage
              */
             WithCreate withSourceResourceId(String sourceResourceId);
-        }
-
-        /**
-         * The stage of the workbook definition allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            WithCreate withTags(Map<String, String> tags);
         }
 
         /**
@@ -235,6 +204,8 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithVersion {
             /**
              * Specifies version.
+             * @param version This instance's version of the data model. This can change as new features are added that can be marked workbook
+             * @return the next definition stage
              */
             WithCreate withVersion(String version);
         }
@@ -245,6 +216,8 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithWorkbookTags {
             /**
              * Specifies workbookTags.
+             * @param workbookTags A list of 0 or more tags that are associated with this workbook definition
+             * @return the next definition stage
              */
             WithCreate withWorkbookTags(List<String> workbookTags);
         }
@@ -254,13 +227,13 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Workbook>, DefinitionStages.WithKind, DefinitionStages.WithSourceResourceId, DefinitionStages.WithTags, DefinitionStages.WithVersion, DefinitionStages.WithWorkbookTags {
+        interface WithCreate extends Creatable<Workbook>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithKind, DefinitionStages.WithSourceResourceId, DefinitionStages.WithVersion, DefinitionStages.WithWorkbookTags {
         }
     }
     /**
      * The template for a Workbook update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Workbook>, UpdateStages.WithKind, UpdateStages.WithSourceResourceId, UpdateStages.WithTags, UpdateStages.WithVersion, UpdateStages.WithWorkbookTags {
+    interface Update extends Appliable<Workbook>, Resource.UpdateWithTags<Update>, UpdateStages.WithKind, UpdateStages.WithSourceResourceId, UpdateStages.WithVersion, UpdateStages.WithWorkbookTags {
     }
 
     /**
@@ -273,6 +246,8 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind The kind of workbook. Choices are user and shared. Possible values include: 'user', 'shared'
+             * @return the next update stage
              */
             Update withKind(SharedTypeKind kind);
         }
@@ -283,18 +258,10 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithSourceResourceId {
             /**
              * Specifies sourceResourceId.
+             * @param sourceResourceId Optional resourceId for a source resource
+             * @return the next update stage
              */
             Update withSourceResourceId(String sourceResourceId);
-        }
-
-        /**
-         * The stage of the workbook update allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            Update withTags(Map<String, String> tags);
         }
 
         /**
@@ -303,6 +270,8 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithVersion {
             /**
              * Specifies version.
+             * @param version This instance's version of the data model. This can change as new features are added that can be marked workbook
+             * @return the next update stage
              */
             Update withVersion(String version);
         }
@@ -313,6 +282,8 @@ public interface Workbook extends HasInner<WorkbookInner>, Indexable, Updatable<
         interface WithWorkbookTags {
             /**
              * Specifies workbookTags.
+             * @param workbookTags A list of 0 or more tags that are associated with this workbook definition
+             * @return the next update stage
              */
             Update withWorkbookTags(List<String> workbookTags);
         }

@@ -11,7 +11,7 @@ package com.microsoft.azure.management.applicationinsights.v2015_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An Application Insights component daily data volumne cap.
+ * An Application Insights component daily data volume cap.
  */
 public class ApplicationInsightsComponentDataVolumeCap {
     /**

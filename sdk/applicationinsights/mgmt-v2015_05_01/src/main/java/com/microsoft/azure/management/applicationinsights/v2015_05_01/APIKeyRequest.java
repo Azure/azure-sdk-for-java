@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An Application Insights component API Key createion request definition.
+ * An Application Insights component API Key creation request definition.
  */
 public class APIKeyRequest {
     /**

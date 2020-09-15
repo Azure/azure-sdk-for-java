@@ -83,7 +83,7 @@ public class ExportConfigurationsInner {
     /**
      * Gets a list of Continuous Export configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -97,7 +97,7 @@ public class ExportConfigurationsInner {
     /**
      * Gets a list of Continuous Export configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -110,7 +110,7 @@ public class ExportConfigurationsInner {
     /**
      * Gets a list of Continuous Export configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ApplicationInsightsComponentExportConfigurationInner&gt; object
@@ -127,7 +127,7 @@ public class ExportConfigurationsInner {
     /**
      * Gets a list of Continuous Export configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ApplicationInsightsComponentExportConfigurationInner&gt; object
@@ -169,7 +169,7 @@ public class ExportConfigurationsInner {
     /**
      * Create a Continuous Export configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -184,7 +184,7 @@ public class ExportConfigurationsInner {
     /**
      * Create a Continuous Export configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -198,7 +198,7 @@ public class ExportConfigurationsInner {
     /**
      * Create a Continuous Export configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -216,7 +216,7 @@ public class ExportConfigurationsInner {
     /**
      * Create a Continuous Export configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -263,7 +263,7 @@ public class ExportConfigurationsInner {
     /**
      * Delete a Continuous Export configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -278,7 +278,7 @@ public class ExportConfigurationsInner {
     /**
      * Delete a Continuous Export configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -292,7 +292,7 @@ public class ExportConfigurationsInner {
     /**
      * Delete a Continuous Export configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -310,7 +310,7 @@ public class ExportConfigurationsInner {
     /**
      * Delete a Continuous Export configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -356,7 +356,7 @@ public class ExportConfigurationsInner {
     /**
      * Get the Continuous Export configuration for this export id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -371,7 +371,7 @@ public class ExportConfigurationsInner {
     /**
      * Get the Continuous Export configuration for this export id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -385,7 +385,7 @@ public class ExportConfigurationsInner {
     /**
      * Get the Continuous Export configuration for this export id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -403,7 +403,7 @@ public class ExportConfigurationsInner {
     /**
      * Get the Continuous Export configuration for this export id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -449,7 +449,7 @@ public class ExportConfigurationsInner {
     /**
      * Update the Continuous Export configuration for this export id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
      * @param exportProperties Properties that need to be specified to update the Continuous Export configuration.
@@ -465,7 +465,7 @@ public class ExportConfigurationsInner {
     /**
      * Update the Continuous Export configuration for this export id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
      * @param exportProperties Properties that need to be specified to update the Continuous Export configuration.
@@ -480,7 +480,7 @@ public class ExportConfigurationsInner {
     /**
      * Update the Continuous Export configuration for this export id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
      * @param exportProperties Properties that need to be specified to update the Continuous Export configuration.
@@ -499,7 +499,7 @@ public class ExportConfigurationsInner {
     /**
      * Update the Continuous Export configuration for this export id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
      * @param exportProperties Properties that need to be specified to update the Continuous Export configuration.
