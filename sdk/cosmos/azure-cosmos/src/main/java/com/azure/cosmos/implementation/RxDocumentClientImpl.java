@@ -7,6 +7,8 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.patch.PatchOperation;
+import com.azure.cosmos.patch.implementation.PatchUtil;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -49,6 +51,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1162,6 +1165,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
         }
 
+        if ((RequestVerb.PATCH.equals(httpMethod))
+            && !request.getHeaders().containsKey(HttpConstants.HttpHeaders.CONTENT_TYPE)) {
+            request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON_PATCH);
+        }
+
         if (!request.getHeaders().containsKey(HttpConstants.HttpHeaders.ACCEPT)) {
             request.getHeaders().put(HttpConstants.HttpHeaders.ACCEPT, RuntimeConstants.MediaTypes.JSON);
         }
@@ -1241,6 +1249,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         populateHeaders(request, RequestVerb.PUT);
+        if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
+            documentClientRetryPolicy.updateEndTime();
+            request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+        }
+
+        return getStoreProxy(request).processMessage(request);
+    }
+
+    private Mono<RxDocumentServiceResponse> patch(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
+        populateHeaders(request, RequestVerb.PATCH);
         if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
             documentClientRetryPolicy.updateEndTime();
             request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
@@ -1409,6 +1427,62 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return requestObs.flatMap(req -> {
             return replace(request, retryPolicyInstance)
+                .map(resp -> toResourceResponse(resp, Document.class));} );
+    }
+
+    @Override
+    public Mono<ResourceResponse<Document>> patchDocument(String documentLink,
+                                                          List<PatchOperation<?>> patchOperations,
+                                                          RequestOptions options) {
+        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        if (options == null || options.getPartitionKey() == null) {
+            String collectionLink = Utils.getCollectionName(documentLink);
+            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
+        }
+
+        DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
+        return ObservableHelper.inlineIfPossibleAsObs(() -> patchDocumentInternal(documentLink, patchOperations, options, finalRetryPolicyInstance), requestRetryPolicy);
+    }
+
+    private Mono<ResourceResponse<Document>> patchDocumentInternal(String documentLink,
+                                                                   List<PatchOperation<?>> patchOperations,
+                                                                   RequestOptions options,
+                                                                   DocumentClientRetryPolicy retryPolicyInstance) {
+        if (patchOperations == null) {
+            throw new IllegalArgumentException("patchOperations");
+        }
+
+        logger.debug("patchOperations a Document. documentLink: [{}]", patchOperations);
+
+        final String path = Utils.joinPath(documentLink, null);
+        final Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Document, OperationType.Update);
+        Instant serializationStartTimeUTC = Instant.now();
+
+        ByteBuffer content = ByteBuffer.wrap(PatchUtil.serializePatchOperations(patchOperations, options).getBytes(StandardCharsets.UTF_8));
+
+        Instant serializationEndTime = Instant.now();
+        SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+            serializationStartTimeUTC,
+            serializationEndTime,
+            SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
+
+        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Update,
+            ResourceType.Document, path, requestHeaders, options, content);
+        if (retryPolicyInstance != null) {
+            retryPolicyInstance.onBeforeSendRequest(request);
+        }
+
+        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+        if (serializationDiagnosticsContext != null) {
+            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
+
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+        Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
+
+        return requestObs.flatMap(req -> {
+            return patch(request, retryPolicyInstance)
                 .map(resp -> toResourceResponse(resp, Document.class));} );
     }
 

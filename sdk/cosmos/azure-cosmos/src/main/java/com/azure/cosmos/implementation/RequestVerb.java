@@ -15,7 +15,8 @@ public enum  RequestVerb {
     PUT("PUT"),
     POST("POST"),
     DELETE("DELETE"),
-    HEAD("HEAD");
+    HEAD("HEAD"),
+    PATCH("PATCH");
 
 
     RequestVerb(String stringValue) {

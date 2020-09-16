@@ -320,7 +320,7 @@ public class HttpTransportClient extends TransportClient {
 
             case Update:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
-                method = new HttpMethod("PATCH");
+                method = HttpMethod.PATCH;
                 assert request.getContentAsByteBufFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContentAsByteBufFlux());

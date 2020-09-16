@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
+import com.azure.cosmos.patch.PatchOperation;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -56,6 +57,7 @@ public class CosmosAsyncContainer {
     private final String upsertItemSpanName;
     private final String deleteItemSpanName;
     private final String replaceItemSpanName;
+    private final String patchItemSpanName;
     private final String createItemSpanName;
     private final String readAllItemsSpanName;
     private final String queryItemsSpanName;
@@ -76,6 +78,7 @@ public class CosmosAsyncContainer {
         this.upsertItemSpanName = "upsertItem." + this.id;
         this.deleteItemSpanName = "deleteItem." + this.id;
         this.replaceItemSpanName = "replaceItem." + this.id;
+        this.patchItemSpanName = "patchItem." + this.id;
         this.createItemSpanName = "createItem." + this.id;
         this.readAllItemsSpanName = "readAllItems." + this.id;
         this.queryItemsSpanName = "queryItems." + this.id;
@@ -561,6 +564,58 @@ public class CosmosAsyncContainer {
         return withContext(context -> replaceItemInternal(itemType, itemId, doc, requestOptions, context));
     }
 
+
+    /**
+     * Run patch operations on an Item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
+     *
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param patchOperations patchOperations.
+     * @param itemType the item type.
+     * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
+     */
+    public <T> Mono<CosmosItemResponse<T>> patchItem(
+        String itemId,
+        PartitionKey partitionKey,
+        List<PatchOperation<?>> patchOperations,
+        Class<T> itemType) {
+        return patchItem(itemId, partitionKey, patchOperations, new CosmosItemRequestOptions(), itemType);
+    }
+
+    /**
+     * Run patch operations on an Item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
+     *
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param patchOperations patchOperations.
+     * @param options the request options.
+     * @param itemType the item type.
+     * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
+     */
+    public <T> Mono<CosmosItemResponse<T>> patchItem(
+        String itemId,
+        PartitionKey partitionKey,
+        List<PatchOperation<?>> patchOperations,
+        CosmosItemRequestOptions options,
+        Class<T> itemType) {
+
+        if (options == null) {
+            options = new CosmosItemRequestOptions();
+        }
+        ModelBridgeInternal.setPartitionKey(options, partitionKey);
+
+        final CosmosItemRequestOptions requestOptions = options;
+        return withContext(context -> patchItemInternal(itemId, patchOperations, requestOptions, context, itemType));
+    }
+
     /**
      * Deletes an item.
      * <p>
@@ -752,6 +807,22 @@ public class CosmosAsyncContainer {
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context, this.replaceItemSpanName, database.getId(), database.getClient().getServiceEndpoint());
+    }
+
+    private <T> Mono<CosmosItemResponse<T>> patchItemInternal(
+        String itemId,
+        List<PatchOperation<?>> patchOperations,
+        CosmosItemRequestOptions options,
+        Context context,
+        Class<T> itemType) {
+
+        Mono<CosmosItemResponse<T>> responseMono = this.getDatabase()
+            .getDocClientWrapper()
+            .patchDocument(getItemLink(itemId), patchOperations, ModelBridgeInternal.toRequestOptions(options))
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
+
+        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
+            context, this.patchItemSpanName, database.getId(), database.getClient().getServiceEndpoint());
     }
 
     private <T> Mono<CosmosItemResponse<T>> upsertItemInternal(T item, CosmosItemRequestOptions options, Context context) {

@@ -30,6 +30,7 @@ module com.azure.cosmos {
     exports com.azure.cosmos;
     exports com.azure.cosmos.models;
     exports com.azure.cosmos.util;
+    exports com.azure.cosmos.patch;
 
     // exporting some packages specifically for Jackson
     opens com.azure.cosmos to com.fasterxml.jackson.databind;
