@@ -259,7 +259,12 @@ public class ServiceBusAdministrationClientBuilder {
     }
 
     /**
-     * Sets the {@link ClientOptions}. It enables various options to be set on the client.
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example
+     * {@link ClientOptions#setApplicationId(String)} which is used to configure {@link UserAgentPolicy} for
+     * telemetry/monitoring purpose.
+     * <p>
+     * More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     *
      * @param clientOptions to be set on the client.
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
@@ -371,6 +376,7 @@ public class ServiceBusAdministrationClientBuilder {
 
         return new HttpPipelineBuilder()
             .policies(httpPolicies.toArray(new HttpPipelinePolicy[0]))
+
             .httpClient(httpClient)
             .build();
     }

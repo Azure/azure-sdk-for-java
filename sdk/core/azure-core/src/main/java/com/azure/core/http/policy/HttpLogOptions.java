@@ -159,7 +159,7 @@ public class HttpLogOptions {
      * Gets the application specific id.
      *
      * @return The application specific id.
-     * @deprecated Use {@link ClientOptions} to configured {@code applicationId}.
+     * @deprecated Use {@link ClientOptions} to configure {@code applicationId}.
      */
     @Deprecated
     public String getApplicationId() {
@@ -171,7 +171,7 @@ public class HttpLogOptions {
      *
      * @param applicationId The user specified application id.
      * @return The updated HttpLogOptions object.
-     * @deprecated Use {@link ClientOptions} to configured {@code applicationId}.
+     * @deprecated Use {@link ClientOptions} to configure {@code applicationId}.
      */
     @Deprecated
     public HttpLogOptions setApplicationId(final String applicationId) {

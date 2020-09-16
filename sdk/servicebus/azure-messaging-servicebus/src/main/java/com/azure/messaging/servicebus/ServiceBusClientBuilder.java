@@ -20,6 +20,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -98,7 +99,11 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Sets the {@link ClientOptions}. It enables various options to be set on the client.
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example
+     * {@link ClientOptions#setApplicationId(String)} which is used to configure {@link UserAgentPolicy} for
+     * telemetry/monitoring purpose.
+     * <p>
+     * More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
      *
      * @param clientOptions to be set on the client.
      *

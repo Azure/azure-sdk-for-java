@@ -11,12 +11,15 @@ import java.util.Collections;
 
 /**
  * This class represents various options to be set on the client.
+ * <p><strong>Headers</strong></p>
+ * The {@link Header} could be set using {@link ClientOptions#setHeaders(Iterable) setHeaders}. For example if you set
+ * a header, {@link Header Header("name", "value")}, on {@link ClientOptions} and it will be set on the request being
+ * sent to Azure Service.
+ * <p><strong>ApplicationId</strong></p>
+ * The {@code applicationId} is used to configure {@link UserAgentPolicy} for telemetry/monitoring purpose. It can be
+ * set using {@link ClientOptions#setApplicationId(String) ClientOptions#setApplicationId(String)}.
  * <p>
- * The {@link Header} could be set using {@link ClientOptions#setHeaders(Iterable) setHeaders}. The {@link Header} will
- * be applied on the request being sent to Azure Service.
- * <p>
- * The {@code applicationId} could be set using {@link ClientOptions#setApplicationId(String) setApplicationId} which
- * is used for setting {@code applicationId} in the {@link UserAgentPolicy}.
+ * More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
  */
 @Fluent
 public final class ClientOptions {
@@ -36,7 +39,11 @@ public final class ClientOptions {
     }
 
     /**
-     * Sets the applicationId provided. It is used for setting {@code applicationId} in the {@link UserAgentPolicy}.
+     * Sets the applicationId provided. The {@code applicationId} is used to configure {@link UserAgentPolicy} for
+     * telemetry/monitoring purpose. It can be set using {@link ClientOptions#setApplicationId(String)
+     * ClientOptions#setApplicationId(String)}.
+     * <p>
+     * More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
      * @param applicationId to be set.
      *
      * @return updated {@link ClientOptions}.
@@ -64,9 +71,9 @@ public final class ClientOptions {
     }
 
     /**
-     * Sets the headers, overwriting all previously set headers in the process.
-     * <p>
-     * It will be applied on the request being sent to Azure Service.
+     * Sets the headers, overwriting all previously set headers in the process. For example if you set a header,
+     * {@link Header Header("name", "value")}, on {@link ClientOptions} and it will be set on the request being sent to
+     * Azure Service.
      * @param headers headers to be set.
      *
      * @return updated {@link ClientOptions}.
@@ -78,7 +85,7 @@ public final class ClientOptions {
 
     /**
      * Gets a {@link Iterable} representation of the {@link Header}.
-     * @return the headers.
+     * @return the headers. If {@link Header} is not set previously, it returns an empty list (immutable).
      */
     public Iterable<Header> getHeaders() {
         if (headers == null) {
