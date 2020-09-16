@@ -1,0 +1,11 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.microsoft.azure.spring.cloud.autoconfigure.cache.AzureRedisAutoConfiguration,\
+com.microsoft.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubKafkaAutoConfiguration,\
+com.microsoft.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration,\
+com.microsoft.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration,\
+com.microsoft.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueAutoConfiguration,\
+com.microsoft.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicAutoConfiguration,\
+com.microsoft.azure.spring.cloud.autoconfigure.telemetry.TelemetryAutoConfiguration
+
+org.springframework.boot.env.EnvironmentPostProcessor=\
+com.microsoft.azure.spring.cloud.autoconfigure.cloudfoundry.AzureCloudFoundryEnvironmentPostProcessor

@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.training.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -20,6 +21,8 @@ import java.time.ZoneOffset;
  */
 @Fluent
 public final class CopyAuthorization {
+    private static final ClientLogger LOGGER = new ClientLogger(CopyAuthorization.class);
+
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     CopyAuthorization() {
@@ -124,10 +127,14 @@ public final class CopyAuthorization {
      * Converts the CopyAuthorization object to its equivalent json string representation.
      *
      * @return the json string representation of the CopyAuthorization object.
-     * @throws IOException exception from serialization
+     * @throws IllegalStateException exception if the serialization failed
      */
-    public String toJson() throws IOException {
-        return SERIALIZER.serialize(this, SerializerEncoding.JSON);
+    public String toJson() {
+        try {
+            return SERIALIZER.serialize(this, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Serialization Failed.", e));
+        }
     }
 
     /**
@@ -136,11 +143,16 @@ public final class CopyAuthorization {
      * @param copyAuthorization the json string representation of the object.
      *
      * @return the CopyAuthorization object equivalent of the json string.
-     * @throws IOException exception from deserialization
+     * @throws IllegalStateException exception if the deserialization failed
      */
-    public static CopyAuthorization fromJson(String copyAuthorization) throws IOException {
-        CopyAuthorization copyAuthorizationObj = SERIALIZER.deserialize(copyAuthorization, CopyAuthorization.class,
-            SerializerEncoding.JSON);
+    public static CopyAuthorization fromJson(String copyAuthorization) {
+        CopyAuthorization copyAuthorizationObj;
+        try {
+            copyAuthorizationObj = SERIALIZER.deserialize(copyAuthorization, CopyAuthorization.class,
+                SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Deserialization Failed.", e));
+        }
         return new CopyAuthorization(
             copyAuthorizationObj.getModelId(), copyAuthorizationObj.getAccessToken(),
             copyAuthorizationObj.getResourceId(), copyAuthorizationObj.getResourceRegion(),

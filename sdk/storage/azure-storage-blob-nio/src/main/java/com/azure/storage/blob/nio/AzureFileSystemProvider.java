@@ -106,7 +106,7 @@ import java.util.function.Supplier;
  *     <li>{@code AzureStorageMaxConcurrencyPerRequest:}{@link Integer}</li>
  *     <li>{@code AzureStorageDownloadResumeRetries:}{@link Integer}</li>
  *     <li>{@code AzureStorageUseHttps:}{@link Boolean}</li>
- *     <li>{@code AzureStorageFileStores:}{@link Iterable}&lt;String&gt;}</li>
+ *     <li>{@code AzureStorageFileStores:}{@link String}</li>
  * </ul>
  * <p>
  * Either an account key or a sas token must be specified. If both are provided, the account key will be preferred. If
@@ -296,15 +296,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 new UnsupportedOperationException("Only the read option is supported."));
         }
 
-        // Ensure the path points to a file.
         AzureResource resource = new AzureResource(path);
+        AzurePath.ensureFileSystemOpen(resource.getPath());
+
+        // Ensure the path points to a file.
         if (!resource.checkDirStatus().equals(DirectoryStatus.NOT_A_DIRECTORY)) {
             throw LoggingUtility.logError(logger, new IOException("Path either does not exist or points to a directory."
                 + "Path must point to a file. Path: " + path.toString()));
         }
 
         // Note that methods on BlobInputStream are already synchronized.
-        return new NioBlobInputStream(resource.getBlobClient().openInputStream());
+        return new NioBlobInputStream(resource.getBlobClient().openInputStream(), resource.getPath());
     }
 
     /**
@@ -375,6 +377,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         AzureResource resource = new AzureResource(path);
+        AzurePath.ensureFileSystemOpen(resource.getPath());
         DirectoryStatus status = resource.checkDirStatus();
 
         // Cannot write to a directory.
@@ -411,7 +414,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         return new NioBlobOutputStream(resource.getBlobClient().getBlockBlobClient().getBlobOutputStream(pto, null,
-            null, null, rq));
+            null, null, rq), resource.getPath());
     }
 
     /**
@@ -442,6 +445,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             throw LoggingUtility.logError(logger, new IllegalArgumentException("This provider cannot operate on "
                 + "subtypes of Path other than AzurePath"));
         }
+        AzurePath.ensureFileSystemOpen(path);
 
         /*
         Ensure the path is a directory. Note that roots are always directories. The case of an invalid root will be
@@ -526,6 +530,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         // Get the destination for the directory. Will throw if path is a root.
         AzureResource azureResource = new AzureResource(path);
+        AzurePath.ensureFileSystemOpen(azureResource.getPath());
 
         // Check if parent exists. If it does, atomically check if a file already exists and create a new dir if not.
         if (azureResource.checkParentDirectoryExists()) {
@@ -567,6 +572,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     public void delete(Path path) throws IOException {
         // Basic validation. Must be an AzurePath. Cannot be a root.
         AzureResource azureResource = new AzureResource(path);
+        AzurePath.ensureFileSystemOpen(azureResource.getPath());
 
         // Check directory status--possibly throw DirectoryNotEmpty or NoSuchFile.
         DirectoryStatus dirStatus = azureResource.checkDirStatus();
@@ -652,7 +658,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         // Validate paths. Build resources.
         // Copying a root directory or attempting to create/overwrite a root directory is illegal.
         AzureResource sourceRes = new AzureResource(source);
+        AzurePath.ensureFileSystemOpen(sourceRes.getPath());
         AzureResource destinationRes = new AzureResource(destination);
+        AzurePath.ensureFileSystemOpen(destinationRes.getPath());
 
         // Check destination is not a directory with children.
         DirectoryStatus destinationStatus = destinationRes.checkDirStatus();
@@ -842,6 +850,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @SuppressWarnings("unchecked")
     public <A extends BasicFileAttributes> A readAttributes(Path path, Class<A> type, LinkOption... linkOptions)
         throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
+
         Class<? extends BasicFileAttributeView> view;
         if (type == BasicFileAttributes.class || type == AzureBasicFileAttributes.class) {
             view = AzureBasicFileAttributeView.class;
@@ -882,6 +892,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         if (attributes == null) {
             throw LoggingUtility.logError(logger, new IllegalArgumentException("Attribute string cannot be null."));
         }
+
+        AzurePath.ensureFileSystemOpen(path);
 
         Map<String, Object> results = new HashMap<>();
 
@@ -998,6 +1010,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public void setAttribute(Path path, String attributes, Object value, LinkOption... linkOptions) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         String viewType;
         String attributeName;
         String[] parts = attributes.split(":");

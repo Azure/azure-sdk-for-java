@@ -63,7 +63,7 @@ public final class FormPage {
      * @param pageNumber the 1-based page number in the input document.
      */
     public FormPage(final float height, final float textAngle, final LengthUnit unit,
-        final float width, final List<FormLine> lines, final List<FormTable> tables, final Integer pageNumber) {
+        final float width, final List<FormLine> lines, final List<FormTable> tables, final int pageNumber) {
         this.height = height;
         this.textAngle = textAngle > 180 ? textAngle - 360 : textAngle;
         this.unit = unit;

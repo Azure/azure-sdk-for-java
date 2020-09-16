@@ -1,0 +1,55 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "413f38e4-5e60-4884-972e-cfec9c963215",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 09 Sep 2020 00:16:34 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename85167a96')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "8d1c5092-3002-00d2-633e-8649b2000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "413f38e4-5e60-4884-972e-cfec9c963215",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename85167a96')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/tablename85167a96",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "73bfc396-9e4c-4852-9b0e-8568486e198d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 09 Sep 2020 00:16:35 GMT",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/datetime'2020-09-09T00%3A16%3A35.3733124Z'",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/tablename85167a96(PartitionKey='partitionkey88485e',RowKey='rowkey00775d8b6')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "8d1c50c0-3002-00d2-083e-8649b2000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "73bfc396-9e4c-4852-9b0e-8568486e198d",
+      "Location" : "https://brsiegelsample.table.core.windows.net/tablename85167a96(PartitionKey='partitionkey88485e',RowKey='rowkey00775d8b6')"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename85167a96", "partitionkey88485e", "rowkey00775d8b6" ]
+}

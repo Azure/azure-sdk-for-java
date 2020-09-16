@@ -37,7 +37,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      * @return An updated instance of this builder.
      */
     public DeviceCodeCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.allowUnencryptedCache();
+        this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
 

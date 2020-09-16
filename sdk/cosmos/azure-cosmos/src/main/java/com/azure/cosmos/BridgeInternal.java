@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -116,13 +117,20 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
-            Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-        return ModelBridgeInternal.createFeedResponseWithQueryMetrics(results, headers, queryMetricsMap);
+                                                                         Map<String, String> headers,
+                                                                         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+                                                                         QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
+        return ModelBridgeInternal.createFeedResponseWithQueryMetrics(results, headers, queryMetricsMap, diagnosticsContext);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosDiagnostics createCosmosDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
         return new CosmosDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setQueryPlanDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
+        cosmosDiagnostics.getFeedResponseDiagnostics().setDiagnosticsContext(diagnosticsContext);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -172,6 +180,11 @@ public final class BridgeInternal {
     public static <E extends CosmosException> void setRequestHeaders(CosmosException cosmosException,
                                                                      Map<String, String> requestHeaders) {
         cosmosException.requestHeaders = requestHeaders;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setSubStatusCode(CosmosException documentClientException, int subStatusCode) {
+        documentClientException.setSubStatusCode(subStatusCode);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -403,8 +416,9 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void recordAddressResolutionEnd(CosmosDiagnostics cosmosDiagnostics,
-                                                  String identifier) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier);
+                                                  String identifier,
+                                                  String errorMessage) {
+        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier, errorMessage);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

@@ -7,14 +7,19 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.EncryptionCosmosAsyncContainer;
-import com.azure.cosmos.WithEncryption;
+import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
+import com.azure.cosmos.encryption.EncryptionKeyUnwrapResult;
+import com.azure.cosmos.encryption.EncryptionKeyWrapMetadata;
+import com.azure.cosmos.encryption.EncryptionKeyWrapProvider;
+import com.azure.cosmos.encryption.EncryptionKeyWrapResult;
+import com.azure.cosmos.encryption.WithEncryption;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.DataEncryptionKey;
 import com.azure.cosmos.implementation.guava25.collect.Streams;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -26,6 +31,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -99,14 +105,14 @@ public class DecryptDataEncryptedByDotNetTest extends TestSuiteBase {
         ObjectNode dataEncryptionKeyProperties = TestUtils.loadPojo("./encryption/dotnet/DataEncryptionKeyProperties.json", ObjectNode.class);
         keyContainer.createItem(dataEncryptionKeyProperties).block();
 
-        DataEncryptionKey loadedKey = dekProvider.getDataEncryptionKey(dataEncryptionKeyProperties.get("id").asText(), CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
+        DataEncryptionKey loadedKey = dekProvider.getDataEncryptionKey(dataEncryptionKeyProperties.get("id").asText(), CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED).block();
 
         assertThat(loadedKey.getEncryptionAlgorithm()).isEqualTo(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
         assertThat(loadedKey.getEncryptionAlgorithm()).isEqualTo(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
 
         EncryptionKeyWrapMetadata keyWrapMetadata = Utils.getSimpleObjectMapper().convertValue(dataEncryptionKeyProperties.get("keyWrapMetadata"), EncryptionKeyWrapMetadata.class);
         byte[] expectedWrappedKey = dataEncryptionKeyProperties.get("wrappedDataEncryptionKey").binaryValue();
-        EncryptionKeyUnwrapResult expectedUnWrappedKey = keyWrapProvider.unwrapKey(expectedWrappedKey, keyWrapMetadata);
+        EncryptionKeyUnwrapResult expectedUnWrappedKey = keyWrapProvider.unwrapKey(expectedWrappedKey, keyWrapMetadata).block();
 
         assertThat(loadedKey.getRawKey()).isEqualTo(expectedUnWrappedKey.getDataEncryptionKey());
     }
@@ -124,7 +130,7 @@ public class DecryptDataEncryptedByDotNetTest extends TestSuiteBase {
         TestDoc expectedTestDoc = TestUtils.loadPojo("./encryption/dotnet/POCO.json", TestDoc.class);
         assertThat(expectedTestDoc.sensitive).isNotNull();
 
-        TestDoc testDoc = encyptionContainer.readItem(objectNode.get("id").asText(), new PartitionKey(objectNode.get("PK").asText()), TestDoc.class).block().getItem();
+        TestDoc testDoc = encyptionContainer.readItem(objectNode.get("id").asText(), new PartitionKey(objectNode.get("PK").asText()), new CosmosItemRequestOptions(), TestDoc.class).block().getItem();
         assertThat(testDoc.sensitive).isNotNull();
         assertThat(testDoc).isEqualTo(expectedTestDoc);
     }
@@ -167,17 +173,17 @@ public class DecryptDataEncryptedByDotNetTest extends TestSuiteBase {
     }
 
     private class TestKeyWrapProvider implements EncryptionKeyWrapProvider {
-        public EncryptionKeyUnwrapResult unwrapKey(byte[] wrappedKey, EncryptionKeyWrapMetadata metadata) {
+        public Mono<EncryptionKeyUnwrapResult> unwrapKey(byte[] wrappedKey, EncryptionKeyWrapMetadata metadata) {
             int moveBy = StringUtils.equals(metadata.value, DecryptDataEncryptedByDotNetTest.METADATA_1.value + DecryptDataEncryptedByDotNetTest.METADATA_UPDATE_SUFFIX) ? 1 : 2;
 
             for (int i = 0; i < wrappedKey.length; i++) {
                 wrappedKey[i] = (byte) (wrappedKey[i] - moveBy);
             }
 
-            return new EncryptionKeyUnwrapResult(wrappedKey, CACHE_TTL);
+            return Mono.just(new EncryptionKeyUnwrapResult(wrappedKey, CACHE_TTL));
         }
 
-        public EncryptionKeyWrapResult wrapKey(byte[] key, EncryptionKeyWrapMetadata metadata) {
+        public Mono<EncryptionKeyWrapResult> wrapKey(byte[] key, EncryptionKeyWrapMetadata metadata) {
             EncryptionKeyWrapMetadata responseMetadata = new EncryptionKeyWrapMetadata(metadata.value + DecryptDataEncryptedByDotNetTest.METADATA_UPDATE_SUFFIX);
             int moveBy = StringUtils.equals(metadata.value, DecryptDataEncryptedByDotNetTest.METADATA_1.value) ? 1 : 2;
 
@@ -185,7 +191,7 @@ public class DecryptDataEncryptedByDotNetTest extends TestSuiteBase {
                 key[i] = (byte) (key[i] + moveBy);
             }
 
-            return new EncryptionKeyWrapResult(key, responseMetadata);
+            return Mono.just(new EncryptionKeyWrapResult(key, responseMetadata));
         }
     }
 }

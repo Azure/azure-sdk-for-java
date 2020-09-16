@@ -17,7 +17,12 @@
   <version>3.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
 
   <name>Microsoft Azure SDK for Event Hubs</name>
-  <description>Libraries built on Microsoft Azure Event Hubs</description>
+  <description>Libraries built on Microsoft Azure Event Hubs.${line.separator}
+    This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure Event Hubs service are:${line.separator}
+    1. https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs${line.separator}
+    2. https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob${line.separator}
+    It is recommended that you move to the new package.
+  </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -45,7 +50,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.28</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+      <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
 
     <!-- Explicitly list this as a compile dependency because in parent/pom.xml, this is a test dependency. -->
@@ -64,19 +69,19 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.25</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.6.2</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -88,7 +93,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.3.3</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

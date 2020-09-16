@@ -523,7 +523,8 @@ class QueueAysncAPITests extends APISpec {
         when:
         def updateMsgVerifier = StepVerifier.create(queueAsyncClient.updateMessageWithResponse(
             dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1)))
-        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage().delaySubscription(Duration.ofSeconds(2)))
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage()
+            .delaySubscription(getMessageUpdateDelay(2000)))
         then:
         updateMsgVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204)

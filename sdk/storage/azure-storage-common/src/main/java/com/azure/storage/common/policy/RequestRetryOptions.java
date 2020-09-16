@@ -69,6 +69,11 @@ public final class RequestRetryOptions {
             StorageImplUtils.assertInBounds("tryTimeout", tryTimeout, 1, Integer.MAX_VALUE);
             this.tryTimeout = tryTimeout;
         } else {
+            /*
+            Because this timeout applies to the whole operation, and calculating a meaningful timeout for read/write
+            operations must consider the size of the payload, we can't set a meaningful default value for all requests
+            and therefore default to no timeout.
+             */
             this.tryTimeout = Integer.MAX_VALUE;
         }
 

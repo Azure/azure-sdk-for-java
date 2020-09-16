@@ -182,7 +182,7 @@ public class SampleApplication implements CommandLineRunner {
 Autowired UserRepository interface, then can do save, delete and find operations. 
 
 ## Examples
-Please refer to [sample project](./azure-spring-boot-samples/azure-spring-data-sample-gremlin/) and [web sample project]((./azure-spring-boot-samples/azure-spring-data-sample-gremlin-web-service)).
+Please refer to [sample project](../azure-spring-boot-samples/azure-spring-data-sample-gremlin/) and [web sample project](../azure-spring-boot-samples/azure-spring-data-sample-gremlin-web-service).
 
 ## Data / Telemetry
 

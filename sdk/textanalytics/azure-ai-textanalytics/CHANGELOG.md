@@ -1,5 +1,19 @@
 # Release History
 ## 5.1.0-beta.1 (Unreleased)
+- Added `offset` and `length` properties for `CategorizedEntity`, `LinkedEntityMatch` and `SentenceSentiment`
+  - `length` is the number of characters in the text of these models
+  - `offset` is the offset of the text from the start of the document
+  
+**New features**
+- Updated Text Analytics SDK's default service API version to `v3.1-preview.2` from `v3.0`.
+- Added support for Personally Identifiable Information(PII) entity recognition feature.
+  To use this feature, you need to make sure you are using the service's v3.1-preview.1 API.
+- Added support for the Opinion Mining feature. To use this feature, you need to make sure you are using the 
+service's v3.1-preview.1 and above API. To get this support pass `includeOpinionMining` as `true` in 
+`AnalyzeSentimentOptions` when calling the sentiment analysis endpoints.
+- Add property `bingEntitySearchApiId` to the `LinkedEntity` class. This property is only available for v3.1-preview.2
+and up, and it is to be used in conjunction with the Bing Entity Search API to fetch additional relevant information
+about the returned entity.
 
 ## 5.0.0 (2020-07-27)
 - Re-release of version `1.0.1` with updated version `5.0.0`.

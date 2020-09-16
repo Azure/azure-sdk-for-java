@@ -46,7 +46,7 @@ parameters:
   TestName: LiveTest
   TimeoutInMinutes: 60
   TestStepMavenInputs:
-    options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -pl $(ProjectList)'
+    options: '-Dmaven.wagon.http.pool=false -DtrimStackTrace=false $(DefaultOptions) -pl $(ProjectList)'
     mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '$(JavaTestVersion)'

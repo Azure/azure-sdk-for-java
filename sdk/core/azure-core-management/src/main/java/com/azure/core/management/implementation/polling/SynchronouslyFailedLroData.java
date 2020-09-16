@@ -3,6 +3,8 @@
 
 package com.azure.core.management.implementation.polling;
 
+import java.util.Map;
+
 /**
  * The type to store the data associated a long-running-operation that is Failed to synchronously.
  */
@@ -16,9 +18,13 @@ final class SynchronouslyFailedLroData extends Error {
      *
      * @param message the error message
      * @param lroResponseStatusCode the http response status code of long-running init operation
+     * @param responseHeaders the http response headers of long-running init operation
      * @param lroResponseBody the http response body of long-running init operation
      */
-    SynchronouslyFailedLroData(String message, int lroResponseStatusCode, String lroResponseBody) {
-        super(message, lroResponseStatusCode, lroResponseBody);
+    SynchronouslyFailedLroData(String message,
+                               int lroResponseStatusCode,
+                               Map<String, String> responseHeaders,
+                               String lroResponseBody) {
+        super(message, lroResponseStatusCode, responseHeaders, lroResponseBody);
     }
 }

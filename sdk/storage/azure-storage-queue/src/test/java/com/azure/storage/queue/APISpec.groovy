@@ -21,6 +21,7 @@ import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import spock.lang.Specification
 
+import java.time.Duration
 import java.time.OffsetDateTime
 
 class APISpec extends Specification {
@@ -224,4 +225,7 @@ class APISpec extends Specification {
         return testMode == TestMode.RECORD
     }
 
+    def getMessageUpdateDelay(long liveTestDurationInMillis) {
+        return (testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+    }
 }

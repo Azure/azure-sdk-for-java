@@ -87,6 +87,28 @@ public interface CassandraResources {
     Observable<ThroughputSettingsGetResults> updateCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
+     * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateCassandraKeyspaceToAutoscaleAsync(String resourceGroupName, String accountName, String keyspaceName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateCassandraKeyspaceToManualThroughputAsync(String resourceGroupName, String accountName, String keyspaceName);
+
+    /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -110,6 +132,30 @@ public interface CassandraResources {
      * @return the observable for the request
      */
     Observable<ThroughputSettingsGetResults> updateCassandraTableThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateCassandraTableToAutoscaleAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateCassandraTableToManualThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.

@@ -1154,6 +1154,7 @@ class BlockBlobAPITest extends APISpec {
 
     @Requires({ liveMode() })
     def "Async buffered upload empty"() {
+
         expect:
         StepVerifier.create(blobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null, true))
             .assertNext({ assert it.getETag() != null })
@@ -1187,7 +1188,13 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
+    @Ignore("Timeouts")
     def "Async buffered upload"() {
+        setup:
+        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
+            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+            .getBlobAsyncClient(blobAsyncClient.getBlobName())
+
         when:
         def data = getRandomData(dataSize)
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
@@ -1257,6 +1264,11 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     @Requires({ liveMode() })
     def "Buffered upload with reporter"() {
+        setup:
+        def blobAsyncClient = getPrimaryServiceClientForWrites(blockSize)
+            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+            .getBlobAsyncClient(blobAsyncClient.getBlobName())
+
         when:
         def uploadReporter = new Reporter(blockSize)
 
@@ -1287,12 +1299,16 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
+    @Ignore("Timeouts")
     def "Buffered upload chunked source"() {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
         it will be chunked appropriately.
          */
         setup:
+        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize * Constants.MB)
+            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+            .getBlobAsyncClient(blobAsyncClient.getBlobName())
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize * Constants.MB).setMaxConcurrency(numBuffers).setMaxSingleUploadSizeLong(4 * Constants.MB)
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size * Constants.MB)) }
@@ -1322,7 +1338,8 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
+        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList),
+            new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))

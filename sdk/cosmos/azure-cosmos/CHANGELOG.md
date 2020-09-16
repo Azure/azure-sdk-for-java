@@ -1,12 +1,58 @@
 # Release History
 
-## 4.3.0-beta.1 (Unreleased)
-### New Features
-* Updated reactor-core version to `3.3.8.RELEASE`
-* Updated reactor-netty version to `0.9.10.RELEASE`
-* Updated netty version to `4.1.51.Final`
+## 4.5.0-beta.1 (Unreleased)
+
+
+## 4.4.0 (2020-09-12)
 ### Key Bug Fixes
-* Fixed issue where SSLException gets thrown in case of cancellation of requests in GATEWAY mode. 
+* Fixed RequestTimeoutException when enabling `netty-tcnative-boringssl` dependency.
+* Fixed memory leak issue on `Delete` operations in `GATEWAY` mode.
+* Fixed a leak in `CosmosClient` instantiation when endpoint uri is invalid.
+* Improved `CPU History` diagnostics.
+
+## 4.4.0-beta.1 (2020-08-27)
+### New Features
+* Added new API to efficiently load many documents (via list of pk/id pairs or all documents for a set of pk values).
+* Added new `deleteItem` API.
+* Enabled query metrics by default.
+### Key Bug Fixes
+* Fixed NPE in `GatewayAddressCache`.
+* Fixing query metric issue for zero item response.
+* Improved performance (reduced CPU usage) for address parsing and Master-Key authentication.
+
+## 4.3.2-beta.2 (2020-08-17)
+### Key Bug Fixes
+* No changes from previous version, releasing for compatibility issues with spring data modules.
+
+## 4.3.2-beta.1 (2020-08-14)
+### Key Bug Fixes
+* Fixed issue in RntbdServiceEndpoint to avoid early closure of an unused TCP connection.
+
+## 4.3.1 (2020-08-13)
+### Key Bug Fixes
+* Fixed issue with `GROUP BY` query, where it was returning only one page.
+* Fixed user agent string format to comply with central SDK guidelines.
+* Enhanced diagnostics information to include query plan diagnostics.
+
+## 4.3.0 (2020-07-29)
+### New Features
+* Updated reactor-core library version to `3.3.8.RELEASE`. 
+* Updated reactor-netty library version to `0.9.10.RELEASE`. 
+* Updated netty library version to `4.1.51.Final`. 
+* Added new overload APIs for `upsertItem` with `partitionKey`. 
+* Added open telemetry tracing support. 
+### Key Bug Fixes
+* Fixed issue where SSLException gets thrown in case of cancellation of requests in GATEWAY mode.
+* Fixed resource throttle retry policy on stored procedures execution.
+* Fixed issue where SDK hangs in log level DEBUG mode. 
+* Fixed periodic spikes in latency in Direct mode. 
+* Fixed high client initialization time issue. 
+* Fixed http proxy bug when customizing client with direct mode and gateway mode. 
+* Fixed potential NPE in users passes null options. 
+* Added timeUnit to `requestLatency` in diagnostics string.
+* Removed duplicate uri string from diagnostics string. 
+* Fixed diagnostics string in proper JSON format for point operations.
+* Fixed issue with `.single()` operator causing the reactor chain to blow up in case of Not Found exception. 
 
 ## 4.2.0 (2020-07-14)
 ### New Features

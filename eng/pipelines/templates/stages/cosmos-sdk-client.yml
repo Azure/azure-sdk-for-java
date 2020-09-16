@@ -65,10 +65,11 @@ stages:
             JavaTestVersion: '1.11'
             RunTitle: 'Windows on Java 1.11'
             ProfileFlag: '-Punit'
-          Windows From Source - Java 8:
-            OSVmImage: 'windows-2019'
-            JavaTestVersion: '1.8'
-            RunTitle: 'From Source: Windows on Java 1.8'
+          Linux From Source - Java 11:
+            OSVmImage: 'ubuntu-18.04'
+            JavaTestVersion: '1.11'
+            RunTitle: 'From Source: Linux on Java 1.11'
+            AdditionalOptions: '-amd'
             TestFromSource: true
             ProfileFlag: '-Punit'
         PreTestSteps:
@@ -120,7 +121,7 @@ stages:
             AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
 
         TestStepMavenInputs:
-          goals: 'verify'
+          goals: clean verify
           options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
           mavenAuthenticateFeed: true
           jdkVersionOption: $(JavaTestVersion)
@@ -138,7 +139,6 @@ stages:
             $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
             $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
           displayName: 'Export Cosmos DB Emulator Certificate'
-
         - powershell: |
             cd $env:java_home\jre\lib\security
             cp $env:temp\CosmosDbEmulatorCert.cer .
@@ -148,6 +148,23 @@ stages:
         # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
         # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
         - template: ../steps/install-reporting-tools.yml
+
+        PostRunSteps:
+          - script: |
+              python --version
+              python -m pip install setuptools termcolor in_place
+              python sdk/spring/scripts/replace_util.py --module cosmos --log debug --color false
+            condition: eq(variables['DisplayName'], 'Spring Emulator only Integration Tests')
+            displayName: 'Run replace_util.py'
+          - task: Maven@3
+            condition: eq(variables['DisplayName'], 'Spring Emulator only Integration Tests')
+            displayName: 'Run tests again: $(DisplayName)'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: clean verify
+              options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl com.azure:azure-spring-data-cosmos-test'
+              mavenAuthenticateFeed: true
+              jdkVersionOption: $(JavaTestVersion)
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:

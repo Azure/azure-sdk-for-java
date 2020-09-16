@@ -68,12 +68,23 @@ jobs:
           inputs:
             mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}/pom.xml
             goals: 'deploy'
-            options: '-pl ${{artifact.groupId}}:${{artifact.name}} -DaltDeploymentRepository=id::default::file://$(Build.ArtifactStagingDirectory) -Dgpg.skip'
+            options: '-pl ${{artifact.groupId}}:${{artifact.name}} -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build -Ddependency-checker -Dgpg.skip'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaBuildVersion)
             jdkArchitectureOption: 'x64'
             publishJUnitResults: false
+
+      - task: PowerShell@2
+        displayName: 'Copy artifacts to staging'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/scripts/Stage-MavenPackageArtifacts.ps1
+          arguments: >
+            -SourceDirectory $(System.DefaultWorkingDirectory)/build
+            -TargetDirectory $(Build.ArtifactStagingDirectory)
+            -InformationAction Continue
 
       - publish: $(Build.ArtifactStagingDirectory)
         displayName: 'Publish Artifacts $(ArtifactName)'

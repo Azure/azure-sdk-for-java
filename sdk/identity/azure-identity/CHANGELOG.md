@@ -1,7 +1,38 @@
 # Release History
 
-## 1.1.0-beta.8 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
+
+## 1.2.0-beta.1 (2020-09-11)
+- Added `InteractiveBrowserCredentialBuilder.redirectUrl(String)` to configure the redirect URL
+- Deprecated `InteractiveBrowserCredentialBuilder.port(int)`
+- Added support for App Service 2019 MSI Endpoint in `ManagedIdentityCredential`
+- Added Shared Token cache support for MacOS Keychain, Gnome Keyring, and plain text for other Linux environments
+- Added option to write to shared token cache from `InteractiveBrowserCredential`, `AuthorizationCodeCredential`, `UsernamePasswordCredential`, `DeviceCodeCredential` `ClientSecretCredential` and `ClientCertificateCredential`
+- Added new APIs for authenticating users with `DeviceCodeCredential`,  `InteractiveBrowserCredential` and `UsernamePasswordCredential`.
+    - Added method `authenticate` which pro-actively interacts with the user to authenticate if necessary and returns a serializable `AuthenticationRecord`
+- Added following configurable options in classes `DeviceCodeCredentialBuilder` and `InteractiveBrowserCredentialBuilder`
+    - `authenticationRecord` enables initializing a credential with an `AuthenticationRecord` returned from a prior call to `Authenticate`
+    - `disableAutomaticAuthentication` disables automatic user interaction causing the credential to throw an `AuthenticationRequiredException` when interactive authentication is necessary.
+
+
+
+## 1.1.0 (2020-08-10)
+- Upgraded core dependency to 1.7.0
+- Removed the default value of 0 for port in `InteractiveBrowserCredential`.
+
+### Breaking Changes
+- Removing Application Authentication APIs for GA release. These will be reintroduced in 1.2.0-beta.1.
+  - Removed class `AuthenticationRecord`
+  - Removed class `AuthenticationRequiredException`
+  - Removed methods `allowUnencryptedCache()` and `enablePersistentCache()` from `ClientCertificateCredentialBuilder`, 
+   `ClientSecretCredentialBuilder`, `InteractiveBrowserCredentialBuilder`, `DeviceCodeCredentialBuilder`,
+    `UsernamePasswordCredentialBuilder` and `ClientCertificateCredentialBuilder`.
+  - Removed methods `allowUnencryptedCache()` and `authenticationRecord(AuthenticationRecord)` from `SharedTokenCacheCredentialBuilder`.
+  - Removed methods `authenticationRecord(AuthenticationRecord)` and `disableAutomaticAuthentication()` from `DeviceCodeCredentialBuilder` and `InteractiveBrowserCredentialBuilder`.
+  - Removed methods `authenticate(TokenRequestContext)` and `authenticate()` from `DeviceCodeCredential`, `InteractiveBrowserCredential`
+    and `UsernamePasswordCredential`.
+    
 
 ## 1.1.0-beta.7 (2020-07-23)
 

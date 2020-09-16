@@ -10,40 +10,28 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.SerializerAdapter;
 
-/** A builder for creating a new instance of the AzureTable type. */
+/**
+ * A builder for creating a new instance of the AzureTable type.
+ */
 @ServiceClientBuilder(serviceClients = {AzureTableImpl.class})
 public final class AzureTableImplBuilder {
     /*
-     * The URL of the service account or table that is the targe of the desired
-     * operation.
+     * The URL of the service account or table that is the target of the
+     * desired operation.
      */
     private String url;
 
     /**
-     * Sets The URL of the service account or table that is the targe of the desired operation.
+     * Sets The URL of the service account or table that is the target of the desired operation.
      *
      * @param url the url value.
+     *
      * @return the AzureTableImplBuilder.
      */
     public AzureTableImplBuilder url(String url) {
         this.url = url;
-        return this;
-    }
-
-    /*
-     * Specifies the version of the operation to use for this request.
-     */
-    private String version;
-
-    /**
-     * Sets Specifies the version of the operation to use for this request.
-     *
-     * @param version the version value.
-     * @return the AzureTableImplBuilder.
-     */
-    public AzureTableImplBuilder version(String version) {
-        this.version = version;
         return this;
     }
 
@@ -56,10 +44,41 @@ public final class AzureTableImplBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
+     *
      * @return the AzureTableImplBuilder.
      */
     public AzureTableImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
+        return this;
+    }
+
+    /**
+     * The version for Tables service.
+     */
+    private String version;
+
+    /**
+     * Sets the version for Tables service.
+     *
+     * @param version the service value.
+     *
+     * @return the AzureTableImplBuilder.
+     */
+    public AzureTableImplBuilder version(String version) {
+        this.version = version;
+        return this;
+    }
+
+    private SerializerAdapter serializerAdapter;
+
+    /**
+     * Sets the serializer adapter to use.
+     *
+     * @param serializerAdapter Adapter to serialize with.
+     * @return The updated object.
+     */
+    public AzureTableImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
         return this;
     }
 
@@ -71,13 +90,11 @@ public final class AzureTableImplBuilder {
     public AzureTableImpl buildClient() {
         if (pipeline == null) {
             this.pipeline =
-                    new HttpPipelineBuilder()
-                            .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                            .build();
+                new HttpPipelineBuilder()
+                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
         }
-        AzureTableImpl client = new AzureTableImpl(pipeline);
-        client.setUrl(this.url);
-        client.setVersion(this.version);
-        return client;
+
+        return new AzureTableImpl(pipeline, url, version, serializerAdapter);
     }
 }

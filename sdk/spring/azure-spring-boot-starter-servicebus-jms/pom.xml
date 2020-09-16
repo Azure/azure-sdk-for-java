@@ -13,7 +13,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
-  <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms-spring-boot-starter;current} -->
+  <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms-spring-boot-starter;current} -->
 
   <name>Azure Service Bus JMS Spring Boot Starter</name>
   <description>Spring Boot Starter for Azure Service Bus JMS</description>
@@ -23,25 +23,59 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
+      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
-      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
     </dependency>
     <!--Spring JMS-->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>5.2.6.RELEASE</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
+      <version>5.2.8.RELEASE</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
     </dependency>
-
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-servicebus-jms</artifactId>
-      <version>0.0.2</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
+      <groupId>org.apache.qpid</groupId>
+      <artifactId>qpid-jms-client</artifactId>
+      <version>0.53.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-buffer</artifactId>
+      <version>4.1.51.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-common</artifactId>
+      <version>4.1.51.Final</version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-handler</artifactId>
+      <version>4.1.51.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport</artifactId>
+      <version>4.1.51.Final</version> <!-- {x-version-update;io.netty:netty-transport;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-epoll</artifactId>
+      <version>4.1.51.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-kqueue</artifactId>
+      <version>4.1.51.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-codec-http</artifactId>
+      <version>4.1.51.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -55,10 +89,17 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-servicebus-jms:[0.0.2]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
-                <include>com.microsoft.azure:azure-spring-boot:[2.3.3-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
-                <include>org.springframework:spring-jms:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-validation:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+                <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+                <include>io.netty:netty-buffer:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
+                <include>io.netty:netty-common:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
+                <include>io.netty:netty-handler:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
+                <include>io.netty:netty-transport:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-transport;external_dependency} -->
+                <include>io.netty:netty-transport-native-epoll:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+                <include>io.netty:netty-transport-native-kqueue:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+                <include>io.netty:netty-codec-http:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                <include>com.microsoft.azure:azure-spring-boot:[2.4.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
+                <include>org.springframework:spring-jms:[5.2.8.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-validation:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

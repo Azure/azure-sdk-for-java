@@ -9,6 +9,8 @@ import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.Memo;
+import com.azure.spring.data.cosmos.domain.Person;
+import com.azure.spring.data.cosmos.domain.PersonWithEtag;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -22,6 +24,7 @@ import org.springframework.context.ApplicationContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -64,9 +67,7 @@ public class MappingCosmosConverterUnitTest {
         objectNode.put(TestConstants.PROPERTY_STREET, TestConstants.STREET);
         objectNode.put(TestConstants.PROPERTY_ID, TestConstants.POSTAL_CODE);
 
-        final JsonNode jsonNode = mappingCosmosConverter.writeJsonNode(objectNode);
-
-        final Address address = mappingCosmosConverter.read(Address.class, jsonNode);
+        final Address address = mappingCosmosConverter.read(Address.class, objectNode);
 
         assertThat(address.getPostalCode()).isEqualTo(TestConstants.POSTAL_CODE);
         assertThat(address.getCity()).isEqualTo(TestConstants.CITY);
@@ -93,12 +94,10 @@ public class MappingCosmosConverterUnitTest {
         jsonObject.put(TestConstants.PROPERTY_DATE, date);
         jsonObject.put(TestConstants.PROPERTY_ID, TestConstants.ID_1);
 
-        final JsonNode jsonNode = mappingCosmosConverter.writeJsonNode(jsonObject);
-
-        final Memo memo = mappingCosmosConverter.read(Memo.class, jsonNode);
-        assertThat(jsonNode.get("id").asText()).isEqualTo(memo.getId());
-        assertThat(jsonNode.get(TestConstants.PROPERTY_MESSAGE).asText()).isEqualTo(TestConstants.MESSAGE);
-        assertThat(jsonNode.get(TestConstants.PROPERTY_DATE).asLong()).isEqualTo(date);
+        final Memo memo = mappingCosmosConverter.read(Memo.class, jsonObject);
+        assertThat(memo.getId()).isEqualTo(TestConstants.ID_1);
+        assertThat(memo.getMessage()).isEqualTo(TestConstants.MESSAGE);
+        assertThat(memo.getDate().getTime()).isEqualTo(date);
     }
 
     @Test
@@ -107,6 +106,52 @@ public class MappingCosmosConverterUnitTest {
         final long time = (Long) MappingCosmosConverter.toCosmosDbValue(date);
 
         assertThat(time).isEqualTo(TestConstants.MILLI_SECONDS);
+    }
+
+    @Test
+    public void mapsVersionFieldToEtagAndRemovesVersionField() {
+        final PersonWithEtag person = new PersonWithEtag(TestConstants.ID_1, TestConstants.FIRST_NAME,
+            TestConstants.LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES);
+
+        final String etagValue = UUID.randomUUID().toString();
+        person.setEtag(etagValue);
+
+        final JsonNode jsonNode = mappingCosmosConverter.writeJsonNode(person);
+
+        assertThat(jsonNode.get(TestConstants.PROPERTY_ETAG_RENAMED)).isNull();
+        assertThat(jsonNode.get(TestConstants.PROPERTY_ETAG_DEFAULT).asText()).isEqualTo(etagValue);
+    }
+
+    @Test
+    public void mapsEtagOntoVersionField() {
+        final String etagValue = UUID.randomUUID().toString();
+        final ObjectNode objectNode = ObjectMapperFactory.getObjectMapper().createObjectNode();
+        objectNode.put(TestConstants.PROPERTY_ID, TestConstants.ID_1);
+        objectNode.put(TestConstants.PROPERTY_FIRST_NAME, TestConstants.FIRST_NAME);
+        objectNode.put(TestConstants.PROPERTY_LAST_NAME, TestConstants.LAST_NAME);
+        objectNode.put(TestConstants.PROPERTY_ETAG_DEFAULT, etagValue);
+
+        final PersonWithEtag person = mappingCosmosConverter.read(PersonWithEtag.class, objectNode);
+
+        assertThat(person.getEtag()).isEqualTo(etagValue);
+    }
+
+    @Test
+    public void mapsDefaultEtag() {
+        final String etagValue = UUID.randomUUID().toString();
+        final ObjectNode objectNode = ObjectMapperFactory.getObjectMapper().createObjectNode();
+        objectNode.put(TestConstants.PROPERTY_ID, TestConstants.ID_1);
+        objectNode.put(TestConstants.PROPERTY_FIRST_NAME, TestConstants.FIRST_NAME);
+        objectNode.put(TestConstants.PROPERTY_LAST_NAME, TestConstants.LAST_NAME);
+        objectNode.put(TestConstants.PROPERTY_ETAG_DEFAULT, etagValue);
+
+        final Person person = mappingCosmosConverter.read(Person.class, objectNode);
+
+        assertThat(person.get_etag()).isEqualTo(etagValue);
+
+        final JsonNode jsonNode = mappingCosmosConverter.writeJsonNode(person);
+
+        assertThat(jsonNode.get(TestConstants.PROPERTY_ETAG_DEFAULT).asText()).isEqualTo(etagValue);
     }
 }
 

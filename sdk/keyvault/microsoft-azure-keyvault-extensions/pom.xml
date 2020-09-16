@@ -83,17 +83,17 @@
     <dependency>
     	<groupId>com.google.guava</groupId>
     	<artifactId>guava</artifactId>
-     <version>24.1.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
+     <version>29.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.8.1</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
+      <version>3.10</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.13</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
+      <version>1.14</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
     </dependency>
 
 
@@ -117,7 +117,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

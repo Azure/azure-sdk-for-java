@@ -12,12 +12,18 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
+import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting
@@ -597,4 +603,18 @@ public final class SearchIndexClient {
     public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(Context context) {
         return asyncClient.getServiceStatisticsWithResponse(context).block();
     }
+
+    /**
+     * Convenience method to convert a {@link Class Class's} {@link Field Fields} and {@link Method Methods} into {@link
+     * SearchField SearchFields} to help aid the creation of a {@link SearchField} which represents the {@link Class}.
+     *
+     * @param model The model {@link Class} that will have {@link SearchField SearchFields} generated from its
+     * structure.
+     * @param options Configuration used to determine generation of the {@link SearchField SearchFields}.
+     * @return A list {@link SearchField SearchFields} which represent the model {@link Class}.
+     */
+    public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
+        return SearchIndexAsyncClient.buildSearchFields(model, options);
+    }
+
 }

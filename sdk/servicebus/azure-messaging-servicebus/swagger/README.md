@@ -4,7 +4,7 @@
 
 ## Getting Started
 
-To build the SDK for ServiceBusManagementClient and ServiceBusManagementClient, simply [Install AutoRest](https://aka.ms/autorest/install) and in this folder, run:
+To build the SDK for ServiceBusManagementClient and ServiceBusManagementClient, simply [Install AutoRest](https://github.com/Azure/autorest/blob/master/docs/installing-autorest.md) and in this folder, run:
 
 ### Setup
 ```ps
@@ -31,13 +31,13 @@ input-file: E:\git\conniey\azure-rest-api-specs-pr\specification\servicebus\data
 java: true
 output-folder: ..\
 generate-client-as-impl: true
-namespace: com.azure.messaging.servicebus
+namespace: com.azure.messaging.servicebus.administration
 generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: AccessRights,AuthorizationRule,EntityAvailabilityStatus,EntityStatus,MessageCountDetails,NamespaceProperties,NamespaceType,QueueDescription,MessagingSku,SubscriptionDescription,TopicDescription
+custom-types: AccessRights,AuthorizationRule,EntityStatus,NamespaceProperties,MessagingSku
 custom-types-subpackage: models
 context-client-method-parameter: true
 enable-xml: true

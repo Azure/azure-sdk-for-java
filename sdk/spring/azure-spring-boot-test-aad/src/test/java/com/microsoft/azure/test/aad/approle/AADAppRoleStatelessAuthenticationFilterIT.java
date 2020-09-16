@@ -7,7 +7,6 @@ import com.microsoft.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthentic
 import com.microsoft.azure.test.utils.AppRunner;
 import com.microsoft.azure.test.oauth.OAuthResponse;
 import com.microsoft.azure.test.oauth.OAuthUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +30,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 
-import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_CLIENT_ID;
-import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_CLIENT_SECRET;
+import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
+import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@Ignore
 public class AADAppRoleStatelessAuthenticationFilterIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAppRoleStatelessAuthenticationFilterIT.class);
@@ -44,13 +42,13 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
 
     @Test
     public void testAADAppRoleStatelessAuthenticationFilter() {
-        final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(System.getenv(AAD_CLIENT_ID),
-            System.getenv(AAD_CLIENT_SECRET));
+        final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(System.getenv(AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE),
+            System.getenv(AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE));
         assertNotNull(authResponse);
 
         try (AppRunner app = new AppRunner(DumbApp.class)) {
 
-            app.property("azure.activedirectory.client-id", System.getenv(AAD_CLIENT_ID));
+            app.property("azure.activedirectory.client-id", System.getenv(AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE));
             app.property("azure.activedirectory.session-stateless", "true");
 
             app.start();

@@ -30,7 +30,7 @@ public final class RecognizedForm {
     /*
      * First and last page number where the document is found.
      */
-    private final FormPageRange formPageRange;
+    private final FormPageRange pageRange;
 
     /*
      * List of extracted pages from the form.
@@ -42,14 +42,14 @@ public final class RecognizedForm {
      *
      * @param fields Dictionary of named field values.
      * @param formType Form type.
-     * @param formPageRange First and last page number where the document is found.
+     * @param pageRange First and last page number where the document is found.
      * @param pages List of extracted pages from the form.
      */
     public RecognizedForm(final Map<String, FormField> fields, final String formType,
-        final FormPageRange formPageRange, final List<FormPage> pages) {
+        final FormPageRange pageRange, final List<FormPage> pages) {
         this.fields = fields == null ? null : Collections.unmodifiableMap(fields);
         this.formType = formType;
-        this.formPageRange = formPageRange;
+        this.pageRange = pageRange;
         this.pages = pages == null ? null : Collections.unmodifiableList(pages);
     }
 
@@ -78,8 +78,8 @@ public final class RecognizedForm {
      *
      * @return the pageRange value.
      */
-    public FormPageRange getFormPageRange() {
-        return this.formPageRange;
+    public FormPageRange getPageRange() {
+        return this.pageRange;
     }
 
     /**

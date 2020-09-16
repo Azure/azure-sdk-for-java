@@ -17,7 +17,12 @@
   <version>3.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-extensions;current} -->
 
   <name>Microsoft Azure SDK for Event Hubs Extensions</name>
-  <description>Extensions built on Microsoft Azure Event Hubs</description>
+  <description>Extensions built on Microsoft Azure Event Hubs${line.separator}
+    This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure Event Hubs service are:${line.separator}
+    1. https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs${line.separator}
+    2. https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob${line.separator}
+    It is recommended that you move to the new package.
+  </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -40,24 +45,24 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.11.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+      <version>2.13.3</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.11.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+      <version>2.13.3</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
     </dependency>
 
     <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+        <version>4.13</version> <!-- {x-version-update;junit:junit;external_dependency} -->
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
-        <version>1.7.25</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+        <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
         <scope>test</scope>
       </dependency>
       <dependency>

@@ -3,7 +3,7 @@
 package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import org.springframework.data.repository.query.ReturnedType;
 
@@ -20,7 +20,7 @@ public interface ReactiveCosmosQueryExecution {
      * @param container container to conduct query
      * @return Object according to execution result
      */
-    Object execute(DocumentQuery query, Class<?> type, String container);
+    Object execute(CosmosQuery query, Class<?> type, String container);
 
     /**
      * Container operation implementation to execute a container name query
@@ -34,7 +34,7 @@ public interface ReactiveCosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.getContainerName(type);
         }
     }
@@ -51,7 +51,7 @@ public interface ReactiveCosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.find(query, type, container);
         }
     }
@@ -70,7 +70,7 @@ public interface ReactiveCosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.find(query, type, container)
                 .buffer(2)
                 .map((vals) -> {
@@ -96,7 +96,7 @@ public interface ReactiveCosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.exists(query, type, container);
         }
     }
@@ -113,7 +113,7 @@ public interface ReactiveCosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.delete(query, type, container);
         }
     }

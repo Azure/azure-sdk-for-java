@@ -3,25 +3,36 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.ExponentialBackoff;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.search.documents.implementation.SerializationUtil;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.azure.core.util.serializer.TypeReference;
+import com.azure.search.documents.implementation.util.Utility;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.reactivestreams.Publisher;
+import reactor.core.Exceptions;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UncheckedIOException;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -32,8 +43,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.Set;
 
+import static com.azure.search.documents.SearchTestBase.API_KEY;
+import static com.azure.search.documents.SearchTestBase.ENDPOINT;
+import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
+import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
+import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -50,9 +67,12 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-
-//    public static PointGeometry createPointGeometryString(Double latitude, Double longitude) {
-//        return new PointGeometry(new GeometryPosition(longitude, latitude), null, Collections.singletonMap("crs", new HashMap<String, Object>() {
+    public static final JacksonAdapter SERIALIZER = (JacksonAdapter) Utility.initializeSerializerAdapter();
+    public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
+        new TypeReference<List<Map<String, Object>>>() { };
+//    public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
+//        return new PointGeometry(new GeometryPosition(longitude, latitude), null,
+//            Collections.singletonMap("crs", new HashMap<String, Object>() {
 //            {
 //                put("type", "name");
 //                put("properties", Collections.singletonMap("name", "EPSG:4326"));
@@ -60,12 +80,6 @@ public final class TestHelpers {
 //        }));
 //    }
 
-    private static final ObjectMapper MAPPER;
-
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-    }
     /**
      * Assert whether two objects are equal.
      *
@@ -287,13 +301,93 @@ public final class TestHelpers {
         return searchAsyncClient.getHttpPipeline();
     }
 
-    private static List<Map<String, Object>> readJsonFileToList(String filename) {
-        Reader reader = new InputStreamReader(Objects.requireNonNull(TestHelpers.class.getClassLoader()
-            .getResourceAsStream(filename)));
+    public static List<Map<String, Object>> readJsonFileToList(String filename) {
+
+        InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
+            .getResourceAsStream(filename));
+        //Creating a Scanner object
+        Scanner sc = new Scanner(inputStream);
+        //Reading line by line from scanner to StringBuffer
+        StringBuilder sb = new StringBuilder();
+        while (sc.hasNext()) {
+            sb.append(sc.nextLine());
+        }
         try {
-            return MAPPER.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
+            return SERIALIZER.deserialize(sb.toString(), LIST_TYPE_REFERENCE.getJavaType(), SerializerEncoding.JSON);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw Exceptions.propagate(e);
+        }
+    }
+
+    public static List<Map<String, Object>> convertStreamToList(InputStream sourceStream) {
+        //Creating a Scanner object
+        Scanner sc = new Scanner(sourceStream);
+        //Reading line by line from scanner to StringBuffer
+        StringBuilder sb = new StringBuilder();
+        while (sc.hasNext()) {
+            sb.append(sc.nextLine());
+        }
+        try {
+            return SERIALIZER.deserialize(sb.toString(), LIST_TYPE_REFERENCE.getJavaType(),
+                SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw Exceptions.propagate(e);
+        }
+    }
+
+    public static Map<String, Object> convertStreamToMap(InputStream sourceStream) {
+        //Creating a Scanner object
+        Scanner sc = new Scanner(sourceStream);
+        //Reading line by line from scanner to StringBuffer
+        StringBuilder sb = new StringBuilder();
+        while (sc.hasNext()) {
+            sb.append(sc.nextLine());
+        }
+        try {
+            return SERIALIZER.deserialize(sb.toString(), MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(),
+                SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw Exceptions.propagate(e);
+        }
+    }
+
+    public static <T> T convertMapToValue(Map<String, Object> value, Class<T> clazz) {
+        try {
+            String serializedJson = SERIALIZER.serialize(value, SerializerEncoding.JSON);
+            return SERIALIZER.deserialize(serializedJson, clazz, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw Exceptions.propagate(ex);
+        }
+    }
+
+    public static SearchIndexClient setupSharedIndex(String indexName) {
+        Reader indexData = new InputStreamReader(Objects.requireNonNull(AutocompleteSyncTests.class
+            .getClassLoader()
+            .getResourceAsStream(HOTELS_TESTS_INDEX_DATA_JSON)));
+
+        try {
+            SearchIndex index = new ObjectMapper().readValue(indexData, SearchIndex.class);
+
+            Field searchIndexName = index.getClass().getDeclaredField("name");
+            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                searchIndexName.setAccessible(true);
+                return null;
+            });
+
+            searchIndexName.set(index, indexName);
+
+            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
+                .endpoint(ENDPOINT)
+                .credential(new AzureKeyCredential(API_KEY))
+                .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))))
+                .buildClient();
+
+            searchIndexClient.createOrUpdateIndex(index);
+            uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), HOTELS_DATA_JSON);
+
+            return searchIndexClient;
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

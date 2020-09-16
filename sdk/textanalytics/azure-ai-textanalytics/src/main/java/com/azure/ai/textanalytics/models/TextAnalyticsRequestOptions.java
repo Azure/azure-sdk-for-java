@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * The {@link TextAnalyticsRequestOptions} model.
  */
 @Fluent
-public final class TextAnalyticsRequestOptions {
+public class TextAnalyticsRequestOptions {
     private String modelVersion;
     private boolean includeStatistics;
 
@@ -27,6 +27,7 @@ public final class TextAnalyticsRequestOptions {
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
      * @param modelVersion The model version.
+     *
      * @return The {@link TextAnalyticsRequestOptions} object itself.
      */
     public TextAnalyticsRequestOptions setModelVersion(String modelVersion) {
@@ -44,10 +45,12 @@ public final class TextAnalyticsRequestOptions {
     }
 
     /**
-     * Set the value of {@code includeStatistics}.
+     * Set the value of {@code includeStatistics}. If set to true, indicates that the service
+     * should return document and document batch statistics with the results of the operation.
      *
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
+     *
      * @return the {@link TextAnalyticsRequestOptions} object itself.
      */
     public TextAnalyticsRequestOptions setIncludeStatistics(boolean includeStatistics) {

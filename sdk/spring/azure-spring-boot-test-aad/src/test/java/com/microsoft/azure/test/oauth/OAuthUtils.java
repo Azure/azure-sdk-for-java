@@ -13,25 +13,27 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 
 public class OAuthUtils {
 
-    public static final String AAD_CLIENT_ID = "AAD_CLIENT_ID";
-    public static final String AAD_CLIENT_SECRET = "AAD_CLIENT_SECRET";
-    public static final String SINGLE_TENANT_AAD_CLIENT_ID = "SINGLE_TENANT_AAD_CLIENT_ID";
-    public static final String SINGLE_TENANT_AAD_CLIENT_SECRET = "SINGLE_TENANT_AAD_CLIENT_SECRET";
-    private static final String AAD_TENANT_ID = "AAD_TENANT_ID";
-    private static final String AAD_USER_NAME = "AAD_USER_NAME";
-    private static final String AAD_USER_PASSWORD = "AAD_USER_PASSWORD";
+    public static final String AAD_MULTI_TENANT_CLIENT_ID = "AAD_MULTI_TENANT_CLIENT_ID";
+    public static final String AAD_MULTI_TENANT_CLIENT_SECRET = "AAD_MULTI_TENANT_CLIENT_SECRET";
+    public static final String AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE = "AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE";
+    public static final String AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE = "AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE";
+    public static final String AAD_SINGLE_TENANT_CLIENT_ID = "AAD_SINGLE_TENANT_CLIENT_ID";
+    public static final String AAD_SINGLE_TENANT_CLIENT_SECRET = "AAD_SINGLE_TENANT_CLIENT_SECRET";
+    private static final String AAD_TENANT_ID_1 = "AAD_TENANT_ID_1";
+    private static final String AAD_USER_NAME_1 = "AAD_USER_NAME_1";
+    private static final String AAD_USER_PASSWORD_1 = "AAD_USER_PASSWORD_1";
 
     private static final RestTemplate CLIENT = new RestTemplate();
 
     public static OAuthResponse executeOAuth2ROPCFlow(String aadClientId, String aadClientSecret) {
-        final String tenantId = System.getenv().get(AAD_TENANT_ID);
-        final String aadUsername = System.getenv(AAD_USER_NAME);
-        final String aadUserPassword = System.getenv(AAD_USER_PASSWORD);
+        final String tenantId = System.getenv().get(AAD_TENANT_ID_1);
+        final String aadUsername = System.getenv(AAD_USER_NAME_1);
+        final String aadUserPassword = System.getenv(AAD_USER_PASSWORD_1);
 
         assertNotEmpty(aadClientId, "client id");
         assertNotEmpty(aadClientSecret, "client secret");
-        assertNotEmpty(aadUsername, AAD_USER_NAME);
-        assertNotEmpty(aadUserPassword, AAD_USER_PASSWORD);
+        assertNotEmpty(aadUsername, AAD_USER_NAME_1);
+        assertNotEmpty(aadUserPassword, AAD_USER_PASSWORD_1);
 
         String url = String.format("https://login.microsoftonline.com/%s/oauth2/v2.0/token", tenantId);
 

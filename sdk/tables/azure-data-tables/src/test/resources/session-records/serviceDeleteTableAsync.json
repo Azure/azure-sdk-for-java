@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "faab62af-5bb3-4403-a5cd-e7026498fcde",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 09 Sep 2020 00:12:59 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test21025bf5eb')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "d7c65b51-d002-0097-433d-869c51000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "faab62af-5bb3-4403-a5cd-e7026498fcde",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test21025bf5eb')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test21025bf5eb')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "8fb5ea2b-4b86-4398-8bcd-ca3b0c9772de"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "d7c65b5e-d002-0097-4c3d-869c51000000",
+      "Date" : "Wed, 09 Sep 2020 00:12:59 GMT",
+      "x-ms-client-request-id" : "8fb5ea2b-4b86-4398-8bcd-ca3b0c9772de"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test21025bf5eb" ]
+}

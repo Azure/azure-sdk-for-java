@@ -21,11 +21,14 @@ import com.azure.storage.blob.implementation.models.PageBlobResizeHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobUpdateSequenceNumberHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobUploadPagesFromURLHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobUploadPagesHeaders;
+import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
@@ -531,7 +534,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfSequenceNumberLessThan(),
             pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
-            pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), encryptionScope,
+            pageBlobRequestConditions.getIfNoneMatch(), pageBlobRequestConditions.getTagsConditions(), null,
+            getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobClearPagesHeaders hd = rb.getDeserializedHeaders();
@@ -790,7 +794,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.pageBlobs().resizeWithRestResponseAsync(null, null, size, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), encryptionScope,
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+            getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobResizeHeaders hd = rb.getDeserializedHeaders();
@@ -864,7 +869,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.pageBlobs().updateSequenceNumberWithRestResponseAsync(null, null, action, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), sequenceNumber, null,
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), sequenceNumber, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobUpdateSequenceNumberHeaders hd = rb.getDeserializedHeaders();
@@ -928,19 +933,49 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(String source, String snapshot,
         RequestConditions modifiedRequestConditions) {
         try {
-            return withContext(context -> copyIncrementalWithResponse(source, snapshot, modifiedRequestConditions,
-                context));
+            return copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(source, snapshot)
+                .setRequestConditions(
+                    ModelHelper.populateBlobDestinationRequestConditions(modifiedRequestConditions)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<CopyStatusType>> copyIncrementalWithResponse(String source, String snapshot,
-        RequestConditions modifiedRequestConditions, Context context) {
-        UrlBuilder builder = UrlBuilder.parse(source);
-        builder.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, snapshot);
-        modifiedRequestConditions = (modifiedRequestConditions == null)
-            ? new RequestConditions() : modifiedRequestConditions;
+    /**
+     * Begins an operation to start an incremental copy from one page blob's snapshot to this page blob. The snapshot
+     * is
+     * copied such that only the differential changes between the previously copied snapshot are transferred to the
+     * destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as
+     * usual. For more information, see the Azure Docs
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
+     * and
+     * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions}
+     *
+     * @param options {@link PageBlobCopyIncrementalOptions}
+     *
+     * @return A reactive response emitting the copy status.
+     *
+     * @throws IllegalStateException If {@code source} and {@code snapshot} form a malformed URL.
+     */
+    public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(PageBlobCopyIncrementalOptions options) {
+        try {
+            return withContext(context -> copyIncrementalWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<CopyStatusType>> copyIncrementalWithResponse(PageBlobCopyIncrementalOptions options,
+        Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        UrlBuilder builder = UrlBuilder.parse(options.getSource());
+        builder.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, options.getSnapshot());
+        PageBlobCopyIncrementalRequestConditions modifiedRequestConditions = (options.getRequestConditions() == null)
+            ? new PageBlobCopyIncrementalRequestConditions() : options.getRequestConditions();
 
         URL url;
         try {
@@ -953,7 +988,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
         return this.azureBlobStorage.pageBlobs().copyIncrementalWithRestResponseAsync(null, null, url, null,
             modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-            modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null,
+            modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(),
+            modifiedRequestConditions.getTagsConditions(), null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyStatus()));
     }

@@ -10,7 +10,7 @@ To build the project, run maven commands.
 
 ```bash
 git clone https://github.com/Azure/azure-sdk-for-java.git 
-cd sdk/cosmos/azure-spring-data-cosmos
+cd sdk/cosmos/azure-spring-data-cosmos-core
 mvnw clean install
 ```
 
@@ -35,7 +35,7 @@ mvn clean install -Dgpg.skip
   
      2. Set environment variables ACCOUNT_HOST, ACCOUNT_KEY and SECONDARY_ACCOUNT_KEY, where value of them are Cosmos account URI, primary key and secondary key. 
      
-        `azure-spring-data-cosmos` also support multiple database configuration. So set the second group environment variables NEW_ACCOUNT_HOST, NEW_ACCOUNT_KEY and NEW_SECONDARY_ACCOUNT_KEY, the two group environment variables can be same.
+        `azure-spring-data-cosmos-core` also support multiple database configuration. So set the second group environment variables NEW_ACCOUNT_HOST, NEW_ACCOUNT_KEY and NEW_SECONDARY_ACCOUNT_KEY, the two group environment variables can be same.
      3. Run maven command with `integration-test-azure` profile. 
   
         ```bash

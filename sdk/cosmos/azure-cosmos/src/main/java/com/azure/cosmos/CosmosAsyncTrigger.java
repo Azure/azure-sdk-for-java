@@ -108,7 +108,8 @@ public class CosmosAsyncTrigger {
         Mono<CosmosTriggerResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
             .readTrigger(getLink(), null)
-            .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response));
+            .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
+            .single();
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
             context,
             spanName,
@@ -122,7 +123,8 @@ public class CosmosAsyncTrigger {
             .getDocClientWrapper()
             .replaceTrigger(new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(
                 ModelBridgeInternal.getResource(triggerSettings))), null)
-            .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response));
+            .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
+            .single();
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
             context,
             spanName,
@@ -135,7 +137,8 @@ public class CosmosAsyncTrigger {
         Mono<CosmosTriggerResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
             .deleteTrigger(getLink(), null)
-            .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response));
+            .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
+            .single();
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
             context,
             spanName,

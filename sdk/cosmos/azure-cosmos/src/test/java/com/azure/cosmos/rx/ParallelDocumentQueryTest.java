@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.ItemOperations;
@@ -74,15 +75,19 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         return new Object[][]{
             {true},
             {false},
+            {null}
         };
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocuments(boolean qmEnabled) {
+    public void queryDocuments(Boolean qmEnabled) {
         String query = "SELECT * from c where c.prop = 99";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        options.setQueryMetricsEnabled(qmEnabled);
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
@@ -671,7 +676,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     //TODO: Fix the test for GW mode
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readMany() throws Exception {
+    public void readManyWithItemOperations() throws Exception {
         if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
             throw new SkipException("Skipping gateway mode. This needs to be fixed");
         }
@@ -690,6 +695,27 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     //TODO: Fix the test for GW mode
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readMany() throws Exception {
+        if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
+            throw new SkipException("Skipping gateway mode. This needs to be fixed");
+        }
+
+        List<CosmosItemIdentity> itemIdentities = new ArrayList<>();
+        for (int i = 0; i < createdDocuments.size(); i = i + 3) {
+            itemIdentities.add(
+                new CosmosItemIdentity(
+                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocuments.get(i), "mypk")),
+                    createdDocuments.get(i).getId()));
+        }
+        FeedResponse<JsonNode> documentFeedResponse =
+            createdCollection.readMany(itemIdentities, JsonNode.class).block();
+        assertThat(documentFeedResponse.getResults().size()).isEqualTo(itemIdentities.size());
+        assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
+            .containsAll(itemIdentities.stream().map(i -> i.getId()).collect(Collectors.toList()));
+    }
+
+    //TODO: Fix the test for GW mode
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyIdSameAsPartitionKey() throws Exception {
         if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
             throw new SkipException("Skipping gateway mode. This needs to be fixed");
@@ -697,15 +723,17 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         CosmosAsyncContainer containerWithIdAsPartitionKey = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
         List<InternalObjectNode> newItems = prepareCosmosContainer(containerWithIdAsPartitionKey);
-        List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
+        List<CosmosItemIdentity> itemIdentities = new ArrayList<>();
         for (int i = 0; i < newItems.size(); i = i + 3) {
-            pairList.add(Pair.of(newItems.get(i).getId(),
-                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newItems.get(i), "id"))));
+            itemIdentities.add(
+                new CosmosItemIdentity(
+                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newItems.get(i), "id")),
+                    newItems.get(i).getId()));
         }
         FeedResponse<JsonNode> documentFeedResponse =
-            ItemOperations.readManyAsync(containerWithIdAsPartitionKey, pairList, JsonNode.class).block();
-        assertThat(documentFeedResponse.getResults().size()).isEqualTo(pairList.size());
+            containerWithIdAsPartitionKey.readMany(itemIdentities, JsonNode.class).block();
+        assertThat(documentFeedResponse.getResults().size()).isEqualTo(itemIdentities.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
-            .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));
+            .containsAll(itemIdentities.stream().map(i -> i.getId()).collect(Collectors.toList()));
     }
 }

@@ -200,4 +200,23 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
             getContentLength(), getBlobType(), getContentOffset(), getDestinationUrl(), getSourceUrl(),
             getBlobUrl(), isRecursive(), getSequencer());
     }
+
+    @Override
+    public String toString() {
+        return "BlobChangefeedEventData{"
+            + "api='" + api + '\''
+            + ", clientRequestId='" + clientRequestId + '\''
+            + ", requestId='" + requestId + '\''
+            + ", eTag='" + eTag + '\''
+            + ", contentType='" + contentType + '\''
+            + ", contentLength=" + contentLength
+            + ", blobType=" + blobType
+            + ", contentOffset=" + contentOffset
+            + ", destinationUrl='" + destinationUrl + '\''
+            + ", sourceUrl='" + sourceUrl + '\''
+            + ", blobUrl='" + blobUrl + '\''
+            + ", recursive=" + recursive
+            + ", sequencer='" + sequencer + '\''
+            + '}';
+    }
 }

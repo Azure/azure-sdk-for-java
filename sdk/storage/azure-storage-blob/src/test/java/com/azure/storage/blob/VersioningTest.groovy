@@ -18,7 +18,6 @@ import com.azure.storage.common.sas.AccountSasSignatureValues
 import org.apache.commons.lang3.StringUtils
 
 import java.nio.charset.StandardCharsets
-import java.time.Duration
 
 class VersioningTest extends APISpec {
 
@@ -237,8 +236,8 @@ class VersioningTest extends APISpec {
         sourceBlob.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        def pooler = blobClient.beginCopy(sourceBlob.getBlobUrl(), Duration.ofSeconds(1))
-        def copyInfo = pooler.waitForCompletion().getValue()
+        def poller = blobClient.beginCopy(sourceBlob.getBlobUrl(), getPollingDuration(1000))
+        def copyInfo = poller.waitForCompletion().getValue()
 
         then:
         copyInfo.getVersionId() != null

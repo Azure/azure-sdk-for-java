@@ -29,6 +29,7 @@ import reactor.test.StepVerifierOptions;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -439,7 +440,11 @@ public class ReactorNettyClientTests {
                 }
             }
 
-            return new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+            try {
+                return outputStream.toString("UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 }

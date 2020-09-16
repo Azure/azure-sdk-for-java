@@ -9,7 +9,7 @@ import java.util.Map;
  * Specifies the options associated with query methods (enumeration operations)
  * in the Azure Cosmos DB database service.
  */
-public final class CosmosQueryRequestOptions {
+public class CosmosQueryRequestOptions {
     private String sessionToken;
     private String partitionKeyRangeId;
     private Boolean scanInQueryEnabled;
@@ -28,6 +28,7 @@ public final class CosmosQueryRequestOptions {
      * Instantiates a new query request options.
      */
     public CosmosQueryRequestOptions() {
+        this.queryMetricsEnabled = true;
     }
 
     /**
@@ -284,16 +285,17 @@ public final class CosmosQueryRequestOptions {
     }
 
     /**
-     * Gets the option to enable populate query metrics
+     * Gets the option to enable populate query metrics. By default query metrics are enabled.
      *
-     * @return whether to enable populate query metrics
+     * @return whether to enable populate query metrics (default: true)
      */
     public boolean isQueryMetricsEnabled() {
         return queryMetricsEnabled;
     }
 
     /**
-     * Sets the option to enable/disable getting metrics relating to query execution on item query requests
+     * Sets the option to enable/disable getting metrics relating to query execution on item query requests.
+     * By default query metrics are enabled.
      *
      * @param queryMetricsEnabled whether to enable or disable query metrics
      * @return the CosmosQueryRequestOptions.

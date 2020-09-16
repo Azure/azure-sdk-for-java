@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
@@ -45,7 +45,7 @@ public class CopyModel {
         // The Id of the model that needs to be copied to the target resource
         String copyModelId = "copy-model-Id";
         // Start copy operation from the source client
-        SyncPoller<OperationResult, CustomFormModelInfo> copyPoller = sourceClient.beginCopyModel(copyModelId,
+        SyncPoller<FormRecognizerOperationResult, CustomFormModelInfo> copyPoller = sourceClient.beginCopyModel(copyModelId,
             modelCopyAuthorization);
         copyPoller.waitForCompletion();
 

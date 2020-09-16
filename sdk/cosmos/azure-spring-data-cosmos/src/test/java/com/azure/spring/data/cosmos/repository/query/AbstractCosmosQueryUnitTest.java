@@ -3,7 +3,7 @@
 package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.CosmosOperations;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -41,7 +41,7 @@ public class AbstractCosmosQueryUnitTest {
         }
 
         @Override
-        protected DocumentQuery createQuery(CosmosParameterAccessor accessor) {
+        protected CosmosQuery createQuery(CosmosParameterAccessor accessor) {
             return null;
         }
 

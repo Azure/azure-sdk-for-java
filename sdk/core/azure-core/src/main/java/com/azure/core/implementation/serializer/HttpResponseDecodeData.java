@@ -53,16 +53,13 @@ public interface HttpResponseDecodeData {
     }
 
     /**
-     * Get the expected HTTP response status codes.
+     * This method returns {@code true} if the given {@code statusCode} is in the list of expected HTTP response
+     * codes, {@code false} otherwise.
      *
-     * 1. If the returned int[] is null, then all 2XX status codes are considered as success code.
-     * 2. If the returned int[] is not-null, only the codes in the array are considered as success code.
-     *
-     * @return the expected HTTP response status codes
+     * @param statusCode The HTTP response status code to evaluate.
+     * @return {@code true} if the given status code is expected.
      */
-    default int[] getExpectedStatusCodes() {
-        return null;
-    }
+    boolean isExpectedResponseStatusCode(int statusCode);
 
     /**
      * Get the type of the 'entity' in HTTP response content.

@@ -17,11 +17,13 @@ public final class Constants {
     public static final boolean DEFAULT_AUTO_CREATE_CONTAINER = true;
 
     public static final String ID_PROPERTY_NAME = "id";
+    public static final String ETAG_PROPERTY_DEFAULT_NAME = "_etag";
 
     public static final String COSMOS_MODULE_NAME = "cosmos";
     public static final String COSMOS_MODULE_PREFIX = "cosmos";
 
-    public static final String USER_AGENT_SUFFIX = "spring-data/";
+    private static final String AZURE_SPRING_DATA_COSMOS = "az-sd-cos";
+    public static final String USER_AGENT_SUFFIX = AZURE_SPRING_DATA_COSMOS + "/";
 
     public static final String OBJECT_MAPPER_BEAN_NAME = "cosmosObjectMapper";
     public static final String AUDITING_HANDLER_BEAN_NAME = "cosmosAuditingHandler";

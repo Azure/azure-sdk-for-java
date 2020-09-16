@@ -27,8 +27,7 @@ import static org.mockito.Mockito.when;
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
 public class ManagedIdentityCredentialTest {
 
-    private final String tenantId = "contoso.com";
-    private final String clientId = UUID.randomUUID().toString();
+    private static final String CLIENT_ID = UUID.randomUUID().toString();
 
     @Test
     public void testVirtualMachineMSICredentialConfigurations() {
@@ -52,11 +51,11 @@ public class ManagedIdentityCredentialTest {
 
             // mock
             IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateToManagedIdentityEndpoint(null, null, endpoint, secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
             // test
-            ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
+            ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(token -> token1.equals(token.getToken())
                     && expiresAt.getSecond() == token.getExpiresAt().getSecond())
@@ -65,6 +64,38 @@ public class ManagedIdentityCredentialTest {
             // clean up
             configuration.remove("MSI_ENDPOINT");
             configuration.remove("MSI_SECRET");
+        }
+    }
+
+    @Test
+    public void testIdentityEndpoint() throws Exception {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+
+        try {
+            // setup
+            String endpoint = "http://localhost";
+            String secret = "secret";
+            String token1 = "token1";
+            TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+            OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+            configuration.put("IDENTITY_ENDPOINT", endpoint);
+            configuration.put("IDENTITY_HEADER", secret);
+
+            // mock
+            IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, null, null, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+
+            // test
+            ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(token -> token1.equals(token.getToken())
+                                                && expiresAt.getSecond() == token.getExpiresAt().getSecond())
+                .verifyComplete();
+        } finally {
+            // clean up
+            configuration.remove("IDENTITY_ENDPOINT");
+            configuration.remove("IDENTITY_HEADER");
         }
     }
 
@@ -81,7 +112,7 @@ public class ManagedIdentityCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
         StepVerifier.create(credential.getToken(request))
                 .expectNextMatches(token -> token1.equals(token.getToken())
                         && expiresOn.getSecond() == token.getExpiresAt().getSecond())

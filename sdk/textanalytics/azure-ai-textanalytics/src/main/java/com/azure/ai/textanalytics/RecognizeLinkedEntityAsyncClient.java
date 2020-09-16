@@ -4,8 +4,10 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -16,7 +18,6 @@ import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -31,7 +32,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
-import static com.azure.ai.textanalytics.implementation.Utility.getEmptyErrorIdHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
@@ -161,23 +161,10 @@ class RecognizeLinkedEntityAsyncClient {
                         }).collect(Collectors.toList())))
             )));
         // Document errors
-        entityLinkingResult.getErrors().forEach(documentError -> {
-            /*
-             *  TODO: Remove this after service update to throw exception.
-             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
-             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
-             */
-            if (documentError.getId().isEmpty()) {
-                throw logger.logExceptionAsError(
-                    new HttpResponseException(documentError.getError().getInnererror().getMessage(),
-                    getEmptyErrorIdHttpResponse(new SimpleResponse<>(response, response.getValue())),
-                        documentError.getError().getInnererror().getCode()));
-            }
-
-            linkedEntitiesResults.add(
-                new RecognizeLinkedEntitiesResult(documentError.getId(), null,
-                    toTextAnalyticsError(documentError.getError()), null));
-        });
+        for (DocumentError documentError : entityLinkingResult.getErrors()) {
+            linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
 
         return new SimpleResponse<>(response,
             new RecognizeLinkedEntitiesResultCollection(linkedEntitiesResults, entityLinkingResult.getModelVersion(),
@@ -192,10 +179,10 @@ class RecognizeLinkedEntityAsyncClient {
             linkedEntitiesList.add(new LinkedEntity(
                 linkedEntity.getName(),
                 new IterableStream<>(linkedEntity.getMatches().stream().map(match -> new LinkedEntityMatch(
-                    match.getText(), match.getConfidenceScore()))
+                    match.getText(), match.getConfidenceScore(), match.getOffset(), match.getLength()))
                     .collect(Collectors.toList())),
                 linkedEntity.getLanguage(),
-                linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource()));
+                linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource(), linkedEntity.getBingId()));
         }
         return new IterableStream<>(linkedEntitiesList);
     }
@@ -216,6 +203,7 @@ class RecognizeLinkedEntityAsyncClient {
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(),
+            StringIndexType.UTF16CODE_UNIT,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",

@@ -3,18 +3,17 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.encryption.EncryptionItemRequestOptions;
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.DataEncryptionKey;
+import com.azure.cosmos.encryption.EncryptionItemRequestOptions;
+import com.azure.cosmos.encryption.EncryptionOptions;
 import com.azure.cosmos.implementation.encryption.SimpleInMemoryProvider;
 import com.azure.cosmos.implementation.encryption.TestUtils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
