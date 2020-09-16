@@ -76,7 +76,7 @@
     <module>azure-spring-cloud-starter-eventhubs</module>
     <module>azure-spring-cloud-starter-eventhubs-kafka</module>
     <module>azure-spring-cloud-starter-servicebus</module>
-    <module>azure-spring-cloud-starter-storage</module>
+    <module>azure-spring-starter-storage</module>
     <module>azure-spring-cloud-starter-storage-queue</module>
     <module>azure-spring-cloud-servicebus-stream-binder-core</module>
     <module>azure-spring-cloud-stream-binder-test</module>

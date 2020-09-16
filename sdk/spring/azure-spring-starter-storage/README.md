@@ -1,6 +1,6 @@
-# Azure Spring Cloud Starter Storage client library for Java
+# Azure Spring Starter Storage client library for Java
 
-The project provides a Spring Boot Starter `spring-cloud-starter-azure-storage` to auto-configure [Azure Blob storage][azure_blob_storage] in your Spring projects. It implements Spring Resource abstraction for Azure Storage service which allows you to interact with Azure Blob storage using Spring programming model.
+The project provides a Spring Boot Starter `spring-starter-azure-storage` to auto-configure [Azure Blob storage][azure_blob_storage] in your Spring projects. It implements Spring Resource abstraction for Azure Storage service which allows you to interact with Azure Blob storage using Spring programming model.
 
 ## Getting started
 ### Prerequisites
@@ -28,7 +28,7 @@ Please use this `sample` as a reference for how to use **Spring Cloud Azure Stor
 
 #### Auto-configuration for Azure Blob storage
 
-The `spring-cloud-starter-azure-storage` provides the following configuration options in `application.properties`.
+The `spring-starter-azure-storage` provides the following configuration options in `application.properties`.
 
 Name | Description | Required | Default 
 ---|---|---|---
@@ -90,7 +90,7 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-storage
+[src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-starter-storage
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-starter-azure-storage
 [refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-starter-azure-storage
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-storage-resource-sample
