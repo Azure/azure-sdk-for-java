@@ -317,7 +317,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         try {
 
             if (event instanceof IdleStateEvent) {
-
+                // NOTE: if the connection is killed this may not receive any event
                 this.healthChecker.isHealthy(context.channel()).addListener((Future<Boolean> future) -> {
 
                     final Throwable cause;
@@ -488,7 +488,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         this.traceOperation(context, "write", message);
 
-        if (message.getClass() == RntbdRequestRecord.class) {
+        if (message instanceof RntbdRequestRecord) {
 
             final RntbdRequestRecord record = (RntbdRequestRecord) message;
             this.timestamps.channelWriteAttempted();
