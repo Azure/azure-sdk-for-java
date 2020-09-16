@@ -1,55 +1,55 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.0//layout/analyze",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.1//layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cf7ae78a-4795-4c2e-a428-640ec6a11538",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ea253a21-720c-45e6-8c04-194969fe133d",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
-      "ClassName" : "io.netty.channel.AbstractChannel$AnnotatedConnectException",
-      "ErrorMessage" : "Connection refused: no further information: notreal.azure.com/23.202.231.169:443"
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "No such host is known (notreal.azure.com)"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.0//layout/analyze",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.1//layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cf7ae78a-4795-4c2e-a428-640ec6a11538",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ea253a21-720c-45e6-8c04-194969fe133d",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
-      "ClassName" : "io.netty.channel.AbstractChannel$AnnotatedConnectException",
-      "ErrorMessage" : "Connection refused: no further information: notreal.azure.com/23.202.231.169:443"
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "notreal.azure.com"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.0//layout/analyze",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.1//layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cf7ae78a-4795-4c2e-a428-640ec6a11538",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ea253a21-720c-45e6-8c04-194969fe133d",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
-      "ClassName" : "io.netty.channel.AbstractChannel$AnnotatedConnectException",
-      "ErrorMessage" : "Connection refused: no further information: notreal.azure.com/23.202.231.169:443"
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "notreal.azure.com"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.0//layout/analyze",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.1//layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cf7ae78a-4795-4c2e-a428-640ec6a11538",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ea253a21-720c-45e6-8c04-194969fe133d",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
-      "ClassName" : "io.netty.channel.AbstractChannel$AnnotatedConnectException",
-      "ErrorMessage" : "Connection refused: no further information: notreal.azure.com/23.202.231.169:443"
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "notreal.azure.com"
     }
   } ],
   "variables" : [ ]
