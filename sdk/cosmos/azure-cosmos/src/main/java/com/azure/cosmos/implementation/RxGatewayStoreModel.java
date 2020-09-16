@@ -303,8 +303,8 @@ class RxGatewayStoreModel implements RxStoreModel {
                        }
 
                        if (request.requestContext.cosmosDiagnostics != null) {
-                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, (CosmosException)exception);
-                           BridgeInternal.setCosmosDiagnostics((CosmosException)exception, request.requestContext.cosmosDiagnostics);
+                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, dce);
+                           BridgeInternal.setCosmosDiagnostics(dce, request.requestContext.cosmosDiagnostics);
                        }
 
                        return Mono.error(dce);

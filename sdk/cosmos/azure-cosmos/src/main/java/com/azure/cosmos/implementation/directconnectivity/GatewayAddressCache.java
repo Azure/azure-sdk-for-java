@@ -347,8 +347,8 @@ public class GatewayAddressCache implements IAddressCache {
 
             if (request.requestContext.cosmosDiagnostics != null) {
                 BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
-                    (CosmosException) exception);
-                BridgeInternal.setCosmosDiagnostics((CosmosException) exception,
+                    dce);
+                BridgeInternal.setCosmosDiagnostics(dce,
                     request.requestContext.cosmosDiagnostics);
             }
 
@@ -564,8 +564,8 @@ public class GatewayAddressCache implements IAddressCache {
 
             if (request.requestContext.cosmosDiagnostics != null) {
                 BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
-                    (CosmosException) exception);
-                BridgeInternal.setCosmosDiagnostics((CosmosException) exception,
+                    dce);
+                BridgeInternal.setCosmosDiagnostics(dce,
                     request.requestContext.cosmosDiagnostics);
             }
 
