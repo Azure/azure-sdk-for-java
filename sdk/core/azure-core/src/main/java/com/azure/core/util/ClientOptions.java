@@ -10,8 +10,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import java.util.Collections;
 
 /**
- * This class represents various options to be set on the client. Client can set {@code applicationId} and
- * {@link Header} on {@link ClientOptions}.
+ * This class represents various options to be set on the client. A user can set {@code applicationId} and a list of
+ * {@link Header} on the {@link ClientOptions}.
  * <p><strong>Headers</strong></p>
  * The {@link Header} could be set using {@link ClientOptions#setHeaders(Iterable) setHeaders}. For example if you set
  * a header, {@link Header Header("name", "value")}, on {@link ClientOptions}, it will be set on the request being sent
