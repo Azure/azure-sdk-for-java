@@ -97,12 +97,11 @@ public class PublishTelemetrySyncSamples {
             // construct your json telemetry payload using a hashtable.
             Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
             telemetryPayload.put("ComponentTelemetry1", 9);
-            String telemetryStringPayload = new ObjectMapper().writeValueAsString(telemetryPayload);
 
             Response<Void> publishComponentTelemetryResponse = client.publishComponentTelemetryWithResponse(
                 digitalTwinId,
                 "Component1",
-                telemetryStringPayload,
+                telemetryPayload,
                 componentTelemetryRequestOptions,
                 Context.NONE);
 
