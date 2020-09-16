@@ -399,7 +399,7 @@ public class DataLakePathClient {
             dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
                 PathSetAccessControlRecursiveMode.SET, options.getBatchSize(), options.getMaxBatches(),
-                options.isContinuingOnFailure(), options.getContinuationToken(), context);
+                options.isContinueOnFailure(), options.getContinuationToken(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -443,7 +443,7 @@ public class DataLakePathClient {
             dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
                 PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(), options.getMaxBatches(),
-                options.isContinuingOnFailure(), options.getContinuationToken(), context);
+                options.isContinueOnFailure(), options.getContinuationToken(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -488,7 +488,7 @@ public class DataLakePathClient {
             dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
                 PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()),
                 options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(),
-                options.getMaxBatches(), options.isContinuingOnFailure(), options.getContinuationToken(), context);
+                options.getMaxBatches(), options.isContinueOnFailure(), options.getContinuationToken(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

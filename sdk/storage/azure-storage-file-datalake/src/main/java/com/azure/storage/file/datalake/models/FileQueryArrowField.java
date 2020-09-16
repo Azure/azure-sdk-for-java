@@ -3,11 +3,13 @@
 
 package com.azure.storage.file.datalake.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * Defines an arrow field for a file quick query request.
  */
+@Fluent
 public class FileQueryArrowField {
 
     private String name;
@@ -36,7 +38,7 @@ public class FileQueryArrowField {
      * @param precision The precision of the field. Required if type is {@link FileQueryArrowFieldType#DECIMAL}
      * @return The updated options.
      */
-    public FileQueryArrowField setPrecision(int precision) {
+    public FileQueryArrowField setPrecision(Integer precision) {
         this.precision = precision;
         return this;
     }
@@ -45,7 +47,7 @@ public class FileQueryArrowField {
      * @param scale The scale of the field. Required if type is {@link FileQueryArrowFieldType#DECIMAL}
      * @return The updated options.
      */
-    public FileQueryArrowField setScale(int scale) {
+    public FileQueryArrowField setScale(Integer scale) {
         this.scale = scale;
         return this;
     }
