@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 /** Interface to define the RegistryTasks collection. */
 @Fluent()
-public interface RegistryTasks extends HasInner<TasksClient>, SupportsCreating<RegistryTask.DefinitionStages.Blank> {
+public interface RegistryTasks extends SupportsCreating<RegistryTask.DefinitionStages.Blank> {
     /**
      * Lists the tasks in a registry asynchronously.
      *
