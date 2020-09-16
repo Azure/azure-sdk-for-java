@@ -4,13 +4,12 @@
 package com.azure.resourcemanager;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServers;
 import com.google.common.util.concurrent.SettableFuture;
 import org.junit.jupiter.api.Assertions;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class TestSql extends TestTemplate<SqlServer, SqlServers> {
     @Override
@@ -18,7 +17,7 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
         final String sqlServerName = resources.manager().sdkContext().randomResourceName("sql", 10);
         final SqlServer[] sqlServers = new SqlServer[1];
         final SettableFuture<SqlServer> future = SettableFuture.create();
-        Flux<Indexable> resourceStream =
+        Mono<SqlServer> resourceStream =
             resources
                 .define(sqlServerName)
                 .withRegion(Region.US_EAST)
@@ -31,7 +30,7 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
                 .withTag("mytag", "testtag")
                 .createAsync();
 
-        resourceStream.last().subscribe(sqlServer -> future.set((SqlServer) sqlServer));
+        resourceStream.subscribe(sqlServer -> future.set(sqlServer));
 
         sqlServers[0] = future.get();
 

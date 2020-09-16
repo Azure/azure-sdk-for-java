@@ -994,6 +994,20 @@
 
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Field name="errorMessage"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Field name="inflightRequest"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
     <Field name="requestResourceType"/>
     <Bug pattern="URF_UNREAD_FIELD"/>

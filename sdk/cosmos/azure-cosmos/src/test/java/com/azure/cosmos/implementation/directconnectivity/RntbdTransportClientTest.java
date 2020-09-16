@@ -841,12 +841,12 @@ public final class RntbdTransportClientTest {
         // region Accessors
 
         @Override
-        public int channelsAcquired() {
+        public int channelsAcquiredMetric() {
             return 0;
         }
 
         @Override
-        public int channelsAvailable() {
+        public int channelsAvailableMetric() {
             return 0;
         }
 
