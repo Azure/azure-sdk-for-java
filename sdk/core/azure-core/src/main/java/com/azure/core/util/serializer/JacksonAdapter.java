@@ -127,10 +127,17 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
+        long startMs = System.currentTimeMillis();
+
         ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
         serialize(object, encoding, stream);
+        String serializedValue = new String(stream.toByteArray(), 0, stream.size(), StandardCharsets.UTF_8);
 
-        return new String(stream.toByteArray(), 0, stream.size(), StandardCharsets.UTF_8);
+        logger.info("It took {} ms to serialize class {} to a String.",
+            System.currentTimeMillis() - startMs,
+            object.getClass().getSimpleName());
+
+        return serializedValue;
     }
 
     @Override
@@ -139,11 +146,17 @@ public class JacksonAdapter implements SerializerAdapter {
             return;
         }
 
+        long startMs = System.currentTimeMillis();
+
         if ((encoding == SerializerEncoding.XML)) {
             xmlMapper.writeValue(outputStream, object);
         } else {
             serializer().writeValue(outputStream, object);
         }
+
+        logger.info("It took {} ms to serialize class {} into an OutputStream.",
+            System.currentTimeMillis() - startMs,
+            object.getClass().getSimpleName());
     }
 
     @Override
@@ -179,13 +192,22 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
+        long startMs = System.currentTimeMillis();
+
         final JavaType javaType = createJavaType(type);
         try {
+            T returnValue;
             if (encoding == SerializerEncoding.XML) {
-                return (T) xmlMapper.readValue(value, javaType);
+                returnValue = (T) xmlMapper.readValue(value, javaType);
             } else {
-                return (T) serializer().readValue(value, javaType);
+                returnValue = (T) serializer().readValue(value, javaType);
             }
+
+            logger.info("It took {} ms to deserialize a String into class {}.",
+                System.currentTimeMillis() - startMs,
+                javaType.getRawClass().getSimpleName());
+
+            return returnValue;
         } catch (JsonParseException jpe) {
             throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
         }
@@ -199,13 +221,22 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
+        long startMs = System.currentTimeMillis();
+
         final JavaType javaType = createJavaType(type);
         try {
+            T returnValue;
             if (encoding == SerializerEncoding.XML) {
-                return (T) xmlMapper.readValue(inputStream, javaType);
+                returnValue = (T) xmlMapper.readValue(inputStream, javaType);
             } else {
-                return (T) serializer().readValue(inputStream, javaType);
+                returnValue = (T) serializer().readValue(inputStream, javaType);
             }
+
+            logger.info("It took {} ms to deserialize an InputStream into class {}.",
+                System.currentTimeMillis(),
+                javaType.getRawClass().getSimpleName());
+
+            return returnValue;
         } catch (JsonParseException jpe) {
             throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
         }
