@@ -24,7 +24,7 @@ public final class RntbdRequestEncoder extends MessageToByteEncoder<RntbdRequest
      */
     @Override
     public boolean acceptOutboundMessage(final Object message) {
-        return message.getClass() == RntbdRequestRecord.class;
+        return message instanceof RntbdRequestRecord;
     }
 
     /**

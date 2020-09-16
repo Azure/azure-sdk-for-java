@@ -26,7 +26,7 @@ final class RntbdContextRequestEncoder extends MessageToByteEncoder<RntbdContext
      */
     @Override
     public boolean acceptOutboundMessage(final Object message) {
-        return message.getClass() == RntbdContextRequest.class;
+        return message instanceof RntbdContextRequest;
     }
 
     /**

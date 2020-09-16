@@ -174,7 +174,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.traceOperation(context, "channelRead");
 
         try {
-            if (message.getClass() == RntbdResponse.class) {
+            if (message instanceof RntbdResponse) {
 
                 try {
                     this.messageReceived(context, (RntbdResponse) message);
@@ -488,7 +488,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         this.traceOperation(context, "write", message);
 
-        if (message.getClass() == RntbdRequestRecord.class) {
+        if (message instanceof RntbdRequestRecord) {
 
             final RntbdRequestRecord record = (RntbdRequestRecord) message;
             this.timestamps.channelWriteAttempted();
