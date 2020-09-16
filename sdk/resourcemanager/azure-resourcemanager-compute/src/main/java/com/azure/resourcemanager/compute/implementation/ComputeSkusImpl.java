@@ -60,7 +60,6 @@ public final class ComputeSkusImpl extends ReadableWrappersImpl<ComputeSku, Comp
         return inner().listAsync(String.format("location eq '%s'", region.name())).mapPage(this::wrapModel);
     }
 
-    @Override
     public ResourceSkusClient inner() {
         return this.manager.inner().getResourceSkus();
     }
