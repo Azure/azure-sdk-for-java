@@ -522,19 +522,14 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         private void logEndpoint(RntbdEndpoint endpoint) {
-            int executorPoolSize = endpoint.executorTaskQueueMetrics();
-
-            if (this.logger.isDebugEnabled()) {
-                logger.debug("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
-            }
-
-            if (executorPoolSize > MAX_TASK_LIMIT ||
+            if (this.logger.isWarnEnabled() &&
+                (endpoint.executorTaskQueueMetrics() > MAX_TASK_LIMIT ||
                 endpoint.requestQueueLength() > MAX_TASK_LIMIT ||
                 endpoint.gettingEstablishedConnectionsMetrics() > 0 ||
-                endpoint.channelsMetrics() > endpoint.maxChannels()) {
-                if (this.logger.isWarnEnabled()) {
-                    logger.warn("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
-                }
+                endpoint.channelsMetrics() > endpoint.maxChannels())) {
+                logger.warn("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
+            } else if (this.logger.isDebugEnabled()) {
+                logger.debug("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
             }
         }
 
