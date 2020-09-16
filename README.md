@@ -38,8 +38,9 @@ You can find the **[most up to date list of all of the new packages on our page]
 Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the new libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Previous library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They might not implement the [guidelines](https://azure.github.io/azure-sdk/java_introduction.html) or have the same feature set as the new releases. They do however offer wider coverage of services.
 
 ### Management: New Releases
-A new set of management libraries that follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) are now in Public Preview. These new libraries provide a higher-level, object-oriented API for _managing_ Azure resources, that is optimized for ease of use, succinctness and consistency.
-You can find the list of new packages [on this page](https://azure.github.io/azure-sdk/releases/latest/java.html). Documentation and code samples for these new libraries can be found [here](./sdk/resourcemanager)
+A new set of management libraries that follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) are now available. These new libraries provide a higher-level, object-oriented API for _managing_ Azure resources, that is optimized for ease of use, succinctness and consistency. High-level documentation and code samples for these new libraries can be found [here](http://aka.ms/azsdk/java/mgmt)
+
+You can find the **[most up to date list of all of the management libraries on our page](https://azure.github.io/azure-sdk/releases/latest/mgmt/java.html)**. This list includes the most recent releases: both GA and preview.
 
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
 
