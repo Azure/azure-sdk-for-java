@@ -18,7 +18,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.Resource;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
@@ -63,7 +63,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SuppressWarnings("unchecked")
 public class LROPollerTests {
 
-    private static final SerializerAdapter SERIALIZER = new AzureJacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = SerializerFactory.createDefaultManagementSerializerAdapter();
 
     private static final Duration POLLING_DURATION = Duration.ofMillis(100);
 

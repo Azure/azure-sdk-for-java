@@ -29,7 +29,6 @@ import java.util.function.Function;
 public final class PollerFactory {
 
     private PollerFactory() {
-
     }
 
     /**
