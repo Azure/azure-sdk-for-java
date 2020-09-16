@@ -41,6 +41,13 @@ azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
 # If not, the logged in user will not be able to access any authorization controller rest APIs
 azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
+The `azure-active-directory-spring-boot-starter` uses Azure AD Connect v2.0 endpoints by default. To use v1.0, please specify the following endpoints in properties.
+```
+spring.security.oauth2.client.provider.azure.authorization-uri=https://login.microsoftonline.com/common/oauth2/authorize
+spring.security.oauth2.client.provider.azure.token-uri=https://login.microsoftonline.com/common/oauth2/token
+spring.security.oauth2.client.provider.azure.user-info-uri=https://login.microsoftonline.com/common/openid/userinfo
+spring.security.oauth2.client.provider.azure.jwk-set-uri=https://login.microsoftonline.com/common/discovery/keys
+```
 
 ### Run with Maven
 
