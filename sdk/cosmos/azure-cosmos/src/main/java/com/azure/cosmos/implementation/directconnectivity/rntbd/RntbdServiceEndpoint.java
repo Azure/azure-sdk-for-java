@@ -487,8 +487,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             "monitoring-rntbd-endpoints",
             true,
             Thread.MIN_PRIORITY));
-        private static final Duration MONITORING_PERIOD = Duration.ofSeconds(5);
+        private static final Duration MONITORING_PERIOD = Duration.ofSeconds(60);
         private final Provider provider;
+        private final static int MAX_TASK_LIMIT = 5_000;
 
         private ScheduledFuture<?> future;
 
@@ -527,8 +528,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 logger.debug("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
             }
 
-            if (executorPoolSize > 5_000 ||
-                endpoint.requestQueueLength() > 5_000 ||
+            if (executorPoolSize > MAX_TASK_LIMIT ||
+                endpoint.requestQueueLength() > MAX_TASK_LIMIT ||
                 endpoint.gettingEstablishedConnectionsMetrics() > 0 ||
                 endpoint.channelsMetrics() > endpoint.maxChannels()) {
                 if (this.logger.isWarnEnabled()) {
