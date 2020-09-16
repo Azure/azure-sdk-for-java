@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import com.azure.spring.autoconfigure.b2c.AADB2CLogoutSuccessHandler;
-import com.azure.spring.autoconfigure.b2c.AADB2CProperties;
-import com.azure.spring.autoconfigure.b2c.AADB2CURL;
 import org.junit.Before;
 import org.junit.Test;
 
