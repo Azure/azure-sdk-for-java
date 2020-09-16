@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
@@ -491,6 +492,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     public void addressResolutionStatistics() {
         CosmosClient client1 = null;
         CosmosClient client2 = null;
+        String databaseId = DatabaseForTest.generateId();
+        String containerId = UUID.randomUUID().toString();
+        CosmosDatabase cosmosDatabase = null;
+        CosmosContainer cosmosContainer = null;
         try {
             client1 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -498,10 +503,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 .contentResponseOnWriteEnabled(true)
                 .directMode()
                 .buildClient();
-            CosmosContainer container =
-                client1.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            client1.createDatabase(databaseId);
+            cosmosDatabase = client1.getDatabase(databaseId);
+            cosmosDatabase.createContainer(containerId, "/mypk");
+
             InternalObjectNode internalObjectNode = getInternalObjectNode();
-            CosmosItemResponse<InternalObjectNode> writeResourceResponse = container.createItem(internalObjectNode);
+            cosmosContainer = cosmosDatabase.getContainer(containerId);
+            CosmosItemResponse<InternalObjectNode> writeResourceResponse = cosmosContainer.createItem(internalObjectNode);
             //Success address resolution client side statistics
             assertThat(writeResourceResponse.getDiagnostics().toString()).contains("addressResolutionStatistics");
             assertThat(writeResourceResponse.getDiagnostics().toString()).contains("\"inflightRequest\":false");
@@ -516,8 +524,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 .contentResponseOnWriteEnabled(true)
                 .directMode()
                 .buildClient();
-            container =
-                client2.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            cosmosDatabase = client2.getDatabase(databaseId);
+            cosmosContainer = cosmosDatabase.getContainer(containerId);
             AsyncDocumentClient asyncDocumentClient = client2.asyncClient().getContextClient();
             GlobalAddressResolver addressResolver = (GlobalAddressResolver) FieldUtils.readField(asyncDocumentClient,
                 "addressResolver", true);
@@ -542,7 +550,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             }).start();
             PartitionKey partitionKey = new PartitionKey(internalObjectNode.get("mypk"));
             CosmosItemResponse<InternalObjectNode> readResourceResponse =
-                container.readItem(internalObjectNode.getId(), partitionKey, new CosmosItemRequestOptions(),
+                cosmosContainer.readItem(internalObjectNode.getId(), partitionKey, new CosmosItemRequestOptions(),
                     InternalObjectNode.class);
 
             //Partial success address resolution client side statistics
@@ -556,6 +564,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             logger.error("Error in test addressResolutionStatistics", ex);
             fail("This test should not throw exception " + ex);
         } finally {
+            safeDeleteSyncDatabase(cosmosDatabase);
             if (client1 != null) {
                 client1.close();
             }
