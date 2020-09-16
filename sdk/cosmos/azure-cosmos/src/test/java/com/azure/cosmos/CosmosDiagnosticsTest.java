@@ -82,8 +82,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.gatewayClient).isNotNull();
-        this.gatewayClient.close();
+        if (this.gatewayClient != null) {
+            this.gatewayClient.close();
+        }
         if (this.directClient != null) {
             this.directClient.close();
         }
