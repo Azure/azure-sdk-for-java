@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -284,7 +285,8 @@ public class TaskGroup
                     return Mono.just(proxyTaskGroupWrapper.taskGroup().root().taskResult());
                 }
                 return Mono.just(root().taskResult());
-            }));
+            }))
+            .onErrorMap(AggregatedManagementException::convertToManagementException);
     }
 
     /**
