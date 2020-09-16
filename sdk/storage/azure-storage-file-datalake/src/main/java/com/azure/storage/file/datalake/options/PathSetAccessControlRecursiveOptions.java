@@ -145,7 +145,7 @@ public class PathSetAccessControlRecursiveOptions {
      *
      * @return If the operation should continue on user failure.
      */
-    public boolean isContinuingOnFailure() {
+    public boolean isContinueOnFailure() {
         return continueOnFailure;
     }
 

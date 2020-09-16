@@ -3,11 +3,13 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * Defines an arrow field for a blob quick query request.
  */
+@Fluent
 public class BlobQueryArrowField {
 
     private String name;
@@ -36,7 +38,7 @@ public class BlobQueryArrowField {
      * @param precision The precision of the field. Required if type is {@link BlobQueryArrowFieldType#DECIMAL}
      * @return The updated options.
      */
-    public BlobQueryArrowField setPrecision(int precision) {
+    public BlobQueryArrowField setPrecision(Integer precision) {
         this.precision = precision;
         return this;
     }
@@ -45,7 +47,7 @@ public class BlobQueryArrowField {
      * @param scale The scale of the field. Required if type is {@link BlobQueryArrowFieldType#DECIMAL}
      * @return The updated options.
      */
-    public BlobQueryArrowField setScale(int scale) {
+    public BlobQueryArrowField setScale(Integer scale) {
         this.scale = scale;
         return this;
     }

@@ -177,7 +177,8 @@ public final class BlobServiceSasSignatureValues {
      *
      * @param version Version to target
      * @return the updated BlobServiceSASSignatureValues object
-     * @deprecated The version is set to the latest version of sas.
+     * @deprecated The version is set to the latest version of sas. Users should stop calling this API as it is now
+     * treated as a no-op.
      */
     @Deprecated
     public BlobServiceSasSignatureValues setVersion(String version) {
