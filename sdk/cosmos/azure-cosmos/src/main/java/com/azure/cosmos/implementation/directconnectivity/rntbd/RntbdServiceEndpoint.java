@@ -176,7 +176,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     public Instant getCreatedTime() {
-        return createdTime;
+        return this.createdTime;
     }
 
     @Override
