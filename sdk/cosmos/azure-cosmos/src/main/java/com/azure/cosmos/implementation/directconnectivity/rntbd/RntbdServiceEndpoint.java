@@ -494,7 +494,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         
         synchronized void init() {
             logger.info("Starting RntbdClientChannelPoolMonitoringProvider ...");
-            this.future = this.monitoringRntbdChannelPool.scheduleAtFixedRate(() -> {
+            this.future = RntbdEndpointMonitoringProvider.monitoringRntbdChannelPool.scheduleAtFixedRate(() -> {
                 logAllPools();
             }, 0, MONITORING_PERIOD.toMillis(), TimeUnit.MILLISECONDS);
         }
