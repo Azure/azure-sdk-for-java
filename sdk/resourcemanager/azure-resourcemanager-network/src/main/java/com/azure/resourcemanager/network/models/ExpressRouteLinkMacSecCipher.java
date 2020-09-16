@@ -11,10 +11,10 @@ import java.util.Collection;
 /** Defines values for ExpressRouteLinkMacSecCipher. */
 public final class ExpressRouteLinkMacSecCipher extends ExpandableStringEnum<ExpressRouteLinkMacSecCipher> {
     /** Static value gcm-aes-128 for ExpressRouteLinkMacSecCipher. */
-    public static final ExpressRouteLinkMacSecCipher GCM_AES128 = fromString("gcm-aes-128");
+    public static final ExpressRouteLinkMacSecCipher GCM_AES_128 = fromString("gcm-aes-128");
 
     /** Static value gcm-aes-256 for ExpressRouteLinkMacSecCipher. */
-    public static final ExpressRouteLinkMacSecCipher GCM_AES256 = fromString("gcm-aes-256");
+    public static final ExpressRouteLinkMacSecCipher GCM_AES_256 = fromString("gcm-aes-256");
 
     /**
      * Creates or finds a ExpressRouteLinkMacSecCipher from its string representation.

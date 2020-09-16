@@ -14,7 +14,7 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
     public static final AuthenticationMethod EAPTLS = fromString("EAPTLS");
 
     /** Static value EAPMSCHAPv2 for AuthenticationMethod. */
-    public static final AuthenticationMethod EAPMSCHA_PV2 = fromString("EAPMSCHAPv2");
+    public static final AuthenticationMethod EAPMSCHAPV2 = fromString("EAPMSCHAPv2");
 
     /**
      * Creates or finds a AuthenticationMethod from its string representation.

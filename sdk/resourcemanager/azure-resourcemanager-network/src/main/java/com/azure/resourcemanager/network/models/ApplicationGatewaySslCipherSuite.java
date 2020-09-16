@@ -11,115 +11,115 @@ import java.util.Collection;
 /** Defines values for ApplicationGatewaySslCipherSuite. */
 public final class ApplicationGatewaySslCipherSuite extends ExpandableStringEnum<ApplicationGatewaySslCipherSuite> {
     /** Static value TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES256CBC_SHA384 =
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 =
         fromString("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384");
 
     /** Static value TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES128CBC_SHA256 =
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 =
         fromString("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256");
 
     /** Static value TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES256CBC_SHA =
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA =
         fromString("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA");
 
     /** Static value TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES128CBC_SHA =
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA =
         fromString("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA");
 
     /** Static value TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_DHE_RSA_WITH_AES256GCM_SHA384 =
+    public static final ApplicationGatewaySslCipherSuite TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 =
         fromString("TLS_DHE_RSA_WITH_AES_256_GCM_SHA384");
 
     /** Static value TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_DHE_RSA_WITH_AES128GCM_SHA256 =
+    public static final ApplicationGatewaySslCipherSuite TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 =
         fromString("TLS_DHE_RSA_WITH_AES_128_GCM_SHA256");
 
     /** Static value TLS_DHE_RSA_WITH_AES_256_CBC_SHA for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_DHE_RSA_WITH_AES256CBC_SHA =
+    public static final ApplicationGatewaySslCipherSuite TLS_DHE_RSA_WITH_AES_256_CBC_SHA =
         fromString("TLS_DHE_RSA_WITH_AES_256_CBC_SHA");
 
     /** Static value TLS_DHE_RSA_WITH_AES_128_CBC_SHA for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_DHE_RSA_WITH_AES128CBC_SHA =
+    public static final ApplicationGatewaySslCipherSuite TLS_DHE_RSA_WITH_AES_128_CBC_SHA =
         fromString("TLS_DHE_RSA_WITH_AES_128_CBC_SHA");
 
     /** Static value TLS_RSA_WITH_AES_256_GCM_SHA384 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_AES256GCM_SHA384 =
+    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_AES_256_GCM_SHA384 =
         fromString("TLS_RSA_WITH_AES_256_GCM_SHA384");
 
     /** Static value TLS_RSA_WITH_AES_128_GCM_SHA256 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_AES128GCM_SHA256 =
+    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_AES_128_GCM_SHA256 =
         fromString("TLS_RSA_WITH_AES_128_GCM_SHA256");
 
     /** Static value TLS_RSA_WITH_AES_256_CBC_SHA256 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_AES256CBC_SHA256 =
+    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_AES_256_CBC_SHA256 =
         fromString("TLS_RSA_WITH_AES_256_CBC_SHA256");
 
     /** Static value TLS_RSA_WITH_AES_128_CBC_SHA256 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_AES128CBC_SHA256 =
+    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_AES_128_CBC_SHA256 =
         fromString("TLS_RSA_WITH_AES_128_CBC_SHA256");
 
     /** Static value TLS_RSA_WITH_AES_256_CBC_SHA for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_AES256CBC_SHA =
+    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_AES_256_CBC_SHA =
         fromString("TLS_RSA_WITH_AES_256_CBC_SHA");
 
     /** Static value TLS_RSA_WITH_AES_128_CBC_SHA for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_AES128CBC_SHA =
+    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_AES_128_CBC_SHA =
         fromString("TLS_RSA_WITH_AES_128_CBC_SHA");
 
     /** Static value TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_ECDSA_WITH_AES256GCM_SHA384 =
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 =
         fromString("TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384");
 
     /** Static value TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_ECDSA_WITH_AES128GCM_SHA256 =
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 =
         fromString("TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256");
 
     /** Static value TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_ECDSA_WITH_AES256CBC_SHA384 =
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384 =
         fromString("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384");
 
     /** Static value TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_ECDSA_WITH_AES128CBC_SHA256 =
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 =
         fromString("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256");
 
     /** Static value TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_ECDSA_WITH_AES256CBC_SHA =
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA =
         fromString("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA");
 
     /** Static value TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_ECDSA_WITH_AES128CBC_SHA =
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA =
         fromString("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA");
 
     /** Static value TLS_DHE_DSS_WITH_AES_256_CBC_SHA256 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_DHE_DSS_WITH_AES256CBC_SHA256 =
+    public static final ApplicationGatewaySslCipherSuite TLS_DHE_DSS_WITH_AES_256_CBC_SHA256 =
         fromString("TLS_DHE_DSS_WITH_AES_256_CBC_SHA256");
 
     /** Static value TLS_DHE_DSS_WITH_AES_128_CBC_SHA256 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_DHE_DSS_WITH_AES128CBC_SHA256 =
+    public static final ApplicationGatewaySslCipherSuite TLS_DHE_DSS_WITH_AES_128_CBC_SHA256 =
         fromString("TLS_DHE_DSS_WITH_AES_128_CBC_SHA256");
 
     /** Static value TLS_DHE_DSS_WITH_AES_256_CBC_SHA for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_DHE_DSS_WITH_AES256CBC_SHA =
+    public static final ApplicationGatewaySslCipherSuite TLS_DHE_DSS_WITH_AES_256_CBC_SHA =
         fromString("TLS_DHE_DSS_WITH_AES_256_CBC_SHA");
 
     /** Static value TLS_DHE_DSS_WITH_AES_128_CBC_SHA for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_DHE_DSS_WITH_AES128CBC_SHA =
+    public static final ApplicationGatewaySslCipherSuite TLS_DHE_DSS_WITH_AES_128_CBC_SHA =
         fromString("TLS_DHE_DSS_WITH_AES_128_CBC_SHA");
 
     /** Static value TLS_RSA_WITH_3DES_EDE_CBC_SHA for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH3DES_EDE_CBC_SHA =
+    public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_3DES_EDE_CBC_SHA =
         fromString("TLS_RSA_WITH_3DES_EDE_CBC_SHA");
 
     /** Static value TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_DHE_DSS_WITH3DES_EDE_CBC_SHA =
+    public static final ApplicationGatewaySslCipherSuite TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA =
         fromString("TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA");
 
     /** Static value TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES128GCM_SHA256 =
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 =
         fromString("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256");
 
     /** Static value TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 for ApplicationGatewaySslCipherSuite. */
-    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES256GCM_SHA384 =
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 =
         fromString("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384");
 
     /**

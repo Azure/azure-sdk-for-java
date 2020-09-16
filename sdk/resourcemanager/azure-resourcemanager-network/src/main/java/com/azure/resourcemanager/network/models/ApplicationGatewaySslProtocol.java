@@ -11,13 +11,13 @@ import java.util.Collection;
 /** Defines values for ApplicationGatewaySslProtocol. */
 public final class ApplicationGatewaySslProtocol extends ExpandableStringEnum<ApplicationGatewaySslProtocol> {
     /** Static value TLSv1_0 for ApplicationGatewaySslProtocol. */
-    public static final ApplicationGatewaySslProtocol TLSV10 = fromString("TLSv1_0");
+    public static final ApplicationGatewaySslProtocol TLSV1_0 = fromString("TLSv1_0");
 
     /** Static value TLSv1_1 for ApplicationGatewaySslProtocol. */
-    public static final ApplicationGatewaySslProtocol TLSV11 = fromString("TLSv1_1");
+    public static final ApplicationGatewaySslProtocol TLSV1_1 = fromString("TLSv1_1");
 
     /** Static value TLSv1_2 for ApplicationGatewaySslProtocol. */
-    public static final ApplicationGatewaySslProtocol TLSV12 = fromString("TLSv1_2");
+    public static final ApplicationGatewaySslProtocol TLSV1_2 = fromString("TLSv1_2");
 
     /**
      * Creates or finds a ApplicationGatewaySslProtocol from its string representation.

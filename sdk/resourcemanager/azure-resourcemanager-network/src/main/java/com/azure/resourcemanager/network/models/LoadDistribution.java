@@ -17,7 +17,7 @@ public final class LoadDistribution extends ExpandableStringEnum<LoadDistributio
     public static final LoadDistribution SOURCE_IP = fromString("SourceIP");
 
     /** Static value SourceIPProtocol for LoadDistribution. */
-    public static final LoadDistribution SOURCE_IP_PROTOCOL = fromString("SourceIPProtocol");
+    public static final LoadDistribution SOURCE_IPPROTOCOL = fromString("SourceIPProtocol");
 
     /**
      * Creates or finds a LoadDistribution from its string representation.

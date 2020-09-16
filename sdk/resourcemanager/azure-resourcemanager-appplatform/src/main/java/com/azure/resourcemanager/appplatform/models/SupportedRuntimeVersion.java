@@ -11,13 +11,13 @@ import java.util.Collection;
 /** Defines values for SupportedRuntimeVersion. */
 public final class SupportedRuntimeVersion extends ExpandableStringEnum<SupportedRuntimeVersion> {
     /** Static value Java_8 for SupportedRuntimeVersion. */
-    public static final SupportedRuntimeVersion JAVA8 = fromString("Java_8");
+    public static final SupportedRuntimeVersion JAVA_8 = fromString("Java_8");
 
     /** Static value Java_11 for SupportedRuntimeVersion. */
-    public static final SupportedRuntimeVersion JAVA11 = fromString("Java_11");
+    public static final SupportedRuntimeVersion JAVA_11 = fromString("Java_11");
 
     /** Static value NetCore_31 for SupportedRuntimeVersion. */
-    public static final SupportedRuntimeVersion NET_CORE31 = fromString("NetCore_31");
+    public static final SupportedRuntimeVersion NET_CORE_31 = fromString("NetCore_31");
 
     /**
      * Creates or finds a SupportedRuntimeVersion from its string representation.
@@ -35,7 +35,7 @@ public final class SupportedRuntimeVersion extends ExpandableStringEnum<Supporte
         return values(SupportedRuntimeVersion.class);
     }
 }
-am value the value value to set.
+value the value value to set.
      * @return the SupportedRuntimeVersion object itself.
      */
     public SupportedRuntimeVersion withValue(SupportedRuntimeVersion value) {

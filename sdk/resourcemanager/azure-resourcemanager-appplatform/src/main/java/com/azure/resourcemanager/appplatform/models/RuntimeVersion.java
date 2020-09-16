@@ -11,13 +11,13 @@ import java.util.Collection;
 /** Defines values for RuntimeVersion. */
 public final class RuntimeVersion extends ExpandableStringEnum<RuntimeVersion> {
     /** Static value Java_8 for RuntimeVersion. */
-    public static final RuntimeVersion JAVA8 = fromString("Java_8");
+    public static final RuntimeVersion JAVA_8 = fromString("Java_8");
 
     /** Static value Java_11 for RuntimeVersion. */
-    public static final RuntimeVersion JAVA11 = fromString("Java_11");
+    public static final RuntimeVersion JAVA_11 = fromString("Java_11");
 
     /** Static value NetCore_31 for RuntimeVersion. */
-    public static final RuntimeVersion NET_CORE31 = fromString("NetCore_31");
+    public static final RuntimeVersion NET_CORE_31 = fromString("NetCore_31");
 
     /**
      * Creates or finds a RuntimeVersion from its string representation.

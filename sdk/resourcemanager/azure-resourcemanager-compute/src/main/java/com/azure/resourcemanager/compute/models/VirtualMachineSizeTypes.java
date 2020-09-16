@@ -62,25 +62,25 @@ public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualM
     public static final VirtualMachineSizeTypes STANDARD_A11 = fromString("Standard_A11");
 
     /** Static value Standard_A1_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_A1V2 = fromString("Standard_A1_v2");
+    public static final VirtualMachineSizeTypes STANDARD_A1_V2 = fromString("Standard_A1_v2");
 
     /** Static value Standard_A2_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_A2V2 = fromString("Standard_A2_v2");
+    public static final VirtualMachineSizeTypes STANDARD_A2_V2 = fromString("Standard_A2_v2");
 
     /** Static value Standard_A4_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_A4V2 = fromString("Standard_A4_v2");
+    public static final VirtualMachineSizeTypes STANDARD_A4_V2 = fromString("Standard_A4_v2");
 
     /** Static value Standard_A8_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_A8V2 = fromString("Standard_A8_v2");
+    public static final VirtualMachineSizeTypes STANDARD_A8_V2 = fromString("Standard_A8_v2");
 
     /** Static value Standard_A2m_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_A2MV2 = fromString("Standard_A2m_v2");
+    public static final VirtualMachineSizeTypes STANDARD_A2M_V2 = fromString("Standard_A2m_v2");
 
     /** Static value Standard_A4m_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_A4MV2 = fromString("Standard_A4m_v2");
+    public static final VirtualMachineSizeTypes STANDARD_A4M_V2 = fromString("Standard_A4m_v2");
 
     /** Static value Standard_A8m_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_A8MV2 = fromString("Standard_A8m_v2");
+    public static final VirtualMachineSizeTypes STANDARD_A8M_V2 = fromString("Standard_A8m_v2");
 
     /** Static value Standard_B1s for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_B1S = fromString("Standard_B1s");
@@ -125,70 +125,70 @@ public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualM
     public static final VirtualMachineSizeTypes STANDARD_D14 = fromString("Standard_D14");
 
     /** Static value Standard_D1_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D1V2 = fromString("Standard_D1_v2");
+    public static final VirtualMachineSizeTypes STANDARD_D1_V2 = fromString("Standard_D1_v2");
 
     /** Static value Standard_D2_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D2V2 = fromString("Standard_D2_v2");
+    public static final VirtualMachineSizeTypes STANDARD_D2_V2 = fromString("Standard_D2_v2");
 
     /** Static value Standard_D3_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D3V2 = fromString("Standard_D3_v2");
+    public static final VirtualMachineSizeTypes STANDARD_D3_V2 = fromString("Standard_D3_v2");
 
     /** Static value Standard_D4_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D4V2 = fromString("Standard_D4_v2");
+    public static final VirtualMachineSizeTypes STANDARD_D4_V2 = fromString("Standard_D4_v2");
 
     /** Static value Standard_D5_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D5V2 = fromString("Standard_D5_v2");
+    public static final VirtualMachineSizeTypes STANDARD_D5_V2 = fromString("Standard_D5_v2");
 
     /** Static value Standard_D2_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D2V3 = fromString("Standard_D2_v3");
+    public static final VirtualMachineSizeTypes STANDARD_D2_V3 = fromString("Standard_D2_v3");
 
     /** Static value Standard_D4_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D4V3 = fromString("Standard_D4_v3");
+    public static final VirtualMachineSizeTypes STANDARD_D4_V3 = fromString("Standard_D4_v3");
 
     /** Static value Standard_D8_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D8V3 = fromString("Standard_D8_v3");
+    public static final VirtualMachineSizeTypes STANDARD_D8_V3 = fromString("Standard_D8_v3");
 
     /** Static value Standard_D16_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D16V3 = fromString("Standard_D16_v3");
+    public static final VirtualMachineSizeTypes STANDARD_D16_V3 = fromString("Standard_D16_v3");
 
     /** Static value Standard_D32_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D32V3 = fromString("Standard_D32_v3");
+    public static final VirtualMachineSizeTypes STANDARD_D32_V3 = fromString("Standard_D32_v3");
 
     /** Static value Standard_D64_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D64V3 = fromString("Standard_D64_v3");
+    public static final VirtualMachineSizeTypes STANDARD_D64_V3 = fromString("Standard_D64_v3");
 
     /** Static value Standard_D2s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D2SV3 = fromString("Standard_D2s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_D2S_V3 = fromString("Standard_D2s_v3");
 
     /** Static value Standard_D4s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D4SV3 = fromString("Standard_D4s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_D4S_V3 = fromString("Standard_D4s_v3");
 
     /** Static value Standard_D8s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D8SV3 = fromString("Standard_D8s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_D8S_V3 = fromString("Standard_D8s_v3");
 
     /** Static value Standard_D16s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D16SV3 = fromString("Standard_D16s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_D16S_V3 = fromString("Standard_D16s_v3");
 
     /** Static value Standard_D32s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D32SV3 = fromString("Standard_D32s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_D32S_V3 = fromString("Standard_D32s_v3");
 
     /** Static value Standard_D64s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D64SV3 = fromString("Standard_D64s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_D64S_V3 = fromString("Standard_D64s_v3");
 
     /** Static value Standard_D11_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D11V2 = fromString("Standard_D11_v2");
+    public static final VirtualMachineSizeTypes STANDARD_D11_V2 = fromString("Standard_D11_v2");
 
     /** Static value Standard_D12_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D12V2 = fromString("Standard_D12_v2");
+    public static final VirtualMachineSizeTypes STANDARD_D12_V2 = fromString("Standard_D12_v2");
 
     /** Static value Standard_D13_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D13V2 = fromString("Standard_D13_v2");
+    public static final VirtualMachineSizeTypes STANDARD_D13_V2 = fromString("Standard_D13_v2");
 
     /** Static value Standard_D14_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D14V2 = fromString("Standard_D14_v2");
+    public static final VirtualMachineSizeTypes STANDARD_D14_V2 = fromString("Standard_D14_v2");
 
     /** Static value Standard_D15_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_D15V2 = fromString("Standard_D15_v2");
+    public static final VirtualMachineSizeTypes STANDARD_D15_V2 = fromString("Standard_D15_v2");
 
     /** Static value Standard_DS1 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_DS1 = fromString("Standard_DS1");
@@ -215,94 +215,94 @@ public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualM
     public static final VirtualMachineSizeTypes STANDARD_DS14 = fromString("Standard_DS14");
 
     /** Static value Standard_DS1_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS1V2 = fromString("Standard_DS1_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS1_V2 = fromString("Standard_DS1_v2");
 
     /** Static value Standard_DS2_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS2V2 = fromString("Standard_DS2_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS2_V2 = fromString("Standard_DS2_v2");
 
     /** Static value Standard_DS3_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS3V2 = fromString("Standard_DS3_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS3_V2 = fromString("Standard_DS3_v2");
 
     /** Static value Standard_DS4_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS4V2 = fromString("Standard_DS4_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS4_V2 = fromString("Standard_DS4_v2");
 
     /** Static value Standard_DS5_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS5V2 = fromString("Standard_DS5_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS5_V2 = fromString("Standard_DS5_v2");
 
     /** Static value Standard_DS11_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS11V2 = fromString("Standard_DS11_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS11_V2 = fromString("Standard_DS11_v2");
 
     /** Static value Standard_DS12_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS12V2 = fromString("Standard_DS12_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS12_V2 = fromString("Standard_DS12_v2");
 
     /** Static value Standard_DS13_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS13V2 = fromString("Standard_DS13_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS13_V2 = fromString("Standard_DS13_v2");
 
     /** Static value Standard_DS14_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS14V2 = fromString("Standard_DS14_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS14_V2 = fromString("Standard_DS14_v2");
 
     /** Static value Standard_DS15_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS15V2 = fromString("Standard_DS15_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS15_V2 = fromString("Standard_DS15_v2");
 
     /** Static value Standard_DS13-4_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS134V2 = fromString("Standard_DS13-4_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS13_4_V2 = fromString("Standard_DS13-4_v2");
 
     /** Static value Standard_DS13-2_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS132V2 = fromString("Standard_DS13-2_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS13_2_V2 = fromString("Standard_DS13-2_v2");
 
     /** Static value Standard_DS14-8_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS148V2 = fromString("Standard_DS14-8_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS14_8_V2 = fromString("Standard_DS14-8_v2");
 
     /** Static value Standard_DS14-4_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_DS144V2 = fromString("Standard_DS14-4_v2");
+    public static final VirtualMachineSizeTypes STANDARD_DS14_4_V2 = fromString("Standard_DS14-4_v2");
 
     /** Static value Standard_E2_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E2V3 = fromString("Standard_E2_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E2_V3 = fromString("Standard_E2_v3");
 
     /** Static value Standard_E4_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E4V3 = fromString("Standard_E4_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E4_V3 = fromString("Standard_E4_v3");
 
     /** Static value Standard_E8_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E8V3 = fromString("Standard_E8_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E8_V3 = fromString("Standard_E8_v3");
 
     /** Static value Standard_E16_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E16V3 = fromString("Standard_E16_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E16_V3 = fromString("Standard_E16_v3");
 
     /** Static value Standard_E32_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E32V3 = fromString("Standard_E32_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E32_V3 = fromString("Standard_E32_v3");
 
     /** Static value Standard_E64_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E64V3 = fromString("Standard_E64_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E64_V3 = fromString("Standard_E64_v3");
 
     /** Static value Standard_E2s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E2SV3 = fromString("Standard_E2s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E2S_V3 = fromString("Standard_E2s_v3");
 
     /** Static value Standard_E4s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E4SV3 = fromString("Standard_E4s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E4S_V3 = fromString("Standard_E4s_v3");
 
     /** Static value Standard_E8s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E8SV3 = fromString("Standard_E8s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E8S_V3 = fromString("Standard_E8s_v3");
 
     /** Static value Standard_E16s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E16SV3 = fromString("Standard_E16s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E16S_V3 = fromString("Standard_E16s_v3");
 
     /** Static value Standard_E32s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E32SV3 = fromString("Standard_E32s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E32S_V3 = fromString("Standard_E32s_v3");
 
     /** Static value Standard_E64s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E64SV3 = fromString("Standard_E64s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E64S_V3 = fromString("Standard_E64s_v3");
 
     /** Static value Standard_E32-16_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E3216V3 = fromString("Standard_E32-16_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E32_16_V3 = fromString("Standard_E32-16_v3");
 
     /** Static value Standard_E32-8s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E328SV3 = fromString("Standard_E32-8s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E32_8S_V3 = fromString("Standard_E32-8s_v3");
 
     /** Static value Standard_E64-32s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E6432SV3 = fromString("Standard_E64-32s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E64_32S_V3 = fromString("Standard_E64-32s_v3");
 
     /** Static value Standard_E64-16s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_E6416SV3 = fromString("Standard_E64-16s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_E64_16S_V3 = fromString("Standard_E64-16s_v3");
 
     /** Static value Standard_F1 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_F1 = fromString("Standard_F1");
@@ -335,25 +335,25 @@ public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualM
     public static final VirtualMachineSizeTypes STANDARD_F16S = fromString("Standard_F16s");
 
     /** Static value Standard_F2s_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_F2SV2 = fromString("Standard_F2s_v2");
+    public static final VirtualMachineSizeTypes STANDARD_F2S_V2 = fromString("Standard_F2s_v2");
 
     /** Static value Standard_F4s_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_F4SV2 = fromString("Standard_F4s_v2");
+    public static final VirtualMachineSizeTypes STANDARD_F4S_V2 = fromString("Standard_F4s_v2");
 
     /** Static value Standard_F8s_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_F8SV2 = fromString("Standard_F8s_v2");
+    public static final VirtualMachineSizeTypes STANDARD_F8S_V2 = fromString("Standard_F8s_v2");
 
     /** Static value Standard_F16s_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_F16SV2 = fromString("Standard_F16s_v2");
+    public static final VirtualMachineSizeTypes STANDARD_F16S_V2 = fromString("Standard_F16s_v2");
 
     /** Static value Standard_F32s_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_F32SV2 = fromString("Standard_F32s_v2");
+    public static final VirtualMachineSizeTypes STANDARD_F32S_V2 = fromString("Standard_F32s_v2");
 
     /** Static value Standard_F64s_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_F64SV2 = fromString("Standard_F64s_v2");
+    public static final VirtualMachineSizeTypes STANDARD_F64S_V2 = fromString("Standard_F64s_v2");
 
     /** Static value Standard_F72s_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_F72SV2 = fromString("Standard_F72s_v2");
+    public static final VirtualMachineSizeTypes STANDARD_F72S_V2 = fromString("Standard_F72s_v2");
 
     /** Static value Standard_G1 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_G1 = fromString("Standard_G1");
@@ -386,16 +386,16 @@ public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualM
     public static final VirtualMachineSizeTypes STANDARD_GS5 = fromString("Standard_GS5");
 
     /** Static value Standard_GS4-8 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_GS48 = fromString("Standard_GS4-8");
+    public static final VirtualMachineSizeTypes STANDARD_GS4_8 = fromString("Standard_GS4-8");
 
     /** Static value Standard_GS4-4 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_GS44 = fromString("Standard_GS4-4");
+    public static final VirtualMachineSizeTypes STANDARD_GS4_4 = fromString("Standard_GS4-4");
 
     /** Static value Standard_GS5-16 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_GS516 = fromString("Standard_GS5-16");
+    public static final VirtualMachineSizeTypes STANDARD_GS5_16 = fromString("Standard_GS5-16");
 
     /** Static value Standard_GS5-8 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_GS58 = fromString("Standard_GS5-8");
+    public static final VirtualMachineSizeTypes STANDARD_GS5_8 = fromString("Standard_GS5-8");
 
     /** Static value Standard_H8 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_H8 = fromString("Standard_H8");
@@ -440,16 +440,16 @@ public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualM
     public static final VirtualMachineSizeTypes STANDARD_M128MS = fromString("Standard_M128ms");
 
     /** Static value Standard_M64-32ms for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_M6432MS = fromString("Standard_M64-32ms");
+    public static final VirtualMachineSizeTypes STANDARD_M64_32MS = fromString("Standard_M64-32ms");
 
     /** Static value Standard_M64-16ms for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_M6416MS = fromString("Standard_M64-16ms");
+    public static final VirtualMachineSizeTypes STANDARD_M64_16MS = fromString("Standard_M64-16ms");
 
     /** Static value Standard_M128-64ms for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_M12864MS = fromString("Standard_M128-64ms");
+    public static final VirtualMachineSizeTypes STANDARD_M128_64MS = fromString("Standard_M128-64ms");
 
     /** Static value Standard_M128-32ms for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_M12832MS = fromString("Standard_M128-32ms");
+    public static final VirtualMachineSizeTypes STANDARD_M128_32MS = fromString("Standard_M128-32ms");
 
     /** Static value Standard_NC6 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_NC6 = fromString("Standard_NC6");
@@ -464,25 +464,25 @@ public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualM
     public static final VirtualMachineSizeTypes STANDARD_NC24R = fromString("Standard_NC24r");
 
     /** Static value Standard_NC6s_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_NC6SV2 = fromString("Standard_NC6s_v2");
+    public static final VirtualMachineSizeTypes STANDARD_NC6S_V2 = fromString("Standard_NC6s_v2");
 
     /** Static value Standard_NC12s_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_NC12SV2 = fromString("Standard_NC12s_v2");
+    public static final VirtualMachineSizeTypes STANDARD_NC12S_V2 = fromString("Standard_NC12s_v2");
 
     /** Static value Standard_NC24s_v2 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_NC24SV2 = fromString("Standard_NC24s_v2");
+    public static final VirtualMachineSizeTypes STANDARD_NC24S_V2 = fromString("Standard_NC24s_v2");
 
     /** Static value Standard_NC24rs_v2 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_NC24RS_V2 = fromString("Standard_NC24rs_v2");
 
     /** Static value Standard_NC6s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_NC6SV3 = fromString("Standard_NC6s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_NC6S_V3 = fromString("Standard_NC6s_v3");
 
     /** Static value Standard_NC12s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_NC12SV3 = fromString("Standard_NC12s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_NC12S_V3 = fromString("Standard_NC12s_v3");
 
     /** Static value Standard_NC24s_v3 for VirtualMachineSizeTypes. */
-    public static final VirtualMachineSizeTypes STANDARD_NC24SV3 = fromString("Standard_NC24s_v3");
+    public static final VirtualMachineSizeTypes STANDARD_NC24S_V3 = fromString("Standard_NC24s_v3");
 
     /** Static value Standard_NC24rs_v3 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_NC24RS_V3 = fromString("Standard_NC24rs_v3");

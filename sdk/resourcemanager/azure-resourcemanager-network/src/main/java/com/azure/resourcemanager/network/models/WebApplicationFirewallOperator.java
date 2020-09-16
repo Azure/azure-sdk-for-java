@@ -11,7 +11,7 @@ import java.util.Collection;
 /** Defines values for WebApplicationFirewallOperator. */
 public final class WebApplicationFirewallOperator extends ExpandableStringEnum<WebApplicationFirewallOperator> {
     /** Static value IPMatch for WebApplicationFirewallOperator. */
-    public static final WebApplicationFirewallOperator IP_MATCH = fromString("IPMatch");
+    public static final WebApplicationFirewallOperator IPMATCH = fromString("IPMatch");
 
     /** Static value Equal for WebApplicationFirewallOperator. */
     public static final WebApplicationFirewallOperator EQUAL = fromString("Equal");
