@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
+import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
@@ -218,7 +219,8 @@ public abstract class CreatableUpdatableImpl<
     @SuppressWarnings("unchecked")
     public Mono<FluentModelT> createOrUpdateAsync() {
         return taskGroup.invokeAsync()
-            .map(indexable -> (FluentModelT) indexable);
+            .map(indexable -> (FluentModelT) indexable)
+            .onErrorMap(AggregatedManagementException::convertToManagementException);
     }
 
     @Override
