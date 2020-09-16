@@ -19,7 +19,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -53,7 +52,7 @@ public class ReactorDroppedIssueTest {
 //            logger.error("Extra error - on error dropped - operator called : " , throwable);
 //        });
         ReactorDroppedIssueTest reactorTimeoutIssue = new ReactorDroppedIssueTest();
-        int numOps = 1;
+        int numOps = 10000;
         if (args.length >= 1) {
             numOps = Integer.parseInt(args[0]);
         }
@@ -68,7 +67,6 @@ public class ReactorDroppedIssueTest {
         initMetrics();
 
         logger.info("Running test: Metrics will be printed periodically every " + REPORT_SECS + " seconds");
-        Random random = new Random();
         for (int i = 0; i < numOps; i++) {
             launchedMeter.mark();
             executeOperation();
