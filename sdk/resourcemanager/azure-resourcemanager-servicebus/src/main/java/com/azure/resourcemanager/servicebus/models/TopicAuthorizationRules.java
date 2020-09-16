@@ -14,6 +14,5 @@ import com.azure.resourcemanager.servicebus.fluent.TopicsClient;
 @Fluent
 public interface TopicAuthorizationRules extends
     AuthorizationRules<TopicAuthorizationRule>,
-    SupportsCreating<TopicAuthorizationRule.DefinitionStages.Blank>,
-    HasInner<TopicsClient> {
+    SupportsCreating<TopicAuthorizationRule.DefinitionStages.Blank> {
 }

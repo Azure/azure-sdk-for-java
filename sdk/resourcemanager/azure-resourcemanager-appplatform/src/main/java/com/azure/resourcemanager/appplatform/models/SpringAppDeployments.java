@@ -20,7 +20,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 @Fluent
 public interface SpringAppDeployments<T>
     extends HasManager<AppPlatformManager>,
-    HasInner<DeploymentsClient>,
     HasParent<SpringApp>,
     SupportsCreating<SpringAppDeployment.DefinitionStages.Blank<T>>,
     SupportsGettingById<SpringAppDeployment>,

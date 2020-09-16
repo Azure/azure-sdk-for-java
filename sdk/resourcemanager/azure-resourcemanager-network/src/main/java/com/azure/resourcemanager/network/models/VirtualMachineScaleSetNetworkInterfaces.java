@@ -15,7 +15,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 @Fluent
 public interface VirtualMachineScaleSetNetworkInterfaces
     extends SupportsListing<VirtualMachineScaleSetNetworkInterface>,
-        HasInner<NetworkInterfacesClient>,
         HasManager<NetworkManager> {
     /**
      * Gets a network interface associated with a virtual machine scale set instance.

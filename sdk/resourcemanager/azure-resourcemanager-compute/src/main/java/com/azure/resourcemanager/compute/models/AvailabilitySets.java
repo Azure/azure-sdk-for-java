@@ -28,6 +28,5 @@ public interface AvailabilitySets
         SupportsDeletingById,
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<AvailabilitySet>,
-        HasManager<ComputeManager>,
-        HasInner<AvailabilitySetsClient> {
+        HasManager<ComputeManager> {
 }

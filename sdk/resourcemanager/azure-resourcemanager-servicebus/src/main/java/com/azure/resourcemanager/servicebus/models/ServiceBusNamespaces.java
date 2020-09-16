@@ -32,8 +32,7 @@ public interface ServiceBusNamespaces extends
     SupportsGettingById<ServiceBusNamespace>,
     SupportsDeletingById,
     SupportsDeletingByResourceGroup,
-    HasManager<ServiceBusManager>,
-    HasInner<NamespacesClient> {
+    HasManager<ServiceBusManager> {
     /**
      * Checks if namespace name is valid and is not in use.
      *

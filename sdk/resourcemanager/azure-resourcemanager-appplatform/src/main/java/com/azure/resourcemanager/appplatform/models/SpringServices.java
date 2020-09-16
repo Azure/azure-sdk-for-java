@@ -24,7 +24,6 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface SpringServices
     extends HasManager<AppPlatformManager>,
-        HasInner<ServicesClient>,
         SupportsCreating<SpringService.DefinitionStages.Blank>,
         SupportsGettingById<SpringService>,
         SupportsGettingByResourceGroup<SpringService>,

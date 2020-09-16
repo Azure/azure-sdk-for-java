@@ -28,8 +28,7 @@ public interface Vaults
         SupportsGettingByResourceGroup<Vault>,
         SupportsGettingById<Vault>,
         SupportsDeletingByResourceGroup,
-        HasManager<KeyVaultManager>,
-        HasInner<VaultsClient> {
+        HasManager<KeyVaultManager> {
 
     /**
      * Gets information about the deleted vaults in a subscription.

@@ -22,6 +22,5 @@ public interface Topics extends
     SupportsListing<Topic>,
     SupportsGettingByName<Topic>,
     SupportsDeletingByName,
-    HasManager<ServiceBusManager>,
-    HasInner<TopicsClient> {
+    HasManager<ServiceBusManager> {
 }

@@ -21,6 +21,5 @@ public interface Galleries
         SupportsBatchDeletion,
         SupportsGettingByResourceGroup<Gallery>,
         SupportsListingByResourceGroup<Gallery>,
-        SupportsListing<Gallery>,
-        HasInner<GalleriesClient> {
+        SupportsListing<Gallery> {
 }

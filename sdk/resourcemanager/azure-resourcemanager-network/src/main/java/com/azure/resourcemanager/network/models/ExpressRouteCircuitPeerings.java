@@ -20,7 +20,6 @@ public interface ExpressRouteCircuitPeerings
         SupportsGettingById<ExpressRouteCircuitPeering>,
         SupportsDeletingByName,
         SupportsDeletingById,
-        HasInner<ExpressRouteCircuitPeeringsClient>,
         HasParent<ExpressRouteCircuit> {
     /**
      * Begins definition of Azure private peering.

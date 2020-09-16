@@ -24,7 +24,6 @@ import java.util.List;
 public interface CosmosDBAccounts
     extends SupportsCreating<CosmosDBAccount.DefinitionStages.Blank>,
         HasManager<CosmosManager>,
-        HasInner<DatabaseAccountsClient>,
         SupportsBatchCreation<CosmosDBAccount>,
         SupportsGettingById<CosmosDBAccount>,
         SupportsDeletingById,

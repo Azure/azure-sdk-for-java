@@ -29,6 +29,5 @@ public interface NetworkWatchers
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<NetworkWatcher>,
         SupportsBatchDeletion,
-        HasManager<NetworkManager>,
-        HasInner<NetworkWatchersClient> {
+        HasManager<NetworkManager> {
 }

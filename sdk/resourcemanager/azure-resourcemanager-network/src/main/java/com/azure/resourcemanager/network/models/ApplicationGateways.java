@@ -32,8 +32,7 @@ public interface ApplicationGateways
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<ApplicationGateway>,
         SupportsBatchDeletion,
-        HasManager<NetworkManager>,
-        HasInner<ApplicationGatewaysClient> {
+        HasManager<NetworkManager> {
 
     /**
      * Starts the specified application gateways.

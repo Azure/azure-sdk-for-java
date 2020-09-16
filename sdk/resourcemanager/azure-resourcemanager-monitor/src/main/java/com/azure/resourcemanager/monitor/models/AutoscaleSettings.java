@@ -27,6 +27,5 @@ public interface AutoscaleSettings
         SupportsDeletingById,
         SupportsDeletingByResourceGroup,
         SupportsBatchDeletion,
-        HasManager<MonitorManager>,
-        HasInner<AutoscaleSettingsClient> {
+        HasManager<MonitorManager> {
 }

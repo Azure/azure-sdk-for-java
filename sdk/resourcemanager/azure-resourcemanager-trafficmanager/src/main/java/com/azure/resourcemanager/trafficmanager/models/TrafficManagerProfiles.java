@@ -29,8 +29,7 @@ public interface TrafficManagerProfiles
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<TrafficManagerProfile>,
         SupportsBatchDeletion,
-        HasManager<TrafficManager>,
-        HasInner<ProfilesClient> {
+        HasManager<TrafficManager> {
 
     /**
      * Checks that the DNS name is valid for traffic manager profile and is not in use.

@@ -24,6 +24,5 @@ public interface ActiveDirectoryGroups
         SupportsGettingByName<ActiveDirectoryGroup>,
         SupportsCreating<ActiveDirectoryGroup.DefinitionStages.Blank>,
         SupportsDeletingById,
-        HasManager<AuthorizationManager>,
-        HasInner<GroupsClient> {
+        HasManager<AuthorizationManager> {
 }

@@ -16,6 +16,5 @@ public interface PacketCaptures
     extends SupportsCreating<PacketCapture.DefinitionStages.WithTarget>,
         SupportsListing<PacketCapture>,
         SupportsGettingByName<PacketCapture>,
-        SupportsDeletingByName,
-        HasInner<PacketCapturesClient> {
+        SupportsDeletingByName {
 }

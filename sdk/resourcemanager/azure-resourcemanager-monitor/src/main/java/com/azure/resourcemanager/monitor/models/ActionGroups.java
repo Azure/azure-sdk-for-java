@@ -29,8 +29,7 @@ public interface ActionGroups
         SupportsDeletingById,
         SupportsDeletingByResourceGroup,
         SupportsBatchDeletion,
-        HasManager<MonitorManager>,
-        HasInner<ActionGroupsClient> {
+        HasManager<MonitorManager> {
 
     /**
      * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation

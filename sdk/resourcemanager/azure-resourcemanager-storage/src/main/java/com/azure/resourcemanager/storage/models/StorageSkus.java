@@ -10,5 +10,5 @@ import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.SkusClient;
 
 /** Entry point to storage service SKUs. */
-public interface StorageSkus extends SupportsListing<StorageSku>, HasInner<SkusClient>, HasManager<StorageManager> {
+public interface StorageSkus extends SupportsListing<StorageSku>, HasManager<StorageManager> {
 }

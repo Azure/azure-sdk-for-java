@@ -22,7 +22,6 @@ public interface EventHubDisasterRecoveryPairings extends
     SupportsCreating<EventHubDisasterRecoveryPairing.DefinitionStages.Blank>,
     SupportsDeletingById,
     SupportsGettingById<EventHubDisasterRecoveryPairing>,
-    HasInner<DisasterRecoveryConfigsClient>,
     HasManager<EventHubsManager> {
     /**
      * @return entry point to manage authorization rules of a disaster recovery pairing.

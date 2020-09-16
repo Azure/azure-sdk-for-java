@@ -33,8 +33,7 @@ public interface RedisCaches
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<RedisCache>,
         SupportsBatchDeletion,
-        HasManager<RedisManager>,
-        HasInner<RedisClient> {
+        HasManager<RedisManager> {
 
     /**
      * Lists all of the available Redis REST API operations.

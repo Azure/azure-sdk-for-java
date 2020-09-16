@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point for Monitor Metric Definitions API. */
-public interface MetricDefinitions extends HasManager<MonitorManager>, HasInner<MetricDefinitionsClient> {
+public interface MetricDefinitions extends HasManager<MonitorManager> {
 
     /**
      * Lists Metric Definitions for a given resource.

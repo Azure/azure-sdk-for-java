@@ -16,6 +16,5 @@ public interface ConnectionMonitors
     extends SupportsCreating<ConnectionMonitor.DefinitionStages.WithSource>,
         SupportsListing<ConnectionMonitor>,
         SupportsGettingByName<ConnectionMonitor>,
-        SupportsDeletingByName,
-        HasInner<ConnectionMonitorsClient> {
+        SupportsDeletingByName {
 }

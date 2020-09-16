@@ -31,8 +31,7 @@ public interface Snapshots
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<Snapshot>,
         SupportsBatchDeletion,
-        HasManager<ComputeManager>,
-        HasInner<SnapshotsClient> {
+        HasManager<ComputeManager> {
     /**
      * Grants access to the snapshot asynchronously.
      *

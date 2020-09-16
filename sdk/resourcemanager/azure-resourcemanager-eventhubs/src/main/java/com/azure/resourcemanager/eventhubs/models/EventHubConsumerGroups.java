@@ -22,7 +22,6 @@ public interface EventHubConsumerGroups extends
     SupportsCreating<EventHubConsumerGroup.DefinitionStages.Blank>,
     SupportsDeletingById,
     SupportsGettingById<EventHubConsumerGroup>,
-    HasInner<ConsumerGroupsClient>,
     HasManager<EventHubsManager> {
     /**
      * Lists the consumer groups of an event hub in a namespace under a resource group.

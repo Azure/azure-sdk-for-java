@@ -35,8 +35,7 @@ public interface SqlServers
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<SqlServer>,
         SupportsBatchDeletion,
-        HasManager<SqlServerManager>,
-        HasInner<ServersClient> {
+        HasManager<SqlServerManager> {
 
     /** @return the SQL Server Firewall Rules API entry point */
     SqlFirewallRuleOperations firewallRules();

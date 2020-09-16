@@ -19,8 +19,7 @@ public interface VirtualNetworkLinks
     extends SupportsGettingById<VirtualNetworkLink>,
         SupportsGettingByName<VirtualNetworkLink>,
         SupportsListing<VirtualNetworkLink>,
-        HasParent<PrivateDnsZone>,
-        HasInner<VirtualNetworkLinksClient> {
+        HasParent<PrivateDnsZone> {
     /**
      * Lists all the virtual network links, with number of entries in each page limited to given size.
      *

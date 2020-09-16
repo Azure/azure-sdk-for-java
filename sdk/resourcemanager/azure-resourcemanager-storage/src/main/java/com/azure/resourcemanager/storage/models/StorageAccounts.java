@@ -31,8 +31,7 @@ public interface StorageAccounts
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<StorageAccount>,
         SupportsBatchDeletion,
-        HasManager<StorageManager>,
-        HasInner<StorageAccountsClient> {
+        HasManager<StorageManager> {
     /**
      * Checks that account name is valid and is not in use.
      *

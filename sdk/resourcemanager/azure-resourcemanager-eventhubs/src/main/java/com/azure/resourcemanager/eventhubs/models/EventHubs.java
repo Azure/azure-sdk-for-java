@@ -22,7 +22,6 @@ public interface EventHubs extends
     SupportsCreating<EventHub.DefinitionStages.Blank>,
     SupportsDeletingById,
     SupportsGettingById<EventHub>,
-    HasInner<EventHubsClient>,
     HasManager<EventHubsManager> {
     /**
      * @return entry point to manage authorization rules of event hubs.

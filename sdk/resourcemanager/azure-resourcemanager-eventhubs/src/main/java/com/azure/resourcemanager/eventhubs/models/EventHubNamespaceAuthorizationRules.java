@@ -22,7 +22,6 @@ public interface EventHubNamespaceAuthorizationRules extends
     SupportsCreating<EventHubNamespaceAuthorizationRule.DefinitionStages.Blank>,
     SupportsDeletingById,
     SupportsGettingById<EventHubNamespaceAuthorizationRule>,
-    HasInner<NamespacesClient>,
     HasManager<EventHubsManager> {
     /**
      * Lists the authorization rules under a namespace in a resource group.

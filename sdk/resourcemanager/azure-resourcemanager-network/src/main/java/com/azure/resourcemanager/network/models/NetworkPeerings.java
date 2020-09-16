@@ -25,8 +25,7 @@ public interface NetworkPeerings
         SupportsBatchCreation<NetworkPeering>,
         SupportsDeletingByParent,
         SupportsListing<NetworkPeering>,
-        HasManager<NetworkManager>,
-        HasInner<VirtualNetworkPeeringsClient> {
+        HasManager<NetworkManager> {
 
     /**
      * Finds the peering, if any, that is associated with the specified network.

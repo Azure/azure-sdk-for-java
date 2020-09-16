@@ -26,7 +26,6 @@ import java.util.Collection;
 public interface Registries
     extends SupportsCreating<Registry.DefinitionStages.Blank>,
         HasManager<ContainerRegistryManager>,
-        HasInner<RegistriesClient>,
         SupportsBatchCreation<Registry>,
         SupportsGettingById<Registry>,
         SupportsDeletingById,

@@ -26,6 +26,5 @@ public interface AppServiceCertificateOrders
         SupportsListing<AppServiceCertificateOrder>,
         SupportsGettingById<AppServiceCertificateOrder>,
         SupportsDeletingByResourceGroup,
-        HasManager<AppServiceManager>,
-        HasInner<AppServiceCertificateOrdersClient> {
+        HasManager<AppServiceManager> {
 }

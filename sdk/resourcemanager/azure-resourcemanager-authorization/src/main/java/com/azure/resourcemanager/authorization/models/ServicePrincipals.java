@@ -24,6 +24,5 @@ public interface ServicePrincipals
         SupportsGettingByName<ServicePrincipal>,
         SupportsCreating<ServicePrincipal.DefinitionStages.Blank>,
         SupportsDeletingById,
-        HasManager<AuthorizationManager>,
-        HasInner<ServicePrincipalsClient> {
+        HasManager<AuthorizationManager> {
 }

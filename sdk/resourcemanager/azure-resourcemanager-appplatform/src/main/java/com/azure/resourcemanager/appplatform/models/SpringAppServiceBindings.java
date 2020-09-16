@@ -19,7 +19,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 @Fluent
 public interface SpringAppServiceBindings
     extends HasManager<AppPlatformManager>,
-    HasInner<BindingsClient>,
     HasParent<SpringApp>,
     SupportsGettingById<SpringAppServiceBinding>,
     SupportsGettingByName<SpringAppServiceBinding>,

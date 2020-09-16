@@ -30,8 +30,7 @@ public interface PublicIpAddresses
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<PublicIpAddress>,
         SupportsBatchDeletion,
-        HasManager<NetworkManager>,
-        HasInner<PublicIpAddressesClient> {
+        HasManager<NetworkManager> {
 
     /**
      * Begins deleting a public IP address from Azure, identifying it by its resource ID.

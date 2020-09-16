@@ -30,8 +30,7 @@ public interface PrivateDnsZones
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<PrivateDnsZone>,
         SupportsBatchDeletion,
-        HasManager<PrivateDnsZoneManager>,
-        HasInner<PrivateZonesClient> {
+        HasManager<PrivateDnsZoneManager> {
     /**
      * Deletes a resource from Azure, identifying it by its resource ID.
      *

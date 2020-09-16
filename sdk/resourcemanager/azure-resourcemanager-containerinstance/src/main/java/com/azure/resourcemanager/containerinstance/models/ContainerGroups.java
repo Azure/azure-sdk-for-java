@@ -26,7 +26,6 @@ import reactor.core.publisher.Mono;
 public interface ContainerGroups
     extends SupportsCreating<ContainerGroup.DefinitionStages.Blank>,
         HasManager<ContainerInstanceManager>,
-        HasInner<ContainerGroupsClient>,
         SupportsBatchCreation<ContainerGroup>,
         SupportsGettingByResourceGroup<ContainerGroup>,
         SupportsGettingById<ContainerGroup>,

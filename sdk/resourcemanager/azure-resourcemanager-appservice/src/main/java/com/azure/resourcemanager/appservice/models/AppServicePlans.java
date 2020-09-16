@@ -26,6 +26,5 @@ public interface AppServicePlans
         SupportsGettingByResourceGroup<AppServicePlan>,
         SupportsGettingById<AppServicePlan>,
         SupportsDeletingByResourceGroup,
-        HasManager<AppServiceManager>,
-        HasInner<AppServicePlansClient> {
+        HasManager<AppServiceManager> {
 }

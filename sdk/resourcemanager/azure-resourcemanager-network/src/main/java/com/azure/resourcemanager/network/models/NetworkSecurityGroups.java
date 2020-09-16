@@ -29,6 +29,5 @@ public interface NetworkSecurityGroups
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<NetworkSecurityGroup>,
         SupportsBatchDeletion,
-        HasManager<NetworkManager>,
-        HasInner<NetworkSecurityGroupsClient> {
+        HasManager<NetworkManager> {
 }

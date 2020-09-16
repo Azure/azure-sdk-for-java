@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 /** Entry point to virtual machine scale set instance management API. */
 @Fluent
 public interface VirtualMachineScaleSetVMs
-    extends SupportsListing<VirtualMachineScaleSetVM>, HasInner<VirtualMachineScaleSetVMsClient> {
+    extends SupportsListing<VirtualMachineScaleSetVM> {
     /**
      * Deletes the specified virtual machine instances from the scale set.
      *

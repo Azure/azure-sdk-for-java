@@ -30,6 +30,5 @@ public interface VirtualMachineCustomImages
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<VirtualMachineCustomImage>,
         SupportsBatchDeletion,
-        HasManager<ComputeManager>,
-        HasInner<ImagesClient> {
+        HasManager<ComputeManager> {
 }

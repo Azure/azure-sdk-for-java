@@ -23,8 +23,7 @@ public interface RoleAssignments
         SupportsCreating<RoleAssignment.DefinitionStages.Blank>,
         SupportsBatchCreation<RoleAssignment>,
         SupportsDeletingById,
-        HasManager<AuthorizationManager>,
-        HasInner<RoleAssignmentsClient> {
+        HasManager<AuthorizationManager> {
     /**
      * Gets the information about a role assignment based on scope and name.
      *

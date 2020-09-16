@@ -28,6 +28,5 @@ public interface MetricAlerts
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<MetricAlert>,
         SupportsBatchDeletion,
-        HasManager<MonitorManager>,
-        HasInner<MetricAlertsClient> {
+        HasManager<MonitorManager> {
 }

@@ -29,6 +29,5 @@ public interface RouteFilters
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<RouteFilter>,
         SupportsBatchDeletion,
-        HasManager<NetworkManager>,
-        HasInner<RouteFiltersClient> {
+        HasManager<NetworkManager> {
 }

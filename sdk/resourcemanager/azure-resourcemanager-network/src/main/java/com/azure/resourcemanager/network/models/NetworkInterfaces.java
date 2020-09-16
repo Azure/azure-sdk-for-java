@@ -33,8 +33,7 @@ public interface NetworkInterfaces
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<NetworkInterface>,
         SupportsBatchDeletion,
-        HasManager<NetworkManager>,
-        HasInner<NetworkInterfacesClient> {
+        HasManager<NetworkManager> {
 
     /**
      * Gets a network interface associated with a virtual machine scale set instance.

@@ -22,7 +22,6 @@ public interface EventHubAuthorizationRules extends
     SupportsCreating<EventHubAuthorizationRule.DefinitionStages.Blank>,
     SupportsDeletingById,
     SupportsGettingById<EventHubAuthorizationRule>,
-    HasInner<EventHubsClient>,
     HasManager<EventHubsManager> {
     /**
      * Lists the authorization rules of an event hub in a namespace under a resource group.

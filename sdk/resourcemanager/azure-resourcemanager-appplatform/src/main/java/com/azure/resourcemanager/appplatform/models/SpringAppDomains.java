@@ -20,7 +20,6 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface SpringAppDomains
     extends HasManager<AppPlatformManager>,
-    HasInner<CustomDomainsClient>,
     HasParent<SpringApp>,
     SupportsGettingById<SpringAppDomain>,
     SupportsGettingByName<SpringAppDomain>,

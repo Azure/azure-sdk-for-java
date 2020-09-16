@@ -31,8 +31,7 @@ public interface VirtualMachines
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<VirtualMachine>,
         SupportsBatchDeletion,
-        HasManager<ComputeManager>,
-        HasInner<VirtualMachinesClient> {
+        HasManager<ComputeManager> {
 
     /** @return available virtual machine sizes */
     VirtualMachineSizes sizes();

@@ -14,6 +14,5 @@ import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
 @Fluent
 public interface NamespaceAuthorizationRules extends
     AuthorizationRules<NamespaceAuthorizationRule>,
-    SupportsCreating<NamespaceAuthorizationRule.DefinitionStages.Blank>,
-    HasInner<NamespacesClient> {
+    SupportsCreating<NamespaceAuthorizationRule.DefinitionStages.Blank> {
 }

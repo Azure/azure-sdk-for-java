@@ -26,6 +26,5 @@ public interface ActiveDirectoryApplications
         SupportsCreating<ActiveDirectoryApplication.DefinitionStages.Blank>,
         SupportsBatchCreation<ActiveDirectoryApplication>,
         SupportsDeletingById,
-        HasManager<AuthorizationManager>,
-        HasInner<ApplicationsClient> {
+        HasManager<AuthorizationManager> {
 }

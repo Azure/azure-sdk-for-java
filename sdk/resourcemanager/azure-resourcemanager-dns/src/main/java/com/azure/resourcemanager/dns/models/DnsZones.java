@@ -30,8 +30,7 @@ public interface DnsZones
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<DnsZone>,
         SupportsBatchDeletion,
-        HasManager<DnsZoneManager>,
-        HasInner<ZonesClient> {
+        HasManager<DnsZoneManager> {
     /**
      * Asynchronously deletes the zone from Azure, identifying it by its name and its resource group.
      *

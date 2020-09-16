@@ -14,6 +14,5 @@ import com.azure.resourcemanager.servicebus.fluent.QueuesClient;
 @Fluent
 public interface QueueAuthorizationRules extends
     AuthorizationRules<QueueAuthorizationRule>,
-    SupportsCreating<QueueAuthorizationRule.DefinitionStages.Blank>,
-    HasInner<QueuesClient> {
+    SupportsCreating<QueueAuthorizationRule.DefinitionStages.Blank> {
 }

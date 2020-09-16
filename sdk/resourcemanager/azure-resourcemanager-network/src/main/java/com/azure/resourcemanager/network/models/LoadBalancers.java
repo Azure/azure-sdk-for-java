@@ -29,6 +29,5 @@ public interface LoadBalancers
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<LoadBalancer>,
         SupportsBatchDeletion,
-        HasManager<NetworkManager>,
-        HasInner<LoadBalancersClient> {
+        HasManager<NetworkManager> {
 }

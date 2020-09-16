@@ -28,6 +28,5 @@ public interface ActivityLogAlerts
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<ActivityLogAlert>,
         SupportsBatchDeletion,
-        HasManager<MonitorManager>,
-        HasInner<ActivityLogAlertsClient> {
+        HasManager<MonitorManager> {
 }

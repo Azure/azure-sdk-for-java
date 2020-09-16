@@ -29,6 +29,5 @@ public interface PublicIpPrefixes extends
     SupportsDeletingByResourceGroup,
     SupportsBatchCreation<PublicIpPrefix>,
     SupportsBatchDeletion,
-    HasManager<NetworkManager>,
-    HasInner<PublicIpPrefixesClient> {
+    HasManager<NetworkManager> {
 }

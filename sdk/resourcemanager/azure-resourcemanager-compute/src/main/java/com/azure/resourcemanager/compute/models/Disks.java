@@ -32,8 +32,7 @@ public interface Disks
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<Disk>,
         SupportsBatchDeletion,
-        HasManager<ComputeManager>,
-        HasInner<DisksClient> {
+        HasManager<ComputeManager> {
 
     /**
      * Grants access to a disk.

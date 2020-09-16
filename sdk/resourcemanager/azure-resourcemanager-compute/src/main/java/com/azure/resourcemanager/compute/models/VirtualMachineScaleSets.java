@@ -34,8 +34,7 @@ public interface VirtualMachineScaleSets
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<VirtualMachineScaleSet>,
         SupportsBatchDeletion,
-        HasManager<ComputeManager>,
-        HasInner<VirtualMachineScaleSetsClient> {
+        HasManager<ComputeManager> {
     /**
      * Shuts down the virtual machines in the scale set and releases the compute resources.
      *

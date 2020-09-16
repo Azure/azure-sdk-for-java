@@ -19,7 +19,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 @Fluent
 public interface SpringServiceCertificates
     extends HasManager<AppPlatformManager>,
-    HasInner<CertificatesClient>,
     HasParent<SpringService>,
     SupportsGettingById<SpringServiceCertificate>,
     SupportsGettingByName<SpringServiceCertificate>,

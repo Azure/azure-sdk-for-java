@@ -27,8 +27,7 @@ public interface AppServiceDomains
         SupportsDeletingByResourceGroup,
         SupportsGettingByResourceGroup<AppServiceDomain>,
         SupportsGettingById<AppServiceDomain>,
-        HasManager<AppServiceManager>,
-        HasInner<DomainsClient> {
+        HasManager<AppServiceManager> {
     /**
      * List the agreements for purchasing a domain with a specific top level extension.
      *

@@ -18,7 +18,6 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface DisasterRecoveryPairingAuthorizationRules extends
     SupportsGettingById<DisasterRecoveryPairingAuthorizationRule>,
-    HasInner<DisasterRecoveryConfigsClient>,
     HasManager<EventHubsManager> {
     /**
      * Lists the authorization rules that can be used to access the disaster recovery pairing.

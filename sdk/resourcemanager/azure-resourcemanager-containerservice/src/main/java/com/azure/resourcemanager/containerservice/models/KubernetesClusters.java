@@ -25,7 +25,6 @@ import java.util.Set;
 @Fluent()
 public interface KubernetesClusters
     extends HasManager<ContainerServiceManager>,
-        HasInner<ManagedClustersClient>,
         SupportsCreating<KubernetesCluster.DefinitionStages.Blank>,
         SupportsBatchCreation<KubernetesCluster>,
         SupportsListing<KubernetesCluster>,

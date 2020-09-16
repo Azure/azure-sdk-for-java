@@ -26,8 +26,7 @@ public interface DiagnosticSettings
         SupportsGettingById<DiagnosticSetting>,
         SupportsDeletingById,
         SupportsBatchDeletion,
-        HasManager<MonitorManager>,
-        HasInner<DiagnosticSettingsClient> {
+        HasManager<MonitorManager> {
 
     /**
      * Lists all the Diagnostic Settings categories for Log and Metric Settings for a specific resource.

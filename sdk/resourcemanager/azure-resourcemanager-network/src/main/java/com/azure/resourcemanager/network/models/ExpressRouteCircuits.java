@@ -27,6 +27,5 @@ public interface ExpressRouteCircuits
         SupportsDeletingById,
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<ExpressRouteCircuit>,
-        HasManager<NetworkManager>,
-        HasInner<ExpressRouteCircuitsClient> {
+        HasManager<NetworkManager> {
 }

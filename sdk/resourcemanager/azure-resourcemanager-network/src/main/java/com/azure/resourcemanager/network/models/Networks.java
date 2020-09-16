@@ -29,6 +29,5 @@ public interface Networks
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<Network>,
         SupportsBatchDeletion,
-        HasManager<NetworkManager>,
-        HasInner<VirtualNetworksClient> {
+        HasManager<NetworkManager> {
 }

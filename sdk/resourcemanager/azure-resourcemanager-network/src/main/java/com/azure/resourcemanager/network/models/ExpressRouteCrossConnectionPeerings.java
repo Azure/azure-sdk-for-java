@@ -20,7 +20,6 @@ public interface ExpressRouteCrossConnectionPeerings
         SupportsGettingById<ExpressRouteCrossConnectionPeering>,
         SupportsDeletingByName,
         SupportsDeletingById,
-        HasInner<ExpressRouteCrossConnectionPeeringsClient>,
         HasParent<ExpressRouteCrossConnection> {
     /**
      * Begins definition of Azure private peering.

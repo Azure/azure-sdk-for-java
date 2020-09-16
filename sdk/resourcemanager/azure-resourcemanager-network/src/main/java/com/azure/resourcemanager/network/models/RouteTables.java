@@ -29,6 +29,5 @@ public interface RouteTables
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<RouteTable>,
         SupportsBatchDeletion,
-        HasManager<NetworkManager>,
-        HasInner<RouteTablesClient> {
+        HasManager<NetworkManager> {
 }

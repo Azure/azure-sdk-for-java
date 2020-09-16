@@ -22,6 +22,5 @@ public interface ServiceBusSubscriptions extends
     SupportsListing<ServiceBusSubscription>,
     SupportsGettingByName<ServiceBusSubscription>,
     SupportsDeletingByName,
-    HasManager<ServiceBusManager>,
-    HasInner<SubscriptionsClient> {
+    HasManager<ServiceBusManager> {
 }

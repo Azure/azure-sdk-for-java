@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 /** Type representing BlobServices. */
 @Fluent
 public interface BlobServices
-    extends SupportsCreating<BlobServiceProperties.DefinitionStages.Blank>, HasInner<BlobServicesClient> {
+    extends SupportsCreating<BlobServiceProperties.DefinitionStages.Blank> {
     /**
      * Gets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.

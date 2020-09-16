@@ -24,6 +24,5 @@ public interface ActiveDirectoryUsers
         SupportsListingByFilter<ActiveDirectoryUser>,
         SupportsCreating<ActiveDirectoryUser.DefinitionStages.Blank>,
         SupportsDeletingById,
-        HasManager<AuthorizationManager>,
-        HasInner<UsersClient> {
+        HasManager<AuthorizationManager> {
 }

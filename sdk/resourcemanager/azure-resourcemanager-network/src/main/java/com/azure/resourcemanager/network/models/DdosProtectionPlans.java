@@ -29,6 +29,5 @@ public interface DdosProtectionPlans
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<DdosProtectionPlan>,
         SupportsBatchDeletion,
-        HasManager<NetworkManager>,
-        HasInner<DdosProtectionPlansClient> {
+        HasManager<NetworkManager> {
 }

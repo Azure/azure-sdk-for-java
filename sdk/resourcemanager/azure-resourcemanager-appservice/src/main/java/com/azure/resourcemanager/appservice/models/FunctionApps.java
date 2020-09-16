@@ -27,8 +27,7 @@ public interface FunctionApps
         SupportsGettingByResourceGroup<FunctionApp>,
         SupportsGettingById<FunctionApp>,
         SupportsDeletingByResourceGroup,
-        HasManager<AppServiceManager>,
-        HasInner<WebAppsClient> {
+        HasManager<AppServiceManager> {
 
     /**
      * List function information elements.

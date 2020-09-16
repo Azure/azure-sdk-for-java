@@ -22,6 +22,5 @@ public interface VirtualNetworkGatewayConnections
         SupportsGettingById<VirtualNetworkGatewayConnection>,
         SupportsDeletingByName,
         SupportsDeletingById,
-        HasInner<VirtualNetworkGatewayConnectionsClient>,
         HasParent<VirtualNetworkGateway> {
 }

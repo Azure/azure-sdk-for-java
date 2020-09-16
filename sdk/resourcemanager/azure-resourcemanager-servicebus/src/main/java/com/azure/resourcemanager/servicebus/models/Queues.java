@@ -23,6 +23,5 @@ public interface Queues extends
     SupportsListing<Queue>,
     SupportsGettingByName<Queue>,
     SupportsDeletingByName,
-    HasManager<ServiceBusManager>,
-    HasInner<QueuesClient> {
+    HasManager<ServiceBusManager> {
 }

@@ -32,6 +32,5 @@ public interface Identities extends
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<Identity>,
         SupportsBatchDeletion,
-        HasManager<MSIManager>,
-        HasInner<UserAssignedIdentitiesClient> {
+        HasManager<MSIManager> {
 }

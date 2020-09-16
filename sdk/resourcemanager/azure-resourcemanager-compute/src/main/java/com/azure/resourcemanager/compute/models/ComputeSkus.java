@@ -19,7 +19,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 public interface ComputeSkus
     extends SupportsListing<ComputeSku>,
         SupportsListingByRegion<ComputeSku>,
-        HasInner<ResourceSkusClient>,
         HasManager<ComputeManager> {
     /**
      * Lists all the skus with the specified resource type.

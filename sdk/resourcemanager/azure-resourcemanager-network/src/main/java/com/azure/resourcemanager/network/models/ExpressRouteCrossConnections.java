@@ -19,6 +19,5 @@ public interface ExpressRouteCrossConnections
         SupportsListingByResourceGroup<ExpressRouteCrossConnection>,
         SupportsGettingByResourceGroup<ExpressRouteCrossConnection>,
         SupportsGettingById<ExpressRouteCrossConnection>,
-        HasManager<NetworkManager>,
-        HasInner<ExpressRouteCrossConnectionsClient> {
+        HasManager<NetworkManager> {
 }

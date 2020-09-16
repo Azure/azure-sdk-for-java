@@ -26,6 +26,5 @@ public interface AppServiceCertificates
         SupportsGettingByResourceGroup<AppServiceCertificate>,
         SupportsGettingById<AppServiceCertificate>,
         SupportsDeletingByResourceGroup,
-        HasManager<AppServiceManager>,
-        HasInner<CertificatesClient> {
+        HasManager<AppServiceManager> {
 }

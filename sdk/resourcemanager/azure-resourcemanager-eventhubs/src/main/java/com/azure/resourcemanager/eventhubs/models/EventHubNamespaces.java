@@ -32,8 +32,7 @@ public interface EventHubNamespaces extends
     SupportsDeletingByResourceGroup,
     SupportsBatchCreation<EventHubNamespace>,
     SupportsBatchDeletion,
-    HasManager<EventHubsManager>,
-    HasInner<NamespacesClient> {
+    HasManager<EventHubsManager> {
     /**
      * @return entry point to manage authorization rules of event hub namespaces.
      */

@@ -25,6 +25,5 @@ public interface LocalNetworkGateways
         SupportsGettingById<LocalNetworkGateway>,
         SupportsDeletingById,
         SupportsDeletingByResourceGroup,
-        HasManager<NetworkManager>,
-        HasInner<LocalNetworkGatewaysClient> {
+        HasManager<NetworkManager> {
 }

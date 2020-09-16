@@ -27,6 +27,5 @@ public interface VirtualNetworkGateways
         SupportsDeletingById,
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<VirtualNetworkGateway>,
-        HasManager<NetworkManager>,
-        HasInner<VirtualNetworkGatewaysClient> {
+        HasManager<NetworkManager> {
 }
