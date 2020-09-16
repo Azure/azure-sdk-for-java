@@ -521,6 +521,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             AsyncDocumentClient asyncDocumentClient = client.asyncClient().getContextClient();
             GlobalAddressResolver addressResolver = (GlobalAddressResolver) FieldUtils.readField(asyncDocumentClient,
                 "addressResolver", true);
+
+            @SuppressWarnings("rawtypes")
             Map addressCacheByEndpoint = (Map) FieldUtils.readField(addressResolver,
                 "addressCacheByEndpoint",
                 true);
