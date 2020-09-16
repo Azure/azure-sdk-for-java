@@ -417,7 +417,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         public void close() {
 
             if (this.closed.compareAndSet(false, true)) {
-                this.monitoring.shutdown();
+                this.monitoring.close();
 
                 for (final RntbdEndpoint endpoint : this.endpoints.values()) {
                     endpoint.close();
@@ -479,7 +479,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
     }
 
-    public static class RntbdEndpointMonitoringProvider {
+    public static class RntbdEndpointMonitoringProvider implements AutoCloseable {
         private final Logger logger = LoggerFactory.getLogger(RntbdEndpointMonitoringProvider.class);
         // this is only for debugging monitoring of the health of RNTBD
         // TODO: once we are certain no task gets stuck in the rntbd queue remove this
@@ -504,7 +504,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             }, 0, MONITORING_PERIOD.toMillis(), TimeUnit.MILLISECONDS);
         }
 
-        synchronized void shutdown() {
+        @Override
+        public synchronized void close() {
             logger.info("Shutting down RntbdClientChannelPoolMonitoringProvider ...");
             this.future.cancel(false);
             this.future = null;
