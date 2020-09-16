@@ -16,6 +16,9 @@ trigger:
       - sdk/cosmos/mgmt-v2019_08_01_preview
       - sdk/cosmos/mgmt-v2019_12_12
 
+
+
+
 pr:
   branches:
     include:
