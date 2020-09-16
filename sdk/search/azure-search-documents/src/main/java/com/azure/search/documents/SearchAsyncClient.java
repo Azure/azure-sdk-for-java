@@ -162,22 +162,22 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Creates a {@link SearchBatchAsyncClient} used to index documents for the Search index associated with
-     * this {@link SearchAsyncClient}.
+     * Creates a {@link SearchBatchAsyncClient} used to index documents for the Search index associated with this {@link
+     * SearchAsyncClient}.
      * <p>
      * This will use the default configuration values for {@link SearchBatchAsyncClient}, see {@link
      * SearchBatchClientBuilder} for more information.
      *
-     * @return A {@link SearchBatchAsyncClient} used to index documents for the Search index associated with
-     * this {@link SearchAsyncClient}.
+     * @return A {@link SearchBatchAsyncClient} used to index documents for the Search index associated with this {@link
+     * SearchAsyncClient}.
      */
-    public SearchBatchAsyncClient getSearchIndexDocumentBatchingAsyncClient() {
-        return getSearchIndexDocumentBatchingAsyncClient(null, null, null, null);
+    public SearchBatchAsyncClient getSearchBatchAsyncClient() {
+        return getSearchBatchAsyncClient(null, null, null, null);
     }
 
     /**
-     * Creates a {@link SearchBatchAsyncClient} used to index documents for the Search index associated with
-     * this {@link SearchAsyncClient}.
+     * Creates a {@link SearchBatchAsyncClient} used to index documents for the Search index associated with this {@link
+     * SearchAsyncClient}.
      *
      * @param autoFlush Flag determining whether the batching client will automatically flush its document batch. If
      * null is passed this will be set to true.
@@ -187,12 +187,12 @@ public final class SearchAsyncClient {
      * @param batchSize The number of documents in a batch that will trigger it to be indexed. If automatic batch
      * sending is disabled this value is ignored. If {@code batchSize} is null a default value of 1000 is used.
      * @param indexingHook An implementation of {@link IndexingHook} used to handle document callback actions.
-     * @return A {@link SearchBatchAsyncClient} used to index documents for the Search index associated with
-     * this {@link SearchAsyncClient}.
+     * @return A {@link SearchBatchAsyncClient} used to index documents for the Search index associated with this {@link
+     * SearchAsyncClient}.
      * @throws IllegalArgumentException If {@code batchSize} is less than one.
      */
-    public SearchBatchAsyncClient getSearchIndexDocumentBatchingAsyncClient(Boolean autoFlush,
-        Duration flushWindow, Integer batchSize, IndexingHook indexingHook) {
+    public SearchBatchAsyncClient getSearchBatchAsyncClient(Boolean autoFlush, Duration flushWindow, Integer batchSize,
+        IndexingHook indexingHook) {
         return new SearchBatchAsyncClient(this, autoFlush, flushWindow, batchSize, indexingHook);
     }
 
@@ -885,7 +885,7 @@ public final class SearchAsyncClient {
         if (searchOptions != null) {
             List<String> scoringParameters = searchOptions.getScoringParameters() == null ? null
                 : searchOptions.getScoringParameters().stream().map(ScoringParameter::toString)
-                .collect(Collectors.toList());
+                    .collect(Collectors.toList());
             searchRequest.setSearchMode(searchOptions.getSearchMode())
                 .setFacets(searchOptions.getFacets())
                 .setFilter(searchOptions.getFilter())

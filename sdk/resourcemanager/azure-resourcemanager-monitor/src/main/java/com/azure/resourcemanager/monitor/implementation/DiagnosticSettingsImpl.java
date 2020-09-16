@@ -64,7 +64,6 @@ public class DiagnosticSettingsImpl
         return this.manager;
     }
 
-    @Override
     public DiagnosticSettingsClient inner() {
         return this.manager().inner().getDiagnosticSettings();
     }

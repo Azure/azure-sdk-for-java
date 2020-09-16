@@ -328,7 +328,7 @@ public final class DeploymentImpl extends
         return Mono.just(creatableResourceGroup)
                 .flatMap(resourceGroupCreatable -> {
                     if (resourceGroupCreatable != null) {
-                        return creatableResourceGroup.createAsync().last();
+                        return creatableResourceGroup.createAsync();
                     } else {
                         return Mono.just((Indexable) DeploymentImpl.this);
                     }

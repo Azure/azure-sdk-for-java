@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -36,7 +35,7 @@ public abstract class AppliableImpl<
     }
 
     @Override
-    public final Flux<Indexable> createAsync() {
+    public final Mono<FluentModelT> createAsync() {
         throw logger.logExceptionAsError(
             new IllegalStateException("Internal Error: createAsync cannot be called from UpdatableImpl"));
     }

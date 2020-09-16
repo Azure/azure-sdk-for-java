@@ -10,17 +10,16 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
@@ -28,7 +27,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MSIIdentityManagementTests extends ResourceManagerTestBase {
@@ -192,37 +190,15 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
                 .define(rgName)
                 .withRegion(region);
 
-        final List<Indexable> createdResosurces = new ArrayList<Indexable>();
-
-        msiManager.identities()
+        Identity identity = msiManager.identities()
                 .define(identityName)
                 .withRegion(region)
                 .withNewResourceGroup(creatableRG)
                 .withAccessToCurrentResourceGroup(BuiltInRole.READER)
                 .withAccessTo(anotherResourceGroup, BuiltInRole.CONTRIBUTOR)
                 .createAsync()
-                .doOnNext(indexable -> createdResosurces.add(indexable))
-                .blockLast();
+                .block();
 
-        int roleAssignmentResourcesCount = 0;
-        int identityResourcesCount = 0;
-        int resourceGroupResourcesCount = 0;
-        Identity identity = null;
-
-        for (Indexable resource : createdResosurces) {
-            if (resource instanceof ResourceGroup) {
-                resourceGroupResourcesCount++;
-            } else if (resource instanceof RoleAssignment) {
-                roleAssignmentResourcesCount++;
-            } else if (resource instanceof Identity) {
-                identityResourcesCount++;
-                identity = (Identity) resource;
-            }
-        }
-
-        Assertions.assertEquals(1, resourceGroupResourcesCount);
-        Assertions.assertEquals(2, roleAssignmentResourcesCount);
-        Assertions.assertEquals(2, identityResourcesCount); // Identity resource will be emitted twice - before & after post-run, will be fixed in graph
         Assertions.assertNotNull(identity);
 
         // Ensure roles are assigned

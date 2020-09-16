@@ -1,5 +1,8 @@
 # Release History
 
+## 5.3.0-beta.1 (Unreleased)
+
+
 ## 5.2.0 (2020-09-11)
 - Default scheme to 'sb://' if no scheme is set in 'Endpoint'. 
 - Update dependency version of `azure-core-amp` to `1.5.1`
