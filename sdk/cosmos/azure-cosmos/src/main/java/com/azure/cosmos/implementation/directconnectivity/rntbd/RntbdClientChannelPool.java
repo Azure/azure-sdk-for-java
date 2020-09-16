@@ -1333,6 +1333,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
 
         private void doOperationComplete(Channel channel) {
+            checkState(channel.eventLoop().inEventLoop());
+
             if (!channel.isActive()) {
                 this.fail(CHANNEL_CLOSED_ON_ACQUIRE);
                 return;
