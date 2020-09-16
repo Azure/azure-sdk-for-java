@@ -16,9 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.sql.SqlServerManager;
-import com.azure.resourcemanager.sql.fluent.ServersClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;

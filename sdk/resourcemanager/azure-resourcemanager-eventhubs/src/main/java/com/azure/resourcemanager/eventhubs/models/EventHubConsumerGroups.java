@@ -6,12 +6,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.ConsumerGroupsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /**

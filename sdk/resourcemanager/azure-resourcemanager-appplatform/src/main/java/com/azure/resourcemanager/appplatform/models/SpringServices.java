@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
-import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -17,7 +16,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point for Spring Service management API. */

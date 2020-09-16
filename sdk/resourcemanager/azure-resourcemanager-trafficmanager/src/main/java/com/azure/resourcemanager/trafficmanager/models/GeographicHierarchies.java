@@ -4,9 +4,7 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
-import com.azure.resourcemanager.trafficmanager.fluent.GeographicHierarchiesClient;
 
 /** Entry point to Azure traffic manager geographic hierarchy management API in Azure. */
 public interface GeographicHierarchies extends HasManager<TrafficManager> {

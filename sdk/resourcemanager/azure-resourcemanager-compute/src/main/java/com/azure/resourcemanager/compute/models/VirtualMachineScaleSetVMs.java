@@ -4,9 +4,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.Collection;
 import reactor.core.publisher.Mono;
 

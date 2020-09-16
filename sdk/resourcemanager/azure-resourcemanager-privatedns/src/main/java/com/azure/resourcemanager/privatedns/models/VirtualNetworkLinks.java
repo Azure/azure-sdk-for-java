@@ -5,12 +5,10 @@ package com.azure.resourcemanager.privatedns.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.privatedns.fluent.VirtualNetworkLinksClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point to virtual network link management API in Azure. */

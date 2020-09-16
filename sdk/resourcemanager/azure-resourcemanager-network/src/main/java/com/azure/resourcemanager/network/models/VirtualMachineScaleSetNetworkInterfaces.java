@@ -6,10 +6,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point to virtual machine scale set network interface management API. */
 @Fluent

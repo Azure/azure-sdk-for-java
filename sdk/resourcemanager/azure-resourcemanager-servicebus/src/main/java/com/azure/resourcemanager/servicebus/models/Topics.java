@@ -9,8 +9,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingByName;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.servicebus.fluent.TopicsClient;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 
 /**

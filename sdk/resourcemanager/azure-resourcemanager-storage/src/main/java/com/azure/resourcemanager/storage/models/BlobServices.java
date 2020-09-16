@@ -5,8 +5,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.storage.fluent.BlobServicesClient;
 import reactor.core.publisher.Mono;
 
 /** Type representing BlobServices. */

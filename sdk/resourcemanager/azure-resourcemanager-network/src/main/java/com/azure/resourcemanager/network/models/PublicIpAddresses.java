@@ -4,7 +4,6 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.PublicIpAddressesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -16,7 +15,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point to public IP address management. */
 @Fluent()

@@ -5,8 +5,6 @@ package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.servicebus.fluent.TopicsClient;
 
 /**
  * Entry point to topic authorization rules management API.

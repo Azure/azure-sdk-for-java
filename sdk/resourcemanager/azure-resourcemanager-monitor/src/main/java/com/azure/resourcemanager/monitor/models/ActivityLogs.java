@@ -6,9 +6,7 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.monitor.MonitorManager;
-import com.azure.resourcemanager.monitor.fluent.ActivityLogsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.time.OffsetDateTime;
 
 /** Entry point for Monitor Activity logs API. */

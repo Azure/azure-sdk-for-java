@@ -3,12 +3,10 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingByName;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point to connection monitors management API in Azure. */
 @Fluent
