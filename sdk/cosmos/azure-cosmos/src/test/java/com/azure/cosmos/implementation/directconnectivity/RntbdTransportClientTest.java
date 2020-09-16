@@ -70,6 +70,7 @@ import java.net.ConnectException;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -857,6 +858,31 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
+        public int gettingEstablishedConnectionsMetrics() {
+            return 0;
+        }
+
+        @Override
+        public Instant getCreatedTime() {
+            return null;
+        }
+
+        @Override
+        public long lastRequestNanoTime() {
+            return 0;
+        }
+
+        @Override
+        public int channelsMetrics() {
+            return 0;
+        }
+
+        @Override
+        public int executorTaskQueueMetrics() {
+            return 0;
+        }
+
+        @Override
         public long id() {
             return 0L;
         }
@@ -864,6 +890,11 @@ public final class RntbdTransportClientTest {
         @Override
         public boolean isClosed() {
             return !this.fakeChannel.isOpen();
+        }
+
+        @Override
+        public int maxChannels() {
+            return 0;
         }
 
         @Override
