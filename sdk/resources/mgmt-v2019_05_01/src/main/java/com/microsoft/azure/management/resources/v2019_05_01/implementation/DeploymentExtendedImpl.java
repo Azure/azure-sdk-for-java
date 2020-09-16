@@ -116,7 +116,7 @@ class DeploymentExtendedImpl extends CreatableUpdatableImpl<DeploymentExtended, 
     }
 
     @Override
-    public DeploymentExtendedImpl withExistingMicrosoftResource(String groupId) {
+    public DeploymentExtendedImpl withExistingMicrosoft.Resource(String groupId) {
         this.groupId = groupId;
         return this;
     }
