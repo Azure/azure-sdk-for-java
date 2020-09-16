@@ -43,15 +43,15 @@ In this samples, we illustrate how to use one derived class: ClientSecretCredent
 
 ```java
 client = new DigitalTwinsClientBuilder()
-            .credential(
-                new ClientSecretCredentialBuilder()
-                    .tenantId(<your-tenantId>)
-                    .clientId(<your-clientId>)
-                    .clientSecret(<your-clientSecret>)
-                    .build()
-            )
-            .endpoint(<your-AdtEndpoint>)
-            .buildClient();
+    .credential(
+        new ClientSecretCredentialBuilder()
+            .tenantId(<your-tenantId>)
+            .clientId(<your-clientId>)
+            .clientSecret(<your-clientSecret>)
+            .build()
+    )
+    .endpoint(<your-AdtEndpoint>)
+    .buildClient();
 ```
 
 ### Building the async client
@@ -60,15 +60,15 @@ You can use the same client builder and build the async client:
 
 ```java
 client = new DigitalTwinsClientBuilder()
-            .credential(
-                new ClientSecretCredentialBuilder()
-                    .tenantId(<your-tenantId>)
-                    .clientId(<your-clientId>)
-                    .clientSecret(<your-clientSecret>)
-                    .build()
-            )
-            .endpoint(<your-AdtEndpoint>)
-            .buildAsyncClient();
+    .credential(
+        new ClientSecretCredentialBuilder()
+            .tenantId(<your-tenantId>)
+            .clientId(<your-clientId>)
+            .clientSecret(<your-clientSecret>)
+            .build()
+    )
+    .endpoint(<your-AdtEndpoint>)
+    .buildAsyncClient();
 ```
 
 Also, if you need to override pipeline behavior, such as provide your own HttpClient instance, you can do that via the other setters in the DigitalTwinsClientBuilder instance.
@@ -77,16 +77,16 @@ For example if you would like to use your own instance of `HttpClient`:
 
 ```java
 client = new DigitalTwinsClientBuilder()
-            .credential(
-                new ClientSecretCredentialBuilder()
-                    .tenantId(<your-tenantId>)
-                    .clientId(<your-clientId>)
-                    .clientSecret(<your-clientSecret>)
-                    .build()
-            )
-            .endpoint(<your-AdtEndpoint>)
-            .httpClient(<your-htt-client>)
-            .buildAsyncClient();
+    .credential(
+        new ClientSecretCredentialBuilder()
+            .tenantId(<your-tenantId>)
+            .clientId(<your-clientId>)
+            .clientSecret(<your-clientSecret>)
+            .build()
+    )
+    .endpoint(<your-AdtEndpoint>)
+    .httpClient(<your-htt-client>)
+    .buildAsyncClient();
 ```
 
 It provides an opportunity to override default behavior including:
@@ -310,12 +310,12 @@ One option is to use the provided class BasicRelationship for serialization and 
 
 ```java
 BasicRelationship buildingFloorRelationshipPayload = new BasicRelationship()
-            .setId(buildingFloorRelationshipId)
-            .setSourceId(buildingTwinId)
-            .setTargetId(floorTwinId)
-            .setName("contains")
-            .addCustomProperty("Prop1", "Prop1 value")
-            .addCustomProperty("Prop2", 6);
+    .setId(buildingFloorRelationshipId)
+    .setSourceId(buildingTwinId)
+    .setTargetId(floorTwinId)
+    .setName("contains")
+    .addCustomProperty("Prop1", "Prop1 value")
+    .addCustomProperty("Prop2", 6);
 
 client.createRelationship(buildingTwinId, buildingFloorRelationshipId, buildingFloorRelationshipPayload, BasicRelationship.class);
 ```
@@ -326,17 +326,17 @@ You can get a digital twin relationship and deserialize it into type of your cho
 
 ```java
 Response<BasicRelationship> getRelationshipResponse = client.getRelationshipWithResponse(
-            buildingTwinId,
-            buildingFloorRelationshipId,
-            BasicRelationship.class,
-            Context.NONE);
+    buildingTwinId,
+    buildingFloorRelationshipId,
+    BasicRelationship.class,
+    Context.NONE);
 
-        if (getRelationshipResponse.getStatusCode() == HttpURLConnection.HTTP_OK) {
-            BasicRelationship retrievedRelationship = getRelationshipResponse.getValue();
-            ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getId() + " from twin: " + retrievedRelationship.getSourceId() + "\n\t" +
-                "Prop1: " + retrievedRelationship.getCustomProperties().get("Prop1") + "\n\t" +
-                "Prop2: " + retrievedRelationship.getCustomProperties().get("Prop2"));
-        }
+if (getRelationshipResponse.getStatusCode() == HttpURLConnection.HTTP_OK) {
+    BasicRelationship retrievedRelationship = getRelationshipResponse.getValue();
+    ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getId() + " from twin: " + retrievedRelationship.getSourceId() + "\n\t" +
+        "Prop1: " + retrievedRelationship.getCustomProperties().get("Prop1") + "\n\t" +
+        "Prop2: " + retrievedRelationship.getCustomProperties().get("Prop2"));
+}
 ```
 
 ### List digital twin relationships
