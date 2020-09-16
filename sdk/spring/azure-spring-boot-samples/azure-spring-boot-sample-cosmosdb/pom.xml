@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-spring-boot-sample-cosmosdb</artifactId>
+  <artifactId>azure-spring-boot-sample-cosmos</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
