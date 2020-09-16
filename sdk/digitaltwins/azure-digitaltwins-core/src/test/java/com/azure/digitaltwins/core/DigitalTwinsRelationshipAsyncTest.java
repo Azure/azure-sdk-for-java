@@ -5,8 +5,9 @@ package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
-import com.azure.digitaltwins.core.serialization.BasicRelationship;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
+import com.azure.digitaltwins.core.models.BasicRelationship;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -33,7 +34,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void relationshipLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void relationshipLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
         String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
@@ -91,7 +92,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             // Create relationship from Floor -> Room
             StepVerifier
-                .create(asyncClient.createRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorContainsRoomPayload, BasicRelationship.class))
+                .create(asyncClient.createRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class))
                 .assertNext(
                     basicRelationship -> {
                         assertThat(basicRelationship.getId())
@@ -104,7 +105,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             // Create relationship from Floor -> Hvac
             StepVerifier
-                .create(asyncClient.createRelationship(floorTwinId, FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID, floorCooledByHvacPayload, BasicRelationship.class))
+                .create(asyncClient.createRelationship(floorTwinId, FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID, deserializeJsonString(floorCooledByHvacPayload, BasicRelationship.class), BasicRelationship.class))
                 .assertNext(
                     basicRelationship -> {
                         assertThat(basicRelationship.getId())
@@ -117,7 +118,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             // Create relationship from Hvac -> Floor
             StepVerifier
-                .create(asyncClient.createRelationship(hvacTwinId, HVAC_COOLS_FLOOR_RELATIONSHIP_ID, floorTwinCoolsRelationshipPayload, BasicRelationship.class))
+                .create(asyncClient.createRelationship(hvacTwinId, HVAC_COOLS_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinCoolsRelationshipPayload, BasicRelationship.class), BasicRelationship.class))
                 .assertNext(
                     basicRelationship -> {
                         assertThat(basicRelationship.getId())
@@ -130,7 +131,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             // Create relationship from Room -> Floor
             StepVerifier
-                .create(asyncClient.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, BasicRelationship.class))
+                .create(asyncClient.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship.class), BasicRelationship.class))
                 .assertNext(
                     basicRelationship -> {
                         assertThat(basicRelationship.getId())

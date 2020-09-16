@@ -17,7 +17,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.models.Subscription;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -107,19 +106,6 @@ public final class Utils {
         } else {
             return String.format("tagname eq '%s' and tagvalue eq '%s'", tagName, tagValue);
         }
-    }
-
-    /**
-     * Gets a Mono of type {@code U}, where U extends {@link Indexable}, that emits only the root
-     * resource from a given Mono of {@link Indexable}.
-     *
-     * @param stream the input Mono of {@link Indexable}
-     * @param <U> the specialized type of last item in the input stream
-     * @return a Mono that emits last item
-     */
-    @SuppressWarnings("unchecked")
-    public static <U extends Indexable> Mono<U> rootResource(Mono<Indexable> stream) {
-        return stream.map(indexable -> (U) indexable);
     }
 
     /**

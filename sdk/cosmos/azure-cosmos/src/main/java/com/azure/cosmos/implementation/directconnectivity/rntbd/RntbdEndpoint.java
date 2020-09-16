@@ -22,9 +22,15 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     // region Accessors
 
-    int channelsAcquired();
+    /**
+     * @return approximate number of acquired channels.
+     */
+    int channelsAcquiredMetric();
 
-    int channelsAvailable();
+    /**
+     * @return approximate number of available channels.
+     */
+    int channelsAvailableMetric();
 
     int concurrentRequests();
 
@@ -144,6 +150,11 @@ public interface RntbdEndpoint extends AutoCloseable {
         @JsonProperty
         public int maxRequestsPerChannel() {
             return this.options.maxRequestsPerChannel();
+        }
+
+        @JsonProperty
+        public int maxConcurrentRequestsPerEndpoint() {
+            return this.options.maxConcurrentRequestsPerEndpoint();
         }
 
         @JsonProperty

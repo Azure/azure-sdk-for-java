@@ -99,7 +99,6 @@ public class SpringAppsImpl
         return new SpringAppImpl(name, parent(), new AppResourceInner());
     }
 
-    @Override
     public AppsClient inner() {
         return manager().inner().getApps();
     }

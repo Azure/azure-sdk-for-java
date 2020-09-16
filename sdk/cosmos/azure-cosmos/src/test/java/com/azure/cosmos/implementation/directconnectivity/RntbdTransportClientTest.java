@@ -34,6 +34,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContext;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextNegotiator;
@@ -841,12 +842,12 @@ public final class RntbdTransportClientTest {
         // region Accessors
 
         @Override
-        public int channelsAcquired() {
+        public int channelsAcquiredMetric() {
             return 0;
         }
 
         @Override
-        public int channelsAvailable() {
+        public int channelsAvailableMetric() {
             return 0;
         }
 
@@ -901,7 +902,7 @@ public final class RntbdTransportClientTest {
 
         @Override
         public RntbdRequestRecord request(final RntbdRequestArgs requestArgs) {
-            final RntbdRequestRecord requestRecord = new RntbdRequestRecord(requestArgs, this.requestTimer);
+            final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
             this.fakeChannel.writeOutbound(requestRecord);
             return requestRecord;
         }

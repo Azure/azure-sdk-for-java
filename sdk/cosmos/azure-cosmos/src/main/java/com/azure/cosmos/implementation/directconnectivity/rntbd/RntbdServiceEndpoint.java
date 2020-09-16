@@ -64,6 +64,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final SocketAddress remoteAddress;
     private final RntbdRequestTimer requestTimer;
     private final Tag tag;
+    private final int maxConcurrentRequests;
 
     // endregion
 
@@ -103,20 +104,27 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.provider = provider;
 
         this.metrics = new RntbdMetrics(provider.transportClient, this);
+        this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
     }
 
     // endregion
 
     // region Accessors
 
+    /**
+     * @return approximate number of acquired channels.
+     */
     @Override
-    public int channelsAcquired() {
-        return this.channelPool.channelsAcquired();
+    public int channelsAcquiredMetric() {
+        return this.channelPool.channelsAcquiredMetrics();
     }
 
+    /**
+     * @return approximate number of available channels.
+     */
     @Override
-    public int channelsAvailable() {
-        return this.channelPool.channelsAvailable();
+    public int channelsAvailableMetric() {
+        return this.channelPool.channelsAvailableMetrics();
     }
 
     @Override
@@ -179,7 +187,21 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         this.throwIfClosed();
 
-        this.concurrentRequests.incrementAndGet();
+        int concurrentRequestSnapshot = this.concurrentRequests.incrementAndGet();
+
+        if (concurrentRequestSnapshot > this.maxConcurrentRequests) {
+            try {
+                return FailFastRntbdRequestRecord.createAndFailFast(
+                    args,
+                    concurrentRequestSnapshot,
+                    metrics,
+                    remoteAddress);
+            }
+            finally {
+                concurrentRequests.decrementAndGet();
+            }
+        }
+
         this.lastRequestNanoTime.set(args.nanoTimeCreated());
 
         final RntbdRequestRecord record = this.write(args);
@@ -229,7 +251,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
 
-        final RntbdRequestRecord requestRecord = new RntbdRequestRecord(requestArgs, this.requestTimer);
+        final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
         final Future<Channel> connectedChannel = this.channelPool.acquire();
 
         logger.debug("\n  [{}]\n  {}\n  WRITE WHEN CONNECTED {}", this, requestArgs, connectedChannel);

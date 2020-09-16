@@ -8,8 +8,8 @@ import com.azure.digitaltwins.core.helpers.ConsoleLogger;
 import com.azure.digitaltwins.core.helpers.FileHelper;
 import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
-import com.azure.digitaltwins.core.serialization.BasicRelationship;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
+import com.azure.digitaltwins.core.models.BasicRelationship;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -25,7 +25,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.digitaltwins.core.util.QueryChargeHelper.*;
+import static com.azure.digitaltwins.core.models.QueryChargeHelper.*;
 import static com.azure.digitaltwins.core.helpers.SamplesConstants.*;
 import static com.azure.digitaltwins.core.helpers.SamplesUtil.IgnoreConflictError;
 import static com.azure.digitaltwins.core.helpers.SamplesUtil.IgnoreNotFoundError;
@@ -118,15 +118,6 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Create all the relationships
         connectTwinsTogether();
-
-        // TODO: Creating event route
-        // createEventRoute();
-
-        // TODO: Get all event routes
-        // listEventRoutes();
-
-        // TODO: Deleting event route
-        // deleteEventRoute();
     }
 
     /**

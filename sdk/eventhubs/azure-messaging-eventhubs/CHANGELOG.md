@@ -1,7 +1,15 @@
 # Release History
 
-## 5.2.0-beta.3 (Unreleased)
+## 5.3.0-beta.1 (Unreleased)
+
+
+## 5.2.0 (2020-09-11)
 - Default scheme to 'sb://' if no scheme is set in 'Endpoint'. 
+- Update dependency version of `azure-core-amp` to `1.5.1`
+- Add support for connection strings containing Shared Access Signature
+- Add option to control the load balancing cycle interval.
+- Add option to control the partition ownership expiration duration.
+- Add option to configure the load balancing strategy to either use balanced or greedy approach.
 
 ## 5.2.0-beta.2 (2020-08-14)
 - Support for object serializer to send and receive strongly-typed objects.

@@ -3,8 +3,11 @@
 ## 12.9.0-beta.1 (Unreleased)
 - Added support for the 2019-02-10 service version.
 - Added support to specify Arrow Output Serialization when querying a blob. 
-- Fixed a bug where BlockBlobOutputStream would not handle certain errors.
 
+- Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
+- Fixed a bug where Default Azure Credential would not work with Azurite.
+- Fixed a bug where a custom application id in HttpLogOptions would not be added to the User Agent String.
+- Fixed a bug where BlockBlobOutputStream would not handle certain errors.
 - Added BlobImmutableDueToPolicy to the BlobErrorCode enum.
 
 ## 12.8.0 (2020-08-13)
