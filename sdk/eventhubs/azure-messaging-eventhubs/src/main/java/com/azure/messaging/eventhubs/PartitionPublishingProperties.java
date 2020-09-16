@@ -58,7 +58,7 @@ public final class PartitionPublishingProperties {
      * {@link com.azure.core.amqp.exception.AmqpException} will be set to
      * {@link com.azure.core.amqp.exception.AmqpErrorCondition#PRODUCER_EPOCH_STOLEN}.
      *
-     * @see EventHubClientBuilder#idempotentPartitionPublishing()
+     * @see EventHubClientBuilder#enableIdempotentPartitionPublishing() ()
      *
      * @return The relative priority to associate with an exclusive publisher; if {@code null},
      * the Event Hubs service will control the value.
@@ -74,7 +74,7 @@ public final class PartitionPublishingProperties {
      * The producer group is only recognized and relevant when certain features of the producer are enabled.
      * For example, it is used by idempotent publishing.
      *
-     * @see EventHubClientBuilder#idempotentPartitionPublishing()
+     * @see EventHubClientBuilder#enableIdempotentPartitionPublishing() ()
      *
      * @return The identifier of the producer group to associate with the partition; if {@code null},
      * the Event Hubs service will control the value.
@@ -90,7 +90,7 @@ public final class PartitionPublishingProperties {
      * The starting sequence number is only recognized and relevant when certain features of the producer are enabled.
      * For example, it is used by idempotent publishing.
      *
-     * @see EventHubClientBuilder#idempotentPartitionPublishing()
+     * @see EventHubClientBuilder#enableIdempotentPartitionPublishing() ()
      *
      * @return The starting sequence number to associate with the partition; if {@code null},
      * the Event Hubs service will control the value.

@@ -30,6 +30,7 @@ import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -143,7 +144,7 @@ public class EventHubClientBuilder {
     private String consumerGroup;
     private EventHubConnectionProcessor eventHubConnectionProcessor;
     private Integer prefetchCount;
-    private boolean idempotentPartitionPublishing;
+    private boolean isIdempotentPartitionPublishing;
     private Map<String, PartitionPublishingState> initialPartitionPublishingStates;
 
     /**
@@ -387,8 +388,8 @@ public class EventHubClientBuilder {
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder idempotentPartitionPublishing() {
-        this.idempotentPartitionPublishing = true;
+    public EventHubClientBuilder enableIdempotentPartitionPublishing() {
+        this.isIdempotentPartitionPublishing = true;
         return this;
     }
 
@@ -408,17 +409,20 @@ public class EventHubClientBuilder {
      * These options are ignored when publishing to the Event Hubs gateway for automatic routing or when using a
      * partition key.
      *
-     * @param states A {@link Map} of {@link PartitionPublishingState} for each partition. The keys of the map
+     * @param states A {@link Map} of {@link PartitionPublishingProperties} for each partition. The keys of the map
      * are the partition ids.
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder initialPartitionPublishingStates(Map<String,
-        PartitionPublishingProperties> states) {
+    public EventHubClientBuilder initialPartitionPublishingStates(Map<String, PartitionPublishingProperties> states) {
         if (states != null) {
             this.initialPartitionPublishingStates = new HashMap<>();
             states.forEach((partitionId, state) -> {
                 this.initialPartitionPublishingStates.put(partitionId, new PartitionPublishingState(state));
+                this.initialPartitionPublishingStates =
+                    Collections.unmodifiableMap(this.initialPartitionPublishingStates);
             });
+        } else {
+            this.initialPartitionPublishingStates = null;
         }
         return this;
     }
@@ -478,7 +482,7 @@ public class EventHubClientBuilder {
      *     proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubProducerAsyncClient buildAsyncProducerClient() {
-        if (initialPartitionPublishingStates != null && !idempotentPartitionPublishing) {
+        if (initialPartitionPublishingStates != null && !isIdempotentPartitionPublishing) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'initialPartitionPublishingStates' "
                 + "shouldn't be set if 'idempotentPartitionPublishing' is not true."));
         }
@@ -557,7 +561,7 @@ public class EventHubClientBuilder {
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
             isSharedConnection.get(), this::onClientClose,
-            idempotentPartitionPublishing, initialPartitionPublishingStates);
+            isIdempotentPartitionPublishing, initialPartitionPublishingStates);
     }
 
     /**

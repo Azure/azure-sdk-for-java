@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
@@ -35,25 +34,11 @@ import java.util.Objects;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
 
 /**
  * An AMQP session for Event Hubs.
  */
 class EventHubReactorSession extends ReactorSession implements EventHubSession {
-    private static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
-    private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
-        Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
-
-    private static final Symbol PRODUCER_EPOCH = Symbol.valueOf(
-        AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue());
-    private static final Symbol PRODUCER_ID = Symbol.valueOf(
-        AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue());
-    private static final Symbol PRODUCER_SEQUENCE_NUMBER = Symbol.valueOf(
-        AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
-    private static final Symbol ENABLE_IDEMPOTENT_PRODUCER =
-        Symbol.valueOf(VENDOR + ":idempotent-producer");
-
     private final ClientLogger logger = new ClientLogger(EventHubReactorSession.class);
 
     /**
@@ -83,9 +68,9 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      * {@inheritDoc}
      */
     @Override
-    public Mono<AmqpSendLink> createProducer(
-        String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
-        boolean idempotentPartitionPublishing, PartitionPublishingState publishingState) {
+    public Mono<AmqpSendLink> createProducer(String linkName, String entityPath, Duration timeout,
+        AmqpRetryPolicy retry, boolean idempotentPartitionPublishing, PartitionPublishingState publishingState) {
+
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
@@ -94,12 +79,12 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         Symbol[] desiredCapabilities = null;
         Map<Symbol, Object> properties = null;
         if (idempotentPartitionPublishing) {
-            desiredCapabilities = new Symbol[]{ENABLE_IDEMPOTENT_PRODUCER};
+            desiredCapabilities = new Symbol[]{SymbolConstants.ENABLE_IDEMPOTENT_PRODUCER};
 
             properties = new HashMap<>();
-            properties.put(PRODUCER_EPOCH, publishingState.getOwnerLevel());
-            properties.put(PRODUCER_ID, publishingState.getProducerGroupId());
-            properties.put(PRODUCER_SEQUENCE_NUMBER, publishingState.getSequenceNumber());
+            properties.put(SymbolConstants.PRODUCER_EPOCH, publishingState.getOwnerLevel());
+            properties.put(SymbolConstants.PRODUCER_ID, publishingState.getProducerGroupId());
+            properties.put(SymbolConstants.PRODUCER_SEQUENCE_NUMBER, publishingState.getSequenceNumber());
         }
         return createProducer(linkName, entityPath, timeout, retry, properties, desiredCapabilities)
             .cast(AmqpSendLink.class);
@@ -125,11 +110,11 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
 
         final Map<Symbol, Object> properties = new HashMap<>();
         if (options.getOwnerLevel() != null) {
-            properties.put(EPOCH, options.getOwnerLevel());
+            properties.put(SymbolConstants.EPOCH, options.getOwnerLevel());
         }
 
         final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventProperties()
-            ? new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME}
+            ? new Symbol[]{SymbolConstants.ENABLE_RECEIVER_RUNTIME_METRIC_NAME}
             : null;
 
         // Use explicit settlement via dispositions (not pre-settled)

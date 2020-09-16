@@ -58,11 +58,11 @@ public final class EventDataBatch {
     private final TracerProvider tracerProvider;
     private final String entityPath;
     private final String hostname;
-    private final boolean publishingSequenceNumberRequired;
+    private final boolean isPublishingSequenceNumberRequired;
     private Integer startingPublishedSequenceNumber;
 
     EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
-        TracerProvider tracerProvider, String entityPath, String hostname, boolean publishingSequenceNumberRequired) {
+        TracerProvider tracerProvider, String entityPath, String hostname, boolean isPublishingSequenceNumberRequired) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.partitionId = partitionId;
@@ -73,7 +73,7 @@ public final class EventDataBatch {
         this.tracerProvider = tracerProvider;
         this.entityPath = entityPath;
         this.hostname = hostname;
-        this.publishingSequenceNumberRequired = publishingSequenceNumberRequired;
+        this.isPublishingSequenceNumberRequired = isPublishingSequenceNumberRequired;
     }
 
     EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
@@ -208,8 +208,9 @@ public final class EventDataBatch {
         Objects.requireNonNull(eventData, "'eventData' cannot be null.");
 
         final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
-        if (publishingSequenceNumberRequired) {
-            // Pre-allocate size for system properties "com.microsoft:producer-sequence-number".
+        if (isPublishingSequenceNumberRequired) {
+            // Pre-allocate size for system properties "com.microsoft:producer-sequence-number",
+            // "com.microsoft:producer-epoch", and "com.microsoft:producer-producer-id".
             // EventData doesn't have this system property until it's added just before an idempotent producer
             // sends the EventData out.
             final MessageAnnotations messageAnnotations = (amqpMessage.getMessageAnnotations() == null)

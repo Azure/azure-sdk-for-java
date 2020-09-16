@@ -267,27 +267,27 @@ public class EventData {
         return publishedOwnerLevel;
     }
 
-    void setInternalProducerGroupId(Long internalProducerGroupId) {
+    void setProducerGroupIdInSysProperties(Long internalProducerGroupId) {
         this.getSystemProperties().put(
             AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue(),
             internalProducerGroupId
         );
     }
 
-    void setInternalProducerOwnerLevel(Short internalProducerOwnerLevel) {
+    void setProducerOwnerLevelInSysProperties(Short internalProducerOwnerLevel) {
         this.getSystemProperties().put(
             AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue(),
             internalProducerOwnerLevel
         );
     }
 
-    void setInternalPublishedSequenceNumber(Integer internalPublishedSequenceNumber) {
+    void setPublishedSequenceNumberInSysProperties(Integer internalPublishedSequenceNumber) {
         this.getSystemProperties().put(
             AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
             internalPublishedSequenceNumber);
     }
 
-    void commitInternalProducerData() {
+    void commitProducerDataFromSysProperties() {
         this.publishedGroupId = this.systemProperties.getPublishedGroupId();
         this.publishedOwnerLevel = this.systemProperties.getPublishedOwnerLevel();
         this.publishedSequenceNumber = this.systemProperties.getPublishedSequenceNumber();
@@ -387,9 +387,6 @@ public class EventData {
             }
             this.sequenceNumber = sequenceNumber;
             put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.sequenceNumber);
-
-            // TODO: confirm with Connie why we remove a value from this SystemProperty and then add it back?
-            // Do we need to do the same for publishedGroupId, publishedOwnerLevel, and publishedSequenceNumber
         }
 
         /**

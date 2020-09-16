@@ -50,6 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
@@ -89,7 +90,7 @@ class ReactorSender implements AmqpSendLink {
     private volatile Exception lastKnownLinkError;
     private volatile Instant lastKnownErrorReportedAt;
     private volatile int linkSize;
-    private volatile Map<Symbol, Object> remoteProperties;
+    private final AtomicReference<Mono<Map<Symbol, Object>>> remotePropertiesReference = new AtomicReference<>();
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
         TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, AmqpRetryPolicy retry) {
@@ -280,22 +281,12 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public Mono<Map<Symbol, Object>> getRemoteProperties() {
-        if (this.remoteProperties != null) {
-            return Mono.just(this.remoteProperties);
-        }
-        synchronized (this) {
-            if (this.remoteProperties != null) {
-                return Mono.just(this.remoteProperties);
-            }
-            return RetryUtil.withRetry(
-                getEndpointStates()
-                    .takeUntil(state -> state == AmqpEndpointState.ACTIVE)
-                    .then(Mono.fromCallable(() -> {
-                        this.remoteProperties = sender.getRemoteProperties();
-                        return this.remoteProperties;
-                    })),
-                timeout, retry);
-        }
+        this.remotePropertiesReference.compareAndSet(null, RetryUtil.withRetry(
+            getEndpointStates()
+                .takeUntil(state -> state == AmqpEndpointState.ACTIVE)
+                .then(Mono.fromCallable(sender::getRemoteProperties)),
+            timeout, retry));
+        return this.remotePropertiesReference.get();
     }
 
     @Override

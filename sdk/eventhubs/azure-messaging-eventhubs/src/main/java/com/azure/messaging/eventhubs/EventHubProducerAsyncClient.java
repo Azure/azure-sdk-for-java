@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -24,9 +23,9 @@ import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.PartitionPublishingState;
 import com.azure.messaging.eventhubs.implementation.PartitionPublishingUtils;
+import com.azure.messaging.eventhubs.implementation.SymbolConstants;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
@@ -100,14 +99,6 @@ public class EventHubProducerAsyncClient implements Closeable {
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
 
-    private static final Symbol PRODUCER_EPOCH = Symbol.valueOf(
-        AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue());
-    private static final Symbol PRODUCER_ID = Symbol.valueOf(
-        AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue());
-    private static final Symbol PRODUCER_SEQUENCE_NUMBER = Symbol.valueOf(
-        AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
-
-
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
     private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS = new CreateBatchOptions();
 
@@ -162,8 +153,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         }
     }
 
-    EventHubProducerAsyncClient(
-        String fullyQualifiedNamespace, String eventHubName,
+    EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose
     ) {
@@ -235,7 +225,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     Mono<PartitionPublishingProperties> getPartitionPublishingProperties(String partitionId) {
         PartitionPublishingState publishingState = getClientPartitionPublishingState(partitionId);
         if (publishingState.isFromLink()) {
-            return Mono.just(publishingState.toPartitionPublishingProperties());
+            return Mono.defer(() -> Mono.just(publishingState.toPartitionPublishingProperties()));
         } else {
             return withRetry(this.getSendLink(partitionId).flatMap(amqpSendLink ->
                     Mono.just(this.getClientPartitionPublishingState(partitionId))),
@@ -254,7 +244,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     Mono<PartitionPublishingState> getPartitionPublishingState(String partitionId) {
         PartitionPublishingState publishingState = getClientPartitionPublishingState(partitionId);
         if (publishingState.isFromLink()) {
-            return Mono.just(publishingState);
+            return Mono.defer(() -> Mono.just(publishingState));
         } else {
             return withRetry(this.getSendLink(partitionId).flatMap(amqpSendLink ->
                     Mono.just(this.getClientPartitionPublishingState(partitionId))),
@@ -530,9 +520,9 @@ public class EventHubProducerAsyncClient implements Closeable {
                 publishingState.getSemaphore().acquireUninterruptibly();
                 int seqNumber = publishingState.getSequenceNumber();
                 for (EventData eventData : batch.getEvents()) {
-                    eventData.setInternalProducerGroupId(publishingState.getProducerGroupId());
-                    eventData.setInternalPublishedSequenceNumber(seqNumber);
-                    eventData.setInternalProducerOwnerLevel(publishingState.getOwnerLevel());
+                    eventData.setProducerGroupIdInSysProperties(publishingState.getProducerGroupId());
+                    eventData.setPublishedSequenceNumberInSysProperties(seqNumber);
+                    eventData.setProducerOwnerLevelInSysProperties(publishingState.getOwnerLevel());
                     seqNumber = PartitionPublishingUtils.incrementSequenceNumber(seqNumber);
                     messages.add(this.createMessageFromEvent(eventData, partitionKey));
                 }
@@ -551,7 +541,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 // Update back if send is successful
                 batch.setStartingPublishedSequenceNumber(publishingState.getSequenceNumber());
                 for (EventData eventData : batch.getEvents()) {
-                    eventData.commitInternalProducerData();
+                    eventData.commitProducerDataFromSysProperties();
                 }
                 publishingState.increaseSequenceNumber(batch.getCount());
             })).doFinally(// Release the partition state semaphore
@@ -631,8 +621,9 @@ public class EventHubProducerAsyncClient implements Closeable {
         if (this.isIdempotentPartitionPublishing) {
             return amqpSendLink.getRemoteProperties().map(properties -> {
                 this.setPartitionPublishingState(
-                    partitionId, (Long) properties.get(PRODUCER_ID),
-                    (Short) properties.get(PRODUCER_EPOCH), (Integer) properties.get(PRODUCER_SEQUENCE_NUMBER)
+                    partitionId, (Long) properties.get(SymbolConstants.PRODUCER_ID),
+                    (Short) properties.get(SymbolConstants.PRODUCER_EPOCH),
+                    (Integer) properties.get(SymbolConstants.PRODUCER_SEQUENCE_NUMBER)
                 );
                 return amqpSendLink;
             });

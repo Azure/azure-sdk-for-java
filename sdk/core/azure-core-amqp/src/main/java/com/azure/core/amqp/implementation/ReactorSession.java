@@ -464,16 +464,17 @@ public class ReactorSession implements AmqpSession {
             }));
     }
 
-    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
-                                            AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
+    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
+        Map<Symbol, Object> linkProperties) {
+
         return this.createProducer(linkName, entityPath, timeout, retry, linkProperties, null);
     }
     /**
      * NOTE: Ensure this is invoked using the reactor dispatcher because proton-j is not thread-safe.
      */
-    private LinkSubscription<AmqpSendLink> getSubscription(
-        String linkName, String entityPath, Map<Symbol, Object> linkProperties, Symbol[] senderDesiredCapabilities,
-        Duration timeout, AmqpRetryPolicy retry, TokenManager tokenManager) {
+    private LinkSubscription<AmqpSendLink> getSubscription(String linkName, String entityPath,
+        Map<Symbol, Object> linkProperties, Symbol[] senderDesiredCapabilities, Duration timeout, AmqpRetryPolicy retry,
+        TokenManager tokenManager) {
 
         final Sender sender = session.sender(linkName);
         final Target target = new Target();
