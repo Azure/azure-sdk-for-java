@@ -139,3 +139,4 @@ com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;1.2.8-bet
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
 beta_com.azure:azure-security-keyvault-keys;4.3.0-beta.1
 unreleased_com.azure:azure-core-amqp;1.6.0-beta.1
+unreleased_com.azure:azure-messaging-eventhubs;5.3.0-beta.1
