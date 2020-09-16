@@ -24,7 +24,7 @@ The samples project demonstrates the following:
 
 Azure DigitalTwins SDK for java has two sets of APIs available for every operation, sync APIs and async APIs.
 
-You can use `DigitalTwinsClientbuilder` to build either a sync client: `buildClient()` or an async client: `buildAsyncClient()`.
+You can use `DigitalTwinsClientBuilder` to build either a sync client: `buildClient()` or an async client: `buildAsyncClient()`.
 
 While using the sync client, the running thread will be blocked by the SDK for the duration of the HTTP request/response.
 The async client is implemented using [Reactor](https://projectreactor.io/docs/core/release/reference/). The rest of this document assumes the reader has basic understanding of Reactor and how to interact with async API response types.
