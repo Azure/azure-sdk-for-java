@@ -553,7 +553,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":\"io.netty" +
                 ".channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information");
         } catch (Exception ex) {
-            fail("This test should not throw exception");
+            fail("This test should not throw exception " + ex);
         } finally {
             if (client != null) {
                 client.close();

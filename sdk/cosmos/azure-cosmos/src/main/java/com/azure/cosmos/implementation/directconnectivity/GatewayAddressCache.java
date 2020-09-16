@@ -206,37 +206,37 @@ public class GatewayAddressCache implements IAddressCache {
                         false)).map(Utils.ValueHolder::new);
 
         return addressesObs.map(
-                addressesValueHolder -> {
-                    if (notAllReplicasAvailable(addressesValueHolder.v)) {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
-                        }
-                        this.suboptimalServerPartitionTimestamps.putIfAbsent(partitionKeyRangeIdentity, Instant.now());
+            addressesValueHolder -> {
+                if (notAllReplicasAvailable(addressesValueHolder.v)) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
                     }
+                    this.suboptimalServerPartitionTimestamps.putIfAbsent(partitionKeyRangeIdentity, Instant.now());
+                }
 
-                    return addressesValueHolder;
-                    }).onErrorResume(ex -> {
-                        Throwable unwrappedException = reactor.core.Exceptions.unwrap(ex);
-                        CosmosException dce = Utils.as(unwrappedException, CosmosException.class);
-                        if (dce == null) {
-                            logger.error("unexpected failure", ex);
-                            if (forceRefreshPartitionAddressesModified) {
-                                this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
-                            }
-                            return Mono.error(unwrappedException);
-                        } else {
-                            logger.debug("tryGetAddresses dce", dce);
-                            if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND) ||
-                                    Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.GONE) ||
-                                    Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
-                                //remove from suboptimal cache in case the collection+pKeyRangeId combo is gone.
-                                this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
-                                logger.debug("tryGetAddresses: inner onErrorResumeNext return null", dce);
-                                return Mono.just(new Utils.ValueHolder<>(null));
-                            }
-                            return Mono.error(unwrappedException);
-                        }
-                    });
+                return addressesValueHolder;
+            }).onErrorResume(ex -> {
+            Throwable unwrappedException = reactor.core.Exceptions.unwrap(ex);
+            CosmosException dce = Utils.as(unwrappedException, CosmosException.class);
+            if (dce == null) {
+                logger.error("unexpected failure", ex);
+                if (forceRefreshPartitionAddressesModified) {
+                    this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
+                }
+                return Mono.error(unwrappedException);
+            } else {
+                logger.debug("tryGetAddresses dce", dce);
+                if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND) ||
+                    Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.GONE) ||
+                    Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
+                    //remove from suboptimal cache in case the collection+pKeyRangeId combo is gone.
+                    this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
+                    logger.debug("tryGetAddresses: inner onErrorResumeNext return null", dce);
+                    return Mono.just(new Utils.ValueHolder<>(null));
+                }
+                return Mono.error(unwrappedException);
+            }
+        });
     }
 
     public Mono<List<Address>> getServerAddressesViaGatewayAsync(
