@@ -75,22 +75,22 @@ public final class SearchClient {
     }
 
     /**
-     * Creates a {@link SearchBatchClient} used to index documents for the Search index associated with this
-     * {@link SearchClient}.
+     * Creates a {@link SearchBatchClient} used to index documents for the Search index associated with this {@link
+     * SearchClient}.
      * <p>
      * This will use the default configuration values for {@link SearchBatchClient}, see {@link
      * SearchBatchClientBuilder} for more information.
      *
-     * @return A {@link SearchBatchClient} used to index documents for the Search index associated with this
-     * {@link SearchClient}.
+     * @return A {@link SearchBatchClient} used to index documents for the Search index associated with this {@link
+     * SearchClient}.
      */
-    public SearchBatchClient getSearchIndexDocumentBatchingClient() {
-        return getSearchIndexDocumentBatchingClient(null, null, null, null);
+    public SearchBatchClient getSearchBatchClient() {
+        return getSearchBatchClient(null, null, null, null);
     }
 
     /**
-     * Creates a {@link SearchBatchClient} used to index documents for the Search index associated with this
-     * {@link SearchClient}.
+     * Creates a {@link SearchBatchClient} used to index documents for the Search index associated with this {@link
+     * SearchClient}.
      *
      * @param autoFlush Flag determining whether the batching client will automatically flush its document batch. If
      * null is passed this will be set to true.
@@ -100,14 +100,14 @@ public final class SearchClient {
      * @param batchSize The number of documents in a batch that will trigger it to be indexed. If automatic batch
      * sending is disabled this value is ignored. If {@code batchSize} is null a default value of 1000 is used.
      * @param indexingHook An implementation of {@link IndexingHook} used to handle document callback actions.
-     * @return A {@link SearchBatchClient} used to index documents for the Search index associated with this
-     * {@link SearchClient}.
+     * @return A {@link SearchBatchClient} used to index documents for the Search index associated with this {@link
+     * SearchClient}.
      * @throws IllegalArgumentException If {@code batchSize} is less than one.
      */
-    public SearchBatchClient getSearchIndexDocumentBatchingClient(Boolean autoFlush, Duration flushWindow,
-        Integer batchSize, IndexingHook indexingHook) {
+    public SearchBatchClient getSearchBatchClient(Boolean autoFlush, Duration flushWindow, Integer batchSize,
+        IndexingHook indexingHook) {
         return new SearchBatchClient(asyncClient
-            .getSearchIndexDocumentBatchingAsyncClient(autoFlush, flushWindow, batchSize, indexingHook));
+            .getSearchBatchAsyncClient(autoFlush, flushWindow, batchSize, indexingHook));
     }
 
     /**
