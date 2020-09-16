@@ -267,7 +267,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     /**
      * Gets the number of connections which are getting established.
      *
-     * @return Gets the number of connections which are getting established.
+     * @return the number of connections which are getting established.
      */
     public int attemptingToConnectMetrics() {
         return this.connecting.get() ? 1 : 0;
