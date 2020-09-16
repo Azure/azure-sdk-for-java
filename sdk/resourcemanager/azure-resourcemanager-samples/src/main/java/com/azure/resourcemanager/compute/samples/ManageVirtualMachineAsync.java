@@ -20,7 +20,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.samples.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuples;
 
 import java.util.Date;
 import java.util.Map;
@@ -72,7 +71,7 @@ public final class ManageVirtualMachineAsync {
 
             // Create a data disk to attach to VM
             //
-            Mono<Disk> dataDiskFlux = azure.disks().define(azure.sdkContext().randomResourceName("dsk-", 15))
+            Mono<Disk> dataDiskMono = azure.disks().define(azure.sdkContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withData()
@@ -81,16 +80,14 @@ public final class ManageVirtualMachineAsync {
 
             final Map<String, VirtualMachine> createdVms = new TreeMap<>();
 
-            Mono<NetworkInterface> nicFlux = azure.networkInterfaces().define(azure.sdkContext().randomResourceName("nic", 20))
+            Mono<NetworkInterface> nicMono = azure.networkInterfaces().define(azure.sdkContext().randomResourceName("nic", 20))
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .createAsync();
 
-            dataDiskFlux
-                .flatMap(disk ->
-                    nicFlux.map(nic -> Tuples.of(disk, nic)))
+            Mono.zip(dataDiskMono, nicMono)
                 .flatMapMany(
                     tuple -> Flux.merge(
                         Mono.defer(() -> {

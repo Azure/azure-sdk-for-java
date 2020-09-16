@@ -27,9 +27,9 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
         }
 
         rgName = generateRandomResourceName("rg", 10);
-        List<Mono<VirtualMachine>> vmFluxes = new ArrayList<>();
+        List<Mono<VirtualMachine>> vmMonos = new ArrayList<>();
         for (KnownWindowsVirtualMachineImage image : KnownWindowsVirtualMachineImage.values()) {
-            Mono<VirtualMachine> flux = computeManager.virtualMachines()
+            Mono<VirtualMachine> mono = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))
                 .withRegion(Region.US_SOUTH_CENTRAL)
                 .withNewResourceGroup(rgName)
@@ -41,11 +41,11 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
                 .withAdminPassword(password())
                 .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                 .createAsync();
-            vmFluxes.add(flux);
+            vmMonos.add(mono);
         }
 
         for (KnownLinuxVirtualMachineImage image : KnownLinuxVirtualMachineImage.values()) {
-            Mono<VirtualMachine> flux = computeManager.virtualMachines()
+            Mono<VirtualMachine> mono = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))
                 .withRegion(Region.US_SOUTH_CENTRAL)
                 .withNewResourceGroup(rgName)
@@ -57,10 +57,10 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
                 .withRootPassword(password())
                 .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                 .createAsync();
-            vmFluxes.add(flux);
+            vmMonos.add(mono);
         }
 
-        Flux.merge(vmFluxes).blockLast();
+        Flux.merge(vmMonos).blockLast();
     }
 
     @Override
