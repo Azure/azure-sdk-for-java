@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
+import com.azure.ai.formrecognizer.models.RecognizeBusinessCardOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
@@ -558,6 +559,162 @@ public final class FormRecognizerAsyncClient {
         }
     }
 
+    /**
+     * Recognizes receipt data using optical character recognition (OCR) and a prebuilt receipt trained
+     * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * @param businessCardUrl The URL of the businessCardUrl to analyze.
+     *
+     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code receiptUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardFromUrl(
+        String businessCardUrl) {
+        return beginRecognizeBusinessCardFromUrl(businessCardUrl, null);
+    }
+
+    /**
+     * Recognizes business card data using optical character recognition (OCR) and a prebuilt business card trained
+     * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * @param businessCardUrl The source URL to the input business card.
+     * @param recognizeBusinessCardOptions The additional configurable {@link RecognizeBusinessCardOptions options}
+     * that may be passed when analyzing a business card.
+     *
+     * @return A {@link PollerFlux} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCardUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardFromUrl(
+        String businessCardUrl, RecognizeBusinessCardOptions recognizeBusinessCardOptions) {
+        return beginRecognizeBusinessCardFromUrl(businessCardUrl, recognizeBusinessCardOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardFromUrl(
+        String businessCardUrl, RecognizeBusinessCardOptions recognizeBusinessCardOptions, Context context) {
+        try {
+            Objects.requireNonNull(businessCardUrl, "'businessCardUrl' is required and cannot be null.");
+
+            recognizeBusinessCardOptions = getRecognizeBusinessCardOptions(recognizeBusinessCardOptions);
+            final boolean isFieldElementsIncluded = recognizeBusinessCardOptions.isFieldElementsIncluded();
+            return new PollerFlux<>(
+                recognizeBusinessCardOptions.getPollInterval(),
+                urlActivationOperation(
+                    () -> service.analyzeBusinessCardAsyncWithResponseAsync(isFieldElementsIncluded,
+                        "", new SourcePath().setSource(businessCardUrl), context)
+                              .map(response -> new FormRecognizerOperationResult(
+                                  parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                pollingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
+                        modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded))
+                                          .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    /**
+     * Recognizes business card data using optical character recognition (OCR) and a prebuilt business card
+     * trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a business card.
+     *
+     * Note that the {@code businessCard} passed must be replayable if retries are enabled (the default).
+     * In other words, thev{@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * @param businessCard The data of the document to recognize business card information from.
+     * @param length The exact length of the data.
+     *
+     * @return A {@link PollerFlux} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCard} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCard(
+        Flux<ByteBuffer> businessCard, long length) {
+        return beginRecognizeBusinessCard(businessCard, length, null);
+    }
+
+    /**
+     * Recognizes business card data from documents using optical character recognition (OCR)
+     * and a prebuilt business card trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a business card.
+     *
+     * Note that the {@code data} passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * @param businessCard The data of the document to recognize business card information from.
+     * @param length The exact length of the data.
+     * @param recognizeBusinessCardOptions The additional configurable {@link RecognizeBusinessCardOptions options}
+     * that may be passed when analyzing a business card.
+     *
+     * @return A {@link PollerFlux} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCard} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCard(
+        Flux<ByteBuffer> businessCard, long length, RecognizeBusinessCardOptions recognizeBusinessCardOptions) {
+        return beginRecognizeBusinessCard(businessCard, length, recognizeBusinessCardOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCard(
+        Flux<ByteBuffer> businessCard, long length, RecognizeBusinessCardOptions recognizeBusinessCardOptions,
+        Context context) {
+        try {
+            Objects.requireNonNull(businessCard, "'businessCard' is required and cannot be null.");
+            recognizeBusinessCardOptions = getRecognizeBusinessCardOptions(recognizeBusinessCardOptions);
+            final boolean isFieldElementsIncluded = recognizeBusinessCardOptions.isFieldElementsIncluded();
+            return new PollerFlux<>(
+                recognizeBusinessCardOptions.getPollInterval(),
+                streamActivationOperation(
+                    (contentType -> service.analyzeBusinessCardAsyncWithResponseAsync(
+                        contentType, businessCard, length, isFieldElementsIncluded, "", context)
+                                        .map(response -> new FormRecognizerOperationResult(
+                                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                    businessCard, recognizeBusinessCardOptions.getContentType()),
+                pollingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
+                        modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded))
+                                          .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
     /*
      * Poller's ACTIVATION operation that takes stream as input.
      */
@@ -674,5 +831,10 @@ public final class FormRecognizerAsyncClient {
     private static RecognizeReceiptsOptions
         getRecognizeReceiptOptions(RecognizeReceiptsOptions userProvidedOptions) {
         return userProvidedOptions == null ? new RecognizeReceiptsOptions() : userProvidedOptions;
+    }
+
+    private static RecognizeBusinessCardOptions getRecognizeBusinessCardOptions(
+        RecognizeBusinessCardOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeBusinessCardOptions() : userProvidedOptions;
     }
 }

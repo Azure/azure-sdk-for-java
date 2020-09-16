@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
+import com.azure.ai.formrecognizer.models.RecognizeBusinessCardOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
@@ -359,5 +360,107 @@ public final class FormRecognizerClient {
         RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(receipt);
         return client.beginRecognizeReceipts(buffer, length, recognizeReceiptsOptions, context).getSyncPoller();
+    }
+
+    /**
+     * Recognizes business card data from document using optical character recognition (OCR) and a prebuilt
+     * business card trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a business card.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * @param businessCardUrl The URL of the businessCardUrl to analyze.
+     *
+     * @return A {@link SyncPoller} to poll the progress of the recognize business card operation until it has
+     * completed, has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCardUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardFromUrl(
+        String businessCardUrl) {
+        return beginRecognizeBusinessCardFromUrl(businessCardUrl, null, Context.NONE);
+    }
+
+    /**
+     * Recognizes business card data from documents using optical character recognition (OCR) and a
+     * prebuilt business card trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * @param businessCardUrl The source URL to the input business card.
+     * @param recognizeBusinessCardOptions The additional configurable {@link RecognizeBusinessCardOptions options}
+     * that may be passed when analyzing a business card.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} to poll the progress of the recognize business card operation until it has
+     * completed, has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCardUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardFromUrl(
+        String businessCardUrl, RecognizeBusinessCardOptions recognizeBusinessCardOptions, Context context) {
+        return client.beginRecognizeBusinessCardFromUrl(businessCardUrl, recognizeBusinessCardOptions, context)
+                   .getSyncPoller();
+    }
+
+    /**
+     * Recognizes data from the provided document data using optical character recognition (OCR)
+     * and a prebuilt trained business card model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a business card.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * @param businessCard The data of the business card to recognize business card information from.
+     * @param length The exact length of the data.
+     *
+     * @return A {@link SyncPoller} that polls the recognize business card operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCard} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCard(
+        InputStream businessCard, long length) {
+        return beginRecognizeBusinessCard(businessCard, length, null, Context.NONE);
+    }
+
+    /**
+     * Recognizes data from the provided document data using optical character recognition (OCR) and a prebuilt
+     * trained business card model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a business card.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * @param businessCard The data of the business card to recognize business card information from.
+     * @param length The exact length of the data.
+     * @param recognizeBusinessCardOptions The additional configurable {@link RecognizeBusinessCardOptions options}
+     * that may be passed when analyzing a business card.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCard} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCard(
+        InputStream businessCard, long length, RecognizeBusinessCardOptions recognizeBusinessCardOptions,
+        Context context) {
+        Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(businessCard);
+        return client.beginRecognizeBusinessCard(buffer, length, recognizeBusinessCardOptions, context).getSyncPoller();
     }
 }
