@@ -9,7 +9,13 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -119,5 +125,10 @@ public class DigitalTwinsTestBase extends TestBase
         public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
             return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
         }
+    }
+
+    // Used for converting json strings into BasicDigitalTwins, BasicRelationships, etc.
+    static <T> T deserializeJsonString(String rawJsonString, Class<T> clazz) throws JsonProcessingException {
+        return new ObjectMapper().readValue(rawJsonString, clazz);
     }
 }
