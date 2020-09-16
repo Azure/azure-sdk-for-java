@@ -64,6 +64,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final SocketAddress remoteAddress;
     private final RntbdRequestTimer requestTimer;
     private final Tag tag;
+    private final int maxConcurrentRequests;
 
     // endregion
 
@@ -103,16 +104,17 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.provider = provider;
 
         this.metrics = new RntbdMetrics(provider.transportClient, this);
+        this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
     }
 
     // endregion
 
     // region Accessors
 
-    @Override
     /**
      * @return approximate number of acquired channels.
      */
+    @Override
     public int channelsAcquiredMetric() {
         return this.channelPool.channelsAcquiredMetrics();
     }
@@ -185,7 +187,17 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         this.throwIfClosed();
 
-        this.concurrentRequests.incrementAndGet();
+        int concurrentRequestSnapshot = this.concurrentRequests.incrementAndGet();
+
+        if (concurrentRequestSnapshot > this.maxConcurrentRequests) {
+            return FailFastRntbdRequestRecord.createAndFailFast(
+                args,
+                concurrentRequestSnapshot,
+                concurrentRequests,
+                metrics,
+                remoteAddress);
+        }
+
         this.lastRequestNanoTime.set(args.nanoTimeCreated());
 
         final RntbdRequestRecord record = this.write(args);
@@ -235,7 +247,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
 
-        final RntbdRequestRecord requestRecord = new RntbdRequestRecord(requestArgs, this.requestTimer);
+        final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
         final Future<Channel> connectedChannel = this.channelPool.acquire();
 
         logger.debug("\n  [{}]\n  {}\n  WRITE WHEN CONNECTED {}", this, requestArgs, connectedChannel);

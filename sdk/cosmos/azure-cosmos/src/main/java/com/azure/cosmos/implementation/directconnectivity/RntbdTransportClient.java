@@ -282,6 +282,9 @@ public final class RntbdTransportClient extends TransportClient {
         private final int maxRequestsPerChannel;
 
         @JsonProperty()
+        private final int maxConcurrentRequestsPerEndpoint;
+
+        @JsonProperty()
         private final Duration receiveHangDetectionTime;
 
         @JsonProperty()
@@ -324,6 +327,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.maxBufferCapacity = builder.maxBufferCapacity;
             this.maxChannelsPerEndpoint = builder.maxChannelsPerEndpoint;
             this.maxRequestsPerChannel = builder.maxRequestsPerChannel;
+            this.maxConcurrentRequestsPerEndpoint = builder.maxConcurrentRequestsPerEndpoint;
             this.receiveHangDetectionTime = builder.receiveHangDetectionTime;
             this.requestExpiryInterval = builder.requestExpiryInterval;
             this.requestTimeout = builder.requestTimeout;
@@ -348,6 +352,12 @@ public final class RntbdTransportClient extends TransportClient {
             this.maxBufferCapacity = 8192 << 10;
             this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
             this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
+
+            this.maxConcurrentRequestsPerEndpoint = Math.max(
+                10000,
+                this.maxChannelsPerEndpoint * maxRequestsPerChannel
+            );
+
             this.receiveHangDetectionTime = Duration.ofSeconds(65L);
             this.requestExpiryInterval = Duration.ofSeconds(5L);
             this.requestTimeout = connectionPolicy.getRequestTimeout();
@@ -394,6 +404,11 @@ public final class RntbdTransportClient extends TransportClient {
 
         public int maxRequestsPerChannel() {
             return this.maxRequestsPerChannel;
+        }
+
+        public int maxConcurrentRequestsPerEndpoint()
+        {
+            return this.maxConcurrentRequestsPerEndpoint;
         }
 
         public Duration receiveHangDetectionTime() {
@@ -470,6 +485,7 @@ public final class RntbdTransportClient extends TransportClient {
          *   "maxBufferCapacity": 8388608,
          *   "maxChannelsPerEndpoint": 10,
          *   "maxRequestsPerChannel": 30,
+         *   "maxConcurrentRequestsPerEndpoint": 500,
          *   "receiveHangDetectionTime": "PT1M5S",
          *   "requestExpiryInterval": "PT5S",
          *   "requestTimeout": "PT5S",
@@ -558,6 +574,7 @@ public final class RntbdTransportClient extends TransportClient {
             private int maxBufferCapacity;
             private int maxChannelsPerEndpoint;
             private int maxRequestsPerChannel;
+            private int maxConcurrentRequestsPerEndpoint;
             private Duration receiveHangDetectionTime;
             private Duration requestExpiryInterval;
             private Duration requestTimeout;
@@ -582,6 +599,11 @@ public final class RntbdTransportClient extends TransportClient {
                 this.maxBufferCapacity = DEFAULT_OPTIONS.maxBufferCapacity;
                 this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
                 this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
+
+                this.maxConcurrentRequestsPerEndpoint = Math.max(
+                    10000,
+                    this.maxChannelsPerEndpoint * this.maxRequestsPerChannel);
+
                 this.receiveHangDetectionTime = DEFAULT_OPTIONS.receiveHangDetectionTime;
                 this.requestExpiryInterval = DEFAULT_OPTIONS.requestExpiryInterval;
                 this.requestTimeout = connectionPolicy.getRequestTimeout();
@@ -663,6 +685,12 @@ public final class RntbdTransportClient extends TransportClient {
             public Builder maxRequestsPerChannel(final int value) {
                 checkArgument(value > 0, "expected positive value, not %s", value);
                 this.maxRequestsPerChannel = value;
+                return this;
+            }
+
+            public Builder maxConcurrentRequestsPerEndpoint(final int value) {
+                checkArgument(value > 0, "expected positive value, not %s", value);
+                this.maxConcurrentRequestsPerEndpoint = value;
                 return this;
             }
 
