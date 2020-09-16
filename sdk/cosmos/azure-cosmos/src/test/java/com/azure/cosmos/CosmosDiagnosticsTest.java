@@ -489,16 +489,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void addressResolutionStatistics() {
-        CosmosClient client = null;
+        CosmosClient client1 = null;
+        CosmosClient client2 = null;
         try {
-            client = new CosmosClientBuilder()
+            client1 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
                 .directMode()
                 .buildClient();
             CosmosContainer container =
-                client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+                client1.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             InternalObjectNode internalObjectNode = getInternalObjectNode();
             CosmosItemResponse<InternalObjectNode> writeResourceResponse = container.createItem(internalObjectNode);
             //Success address resolution client side statistics
@@ -509,16 +510,15 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(writeResourceResponse.getDiagnostics().toString()).doesNotContain("\"errorMessage\":\"io.netty" +
                 ".channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information");
 
-            client.close();
-            client = new CosmosClientBuilder()
+            client2 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
                 .directMode()
                 .buildClient();
             container =
-                client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
-            AsyncDocumentClient asyncDocumentClient = client.asyncClient().getContextClient();
+                client2.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            AsyncDocumentClient asyncDocumentClient = client2.asyncClient().getContextClient();
             GlobalAddressResolver addressResolver = (GlobalAddressResolver) FieldUtils.readField(asyncDocumentClient,
                 "addressResolver", true);
 
@@ -551,12 +551,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(readResourceResponse.getDiagnostics().toString()).doesNotContain("endTime=\"null\"");
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":null");
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":\"io.netty" +
-                ".channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information");
+                ".channel.AbstractChannel$AnnotatedConnectException: Connection refused");
         } catch (Exception ex) {
+            logger.error("Error in test addressResolutionStatistics", ex);
             fail("This test should not throw exception " + ex);
         } finally {
-            if (client != null) {
-                client.close();
+            if (client1 != null) {
+                client1.close();
+            }
+
+            if (client2 != null) {
+                client2.close();
             }
         }
     }
