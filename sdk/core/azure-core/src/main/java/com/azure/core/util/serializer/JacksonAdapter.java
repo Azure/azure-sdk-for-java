@@ -58,7 +58,7 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     private final ObjectMapper simpleMapper;
 
-    private final ObjectMapper xmlMapper;
+    private final XmlMapper xmlMapper;
 
     private final ObjectMapper headerMapper;
 
@@ -73,9 +73,11 @@ public class JacksonAdapter implements SerializerAdapter {
     public JacksonAdapter() {
         simpleMapper = initializeObjectMapper(new ObjectMapper());
 
-        xmlMapper = initializeObjectMapper(new XmlMapper())
-            .setDefaultUseWrapper(false)
-            .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+        xmlMapper = initializeObjectMapper(XmlMapper.xmlBuilder()
+            .defaultUseWrapper(false)
+            .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true)
+            .build());
+        // xmlMapper.getFactory().getXMLInputFactory().createXMLStreamReader()
 
         ObjectMapper flatteningMapper = initializeObjectMapper(new ObjectMapper())
             .registerModule(FlatteningSerializer.getModule(simpleMapper()))
@@ -233,7 +235,7 @@ public class JacksonAdapter implements SerializerAdapter {
             }
 
             logger.info("It took {} ms to deserialize an InputStream into class {}.",
-                System.currentTimeMillis(),
+                System.currentTimeMillis() - startMs,
                 javaType.getRawClass().getSimpleName());
 
             return returnValue;
