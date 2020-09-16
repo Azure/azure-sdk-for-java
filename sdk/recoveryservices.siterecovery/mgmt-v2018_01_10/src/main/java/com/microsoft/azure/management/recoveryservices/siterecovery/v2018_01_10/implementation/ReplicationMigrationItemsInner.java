@@ -17,6 +17,8 @@ import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.
 import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.EnableMigrationInputProperties;
 import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.MigrateInput;
 import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.MigrateInputProperties;
+import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.ResyncInput;
+import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.ResyncInputProperties;
 import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.TestMigrateCleanupInput;
 import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.TestMigrateCleanupInputProperties;
 import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.TestMigrateInput;
@@ -112,6 +114,14 @@ public class ReplicationMigrationItemsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.ReplicationMigrationItems beginMigrate" })
         @POST("Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}/migrate")
         Observable<Response<ResponseBody>> beginMigrate(@Path("resourceName") String resourceName, @Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Path("fabricName") String fabricName, @Path("protectionContainerName") String protectionContainerName, @Path("migrationItemName") String migrationItemName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body MigrateInput migrateInput, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.ReplicationMigrationItems resync" })
+        @POST("Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}/resync")
+        Observable<Response<ResponseBody>> resync(@Path("resourceName") String resourceName, @Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Path("fabricName") String fabricName, @Path("protectionContainerName") String protectionContainerName, @Path("migrationItemName") String migrationItemName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ResyncInput input, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.ReplicationMigrationItems beginResync" })
+        @POST("Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}/resync")
+        Observable<Response<ResponseBody>> beginResync(@Path("resourceName") String resourceName, @Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Path("fabricName") String fabricName, @Path("protectionContainerName") String protectionContainerName, @Path("migrationItemName") String migrationItemName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ResyncInput input, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.ReplicationMigrationItems testMigrate" })
         @POST("Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}/testMigrate")
@@ -1557,6 +1567,216 @@ public class ReplicationMigrationItemsInner {
     }
 
     private ServiceResponse<MigrationItemInner> beginMigrateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MigrationItemInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MigrationItemInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Resynchronizes replication.
+     * The operation to resynchronize replication of an ASR migration item.
+     *
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param migrationItemName Migration item name.
+     * @param properties Resync input properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MigrationItemInner object if successful.
+     */
+    public MigrationItemInner resync(String fabricName, String protectionContainerName, String migrationItemName, ResyncInputProperties properties) {
+        return resyncWithServiceResponseAsync(fabricName, protectionContainerName, migrationItemName, properties).toBlocking().last().body();
+    }
+
+    /**
+     * Resynchronizes replication.
+     * The operation to resynchronize replication of an ASR migration item.
+     *
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param migrationItemName Migration item name.
+     * @param properties Resync input properties.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MigrationItemInner> resyncAsync(String fabricName, String protectionContainerName, String migrationItemName, ResyncInputProperties properties, final ServiceCallback<MigrationItemInner> serviceCallback) {
+        return ServiceFuture.fromResponse(resyncWithServiceResponseAsync(fabricName, protectionContainerName, migrationItemName, properties), serviceCallback);
+    }
+
+    /**
+     * Resynchronizes replication.
+     * The operation to resynchronize replication of an ASR migration item.
+     *
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param migrationItemName Migration item name.
+     * @param properties Resync input properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<MigrationItemInner> resyncAsync(String fabricName, String protectionContainerName, String migrationItemName, ResyncInputProperties properties) {
+        return resyncWithServiceResponseAsync(fabricName, protectionContainerName, migrationItemName, properties).map(new Func1<ServiceResponse<MigrationItemInner>, MigrationItemInner>() {
+            @Override
+            public MigrationItemInner call(ServiceResponse<MigrationItemInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Resynchronizes replication.
+     * The operation to resynchronize replication of an ASR migration item.
+     *
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param migrationItemName Migration item name.
+     * @param properties Resync input properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<MigrationItemInner>> resyncWithServiceResponseAsync(String fabricName, String protectionContainerName, String migrationItemName, ResyncInputProperties properties) {
+        if (this.client.resourceName() == null) {
+            throw new IllegalArgumentException("Parameter this.client.resourceName() is required and cannot be null.");
+        }
+        if (this.client.resourceGroupName() == null) {
+            throw new IllegalArgumentException("Parameter this.client.resourceGroupName() is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (fabricName == null) {
+            throw new IllegalArgumentException("Parameter fabricName is required and cannot be null.");
+        }
+        if (protectionContainerName == null) {
+            throw new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null.");
+        }
+        if (migrationItemName == null) {
+            throw new IllegalArgumentException("Parameter migrationItemName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (properties == null) {
+            throw new IllegalArgumentException("Parameter properties is required and cannot be null.");
+        }
+        Validator.validate(properties);
+        ResyncInput input = new ResyncInput();
+        input.withProperties(properties);
+        Observable<Response<ResponseBody>> observable = service.resync(this.client.resourceName(), this.client.resourceGroupName(), this.client.subscriptionId(), fabricName, protectionContainerName, migrationItemName, this.client.apiVersion(), this.client.acceptLanguage(), input, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<MigrationItemInner>() { }.getType());
+    }
+
+    /**
+     * Resynchronizes replication.
+     * The operation to resynchronize replication of an ASR migration item.
+     *
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param migrationItemName Migration item name.
+     * @param properties Resync input properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MigrationItemInner object if successful.
+     */
+    public MigrationItemInner beginResync(String fabricName, String protectionContainerName, String migrationItemName, ResyncInputProperties properties) {
+        return beginResyncWithServiceResponseAsync(fabricName, protectionContainerName, migrationItemName, properties).toBlocking().single().body();
+    }
+
+    /**
+     * Resynchronizes replication.
+     * The operation to resynchronize replication of an ASR migration item.
+     *
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param migrationItemName Migration item name.
+     * @param properties Resync input properties.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MigrationItemInner> beginResyncAsync(String fabricName, String protectionContainerName, String migrationItemName, ResyncInputProperties properties, final ServiceCallback<MigrationItemInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginResyncWithServiceResponseAsync(fabricName, protectionContainerName, migrationItemName, properties), serviceCallback);
+    }
+
+    /**
+     * Resynchronizes replication.
+     * The operation to resynchronize replication of an ASR migration item.
+     *
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param migrationItemName Migration item name.
+     * @param properties Resync input properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MigrationItemInner object
+     */
+    public Observable<MigrationItemInner> beginResyncAsync(String fabricName, String protectionContainerName, String migrationItemName, ResyncInputProperties properties) {
+        return beginResyncWithServiceResponseAsync(fabricName, protectionContainerName, migrationItemName, properties).map(new Func1<ServiceResponse<MigrationItemInner>, MigrationItemInner>() {
+            @Override
+            public MigrationItemInner call(ServiceResponse<MigrationItemInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Resynchronizes replication.
+     * The operation to resynchronize replication of an ASR migration item.
+     *
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param migrationItemName Migration item name.
+     * @param properties Resync input properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MigrationItemInner object
+     */
+    public Observable<ServiceResponse<MigrationItemInner>> beginResyncWithServiceResponseAsync(String fabricName, String protectionContainerName, String migrationItemName, ResyncInputProperties properties) {
+        if (this.client.resourceName() == null) {
+            throw new IllegalArgumentException("Parameter this.client.resourceName() is required and cannot be null.");
+        }
+        if (this.client.resourceGroupName() == null) {
+            throw new IllegalArgumentException("Parameter this.client.resourceGroupName() is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (fabricName == null) {
+            throw new IllegalArgumentException("Parameter fabricName is required and cannot be null.");
+        }
+        if (protectionContainerName == null) {
+            throw new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null.");
+        }
+        if (migrationItemName == null) {
+            throw new IllegalArgumentException("Parameter migrationItemName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (properties == null) {
+            throw new IllegalArgumentException("Parameter properties is required and cannot be null.");
+        }
+        Validator.validate(properties);
+        ResyncInput input = new ResyncInput();
+        input.withProperties(properties);
+        return service.beginResync(this.client.resourceName(), this.client.resourceGroupName(), this.client.subscriptionId(), fabricName, protectionContainerName, migrationItemName, this.client.apiVersion(), this.client.acceptLanguage(), input, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MigrationItemInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MigrationItemInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MigrationItemInner> clientResponse = beginResyncDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MigrationItemInner> beginResyncDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<MigrationItemInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<MigrationItemInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())

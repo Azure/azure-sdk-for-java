@@ -17,6 +17,7 @@ import rx.functions.Func1;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.MigrationItem;
 import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.MigrateInputProperties;
+import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.ResyncInputProperties;
 import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.TestMigrateInputProperties;
 import com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10.TestMigrateCleanupInputProperties;
 
@@ -49,6 +50,18 @@ class ReplicationMigrationItemsImpl extends WrapperImpl<ReplicationMigrationItem
     public Observable<MigrationItem> migrateAsync(String fabricName, String protectionContainerName, String migrationItemName, MigrateInputProperties properties) {
         ReplicationMigrationItemsInner client = this.inner();
         return client.migrateAsync(fabricName, protectionContainerName, migrationItemName, properties)
+        .map(new Func1<MigrationItemInner, MigrationItem>() {
+            @Override
+            public MigrationItem call(MigrationItemInner inner) {
+                return new MigrationItemImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<MigrationItem> resyncAsync(String fabricName, String protectionContainerName, String migrationItemName, ResyncInputProperties properties) {
+        ReplicationMigrationItemsInner client = this.inner();
+        return client.resyncAsync(fabricName, protectionContainerName, migrationItemName, properties)
         .map(new Func1<MigrationItemInner, MigrationItem>() {
             @Override
             public MigrationItem call(MigrationItemInner inner) {
@@ -121,10 +134,14 @@ class ReplicationMigrationItemsImpl extends WrapperImpl<ReplicationMigrationItem
     public Observable<MigrationItem> getAsync(String fabricName, String protectionContainerName, String migrationItemName) {
         ReplicationMigrationItemsInner client = this.inner();
         return client.getAsync(fabricName, protectionContainerName, migrationItemName)
-        .map(new Func1<MigrationItemInner, MigrationItem>() {
+        .flatMap(new Func1<MigrationItemInner, Observable<MigrationItem>>() {
             @Override
-            public MigrationItem call(MigrationItemInner inner) {
-                return wrapModel(inner);
+            public Observable<MigrationItem> call(MigrationItemInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((MigrationItem)wrapModel(inner));
+                }
             }
        });
     }

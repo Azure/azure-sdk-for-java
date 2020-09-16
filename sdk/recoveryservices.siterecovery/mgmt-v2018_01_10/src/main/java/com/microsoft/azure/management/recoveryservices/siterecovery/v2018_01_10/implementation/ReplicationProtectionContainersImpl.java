@@ -112,10 +112,14 @@ class ReplicationProtectionContainersImpl extends WrapperImpl<ReplicationProtect
     public Observable<ProtectionContainer> getAsync(String fabricName, String protectionContainerName) {
         ReplicationProtectionContainersInner client = this.inner();
         return client.getAsync(fabricName, protectionContainerName)
-        .map(new Func1<ProtectionContainerInner, ProtectionContainer>() {
+        .flatMap(new Func1<ProtectionContainerInner, Observable<ProtectionContainer>>() {
             @Override
-            public ProtectionContainer call(ProtectionContainerInner inner) {
-                return wrapModel(inner);
+            public Observable<ProtectionContainer> call(ProtectionContainerInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ProtectionContainer)wrapModel(inner));
+                }
             }
        });
     }

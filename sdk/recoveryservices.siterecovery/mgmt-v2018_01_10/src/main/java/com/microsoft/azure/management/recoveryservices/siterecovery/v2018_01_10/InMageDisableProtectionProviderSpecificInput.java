@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * InMage disable protection provider specific input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = InMageDisableProtectionProviderSpecificInput.class)
 @JsonTypeName("InMage")
 public class InMageDisableProtectionProviderSpecificInput extends DisableProtectionProviderSpecificInput {
     /**

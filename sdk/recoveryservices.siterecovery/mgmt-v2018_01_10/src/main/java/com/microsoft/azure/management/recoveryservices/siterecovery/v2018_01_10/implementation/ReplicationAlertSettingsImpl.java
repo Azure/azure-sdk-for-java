@@ -63,10 +63,14 @@ class ReplicationAlertSettingsImpl extends WrapperImpl<ReplicationAlertSettingsI
     public Observable<Alert> getAsync(String alertSettingName) {
         ReplicationAlertSettingsInner client = this.inner();
         return client.getAsync(alertSettingName)
-        .map(new Func1<AlertInner, Alert>() {
+        .flatMap(new Func1<AlertInner, Observable<Alert>>() {
             @Override
-            public Alert call(AlertInner inner) {
-                return wrapModel(inner);
+            public Observable<Alert> call(AlertInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Alert)wrapModel(inner));
+                }
             }
        });
     }

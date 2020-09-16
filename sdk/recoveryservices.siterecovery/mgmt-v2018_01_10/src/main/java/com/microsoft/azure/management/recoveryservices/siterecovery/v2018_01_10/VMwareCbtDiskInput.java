@@ -46,6 +46,12 @@ public class VMwareCbtDiskInput {
     private DiskAccountType diskType;
 
     /**
+     * The DiskEncryptionSet ARM Id.
+     */
+    @JsonProperty(value = "diskEncryptionSetId")
+    private String diskEncryptionSetId;
+
+    /**
      * Get the disk Id.
      *
      * @return the diskId value
@@ -142,6 +148,26 @@ public class VMwareCbtDiskInput {
      */
     public VMwareCbtDiskInput withDiskType(DiskAccountType diskType) {
         this.diskType = diskType;
+        return this;
+    }
+
+    /**
+     * Get the DiskEncryptionSet ARM Id.
+     *
+     * @return the diskEncryptionSetId value
+     */
+    public String diskEncryptionSetId() {
+        return this.diskEncryptionSetId;
+    }
+
+    /**
+     * Set the DiskEncryptionSet ARM Id.
+     *
+     * @param diskEncryptionSetId the diskEncryptionSetId value to set
+     * @return the VMwareCbtDiskInput object itself.
+     */
+    public VMwareCbtDiskInput withDiskEncryptionSetId(String diskEncryptionSetId) {
+        this.diskEncryptionSetId = diskEncryptionSetId;
         return this;
     }
 

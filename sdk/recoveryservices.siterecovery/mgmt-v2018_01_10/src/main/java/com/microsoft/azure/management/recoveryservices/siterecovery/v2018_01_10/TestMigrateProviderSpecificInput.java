@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Test migrate provider specific input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = TestMigrateProviderSpecificInput.class)
 @JsonTypeName("TestMigrateProviderSpecificInput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtTestMigrateInput.class)

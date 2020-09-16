@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * This class represents the recovery plan shutdown group task details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = RecoveryPlanShutdownGroupTaskDetails.class)
 @JsonTypeName("RecoveryPlanShutdownGroupTaskDetails")
 public class RecoveryPlanShutdownGroupTaskDetails extends GroupTaskDetails {
     /**

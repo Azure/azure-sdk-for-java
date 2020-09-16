@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Recovery plan Automation runbook action details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = RecoveryPlanAutomationRunbookActionDetails.class)
 @JsonTypeName("AutomationRunbookActionDetails")
 public class RecoveryPlanAutomationRunbookActionDetails extends RecoveryPlanActionDetails {
     /**

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * This class represents the task details for an automation runbook.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = AutomationRunbookTaskDetails.class)
 @JsonTypeName("AutomationRunbookTaskDetails")
 public class AutomationRunbookTaskDetails extends TaskTypeDetails {
     /**

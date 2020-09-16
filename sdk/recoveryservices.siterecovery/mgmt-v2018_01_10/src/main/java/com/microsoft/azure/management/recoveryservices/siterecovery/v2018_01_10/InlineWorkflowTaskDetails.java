@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * This class represents the inline workflow task details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = InlineWorkflowTaskDetails.class)
 @JsonTypeName("InlineWorkflowTaskDetails")
 public class InlineWorkflowTaskDetails extends GroupTaskDetails {
     /**

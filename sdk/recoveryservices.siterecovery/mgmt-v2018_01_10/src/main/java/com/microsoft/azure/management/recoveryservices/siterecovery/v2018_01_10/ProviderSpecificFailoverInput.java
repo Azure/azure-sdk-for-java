@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Provider specific failover input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = ProviderSpecificFailoverInput.class)
 @JsonTypeName("ProviderSpecificFailoverInput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AFailoverProviderInput.class),

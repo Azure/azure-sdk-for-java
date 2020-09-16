@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * VMwareCbt specific enable migration input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VMwareCbtEnableMigrationInput.class)
 @JsonTypeName("VMwareCbt")
 public class VMwareCbtEnableMigrationInput extends EnableMigrationProviderSpecificInput {
     /**
@@ -87,10 +87,22 @@ public class VMwareCbtEnableMigrationInput extends EnableMigrationProviderSpecif
     private String targetAvailabilitySetId;
 
     /**
+     * The target availability zone.
+     */
+    @JsonProperty(value = "targetAvailabilityZone")
+    private String targetAvailabilityZone;
+
+    /**
      * The target boot diagnostics storage account ARM Id.
      */
     @JsonProperty(value = "targetBootDiagnosticsStorageAccountId")
     private String targetBootDiagnosticsStorageAccountId;
+
+    /**
+     * A value indicating whether auto resync is to be done.
+     */
+    @JsonProperty(value = "performAutoResync")
+    private String performAutoResync;
 
     /**
      * Get the ARM Id of the VM discovered in VMware.
@@ -313,6 +325,26 @@ public class VMwareCbtEnableMigrationInput extends EnableMigrationProviderSpecif
     }
 
     /**
+     * Get the target availability zone.
+     *
+     * @return the targetAvailabilityZone value
+     */
+    public String targetAvailabilityZone() {
+        return this.targetAvailabilityZone;
+    }
+
+    /**
+     * Set the target availability zone.
+     *
+     * @param targetAvailabilityZone the targetAvailabilityZone value to set
+     * @return the VMwareCbtEnableMigrationInput object itself.
+     */
+    public VMwareCbtEnableMigrationInput withTargetAvailabilityZone(String targetAvailabilityZone) {
+        this.targetAvailabilityZone = targetAvailabilityZone;
+        return this;
+    }
+
+    /**
      * Get the target boot diagnostics storage account ARM Id.
      *
      * @return the targetBootDiagnosticsStorageAccountId value
@@ -329,6 +361,26 @@ public class VMwareCbtEnableMigrationInput extends EnableMigrationProviderSpecif
      */
     public VMwareCbtEnableMigrationInput withTargetBootDiagnosticsStorageAccountId(String targetBootDiagnosticsStorageAccountId) {
         this.targetBootDiagnosticsStorageAccountId = targetBootDiagnosticsStorageAccountId;
+        return this;
+    }
+
+    /**
+     * Get a value indicating whether auto resync is to be done.
+     *
+     * @return the performAutoResync value
+     */
+    public String performAutoResync() {
+        return this.performAutoResync;
+    }
+
+    /**
+     * Set a value indicating whether auto resync is to be done.
+     *
+     * @param performAutoResync the performAutoResync value to set
+     * @return the VMwareCbtEnableMigrationInput object itself.
+     */
+    public VMwareCbtEnableMigrationInput withPerformAutoResync(String performAutoResync) {
+        this.performAutoResync = performAutoResync;
         return this;
     }
 
