@@ -69,7 +69,7 @@ To regenerate the code, run the powershell script [generate.ps1](./generate.ps1)
 
 All service operations will throw ErrorResponseException on failure reported by the service, with helpful error codes and other information.
 
-For example, use the `getMOdel` operation to check if the model exists before creating it.
+For example, use the `getModel` operation to check if the model exists before creating it.
 
 ```java
 try {

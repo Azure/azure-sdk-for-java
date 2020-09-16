@@ -106,8 +106,8 @@ For example you can get a model by calling:
 ModelData model = syncClient.getModel(modelId);
 ```
 
-This will only return the Model payload. The API's response will not contain any REST inforamtion.
-To get information about the REST call you can call the maximal overload and have access to both the response body (ModelData) and the HTTP REST inforamtion.
+This will only return the Model payload. The API's response will not contain any REST information.
+To get information about the REST call you can call the maximal overload and have access to both the response body (ModelData) and the HTTP REST information.
 
 ```java
 Response<ModelData> modelResponse = syncClient.getModelWithResponse(modelId, context);
@@ -172,7 +172,7 @@ asyncClient.createDigitalTwin(twinId, twinContent)
 
 ### Decommission models
 
-To decommision a model, pass in a model Id for the model you want to decommision.
+To decommission a model, pass in a model Id for the model you want to decommission.
 
 ```java
 client.decommissionModel(modelId);
@@ -218,7 +218,7 @@ BasicDigitalTwin basicTwinResponse = syncClient.createDigitalTwin(basicDtId, bas
 Alternatively, you can create your own custom data types to serialize and deserialize your digital twins.
 By specifying your properties and types directly, it requires less code or knowledge of the type for interaction.
 
-You can also retrive the application/json string payload from disk and pass it down to the client directly.
+You can also retrieve the application/json string payload from disk and pass it down to the client directly.
 
 ```java
 String payload = <Load the file content into memory>;
@@ -227,7 +227,7 @@ String digitalTwinCreateResponse = syncClient.createDigitalTwin(twinId, payload)
 
 ### Get and deserialize a digital twin
 
-You can get a digital twin in 2 separate foramts
+You can get a digital twin in 2 separate formats
 
 - In a String format by just calling:
 
@@ -235,7 +235,7 @@ You can get a digital twin in 2 separate foramts
 String stringDt = syncClient.getDigitalTwin(twinId);
 ```
 
-- Choose what type you would like the twin to be deserialzied as:
+- Choose what type you would like the twin to be deserialized as:
 
 ```java
 BasicDigitalTwin basicDt = syncClient.getDigitalTwin(twinId, BasicDigitalTwin.class);
@@ -243,7 +243,7 @@ BasicDigitalTwin basicDt = syncClient.getDigitalTwin(twinId, BasicDigitalTwin.cl
 
 ### Query digital twins
 
-Query the Azure Digital Twins instance for digital twins using the [Azure Digital Twins Query Store lanaguage](https://review.docs.microsoft.com/en-us/azure/digital-twins-v2/concepts-query-language?branch=pr-en-us-114648). Query calls support paging. Here's an example of how to query for digital twins and how to iterate over the results.
+Query the Azure Digital Twins instance for digital twins using the [Azure Digital Twins Query Store language](https://review.docs.microsoft.com/en-us/azure/digital-twins-v2/concepts-query-language?branch=pr-en-us-114648). Query calls support paging. Here's an example of how to query for digital twins and how to iterate over the results.
 
 ```java
 // This code snippet demonstrates the simplest way to iterate over the digital twin results, where paging
@@ -302,7 +302,7 @@ String getComponentResponse = client.getComponent(digitalTwinId, "Component1");
 
 ### Create digital twin relationships
 
-`createRelationship` creates a relationship on a digital twin provided with Id of a digital twin, name of relationship such as "contains", Id of an relationship such as "FloorContainsRoom" and an application/json relationship to be created. Must contain property with key "$targetId" to specify the target of the relationship. Sample payloads for relationships can be found [here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/src/samples/resources/DTDL/Relationships/HospitalRelationships.json).
+`createRelationship` creates a relationship on a digital twin provided with Id of a digital twin, name of relationship such as "contains", Id of a relationship such as "FloorContainsRoom" and an application/json relationship to be created. Must contain property with key "$targetId" to specify the target of the relationship. Sample payloads for relationships can be found [here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/src/samples/resources/DTDL/Relationships/HospitalRelationships.json).
 
 One option is to use the provided class BasicRelationship for serialization and deserialization.
 
