@@ -82,7 +82,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:azure-spring-boot:[3.0.0-beta.1]</include> <!-- {x-include-update;com.azure:azure-spring-boot;current} --> -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.microsoft.azure:msal4j:[1.6.2]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.nimbusds:nimbus-jose-jwt:[7.9]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
