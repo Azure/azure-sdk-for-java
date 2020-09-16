@@ -10,11 +10,12 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import java.util.Collections;
 
 /**
- * This class represents various options to be set on the client.
+ * This class represents various options to be set on the client. Client can set {@code applicationId} and
+ * {@link Header} on {@link ClientOptions}.
  * <p><strong>Headers</strong></p>
  * The {@link Header} could be set using {@link ClientOptions#setHeaders(Iterable) setHeaders}. For example if you set
- * a header, {@link Header Header("name", "value")}, on {@link ClientOptions} and it will be set on the request being
- * sent to Azure Service.
+ * a header, {@link Header Header("name", "value")}, on {@link ClientOptions}, it will be set on the request being sent
+ * to Azure Service.
  * <p><strong>ApplicationId</strong></p>
  * The {@code applicationId} is used to configure {@link UserAgentPolicy} for telemetry/monitoring purpose. It can be
  * set using {@link ClientOptions#setApplicationId(String) ClientOptions#setApplicationId(String)}.
@@ -72,9 +73,9 @@ public final class ClientOptions {
 
     /**
      * Sets the headers, overwriting all previously set headers in the process. For example if you set a header,
-     * {@link Header Header("name", "value")}, on {@link ClientOptions} and it will be set on the request being sent to
+     * {@link Header Header("name", "value")}, on {@link ClientOptions}, it will be set on the request being sent to
      * Azure Service.
-     * @param headers headers to be set.
+     * @param headers to be set on the request being sent to Azure Service.
      *
      * @return updated {@link ClientOptions}.
      */

@@ -6,10 +6,10 @@ package com.azure.core.util;
 import java.util.Objects;
 
 /**
- * Represents a single header for a request.
+ * Represents a single header to be set on a request.
  *<p>
- * If multiple header values are added to a request or response with the same name (case-insensitive), then the values
- * will be appended at the end of the same {@link Header} with commas separating them.
+ * If multiple header values are added to a request with the same name (case-insensitive), then the values will be
+ * appended at the end of the same {@link Header} with commas separating them.
  */
 public class Header {
     private final String name;
@@ -18,8 +18,8 @@ public class Header {
     /**
      * Create a Header instance using the provided name and value.
      *
-     * @param name the name
-     * @param value the value
+     * @param name the name of the header.
+     * @param value the value of the header.
      * @throws NullPointerException if {@code name} is null.
      */
     public Header(String name, String value) {
@@ -31,14 +31,14 @@ public class Header {
     /**
      * Gets the header name.
      *
-     * @return the name of this Header
+     * @return the name of this {@link Header}
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Gets the header value.
+     * Gets the value of this {@link Header}.
      *
      * @return the value of this Header
      */
@@ -49,7 +49,7 @@ public class Header {
     /**
      * Gets the comma separated value as an array.
      *
-     * @return the values of this Header that are separated by a comma
+     * @return the values of this {@link Header} that are separated by a comma
      */
     public String[] getValues() {
         return value == null ? null : value.split(",");
