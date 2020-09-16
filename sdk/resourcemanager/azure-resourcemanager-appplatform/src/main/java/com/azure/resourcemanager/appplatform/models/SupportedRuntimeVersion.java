@@ -4,41 +4,51 @@
 
 package com.azure.resourcemanager.appplatform.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines values for SupportedRuntimeVersion. */
-public final class SupportedRuntimeVersion extends ExpandableStringEnum<SupportedRuntimeVersion> {
-    /** Static value Java_8 for SupportedRuntimeVersion. */
-    public static final SupportedRuntimeVersion JAVA_8 = fromString("Java_8");
+/** The SupportedRuntimeVersion model. */
+@Fluent
+public final class SupportedRuntimeVersion {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportedRuntimeVersion.class);
 
-    /** Static value Java_11 for SupportedRuntimeVersion. */
-    public static final SupportedRuntimeVersion JAVA_11 = fromString("Java_11");
+    /*
+     * The raw value which could be passed to deployment CRUD operations.
+     */
+    @JsonProperty(value = "value")
+    private SupportedRuntimeVersionEnum value;
 
-    /** Static value NetCore_31 for SupportedRuntimeVersion. */
-    public static final SupportedRuntimeVersion NET_CORE_31 = fromString("NetCore_31");
+    /*
+     * The platform of this runtime version (possible values: "Java" or
+     * ".NET").
+     */
+    @JsonProperty(value = "platform")
+    private SupportedRuntimePlatform platform;
+
+    /*
+     * The detailed version (major.minor) of the platform.
+     */
+    @JsonProperty(value = "version")
+    private String version;
 
     /**
-     * Creates or finds a SupportedRuntimeVersion from its string representation.
+     * Get the value property: The raw value which could be passed to deployment CRUD operations.
      *
-     * @param name a name to look for.
-     * @return the corresponding SupportedRuntimeVersion.
+     * @return the value value.
      */
-    @JsonCreator
-    public static SupportedRuntimeVersion fromString(String name) {
-        return fromString(name, SupportedRuntimeVersion.class);
+    public SupportedRuntimeVersionEnum value() {
+        return this.value;
     }
 
-    /** @return known SupportedRuntimeVersion values. */
-    public static Collection<SupportedRuntimeVersion> values() {
-        return values(SupportedRuntimeVersion.class);
-    }
-}
-value the value value to set.
+    /**
+     * Set the value property: The raw value which could be passed to deployment CRUD operations.
+     *
+     * @param value the value value to set.
      * @return the SupportedRuntimeVersion object itself.
      */
-    public SupportedRuntimeVersion withValue(SupportedRuntimeVersion value) {
+    public SupportedRuntimeVersion withValue(SupportedRuntimeVersionEnum value) {
         this.value = value;
         return this;
     }
