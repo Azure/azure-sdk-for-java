@@ -392,7 +392,7 @@ eventRoute.setFilter(filter);
 client.createEventRoute(eventRouteId, eventRoute);
 ```
 
-For more information on the event route filter language, see the "how to manage routes" [filter events documentation](https://github.com/Azure/azure-digital-twins/blob/private-preview/Documentation/how-to-manage-routes.md#filter-events).
+For more information on the event route filter language, see the "how to manage routes" [filter events documentation](https://docs.microsoft.com/en-us/azure/digital-twins/how-to-manage-routes-apis-cli#filter-events).
 
 ### List event routes
 
