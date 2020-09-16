@@ -21,7 +21,7 @@ public final class VirtualNetworkGatewayConnectionType
     public static final VirtualNetworkGatewayConnectionType EXPRESS_ROUTE = fromString("ExpressRoute");
 
     /** Static value VPNClient for VirtualNetworkGatewayConnectionType. */
-    public static final VirtualNetworkGatewayConnectionType VPNCLIENT = fromString("VPNClient");
+    public static final VirtualNetworkGatewayConnectionType VPN_CLIENT = fromString("VPNClient");
 
     /**
      * Creates or finds a VirtualNetworkGatewayConnectionType from its string representation.

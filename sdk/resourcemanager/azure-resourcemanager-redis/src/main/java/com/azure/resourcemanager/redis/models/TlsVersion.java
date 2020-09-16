@@ -11,13 +11,13 @@ import java.util.Collection;
 /** Defines values for TlsVersion. */
 public final class TlsVersion extends ExpandableStringEnum<TlsVersion> {
     /** Static value 1.0 for TlsVersion. */
-    public static final TlsVersion ONE_ZERO = fromString("1.0");
+    public static final TlsVersion ONE0 = fromString("1.0");
 
     /** Static value 1.1 for TlsVersion. */
-    public static final TlsVersion ONE_ONE = fromString("1.1");
+    public static final TlsVersion ONE1 = fromString("1.1");
 
     /** Static value 1.2 for TlsVersion. */
-    public static final TlsVersion ONE_TWO = fromString("1.2");
+    public static final TlsVersion ONE2 = fromString("1.2");
 
     /**
      * Creates or finds a TlsVersion from its string representation.

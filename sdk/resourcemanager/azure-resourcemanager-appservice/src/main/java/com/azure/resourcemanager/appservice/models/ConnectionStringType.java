@@ -13,10 +13,10 @@ public enum ConnectionStringType {
     MY_SQL("MySql"),
 
     /** Enum value SQLServer. */
-    SQLSERVER("SQLServer"),
+    SQL_SERVER("SQLServer"),
 
     /** Enum value SQLAzure. */
-    SQLAZURE("SQLAzure"),
+    SQL_AZURE("SQLAzure"),
 
     /** Enum value Custom. */
     CUSTOM("Custom"),

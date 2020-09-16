@@ -38,6 +38,12 @@ public final class DeploymentInstance {
     @JsonProperty(value = "discoveryStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String discoveryStatus;
 
+    /*
+     * Start time of the deployment instance
+     */
+    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
+    private String startTime;
+
     /**
      * Get the name property: Name of the deployment instance.
      *
@@ -72,6 +78,15 @@ public final class DeploymentInstance {
      */
     public String discoveryStatus() {
         return this.discoveryStatus;
+    }
+
+    /**
+     * Get the startTime property: Start time of the deployment instance.
+     *
+     * @return the startTime value.
+     */
+    public String startTime() {
+        return this.startTime;
     }
 
     /**

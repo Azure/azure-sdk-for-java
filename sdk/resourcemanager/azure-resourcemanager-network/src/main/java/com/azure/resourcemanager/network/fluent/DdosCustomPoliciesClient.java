@@ -53,7 +53,7 @@ public final class DdosCustomPoliciesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DdosCustomPoliciesClient(NetworkManagementClient client) {
+    DdosCustomPoliciesClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(DdosCustomPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

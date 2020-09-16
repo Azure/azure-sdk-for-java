@@ -6,7 +6,7 @@ package com.azure.resourcemanager.servicebus.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.models.EntityAvailabilityStatus;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 /** The QueueResource model. */
 @JsonFlatten
 @Fluent
-public class QueueResourceInner extends Resource {
+public class QueueResourceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(QueueResourceInner.class);
 
     /*

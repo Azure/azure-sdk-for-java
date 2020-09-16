@@ -32,7 +32,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.inner.FirewallPolicyRuleCollectionGroupInner;
-import com.azure.resourcemanager.network.fluent.inner.FirewallPolicyRuleCollectionGroupListResultInner;
+import com.azure.resourcemanager.network.models.FirewallPolicyRuleCollectionGroupListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -52,7 +52,7 @@ public final class FirewallPolicyRuleCollectionGroupsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public FirewallPolicyRuleCollectionGroupsClient(NetworkManagementClient client) {
+    FirewallPolicyRuleCollectionGroupsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -121,7 +121,7 @@ public final class FirewallPolicyRuleCollectionGroupsClient {
                 + "/firewallPolicies/{firewallPolicyName}/ruleCollectionGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FirewallPolicyRuleCollectionGroupListResultInner>> list(
+        Mono<Response<FirewallPolicyRuleCollectionGroupListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("firewallPolicyName") String firewallPolicyName,
@@ -133,7 +133,7 @@ public final class FirewallPolicyRuleCollectionGroupsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FirewallPolicyRuleCollectionGroupListResultInner>> listNext(
+        Mono<Response<FirewallPolicyRuleCollectionGroupListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

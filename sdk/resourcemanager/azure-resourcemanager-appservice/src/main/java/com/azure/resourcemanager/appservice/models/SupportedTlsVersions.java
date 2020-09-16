@@ -11,13 +11,13 @@ import java.util.Collection;
 /** Defines values for SupportedTlsVersions. */
 public final class SupportedTlsVersions extends ExpandableStringEnum<SupportedTlsVersions> {
     /** Static value 1.0 for SupportedTlsVersions. */
-    public static final SupportedTlsVersions ONE_ZERO = fromString("1.0");
+    public static final SupportedTlsVersions ONE0 = fromString("1.0");
 
     /** Static value 1.1 for SupportedTlsVersions. */
-    public static final SupportedTlsVersions ONE_ONE = fromString("1.1");
+    public static final SupportedTlsVersions ONE1 = fromString("1.1");
 
     /** Static value 1.2 for SupportedTlsVersions. */
-    public static final SupportedTlsVersions ONE_TWO = fromString("1.2");
+    public static final SupportedTlsVersions ONE2 = fromString("1.2");
 
     /**
      * Creates or finds a SupportedTlsVersions from its string representation.

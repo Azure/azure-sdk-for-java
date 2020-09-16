@@ -48,7 +48,7 @@ public final class ConfigServersClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ConfigServersClient(AppPlatformManagementClient client) {
+    ConfigServersClient(AppPlatformManagementClient client) {
         this.service =
             RestProxy.create(ConfigServersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

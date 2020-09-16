@@ -19,7 +19,7 @@ public enum ResolveStatus {
     INVALID_SYNTAX("InvalidSyntax"),
 
     /** Enum value MSINotEnabled. */
-    MSINOT_ENABLED("MSINotEnabled"),
+    MSI_NOT_ENABLED("MSINotEnabled"),
 
     /** Enum value VaultNotFound. */
     VAULT_NOT_FOUND("VaultNotFound"),

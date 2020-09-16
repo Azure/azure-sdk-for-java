@@ -11,13 +11,13 @@ import java.util.Collection;
 /** Defines values for MinimumTlsVersion. */
 public final class MinimumTlsVersion extends ExpandableStringEnum<MinimumTlsVersion> {
     /** Static value TLS1_0 for MinimumTlsVersion. */
-    public static final MinimumTlsVersion TLS1_0 = fromString("TLS1_0");
+    public static final MinimumTlsVersion TLS10 = fromString("TLS1_0");
 
     /** Static value TLS1_1 for MinimumTlsVersion. */
-    public static final MinimumTlsVersion TLS1_1 = fromString("TLS1_1");
+    public static final MinimumTlsVersion TLS11 = fromString("TLS1_1");
 
     /** Static value TLS1_2 for MinimumTlsVersion. */
-    public static final MinimumTlsVersion TLS1_2 = fromString("TLS1_2");
+    public static final MinimumTlsVersion TLS12 = fromString("TLS1_2");
 
     /**
      * Creates or finds a MinimumTlsVersion from its string representation.
