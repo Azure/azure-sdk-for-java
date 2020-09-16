@@ -46,17 +46,17 @@ public class ReactorTimeoutIssue {
     private Meter operationsMeter;
     private Meter launchedMeter;
 
-    private List<MyItem> itemList = new ArrayList<>();
+    private final List<MyItem> itemList = new ArrayList<>();
 
     private static final int REPORT_SECS = 20;
 
-    public static void main(String[] args) {
-        ReactorTimeoutIssue m = new ReactorTimeoutIssue();
-        int numOps = 100000;
+    public static void main(String[] args) throws InterruptedException {
+        ReactorTimeoutIssue reactorTimeoutIssue = new ReactorTimeoutIssue();
+        int numOps = 10000;
         if (args.length >= 1) {
             numOps = Integer.parseInt(args[0]);
         }
-        m.runTest(numOps);
+        reactorTimeoutIssue.runTest(numOps);
         logger.info("Started");
     }
 
@@ -109,14 +109,13 @@ public class ReactorTimeoutIssue {
                                                     .convertRatesTo(TimeUnit.SECONDS)
                                                     .build();
         reporter.start(REPORT_SECS, TimeUnit.SECONDS);
-
     }
 
     private void initializeClient() {
         asyncClient = new CosmosClientBuilder()
             .endpoint(HOST)
             .key(MASTER_KEY)
-            .directMode(DirectConnectionConfig.getDefaultConfig().setIdleEndpointTimeout(Duration.ofSeconds(10)))
+            .directMode()
             .consistencyLevel(ConsistencyLevel.SESSION)
             .contentResponseOnWriteEnabled(true)
             .buildAsyncClient();
@@ -136,6 +135,7 @@ public class ReactorTimeoutIssue {
                 protected void hookOnError(Throwable throwable) {
                     logger.error("Error occurred : ", throwable);
                     failureMeter.mark();
+                    operationsMeter.mark();
                 }
 
                 @Override

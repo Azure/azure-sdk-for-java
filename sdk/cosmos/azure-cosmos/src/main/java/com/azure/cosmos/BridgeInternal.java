@@ -286,7 +286,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosException createCosmosException(int statusCode, Exception innerException) {
-        return new CosmosException(statusCode, null, null, innerException);
+        return new CosmosException(statusCode, innerException.getMessage(), null, innerException);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
