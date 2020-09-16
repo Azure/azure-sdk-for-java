@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -59,6 +60,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final AtomicInteger concurrentRequests;
     private final long id;
     private final AtomicLong lastRequestNanoTime;
+
+    private final Instant createdTime;
     private final RntbdMetrics metrics;
     private final Provider provider;
     private final SocketAddress remoteAddress;
@@ -87,6 +90,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .option(ChannelOption.SO_KEEPALIVE, true)
             .remoteAddress(physicalAddress.getHost(), physicalAddress.getPort());
 
+        this.createdTime = Instant.now();
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);
         this.remoteAddress = bootstrap.config().remoteAddress();
         this.concurrentRequests = new AtomicInteger();
@@ -144,6 +148,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     public long lastRequestNanoTime() {
         return this.lastRequestNanoTime.get();
+    }
+
+    public Instant getCreatedTime() {
+        return createdTime;
     }
 
     @Override
