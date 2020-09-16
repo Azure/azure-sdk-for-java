@@ -100,24 +100,20 @@ public final class ManageVirtualNetworkAsync {
                             .withAnyProtocol()
                             .attach()
                             .createAsync()
-                            .flatMapMany(indexable -> {
-                                if (indexable instanceof NetworkSecurityGroup) {
-                                    NetworkSecurityGroup backEndNsg = indexable;
-                                    System.out.println("Creating virtual network #1...");
-                                    return Flux.merge(
-                                            Flux.just(indexable),
-                                            azure.networks().define(vnetName1)
-                                                    .withRegion(Region.US_EAST)
-                                                    .withExistingResourceGroup(rgName)
-                                                    .withAddressSpace("192.168.0.0/16")
-                                                    .withSubnet(vnet1FrontEndSubnetName, "192.168.1.0/24")
-                                                    .defineSubnet(vnet1BackEndSubnetName)
-                                                    .withAddressPrefix("192.168.2.0/24")
-                                                    .withExistingNetworkSecurityGroup(backEndNsg)
-                                                    .attach()
-                                                    .createAsync());
-                                }
-                                return Flux.just(indexable);
+                            .flatMapMany(backEndNsg -> {
+                                System.out.println("Creating virtual network #1...");
+                                return Flux.merge(
+                                        Flux.just(backEndNsg),
+                                        azure.networks().define(vnetName1)
+                                                .withRegion(Region.US_EAST)
+                                                .withExistingResourceGroup(rgName)
+                                                .withAddressSpace("192.168.0.0/16")
+                                                .withSubnet(vnet1FrontEndSubnetName, "192.168.1.0/24")
+                                                .defineSubnet(vnet1BackEndSubnetName)
+                                                .withAddressPrefix("192.168.2.0/24")
+                                                .withExistingNetworkSecurityGroup(backEndNsg)
+                                                .attach()
+                                                .createAsync());
                             }),
                     azure.networkSecurityGroups().define(vnet1FrontEndSubnetNsgName)
                             .withRegion(Region.US_EAST)

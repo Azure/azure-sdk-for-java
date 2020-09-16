@@ -11,7 +11,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
-import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
@@ -70,24 +69,20 @@ public final class ManageWebAppSourceControlAsync {
                     .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                     .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                     .createAsync()
-                    .flatMapMany(indexable -> {
-                        if (indexable instanceof WebApp) {
-                            WebApp app = indexable;
-                            System.out.println("Created web app " + app.name());
-                            return Flux.merge(
-                                    Flux.just(indexable),
-                                    app.getPublishingProfileAsync()
-                                    .map(publishingProfile -> {
-                                        System.out.println("Deploying helloworld.war to " + app1Name + " through FTP...");
-                                        Utils.uploadFileViaFtp(publishingProfile,
-                                                "helloworld.war",
-                                                ManageWebAppSourceControlAsync.class.getResourceAsStream("/helloworld.war"));
+                    .flatMapMany(app -> {
+                        System.out.println("Created web app " + app.name());
+                        return Flux.merge(
+                                Flux.just(app),
+                                app.getPublishingProfileAsync()
+                                .map(publishingProfile -> {
+                                    System.out.println("Deploying helloworld.war to " + app1Name + " through FTP...");
+                                    Utils.uploadFileViaFtp(publishingProfile,
+                                            "helloworld.war",
+                                            ManageWebAppSourceControlAsync.class.getResourceAsStream("/helloworld.war"));
 
-                                        System.out.println("Deployment helloworld.war to web app " + app1Name + " completed");
-                                        return publishingProfile;
-                                    }));
-                        }
-                        return Flux.just(indexable);
+                                    System.out.println("Deployment helloworld.war to web app " + app1Name + " completed");
+                                    return publishingProfile;
+                                }));
                     });
 
             System.out.println("Creating another web app " + app2Name + " in resource group " + rgName + "...");
@@ -125,42 +120,38 @@ public final class ManageWebAppSourceControlAsync {
                                         //    .withGitHubAccessToken("YOUR GITHUB PERSONAL TOKEN")
                                         //    .attach()
                                         .createAsync());
-                    }).flatMap(indexable -> {
-                        if (indexable instanceof WebApp) {
-                            WebApp app = indexable;
-                            System.out.println("Created web app " + app.name());
-                            if (!app.name().equals(app2Name)) {
-                                return Flux.just(indexable);
-                            }
-                            // for the second web app Deploy a local Tomcat
-                            return app.getPublishingProfileAsync()
-                                    .map(profile -> {
-                                        System.out.println("Deploying a local Tomcat source to " + app2Name + " through Git...");
-                                        Git git = null;
-                                        try {
-                                            git = Git
-                                                    .init()
-                                                    .setDirectory(new File(
-                                                            ManageWebAppSourceControlAsync.class.getResource(
-                                                                        "/azure-samples-appservice-helloworld/")
-                                                                    .getPath()))
-                                                    .call();
-                                            git.add().addFilepattern(".").call();
-                                            git.commit().setMessage("Initial commit").call();
-                                            PushCommand command = git.push();
-                                            command.setRemote(profile.gitUrl());
-                                            command.setCredentialsProvider(new UsernamePasswordCredentialsProvider(profile.gitUsername(), profile.gitPassword()));
-                                            command.setRefSpecs(new RefSpec("master:master"));
-                                            command.setForce(true);
-                                            command.call();
-                                        } catch (GitAPIException e) {
-                                            e.printStackTrace();
-                                        }
-                                        System.out.println("Deployment to web app " + app2Name + " completed");
-                                        return profile;
-                                    });
+                    }).flatMap(app -> {
+                        System.out.println("Created web app " + app.name());
+                        if (!app.name().equals(app2Name)) {
+                            return Flux.just(app);
                         }
-                        return Flux.just(indexable);
+                        // for the second web app Deploy a local Tomcat
+                        return app.getPublishingProfileAsync()
+                                .map(profile -> {
+                                    System.out.println("Deploying a local Tomcat source to " + app2Name + " through Git...");
+                                    Git git = null;
+                                    try {
+                                        git = Git
+                                                .init()
+                                                .setDirectory(new File(
+                                                        ManageWebAppSourceControlAsync.class.getResource(
+                                                                    "/azure-samples-appservice-helloworld/")
+                                                                .getPath()))
+                                                .call();
+                                        git.add().addFilepattern(".").call();
+                                        git.commit().setMessage("Initial commit").call();
+                                        PushCommand command = git.push();
+                                        command.setRemote(profile.gitUrl());
+                                        command.setCredentialsProvider(new UsernamePasswordCredentialsProvider(profile.gitUsername(), profile.gitPassword()));
+                                        command.setRefSpecs(new RefSpec("master:master"));
+                                        command.setForce(true);
+                                        command.call();
+                                    } catch (GitAPIException e) {
+                                        e.printStackTrace();
+                                    }
+                                    System.out.println("Deployment to web app " + app2Name + " completed");
+                                    return profile;
+                                });
                     });
 
             Flux.merge(app1Observable, app234Observable).blockLast();
