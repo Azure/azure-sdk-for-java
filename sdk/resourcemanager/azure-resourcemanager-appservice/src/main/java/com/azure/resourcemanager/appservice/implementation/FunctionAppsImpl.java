@@ -69,8 +69,8 @@ public class FunctionAppsImpl
     public PagedIterable<FunctionEnvelope> listFunctions(String resourceGroupName, String name) {
         return this
             .manager()
-            .webApps()
             .inner()
+            .getWebApps()
             .listFunctions(resourceGroupName, name)
             .mapPage(FunctionEnvelopeImpl::new);
     }

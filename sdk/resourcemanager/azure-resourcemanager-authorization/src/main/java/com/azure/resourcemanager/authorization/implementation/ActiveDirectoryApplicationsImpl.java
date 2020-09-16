@@ -112,7 +112,6 @@ public class ActiveDirectoryApplicationsImpl
         return this.manager;
     }
 
-    @Override
     public ApplicationsClient inner() {
         return this.innerCollection;
     }

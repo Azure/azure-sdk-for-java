@@ -173,7 +173,7 @@ class ClientSideRequestStatistics {
         return identifier;
     }
 
-    void recordAddressResolutionEnd(String identifier) {
+    void recordAddressResolutionEnd(String identifier, String errorMessage) {
         if (StringUtils.isEmpty(identifier)) {
             return;
         }
@@ -191,7 +191,7 @@ class ClientSideRequestStatistics {
 
             AddressResolutionStatistics resolutionStatistics = this.addressResolutionStatistics.get(identifier);
             resolutionStatistics.endTimeUTC = responseTime;
-            resolutionStatistics.errorMessage = null;
+            resolutionStatistics.errorMessage = errorMessage;
             resolutionStatistics.inflightRequest = false;
         }
     }

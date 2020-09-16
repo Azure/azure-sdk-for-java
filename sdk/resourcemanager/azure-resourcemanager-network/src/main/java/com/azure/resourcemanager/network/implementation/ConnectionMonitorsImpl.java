@@ -74,7 +74,6 @@ class ConnectionMonitorsImpl
         return this.inner().deleteAsync(parent.resourceGroupName(), parent.name(), name);
     }
 
-    @Override
     public ConnectionMonitorsClient inner() {
         return innerCollection;
     }

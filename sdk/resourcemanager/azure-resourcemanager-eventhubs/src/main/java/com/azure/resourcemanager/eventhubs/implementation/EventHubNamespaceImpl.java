@@ -90,7 +90,7 @@ class EventHubNamespaceImpl
             .define(eventHubName)
             .withExistingNamespace(resourceGroupName(), name())
             .createAsync()
-            .last());
+            .cast(Indexable.class));
         return this;
     }
 
@@ -101,7 +101,7 @@ class EventHubNamespaceImpl
             .withExistingNamespace(resourceGroupName(), name())
             .withPartitionCount(partitionCount)
             .createAsync()
-            .last());
+            .cast(Indexable.class));
         return this;
     }
 
@@ -114,7 +114,7 @@ class EventHubNamespaceImpl
             .withPartitionCount(partitionCount)
             .withRetentionPeriodInDays(retentionPeriodInDays)
             .createAsync()
-            .last());
+            .cast(Indexable.class));
         return this;
     }
 
@@ -133,7 +133,7 @@ class EventHubNamespaceImpl
             .withExistingNamespace(resourceGroupName(), name())
             .withSendAccess()
             .createAsync()
-            .last());
+            .cast(Indexable.class));
         return this;
     }
 
@@ -144,7 +144,7 @@ class EventHubNamespaceImpl
             .withExistingNamespace(resourceGroupName(), name())
             .withListenAccess()
             .createAsync()
-            .last());
+            .cast(Indexable.class));
         return this;
     }
 
@@ -155,7 +155,7 @@ class EventHubNamespaceImpl
             .withExistingNamespace(resourceGroupName(), name())
             .withManageAccess()
             .createAsync()
-            .last());
+            .cast(Indexable.class));
         return this;
     }
 

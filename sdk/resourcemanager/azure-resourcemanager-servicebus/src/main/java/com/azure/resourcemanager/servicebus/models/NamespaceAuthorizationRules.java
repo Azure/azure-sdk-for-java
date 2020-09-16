@@ -5,8 +5,6 @@ package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
 
 /**
  * Entry point to namespace authorization rules management API.
@@ -14,6 +12,5 @@ import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
 @Fluent
 public interface NamespaceAuthorizationRules extends
     AuthorizationRules<NamespaceAuthorizationRule>,
-    SupportsCreating<NamespaceAuthorizationRule.DefinitionStages.Blank>,
-    HasInner<NamespacesClient> {
+    SupportsCreating<NamespaceAuthorizationRule.DefinitionStages.Blank> {
 }

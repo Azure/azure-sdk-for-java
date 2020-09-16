@@ -117,9 +117,6 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Test
     public void canCreateRecordSetsWithDefaultETag() {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
