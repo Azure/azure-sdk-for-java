@@ -259,9 +259,9 @@ public class ServiceBusAdministrationClientBuilder {
     }
 
     /**
-     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example
-     * {@link ClientOptions#setApplicationId(String)} which is used to configure {@link UserAgentPolicy} for
-     * telemetry/monitoring purpose.
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure {@link UserAgentPolicy}
+     * for telemetry/monitoring purpose.
      * <p>
      * More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
      *
