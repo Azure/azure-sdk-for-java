@@ -92,7 +92,6 @@ public class SpringAppDomainsImpl
             .mapPage(this::wrapModel);
     }
 
-    @Override
     public CustomDomainsClient inner() {
         return manager().inner().getCustomDomains();
     }

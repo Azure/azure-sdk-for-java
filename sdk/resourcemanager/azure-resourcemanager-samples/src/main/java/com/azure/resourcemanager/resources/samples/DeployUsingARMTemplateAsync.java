@@ -7,12 +7,11 @@ package com.azure.resourcemanager.resources.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.resources.models.Deployment;
-import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.io.ByteStreams;
@@ -85,12 +84,12 @@ public final class DeployUsingARMTemplateAsync {
                                     .withTemplateLink(templateUri, templateContentVersion)
                                     .withParameters(params)
                                     .withMode(DeploymentMode.COMPLETE)
-                                    .createAsync().last();
+                                    .createAsync();
                         } catch (IOException e) {
                             return Flux.error(e);
                         }
                     })
-                    .map(indexable -> (Deployment) indexable)
+                    .map(indexable -> indexable)
                     .doOnNext(deployment -> {
                         if (deployment != null) {
                             System.out.println("Deployment finished: " + deployment.name());

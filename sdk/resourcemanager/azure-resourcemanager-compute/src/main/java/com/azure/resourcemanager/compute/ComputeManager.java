@@ -66,6 +66,21 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     private GalleryImages galleryImages;
     private GalleryImageVersions galleryImageVersions;
 
+    /** @return the storage manager */
+    public StorageManager storageManager() {
+        return storageManager;
+    }
+
+    /** @return the network manager */
+    public NetworkManager networkManager() {
+        return networkManager;
+    }
+
+    /** @return the authorization manager */
+    public AuthorizationManager authorizationManager() {
+        return authorizationManager;
+    }
+
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
      *

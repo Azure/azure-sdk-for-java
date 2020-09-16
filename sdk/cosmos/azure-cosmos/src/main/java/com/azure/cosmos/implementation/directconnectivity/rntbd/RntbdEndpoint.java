@@ -153,6 +153,11 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
+        public int maxConcurrentRequestsPerEndpoint() {
+            return this.options.maxConcurrentRequestsPerEndpoint();
+        }
+
+        @JsonProperty
         public long receiveHangDetectionTimeInNanos() {
             return this.options.receiveHangDetectionTime().toNanos();
         }

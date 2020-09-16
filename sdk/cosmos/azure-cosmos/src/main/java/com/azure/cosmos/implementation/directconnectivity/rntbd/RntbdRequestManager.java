@@ -60,8 +60,6 @@ import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
@@ -319,7 +317,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         try {
 
             if (event instanceof IdleStateEvent) {
-
+                // NOTE: if the connection is killed this may not receive any event
                 this.healthChecker.isHealthy(context.channel()).addListener((Future<Boolean> future) -> {
 
                     final Throwable cause;
@@ -490,7 +488,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         this.traceOperation(context, "write", message);
 
-        if (message.getClass() == RntbdRequestRecord.class) {
+        if (message instanceof RntbdRequestRecord) {
 
             final RntbdRequestRecord record = (RntbdRequestRecord) message;
             this.timestamps.channelWriteAttempted();
@@ -548,10 +546,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         return this.contextFuture.getNow(null) != null;
     }
 
-    boolean isServiceable(final int demand, boolean ignoreMaxRequestPerChannel) {
+    boolean isServiceable(final int demand) {
         reportIssueUnless(this.hasRequestedRntbdContext(), this, "Direct TCP context request was not issued");
         final int limit = this.hasRntbdContext() ? this.pendingRequestLimit : Math.min(this.pendingRequestLimit, demand);
-        return ignoreMaxRequestPerChannel || this.pendingRequests.size() < limit;
+        return this.pendingRequests.size() < limit;
     }
 
     void pendWrite(final ByteBuf out, final ChannelPromise promise) {

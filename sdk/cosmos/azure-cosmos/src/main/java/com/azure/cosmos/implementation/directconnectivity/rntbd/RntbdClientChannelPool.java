@@ -132,21 +132,20 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final AtomicBoolean closed = new AtomicBoolean();
     private final AtomicBoolean connecting = new AtomicBoolean();
 
-    private final Queue<AcquireTask> pendingAcquisitions = new PriorityBlockingQueue<>(
+    private final Queue<AcquireListener> pendingAcquisitions = new PriorityBlockingQueue<>(
         100,
-        Comparator.<AcquireTask>comparingLong((task) -> task.promise.getExpiryTimeInNanos()));
+        Comparator.comparingLong((task) -> task.originalPromise.getExpiryTimeInNanos()));
 
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
 
     // this is only for debugging monitoring of the health of RNTBD
     // TODO: once we are certain no task gets stuck in the rntbd queue remove this
     private final ScheduledFuture<?> monitoringFuture;
-    private ChannelPromiseWithExpiryTime promiseWithExpiryTime;
 
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
      *
-     * @param bootstrap the {@link Bootstrap} that is used for connections.
+     * @param bootstrap the {@link Bootstrap} that is used for connections.
      * @param config the {@link Config} that is used for the channel pool instance created.
      */
     RntbdClientChannelPool(final RntbdServiceEndpoint endpoint, final Bootstrap bootstrap, final Config config) {
@@ -192,11 +191,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
             /**
              * Fails a request due to a channel acquisition timeout.
              *
-             * @param task a {@link AcquireTask channel acquisition task} that has timed out.
+             * @param task a {@link AcquireListener channel acquisition task} that has timed out.
              */
             @Override
-            public void onTimeout(AcquireTask task) {
-                task.promise.setFailure(ACQUISITION_TIMEOUT);
+            public void onTimeout(AcquireListener task) {
+                task.originalPromise.setFailure(ACQUISITION_TIMEOUT);
             }
         };
 
@@ -531,7 +530,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      *
      * @param promise the promise of a {@link Channel channel}.
      *
-     * @see #isChannelServiceable(Channel, boolean)
+     * @see #isChannelServiceable(Channel)
      * @see AcquireTimeoutTask
      */
     private void acquireChannel(final ChannelPromiseWithExpiryTime promise) {
@@ -566,7 +565,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     // Fulfill this request with a new channel, assuming we can connect one
                     // If our connection attempt fails, notifyChannelConnect will call us again
 
-                    final Promise<Channel> anotherPromise = this.newChannelPromise(promise);
+                    final Promise<Channel> anotherPromise = this.newChannelPromiseForToBeEstablishedChannel(promise);
                     final ChannelFuture future = this.bootstrap.clone().attr(POOL_KEY, this).connect();
 
                     if (future.isDone()) {
@@ -589,14 +588,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
 
                     if (manager == null) {
-                        logger.warn("Channel({} --> {}) closed", channel, this.remoteAddress());
+                        logger.debug("Channel({} --> {}) closed", channel, this.remoteAddress());
                     } else {
                         final long pendingRequestCount = manager.pendingRequestCount();
 
                         // we accept the risk of reusing the channel even if more than maxPendingRequests are
                         // queued - by picking the channel with the least number of outstanding requests we load
                         // balance reasonably
-                        if (isChannelServiceable(channel, true) && pendingRequestCount < pendingRequestCountMin) {
+                        if (pendingRequestCount < pendingRequestCountMin && isChannelServiceable(channel)) {
                             pendingRequestCountMin = pendingRequestCount;
                             candidate = channel;
                         }
@@ -612,7 +611,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                     // we pick the first available channel to avoid the additional cost of load balancing
                     // as long as the load is lower than the load factor threshold above.
-                    if (isChannelServiceable(channel, true)) {
+                    if (isChannelServiceable(channel)) {
                         if (this.availableChannels.remove(channel)) {
                             this.doAcquireChannel(promise, channel);
                             return;
@@ -653,7 +652,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         if (this.pendingAcquisitions.size() >= this.maxPendingAcquisitions) {
             promise.setFailure(TOO_MANY_PENDING_ACQUISITIONS);
         } else {
-            final AcquireTask acquireTask = new AcquireTask(this, promise);
+            final AcquireListener acquireTask = new AcquireListener(this, promise);
 
             if (!this.pendingAcquisitions.offer(acquireTask)) {
                 promise.setFailure(TOO_MANY_PENDING_ACQUISITIONS);
@@ -730,7 +729,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.ensureInEventLoop();
         acquiredChannels.put(candidate, candidate);
 
-        final ChannelPromiseWithExpiryTime anotherPromise = this.newChannelPromise(promise);
+        final ChannelPromiseWithExpiryTime anotherPromise =
+            this.newChannelPromiseForAvailableChannel(promise, candidate);
+
         final EventLoop loop = candidate.eventLoop();
 
         if (loop.inEventLoop()) {
@@ -792,11 +793,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
 
         for (; ; ) {
-            final AcquireTask task = this.pendingAcquisitions.poll();
+            final AcquireListener task = this.pendingAcquisitions.poll();
             if (task == null) {
                 break;
             }
-            task.promise.setFailure(new ClosedChannelException());
+            task.originalPromise.setFailure(new ClosedChannelException());
         }
 
         // NOTE: we must dispatch this request on another thread--the closer thread--as this.doClose is called on
@@ -860,26 +861,52 @@ public final class RntbdClientChannelPool implements ChannelPool {
      *
      * @return {@code true} if the given {@link Channel channel} is serviceable; {@code false} otherwise.
      */
-    private boolean isChannelServiceable(final Channel channel, boolean ignoreMaxRequestLimit) {
+    private boolean isChannelServiceable(final Channel channel) {
         final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
-        return manager != null && manager.isServiceable(this.maxRequestsPerChannel, ignoreMaxRequestLimit) && channel.isOpen();
+        return manager != null && manager.isServiceable(this.maxRequestsPerChannel) && channel.isOpen();
     }
 
     /**
-     * Creates a new {@link Channel channel} {@link Promise promise} that completes on this {@link
-     * RntbdClientChannelPool pool}'s {@link EventExecutor executor}.
+     * Creates a new {@link Channel channel} {@link Promise promise} that completes on a dedicated
+     * {@link EventExecutor executor} to avoid spamming the {@link RntbdClientChannelPool pool}'s
+     * {@link EventExecutor executor}.
      *
-     * @return a newly created {@link Promise promise} that completes on this {@link RntbdClientChannelPool pool}'s
+     * @return a newly created {@link Promise promise} that completes on a dedicated
+     * {@link EventExecutor executor} to avoid spamming the {@link RntbdClientChannelPool pool}'s
      * {@link EventExecutor executor}.
      */
-    private ChannelPromiseWithExpiryTime newChannelPromise(final ChannelPromiseWithExpiryTime promise) {
+    private ChannelPromiseWithExpiryTime newChannelPromiseForAvailableChannel(
+        final ChannelPromiseWithExpiryTime promise,
+        final Channel candidate) {
+
+        return this.createNewChannelPromise(promise, candidate.eventLoop());
+    }
+
+    /**
+     * Creates a new {@link Channel channel} {@link Promise promise} that completes on a dedicated
+     * {@link EventExecutor executor} to avoid spamming the {@link RntbdClientChannelPool pool}'s
+     * {@link EventExecutor executor}.
+     *
+     * @return a newly created {@link Promise promise} that completes on a dedicated
+     * {@link EventExecutor executor} to avoid spamming the {@link RntbdClientChannelPool pool}'s
+     * {@link EventExecutor executor}.
+     */
+    private ChannelPromiseWithExpiryTime newChannelPromiseForToBeEstablishedChannel(
+        final ChannelPromiseWithExpiryTime promise) {
+
+        return this.createNewChannelPromise(promise, this.executor);
+    }
+
+    private ChannelPromiseWithExpiryTime createNewChannelPromise(
+        final ChannelPromiseWithExpiryTime promise,
+        final EventExecutor eventLoop) {
 
         checkNotNull(promise, "expected non-null promise");
 
         final AcquireListener listener = new AcquireListener(this, promise);
-        final Promise<Channel> anotherPromise = this.executor.newPromise();
+        final Promise<Channel> anotherPromise = eventLoop.newPromise();
 
-        listener.acquired(true);
+        listener.acquired();
         anotherPromise.addListener(listener);
 
         return new ChannelPromiseWithExpiryTime(anotherPromise, promise.getExpiryTimeInNanos());
@@ -927,6 +954,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
     }
 
+    private void safeCloseChannel(final Channel channel) {
+        if (this.executor.inEventLoop()) {
+            this.closeChannel(channel);
+        } else {
+            this.executor.submit(() -> this.closeChannel(channel));
+        }
+    }
+
     private void notifyChannelConnect(final ChannelFuture future, final Promise<Channel> promise) {
         ensureInEventLoop();
 
@@ -935,6 +970,33 @@ public final class RntbdClientChannelPool implements ChannelPool {
         try {
             if (future.isSuccess()) {
                 final Channel channel = future.channel();
+
+                channel.closeFuture().addListener((ChannelFuture f) -> {
+
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Channel to endpoint {} is closed. " +
+                                "isInAvailableChannels={}, " +
+                                "isInAcquiredChannels={}, " +
+                                "isOnChannelEventLoop={}, " +
+                                "isActive={}, " +
+                                "isOpen={}, " +
+                                "isRegistered={}, " +
+                                "isWritable={}, " +
+                                "threadName={}",
+                            channel.remoteAddress(),
+                            availableChannels.contains(channel),
+                            acquiredChannels.contains(channel),
+                            channel.eventLoop().inEventLoop(),
+                            channel.isActive(),
+                            channel.isOpen(),
+                            channel.isRegistered(),
+                            channel.isWritable(),
+                            Thread.currentThread().getName()
+                        );
+                    }
+
+                    this.safeCloseChannel(channel);
+                });
 
                 try {
                     this.poolHandler.channelAcquired(channel);
@@ -1056,7 +1118,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         // Only return channels as servicable here if less than maxPendingRequests 
         // are queued on them
-        if (this.isChannelServiceable(first, false)) {
+        if (this.isChannelServiceable(first)) {
             return first;
         }
 
@@ -1069,7 +1131,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                 // Only return channels as servicable here if less than maxPendingRequests 
                 // are queued on them
-                if (this.isChannelServiceable(next, false)) {
+                if (this.isChannelServiceable(next)) {
                     return next;
                 }
                 this.availableChannels.offer(next);
@@ -1226,14 +1288,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
         do {
 
             // translate a pending acquisition item to a task
-            final AcquireTask task = this.pendingAcquisitions.poll();
+            final AcquireListener task = this.pendingAcquisitions.poll();
 
             if (task == null) {
                 break;
             }
 
-            task.acquired(true);
-            this.acquire(task.promise);
+            task.acquired();
+            this.acquire(task.originalPromise);
         } while (--channelsAvailable > 0);
     }
 
@@ -1247,20 +1309,20 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
     private static class AcquireListener implements FutureListener<Channel> {
 
-        private final Promise<Channel> originalPromise;
+        private final ChannelPromiseWithExpiryTime originalPromise;
         private final RntbdClientChannelPool pool;
         private boolean acquired;
 
-        AcquireListener(RntbdClientChannelPool pool, Promise<Channel> originalPromise) {
+        AcquireListener(RntbdClientChannelPool pool, ChannelPromiseWithExpiryTime originalPromise) {
             this.originalPromise = originalPromise;
             this.pool = pool;
         }
 
-        public final boolean acquired() {
+        public final boolean isAcquired() {
             return this.acquired;
         }
 
-        public final AcquireListener acquired(boolean value) {
+        public final AcquireListener acquired() {
 
             if (this.acquired) {
                 return this;
@@ -1268,6 +1330,42 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             this.acquired = true;
             return this;
+        }
+
+        private void doOperationComplete(Channel channel) {
+            checkState(channel.eventLoop().inEventLoop());
+
+            if (!channel.isActive()) {
+                this.fail(CHANNEL_CLOSED_ON_ACQUIRE);
+                return;
+            }
+
+            final ChannelPipeline pipeline = channel.pipeline();
+            checkState(pipeline != null, "expected non-null channel pipeline");
+
+            final RntbdRequestManager requestManager = pipeline.get(RntbdRequestManager.class);
+            checkState(requestManager != null, "expected non-null request manager");
+
+            if (requestManager.hasRequestedRntbdContext()) {
+                this.originalPromise.setSuccess(channel);
+            } else {
+                channel.writeAndFlush(RntbdHealthCheckRequest.MESSAGE).addListener(completed -> {
+                    if (completed.isSuccess()) {
+                        reportIssueUnless(
+                            logger,
+                            this.acquired && requestManager.hasRntbdContext(),
+                            this,
+                            "acquired: {}, rntbdContext: {}",
+                            this.acquired,
+                            requestManager.rntbdContext());
+                        this.originalPromise.setSuccess(channel);
+                    } else {
+                        final Throwable cause = completed.cause();
+                        logger.warn("Channel({}) health check request failed due to:", channel, cause);
+                        this.fail(cause);
+                    }
+                });
+            }
         }
 
         /**
@@ -1289,8 +1387,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
         @Override
         public final void operationComplete(Future<Channel> future) {
 
-            this.pool.ensureInEventLoop();
-
             if (this.pool.isClosed()) {
                 if (future.isSuccess()) {
                     // Since the pool is closed, we have no choice but to close the channel
@@ -1303,40 +1399,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
             if (future.isSuccess()) {
 
                 // Ensure that the channel is active and ready to receive requests
-
                 final Channel channel = future.getNow();
 
-                channel.eventLoop().execute(() -> {
-
-                    if (!channel.isActive()) {
-                        this.fail(CHANNEL_CLOSED_ON_ACQUIRE);
-                        return;
-                    }
-
-                    final ChannelPipeline pipeline = channel.pipeline();
-                    checkState(pipeline != null, "expected non-null channel pipeline");
-
-                    final RntbdRequestManager requestManager = pipeline.get(RntbdRequestManager.class);
-                    checkState(requestManager != null, "expected non-null request manager");
-
-                    if (requestManager.hasRequestedRntbdContext()) {
-                        this.originalPromise.setSuccess(channel);
-                    } else {
-                        channel.writeAndFlush(RntbdHealthCheckRequest.MESSAGE).addListener(completed -> {
-                            if (completed.isSuccess()) {
-                                reportIssueUnless(logger, this.acquired && requestManager.hasRntbdContext(), this,
-                                    "acquired: {}, rntbdContext: {}",
-                                    this.acquired,
-                                    requestManager.rntbdContext());
-                                this.originalPromise.setSuccess(channel);
-                            } else {
-                                final Throwable cause = completed.cause();
-                                logger.warn("Channel({}) health check request failed due to:", channel, cause);
-                                this.fail(cause);
-                            }
-                        });
-                    }
-                });
+                if (channel.eventLoop().inEventLoop()) {
+                    doOperationComplete(channel);
+                } else {
+                    channel.eventLoop().execute(() -> doOperationComplete(channel));
+                }
 
             } else {
                 logger.warn("channel acquisition failed due to ", future.cause());
@@ -1344,31 +1413,18 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }
         }
 
+        public long getAcquisitionTimeoutInNanos() {
+            return this.originalPromise.getExpiryTimeInNanos();
+        }
+
         private void fail(Throwable cause) {
+            this.originalPromise.setFailure(cause);
+
             if (this.pool.executor.inEventLoop()) {
                 this.pool.runTasksInPendingAcquisitionQueue();
             } else {
                 this.pool.executor.submit(this.pool::runTasksInPendingAcquisitionQueue);
             }
-            this.originalPromise.setFailure(cause);
-        }
-    }
-
-    private static final class AcquireTask extends AcquireListener {
-
-        // AcquireTask extends AcquireListener to reduce object creations and so GC pressure
-
-        private final ChannelPromiseWithExpiryTime promise;
-
-        AcquireTask(RntbdClientChannelPool pool, ChannelPromiseWithExpiryTime promise) {
-            // We need to create a new promise to ensure the AcquireListener runs in the correct event loop
-            super(pool, promise);
-            this.promise = new ChannelPromiseWithExpiryTime(
-                pool.executor.<Channel>newPromise().addListener(this), promise.getExpiryTimeInNanos());
-        }
-
-        public long getAcquisitionTimeoutInNanos() {
-            return this.promise.getExpiryTimeInNanos();
         }
     }
 
@@ -1380,7 +1436,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             this.pool = pool;
         }
 
-        public abstract void onTimeout(AcquireTask task);
+        public abstract void onTimeout(AcquireListener task);
 
         /**
          * Runs the {@link #onTimeout} method on each expired task in {@link
@@ -1395,7 +1451,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             while (true) {
                 try {
-                    AcquireTask removedTask = this.pool.pendingAcquisitions.poll();
+                    AcquireListener removedTask = this.pool.pendingAcquisitions.poll();
                     if (removedTask == null) {
                         // queue is empty
                         break;
@@ -1478,7 +1534,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     // endregion
 
     // TODO: remove when we are confident of RNTBD OOM bug
-    @SuppressWarnings("unchecked")
     private ScheduledFuture<?> startMonitoring() {
         return monitoringRntbdChannelPool.scheduleAtFixedRate(() -> {
             int i = getTaskCount();
@@ -1495,7 +1550,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     }
 
     // TODO: remove when we are confident of RNTBD OOM bug
-    @SuppressWarnings("unchecked")
     public int getTaskCount() {
 
         try {
