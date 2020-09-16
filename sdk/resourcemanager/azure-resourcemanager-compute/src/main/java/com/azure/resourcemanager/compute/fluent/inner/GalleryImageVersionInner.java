@@ -8,8 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.models.GalleryArtifactPublishingProfileBase;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionPropertiesProvisioningState;
+import com.azure.resourcemanager.compute.models.GalleryImageVersionPublishingProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,7 +25,7 @@ public class GalleryImageVersionInner extends Resource {
      * Describes the basic gallery artifact publishing profile.
      */
     @JsonProperty(value = "properties.publishingProfile")
-    private GalleryArtifactPublishingProfileBase publishingProfile;
+    private GalleryImageVersionPublishingProfile publishingProfile;
 
     /*
      * The provisioning state, which only appears in the response.
@@ -50,7 +50,7 @@ public class GalleryImageVersionInner extends Resource {
      *
      * @return the publishingProfile value.
      */
-    public GalleryArtifactPublishingProfileBase publishingProfile() {
+    public GalleryImageVersionPublishingProfile publishingProfile() {
         return this.publishingProfile;
     }
 
@@ -60,7 +60,7 @@ public class GalleryImageVersionInner extends Resource {
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryImageVersionInner object itself.
      */
-    public GalleryImageVersionInner withPublishingProfile(GalleryArtifactPublishingProfileBase publishingProfile) {
+    public GalleryImageVersionInner withPublishingProfile(GalleryImageVersionPublishingProfile publishingProfile) {
         this.publishingProfile = publishingProfile;
         return this;
     }

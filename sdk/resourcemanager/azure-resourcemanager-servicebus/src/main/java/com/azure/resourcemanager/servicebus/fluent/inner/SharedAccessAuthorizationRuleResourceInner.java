@@ -6,7 +6,7 @@ package com.azure.resourcemanager.servicebus.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,7 +16,7 @@ import java.util.List;
 /** The SharedAccessAuthorizationRuleResource model. */
 @JsonFlatten
 @Fluent
-public class SharedAccessAuthorizationRuleResourceInner extends ProxyResource {
+public class SharedAccessAuthorizationRuleResourceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedAccessAuthorizationRuleResourceInner.class);
 
     /*

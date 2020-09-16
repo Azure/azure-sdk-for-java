@@ -110,7 +110,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
             || containerGroupInner.identity().type().equals(identityType)) {
             containerGroupInner.identity().withType(identityType);
         } else {
-            containerGroupInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
+            containerGroupInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
         }
     }
 }
