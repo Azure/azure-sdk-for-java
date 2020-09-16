@@ -405,8 +405,7 @@ public final class RntbdTransportClient extends TransportClient {
             return this.maxRequestsPerChannel;
         }
 
-        public int maxConcurrentRequestsPerEndpoint()
-        {
+        public int maxConcurrentRequestsPerEndpoint() {
             if (this.maxConcurrentRequestsPerEndpointOverride > 0) {
                 return maxConcurrentRequestsPerEndpointOverride;
             };
