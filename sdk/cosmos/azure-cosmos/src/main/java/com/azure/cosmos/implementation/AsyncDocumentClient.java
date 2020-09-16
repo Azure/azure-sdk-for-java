@@ -535,15 +535,15 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Document>> replaceDocument(String documentLink, Object document, RequestOptions options);
 
     /**
-     * Replaces a document using a POJO object.
+     * Patch a document.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the replaced document.
+     * The {@link Mono} upon successful completion will contain a single resource response with the patched document.
      * In case of failure the {@link Mono} will error.
      *
      * @param documentLink the document link.
-     * @param patchOperations     patchOperations.
-     * @param options      the request options.
+     * @param patchOperations patchOperations.
+     * @param options the request options.
      * @return a {@link Mono} containing the single resource response with the replaced document or an error.
      */
     Mono<ResourceResponse<Document>> patchDocument(String documentLink, List<PatchOperation<?>> patchOperations, RequestOptions options);

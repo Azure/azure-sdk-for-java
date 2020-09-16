@@ -15,7 +15,7 @@ import java.util.List;
 public class PatchUtil {
 
     public static String serializePatchOperations(List<PatchOperation<?>> patchOperations, RequestOptions options) {
-        ArrayNode arrayNode =  Utils.getSimpleObjectMapper().createArrayNode();
+        ArrayNode operations =  Utils.getSimpleObjectMapper().createArrayNode();
 
         for(PatchOperation<?> patchOperation : patchOperations) {
 
@@ -27,11 +27,9 @@ public class PatchUtil {
             }
 
             jsonSerializable.set(PatchConstants.PropertyNames_Value, patchOperation.getResource());
-            arrayNode.add(jsonSerializable.getPropertyBag());
+            operations.add(jsonSerializable.getPropertyBag());
         }
 
-        System.out.println("Patch content: " + arrayNode.toString());
-
-        return arrayNode.toString();
+        return operations.toString();
     }
 }

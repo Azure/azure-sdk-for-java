@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.patch;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -10,7 +13,7 @@ public class PatchOperationCore<TResource>  extends PatchOperation<TResource> {
     private String path;
 
     /**
-     * Initializes a new instance of the {@link PatchOperation} class.
+     * Initializes a new instance of the {@link PatchOperationCore} class.
      *
      * @param operationType Specifies the type of Patch operation
      * @param path          Specifies the path to target location.
@@ -26,5 +29,4 @@ public class PatchOperationCore<TResource>  extends PatchOperation<TResource> {
     public String getPath() {
         return path;
     }
-
 }

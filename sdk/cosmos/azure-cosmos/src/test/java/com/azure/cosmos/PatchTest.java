@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -28,7 +31,7 @@ public class PatchTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncContainer container;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public PatchTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -47,7 +50,7 @@ public class PatchTest extends TestSuiteBase {
         this.client.close();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 100)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void itemPatchSuccessTest() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
 

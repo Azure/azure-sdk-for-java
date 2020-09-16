@@ -1488,9 +1488,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("patchOperations");
         }
 
-        logger.debug("patchOperations a Document. documentLink: [{}]", patchOperations);
+        logger.debug("Running patch operations on document. patch Operations: [{}]", patchOperations);
 
         final String path = Utils.joinPath(documentLink, null);
+
+        // OperationType.Update is later used for patch method.
         final Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Document, OperationType.Update);
         Instant serializationStartTimeUTC = Instant.now();
 
