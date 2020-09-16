@@ -19,7 +19,7 @@ def read_module(root = os.curdir):
 
 def main():
     basedir = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), '..')
-    version_pattern = '\n## \d+\.\d+\.\d+(?:-[\w\d\.]+)? \((.*?)\)'
+    version_pattern = '\n## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((.*?)\)'
     date = datetime.date(datetime.now())
 
     for folder in read_module(basedir):
@@ -41,7 +41,11 @@ def main():
             left = left[:second_version.start()]
             current_changelog = left if left.strip() else '\n\n- Updated core dependency from resources\n'
 
-        new_changelog = changelog[:first_version.start()] + first_version.group().replace(first_version.group(1), str(date)) + current_changelog
+        version: str = first_version.group().replace(first_version.group(2), str(date))
+        if len(sys.argv) > 1:
+            version = version.replace(first_version.group(1), sys.argv[1])
+
+        new_changelog = changelog[:first_version.start()] + version + current_changelog
         if second_version:
             new_changelog += changelog[first_version.end() + second_version.start():]
 
@@ -50,4 +54,5 @@ def main():
 
 if __name__ == "__main__":
     logging.basicConfig(format = '%(asctime)s %(levelname)s %(message)s')
+    print('Usage: {} [version]'.format(sys.argv[0]))
     main()
