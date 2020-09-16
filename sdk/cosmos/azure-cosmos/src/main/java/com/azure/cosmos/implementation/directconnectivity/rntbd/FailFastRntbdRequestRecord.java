@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
@@ -32,7 +33,6 @@ public class FailFastRntbdRequestRecord extends RntbdRequestRecord {
     public static FailFastRntbdRequestRecord createAndFailFast(
         RntbdRequestArgs args,
         long concurrentRequestsSnapshot,
-        AtomicInteger concurrentRequests,
         RntbdMetrics metrics,
         SocketAddress remoteAddress) {
 
@@ -42,26 +42,22 @@ public class FailFastRntbdRequestRecord extends RntbdRequestRecord {
             "\n  [{}]\n  {}\n  created FailFastRntbdRequestRecord {} ",
             failFastRecord,
             args,
-            concurrentRequests);
+            concurrentRequestsSnapshot);
 
         final String reason = lenientFormat(
             "Failed due to too many (%s) concurrent requests.",
             concurrentRequestsSnapshot);
-
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.set(HttpConstants.HttpHeaders.ACTIVITY_ID, failFastRecord.activityId().toString());
-
-        failFastRecord.whenComplete((response, error) -> {
-            concurrentRequests.decrementAndGet();
-            metrics.markComplete(failFastRecord);
-        });
-
         final RequestTimeoutException requestTimeoutException = new RequestTimeoutException(
             reason,
             headers,
             remoteAddress);
-
         BridgeInternal.setRequestHeaders(requestTimeoutException, args.serviceRequest().getHeaders());
+
+        failFastRecord.whenComplete((response, error) -> {
+            metrics.markComplete(failFastRecord);
+        });
         failFastRecord.completeExceptionally(requestTimeoutException);
 
         return failFastRecord;

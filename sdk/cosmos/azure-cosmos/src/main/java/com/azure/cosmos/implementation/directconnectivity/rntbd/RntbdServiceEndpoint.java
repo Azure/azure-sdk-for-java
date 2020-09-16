@@ -190,12 +190,16 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         int concurrentRequestSnapshot = this.concurrentRequests.incrementAndGet();
 
         if (concurrentRequestSnapshot > this.maxConcurrentRequests) {
-            return FailFastRntbdRequestRecord.createAndFailFast(
-                args,
-                concurrentRequestSnapshot,
-                concurrentRequests,
-                metrics,
-                remoteAddress);
+            try {
+                return FailFastRntbdRequestRecord.createAndFailFast(
+                    args,
+                    concurrentRequestSnapshot,
+                    metrics,
+                    remoteAddress);
+            }
+            finally {
+                concurrentRequests.decrementAndGet();
+            }
         }
 
         this.lastRequestNanoTime.set(args.nanoTimeCreated());

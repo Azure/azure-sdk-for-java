@@ -174,7 +174,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.traceOperation(context, "channelRead");
 
         try {
-            if (message instanceof RntbdResponse) {
+            if (message.getClass() == RntbdResponse.class) {
 
                 try {
                     this.messageReceived(context, (RntbdResponse) message);
