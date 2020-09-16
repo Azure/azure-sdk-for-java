@@ -117,8 +117,6 @@ System.out.println(modelResponse.getStatuscode());
 ModelData modelObject = modelResponse.getValue();
 ```
 
-For simplicity, we will not use maximal overloads in this document.
-
 ## Create, list, decommission, and delete models
 
 ### Create models
