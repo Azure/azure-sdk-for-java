@@ -255,12 +255,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     // endregion
 
     // region Privates
-
-
-    RntbdClientChannelPool getChannelPool() {
-        return this.channelPool;
-    }
-
+    
     private void ensureSuccessWhenReleasedToPool(Channel channel, Future<Void> released) {
         if (released.isSuccess()) {
             logger.debug("\n  [{}]\n  {}\n  release succeeded", this, channel);
