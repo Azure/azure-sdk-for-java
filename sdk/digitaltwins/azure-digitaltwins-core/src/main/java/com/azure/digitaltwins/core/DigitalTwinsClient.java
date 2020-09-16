@@ -797,7 +797,7 @@ public final class DigitalTwinsClient {
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
-     * @param payload The application/json telemetry payload to be sent.
+     * @param payload The application/json telemetry payload to be sent. payload can be a raw json string or a strongly typed object like a Dictionary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void publishTelemetry(String digitalTwinId, Object payload) {
@@ -810,7 +810,7 @@ public final class DigitalTwinsClient {
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
-     * @param payload The application/json telemetry payload to be sent.
+     * @param payload The application/json telemetry payload to be sent. payload can be a raw json string or a strongly typed object like a Dictionary.
      * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response}.
@@ -826,7 +826,7 @@ public final class DigitalTwinsClient {
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
      * @param componentName The name of the DTDL component.
-     * @param payload The application/json telemetry payload to be sent.
+     * @param payload The application/json telemetry payload to be sent. payload can be a raw json string or a strongly typed object like a Dictionary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void publishComponentTelemetry(String digitalTwinId, String componentName, Object payload) {
@@ -840,7 +840,7 @@ public final class DigitalTwinsClient {
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
      * @param componentName The name of the DTDL component.
-     * @param payload The application/json telemetry payload to be sent.
+     * @param payload The application/json telemetry payload to be sent. payload can be a raw json string or a strongly typed object like a Dictionary.
      * @param publishTelemetryRequestOptions The additional information to be used when processing a telemetry request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response}.
