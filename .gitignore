@@ -84,3 +84,7 @@ ClientAggregatePom.xml
 
 # Anaconda virtual
 venv
+
+# NetBeans
+nbproject
+nb-configuration.xml
