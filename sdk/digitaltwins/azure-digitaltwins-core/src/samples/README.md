@@ -22,7 +22,7 @@ The samples project demonstrates the following:
 
 ## sync vs async clients
 
-Azure DigitalTwins SDK for java has two sets of APIs available for every operation, sync APIs and Async APIs.
+Azure DigitalTwins SDK for java has two sets of APIs available for every operation, sync APIs and async APIs.
 
 You can use `DigitalTwinsClientbuilder` to build either a sync client: `buildClient()` or an async client: `buildAsyncClient()`.
 
@@ -85,7 +85,7 @@ client = new DigitalTwinsClientBuilder()
             .build()
     )
     .endpoint(<your-AdtEndpoint>)
-    .httpClient(<your-htt-client>)
+    .httpClient(<your-http-client>)
     .buildAsyncClient();
 ```
 
