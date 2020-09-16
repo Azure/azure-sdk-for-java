@@ -4,10 +4,7 @@
 package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +28,7 @@ public final class BasicDigitalTwin {
     @JsonProperty(value = "$metadata", required = true)
     private DigitalTwinMetadata metadata;
 
+    @JsonIgnore
     private final Map<String, Object> customProperties = new HashMap<>();
 
     /**
@@ -97,13 +95,13 @@ public final class BasicDigitalTwin {
     }
 
     /**
-     * Sets the additional properties of the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
+     * Adds an additional property to the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
      * @param key The key of the additional property to be added to the digital twin.
      * @param value The value of the additional property to be added to the digital twin.
      * @return The BasicDigitalTwin object itself.
      */
     @JsonAnySetter
-    public BasicDigitalTwin setCustomProperties(String key, Object value) {
+    public BasicDigitalTwin addCustomProperty(String key, Object value) {
         this.customProperties.put(key, value);
         return this;
     }

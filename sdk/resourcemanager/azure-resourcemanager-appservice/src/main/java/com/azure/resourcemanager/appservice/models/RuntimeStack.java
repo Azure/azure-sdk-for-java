@@ -149,6 +149,10 @@ public class RuntimeStack {
     /** Tomcat 9.0-jre8 image with catalina root set to Azure wwwroot. */
     public static final RuntimeStack TOMCAT_9_0_JRE8 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "9.0-jre8"));
 
+    /** JBOSS EAP 7.2-java8. */
+    public static final RuntimeStack JBOSS_EAP_7_2_JAVA8 =
+        COLLECTION.addValue(new RuntimeStack("JBOSSEAP", "7.2-java8"));
+
     /** The name of the language runtime stack. */
     private final String stack;
     /** The version of the runtime. */
