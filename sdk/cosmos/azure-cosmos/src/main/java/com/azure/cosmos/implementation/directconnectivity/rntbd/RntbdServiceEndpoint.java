@@ -110,13 +110,19 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     // region Accessors
 
     @Override
-    public int channelsAcquired() {
-        return this.channelPool.channelsAcquired();
+    /**
+     * @return approximate number of acquired channels.
+     */
+    public int channelsAcquiredMetric() {
+        return this.channelPool.channelsAcquiredMetrics();
     }
 
+    /**
+     * @return approximate number of available channels.
+     */
     @Override
-    public int channelsAvailable() {
-        return this.channelPool.channelsAvailable();
+    public int channelsAvailableMetric() {
+        return this.channelPool.channelsAvailableMetrics();
     }
 
     @Override
