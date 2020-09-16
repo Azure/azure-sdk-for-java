@@ -10,10 +10,19 @@ The complete Microsoft Azure SDK can be downloaded from the [Microsoft Azure dow
 
 For the best development experience, developers should use the official Microsoft Maven packages for libraries. Maven packages are regularly updated with new functionality and hotfixes.
 
-### Install the package
+### Include the Package
 
-Install the Azure Digital Twins client library for java
-TODO: Fill in details after first publish
+[//]: # ({x-version-update-start;com.azure:azure-digitaltwins-core;current})
+
+```xml
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-digitaltwins-core</artifactId>
+  <version>1.0.0-beta.1</version>
+</dependency>
+```
+
+[//]: # ({x-version-update-end})
 
 ### Prerequisites
 
@@ -29,7 +38,7 @@ TODO: Fill in details after first publish
 
 ### Authenticate the Client
 
-In order to interact with the Azure Digital Twins service, you will need to create an instance of a [TokenCredential class][token_credential] and pass it to the constructor of your DigitalTwinsClientBuilder (TODO: Reference the file once checked in).
+In order to interact with the Azure Digital Twins service, you will need to create an instance of a [TokenCredential class][token_credential] and pass it to the constructor of your [DigitalTwinsClientBuilder](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/src/main/java/com/azure/digitaltwins/core/DigitalTwinsClientBuilder.java).
 
 ## Key concepts
 
@@ -40,13 +49,15 @@ You can learn more about Azure Digital Twins by visiting [Azure Digital Twins Do
 
 ## Examples
 
-You can familiarize yourself with different APIs using [samples for Digital Twins](TODO: Point to sampels once available).
+You can familiarize yourself with different APIs using [samples for Digital Twins](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core/src/samples).
 
 ## Source code folder structure
 
-### /src
+### /src/main/java/com/azure/digitaltwins/core
 
-TODO: Describe source and link to the path.
+- The Digital Twins client builder [`DigitalTwinsClientBuilder`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/src/main/java/com/azure/digitaltwins/core/DigitalTwinsClientBuilder.java)
+- The Digital Twins public sync and async clients [`DigitalTwinsClient`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/src/main/java/com/azure/digitaltwins/core/DigitalTwinsClient.java), [`DigitalTwinsAsyncClient`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/src/main/java/com/azure/digitaltwins/core/DigitalTwinsAsyncClient.java)
+- [`models` package](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core/src/main/java/com/azure/digitaltwins/core/models)
 
 ### /src/swagger
 
@@ -54,15 +65,29 @@ A local copy of the swagger file that defines the structure of the REST APIs sup
 
 To regenerate the code, run the powershell script [generate.ps1](./generate.ps1).
 
-Any time the client library code is updated, the following scripts need to be run:
-
-TODO: Add extra information here.
-
 ## Troubleshooting
 
-TODO: Add troubleshoooting guide
+All service operations will throw ErrorResponseException on failure reported by the service, with helpful error codes and other information.
+
+For example, use the `getModel` operation to check if the model exists before creating it.
+
+```java
+try {
+    syncClient.getModel("someRandomModelId");
+}
+catch (ErrorResponseException ex) {
+    if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+        return id;
+    } else {
+        // This request should not retried if it encounters a 401 error, for instance
+        throw new IllegalStateException("Encountered unexpected error while searching for unique id", ex);
+    }
+}
+```
 
 ## Next steps
+
+See implementation examples with our [code samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core/src/samples).
 
 ## Contributing
 

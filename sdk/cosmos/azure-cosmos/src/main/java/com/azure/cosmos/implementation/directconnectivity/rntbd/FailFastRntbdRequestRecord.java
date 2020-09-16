@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 public class FailFastRntbdRequestRecord extends RntbdRequestRecord {
-    private static final Logger logger = LoggerFactory.getLogger(RntbdRequestRecord.class);
+    private static final Logger logger = LoggerFactory.getLogger(FailFastRntbdRequestRecord.class);
 
     private FailFastRntbdRequestRecord(final RntbdRequestArgs args) {
         super(args);
