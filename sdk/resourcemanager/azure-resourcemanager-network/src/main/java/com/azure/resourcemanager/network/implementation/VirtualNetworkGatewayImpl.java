@@ -269,7 +269,6 @@ class VirtualNetworkGatewayImpl
         return this.inner().sku();
     }
 
-    @Override
     public VpnClientConfiguration vpnClientConfiguration() {
         return inner().vpnClientConfiguration();
     }

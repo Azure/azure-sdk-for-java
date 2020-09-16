@@ -46,7 +46,6 @@ class VirtualMachineScaleSetVMsImpl
         return super.wrapList(this.client.list(this.scaleSet.resourceGroupName(), this.scaleSet.name()));
     }
 
-    @Override
     public VirtualMachineScaleSetVMsClient inner() {
         return this.client;
     }

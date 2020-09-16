@@ -93,7 +93,6 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         return vaultHttpPipeline;
     }
 
-    @Override
     public SecretAsyncClient secretClient() {
         return secretClient;
     }
