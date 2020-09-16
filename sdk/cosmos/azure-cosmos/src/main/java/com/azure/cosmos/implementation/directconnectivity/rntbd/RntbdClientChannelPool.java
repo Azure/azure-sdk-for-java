@@ -1331,7 +1331,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             this.acquired = true;
             return this;
         }
-        
+
         private void doOperationComplete(Channel channel) {
             if (!channel.isActive()) {
                 this.fail(CHANNEL_CLOSED_ON_ACQUIRE);
