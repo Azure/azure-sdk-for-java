@@ -111,7 +111,6 @@ public class ActiveDirectoryUsersImpl
         return this.manager;
     }
 
-    @Override
     public UsersClient inner() {
         return manager().inner().getUsers();
     }
