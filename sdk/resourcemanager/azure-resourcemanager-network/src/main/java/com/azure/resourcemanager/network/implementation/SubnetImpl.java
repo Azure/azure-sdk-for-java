@@ -261,8 +261,8 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             this
                 .parent()
                 .manager()
-                .networks()
                 .inner()
+                .getVirtualNetworks()
                 .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
         if (result == null) {
             return ipAddresses;

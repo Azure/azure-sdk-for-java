@@ -5,17 +5,18 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
-import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
+import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMInner;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import reactor.core.publisher.Mono;
 
 /** Implementation for {@link VirtualMachineScaleSetVMs}. */
 class VirtualMachineScaleSetVMsImpl
@@ -64,7 +65,8 @@ class VirtualMachineScaleSetVMsImpl
         for (String instanceId : instanceIds) {
             instanceIdList.add(instanceId);
         }
-        VirtualMachineScaleSetsClient scaleSetInnerManager = this.scaleSet.manager().virtualMachineScaleSets().inner();
+        VirtualMachineScaleSetsClient scaleSetInnerManager =
+            this.scaleSet.manager().inner().getVirtualMachineScaleSets();
         return scaleSetInnerManager
             .deleteInstancesAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceIdList);
     }
@@ -101,7 +103,8 @@ class VirtualMachineScaleSetVMsImpl
         for (String instanceId : instanceIds) {
             instanceIdList.add(instanceId);
         }
-        VirtualMachineScaleSetsClient scaleSetInnerManager = this.scaleSet.manager().virtualMachineScaleSets().inner();
+        VirtualMachineScaleSetsClient scaleSetInnerManager =
+            this.scaleSet.manager().inner().getVirtualMachineScaleSets();
         return scaleSetInnerManager
             .updateInstancesAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceIdList);
     }
