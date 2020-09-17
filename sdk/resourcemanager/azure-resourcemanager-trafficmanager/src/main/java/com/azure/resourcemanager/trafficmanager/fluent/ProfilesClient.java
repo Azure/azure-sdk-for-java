@@ -58,7 +58,7 @@ public final class ProfilesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ProfilesClient(TrafficManagerManagementClient client) {
+    ProfilesClient(TrafficManagerManagementClient client) {
         this.service = RestProxy.create(ProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -299,9 +299,9 @@ public final class ProfilesClient
      * @return class representing a Traffic Manager Name Availability response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityWithResponse(
+    public TrafficManagerNameAvailabilityInner checkTrafficManagerRelativeDnsNameAvailability(
         CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters, Context context) {
-        return checkTrafficManagerRelativeDnsNameAvailabilityWithResponseAsync(parameters, context).block();
+        return checkTrafficManagerRelativeDnsNameAvailabilityAsync(parameters, context).block();
     }
 
     /**
@@ -734,9 +734,8 @@ public final class ProfilesClient
      * @return a Traffic Manager profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProfileInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String profileName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, profileName, context).block();
+    public ProfileInner getByResourceGroup(String resourceGroupName, String profileName, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, profileName, context).block();
     }
 
     /**
@@ -923,9 +922,9 @@ public final class ProfilesClient
      * @return class representing a Traffic Manager profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProfileInner> createOrUpdateWithResponse(
+    public ProfileInner createOrUpdate(
         String resourceGroupName, String profileName, ProfileInner parameters, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, profileName, parameters, context).block();
+        return createOrUpdateAsync(resourceGroupName, profileName, parameters, context).block();
     }
 
     /**
@@ -1092,9 +1091,8 @@ public final class ProfilesClient
      * @return the result of the request or operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeleteOperationResultInner> deleteWithResponse(
-        String resourceGroupName, String profileName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, profileName, context).block();
+    public DeleteOperationResultInner delete(String resourceGroupName, String profileName, Context context) {
+        return deleteAsync(resourceGroupName, profileName, context).block();
     }
 
     /**
@@ -1280,8 +1278,7 @@ public final class ProfilesClient
      * @return class representing a Traffic Manager profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProfileInner> updateWithResponse(
-        String resourceGroupName, String profileName, ProfileInner parameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, profileName, parameters, context).block();
+    public ProfileInner update(String resourceGroupName, String profileName, ProfileInner parameters, Context context) {
+        return updateAsync(resourceGroupName, profileName, parameters, context).block();
     }
 }

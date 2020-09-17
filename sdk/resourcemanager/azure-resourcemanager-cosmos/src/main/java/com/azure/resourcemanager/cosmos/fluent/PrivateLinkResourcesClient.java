@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.inner.PrivateLinkResourceInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.PrivateLinkResourceListResultInner;
+import com.azure.resourcemanager.cosmos.models.PrivateLinkResourceListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateLinkResources. */
@@ -44,7 +44,7 @@ public final class PrivateLinkResourcesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PrivateLinkResourcesClient(CosmosDBManagementClient client) {
+    PrivateLinkResourcesClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy
                 .create(PrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -64,7 +64,7 @@ public final class PrivateLinkResourcesClient {
                 + "/databaseAccounts/{accountName}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResultInner>> listByDatabaseAccount(
+        Mono<Response<PrivateLinkResourceListResult>> listByDatabaseAccount(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,

@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.RMResources;
+import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
@@ -34,7 +35,6 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.implementation.RequestVerb;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -207,37 +206,37 @@ public class GatewayAddressCache implements IAddressCache {
                         false)).map(Utils.ValueHolder::new);
 
         return addressesObs.map(
-                addressesValueHolder -> {
-                    if (notAllReplicasAvailable(addressesValueHolder.v)) {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
-                        }
-                        this.suboptimalServerPartitionTimestamps.putIfAbsent(partitionKeyRangeIdentity, Instant.now());
+            addressesValueHolder -> {
+                if (notAllReplicasAvailable(addressesValueHolder.v)) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
                     }
+                    this.suboptimalServerPartitionTimestamps.putIfAbsent(partitionKeyRangeIdentity, Instant.now());
+                }
 
-                    return addressesValueHolder;
-                    }).onErrorResume(ex -> {
-                        Throwable unwrappedException = reactor.core.Exceptions.unwrap(ex);
-                        CosmosException dce = Utils.as(unwrappedException, CosmosException.class);
-                        if (dce == null) {
-                            logger.error("unexpected failure", ex);
-                            if (forceRefreshPartitionAddressesModified) {
-                                this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
-                            }
-                            return Mono.error(unwrappedException);
-                        } else {
-                            logger.debug("tryGetAddresses dce", dce);
-                            if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND) ||
-                                    Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.GONE) ||
-                                    Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
-                                //remove from suboptimal cache in case the collection+pKeyRangeId combo is gone.
-                                this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
-                                logger.debug("tryGetAddresses: inner onErrorResumeNext return null", dce);
-                                return Mono.just(new Utils.ValueHolder<>(null));
-                            }
-                            return Mono.error(unwrappedException);
-                        }
-                    });
+                return addressesValueHolder;
+            }).onErrorResume(ex -> {
+            Throwable unwrappedException = reactor.core.Exceptions.unwrap(ex);
+            CosmosException dce = Utils.as(unwrappedException, CosmosException.class);
+            if (dce == null) {
+                logger.error("unexpected failure", ex);
+                if (forceRefreshPartitionAddressesModified) {
+                    this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
+                }
+                return Mono.error(unwrappedException);
+            } else {
+                logger.debug("tryGetAddresses dce", dce);
+                if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND) ||
+                    Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.GONE) ||
+                    Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
+                    //remove from suboptimal cache in case the collection+pKeyRangeId combo is gone.
+                    this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
+                    logger.debug("tryGetAddresses: inner onErrorResumeNext return null", dce);
+                    return Mono.just(new Utils.ValueHolder<>(null));
+                }
+                return Mono.error(unwrappedException);
+            }
+        });
     }
 
     public Mono<List<Address>> getServerAddressesViaGatewayAsync(
@@ -306,22 +305,55 @@ public class GatewayAddressCache implements IAddressCache {
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
         return dsrObs.map(
-                dsr -> {
-                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
-                    if (metadataDiagnosticsContext != null) {
-                        Instant addressCallEndTime = Instant.now();
-                        MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
-                            addressCallEndTime,
-                            MetadataType.SERVER_ADDRESS_LOOKUP);
-                        metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
-                    }
+            dsr -> {
+                MetadataDiagnosticsContext metadataDiagnosticsContext =
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+                if (metadataDiagnosticsContext != null) {
+                    Instant addressCallEndTime = Instant.now();
+                    MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
+                        addressCallEndTime,
+                        MetadataType.SERVER_ADDRESS_LOOKUP);
+                    metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+                }
 
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("getServerAddressesViaGatewayAsync deserializes result");
-                    }
-                    logAddressResolutionEnd(request, identifier);
-                    return dsr.getQueryResponse(Address.class);
-                });
+                if (logger.isDebugEnabled()) {
+                    logger.debug("getServerAddressesViaGatewayAsync deserializes result");
+                }
+                logAddressResolutionEnd(request, identifier, null);
+                return dsr.getQueryResponse(Address.class);
+            }).onErrorResume(throwable -> {
+            Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+            logAddressResolutionEnd(request, identifier, unwrappedException.toString());
+            if (!(unwrappedException instanceof Exception)) {
+                // fatal error
+                logger.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
+                return Mono.error(unwrappedException);
+            }
+
+            Exception exception = (Exception) unwrappedException;
+            CosmosException dce;
+            if (!(exception instanceof CosmosException)) {
+                // wrap in CosmosException
+                logger.error("Network failure", exception);
+                dce = BridgeInternal.createCosmosException(0, exception);
+                BridgeInternal.setRequestHeaders(dce, request.getHeaders());
+            } else {
+                dce = (CosmosException) exception;
+            }
+
+            if (WebExceptionUtility.isNetworkFailure(dce)) {
+                BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+            }
+
+            if (request.requestContext.cosmosDiagnostics != null) {
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
+                    dce);
+                BridgeInternal.setCosmosDiagnostics(dce,
+                    request.requestContext.cosmosDiagnostics);
+            }
+
+            return Mono.error(dce);
+        });
     }
 
     public void dispose() {
@@ -493,19 +525,52 @@ public class GatewayAddressCache implements IAddressCache {
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
 
         return dsrObs.map(
-                dsr -> {
-                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
-                    if (metadataDiagnosticsContext != null) {
-                        Instant addressCallEndTime = Instant.now();
-                        MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
-                            addressCallEndTime,
-                            MetadataType.MASTER_ADDRESS_LOOK_UP);
-                        metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
-                    }
+            dsr -> {
+                MetadataDiagnosticsContext metadataDiagnosticsContext =
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+                if (metadataDiagnosticsContext != null) {
+                    Instant addressCallEndTime = Instant.now();
+                    MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
+                        addressCallEndTime,
+                        MetadataType.MASTER_ADDRESS_LOOK_UP);
+                    metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+                }
 
-                    logAddressResolutionEnd(request, identifier);
-                    return dsr.getQueryResponse(Address.class);
-                });
+                logAddressResolutionEnd(request, identifier, null);
+                return dsr.getQueryResponse(Address.class);
+            }).onErrorResume(throwable -> {
+            Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+            logAddressResolutionEnd(request, identifier, unwrappedException.toString());
+            if (!(unwrappedException instanceof Exception)) {
+                // fatal error
+                logger.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
+                return Mono.error(unwrappedException);
+            }
+
+            Exception exception = (Exception) unwrappedException;
+            CosmosException dce;
+            if (!(exception instanceof CosmosException)) {
+                // wrap in CosmosException
+                logger.error("Network failure", exception);
+                dce = BridgeInternal.createCosmosException(0, exception);
+                BridgeInternal.setRequestHeaders(dce, request.getHeaders());
+            } else {
+                dce = (CosmosException) exception;
+            }
+
+            if (WebExceptionUtility.isNetworkFailure(dce)) {
+                BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+            }
+
+            if (request.requestContext.cosmosDiagnostics != null) {
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
+                    dce);
+                BridgeInternal.setCosmosDiagnostics(dce,
+                    request.requestContext.cosmosDiagnostics);
+            }
+
+            return Mono.error(dce);
+        });
     }
 
     private Pair<PartitionKeyRangeIdentity, AddressInformation[]> toPartitionAddressAndRange(String collectionRid, List<Address> addresses) {
@@ -582,9 +647,9 @@ public class GatewayAddressCache implements IAddressCache {
         return null;
     }
 
-    private static void logAddressResolutionEnd(RxDocumentServiceRequest request, String identifier) {
+    private static void logAddressResolutionEnd(RxDocumentServiceRequest request, String identifier, String errorMessage) {
         if (request.requestContext.cosmosDiagnostics != null) {
-            BridgeInternal.recordAddressResolutionEnd(request.requestContext.cosmosDiagnostics, identifier);
+            BridgeInternal.recordAddressResolutionEnd(request.requestContext.cosmosDiagnostics, identifier, errorMessage);
         }
     }
 }

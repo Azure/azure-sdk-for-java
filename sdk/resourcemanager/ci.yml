@@ -9,6 +9,9 @@ trigger:
   paths:
     include:
       - sdk/resourcemanager/
+    exclude:
+      - sdk/resourcemanager/docs/
+      - sdk/resourcemanager/tools/
 
 pr:
   branches:
@@ -20,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/resourcemanager/
+    exclude:
+      - sdk/resourcemanager/docs/
+      - sdk/resourcemanager/tools/
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

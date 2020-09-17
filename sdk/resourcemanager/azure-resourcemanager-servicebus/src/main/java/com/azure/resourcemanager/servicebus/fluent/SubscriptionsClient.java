@@ -28,9 +28,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicebus.fluent.inner.SubscriptionListResultInner;
 import com.azure.resourcemanager.servicebus.fluent.inner.SubscriptionResourceInner;
 import com.azure.resourcemanager.servicebus.models.SubscriptionCreateOrUpdateParameters;
+import com.azure.resourcemanager.servicebus.models.SubscriptionListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Subscriptions. */
@@ -48,7 +48,7 @@ public final class SubscriptionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public SubscriptionsClient(ServiceBusManagementClient client) {
+    SubscriptionsClient(ServiceBusManagementClient client) {
         this.service =
             RestProxy.create(SubscriptionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -67,7 +67,7 @@ public final class SubscriptionsClient {
                 + "/namespaces/{namespaceName}/topics/{topicName}/subscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionListResultInner>> listAll(
+        Mono<Response<SubscriptionListResult>> listAll(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -129,7 +129,7 @@ public final class SubscriptionsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionListResultInner>> listAllNext(
+        Mono<Response<SubscriptionListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

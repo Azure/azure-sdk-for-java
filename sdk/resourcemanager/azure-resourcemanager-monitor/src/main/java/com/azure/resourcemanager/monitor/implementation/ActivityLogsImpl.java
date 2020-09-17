@@ -40,7 +40,6 @@ public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogs
         return this.myManager;
     }
 
-    @Override
     public ActivityLogsClient inner() {
         return this.myManager.inner().getActivityLogs();
     }

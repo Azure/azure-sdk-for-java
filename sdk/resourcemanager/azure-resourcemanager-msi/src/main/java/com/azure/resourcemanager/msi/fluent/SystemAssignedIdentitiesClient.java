@@ -39,7 +39,7 @@ public final class SystemAssignedIdentitiesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public SystemAssignedIdentitiesClient(ManagedServiceIdentityClient client) {
+    SystemAssignedIdentitiesClient(ManagedServiceIdentityClient client) {
         this.service =
             RestProxy
                 .create(SystemAssignedIdentitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());

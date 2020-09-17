@@ -35,8 +35,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitsArpTableListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitsRoutesTableListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner;
+import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -62,7 +62,7 @@ public final class ExpressRouteCrossConnectionsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ExpressRouteCrossConnectionsClient(NetworkManagementClient client) {
+    ExpressRouteCrossConnectionsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -81,7 +81,7 @@ public final class ExpressRouteCrossConnectionsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteCrossConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCrossConnectionListResultInner>> list(
+        Mono<Response<ExpressRouteCrossConnectionListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -93,7 +93,7 @@ public final class ExpressRouteCrossConnectionsClient
                 + "/expressRouteCrossConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCrossConnectionListResultInner>> listByResourceGroup(
+        Mono<Response<ExpressRouteCrossConnectionListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -197,14 +197,14 @@ public final class ExpressRouteCrossConnectionsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCrossConnectionListResultInner>> listNext(
+        Mono<Response<ExpressRouteCrossConnectionListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCrossConnectionListResultInner>> listByResourceGroupNext(
+        Mono<Response<ExpressRouteCrossConnectionListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
