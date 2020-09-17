@@ -11,6 +11,7 @@ import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Flux;
@@ -821,6 +822,31 @@ public class ShareFileAsyncJavaDocCodeSamples {
             .subscribe(result -> System.out.printf("List ranges completed with start: %d, end: %d",
                 result.getStart(), result.getEnd()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.listRanges#ShareFileRange
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#listRangesDiff(String)}
+     */
+    public void listRangesDiffAsync() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiff#String
+        shareFileAsyncClient.listRangesDiff("previoussnapshot")
+            .subscribe(result -> System.out.printf("List ranges completed with start: %d, end: %d",
+                result.getStart(), result.getEnd()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiff#String
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#listRangesDiff(ShareFileListRangesDiffOptions)}
+     */
+    public void listRangesDiffAsyncOptionalOverload() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiff#ShareFileListRangesDiffOptions
+        shareFileAsyncClient.listRangesDiff(new ShareFileListRangesDiffOptions("previoussnapshot")
+            .setRange(new ShareFileRange(1024, 2048L)))
+            .subscribe(result -> System.out.printf("List ranges completed with start: %d, end: %d",
+                result.getStart(), result.getEnd()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiff#ShareFileListRangesDiffOptions
     }
 
     /**

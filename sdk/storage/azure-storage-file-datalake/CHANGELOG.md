@@ -1,6 +1,12 @@
 # Release History
 
 ## 12.3.0-beta.1 (Unreleased)
+- Added support for the 2020-02-10 service version.
+- Added support for setting, modifying, and removing ACLs recursively.
+- Added support to schedule file expiration. 
+- Added support to specify Arrow Output Serialization when querying a file. 
+- Added support to generate directory SAS and added support to specify additional user ids and correlation ids for user delegation SAS.
+
 - Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
 - Added support to upload data to a file from an InputStream.
 - Added support to specify permissions and umask when uploading a file. 

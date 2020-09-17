@@ -58,6 +58,7 @@ import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -1613,21 +1614,72 @@ public class ShareFileAsyncClient {
      */
     public PagedFlux<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions) {
         try {
-            return listRangesWithOptionalTimeout(range, requestConditions, null, Context.NONE);
+            return listRangesWithOptionalTimeout(range, requestConditions, null,
+                null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    /**
+     * List of valid ranges for a file between the file and the specified snapshot.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiff#String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
+     * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
+     * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
+     * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     */
+    public PagedFlux<ShareFileRange> listRangesDiff(String previousSnapshot) {
+        try {
+            return listRangesDiff(new ShareFileListRangesDiffOptions(previousSnapshot));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    /**
+     * List of valid ranges for a file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>List all ranges within the file range from 1KB to 2KB.</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiff#ShareFileListRangesDiffOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareFileListRangesDiffOptions}.
+     * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     */
+    public PagedFlux<ShareFileRange> listRangesDiff(ShareFileListRangesDiffOptions options) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            return listRangesWithOptionalTimeout(options.getRange(), options.getRequestConditions(),
+                options.getPreviousSnapshot(), null, Context.NONE);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
     PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range,
-        ShareRequestConditions requestConditions, Duration timeout, Context context) {
+        ShareRequestConditions requestConditions, String previousSnapshot, Duration timeout,
+        Context context) {
+
         ShareRequestConditions finalRequestConditions = requestConditions == null
             ? new ShareRequestConditions() : requestConditions;
         String rangeString = range == null ? null : range.toString();
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
-                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString,
-                    finalRequestConditions.getLeaseId(), context), timeout)
+                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, previousSnapshot,
+                    null, rangeString, finalRequestConditions.getLeaseId(), context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),

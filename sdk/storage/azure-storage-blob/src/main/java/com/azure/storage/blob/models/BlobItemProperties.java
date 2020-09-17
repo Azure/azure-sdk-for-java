@@ -230,6 +230,12 @@ public final class BlobItemProperties {
     @JsonProperty(value = "Sealed")
     private Boolean sealed;
 
+    /*
+     * The lastAccessedTime property.
+     */
+    @JsonProperty(value = "LastAccessTime")
+    private OffsetDateTime lastAccessedTime;
+
     /**
      * Get the creationTime property: The creationTime property.
      *
@@ -956,6 +962,26 @@ public final class BlobItemProperties {
      */
     public BlobItemProperties setSealed(Boolean sealed) {
         this.sealed = sealed;
+        return this;
+    }
+
+    /**
+     * Get the lastAccessedTime property: The lastAccessedTime property.
+     *
+     * @return the lastAccessedTime value.
+     */
+    public OffsetDateTime getLastAccessedTime() {
+        return this.lastAccessedTime;
+    }
+
+    /**
+     * Set the lastAccessedTime property: The lastAccessedTime property.
+     *
+     * @param lastAccessedTime the lastAccessedTime value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setLastAccessedTime(OffsetDateTime lastAccessedTime) {
+        this.lastAccessedTime = lastAccessedTime;
         return this;
     }
 }

@@ -149,9 +149,7 @@ public final class BlobServiceSasSignatureValues {
     public BlobServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, String permission, SasIpRange sasIpRange, String identifier, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        if (version != null) {
-            this.version = version;
-        }
+        this.version = null;
         this.protocol = sasProtocol;
         this.startTime = startTime;
         this.expiryTime = expiryTime;
@@ -179,9 +177,12 @@ public final class BlobServiceSasSignatureValues {
      *
      * @param version Version to target
      * @return the updated BlobServiceSASSignatureValues object
+     * @deprecated The version is set to the latest version of sas. Users should stop calling this API as it is now
+     * treated as a no-op.
      */
+    @Deprecated
     public BlobServiceSasSignatureValues setVersion(String version) {
-        this.version = version;
+        /* No-op.*/
         return this;
     }
 
@@ -656,7 +657,7 @@ public final class BlobServiceSasSignatureValues {
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            version,
+            BlobSasServiceVersion.V2019_12_12.getVersion(), /* Pin down to version so old string to sign works. */
             resource,
             this.snapshotId == null ? "" : this.snapshotId,
             this.cacheControl == null ? "" : this.cacheControl,
@@ -681,7 +682,7 @@ public final class BlobServiceSasSignatureValues {
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            version,
+            BlobSasServiceVersion.V2019_12_12.getVersion(), /* Pin down to version so old string to sign works. */
             resource,
             this.snapshotId == null ? "" : this.snapshotId,
             this.cacheControl == null ? "" : this.cacheControl,
