@@ -60,6 +60,5 @@
       "provisioningErrors": [],
       "proxyAddresses": [],
       "securityEnabled": true
-    }],
-  "odata.nextLink": "directoryObjects/$/Microsoft.DirectoryServices.User/12345678-2898-434a-a370-8ec974c2fb57/memberOf?$skiptoken=X'445370740700010000000000000000100000009D29CBA7B45D854A84FF7F9B636BD9DC000000000000000000000017312E322E3834302E3131333535362E312E342E3233333100000000'"
+    }]
 }

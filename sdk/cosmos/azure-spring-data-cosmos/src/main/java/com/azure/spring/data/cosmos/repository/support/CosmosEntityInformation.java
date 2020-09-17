@@ -3,43 +3,63 @@
 
 package com.azure.spring.data.cosmos.repository.support;
 
-import com.azure.data.cosmos.ExcludedPath;
-import com.azure.data.cosmos.IncludedPath;
-import com.azure.data.cosmos.IndexingMode;
-import com.azure.data.cosmos.IndexingPolicy;
+import com.azure.cosmos.models.ExcludedPath;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.spring.data.cosmos.Constants;
-import com.azure.spring.data.cosmos.core.mapping.Document;
-import com.azure.spring.data.cosmos.core.mapping.DocumentIndexingPolicy;
+import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
+import com.azure.spring.data.cosmos.common.Memoizer;
+import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.apache.commons.lang3.reflect.FieldUtils;
-
-import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.repository.core.support.AbstractEntityInformation;
 import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
 
-import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpression;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+
+import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpression;
 
 /**
- * Class to describe cosmosdb entity
+ * Class to describe cosmosDb entity
  */
 public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T, ID> {
 
-    private static final String ETAG = "_etag";
+    private static final Function<Class<?>, CosmosEntityInformation<?, ?>> entityInformationCreator =
+        Memoizer.memoize(CosmosEntityInformation::getCosmosEntityInformation);
+
+    private static CosmosEntityInformation<?, ?> getCosmosEntityInformation(Class<?> domainClass) {
+        return new CosmosEntityInformation<>(domainClass);
+    }
+
+    /**
+     * Static Factory
+     *
+     * @param domainClass to specify id field
+     * @return new CosmosEntityInformation
+     */
+    public static CosmosEntityInformation<?, ?> getInstance(Class<?> domainClass) {
+        return entityInformationCreator.apply(domainClass);
+    }
+
     private final Field id;
     private final Field partitionKeyField;
+    private final Field versionField;
     private final String containerName;
+    private final String partitionKeyPath;
     private final Integer requestUnit;
     private final Integer timeToLive;
     private final IndexingPolicy indexingPolicy;
-    private final boolean isVersioned;
-    private boolean autoCreateContainer;
+    private final boolean autoCreateContainer;
+    private final boolean autoGenerateId;
+
 
     /**
      * Initialization
@@ -52,16 +72,24 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         this.id = getIdField(domainType);
         ReflectionUtils.makeAccessible(this.id);
 
+        this.autoGenerateId = isIdFieldAnnotatedWithGeneratedValue(this.id);
+
         this.containerName = getContainerName(domainType);
+        this.partitionKeyPath = getPartitionKeyPathAnnotationValue(domainType);
+
         this.partitionKeyField = getPartitionKeyField(domainType);
         if (this.partitionKeyField != null) {
             ReflectionUtils.makeAccessible(this.partitionKeyField);
         }
 
+        this.versionField = getVersionedField(domainType);
+        if (this.versionField != null) {
+            ReflectionUtils.makeAccessible(this.versionField);
+        }
+
         this.requestUnit = getRequestUnit(domainType);
         this.timeToLive = getTimeToLive(domainType);
         this.indexingPolicy = getIndexingPolicy(domainType);
-        this.isVersioned = getIsVersioned(domainType);
         this.autoCreateContainer = getIsAutoCreateContainer(domainType);
     }
 
@@ -87,6 +115,24 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
+     * Get id field name
+     *
+     * @return string
+     */
+    public String getIdFieldName() {
+        return id.getName();
+    }
+
+    /**
+     * Should generate Id field value
+     *
+     * @return boolean
+     */
+    public boolean shouldGenerateId() {
+        return autoGenerateId;
+    }
+
+    /**
      * Get id type
      *
      * @return class of id type
@@ -94,17 +140,6 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     @SuppressWarnings("unchecked")
     public Class<ID> getIdType() {
         return (Class<ID>) id.getType();
-    }
-
-    /**
-     * Get collection name
-     *
-     * @return collection name
-     * @deprecated Use {@link #getContainerName()} instead
-     */
-    @Deprecated
-    public String getCollectionName() {
-        return this.containerName;
     }
 
     /**
@@ -150,21 +185,40 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      * @return boolean
      */
     public boolean isVersioned() {
-        return isVersioned;
+        return versionField != null;
     }
 
     /**
-     * Get the field name represented by the supplied partitionKeyField object
+     * Get name of field annotated with @Version if any
      *
-     * @return partition key field name
+     * @return String
      */
-    public String getPartitionKeyFieldName() {
+    public String getVersionFieldName() {
+        return versionField == null ? null : versionField.getName();
+    }
+
+    /**
+     * Get the computed partition key path for container
+     *
+     * @return partition key path
+     */
+    public String getPartitionKeyPath() {
         if (partitionKeyField == null) {
-            return null;
+            return partitionKeyPath == null ? "/null" : partitionKeyPath;
         } else {
             final PartitionKey partitionKey = partitionKeyField.getAnnotation(PartitionKey.class);
-            return partitionKey.value().equals("") ? partitionKeyField.getName() : partitionKey.value();
+            return partitionKey.value().equals("") ? "/" + partitionKeyField.getName() : "/" + partitionKey.value();
         }
+    }
+
+    /**
+     * Get the value of the field marked as the version field
+     *
+     * @param entity the object to get the value from
+     * @return the value of the version field
+     */
+    public String getVersionFieldValue(Object entity) {
+        return versionField == null ? null : (String) ReflectionUtils.getField(versionField, entity);
     }
 
     /**
@@ -174,19 +228,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      * @param entity the target object from which to get the field
      * @return partition key field
      */
-    public String getPartitionKeyFieldValue(T entity) {
-        return partitionKeyField == null ? null : (String) ReflectionUtils.getField(partitionKeyField, entity);
-    }
-
-    /**
-     * Check if auto creating collection is allowed
-     *
-     * @return boolean
-     * @deprecated Use {@link #isAutoCreateContainer()} instead.
-     */
-    @Deprecated
-    public boolean isAutoCreateCollection() {
-        return autoCreateContainer;
+    public Object getPartitionKeyFieldValue(T entity) {
+        return partitionKeyField == null ? null : ReflectionUtils.getField(partitionKeyField, entity);
     }
 
     /**
@@ -201,10 +244,10 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private IndexingPolicy getIndexingPolicy(Class<?> domainType) {
         final IndexingPolicy policy = new IndexingPolicy();
 
-        policy.automatic(this.getIndexingPolicyAutomatic(domainType));
-        policy.indexingMode(this.getIndexingPolicyMode(domainType));
+        policy.setAutomatic(this.getIndexingPolicyAutomatic(domainType));
+        policy.setIndexingMode(this.getIndexingPolicyMode(domainType));
         policy.setIncludedPaths(this.getIndexingPolicyIncludePaths(domainType));
-        policy.excludedPaths(this.getIndexingPolicyExcludePaths(domainType));
+        policy.setExcludedPaths(this.getIndexingPolicyExcludePaths(domainType));
 
         return policy;
     }
@@ -225,25 +268,46 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             throw new IllegalArgumentException("domain should contain @Id field or field named id");
         } else if (idField.getType() != String.class
                 && idField.getType() != Integer.class
-                && idField.getType() != int.class) {
-            throw new IllegalArgumentException("type of id field must be String or Integer");
+                && idField.getType() != int.class
+                && idField.getType() != Long.class
+                && idField.getType() != long.class) {
+            throw new IllegalArgumentException("type of id field must be String, Integer or Long");
         }
 
         return idField;
     }
 
+    private boolean isIdFieldAnnotatedWithGeneratedValue(Field idField) {
+        if (id.getAnnotation(GeneratedValue.class) != null) {
+            if (idField.getType() == String.class) {
+                return true;
+            } else {
+                throw new IllegalArgumentException("id field must be of type String if "
+                    + "GeneratedValue annotation is present");
+            }
+        }
+        return false;
+    }
+
     private String getContainerName(Class<?> domainType) {
         String customContainerName = domainType.getSimpleName();
 
-        final Document annotation = domainType.getAnnotation(Document.class);
+        final Container annotation = domainType.getAnnotation(Container.class);
 
-        if (annotation != null
-                && annotation.collection() != null
-                && !annotation.collection().isEmpty()) {
-            customContainerName = resolveExpression(annotation.collection());
+        if (annotation != null && !annotation.containerName().isEmpty()) {
+            customContainerName = resolveExpression(annotation.containerName());
         }
 
         return customContainerName;
+    }
+
+    private String getPartitionKeyPathAnnotationValue(Class<?> domainType) {
+        final Container annotation = domainType.getAnnotation(Container.class);
+
+        if (annotation != null && !annotation.partitionKeyPath().isEmpty()) {
+            return annotation.partitionKeyPath();
+        }
+        return null;
     }
 
     private Field getPartitionKeyField(Class<?> domainType) {
@@ -257,17 +321,12 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             throw new IllegalArgumentException("Azure Cosmos DB supports only one partition key, "
                 + "only one field with @PartitionKey annotation!");
         }
-
-        if (partitionKey != null
-                && partitionKey.getType() != String.class) {
-            throw new IllegalArgumentException("type of PartitionKey field must be String");
-        }
         return partitionKey;
     }
 
     private Integer getRequestUnit(Class<?> domainType) {
         Integer ru = null;
-        final Document annotation = domainType.getAnnotation(Document.class);
+        final Container annotation = domainType.getAnnotation(Container.class);
 
         if (annotation != null
                 && annotation.ru() != null
@@ -279,7 +338,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
     private Integer getTimeToLive(Class<T> domainType) {
         Integer ttl = Constants.DEFAULT_TIME_TO_LIVE;
-        final Document annotation = domainType.getAnnotation(Document.class);
+        final Container annotation = domainType.getAnnotation(Container.class);
 
         if (annotation != null) {
             ttl = annotation.timeToLive();
@@ -290,8 +349,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
 
     private Boolean getIndexingPolicyAutomatic(Class<?> domainType) {
-        Boolean isAutomatic = Boolean.valueOf(Constants.DEFAULT_INDEXINGPOLICY_AUTOMATIC);
-        final DocumentIndexingPolicy annotation = domainType.getAnnotation(DocumentIndexingPolicy.class);
+        Boolean isAutomatic = Boolean.valueOf(Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC);
+        final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 
         if (annotation != null) {
             isAutomatic = Boolean.valueOf(annotation.automatic());
@@ -301,8 +360,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     private IndexingMode getIndexingPolicyMode(Class<?> domainType) {
-        IndexingMode mode = Constants.DEFAULT_INDEXINGPOLICY_MODE;
-        final DocumentIndexingPolicy annotation = domainType.getAnnotation(DocumentIndexingPolicy.class);
+        IndexingMode mode = Constants.DEFAULT_INDEXING_POLICY_MODE;
+        final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 
         if (annotation != null) {
             mode = annotation.mode();
@@ -313,9 +372,9 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
     private List<IncludedPath> getIndexingPolicyIncludePaths(Class<?> domainType) {
         final List<IncludedPath> pathArrayList = new ArrayList<>();
-        final DocumentIndexingPolicy annotation = domainType.getAnnotation(DocumentIndexingPolicy.class);
+        final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 
-        if (annotation == null || annotation.includePaths() == null || annotation.includePaths().length == 0) {
+        if (annotation == null || annotation.includePaths().length == 0) {
             return null; // Align the default value of IndexingPolicy
         }
 
@@ -330,7 +389,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
     private List<ExcludedPath> getIndexingPolicyExcludePaths(Class<?> domainType) {
         final List<ExcludedPath> pathArrayList = new ArrayList<>();
-        final DocumentIndexingPolicy annotation = domainType.getAnnotation(DocumentIndexingPolicy.class);
+        final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 
         if (annotation == null || annotation.excludePaths().length == 0) {
             return null; // Align the default value of IndexingPolicy
@@ -338,30 +397,37 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
         final String[] rawPaths = annotation.excludePaths();
         for (final String path : rawPaths) {
-            final JSONObject obj = new JSONObject(path);
-            pathArrayList.add(new ExcludedPath().path(obj.get("path").toString()));
+            pathArrayList.add(new ExcludedPath(path));
         }
 
         return pathArrayList;
     }
 
-    private boolean getIsVersioned(Class<T> domainType) {
-        final Field findField = ReflectionUtils.findField(domainType, ETAG);
-        return findField != null
-                && findField.getType() == String.class
-                && findField.isAnnotationPresent(Version.class);
+    private Field getVersionedField(Class<T> domainClass) {
+        Field version = null;
+        final List<Field> fields = FieldUtils.getFieldsListWithAnnotation(domainClass, Version.class);
+
+        if (fields.size() == 1) {
+            version = fields.get(0);
+        } else if (fields.size() > 1) {
+            throw new IllegalArgumentException("Azure Cosmos DB supports only one field with @Version annotation!");
+        }
+
+        if (version != null && version.getType() != String.class) {
+            throw new IllegalArgumentException("type of Version field must be String");
+        }
+        return version;
     }
 
     private boolean getIsAutoCreateContainer(Class<T> domainType) {
-        final Document annotation = domainType.getAnnotation(Document.class);
+        final Container annotation = domainType.getAnnotation(Container.class);
 
         boolean autoCreateContainer = Constants.DEFAULT_AUTO_CREATE_CONTAINER;
         if (annotation != null) {
-            autoCreateContainer = annotation.autoCreateCollection();
+            autoCreateContainer = annotation.autoCreateContainer();
         }
 
         return autoCreateContainer;
     }
-
 }
 

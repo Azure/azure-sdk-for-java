@@ -186,11 +186,11 @@ After the unreleased version of `com.azure:azure-core` was released but before `
 - [ ] In [version_client.txt](./eng/versioning/version_client.txt) the the dependency version of `com.azure:azure-core` would become the released version and the "unreleased_" entry, at this time, would be removed.
 - [ ] In the pom.xml file for `com.azure:azure-storage-blob`, the dependency tag for `com.azure:azure-core` would get changed back to `{x-version-update;com.azure:azure-core-test;dependency}`
 
-### Nightly package builds
+### Dev Feed
 
-Each night our engineering system produces a set of packages for each component of the SDK. These can be used by other projects to test updated builds of our libraries prior to their release. The packages are published to an Azure Artifacts public feed hosted at the following URL:
+Every day our engineering system produces a set of packages for each component of the SDK. These can be used by other projects to test updated builds of our libraries prior to their release. The packages are published to an Azure Artifacts public feed hosted at the following URL:
 
-> https://dev.azure.com/azure-sdk/public/_packaging?_a=feed&feed=azure-sdk-for-java
+> [https://dev.azure.com/azure-sdk/public/_packaging?_a=feed&feed=azure-sdk-for-java](https://dev.azure.com/azure-sdk/public/_packaging?_a=feed&feed=azure-sdk-for-java)
 
 For developers working within the repo, refer to the instructions above for updating versions numbers correctly. The parent POM for the Azure SDK already contains a repository reference to the daily feed and can download the packages.
 

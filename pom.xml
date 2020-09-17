@@ -11,6 +11,7 @@
     <module>common/perf-test-core</module>
     <module>eng/jacoco-test-coverage</module>
     <module>eng/code-quality-reports</module>
+    <module>sdk/anomalydetector</module>
     <module>sdk/appconfiguration</module>
     <module>sdk/authorization</module>
     <module>sdk/batch</module>
@@ -18,6 +19,7 @@
     <module>sdk/core</module>
     <module>sdk/cosmos</module>
     <module>sdk/cognitiveservices</module>
+    <module>sdk/digitaltwins</module>
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/formrecognizer</module>
@@ -25,6 +27,7 @@
     <module>sdk/keyvault</module>
     <module>sdk/loganalytics</module>
     <module>sdk/mediaservices</module>
+    <module>sdk/resourcemanager</module>
     <module>sdk/schemaregistry</module>
     <module>sdk/search</module>
     <module>sdk/servicebus</module>

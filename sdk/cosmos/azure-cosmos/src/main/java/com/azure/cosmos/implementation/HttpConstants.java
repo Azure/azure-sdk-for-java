@@ -261,10 +261,11 @@ public class HttpConstants {
         public static final String AZURE_COSMOS_PROPERTIES_FILE_NAME = "azure-cosmos.properties";
 
         public static final String SDK_VERSION = CoreUtils.getProperties(AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version");
-        public static final String SDK_NAME = "cosmosdb-java-sdk";
+        public static final String SDK_NAME = "cosmos";
     }
 
     public static class StatusCodes {
+        public static final int OK = 200;
         public static final int NOT_MODIFIED = 304;
         // Client error
         public static final int MINIMUM_STATUSCODE_AS_ERROR_GATEWAY = 400;
@@ -306,6 +307,9 @@ public class HttpConstants {
 
         // 404: LSN in session token is higher
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
+
+        // Client generated gateway network error substatus
+        public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;
     }
 
     public static class HeaderValues {

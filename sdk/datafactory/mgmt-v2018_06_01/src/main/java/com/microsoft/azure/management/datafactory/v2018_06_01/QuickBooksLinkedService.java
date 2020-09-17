@@ -22,39 +22,46 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.implementation.Lin
 @JsonFlatten
 public class QuickBooksLinkedService extends LinkedServiceInner {
     /**
+     * Properties used to connect to QuickBooks. It is mutually exclusive with
+     * any other properties in the linked service. Type: object.
+     */
+    @JsonProperty(value = "typeProperties.connectionProperties")
+    private Object connectionProperties;
+
+    /**
      * The endpoint of the QuickBooks server. (i.e. quickbooks.api.intuit.com).
      */
-    @JsonProperty(value = "typeProperties.endpoint", required = true)
+    @JsonProperty(value = "typeProperties.endpoint")
     private Object endpoint;
 
     /**
      * The company ID of the QuickBooks company to authorize.
      */
-    @JsonProperty(value = "typeProperties.companyId", required = true)
+    @JsonProperty(value = "typeProperties.companyId")
     private Object companyId;
 
     /**
      * The consumer key for OAuth 1.0 authentication.
      */
-    @JsonProperty(value = "typeProperties.consumerKey", required = true)
+    @JsonProperty(value = "typeProperties.consumerKey")
     private Object consumerKey;
 
     /**
      * The consumer secret for OAuth 1.0 authentication.
      */
-    @JsonProperty(value = "typeProperties.consumerSecret", required = true)
+    @JsonProperty(value = "typeProperties.consumerSecret")
     private SecretBase consumerSecret;
 
     /**
      * The access token for OAuth 1.0 authentication.
      */
-    @JsonProperty(value = "typeProperties.accessToken", required = true)
+    @JsonProperty(value = "typeProperties.accessToken")
     private SecretBase accessToken;
 
     /**
      * The access token secret for OAuth 1.0 authentication.
      */
-    @JsonProperty(value = "typeProperties.accessTokenSecret", required = true)
+    @JsonProperty(value = "typeProperties.accessTokenSecret")
     private SecretBase accessTokenSecret;
 
     /**
@@ -71,6 +78,26 @@ public class QuickBooksLinkedService extends LinkedServiceInner {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get properties used to connect to QuickBooks. It is mutually exclusive with any other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value
+     */
+    public Object connectionProperties() {
+        return this.connectionProperties;
+    }
+
+    /**
+     * Set properties used to connect to QuickBooks. It is mutually exclusive with any other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set
+     * @return the QuickBooksLinkedService object itself.
+     */
+    public QuickBooksLinkedService withConnectionProperties(Object connectionProperties) {
+        this.connectionProperties = connectionProperties;
+        return this;
+    }
 
     /**
      * Get the endpoint of the QuickBooks server. (i.e. quickbooks.api.intuit.com).

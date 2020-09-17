@@ -20,7 +20,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -114,7 +114,7 @@ public final class BuilderHelper {
 
             // Attempt to get the SAS token from the URL passed
             String sasToken = new CommonSasQueryParameters(
-                StorageImplUtils.parseQueryStringSplitValues(url.getQuery()), false).encode();
+                SasImplUtils.parseQueryString(url.getQuery()), false).encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 parts.setSasToken(sasToken);
             }
@@ -149,7 +149,7 @@ public final class BuilderHelper {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(getUserAgentPolicy(configuration));
+        policies.add(getUserAgentPolicy(configuration, logOptions));
         policies.add(new RequestIdPolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -162,8 +162,7 @@ public final class BuilderHelper {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
-            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential,
-                String.format("%s/.default", endpoint));
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE);
         } else if (sasTokenCredential != null) {
             credentialPolicy =  new SasTokenCredentialPolicy(sasTokenCredential);
         } else {
@@ -206,14 +205,15 @@ public final class BuilderHelper {
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
      * @param configuration Configuration store used to determine whether telemetry information should be included.
+     * @param logOptions Logging options to set in the logging policy.
      * @return The default {@link UserAgentPolicy} for the module.
      */
-    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
+    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, HttpLogOptions logOptions) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
         String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(), clientName, clientVersion,
+        return new UserAgentPolicy(logOptions.getApplicationId(), clientName, clientVersion,
             configuration);
     }
 
@@ -243,6 +243,7 @@ public final class BuilderHelper {
                 "Using a(n) " + objectName + " requires https"));
         }
     }
+
 
     public static class QueueUrlParts {
         private String scheme;

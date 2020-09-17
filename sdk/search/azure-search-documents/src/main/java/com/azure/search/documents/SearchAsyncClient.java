@@ -12,19 +12,17 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
-import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
-import com.azure.search.documents.implementation.converters.FacetResultConverter;
-import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
+import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
-import com.azure.search.documents.implementation.converters.QueryTypeConverter;
-import com.azure.search.documents.implementation.converters.SearchModeConverter;
 import com.azure.search.documents.implementation.converters.SearchResultConverter;
 import com.azure.search.documents.implementation.converters.SuggestResultConverter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
+import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
@@ -53,13 +51,13 @@ import com.azure.search.documents.util.SearchPagedFlux;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedFlux;
 import com.azure.search.documents.util.SuggestPagedResponse;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -67,6 +65,8 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.serializer.TypeReference.createInstance;
+import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
@@ -111,29 +111,26 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    private static final ObjectMapper MAPPER;
+    final JsonSerializer serializer;
 
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-        MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-    }
+    private static final SerializerAdapter ADAPTER = initializeSerializerAdapter();
 
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
     SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
-        HttpPipeline httpPipeline) {
-
+        HttpPipeline httpPipeline, JsonSerializer serializer) {
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
+        this.serializer = serializer;
 
         restClient = new SearchIndexClientImplBuilder()
             .endpoint(endpoint)
             .indexName(indexName)
             .pipeline(httpPipeline)
+            .serializerAdapter(ADAPTER)
             .buildClient();
     }
 
@@ -162,6 +159,41 @@ public final class SearchAsyncClient {
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /**
+     * Creates a {@link SearchBatchAsyncClient} used to index documents for the Search index associated with this {@link
+     * SearchAsyncClient}.
+     * <p>
+     * This will use the default configuration values for {@link SearchBatchAsyncClient}, see {@link
+     * SearchBatchClientBuilder} for more information.
+     *
+     * @return A {@link SearchBatchAsyncClient} used to index documents for the Search index associated with this {@link
+     * SearchAsyncClient}.
+     */
+    public SearchBatchAsyncClient getSearchBatchAsyncClient() {
+        return getSearchBatchAsyncClient(null, null, null, null);
+    }
+
+    /**
+     * Creates a {@link SearchBatchAsyncClient} used to index documents for the Search index associated with this {@link
+     * SearchAsyncClient}.
+     *
+     * @param autoFlush Flag determining whether the batching client will automatically flush its document batch. If
+     * null is passed this will be set to true.
+     * @param flushWindow Duration that the client will wait between documents being added to the batch before sending
+     * the batch to be indexed. If {@code flushWindow} is negative or zero the flush window will be disabled, if {@code
+     * flushWindow} is null a default of 60 seconds will be used.
+     * @param batchSize The number of documents in a batch that will trigger it to be indexed. If automatic batch
+     * sending is disabled this value is ignored. If {@code batchSize} is null a default value of 1000 is used.
+     * @param indexingHook An implementation of {@link IndexingHook} used to handle document callback actions.
+     * @return A {@link SearchBatchAsyncClient} used to index documents for the Search index associated with this {@link
+     * SearchAsyncClient}.
+     * @throws IllegalArgumentException If {@code batchSize} is less than one.
+     */
+    public SearchBatchAsyncClient getSearchBatchAsyncClient(Boolean autoFlush, Duration flushWindow, Integer batchSize,
+        IndexingHook indexingHook) {
+        return new SearchBatchAsyncClient(this, autoFlush, flushWindow, batchSize, indexingHook);
     }
 
     /**
@@ -224,10 +256,10 @@ public final class SearchAsyncClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -255,10 +287,10 @@ public final class SearchAsyncClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -294,10 +326,10 @@ public final class SearchAsyncClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -326,10 +358,10 @@ public final class SearchAsyncClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -467,13 +499,22 @@ public final class SearchAsyncClient {
 
     Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
         IndexDocumentsOptions options, Context context) {
+        List<com.azure.search.documents.implementation.models.IndexAction> indexActions = batch.getActions()
+            .stream()
+            .map(document -> IndexActionConverter.map(document, serializer))
+            .collect(Collectors.toList());
+
+        boolean throwOnAnyError = options == null || options.throwOnAnyError();
+        return indexDocumentsWithResponse(indexActions, throwOnAnyError, context);
+    }
+
+    Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(
+        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
+        Context context) {
         try {
-            IndexDocumentsOptions documentsOptions = (options == null) ? new IndexDocumentsOptions() : options;
-            return restClient.getDocuments()
-                .indexWithResponseAsync(IndexBatchBaseConverter.map(batch), null, context)
+            return restClient.getDocuments().indexWithResponseAsync(new IndexBatch(actions), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
-                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE
-                    && documentsOptions.throwOnAnyError())
+                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError)
                     ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
                     : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
         } catch (RuntimeException ex) {
@@ -529,7 +570,6 @@ public final class SearchAsyncClient {
         return withContext(context -> getDocumentWithResponse(key, modelClass, selectedFields, context));
     }
 
-    @SuppressWarnings("unchecked")
     <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
         Context context) {
         try {
@@ -537,16 +577,22 @@ public final class SearchAsyncClient {
                 .getWithResponseAsync(key, selectedFields, null, context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
-                    if (SearchDocument.class == modelClass) {
-                        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {
-                        };
-                        SearchDocument doc = new SearchDocument(MAPPER.convertValue(res.getValue(), typeReference));
-                        return new SimpleResponse<T>(res, (T) doc);
+                    if (serializer == null) {
+                        try {
+                            String serializedJson = ADAPTER.serialize(res.getValue(), SerializerEncoding.JSON);
+                            T document = ADAPTER.deserialize(serializedJson, modelClass, SerializerEncoding.JSON);
+                            return new SimpleResponse<>(res, document);
+                        } catch (IOException ex) {
+                            throw logger.logExceptionAsError(
+                                new RuntimeException("Failed to deserialize document.", ex));
+                        }
                     }
-                    T document = MAPPER.convertValue(res.getValue(), modelClass);
-                    return new SimpleResponse<>(res, document);
-                })
-                .map(Function.identity());
+                    ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
+                    serializer.serialize(sourceStream, res.getValue());
+                    T doc = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
+                        createInstance(modelClass));
+                    return new SimpleResponse<>(res, doc);
+                }).map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -598,7 +644,7 @@ public final class SearchAsyncClient {
     /**
      * Searches for documents in the Azure Cognitive Search index.
      * <p>
-     * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
+     * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
      * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *
@@ -622,7 +668,7 @@ public final class SearchAsyncClient {
     /**
      * Searches for documents in the Azure Cognitive Search index.
      * <p>
-     * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
+     * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
      * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *
@@ -685,9 +731,9 @@ public final class SearchAsyncClient {
             });
     }
 
-    private static List<SearchResult> getSearchResults(SearchDocumentsResult result) {
+    private List<SearchResult> getSearchResults(SearchDocumentsResult result) {
         return result.getResults().stream()
-            .map(SearchResultConverter::map)
+            .map(searchResult -> SearchResultConverter.map(searchResult, serializer))
             .collect(Collectors.toList());
     }
 
@@ -701,12 +747,7 @@ public final class SearchAsyncClient {
             return null;
         }
 
-        Map<String, List<FacetResult>> facets = new HashMap<>();
-
-        result.getFacets().forEach((key, values) ->
-            facets.put(key, values.stream().map(FacetResultConverter::map).collect(Collectors.toList())));
-
-        return facets;
+        return result.getFacets();
     }
 
     /**
@@ -828,7 +869,7 @@ public final class SearchAsyncClient {
     private Mono<AutocompletePagedResponse> autocomplete(AutocompleteRequest request, Context context) {
         return restClient.getDocuments().autocompletePostWithResponseAsync(request, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
-            .map(MappingUtils::mappingAutocompleteResponse);
+            .map(response -> new AutocompletePagedResponse(new SimpleResponse<>(response, response.getValue())));
     }
 
     /**
@@ -844,19 +885,21 @@ public final class SearchAsyncClient {
         if (searchOptions != null) {
             List<String> scoringParameters = searchOptions.getScoringParameters() == null ? null
                 : searchOptions.getScoringParameters().stream().map(ScoringParameter::toString)
-                .collect(Collectors.toList());
-            searchRequest.setSearchMode(SearchModeConverter.map(searchOptions.getSearchMode()))
+                    .collect(Collectors.toList());
+            searchRequest.setSearchMode(searchOptions.getSearchMode())
                 .setFacets(searchOptions.getFacets())
                 .setFilter(searchOptions.getFilter())
                 .setHighlightPostTag(searchOptions.getHighlightPostTag())
                 .setHighlightPreTag(searchOptions.getHighlightPreTag())
                 .setIncludeTotalResultCount(searchOptions.isTotalCountIncluded())
                 .setMinimumCoverage(searchOptions.getMinimumCoverage())
-                .setQueryType(QueryTypeConverter.map(searchOptions.getQueryType()))
+                .setQueryType(searchOptions.getQueryType())
                 .setScoringParameters(scoringParameters)
                 .setScoringProfile(searchOptions.getScoringProfile())
                 .setSkip(searchOptions.getSkip())
-                .setTop(searchOptions.getTop());
+                .setTop(searchOptions.getTop())
+                .setScoringStatistics(searchOptions.getScoringStatistics())
+                .setSessionId(searchOptions.getSessionId());
 
             if (searchOptions.getHighlightFields() != null) {
                 searchRequest.setHighlightFields(String.join(",", searchOptions.getHighlightFields()));
@@ -889,7 +932,6 @@ public final class SearchAsyncClient {
     private static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
         SuggestOptions suggestOptions) {
         SuggestRequest suggestRequest = new SuggestRequest(searchText, suggesterName);
-        suggestRequest.validate();
 
         if (suggestOptions != null) {
             suggestRequest.setFilter(suggestOptions.getFilter())
@@ -929,7 +971,6 @@ public final class SearchAsyncClient {
     private static AutocompleteRequest createAutoCompleteRequest(String searchText, String suggesterName,
         AutocompleteOptions autocompleteOptions) {
         AutocompleteRequest autoCompleteRequest = new AutocompleteRequest(searchText, suggesterName);
-        autoCompleteRequest.validate();
 
         if (autocompleteOptions != null) {
             autoCompleteRequest.setFilter(autocompleteOptions.getFilter())
@@ -938,7 +979,7 @@ public final class SearchAsyncClient {
                 .setHighlightPreTag(autocompleteOptions.getHighlightPreTag())
                 .setMinimumCoverage(autocompleteOptions.getMinimumCoverage())
                 .setTop(autocompleteOptions.getTop())
-                .setAutocompleteMode(AutocompleteModeConverter.map(autocompleteOptions.getAutocompleteMode()));
+                .setAutocompleteMode(autocompleteOptions.getAutocompleteMode());
 
             List<String> searchFields = autocompleteOptions.getSearchFields();
             if (searchFields != null) {
@@ -957,4 +998,5 @@ public final class SearchAsyncClient {
 
         return new IndexDocumentsBatch<T>().addActions(actions);
     }
+
 }

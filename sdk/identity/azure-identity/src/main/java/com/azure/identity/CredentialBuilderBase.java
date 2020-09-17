@@ -89,21 +89,4 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
         this.identityClientOptions.setHttpClient(client);
         return (T) this;
     }
-
-    /**
-     * Sets how long before the actual token expiry to refresh the token. The
-     * token will be considered expired at and after the time of (actual
-     * expiry - token refresh offset). The default offset is 2 minutes.
-     *
-     * This is useful when network is congested and a request containing the
-     * token takes longer than normal to get to the server.
-     *
-     * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
-     * @return An updated instance of this builder with the token refresh offset set as specified.
-     */
-    @SuppressWarnings("unchecked")
-    public T tokenRefreshOffset(Duration tokenRefreshOffset) {
-        this.identityClientOptions.setTokenRefreshOffset(tokenRefreshOffset);
-        return (T) this;
-    }
 }

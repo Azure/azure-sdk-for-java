@@ -12,16 +12,17 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
 public class CosmosRepositoryFactoryBeanUnitTest {
+
     @Mock
-    CosmosTemplate dbTemplate;
+    CosmosTemplate template;
 
     @Test
     public void testCreateRepositoryFactory() {
         final CosmosRepositoryFactoryBean<?, ?, ?> factoryBean =
                 new CosmosRepositoryFactoryBean<>(PersonRepository.class);
+        factoryBean.setCosmosOperations(template);
         final RepositoryFactorySupport factory = factoryBean.createRepositoryFactory();
         assertThat(factory).isNotNull();
     }

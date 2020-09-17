@@ -12,11 +12,6 @@ import org.springframework.context.annotation.PropertySource;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-/**
- *
- * @author Domenico Sibilio
- *
- */
 public class ExpressionResolverUnitTest {
     private static final String LITERAL_EXPRESSION = "literal expression";
     private static final String SPEL_EXPRESSION = "#{@environment.getProperty('dynamic.collection.name')}";

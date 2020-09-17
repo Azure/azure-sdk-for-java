@@ -3,36 +3,38 @@
 
 package com.azure.security.keyvault.keys;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
-import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
-import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -40,9 +42,6 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -71,6 +70,8 @@ public final class KeyAsyncClient {
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
+    private static final Duration DEFAULT_POLL_DURATION = Duration.ofSeconds(1);
+
     private final String vaultUrl;
     private final KeyService service;
     private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
@@ -97,6 +98,10 @@ public final class KeyAsyncClient {
      */
     public String getVaultUrl() {
         return vaultUrl;
+    }
+
+    Duration getPollDuration() {
+        return DEFAULT_POLL_DURATION;
     }
 
     /**
@@ -686,7 +691,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<DeletedKey, Void> beginDeleteKey(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return new PollerFlux<>(getPollDuration(),
             activationOperation(name),
             createPollOperation(name),
             (context, firstResponse) -> Mono.empty(),
@@ -863,7 +868,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return new PollerFlux<>(getPollDuration(),
             recoverActivationOperation(name),
             createRecoverPollOperation(name),
             (context, firstResponse) -> Mono.empty(),

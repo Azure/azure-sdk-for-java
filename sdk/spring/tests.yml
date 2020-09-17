@@ -25,6 +25,64 @@ jobs:
           - name: azure-spring-boot-test-keyvault
             groupId: com.azure
             safeName: azurespringboottestkeyvault
+          - name: azure-spring-boot-test-servicebus-jms
+            groupId: com.azure
+            safeName: azurespringboottestservicebusjms
+          - name: azure-spring-cloud-test-eventhubs
+            groupId: com.azure
+            safeName: azurespringcloudtesteventhubs
 
         EnvVars:
           AZURE_TEST_MODE: LIVE
+          AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1)
+          AAD_USER_NAME_1: $(java-spring-aad-user-name-1)
+          AAD_USER_PASSWORD_1: $(java-spring-aad-user-password-1)
+          AAD_TENANT_ID_2: $(java-spring-aad-tenant-id-2)
+          AAD_USER_NAME_2: $(java-spring-aad-user-name-2)
+          AAD_USER_PASSWORD_2: $(java-spring-aad-user-password-2)
+          AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-multi-tenant-client-id)
+          AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-multi-tenant-client-secret)
+          AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-single-tenant-id)
+          AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
+          AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
+          AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
+
+        PostRunSteps:
+          - script: |
+              python --version
+              python -m pip install setuptools termcolor in_place
+              python sdk/spring/scripts/replace_util.py --module spring --log debug --color false
+            displayName: 'Run replace_util.py'
+
+          - task: Maven@3
+            displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: 'install'
+              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(JavaBuildVersion)
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: false
+
+          - task: Maven@3
+            displayName: 'Run tests again, JDK Version: $(JavaBuildVersion)'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: verify
+              options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+            env:
+              AZURE_TEST_MODE: LIVE
+              AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1)
+              AAD_USER_NAME_1: $(java-spring-aad-user-name-1)
+              AAD_USER_PASSWORD_1: $(java-spring-aad-user-password-1)
+              AAD_TENANT_ID_2: $(java-spring-aad-tenant-id-2)
+              AAD_USER_NAME_2: $(java-spring-aad-user-name-2)
+              AAD_USER_PASSWORD_2: $(java-spring-aad-user-password-2)
+              AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-multi-tenant-client-id)
+              AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-multi-tenant-client-secret)
+              AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-single-tenant-id)
+              AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
+              AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
+              AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)

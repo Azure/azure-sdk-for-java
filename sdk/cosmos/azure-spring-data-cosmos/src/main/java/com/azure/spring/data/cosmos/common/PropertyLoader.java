@@ -19,8 +19,6 @@ public final class PropertyLoader {
 
     private static final String APPLICATION_YML_FILE = "/application.yml";
 
-    private static final String TELEMETRY_CONFIG_FILE = "/telemetry.config";
-
     private PropertyLoader() {
     }
 
@@ -31,35 +29,6 @@ public final class PropertyLoader {
      */
     public static String getProjectVersion() {
         return getPropertyByName("project.version", PROJECT_PROPERTY_FILE);
-    }
-
-    /**
-     * Get telemetry instrumentation key from /telemetry.config
-     *
-     * @return String telemetry instrumentation key
-     */
-    public static String getTelemetryInstrumentationKey() {
-        return getPropertyByName("telemetry.instrumentationKey", TELEMETRY_CONFIG_FILE);
-    }
-
-    /**
-     * Check if telemetry is allowed
-     *
-     * @return boolean if telemetry is allowed
-     */
-    public static boolean isApplicationTelemetryAllowed() {
-        String allowed = getPropertyByName("cosmosdb.telemetryAllowed", APPLICATION_PROPERTY_FILE);
-
-        if (allowed == null) {
-            allowed = getPropertyByName("telemetryAllowed", APPLICATION_YML_FILE);
-        }
-
-        //  Default, no telemetry
-        if (allowed == null) {
-            return false;
-        } else {
-            return !allowed.equalsIgnoreCase("false");
-        }
     }
 
     private static String getPropertyByName(@NonNull String name, @NonNull String filename) {

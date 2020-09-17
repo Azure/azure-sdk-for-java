@@ -1,7 +1,6 @@
 package com.azure.storage.internal.avro.implementation
 
 import com.azure.core.util.FluxUtil
-import com.azure.storage.common.implementation.Constants
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
@@ -248,7 +247,7 @@ class AvroReaderTest extends Specification {
 
         /* Special use case for Changefeed - parse header and block separate. */
         when:
-        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * Constants.KB)
+        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * 1024)
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
         def complexVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(header, body, blockOffset, -1 as long)
@@ -293,7 +292,7 @@ class AvroReaderTest extends Specification {
 
         /* Special use case for Changefeed - parse header and block separate. */
         when:
-        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * Constants.KB)
+        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * 1024)
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
         def complexVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(header, body, blockOffset, filterIndex)
@@ -315,16 +314,16 @@ class AvroReaderTest extends Specification {
 
         where:
         blockOffset | filterIndex | numObjects || _
-        1953        | 0           | 999        || _
-        67686       | 34          | 846        || _
-        133529      | 56          | 705        || _
-        199372      | -1          | 643        || _
-        265215      | 50          | 473        || _
-        331058      | -1          | 405        || _
-        396901      | 10          | 275        || _
-        462744      | 67          | 99         || _
-        528587      | 40          | 7          || _
-        555167      | -1          | 0          || _
+        1953        | 1           | 999        || _
+        67686       | 35          | 846        || _
+        133529      | 57          | 705        || _
+        199372      | 0           | 643        || _
+        265215      | 51          | 473        || _
+        331058      | 0           | 405        || _
+        396901      | 11          | 275        || _
+        462744      | 68          | 99         || _
+        528587      | 41          | 7          || _
+        555167      | 0           | 0          || _
     }
 
     def "Parse CF small"() {

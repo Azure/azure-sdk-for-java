@@ -1,0 +1,1 @@
+servicebus-topic: com.microsoft.azure.servicebus.stream.binder.config.ServiceBusTopicBinderConfiguration

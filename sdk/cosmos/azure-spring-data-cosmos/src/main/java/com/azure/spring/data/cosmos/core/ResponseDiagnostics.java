@@ -3,109 +3,55 @@
 
 package com.azure.spring.data.cosmos.core;
 
-import com.azure.data.cosmos.CosmosResponseDiagnostics;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.FeedResponseDiagnostics;
-import com.azure.data.cosmos.Resource;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.models.FeedResponse;
 
 /**
  * Diagnostics class of cosmos and feed response
+ * <p>
+ * NOTE: activityId will be null in case of cross partition queries
  */
 public class ResponseDiagnostics {
 
-    private CosmosResponseDiagnostics cosmosResponseDiagnostics;
-    private FeedResponseDiagnostics feedResponseDiagnostics;
-    private CosmosResponseStatistics cosmosResponseStatistics;
+    private final CosmosDiagnostics cosmosDiagnostics;
+    private final CosmosResponseStatistics cosmosResponseStatistics;
 
     /**
      * Initialization
      *
-     * @param cosmosResponseDiagnostics cannot be null
-     * @param feedResponseDiagnostics cannot be null
-     */
-    public ResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics,
-                               FeedResponseDiagnostics feedResponseDiagnostics) {
-        this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
-        this.feedResponseDiagnostics = feedResponseDiagnostics;
-    }
-
-    /**
-     * Initialization
-     *
-     * @param cosmosResponseDiagnostics cannot be null
-     * @param feedResponseDiagnostics cannot be null
+     * @param cosmosDiagnostics cannot be null
      * @param cosmosResponseStatistics cannot be null
      */
-    public ResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics,
-                               FeedResponseDiagnostics feedResponseDiagnostics,
+    public ResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics,
                                CosmosResponseStatistics cosmosResponseStatistics) {
-        this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
-        this.feedResponseDiagnostics = feedResponseDiagnostics;
+        this.cosmosDiagnostics = cosmosDiagnostics;
         this.cosmosResponseStatistics = cosmosResponseStatistics;
     }
 
     /**
      * To get diagnostics of cosmos response
+     *
      * @return CosmosResponseDiagnostics
      */
-    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
-        return cosmosResponseDiagnostics;
-    }
-
-    /**
-     * To set diagnostics of cosmos response
-     * @param cosmosResponseDiagnostics cannot be null
-     */
-    public void setCosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
-        this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
-    }
-
-    /**
-     * To get diagnostics of feed response
-     * @return FeedResponseDiagnostics
-     */
-    public FeedResponseDiagnostics getFeedResponseDiagnostics() {
-        return feedResponseDiagnostics;
-    }
-
-    /**
-     * To set diagnostics of feed response
-     * @param feedResponseDiagnostics cannot be null
-     */
-    public void setFeedResponseDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
-        this.feedResponseDiagnostics = feedResponseDiagnostics;
+    public CosmosDiagnostics getCosmosDiagnostics() {
+        return cosmosDiagnostics;
     }
 
     /**
      * To get the statistics value of cosmos response
+     *
      * @return CosmosResponseStatistics
      */
     public CosmosResponseStatistics getCosmosResponseStatistics() {
         return cosmosResponseStatistics;
     }
 
-    /**
-     * To set statistics of cosmos response
-     * @param cosmosResponseStatistics cannot be null
-     */
-    public void setCosmosResponseStatistics(CosmosResponseStatistics cosmosResponseStatistics) {
-        this.cosmosResponseStatistics = cosmosResponseStatistics;
-    }
-
     @Override
     public String toString() {
         final StringBuilder diagnostics = new StringBuilder();
-        if (cosmosResponseDiagnostics != null) {
+        if (cosmosDiagnostics != null) {
             diagnostics.append("cosmosResponseDiagnostics={")
-                       .append(cosmosResponseDiagnostics)
-                       .append("}");
-        }
-        if (feedResponseDiagnostics != null) {
-            if (diagnostics.length() != 0) {
-                diagnostics.append(", ");
-            }
-            diagnostics.append("feedResponseDiagnostics={")
-                       .append(feedResponseDiagnostics)
+                       .append(cosmosDiagnostics)
                        .append("}");
         }
         if (cosmosResponseStatistics != null) {
@@ -121,6 +67,8 @@ public class ResponseDiagnostics {
 
     /**
      * Generates statistics from cosmos response
+     * <p>
+     * NOTE: activityId will be null in case of cross partition queries
      */
     public static class CosmosResponseStatistics {
 
@@ -133,13 +81,14 @@ public class ResponseDiagnostics {
          * @param feedResponse response from feed
          * @param <T> type of cosmosResponse
          */
-        public <T extends Resource> CosmosResponseStatistics(FeedResponse<T> feedResponse) {
-            this.requestCharge = feedResponse.requestCharge();
-            this.activityId = feedResponse.activityId();
+        public <T> CosmosResponseStatistics(FeedResponse<T> feedResponse) {
+            this.requestCharge = feedResponse.getRequestCharge();
+            this.activityId = feedResponse.getActivityId();
         }
 
         /**
          * To get the charge value of request
+         *
          * @return double
          */
         public double getRequestCharge() {
@@ -148,6 +97,7 @@ public class ResponseDiagnostics {
 
         /**
          * To get the activity id
+         *
          * @return String
          */
         public String getActivityId() {
@@ -157,11 +107,8 @@ public class ResponseDiagnostics {
         @Override
         public String toString() {
             return "CosmosResponseStatistics{"
-                + "requestCharge="
-                + requestCharge
-                + ", activityId='"
-                + activityId
-                + '\''
+                + "requestCharge=" + requestCharge + ","
+                + "activityId='" + activityId + '\''
                 + '}';
         }
     }

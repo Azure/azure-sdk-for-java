@@ -2,34 +2,27 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
-import com.azure.data.cosmos.IndexingMode;
-import com.azure.spring.data.cosmos.core.mapping.Document;
-import com.azure.spring.data.cosmos.core.mapping.DocumentIndexingPolicy;
-import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
+import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
+import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
-@DocumentIndexingPolicy(
-        mode = IndexingMode.LAZY,
-        automatic = TestConstants.INDEXINGPOLICY_AUTOMATIC,
-        includePaths = {
-                TestConstants.INCLUDEDPATH_0,
-                TestConstants.INCLUDEDPATH_1,
-                TestConstants.INCLUDEDPATH_2,
-        },
-        excludePaths = {
-                TestConstants.EXCLUDEDPATH_0,
-                TestConstants.EXCLUDEDPATH_1,
-        })
-@Document(collection = TestConstants.ROLE_COLLECTION_NAME,
-    autoCreateCollection = false)
+@CosmosIndexingPolicy(
+    mode = IndexingMode.CONSISTENT,
+    automatic = TestConstants.INDEXING_POLICY_AUTOMATIC)
+@Container(containerName = TestConstants.ROLE_COLLECTION_NAME,
+    autoCreateContainer = false)
 public class Role {
     @Id
     String id;
 
     @PartitionKey
+    boolean developer;
+
     String name;
 
     String level;
@@ -37,8 +30,9 @@ public class Role {
     public Role() {
     }
 
-    public Role(String id, String name, String level) {
+    public Role(String id, boolean developer, String name, String level) {
         this.id = id;
+        this.developer = developer;
         this.name = name;
         this.level = level;
     }
@@ -67,6 +61,14 @@ public class Role {
         this.level = level;
     }
 
+    public boolean isDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(boolean developer) {
+        this.developer = developer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -76,28 +78,22 @@ public class Role {
             return false;
         }
         Role role = (Role) o;
-        return Objects.equals(id, role.id)
-            && Objects.equals(name, role.name)
-            && Objects.equals(level, role.level);
+        return developer == role.developer && Objects.equals(id, role.id)
+            && Objects.equals(name, role.name) && Objects.equals(level, role.level);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, level);
+        return Objects.hash(id, developer, name, level);
     }
 
     @Override
     public String toString() {
         return "Role{"
-            + "id='"
-            + id
-            + '\''
-            + ", name='"
-            + name
-            + '\''
-            + ", level='"
-            + level
-            + '\''
+            + "id='" + id + '\''
+            + ", isDeveloper=" + developer
+            + ", name='" + name + '\''
+            + ", level='" + level + '\''
             + '}';
     }
 }

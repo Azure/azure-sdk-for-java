@@ -8,7 +8,9 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerDataSources;
@@ -44,6 +46,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -55,12 +58,14 @@ import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
  * Abstract base class for all Search API tests
  */
 public abstract class SearchTestBase extends TestBase {
-    private static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
+    protected static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
 
     protected static final String API_KEY = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_API_KEY", "apiKey");
+
+    protected static final TestMode TEST_MODE = initializeTestMode();
 
     // The connection string we use here, as well as table name and target index schema, use the USGS database
     // that we set up to support our code samples.
@@ -138,10 +143,8 @@ public abstract class SearchTestBase extends TestBase {
             addPolicies(builder, policies);
             return builder;
         }
-//        builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(
-//            new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         addPolicies(builder, policies);
-
+        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {
@@ -181,7 +184,7 @@ public abstract class SearchTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             return builder.httpClient(interceptorManager.getPlaybackClient());
         }
-
+        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {
@@ -388,5 +391,21 @@ public abstract class SearchTestBase extends TestBase {
 
     protected String randomIndexName(String indexNameBase) {
         return testResourceNamer.randomName(indexNameBase, 64);
+    }
+
+    private static TestMode initializeTestMode() {
+        ClientLogger logger = new ClientLogger(SearchTestBase.class);
+        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+        if (azureTestMode != null) {
+            try {
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+            } catch (IllegalArgumentException var3) {
+                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
+                return TestMode.PLAYBACK;
+            }
+        } else {
+            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
+            return TestMode.PLAYBACK;
+        }
     }
 }

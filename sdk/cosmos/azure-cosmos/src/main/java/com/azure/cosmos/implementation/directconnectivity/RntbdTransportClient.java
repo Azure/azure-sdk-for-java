@@ -252,6 +252,8 @@ public final class RntbdTransportClient extends TransportClient {
 
     public static final class Options {
 
+        private static final int DEFAULT_MIN_MAX_CONCURRENT_REQUESTS_PER_ENDPOINT = 10_000;
+
         // region Fields
 
         @JsonProperty()
@@ -267,6 +269,9 @@ public final class RntbdTransportClient extends TransportClient {
         private final Duration idleChannelTimeout;
 
         @JsonProperty()
+        private final Duration idleChannelTimerResolution;
+
+        @JsonProperty()
         private final Duration idleEndpointTimeout;
 
         @JsonProperty()
@@ -277,6 +282,9 @@ public final class RntbdTransportClient extends TransportClient {
 
         @JsonProperty()
         private final int maxRequestsPerChannel;
+
+        @JsonProperty()
+        private final int maxConcurrentRequestsPerEndpointOverride;
 
         @JsonProperty()
         private final Duration receiveHangDetectionTime;
@@ -316,10 +324,12 @@ public final class RntbdTransportClient extends TransportClient {
             this.bufferPageSize = builder.bufferPageSize;
             this.connectionAcquisitionTimeout = builder.connectionAcquisitionTimeout;
             this.idleChannelTimeout = builder.idleChannelTimeout;
+            this.idleChannelTimerResolution = builder.idleChannelTimerResolution;
             this.idleEndpointTimeout = builder.idleEndpointTimeout;
             this.maxBufferCapacity = builder.maxBufferCapacity;
             this.maxChannelsPerEndpoint = builder.maxChannelsPerEndpoint;
             this.maxRequestsPerChannel = builder.maxRequestsPerChannel;
+            this.maxConcurrentRequestsPerEndpointOverride = builder.maxConcurrentRequestsPerEndpointOverride;
             this.receiveHangDetectionTime = builder.receiveHangDetectionTime;
             this.requestExpiryInterval = builder.requestExpiryInterval;
             this.requestTimeout = builder.requestTimeout;
@@ -336,13 +346,17 @@ public final class RntbdTransportClient extends TransportClient {
 
         private Options(final ConnectionPolicy connectionPolicy) {
             this.bufferPageSize = 8192;
-            this.connectionAcquisitionTimeout = Duration.ZERO;
+            this.connectionAcquisitionTimeout = Duration.ofSeconds(5L);
             this.connectTimeout = connectionPolicy.getConnectTimeout();
             this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
+            this.idleChannelTimerResolution = Duration.ofMillis(100);
             this.idleEndpointTimeout = connectionPolicy.getIdleEndpointTimeout();
             this.maxBufferCapacity = 8192 << 10;
             this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
             this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
+
+            this.maxConcurrentRequestsPerEndpointOverride = -1;
+
             this.receiveHangDetectionTime = Duration.ofSeconds(65L);
             this.requestExpiryInterval = Duration.ofSeconds(5L);
             this.requestTimeout = connectionPolicy.getRequestTimeout();
@@ -373,6 +387,8 @@ public final class RntbdTransportClient extends TransportClient {
             return this.idleChannelTimeout;
         }
 
+        public Duration idleChannelTimerResolution() { return this.idleChannelTimerResolution; }
+
         public Duration idleEndpointTimeout() {
             return this.idleEndpointTimeout;
         }
@@ -387,6 +403,16 @@ public final class RntbdTransportClient extends TransportClient {
 
         public int maxRequestsPerChannel() {
             return this.maxRequestsPerChannel;
+        }
+
+        public int maxConcurrentRequestsPerEndpoint() {
+            if (this.maxConcurrentRequestsPerEndpointOverride > 0) {
+                return maxConcurrentRequestsPerEndpointOverride;
+            };
+
+            return Math.max(
+                DEFAULT_MIN_MAX_CONCURRENT_REQUESTS_PER_ENDPOINT,
+                this.maxChannelsPerEndpoint * this.maxRequestsPerChannel);
         }
 
         public Duration receiveHangDetectionTime() {
@@ -463,6 +489,7 @@ public final class RntbdTransportClient extends TransportClient {
          *   "maxBufferCapacity": 8388608,
          *   "maxChannelsPerEndpoint": 10,
          *   "maxRequestsPerChannel": 30,
+         *   "maxConcurrentRequestsPerEndpointOverride": 500,
          *   "receiveHangDetectionTime": "PT1M5S",
          *   "requestExpiryInterval": "PT5S",
          *   "requestTimeout": "PT5S",
@@ -546,10 +573,12 @@ public final class RntbdTransportClient extends TransportClient {
             private Duration connectionAcquisitionTimeout;
             private Duration connectTimeout;
             private Duration idleChannelTimeout;
+            private Duration idleChannelTimerResolution;
             private Duration idleEndpointTimeout;
             private int maxBufferCapacity;
             private int maxChannelsPerEndpoint;
             private int maxRequestsPerChannel;
+            private int maxConcurrentRequestsPerEndpointOverride;
             private Duration receiveHangDetectionTime;
             private Duration requestExpiryInterval;
             private Duration requestTimeout;
@@ -569,10 +598,15 @@ public final class RntbdTransportClient extends TransportClient {
                 this.connectionAcquisitionTimeout = DEFAULT_OPTIONS.connectionAcquisitionTimeout;
                 this.connectTimeout = connectionPolicy.getConnectTimeout();
                 this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
+                this.idleChannelTimerResolution = DEFAULT_OPTIONS.idleChannelTimerResolution;
                 this.idleEndpointTimeout = DEFAULT_OPTIONS.idleEndpointTimeout;
                 this.maxBufferCapacity = DEFAULT_OPTIONS.maxBufferCapacity;
                 this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
                 this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
+
+                this.maxConcurrentRequestsPerEndpointOverride =
+                    DEFAULT_OPTIONS.maxConcurrentRequestsPerEndpointOverride;
+
                 this.receiveHangDetectionTime = DEFAULT_OPTIONS.receiveHangDetectionTime;
                 this.requestExpiryInterval = DEFAULT_OPTIONS.requestExpiryInterval;
                 this.requestTimeout = connectionPolicy.getRequestTimeout();
@@ -623,6 +657,12 @@ public final class RntbdTransportClient extends TransportClient {
                 return this;
             }
 
+            public Builder idleChannelTimerResolution(final Duration value) {
+                checkNotNull(value, "expected non-null value");
+                this.idleChannelTimerResolution = value;
+                return this;
+            }
+
             public Builder idleEndpointTimeout(final Duration value) {
                 checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
                     "expected positive value, not %s",
@@ -648,6 +688,12 @@ public final class RntbdTransportClient extends TransportClient {
             public Builder maxRequestsPerChannel(final int value) {
                 checkArgument(value > 0, "expected positive value, not %s", value);
                 this.maxRequestsPerChannel = value;
+                return this;
+            }
+
+            public Builder maxConcurrentRequestsPerEndpointOverride(final int value) {
+                checkArgument(value > 0, "expected positive value, not %s", value);
+                this.maxConcurrentRequestsPerEndpointOverride = value;
                 return this;
             }
 

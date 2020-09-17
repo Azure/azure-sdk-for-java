@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
+import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
@@ -36,6 +37,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
     private long length = 4L;
     private Duration timeout = Duration.ofSeconds(30);
     private String leaseId = "leaseId";
+    private String tags = "tags";
     private String base64BlockId = "base64BlockID";
     private String sourceUrl = "https://example.com";
     private long offset = 1024L;
@@ -210,6 +212,24 @@ public class BlockBlobClientJavaDocCodeSnippets {
         System.out.println("Uncommitted Blocks:");
         block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
         // END: com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockListType-String-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#listBlocksWithResponse(BlockBlobListBlocksOptions, Duration, Context)}
+     */
+    public void listBlocks3() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockBlobListBlocksOptions-Duration-Context
+        Context context = new Context("key", "value");
+        BlockList block = client.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL)
+            .setLeaseId(leaseId)
+            .setIfTagsMatch(tags), timeout, context).getValue();
+
+        System.out.println("Committed Blocks:");
+        block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
+
+        System.out.println("Uncommitted Blocks:");
+        block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockBlobListBlocksOptions-Duration-Context
     }
 
     /**

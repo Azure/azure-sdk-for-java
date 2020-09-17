@@ -89,6 +89,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
      */
     @Override
     public AzureBlobFileAttributes readAttributes() throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         return new AzureBlobFileAttributes(path);
     }
 
@@ -100,6 +101,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
      * @throws IOException if an IOException occurs.
      */
     public void setBlobHttpHeaders(BlobHttpHeaders headers) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             new AzureResource(this.path).getBlobClient().setHttpHeaders(headers);
         } catch (BlobStorageException e) {
@@ -115,6 +117,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
      * @throws IOException if an IOException occurs.
      */
     public void setMetadata(Map<String, String> metadata) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             new AzureResource(this.path).getBlobClient().setMetadata(metadata);
         } catch (BlobStorageException e) {
@@ -130,6 +133,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
      * @throws IOException if an IOException occurs.
      */
     public void setTier(AccessTier tier) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             new AzureResource(this.path).getBlobClient().setAccessTier(tier);
         } catch (BlobStorageException e) {

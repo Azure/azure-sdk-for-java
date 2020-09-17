@@ -28,6 +28,7 @@ import java.util.Map;
 import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
 
+
 /**
  * To create Gremlin factory and template for auto-configure Gremlin properties.
  */
@@ -62,7 +63,8 @@ public class GremlinAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GremlinConfig getGremlinConfig() {
-        return GremlinConfig.builder(properties.getEndpoint(), properties.getUsername(), properties.getPassword())
+        return GremlinConfig.builder(properties.getEndpoint(), properties.getUsername(),
+            properties.getPassword())
                 .port(properties.getPort())
                 .sslEnabled(properties.isSslEnabled())
                 .telemetryAllowed(properties.isTelemetryAllowed())

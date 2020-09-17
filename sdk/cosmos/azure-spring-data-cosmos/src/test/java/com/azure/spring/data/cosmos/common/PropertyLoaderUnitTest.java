@@ -14,11 +14,4 @@ public class PropertyLoaderUnitTest {
         Assert.assertNotNull(version);
         Assert.assertNotEquals(version, "");
     }
-
-    @Test
-    public void testGetApplicationTelemetryAllowed() {
-        final boolean isAllowed = PropertyLoader.isApplicationTelemetryAllowed();
-
-        Assert.assertFalse(isAllowed);
-    }
 }

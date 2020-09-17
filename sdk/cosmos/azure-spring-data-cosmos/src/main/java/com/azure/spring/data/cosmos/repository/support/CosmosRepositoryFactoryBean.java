@@ -4,11 +4,7 @@ package com.azure.spring.data.cosmos.repository.support;
 
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport;
@@ -21,10 +17,8 @@ import java.io.Serializable;
  * configuration.
  */
 public class CosmosRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extends Serializable>
-        extends RepositoryFactoryBeanSupport<T, S, ID>
-        implements ApplicationContextAware {
+        extends RepositoryFactoryBeanSupport<T, S, ID> {
 
-    private ApplicationContext applicationContext;
     private CosmosOperations operations;
     private boolean mappingContextConfigured = false;
 
@@ -42,23 +36,17 @@ public class CosmosRepositoryFactoryBean<T extends Repository<S, ID>, S, ID exte
      *
      * @param operations for cosmos operations
      */
-    @Autowired
     public void setCosmosOperations(CosmosOperations operations) {
         this.operations = operations;
     }
 
     @Override
     protected final RepositoryFactorySupport createRepositoryFactory() {
-        return getFactoryInstance(applicationContext);
+        return getFactoryInstance();
     }
 
-    protected RepositoryFactorySupport getFactoryInstance(ApplicationContext applicationContext) {
-        return new CosmosRepositoryFactory(operations, applicationContext);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+    protected RepositoryFactorySupport getFactoryInstance() {
+        return new CosmosRepositoryFactory(operations);
     }
 
     @Override

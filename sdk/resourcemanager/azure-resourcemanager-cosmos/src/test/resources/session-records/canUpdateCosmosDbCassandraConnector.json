@@ -1,0 +1,2088 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgcosmosdb0ce505265?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (ResourceManagementClient, 2019-08-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:07:56 GMT",
+      "content-length" : "319",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c2fb9baa-b21e-4b5c-ac9c-e3bf0c561ea8",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T060757Z:c2fb9baa-b21e-4b5c-ac9c-e3bf0c561ea8",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c2fb9baa-b21e-4b5c-ac9c-e3bf0c561ea8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265\",\"name\":\"rgcosmosdb0ce505265\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"tags\":{\"date\":\"2019-11-15T06:07:54.046Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:08:02 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "1512",
+      "vary" : "Accept-Encoding",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "931df2c0-6723-4767-98a5-df20bc8de680",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T060802Z:931df2c0-6723-4767-98a5-df20bc8de680",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a/operationResults/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "32b13b6f-24ae-48cb-8164-2654c0ba25cd",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a\",\"name\":\"cosmosdbd4026295a8a\",\"location\":\"West US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{\"defaultExperience\":\"Cassandra\",\"tag1\":\"value1\"},\"properties\":{\"provisioningState\":\"Initializing\",\"ipRangeFilter\":\"\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Cassandra\",\"disableKeyBasedMetadataWriteAccess\":false,\"databaseAccountOfferType\":\"Standard\",\"enableCassandraConnector\":true,\"connectorOffer\":\"Small\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Strong\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"provisioningState\":\"Initializing\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"provisioningState\":\"Initializing\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"provisioningState\":\"Initializing\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"failoverPriority\":0}],\"cors\":[],\"capabilities\":[{\"name\":\"EnableCassandra\"}]}}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:08:02 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "399c0423-ec27-43ac-b339-d23262d87c8e",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T060802Z:399c0423-ec27-43ac-b339-d23262d87c8e",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "399c0423-ec27-43ac-b339-d23262d87c8e",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:08:32 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "6482c20b-63b1-45e1-9ddd-69ffe3ebdc26",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T060833Z:6482c20b-63b1-45e1-9ddd-69ffe3ebdc26",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "6482c20b-63b1-45e1-9ddd-69ffe3ebdc26",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:09:02 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "09d05fd3-0131-4abc-8fc6-818e532340e1",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T060903Z:09d05fd3-0131-4abc-8fc6-818e532340e1",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "09d05fd3-0131-4abc-8fc6-818e532340e1",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:09:33 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "220d5d29-1ea4-428b-8b12-9f256da54b7b",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T060934Z:220d5d29-1ea4-428b-8b12-9f256da54b7b",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "220d5d29-1ea4-428b-8b12-9f256da54b7b",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:10:04 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11995",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ca9f1fe5-0f44-4897-820d-bdaf8b92913c",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061005Z:ca9f1fe5-0f44-4897-820d-bdaf8b92913c",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "ca9f1fe5-0f44-4897-820d-bdaf8b92913c",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:10:34 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ae9de72e-3de9-4462-a68c-ecd4761ee011",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061035Z:ae9de72e-3de9-4462-a68c-ecd4761ee011",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "ae9de72e-3de9-4462-a68c-ecd4761ee011",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:11:06 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "8056117d-ac74-425b-835e-93f6be09b1e0",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061107Z:8056117d-ac74-425b-835e-93f6be09b1e0",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "8056117d-ac74-425b-835e-93f6be09b1e0",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:11:38 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11992",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4e2040f6-5474-434e-9cde-089ae25a13d4",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061138Z:4e2040f6-5474-434e-9cde-089ae25a13d4",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "4e2040f6-5474-434e-9cde-089ae25a13d4",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:12:08 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11991",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "74933b32-b5e9-4b1f-91d5-6948940b92db",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061209Z:74933b32-b5e9-4b1f-91d5-6948940b92db",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "74933b32-b5e9-4b1f-91d5-6948940b92db",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:12:39 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11990",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a5ed531d-9a55-440a-b275-46e6fd6fb8f3",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061240Z:a5ed531d-9a55-440a-b275-46e6fd6fb8f3",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "a5ed531d-9a55-440a-b275-46e6fd6fb8f3",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:13:11 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "8f92e3b8-a9d2-452c-b933-59054187d735",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061311Z:8f92e3b8-a9d2-452c-b933-59054187d735",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "8f92e3b8-a9d2-452c-b933-59054187d735",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:13:42 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11988",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "9ed75ca2-78e6-4a87-97ff-031ed263be5f",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061342Z:9ed75ca2-78e6-4a87-97ff-031ed263be5f",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "9ed75ca2-78e6-4a87-97ff-031ed263be5f",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:14:13 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11987",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "cca2c4c9-8202-4228-897a-3898edc31bc1",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061414Z:cca2c4c9-8202-4228-897a-3898edc31bc1",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "cca2c4c9-8202-4228-897a-3898edc31bc1",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:14:44 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11986",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "b1e60902-f9eb-472e-9f88-9e78d1054e73",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061444Z:b1e60902-f9eb-472e-9f88-9e78d1054e73",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "b1e60902-f9eb-472e-9f88-9e78d1054e73",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:15:14 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11985",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4df00983-945f-4e84-a501-b0604c2b5e2f",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061514Z:4df00983-945f-4e84-a501-b0604c2b5e2f",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "4df00983-945f-4e84-a501-b0604c2b5e2f",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:15:45 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11984",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "8df31550-3b8b-471a-ada2-711a43d31b55",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061546Z:8df31550-3b8b-471a-ada2-711a43d31b55",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "8df31550-3b8b-471a-ada2-711a43d31b55",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:16:16 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11983",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "9edfb61a-ebac-427f-8a2a-974fafd891a5",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061616Z:9edfb61a-ebac-427f-8a2a-974fafd891a5",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "9edfb61a-ebac-427f-8a2a-974fafd891a5",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:16:47 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11982",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2b4bc8a6-9eee-41ce-b958-a2da5f5f3bfc",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061648Z:2b4bc8a6-9eee-41ce-b958-a2da5f5f3bfc",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "2b4bc8a6-9eee-41ce-b958-a2da5f5f3bfc",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:17:18 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11981",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "86ed4e1e-29ab-4fa4-9315-e531c3fe80c6",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061718Z:86ed4e1e-29ab-4fa4-9315-e531c3fe80c6",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "86ed4e1e-29ab-4fa4-9315-e531c3fe80c6",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:17:48 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11980",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "b4b356be-6b98-44b2-93d0-42abbf486ecd",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061748Z:b4b356be-6b98-44b2-93d0-42abbf486ecd",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "b4b356be-6b98-44b2-93d0-42abbf486ecd",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:18:19 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11979",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "e0a2a344-d234-4594-a82f-8aa5a8737ee1",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061820Z:e0a2a344-d234-4594-a82f-8aa5a8737ee1",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "e0a2a344-d234-4594-a82f-8aa5a8737ee1",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:18:51 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11978",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "f98a26f8-4eb1-45c9-9637-3a9146b888e9",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061851Z:f98a26f8-4eb1-45c9-9637-3a9146b888e9",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "f98a26f8-4eb1-45c9-9637-3a9146b888e9",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:19:21 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11977",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d217ba40-9f68-4bef-919f-1c860c9ab3f5",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061921Z:d217ba40-9f68-4bef-919f-1c860c9ab3f5",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "d217ba40-9f68-4bef-919f-1c860c9ab3f5",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:19:52 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11976",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "44f85343-27a3-4957-a371-828134a0b1d0",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T061953Z:44f85343-27a3-4957-a371-828134a0b1d0",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "44f85343-27a3-4957-a371-828134a0b1d0",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:20:24 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11975",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "6b932d24-d69f-4a80-9ae2-c256f7a4039d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062024Z:6b932d24-d69f-4a80-9ae2-c256f7a4039d",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "6b932d24-d69f-4a80-9ae2-c256f7a4039d",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:20:55 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11974",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "07bebdc1-2d0a-4895-b21c-20a71994891f",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062056Z:07bebdc1-2d0a-4895-b21c-20a71994891f",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "07bebdc1-2d0a-4895-b21c-20a71994891f",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:21:26 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11973",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "06d8b0e5-aa89-4d33-8990-f2e1004d8e05",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062126Z:06d8b0e5-aa89-4d33-8990-f2e1004d8e05",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "06d8b0e5-aa89-4d33-8990-f2e1004d8e05",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:21:56 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11972",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d6ae02c1-c7e4-49ca-ae9e-8397a007d10d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062156Z:d6ae02c1-c7e4-49ca-ae9e-8397a007d10d",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "d6ae02c1-c7e4-49ca-ae9e-8397a007d10d",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:22:26 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11971",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "80694d66-4edf-4ab8-8f56-499cbbdff530",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062227Z:80694d66-4edf-4ab8-8f56-499cbbdff530",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "80694d66-4edf-4ab8-8f56-499cbbdff530",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:22:56 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11970",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "3d101c47-32cc-4649-9175-6626802a041d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062257Z:3d101c47-32cc-4649-9175-6626802a041d",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "3d101c47-32cc-4649-9175-6626802a041d",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:23:27 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11969",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "8b4aaf2c-d9bf-435e-86b4-0116efa7af74",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062327Z:8b4aaf2c-d9bf-435e-86b4-0116efa7af74",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "8b4aaf2c-d9bf-435e-86b4-0116efa7af74",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:23:57 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11968",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "be7807ae-6288-438c-a8f7-57983359b1a7",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062358Z:be7807ae-6288-438c-a8f7-57983359b1a7",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "be7807ae-6288-438c-a8f7-57983359b1a7",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:24:29 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11967",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d262c528-edf7-4666-baa5-1c8df9ba8963",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062429Z:d262c528-edf7-4666-baa5-1c8df9ba8963",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "d262c528-edf7-4666-baa5-1c8df9ba8963",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:24:59 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11966",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "124fa320-a119-43ea-b67d-270f856e9c0e",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062459Z:124fa320-a119-43ea-b67d-270f856e9c0e",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "124fa320-a119-43ea-b67d-270f856e9c0e",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:25:29 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11965",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a304b8cf-3007-47ee-972d-b95479ae89c2",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062530Z:a304b8cf-3007-47ee-972d-b95479ae89c2",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "a304b8cf-3007-47ee-972d-b95479ae89c2",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:26:01 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11964",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "3bded1eb-e46e-4931-83cf-a4e059a3d99a",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062601Z:3bded1eb-e46e-4931-83cf-a4e059a3d99a",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "3bded1eb-e46e-4931-83cf-a4e059a3d99a",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:26:31 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11963",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "cfd57c53-3b86-4064-b303-8ecc1968612e",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062632Z:cfd57c53-3b86-4064-b303-8ecc1968612e",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "cfd57c53-3b86-4064-b303-8ecc1968612e",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:27:02 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11962",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "f7e4a298-0dc8-470a-8f81-4d5a3ebb42c8",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062702Z:f7e4a298-0dc8-470a-8f81-4d5a3ebb42c8",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "f7e4a298-0dc8-470a-8f81-4d5a3ebb42c8",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:27:32 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11961",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1a0ed6b1-5c26-4c8e-b4a2-f6fa4529ba06",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062732Z:1a0ed6b1-5c26-4c8e-b4a2-f6fa4529ba06",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "1a0ed6b1-5c26-4c8e-b4a2-f6fa4529ba06",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:28:02 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11960",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "22ccd054-498d-4e99-83ae-44946b5f2424",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062803Z:22ccd054-498d-4e99-83ae-44946b5f2424",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "22ccd054-498d-4e99-83ae-44946b5f2424",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:28:34 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11959",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2bd13cae-b938-4420-b247-e30b3bd6dc1b",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062834Z:2bd13cae-b938-4420-b247-e30b3bd6dc1b",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "2bd13cae-b938-4420-b247-e30b3bd6dc1b",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:29:04 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11958",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "954ae6cc-a319-4e68-bb92-5302169d76aa",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062904Z:954ae6cc-a319-4e68-bb92-5302169d76aa",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "954ae6cc-a319-4e68-bb92-5302169d76aa",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:29:35 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11957",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "92815583-518b-4ba9-89ac-f1c887d8d324",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T062935Z:92815583-518b-4ba9-89ac-f1c887d8d324",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "92815583-518b-4ba9-89ac-f1c887d8d324",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:30:05 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11956",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a9d03044-4e2e-4bf7-b840-745d521acc7c",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063005Z:a9d03044-4e2e-4bf7-b840-745d521acc7c",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "a9d03044-4e2e-4bf7-b840-745d521acc7c",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:30:35 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11955",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "88f52ca2-e9b1-4e0a-badb-29e487ab83cb",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063036Z:88f52ca2-e9b1-4e0a-badb-29e487ab83cb",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "88f52ca2-e9b1-4e0a-badb-29e487ab83cb",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:31:06 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11954",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "6591d860-c263-438f-ba79-e004b1e6a3d1",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063106Z:6591d860-c263-438f-ba79-e004b1e6a3d1",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "6591d860-c263-438f-ba79-e004b1e6a3d1",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:31:36 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11953",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4b97bd65-619e-44ed-b94a-0796639bd3ca",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063136Z:4b97bd65-619e-44ed-b94a-0796639bd3ca",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "4b97bd65-619e-44ed-b94a-0796639bd3ca",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:32:08 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11952",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ac5b328a-171e-4b1c-a103-49f61b8c75ec",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063208Z:ac5b328a-171e-4b1c-a103-49f61b8c75ec",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "ac5b328a-171e-4b1c-a103-49f61b8c75ec",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:32:39 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "33",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11951",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "218daecc-a843-468f-844c-c639b3c9a6ee",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063239Z:218daecc-a843-468f-844c-c639b3c9a6ee",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/32b13b6f-24ae-48cb-8164-2654c0ba25cd?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "218daecc-a843-468f-844c-c639b3c9a6ee",
+      "Body" : "{\"status\":\"Succeeded\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:32:39 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "1899",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11950",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "031c2603-05b1-4a80-a302-de19858e23b0",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063239Z:031c2603-05b1-4a80-a302-de19858e23b0",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "031c2603-05b1-4a80-a302-de19858e23b0",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a\",\"name\":\"cosmosdbd4026295a8a\",\"location\":\"West US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{\"defaultExperience\":\"Cassandra\",\"tag1\":\"value1\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a.documents.azure.com:443/\",\"cassandraEndpoint\":\"https://cosmosdbd4026295a8a.cassandra.cosmos.azure.com:443/\",\"ipRangeFilter\":\"\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Cassandra\",\"disableKeyBasedMetadataWriteAccess\":false,\"databaseAccountOfferType\":\"Standard\",\"enableCassandraConnector\":true,\"connectorOffer\":\"Small\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Strong\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"failoverPriority\":0}],\"cors\":[],\"capabilities\":[{\"name\":\"EnableCassandra\"}]}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:32:39 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "1899",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11949",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "5216f0e2-1c82-4164-a3b8-d33622dfeaa5",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063240Z:5216f0e2-1c82-4164-a3b8-d33622dfeaa5",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "5216f0e2-1c82-4164-a3b8-d33622dfeaa5",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a\",\"name\":\"cosmosdbd4026295a8a\",\"location\":\"West US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{\"defaultExperience\":\"Cassandra\",\"tag1\":\"value1\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a.documents.azure.com:443/\",\"cassandraEndpoint\":\"https://cosmosdbd4026295a8a.cassandra.cosmos.azure.com:443/\",\"ipRangeFilter\":\"\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Cassandra\",\"disableKeyBasedMetadataWriteAccess\":false,\"databaseAccountOfferType\":\"Standard\",\"enableCassandraConnector\":true,\"connectorOffer\":\"Small\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Strong\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"failoverPriority\":0}],\"cors\":[],\"capabilities\":[{\"name\":\"EnableCassandra\"}]}}"
+    }
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:32:44 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "1895",
+      "vary" : "Accept-Encoding",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a7da4f10-db32-4490-a8cb-7ada703902ee",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063245Z:a7da4f10-db32-4490-a8cb-7ada703902ee",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a/operationResults/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "7f062843-53f7-47a0-96d9-7d77de65dbdf",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a\",\"name\":\"cosmosdbd4026295a8a\",\"location\":\"West US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{\"defaultExperience\":\"Cassandra\",\"tag1\":\"value1\"},\"properties\":{\"provisioningState\":\"Updating\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a.documents.azure.com:443/\",\"cassandraEndpoint\":\"https://cosmosdbd4026295a8a.cassandra.cosmos.azure.com:443/\",\"ipRangeFilter\":\"\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Cassandra\",\"disableKeyBasedMetadataWriteAccess\":false,\"databaseAccountOfferType\":\"Standard\",\"enableCassandraConnector\":true,\"connectorOffer\":\"Small\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Strong\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Updating\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Updating\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Updating\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"failoverPriority\":0}],\"cors\":[],\"capabilities\":[{\"name\":\"EnableCassandra\"}]}}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:32:46 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11948",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "efdd73e6-ca8c-4466-bc3c-8219341dfb4c",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063246Z:efdd73e6-ca8c-4466-bc3c-8219341dfb4c",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "efdd73e6-ca8c-4466-bc3c-8219341dfb4c",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:33:16 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11947",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "04bbcabf-e800-4c64-91f2-f9e5244ac841",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063317Z:04bbcabf-e800-4c64-91f2-f9e5244ac841",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "04bbcabf-e800-4c64-91f2-f9e5244ac841",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:33:47 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11946",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "6dabaa2f-2776-4f64-a763-b428730d17fb",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063347Z:6dabaa2f-2776-4f64-a763-b428730d17fb",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "6dabaa2f-2776-4f64-a763-b428730d17fb",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:34:17 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11945",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "41d762e6-eb4b-4092-9831-8a1daa44c70e",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063417Z:41d762e6-eb4b-4092-9831-8a1daa44c70e",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "41d762e6-eb4b-4092-9831-8a1daa44c70e",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:34:47 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11944",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ed321bb7-9c13-4c8f-8273-400e45a6d220",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063448Z:ed321bb7-9c13-4c8f-8273-400e45a6d220",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "ed321bb7-9c13-4c8f-8273-400e45a6d220",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:35:18 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11943",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ddb66b87-41a4-4812-a5d4-3a04390c557a",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063518Z:ddb66b87-41a4-4812-a5d4-3a04390c557a",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "ddb66b87-41a4-4812-a5d4-3a04390c557a",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:35:48 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11942",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "016daec6-8341-417f-a0ef-f541dd2dcf8d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063548Z:016daec6-8341-417f-a0ef-f541dd2dcf8d",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "016daec6-8341-417f-a0ef-f541dd2dcf8d",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:36:18 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11941",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "e4b432ab-58d2-4c2c-bf88-201a22f9e6d9",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063619Z:e4b432ab-58d2-4c2c-bf88-201a22f9e6d9",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "e4b432ab-58d2-4c2c-bf88-201a22f9e6d9",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:36:49 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11940",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "0de59ff8-e2fa-4006-a8ae-18ad64a361f2",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063649Z:0de59ff8-e2fa-4006-a8ae-18ad64a361f2",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "0de59ff8-e2fa-4006-a8ae-18ad64a361f2",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:37:19 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11939",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4c1c706f-be0f-4cd2-8a0a-16c2e776feb2",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063719Z:4c1c706f-be0f-4cd2-8a0a-16c2e776feb2",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "4c1c706f-be0f-4cd2-8a0a-16c2e776feb2",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:37:49 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11938",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c3ae726e-6f09-4f82-bf5c-f4e2249f3645",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063750Z:c3ae726e-6f09-4f82-bf5c-f4e2249f3645",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "c3ae726e-6f09-4f82-bf5c-f4e2249f3645",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:38:20 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11937",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "de437023-3fda-4b3f-b9e3-8f7b443d932d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063820Z:de437023-3fda-4b3f-b9e3-8f7b443d932d",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "de437023-3fda-4b3f-b9e3-8f7b443d932d",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:38:50 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11936",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "cb614aad-dc3b-4d8d-87a0-6ca76690d126",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063850Z:cb614aad-dc3b-4d8d-87a0-6ca76690d126",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "cb614aad-dc3b-4d8d-87a0-6ca76690d126",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:39:19 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11935",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "e5412e66-c6d5-466a-8ded-5181760aefb8",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063920Z:e5412e66-c6d5-466a-8ded-5181760aefb8",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "e5412e66-c6d5-466a-8ded-5181760aefb8",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:39:51 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11934",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "e69819cb-fd6d-4a35-86b2-aafec7ae95cf",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T063951Z:e69819cb-fd6d-4a35-86b2-aafec7ae95cf",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "e69819cb-fd6d-4a35-86b2-aafec7ae95cf",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:40:21 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11933",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "831c93d9-9f79-47b0-b1e8-5610627994e7",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T064021Z:831c93d9-9f79-47b0-b1e8-5610627994e7",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "831c93d9-9f79-47b0-b1e8-5610627994e7",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:40:51 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11932",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "8b6fca52-57b3-4945-ad71-be196b3b2003",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T064051Z:8b6fca52-57b3-4945-ad71-be196b3b2003",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "8b6fca52-57b3-4945-ad71-be196b3b2003",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:41:21 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11931",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "8cf60c05-5a17-4776-9f04-e7a07ec74dd6",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T064122Z:8cf60c05-5a17-4776-9f04-e7a07ec74dd6",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "8cf60c05-5a17-4776-9f04-e7a07ec74dd6",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:41:52 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11930",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "fcb4a8f6-e460-4c86-a907-6072f261b5f5",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T064152Z:fcb4a8f6-e460-4c86-a907-6072f261b5f5",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "fcb4a8f6-e460-4c86-a907-6072f261b5f5",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:42:23 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11929",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1d448933-3e3e-4861-bac8-7d1237ea54d1",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T064223Z:1d448933-3e3e-4861-bac8-7d1237ea54d1",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "1d448933-3e3e-4861-bac8-7d1237ea54d1",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:42:54 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11928",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "dde361cd-1b78-4972-be06-0c2b6752e0b1",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T064254Z:dde361cd-1b78-4972-be06-0c2b6752e0b1",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "dde361cd-1b78-4972-be06-0c2b6752e0b1",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:43:24 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "32",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11927",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2d19050c-8eb3-45ff-8bc2-519ad9b4f5bd",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T064324Z:2d19050c-8eb3-45ff-8bc2-519ad9b4f5bd",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "2d19050c-8eb3-45ff-8bc2-519ad9b4f5bd",
+      "Body" : "{\"status\":\"Dequeued\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:43:55 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "33",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11926",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "70649a1e-90e9-4319-bc33-c276fe240c58",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T064355Z:70649a1e-90e9-4319-bc33-c276fe240c58",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/7f062843-53f7-47a0-96d9-7d77de65dbdf?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "70649a1e-90e9-4319-bc33-c276fe240c58",
+      "Body" : "{\"status\":\"Succeeded\",\"error\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:43:55 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "1895",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11925",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "7ff67470-5a0a-4881-83d1-9f7ba018af28",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T064356Z:7ff67470-5a0a-4881-83d1-9f7ba018af28",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "7ff67470-5a0a-4881-83d1-9f7ba018af28",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a\",\"name\":\"cosmosdbd4026295a8a\",\"location\":\"West US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{\"defaultExperience\":\"Cassandra\",\"tag1\":\"value1\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a.documents.azure.com:443/\",\"cassandraEndpoint\":\"https://cosmosdbd4026295a8a.cassandra.cosmos.azure.com:443/\",\"ipRangeFilter\":\"\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Cassandra\",\"disableKeyBasedMetadataWriteAccess\":false,\"databaseAccountOfferType\":\"Standard\",\"enableCassandraConnector\":false,\"connectorOffer\":\"\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Strong\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"failoverPriority\":0}],\"cors\":[],\"capabilities\":[{\"name\":\"EnableCassandra\"}]}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (CosmosDB)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:43:56 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "1895",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11924",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1e88fb3c-dba0-4495-be01-1c1f5c22f57b",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T064357Z:1e88fb3c-dba0-4495-be01-1c1f5c22f57b",
+      "x-ms-gatewayversion" : "version=2.7.0",
+      "content-location" : "https://management.documents.azure.com:450/subscriptions/1c638cf4-608f-4ee6-b680-c329e824c3a8/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a?api-version=2019-08-01",
+      "content-type" : "application/json",
+      "cache-control" : "no-store, no-cache",
+      "x-ms-request-id" : "1e88fb3c-dba0-4495-be01-1c1f5c22f57b",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb0ce505265/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbd4026295a8a\",\"name\":\"cosmosdbd4026295a8a\",\"location\":\"West US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{\"defaultExperience\":\"Cassandra\",\"tag1\":\"value1\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a.documents.azure.com:443/\",\"cassandraEndpoint\":\"https://cosmosdbd4026295a8a.cassandra.cosmos.azure.com:443/\",\"ipRangeFilter\":\"\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Cassandra\",\"disableKeyBasedMetadataWriteAccess\":false,\"databaseAccountOfferType\":\"Standard\",\"enableCassandraConnector\":false,\"connectorOffer\":\"\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Strong\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdbd4026295a8a-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"cosmosdbd4026295a8a-westus\",\"locationName\":\"West US\",\"failoverPriority\":0}],\"cors\":[],\"capabilities\":[{\"name\":\"EnableCassandra\"}]}}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgcosmosdb0ce505265?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (ResourceManagementClient, 2019-08-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 15 Nov 2019 06:44:01 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "7b7781bf-6217-41e1-b58f-d9f8db01e7db",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191115T064402Z:7b7781bf-6217-41e1-b58f-d9f8db01e7db",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR0NPU01PU0RCMENFNTA1MjY1LVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0?api-version=2019-08-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "7b7781bf-6217-41e1-b58f-d9f8db01e7db",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "rgcosmosdb0ce505265", "cosmosdbd4026295a8a", "ca3601b3-9945-4457-9d84-dd89094899e3", "d9be0689-46d6-4978-bd69-829041780a86", "da08555f-d8ae-4cf9-8661-0f32469df4a6", "f749aa26-89fc-436b-81bd-e1d5536017d5" ]
+}

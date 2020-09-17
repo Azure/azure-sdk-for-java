@@ -218,10 +218,7 @@ public final class AzurePath implements Path {
         if (this.pathString.isEmpty()) {
             return this;
         }
-        // If the path is empty, the only valid option is also an empty path.
-        if (this.pathString.isEmpty()) {
-            return this;
-        }
+
         return this.parentFileSystem.getPath(this.splitToElements(this.withoutRoot())[index]);
     }
 
@@ -774,5 +771,12 @@ public final class AzurePath implements Path {
 
     private String rootToFileStore(String root) {
         return root.substring(0, root.length() - 1); // Remove the ROOT_DIR_SUFFIX
+    }
+
+    static void ensureFileSystemOpen(Path p) throws IOException {
+        if (!p.getFileSystem().isOpen()) {
+            throw LoggingUtility.logError(((AzurePath) p).logger,
+                new IOException("FileSystem for path has been closed. Path: " + p.toString()));
+        }
     }
 }

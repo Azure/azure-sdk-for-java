@@ -10,7 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.type.StandardAnnotationMetadata;
+import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.data.repository.config.AnnotationRepositoryConfigurationSource;
 import org.springframework.data.repository.config.RepositoryConfiguration;
 import org.springframework.data.repository.config.RepositoryConfigurationSource;
@@ -21,11 +21,11 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class ReactiveCosmosRepositoryConfigurationExtensionUnitTest {
 
-    StandardAnnotationMetadata metadata = new StandardAnnotationMetadata(Config.class, true);
+    AnnotationMetadata metadata = AnnotationMetadata.introspect(Config.class);
     ResourceLoader loader = new PathMatchingResourcePatternResolver();
     Environment environment = new StandardEnvironment();
     RepositoryConfigurationSource configurationSource = new AnnotationRepositoryConfigurationSource(metadata,
-            EnableReactiveCosmosRepositories.class, loader, environment, new DefaultListableBeanFactory());
+            EnableReactiveCosmosRepositories.class, loader, environment, new DefaultListableBeanFactory(), null);
 
     private static void assertHashRepo(Class<?> repositoryInterface,
                                        Collection<RepositoryConfiguration<RepositoryConfigurationSource>> configs) {

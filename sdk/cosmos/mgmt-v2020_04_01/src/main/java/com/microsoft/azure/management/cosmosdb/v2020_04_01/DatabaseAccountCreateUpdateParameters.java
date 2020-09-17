@@ -135,6 +135,12 @@ public class DatabaseAccountCreateUpdateParameters extends ARMResourceProperties
     private Boolean enableAnalyticalStorage;
 
     /**
+     * The CORS policy for the Cosmos DB database account.
+     */
+    @JsonProperty(value = "properties.cors")
+    private List<CorsPolicy> cors;
+
+    /**
      * Creates an instance of DatabaseAccountCreateUpdateParameters class.
      * @param locations an array that contains the georeplication locations enabled for the Cosmos DB account.
      */
@@ -499,6 +505,26 @@ public class DatabaseAccountCreateUpdateParameters extends ARMResourceProperties
      */
     public DatabaseAccountCreateUpdateParameters withEnableAnalyticalStorage(Boolean enableAnalyticalStorage) {
         this.enableAnalyticalStorage = enableAnalyticalStorage;
+        return this;
+    }
+
+    /**
+     * Get the CORS policy for the Cosmos DB database account.
+     *
+     * @return the cors value
+     */
+    public List<CorsPolicy> cors() {
+        return this.cors;
+    }
+
+    /**
+     * Set the CORS policy for the Cosmos DB database account.
+     *
+     * @param cors the cors value to set
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withCors(List<CorsPolicy> cors) {
+        this.cors = cors;
         return this;
     }
 

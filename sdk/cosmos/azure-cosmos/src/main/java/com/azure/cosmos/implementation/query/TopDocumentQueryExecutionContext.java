@@ -5,10 +5,11 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
 
 import java.util.HashMap;
@@ -108,8 +109,10 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                         headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);
                     }
 
-                    return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults(), headers,
-                            BridgeInternal.queryMetricsFromFeedResponse(t));
+                    return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults(),
+                        headers,
+                        BridgeInternal.queryMetricsFromFeedResponse(t),
+                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(t));
                 } else {
                     assert lastPage == false;
                     lastPage = true;
@@ -121,7 +124,9 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                     headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);
 
                     return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults().subList(0, lastPageSize),
-                            headers, BridgeInternal.queryMetricsFromFeedResponse(t));
+                        headers,
+                        BridgeInternal.queryMetricsFromFeedResponse(t),
+                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(t));
                 }
             }
         });

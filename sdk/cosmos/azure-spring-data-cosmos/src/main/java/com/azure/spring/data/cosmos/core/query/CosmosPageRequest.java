@@ -2,14 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.query;
 
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.cosmos.models.FeedResponse;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.Objects;
+
 /**
  * CosmosPageRequest representing page request during pagination query, field
- * {@link FeedResponse#continuationToken()}  response continuation token} is saved
+ * {@link FeedResponse#getContinuationToken()}  response continuation token} is saved
  * to help query next page.
  * <p>
  * The requestContinuation token should be saved after each request and reused in later queries.
@@ -128,8 +130,7 @@ public class CosmosPageRequest extends PageRequest {
 
         final CosmosPageRequest that = (CosmosPageRequest) obj;
 
-        final boolean continuationTokenEquals = requestContinuation != null
-            ? requestContinuation.equals(that.requestContinuation) : that.requestContinuation == null;
+        final boolean continuationTokenEquals = Objects.equals(requestContinuation, that.requestContinuation);
 
         return continuationTokenEquals
             && super.equals(that);

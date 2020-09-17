@@ -3,9 +3,10 @@
 
 package com.azure.spring.data.cosmos.core;
 
-import com.azure.spring.data.cosmos.CosmosDbFactory;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -15,9 +16,9 @@ public class CosmosTemplateUnitTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void rejectNullDbFactory() {
-        final CosmosDBConfig dbConfig = CosmosDBConfig.builder("", "", TestConstants.DB_NAME).build();
-        final CosmosDbFactory cosmosDbFactory = new CosmosDbFactory(dbConfig);
-
-        new CosmosTemplate(cosmosDbFactory, null, TestConstants.DB_NAME);
+        CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
+            .endpoint("")
+            .key(""));
+        new CosmosFactory(client, TestConstants.DB_NAME);
     }
 }

@@ -3,9 +3,10 @@
 package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.CosmosOperations;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.data.repository.query.ResultProcessor;
+import org.springframework.data.repository.query.ReturnedType;
 
 /**
  * Abstract class for cosmos query.
@@ -13,7 +14,7 @@ import org.springframework.data.repository.query.ResultProcessor;
 public abstract class AbstractCosmosQuery implements RepositoryQuery {
 
     private final CosmosQueryMethod method;
-    private final CosmosOperations operations;
+    protected final CosmosOperations operations;
 
     /**
      * Initialization
@@ -32,27 +33,38 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
      * @param parameters must not be {@literal null}.
      * @return execution result. Can be {@literal null}.
      */
+    @Override
     public Object execute(Object[] parameters) {
         final CosmosParameterAccessor accessor = new CosmosParameterParameterAccessor(method, parameters);
-        final DocumentQuery query = createQuery(accessor);
+        final CosmosQuery query = createQuery(accessor);
 
         final ResultProcessor processor = method.getResultProcessor().withDynamicProjection(accessor);
         final String container = ((CosmosEntityMetadata) method.getEntityInformation()).getContainerName();
 
-        final CosmosQueryExecution execution = getExecution(accessor);
+        final CosmosQueryExecution execution = getExecution(accessor, processor.getReturnedType());
+
         return execution.execute(query, processor.getReturnedType().getDomainType(), container);
     }
 
 
-    private CosmosQueryExecution getExecution(CosmosParameterAccessor accessor) {
+    /**
+     * Determines the appropriate execution path for a query
+     *
+     * @param returnedType The return type of the method
+     * @param accessor Object for accessing method parameters
+     * @return the execution type needed to handle the query
+     */
+    protected CosmosQueryExecution getExecution(CosmosParameterAccessor accessor, ReturnedType returnedType) {
         if (isDeleteQuery()) {
             return new CosmosQueryExecution.DeleteExecution(operations);
-        } else if (method.isPageQuery()) {
+        } else if (isPageQuery()) {
             return new CosmosQueryExecution.PagedExecution(operations, accessor.getPageable());
         } else if (isExistsQuery()) {
             return new CosmosQueryExecution.ExistsExecution(operations);
-        } else {
+        } else if (isCollectionQuery()) {
             return new CosmosQueryExecution.MultiEntityExecution(operations);
+        } else {
+            return new CosmosQueryExecution.SingleEntityExecution(operations, returnedType);
         }
     }
 
@@ -65,10 +77,18 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
         return method;
     }
 
-    protected abstract DocumentQuery createQuery(CosmosParameterAccessor accessor);
+    protected abstract CosmosQuery createQuery(CosmosParameterAccessor accessor);
 
     protected abstract boolean isDeleteQuery();
 
     protected abstract boolean isExistsQuery();
+
+    protected boolean isPageQuery() {
+        return method.isPageQuery();
+    }
+
+    protected boolean isCollectionQuery() {
+        return method.isCollectionQuery();
+    }
 
 }

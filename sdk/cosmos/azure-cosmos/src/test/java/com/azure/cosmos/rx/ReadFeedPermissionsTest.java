@@ -87,6 +87,6 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
         permission.setPermissionMode(PermissionMode.READ);
         permission.setContainerName("myContainer" + index + "=");
 
-        return createdUser.createPermission(permission, null).single().block().getProperties();
+        return createdUser.createPermission(permission, null).block().getProperties();
     }
 }

@@ -6,7 +6,6 @@ package com.azure.security.keyvault.keys.models;
 import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -30,8 +29,7 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
      * @param name The name of the Ec key.
      */
     public CreateEcKeyOptions(String name) {
-        super.name = name;
-        this.keyType = KeyType.EC;
+        super(name, KeyType.EC);
     }
 
     /**
@@ -62,7 +60,7 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
      */
     @Override
     public CreateEcKeyOptions setKeyOperations(KeyOperation... keyOperations) {
-        this.keyOperations = Arrays.asList(keyOperations);
+        super.setKeyOperations(keyOperations);
         return this;
     }
 
@@ -121,7 +119,8 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
      */
     public CreateEcKeyOptions setHardwareProtected(Boolean hardwareProtected) {
         this.hardwareProtected = hardwareProtected;
-        this.keyType = hardwareProtected ? KeyType.EC_HSM : KeyType.EC;
+        KeyType keyType = hardwareProtected ? KeyType.EC_HSM : KeyType.EC;
+        setKeyType(keyType);
         return this;
     }
 

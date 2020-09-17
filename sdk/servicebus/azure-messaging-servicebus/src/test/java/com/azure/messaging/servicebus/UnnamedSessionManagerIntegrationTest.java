@@ -70,10 +70,9 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
         final String contents = "Some-contents";
         final int numberToSend = 5;
-        final List<String> lockTokens = new ArrayList<>();
+        final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
-        setSenderAndReceiver(entityType, entityIndex, TIMEOUT,
-            builder -> builder.maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
+        setSenderAndReceiver(entityType, entityIndex, TIMEOUT, builder -> builder);
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(numberToSend)
@@ -99,7 +98,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 .verify(Duration.ofMinutes(2));
         } finally {
             subscription.dispose();
-            Mono.when(lockTokens.stream().map(e -> receiver.complete(e, sessionId))
+            Mono.when(receivedMessages.stream().map(e -> receiver.complete(e))
                 .collect(Collectors.toList()))
                 .block(TIMEOUT);
         }
@@ -130,7 +129,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final Set<String> set = new HashSet<>();
 
         setSenderAndReceiver(MessagingEntityType.SUBSCRIPTION, entityIndex, Duration.ofSeconds(20),
-            builder -> builder.maxConcurrentSessions(maxConcurrency).maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
+            builder -> builder.maxConcurrentSessions(maxConcurrency));
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(maxMessages)

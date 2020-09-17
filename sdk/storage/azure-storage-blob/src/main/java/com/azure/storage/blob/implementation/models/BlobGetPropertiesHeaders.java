@@ -362,6 +362,13 @@ public final class BlobGetPropertiesHeaders {
     private Boolean isSealed;
 
     /*
+     * If an object is in rehydrate pending state then this header is returned
+     * with priority of rehydrate. Valid values are High and Standard.
+     */
+    @JsonProperty(value = "x-ms-rehydrate-priority")
+    private String rehydratePriority;
+
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -1475,6 +1482,30 @@ public final class BlobGetPropertiesHeaders {
      */
     public BlobGetPropertiesHeaders setIsSealed(Boolean isSealed) {
         this.isSealed = isSealed;
+        return this;
+    }
+
+    /**
+     * Get the rehydratePriority property: If an object is in rehydrate pending
+     * state then this header is returned with priority of rehydrate. Valid
+     * values are High and Standard.
+     *
+     * @return the rehydratePriority value.
+     */
+    public String getRehydratePriority() {
+        return this.rehydratePriority;
+    }
+
+    /**
+     * Set the rehydratePriority property: If an object is in rehydrate pending
+     * state then this header is returned with priority of rehydrate. Valid
+     * values are High and Standard.
+     *
+     * @param rehydratePriority the rehydratePriority value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setRehydratePriority(String rehydratePriority) {
+        this.rehydratePriority = rehydratePriority;
         return this;
     }
 

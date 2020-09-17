@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  */
 public class RecordingRedactor {
     private static final String REDACTED = "REDACTED";
-    private static final String REDACTED_UTF_8 = Base64.getEncoder().encodeToString("REDACTED".getBytes(StandardCharsets.UTF_8));
+    private static final String REDACTED_UTF_8 = Base64.getEncoder().encodeToString(REDACTED.getBytes(StandardCharsets.UTF_8));
 
     private static final Pattern ACCESS_TOKEN_KEY_PATTERN = Pattern.compile("(?:\"accessToken\":\")(.*?)(?:\",|\"})");
     private static final Pattern DELEGATIONKEY_KEY_PATTERN = Pattern.compile("(?:<Value>)(.*)(?:</Value>)");
@@ -53,9 +53,12 @@ public class RecordingRedactor {
     }
 
     private static String redactUserDelegationKey(String content) {
-        content = redactionReplacement(content, DELEGATIONKEY_KEY_PATTERN.matcher(content), REDACTED_UTF_8);
-        content = redactionReplacement(content, DELEGATIONKEY_CLIENTID_PATTERN.matcher(content), UUID.randomUUID().toString());
-        content = redactionReplacement(content, DELEGATIONKEY_TENANTID_PATTERN.matcher(content), UUID.randomUUID().toString());
+        if (content.contains("<UserDelegationKey>")) {
+            content = redactionReplacement(content, DELEGATIONKEY_KEY_PATTERN.matcher(content), REDACTED_UTF_8);
+            content = redactionReplacement(content, DELEGATIONKEY_CLIENTID_PATTERN.matcher(content), UUID.randomUUID().toString());
+            content = redactionReplacement(content, DELEGATIONKEY_TENANTID_PATTERN.matcher(content), UUID.randomUUID().toString());
+        }
+
         return content;
     }
 

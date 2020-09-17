@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.generator;
 
-import com.azure.data.cosmos.SqlQuerySpec;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 
 /**
  * Interface of generating SqlQuerySpec
@@ -15,5 +15,5 @@ public interface QuerySpecGenerator {
      * @param query tree structured query condition.
      * @return SqlQuerySpec executed by cosmos client.
      */
-    SqlQuerySpec generateCosmos(DocumentQuery query);
+    SqlQuerySpec generateCosmos(CosmosQuery query);
 }

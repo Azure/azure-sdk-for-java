@@ -51,7 +51,8 @@ class BlobChunkedDownloader {
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc = (range, conditions)
             -> client.downloadWithResponse(range, null, conditions, false);
 
-        return ChunkedDownloadUtils.downloadFirstChunk(range, options, requestConditions, downloadFunc)
+        /* We don't etag lock since the Changefeed can append to the blob while we are reading it. */
+        return ChunkedDownloadUtils.downloadFirstChunk(range, options, requestConditions, downloadFunc, false)
             .flatMapMany(setupTuple3 -> {
                 long newCount = setupTuple3.getT1();
                 BlobRequestConditions finalConditions = setupTuple3.getT2();

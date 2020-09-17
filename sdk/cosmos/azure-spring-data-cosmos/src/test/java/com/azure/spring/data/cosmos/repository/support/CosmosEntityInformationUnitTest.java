@@ -2,13 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.support;
 
-import com.azure.spring.data.cosmos.core.mapping.Document;
-import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import com.azure.spring.data.cosmos.domain.Address;
+import com.azure.spring.data.cosmos.domain.LongIdDomain;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.domain.Student;
 import org.junit.Test;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 
 import java.util.List;
@@ -58,7 +60,7 @@ public class CosmosEntityInformationUnitTest {
                 new CosmosEntityInformation<VersionedVolunteer, String>(VersionedVolunteer.class);
 
         final String containerName = entityInformation.getContainerName();
-        assertThat(containerName).isEqualTo("testCollection");
+        assertThat(containerName).isEqualTo("testContainer");
     }
 
     @Test
@@ -66,8 +68,8 @@ public class CosmosEntityInformationUnitTest {
         final CosmosEntityInformation<VolunteerWithPartitionKey, String> entityInformation =
                 new CosmosEntityInformation<>(VolunteerWithPartitionKey.class);
 
-        final String partitionKeyName = entityInformation.getPartitionKeyFieldName();
-        assertThat(partitionKeyName).isEqualTo("name");
+        final String partitionKeyName = entityInformation.getPartitionKeyPath();
+        assertThat(partitionKeyName).isEqualTo("/name");
     }
 
     @Test
@@ -75,8 +77,8 @@ public class CosmosEntityInformationUnitTest {
         final CosmosEntityInformation<Volunteer, String> entityInformation =
                 new CosmosEntityInformation<>(Volunteer.class);
 
-        final String partitionKeyName = entityInformation.getPartitionKeyFieldName();
-        assertThat(partitionKeyName).isEqualTo(null);
+        final String partitionKeyName = entityInformation.getPartitionKeyPath();
+        assertThat(partitionKeyName).isEqualTo("/null");
     }
 
     @Test
@@ -84,8 +86,26 @@ public class CosmosEntityInformationUnitTest {
         final CosmosEntityInformation<VolunteerWithCustomPartitionKey, String> entityInformation =
                 new CosmosEntityInformation<>(VolunteerWithCustomPartitionKey.class);
 
-        final String partitionKeyName = entityInformation.getPartitionKeyFieldName();
-        assertThat(partitionKeyName).isEqualTo("vol_name");
+        final String partitionKeyName = entityInformation.getPartitionKeyPath();
+        assertThat(partitionKeyName).isEqualTo("/vol_name");
+    }
+
+    @Test
+    public void testPartitionKeyPathAnnotation() {
+        final CosmosEntityInformation<VolunteerWithPartitionKeyPath, String> entityInformation =
+            new CosmosEntityInformation<>(VolunteerWithPartitionKeyPath.class);
+
+        final String partitionKeyPath = entityInformation.getPartitionKeyPath();
+        assertThat(partitionKeyPath).isEqualTo("/partitionKeyPath");
+    }
+
+    @Test
+    public void testPartitionKeyPathAndPartitionKeyAnnotation() {
+        final CosmosEntityInformation<VolunteerWithPartitionKeyPathAndPartitionKey, String> entityInformation =
+            new CosmosEntityInformation<>(VolunteerWithPartitionKeyPathAndPartitionKey.class);
+
+        final String partitionKeyPath = entityInformation.getPartitionKeyPath();
+        assertThat(partitionKeyPath).isEqualTo("/name");
     }
 
     @Test
@@ -107,12 +127,11 @@ public class CosmosEntityInformationUnitTest {
     }
 
     @Test
-    public void testEntityShouldNotBeVersionedWithoutAnnotationOnEtag() {
-        final CosmosEntityInformation<VersionOnWrongField, String> entityInformation =
-                new CosmosEntityInformation<VersionOnWrongField, String>(VersionOnWrongField.class);
-
+    public void testEntityShouldBeVersionedIfUsingAnnotationOnAStringField() {
+        final CosmosEntityInformation<VersionFieldDifferentName, String> entityInformation =
+                new CosmosEntityInformation<VersionFieldDifferentName, String>(VersionFieldDifferentName.class);
         final boolean isVersioned = entityInformation.isVersioned();
-        assertThat(isVersioned).isFalse();
+        assertThat(isVersioned).isTrue();
     }
 
     @Test
@@ -124,13 +143,13 @@ public class CosmosEntityInformationUnitTest {
         assertThat(isVersioned).isFalse();
     }
 
-    @Document(collection = "testCollection")
+    @Container(containerName = "testContainer")
     private static class Volunteer {
         String id;
         String name;
     }
 
-    @Document
+    @Container
     private static class VolunteerWithCustomPartitionKey {
         private String id;
         @PartitionKey("vol_name")
@@ -153,7 +172,7 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document
+    @Container
     private static class VolunteerWithPartitionKey {
         private String id;
         @PartitionKey
@@ -176,7 +195,20 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document(collection = "testCollection")
+    @Container(partitionKeyPath = "/partitionKeyPath")
+    private static class VolunteerWithPartitionKeyPath {
+        private String id;
+        private String name;
+    }
+
+    @Container(partitionKeyPath = "/partitionKeyPath")
+    private static class VolunteerWithPartitionKeyPathAndPartitionKey {
+        private String id;
+        @PartitionKey
+        private String name;
+    }
+
+    @Container(containerName = "testContainer")
     private static class VersionedVolunteer {
         private String id;
         private String name;
@@ -245,7 +277,7 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document
+    @Container
     private static class WrongVersionType {
         private String id;
         private String name;
@@ -312,14 +344,14 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document
-    private static class VersionOnWrongField {
+    @Container
+    private static class VersionFieldDifferentName {
         private String id;
-        @Version
         private String name;
-        private String _etag;
+        @Version
+        private String version;
 
-        VersionOnWrongField() {
+        VersionFieldDifferentName() {
         }
 
         public String getId() {
@@ -338,12 +370,12 @@ public class CosmosEntityInformationUnitTest {
             this.name = name;
         }
 
-        public String get_etag() {
-            return _etag;
+        public String getVersion() {
+            return version;
         }
 
-        public void set_etag(String _etag) {
-            this._etag = _etag;
+        public void setVersion(String version) {
+            this.version = version;
         }
 
         @Override
@@ -354,28 +386,104 @@ public class CosmosEntityInformationUnitTest {
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }
-            VersionOnWrongField that = (VersionOnWrongField) o;
+            VersionFieldDifferentName that = (VersionFieldDifferentName) o;
             return Objects.equals(id, that.id)
                 && Objects.equals(name, that.name)
-                && Objects.equals(_etag, that._etag);
+                && Objects.equals(version, that.version);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(id, name, _etag);
+            return Objects.hash(id, name, version);
         }
 
         @Override
         public String toString() {
-            return "VersionOnWrongField{"
+            return "VersionFieldDifferentName{"
                 + "id='"
                 + id
                 + '\''
                 + ", name='"
                 + name
                 + '\''
-                + ", _etag='"
-                + _etag
+                + ", version='"
+                + version
+                + '\''
+                + '}';
+        }
+    }
+
+    @Test
+    public void testGetIdFieldWithLongType() {
+        final CosmosEntityInformation<LongIdDomain, Long> entityInformation =
+            new CosmosEntityInformation<>(LongIdDomain.class);
+        assertThat(entityInformation.getIdField().getType().equals(Long.class)).isTrue();
+    }
+
+    @Test
+    public void testGetIdFieldWithBasicType() {
+        final CosmosEntityInformation<BasicLongIdDomain, Long> entityInformation =
+            new CosmosEntityInformation<>(BasicLongIdDomain.class);
+        assertThat(entityInformation.getIdField().getType().equals(long.class)).isTrue();
+    }
+
+    @Container
+    class BasicLongIdDomain {
+
+        @Id
+        private long number;
+
+        private String name;
+
+        BasicLongIdDomain(long number, String name) {
+            this.number = number;
+            this.name = name;
+        }
+
+        BasicLongIdDomain() {
+        }
+
+        public long getNumber() {
+            return number;
+        }
+
+        public void setNumber(Long number) {
+            this.number = number;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            BasicLongIdDomain that = (BasicLongIdDomain) o;
+            return Objects.equals(number, that.number)
+                && Objects.equals(name, that.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(number, name);
+        }
+
+        @Override
+        public String toString() {
+            return "BasicLongIdDomain{"
+                + "number="
+                + number
+                + ", name='"
+                + name
                 + '\''
                 + '}';
         }

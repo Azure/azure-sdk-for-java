@@ -4,8 +4,7 @@ package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
-import org.apache.commons.lang3.NotImplementedException;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.repository.query.ResultProcessor;
 import org.springframework.data.repository.query.parser.Part;
@@ -35,13 +34,13 @@ public class PartTreeReactiveCosmosQuery extends AbstractReactiveCosmosQuery {
     }
 
     @Override
-    protected DocumentQuery createQuery(ReactiveCosmosParameterAccessor accessor) {
+    protected CosmosQuery createQuery(ReactiveCosmosParameterAccessor accessor) {
         final ReactiveCosmosQueryCreator creator = new ReactiveCosmosQueryCreator(tree, accessor, mappingContext);
 
-        final DocumentQuery query = creator.createQuery();
+        final CosmosQuery query = creator.createQuery();
 
         if (tree.isLimiting()) {
-            throw new NotImplementedException("Limiting is not supported.");
+            throw new UnsupportedOperationException("Limiting is not supported.");
         }
 
         return query;

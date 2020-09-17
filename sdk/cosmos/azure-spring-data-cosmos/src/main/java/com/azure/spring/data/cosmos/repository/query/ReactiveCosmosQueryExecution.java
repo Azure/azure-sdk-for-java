@@ -3,7 +3,9 @@
 package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import org.springframework.data.repository.query.ReturnedType;
 
 /**
  * Interface to execute reactive cosmos query operations
@@ -18,7 +20,7 @@ public interface ReactiveCosmosQueryExecution {
      * @param container container to conduct query
      * @return Object according to execution result
      */
-    Object execute(DocumentQuery query, Class<?> type, String container);
+    Object execute(CosmosQuery query, Class<?> type, String container);
 
     /**
      * Container operation implementation to execute a container name query
@@ -32,13 +34,13 @@ public interface ReactiveCosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.getContainerName(type);
         }
     }
 
     /**
-     * Find operation implementation to execute a find query
+     * Find operation implementation to execute a find query for multiple items
      */
     final class MultiEntityExecution implements ReactiveCosmosQueryExecution {
 
@@ -49,8 +51,36 @@ public interface ReactiveCosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.find(query, type, container);
+        }
+    }
+
+    /**
+     * Find operation implementation to execute a find query for a single item
+     */
+    final class SingleEntityExecution implements ReactiveCosmosQueryExecution {
+
+        private final ReactiveCosmosOperations operations;
+        private final ReturnedType returnedType;
+
+        public SingleEntityExecution(ReactiveCosmosOperations operations, ReturnedType returnedType) {
+            this.operations = operations;
+            this.returnedType = returnedType;
+        }
+
+        @Override
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
+            return operations.find(query, type, container)
+                .buffer(2)
+                .map((vals) -> {
+                    if (vals.size() > 1) {
+                        throw new CosmosAccessException("Too many results - Expected Mono<"
+                            + returnedType.getReturnedType()
+                            + "> but query returned multiple results");
+                    }
+                    return vals.iterator().next();
+                });
         }
     }
 
@@ -66,7 +96,7 @@ public interface ReactiveCosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.exists(query, type, container);
         }
     }
@@ -83,7 +113,7 @@ public interface ReactiveCosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.delete(query, type, container);
         }
     }

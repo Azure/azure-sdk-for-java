@@ -3,8 +3,9 @@
 
 package com.azure.spring.data.cosmos.repository.config;
 
-import com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactoryBean;
 import com.azure.spring.data.cosmos.Constants;
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactoryBean;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.repository.config.DefaultRepositoryBaseClass;
@@ -28,7 +29,7 @@ import java.lang.annotation.Target;
 public @interface EnableCosmosRepositories {
 
     /**
-     * Toset repo value
+     * To set repo value
      * @return default as {}
      */
     String[] value() default {};
@@ -92,5 +93,12 @@ public @interface EnableCosmosRepositories {
      * @return default value is false
      */
     boolean considerNestedRepositories() default false;
+
+    /**
+     * Configures the name of the {@link CosmosTemplate} bean to be used with the repositories detected.
+     *
+     * @return {@literal cosmosTemplate} by default.
+     */
+    String cosmosTemplateRef() default "cosmosTemplate";
 }
 

@@ -5,6 +5,7 @@ package com.azure.storage.blob.nio
 
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.BlobStorageException
+import org.apache.groovy.json.internal.IO
 import spock.lang.Unroll
 
 class NioBlobInputStreamTest extends APISpec {
@@ -13,13 +14,18 @@ class NioBlobInputStreamTest extends APISpec {
     BlobClient bc
     NioBlobInputStream nioStream
     FileInputStream fileStream
+    AzureFileSystem fs
 
     def setup() {
         sourceFile = getRandomFile(10 * 1024 * 1024)
+
         cc.create()
         bc = cc.getBlobClient(generateBlobName())
         bc.uploadFromFile(sourceFile.getPath())
-        nioStream = new NioBlobInputStream(bc.openInputStream())
+        fs = createFS(initializeConfigMap())
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()))
+
+        nioStream = new NioBlobInputStream(bc.openInputStream(), path)
         fileStream = new FileInputStream(sourceFile)
     }
 
@@ -116,6 +122,28 @@ class NioBlobInputStreamTest extends APISpec {
         e.getCause() instanceof BlobStorageException
     }
 
+    def "Read fs closed"() {
+        when:
+        fs.close()
+        nioStream.read()
+
+        then:
+        thrown(IOException)
+
+        when:
+        nioStream.read(new byte[1])
+
+        then:
+        thrown(IOException)
+
+        when:
+        nioStream.read(new byte[10], 2, 5)
+
+        then:
+        thrown(IOException)
+    }
+
+
     @Unroll
     def "Mark and reset"() {
         setup:
@@ -165,6 +193,18 @@ class NioBlobInputStreamTest extends APISpec {
         thrown(IOException)
     }
 
+    def "Reset fs closed"() {
+        setup:
+        nioStream.mark(5)
+
+        when:
+        fs.close()
+        nioStream.reset()
+
+        then:
+        thrown(IOException)
+    }
+
     def "Mark supported"() {
         expect:
         nioStream.markSupported()
@@ -185,6 +225,15 @@ class NioBlobInputStreamTest extends APISpec {
         10                     | _
         5 * 1024 * 1024        | _
         (10 * 1024 * 1024) - 1 | _
+    }
+
+    def "Skip fs closed"() {
+        when:
+        fs.close()
+        nioStream.skip(5)
+
+        then:
+        thrown(IOException)
     }
 
     def "Close"() {
@@ -210,6 +259,15 @@ class NioBlobInputStreamTest extends APISpec {
         thrown(IOException)
     }
 
+    def "Close fs closed"() {
+        when:
+        fs.close()
+        nioStream.close()
+
+        then:
+        thrown(IOException)
+    }
+
     @Unroll
     def "Available"() {
         when:
@@ -225,17 +283,12 @@ class NioBlobInputStreamTest extends APISpec {
         5 * 1024 * 1024 | 3 * 1024 * 1024
     }
 
-    // Upload a file that's 8mb
-    // Test marking and resetting
-    // Test skipping
-    // Test thread safety?
-    // Mark supported
-    // Available
-    // Close
-    // Reading
-    // Test option validation on provider
-    // Test path validation on provider
-    // double check docs
+    def "Available fs closed"() {
+        when:
+        fs.close()
+        nioStream.available()
 
-    // Outputstream: Could do a commitBlockList on each write so data is available immediately. Could stage each write as a block. Could just use BlobOutputStream
+        then:
+        thrown(IOException)
+    }
 }

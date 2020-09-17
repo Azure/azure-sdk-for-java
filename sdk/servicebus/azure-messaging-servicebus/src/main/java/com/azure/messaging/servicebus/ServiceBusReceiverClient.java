@@ -6,18 +6,19 @@ package com.azure.messaging.servicebus;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 /**
  * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
@@ -69,385 +70,184 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message} with its lock token. This will make the message available
-     * again for processing. Abandoning a message will increase the delivery count on the message.
+     * Abandon a {@link ServiceBusReceivedMessage message}. This will make the message available again for processing.
+     * Abandoning a message will increase the delivery count on the message.
      *
-     * @param lockToken Lock token of the message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public void abandon(String lockToken) {
-        asyncClient.abandon(lockToken).block(operationTimeout);
+    public void abandon(ServiceBusReceivedMessage message) {
+        asyncClient.abandon(message).block(operationTimeout);
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message} with its lock token and updates the message's properties.
-     * This will make the message available again for processing. Abandoning a message will increase the delivery count
-     * on the message.
+     * Abandon a {@link ServiceBusReceivedMessage message} updates the message's properties. This will make the message
+     * available again for processing. Abandoning a message will increase the delivery count on the message.
      *
-     * @param lockToken Lock token of the message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Properties to modify on the message.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public void abandon(String lockToken, Map<String, Object> propertiesToModify) {
-        asyncClient.abandon(lockToken, propertiesToModify).block(operationTimeout);
+    public void abandon(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
+        asyncClient.abandon(message, propertiesToModify).block(operationTimeout);
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message} with its lock token and updates the message's properties.
-     * This will make the message available again for processing. Abandoning a message will increase the delivery count
-     * on the message.
+     * Abandon a {@link ServiceBusReceivedMessage message} updates the message's properties. This will make the message
+     * available again for processing. Abandoning a message will increase the delivery count on the message.
      *
-     * @param lockToken Lock token of the message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Properties to modify on the message.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first
+     *     by {@link ServiceBusReceiverClient#createTransaction()} or
+     *     {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
+     *     transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public void abandon(String lockToken, Map<String, Object> propertiesToModify,
+    public void abandon(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
 
-        asyncClient.abandon(lockToken, propertiesToModify, transactionContext).block(operationTimeout);
+        asyncClient.abandon(message, propertiesToModify, transactionContext).block(operationTimeout);
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message} with its lock token and updates the message's properties.
-     * This will make the message available again for processing. Abandoning a message will increase the delivery count
-     * on the message.
+     * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the service.
      *
-     * @param lockToken Lock token of the message.
-     * @param propertiesToModify Properties to modify on the message.
-     * @param sessionId Session id of the message to abandon. {@code null} if there is no session.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public void abandon(String lockToken, Map<String, Object> propertiesToModify, String sessionId) {
-        asyncClient.abandon(lockToken, propertiesToModify, sessionId).block(operationTimeout);
+    public void complete(ServiceBusReceivedMessage message) {
+        asyncClient.complete(message).block(operationTimeout);
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message} with its lock token and updates the message's properties.
-     * This will make the message available again for processing. Abandoning a message will increase the delivery count
-     * on the message.
+     * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the service.
      *
-     * @param lockToken Lock token of the message.
-     * @param propertiesToModify Properties to modify on the message.
-     * @param sessionId Session id of the message to abandon. {@code null} if there is no session.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first
+     *     by {@link ServiceBusReceiverClient#createTransaction()} or
+     *     {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
+     *     transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public void abandon(String lockToken, Map<String, Object> propertiesToModify, String sessionId,
+    public void complete(ServiceBusReceivedMessage message, ServiceBusTransactionContext transactionContext) {
+        asyncClient.complete(message, transactionContext).block(operationTimeout);
+    }
+
+    /**
+     * Defers a {@link ServiceBusReceivedMessage message}. This will move message into the deferred subqueue.
+     *
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
+     *
+     * @throws NullPointerException if {@code message} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
+     */
+    public void defer(ServiceBusReceivedMessage message) {
+        asyncClient.defer(message).block(operationTimeout);
+    }
+
+    /**
+     * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
+     * move message into the deferred subqueue.
+     *
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
+     * @param propertiesToModify Message properties to modify.
+     *
+     * @throws NullPointerException if {@code message} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
+     */
+    public void defer(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
+        asyncClient.defer(message, propertiesToModify).block(operationTimeout);
+    }
+
+    /**
+     * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will move message into
+     * the deferred subqueue.
+     *
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
+     * @param propertiesToModify Message properties to modify.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first
+     *     by {@link ServiceBusReceiverClient#createTransaction()} or
+     *     {@link ServiceBusSenderClient#createTransaction()}.
+     *
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
+     *     transactionContext.transactionId} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
+     */
+    public void defer(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
-        asyncClient.abandon(lockToken, propertiesToModify, sessionId, transactionContext).block(operationTimeout);
-    }
-
-    /**
-     * Completes a {@link ServiceBusReceivedMessage message} using its lock token. This will delete the message from the
-     * service.
-     *
-     * @param lockToken Lock token of the message.
-     *
-     * @throws NullPointerException if {@code lockToken} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     */
-    public void complete(String lockToken) {
-        asyncClient.complete(lockToken).block(operationTimeout);
-    }
-
-    /**
-     * Completes a {@link ServiceBusReceivedMessage message} using its lock token. This will delete the message from the
-     * service.
-     *
-     * @param lockToken Lock token of the message.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
-     *
-     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     */
-    public void complete(String lockToken, ServiceBusTransactionContext transactionContext) {
-        asyncClient.complete(lockToken, transactionContext).block(operationTimeout);
-    }
-
-    /**
-     * Completes a {@link ServiceBusReceivedMessage message} using its lock token. This will delete the message from the
-     * service.
-     *
-     * @param lockToken Lock token of the message.
-     * @param sessionId Session id of the message to complete. {@code null} if there is no session.
-     *
-     * @throws NullPointerException if {@code lockToken} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     */
-    public void complete(String lockToken, String sessionId) {
-        asyncClient.complete(lockToken, sessionId).block(operationTimeout);
-    }
-
-    /**
-     * Completes a {@link ServiceBusReceivedMessage message} using its lock token. This will delete the message from the
-     * service.
-     *
-     * @param lockToken Lock token of the message.
-     * @param sessionId Session id of the message to complete. {@code null} if there is no session.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
-     *
-     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     */
-    public void complete(String lockToken, String sessionId, ServiceBusTransactionContext
-        transactionContext) {
-        asyncClient.complete(lockToken, sessionId, transactionContext).block(operationTimeout);
-    }
-
-    /**
-     * Defers a {@link ServiceBusReceivedMessage message} using its lock token. This will move message into the deferred
-     * subqueue.
-     *
-     * @param lockToken Lock token of the message.
-     *
-     * @throws NullPointerException if {@code lockToken} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
-     */
-    public void defer(String lockToken) {
-        asyncClient.defer(lockToken).block(operationTimeout);
-    }
-
-    /**
-     * Defers a {@link ServiceBusReceivedMessage message} using its lock token. This will move message into the deferred
-     * subqueue.
-     *
-     * @param lockToken Lock token of the message.
-     * @param sessionId Session id of the message to defer. {@code null} if there is no session.
-     *
-     * @throws NullPointerException if {@code lockToken} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
-     */
-    public void defer(String lockToken, String sessionId) {
-        asyncClient.defer(lockToken, sessionId).block(operationTimeout);
-    }
-
-    /**
-     * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
-     * move message into the deferred subqueue.
-     *
-     * @param lockToken Lock token of the message.
-     * @param propertiesToModify Message properties to modify.
-     *
-     * @throws NullPointerException if {@code lockToken} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
-     */
-    public void defer(String lockToken, Map<String, Object> propertiesToModify) {
-        asyncClient.defer(lockToken, propertiesToModify).block(operationTimeout);
-    }
-
-    /**
-     * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
-     * move message into the deferred subqueue.
-     *
-     * @param lockToken Lock token of the message.
-     * @param propertiesToModify Message properties to modify.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
-     *
-     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
-     */
-    public void defer(String lockToken, Map<String, Object> propertiesToModify, ServiceBusTransactionContext
-        transactionContext) {
-        asyncClient.defer(lockToken, propertiesToModify, transactionContext).block(operationTimeout);
-
-    }
-
-    /**
-     * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
-     * move message into the deferred subqueue.
-     *
-     * @param lockToken Lock token of the message.
-     * @param propertiesToModify Message properties to modify.
-     * @param sessionId Session id of the message to defer. {@code null} if there is no session.
-     *
-     * @throws NullPointerException if {@code lockToken} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
-     */
-    public void defer(String lockToken, Map<String, Object> propertiesToModify, String sessionId) {
-        asyncClient.defer(lockToken, propertiesToModify, sessionId).block(operationTimeout);
-    }
-
-    /**
-     * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
-     * move message into the deferred subqueue.
-     *
-     * @param lockToken Lock token of the message.
-     * @param propertiesToModify Message properties to modify.
-     * @param sessionId Session id of the message to defer. {@code null} if there is no session.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
-     *
-     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
-     */
-    public void defer(String lockToken, Map<String, Object> propertiesToModify, String sessionId,
-        ServiceBusTransactionContext transactionContext) {
-        asyncClient.defer(lockToken, propertiesToModify, sessionId, transactionContext).block(operationTimeout);
+        asyncClient.defer(message, propertiesToModify, transactionContext).block(operationTimeout);
     }
 
     /**
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
      *
-     * @param lockToken Lock token of the message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
-    public void deadLetter(String lockToken) {
-        asyncClient.deadLetter(lockToken).block(operationTimeout);
-    }
-
-    /**
-     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
-     *
-     * @param lockToken Lock token of the message.
-     * @param sessionId Session id of the message to deadletter. {@code null} if there is no session.
-     *
-     * @throws NullPointerException if {@code lockToken} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
-     *     queues</a>
-     */
-    public void deadLetter(String lockToken, String sessionId) {
-        asyncClient.deadLetter(lockToken, sessionId).block(operationTimeout);
+    public void deadLetter(ServiceBusReceivedMessage message) {
+        asyncClient.deadLetter(message).block(operationTimeout);
     }
 
     /**
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
      * description, and/or modified properties.
      *
-     * @param lockToken Lock token of the message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public void deadLetter(String lockToken, DeadLetterOptions deadLetterOptions) {
-        asyncClient.deadLetter(lockToken, deadLetterOptions).block(operationTimeout);
+    public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions) {
+        asyncClient.deadLetter(message, deadLetterOptions).block(operationTimeout);
     }
 
     /**
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
      * description, and/or modified properties.
      *
-     * @param lockToken Lock token of the message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first
+     *     by {@link ServiceBusReceiverClient#createTransaction()} or
+     *     {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
+     *     transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public void deadLetter(String lockToken, DeadLetterOptions deadLetterOptions,
+    public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions,
         ServiceBusTransactionContext transactionContext) {
-        asyncClient.deadLetter(lockToken, deadLetterOptions, transactionContext).block(operationTimeout);
-    }
-
-    /**
-     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
-     * description, and/or modified properties.
-     *
-     * @param lockToken Lock token of the message.
-     * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
-     * @param sessionId Session id of the message to deadletter. {@code null} if there is no session.
-     *
-     * @throws NullPointerException if {@code lockToken} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     */
-    public void deadLetter(String lockToken, DeadLetterOptions deadLetterOptions, String sessionId) {
-        asyncClient.deadLetter(lockToken, deadLetterOptions, sessionId).block(operationTimeout);
-    }
-
-    /**
-     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
-     * description, and/or modified properties.
-     *
-     * @param lockToken Lock token of the message.
-     * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
-     * @param sessionId Session id of the message to deadletter. {@code null} if there is no session.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
-     *
-     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
-     */
-    public void deadLetter(String lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
-        ServiceBusTransactionContext transactionContext) {
-        asyncClient.deadLetter(lockToken, deadLetterOptions, sessionId, transactionContext).block(operationTimeout);
+        asyncClient.deadLetter(message, deadLetterOptions, transactionContext).block(operationTimeout);
     }
 
     /**
@@ -603,7 +403,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public IterableStream<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber,
-                                                                    String sessionId) {
+        String sessionId) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
@@ -619,13 +419,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
-     * The receive operation will wait for a default 1 minute for receiving a message before it times out. You can it
+     * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. The
+     * receive operation will wait for a default 1 minute for receiving a message before it times out. You can it
      * override by using {@link #receiveMessages(int, Duration)}.
      *
      * @param maxMessages The maximum number of messages to receive.
-     * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      *
+     * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      * @throws IllegalArgumentException if {@code maxMessages} is zero or a negative value.
      */
     public IterableStream<ServiceBusReceivedMessageContext> receiveMessages(int maxMessages) {
@@ -634,13 +434,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
     /**
      * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. The
-     * default receive mode is {@link ReceiveMode#PEEK_LOCK } unless it is changed during creation of
-     * {@link ServiceBusReceiverClient} using {@link ServiceBusReceiverClientBuilder#receiveMode(ReceiveMode)}.
+     * default receive mode is {@link ReceiveMode#PEEK_LOCK } unless it is changed during creation of {@link
+     * ServiceBusReceiverClient} using {@link ServiceBusReceiverClientBuilder#receiveMode(ReceiveMode)}.
      *
      * @param maxMessages The maximum number of messages to receive.
      * @param maxWaitTime The time the client waits for receiving a message before it times out.
-     * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      *
+     * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      * @throws IllegalArgumentException if {@code maxMessages} or {@code maxWaitTime} is zero or a negative value.
      */
     public IterableStream<ServiceBusReceivedMessageContext> receiveMessages(int maxMessages,
@@ -734,17 +534,39 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * message requires longer than this duration, the lock needs to be renewed. For each renewal, the lock is reset to
      * the entity's LockDuration value.
      *
-     * @param lockToken Lock token of the message to renew.
+     * @param message The {@link ServiceBusReceivedMessage} to perform lock renewal.
      *
      * @return The new expiration time for the message.
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @throws IllegalStateException if the receiver is a session receiver.
      */
-    public Instant renewMessageLock(String lockToken) {
-        return asyncClient.renewMessageLock(lockToken).block(operationTimeout);
+    public OffsetDateTime renewMessageLock(ServiceBusReceivedMessage message) {
+        return asyncClient.renewMessageLock(message).block(operationTimeout);
+    }
+
+    /**
+     * Starts the auto lock renewal for a message with the given lock.
+     *
+     * @param message The {@link ServiceBusReceivedMessage} to perform auto-lock renewal.
+     * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
+     * @param onError A function to call when an error occurs during lock renewal.
+     *
+     * @throws NullPointerException if {@code message} or {@code maxLockRenewalDuration} is null.
+     * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
+     */
+    public void renewMessageLock(ServiceBusReceivedMessage message, Duration maxLockRenewalDuration,
+        Consumer<Throwable> onError) {
+        final String lockToken = message != null ? message.getLockToken() : "null";
+        final Consumer<Throwable> throwableConsumer = onError != null
+            ? onError
+            : error -> logger.warning("Exception occurred while renewing lock token '{}'.", lockToken, error);
+
+        asyncClient.renewMessageLock(message, maxLockRenewalDuration).subscribe(
+            v -> logger.verbose("Completed renewing lock token: '{}'", lockToken),
+            throwableConsumer,
+            () -> logger.verbose("Auto message lock renewal operation completed: {}", lockToken));
     }
 
     /**
@@ -753,10 +575,34 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Identifier of session to get.
      *
      * @return The next expiration time for the session lock.
+     * @throws NullPointerException if {@code sessionId} is null.
+     * @throws IllegalArgumentException if {@code sessionId} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
-    public Instant renewSessionLock(String sessionId) {
+    public OffsetDateTime renewSessionLock(String sessionId) {
         return asyncClient.renewSessionLock(sessionId).block(operationTimeout);
+    }
+
+    /**
+     * Starts the auto lock renewal for a session id.
+     *
+     * @param sessionId Id for the session to renew.
+     * @param maxLockRenewalDuration Maximum duration to keep renewing the session.
+     * @param onError A function to call when an error occurs during lock renewal.
+     *
+     * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
+     * @throws IllegalArgumentException if {@code sessionId} is an empty string.
+     * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
+     */
+    public void renewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
+        final Consumer<Throwable> throwableConsumer = onError != null
+            ? onError
+            : error -> logger.warning("Exception occurred while renewing session: '{}'.", sessionId, error);
+
+        asyncClient.renewSessionLock(sessionId, maxLockRenewalDuration).subscribe(
+            v -> logger.verbose("Completed renewing session: '{}'", sessionId),
+            throwableConsumer,
+            () -> logger.verbose("Auto session lock renewal operation completed: {}", sessionId));
     }
 
     /**
@@ -773,12 +619,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
     /**
      * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
-     * {@link ServiceBusReceivedMessage} or {@code lockToken} to all operations that needs to be in
-     * this transaction.
-     *
-     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     * {@link ServiceBusReceivedMessage} or {@code lockToken} to all operations that needs to be in this transaction.
      *
      * @return a new {@link ServiceBusTransactionContext}.
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
+     *     null.
      */
     public ServiceBusTransactionContext createTransaction() {
         return asyncClient.createTransaction().block(operationTimeout);
@@ -789,7 +634,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param transactionContext to be committed.
      *
-     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
+     *     null.
      */
     public void commitTransaction(ServiceBusTransactionContext transactionContext) {
         asyncClient.commitTransaction(transactionContext).block(operationTimeout);
@@ -799,7 +645,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
      *
      * @param transactionContext to be rollbacked.
-     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     *
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
+     *     null.
      */
     public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         asyncClient.rollbackTransaction(transactionContext).block(operationTimeout);

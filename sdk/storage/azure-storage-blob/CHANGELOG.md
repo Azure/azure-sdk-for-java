@@ -1,8 +1,23 @@
 # Release History
 
-## 12.8.0-beta.2 (Unreleased)
+## 12.9.0-beta.1 (Unreleased)
+- Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
+- Fixed a bug where Default Azure Credential would not work with Azurite.
+- Fixed a bug where a custom application id in HttpLogOptions would not be added to the User Agent String.
+- Fixed a bug where BlockBlobOutputStream would not handle certain errors.
+
+## 12.8.0 (2020-08-13)
 - Fixed a bug that, when the data length parameter did not match the actual length of the data in BlobClient.upload, caused a zero length blob to be uploaded rather than throwing an exception.
 - Fixed a bug that ignored the customer's specified block size when determining buffer sizes in BlobClient.upload
+- Added support for Object Replication Service on listBlobs and getProperties.
+- Added support for blob tags. Added tagsConditions to BlobRequestConditions that allow a user to specify a SQL statement for the blob's tags to satisfy.
+- Added support for setting tags and filterTags operations on SAS by adding to AccountSASPermissions, BlobSASPermissions, and BlobContainerSASPermissions.
+- Added support for setting and getting the StaticWebsite.DefaultIndexDocumentPath property on the service client.
+- Added RehydratePriority to BlobProperties and BlobItemProperties.
+- Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
+- Added support to seal an append blob. Added AppendBlob.seal. Added ability to specify destinationSealed on BlobClient.beginCopy. isSealed property returned on getProperties/getBlob/listBlob. 
+- Added support to set tier on a snapshot or version.
+- Fixed a bug that would cause buffered upload to always put an empty blob before uploading actual data.
 
 ## 12.8.0-beta.1 (2020-07-07)
 - Added support for the 2019-12-12 service version.
@@ -173,7 +188,7 @@ and
 demonstrate the new API.
 
 ## 12.0.0-preview.2 (2019-08-08)
-For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
+For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html).
 
 - Renamed `StorageClient`, `StorageAsyncClient`, and `StorageClientBuilder` to `BlobServiceClient`, `BlobServiceAsyncClient`, and `BlobServiceClientBuilder`.
 - Combined `AppendBlobClientBuilder`, `BlockBlobClientBuilder`, and `PageBlobClientBuilder` into `BlobClientBuilder`. Methods to create each client type were added.

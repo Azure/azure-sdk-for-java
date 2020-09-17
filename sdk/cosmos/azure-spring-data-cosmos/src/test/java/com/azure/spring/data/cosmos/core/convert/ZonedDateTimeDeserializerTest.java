@@ -9,7 +9,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class ZonedDateTimeDeserializerTest {

@@ -273,7 +273,7 @@ public class WorkflowTest {
         database = Utils.createDatabaseForTest(housekeepingClient);
         collection = housekeepingClient.createCollection("dbs/" + database.getId(),
             getCollectionDefinitionWithRangeRangeIndex(),
-            options).single().block().getResource();
+            options).block().getResource();
         housekeepingClient.close();
     }
 

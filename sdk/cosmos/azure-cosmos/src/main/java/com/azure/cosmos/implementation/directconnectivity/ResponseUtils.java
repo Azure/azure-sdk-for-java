@@ -10,20 +10,13 @@ import io.netty.handler.codec.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
 class ResponseUtils {
-    private static byte[] EMPTY_BYTE_ARRAY = {};
+    private static final byte[] EMPTY_BYTE_ARRAY = {};
 
     static Mono<StoreResponse> toStoreResponse(HttpResponse httpClientResponse, HttpRequest httpRequest) {
 
         HttpHeaders httpResponseHeaders = httpClientResponse.headers();
 
-        Mono<byte[]> contentObservable;
-
-        if (httpRequest.httpMethod() == HttpMethod.DELETE) {
-            // for delete we don't expect any body
-            contentObservable = Mono.just(EMPTY_BYTE_ARRAY);
-        } else {
-            contentObservable = httpClientResponse.bodyAsByteArray().switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
-        }
+        Mono<byte[]> contentObservable = httpClientResponse.bodyAsByteArray().switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
 
         return contentObservable.map(byteArrayContent -> {
             // transforms to Mono<StoreResponse>

@@ -9,8 +9,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.options.BlobBeginCopyOptions
-import com.azure.storage.blob.options.BlobCopyFromUrlOptions
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -30,7 +29,12 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.options.BlobBeginCopyOptions
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions
+import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
+import com.azure.storage.blob.options.BlobSetAccessTierOptions
+import com.azure.storage.blob.options.BlobSetTagsOptions
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -304,6 +308,9 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Download AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def bac = new BlobRequestConditions()
@@ -312,6 +319,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
         def response = bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null)
@@ -320,13 +328,14 @@ class BlobAPITest extends APISpec {
         response.getStatusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -339,6 +348,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
         bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null).getStatusCode()
@@ -347,12 +357,13 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Download md5"() {
@@ -932,6 +943,8 @@ class BlobAPITest extends APISpec {
         properties.getArchiveStatus() == null
         properties.getCreationTime() != null
         properties.getTagCount() == 1
+        properties.getRehydratePriority() == null // tested in setTier rehydrate priority
+        !properties.isSealed() // tested in AppendBlob. "seal blob"
     }
 
     def "Get properties min"() {
@@ -942,24 +955,29 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Get properties AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         def bac = new BlobRequestConditions()
             .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(setupBlobMatchCondition(bc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         expect:
         bc.getPropertiesWithResponse(bac, null, null).getStatusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -971,6 +989,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
         bc.getPropertiesWithResponse(bac, null, null)
@@ -979,12 +998,13 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
     /*
@@ -1098,6 +1118,9 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set HTTP headers AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def bac = new BlobRequestConditions()
@@ -1106,18 +1129,20 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         expect:
         bc.setHttpHeadersWithResponse(null, bac, null, null).getStatusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -1131,6 +1156,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
         bc.setHttpHeadersWithResponse(null, bac, null, null)
@@ -1139,12 +1165,13 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Set HTTP headers error"() {
@@ -1206,6 +1233,9 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set metadata AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def bac = new BlobRequestConditions()
@@ -1219,13 +1249,14 @@ class BlobAPITest extends APISpec {
         bc.setMetadataWithResponse(null, bac, null, null).getStatusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -1240,6 +1271,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
         bc.setMetadataWithResponse(null, bac, null, null)
@@ -1248,12 +1280,13 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Set metadata error"() {
@@ -1269,7 +1302,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tags all null"() {
         when:
-        def response = bc.setTagsWithResponse(null, null, null)
+        def response = bc.setTagsWithResponse(new BlobSetTagsOptions(new HashMap<String, String>()), null, null)
 
         then:
         bc.getTags().size() == 0
@@ -1300,7 +1333,7 @@ class BlobAPITest extends APISpec {
         }
 
         expect:
-        bc.setTagsWithResponse(tags, null, null).getStatusCode() == statusCode
+        bc.setTagsWithResponse(new BlobSetTagsOptions(tags), null, null).getStatusCode() == statusCode
         bc.getTags() == tags
 
         where:
@@ -1310,12 +1343,80 @@ class BlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null   || 204
     }
 
+    @Unroll
+    def "Set tags AC"() {
+        setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
+        t = new HashMap<String, String>()
+        t.put("fizz", "buzz")
+
+        expect:
+        bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(new BlobRequestConditions().setTagsConditions(tags)), null, null).getStatusCode() == 204
+
+        where:
+        tags              || _
+        null              || _
+        "\"foo\" = 'bar'" || _
+    }
+
+    @Unroll
+    def "Set tags AC fail"() {
+        setup:
+        def t = new HashMap<String, String>()
+        t.put("fizz", "buzz")
+
+        when:
+        bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(new BlobRequestConditions().setTagsConditions(tags)), null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        tags              || _
+        "\"foo\" = 'bar'" || _
+    }
+
+    @Unroll
+    def "Get tags AC"() {
+        setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
+
+        expect:
+        bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(new BlobRequestConditions().setTagsConditions(tags)), null, null).getStatusCode() == 200
+
+        where:
+        tags              || _
+        null              || _
+        "\"foo\" = 'bar'" || _
+    }
+
+    @Unroll
+    def "Get tags AC fail"() {
+        setup:
+        def t = new HashMap<String, String>()
+        t.put("fizz", "buzz")
+
+        when:
+        bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(new BlobRequestConditions().setTagsConditions(tags)), null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        tags              || _
+        "\"foo\" = 'bar'" || _
+    }
+
     def "Set tags error"() {
         setup:
         bc = cc.getBlobClient(generateBlobName())
 
         when:
-        bc.setTags(null)
+        bc.setTags(new HashMap<String, String>())
 
         then:
         thrown(BlobStorageException)
@@ -1332,6 +1433,38 @@ class BlobAPITest extends APISpec {
 
     def "Snapshot min"() {
         bc.createSnapshotWithResponse(null, null, null, null).getStatusCode() == 201
+    }
+
+    def "getSnapshot"() {
+        setup:
+        def data = "test".getBytes()
+        def blobName = generateBlobName()
+        def bu = cc.getBlobClient(blobName).getBlockBlobClient()
+        bu.upload(new ByteArrayInputStream(data), data.length)
+        def snapshotId = bu.createSnapshot().getSnapshotId()
+
+        when:
+        def snapshotBlob = cc.getBlobClient(blobName, snapshotId).getBlockBlobClient()
+
+        then:
+        snapshotBlob.getSnapshotId() == snapshotId
+        bu.getSnapshotId() == null
+    }
+
+    def "isSnapshot"() {
+        setup:
+        def data = "test".getBytes()
+        def blobName = generateBlobName()
+        def bu = cc.getBlobClient(blobName).getBlockBlobClient()
+        bu.upload(new ByteArrayInputStream(data), data.length)
+        def snapshotId = bu.createSnapshot().getSnapshotId()
+
+        when:
+        def snapshotBlob = cc.getBlobClient(blobName, snapshotId).getBlockBlobClient()
+
+        then:
+        snapshotBlob.isSnapshot()
+        !bu.isSnapshot()
     }
 
     @Unroll
@@ -1361,6 +1494,9 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Snapshot AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def bac = new BlobRequestConditions()
@@ -1369,18 +1505,20 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         expect:
         bc.createSnapshotWithResponse(null, bac, null, null).getStatusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -1394,7 +1532,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-
+            .setTagsConditions(tags)
 
         when:
         bc.createSnapshotWithResponse(null, bac, null, null)
@@ -1403,12 +1541,13 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Snapshot error"() {
@@ -1425,7 +1564,7 @@ class BlobAPITest extends APISpec {
     def "Copy"() {
         setup:
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
-        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), Duration.ofSeconds(1))
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000))
 
         when:
         def response = poller.blockLast()
@@ -1450,7 +1589,7 @@ class BlobAPITest extends APISpec {
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
 
         when:
-        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), Duration.ofSeconds(1))
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000))
         def verifier = StepVerifier.create(poller.take(1))
 
         then:
@@ -1467,7 +1606,7 @@ class BlobAPITest extends APISpec {
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
 
         when:
-        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null)
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, getPollingDuration(1000))
 
         then:
         def lastResponse = poller.doOnNext({
@@ -1505,7 +1644,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), metadata, null, null, null, null, Duration.ofSeconds(1))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), metadata, null, null, null, null, getPollingDuration(1000))
         poller.blockLast()
 
         then:
@@ -1533,7 +1672,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def poller = bu2.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setTags(tags)
-            .setPollInterval(Duration.ofSeconds(1)))
+            .setPollInterval(getPollingDuration(1000)))
         poller.blockLast()
 
         then:
@@ -1549,55 +1688,92 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
+    def "Copy seal"() {
+        setup:
+        def appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
+        appendBlobClient.create()
+        if (source) {
+            appendBlobClient.seal()
+        }
+
+        def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient()
+
+        when:
+        def poller = bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl()).setSealDestination(destination)
+            .setPollInterval(getPollingDuration(1000)))
+        poller.blockLast()
+
+        then:
+        StepVerifier.create(bu2.getProperties())
+            .assertNext({ assert Boolean.TRUE.equals(it.isSealed()) == destination })
+            .verifyComplete()
+
+        where:
+        source | destination
+        true   | true
+        true   | false
+        false  | true
+        false  | false
+    }
+
+    @Unroll
     def "Copy source AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         match = setupBlobMatchCondition(bc, match)
-        def mac = new RequestConditions()
+        def mac = new BlobBeginCopySourceRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
+            .setTagsConditions(tags)
 
         when:
-        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, mac, null, null)
+        def poller = copyDestBlob.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setSourceRequestConditions(mac))
         def response = poller.blockLast()
 
         then:
         response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
-        modified | unmodified | match        | noneMatch
-        null     | null       | null         | null
-        oldDate  | null       | null         | null
-        null     | newDate    | null         | null
-        null     | null       | receivedEtag | null
-        null     | null       | null         | garbageEtag
+        modified | unmodified | match        | noneMatch    | tags
+        null     | null       | null         | null         | null
+        oldDate  | null       | null         | null         | null
+        null     | newDate    | null         | null         | null
+        null     | null       | receivedEtag | null         | null
+        null     | null       | null         | garbageEtag  | null
+        null     | null       | null         | null         | "\"foo\" = 'bar'"
     }
 
     @Unroll
     def "Copy source AC fail"() {
         setup:
-        def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
-        def mac = new RequestConditions()
+        def mac = new BlobBeginCopySourceRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
+            .setTagsConditions(tags)
 
         when:
-        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null)
+        def poller = copyDestBlob.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setSourceRequestConditions(mac))
+        poller.blockLast()
 
         then:
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch
-        newDate  | null       | null        | null
-        null     | oldDate    | null        | null
-        null     | null       | garbageEtag | null
-        null     | null       | null        | receivedEtag
+        modified | unmodified | match       | noneMatch     | tags
+        newDate  | null       | null        | null          | null
+        null     | oldDate    | null        | null          | null
+        null     | null       | garbageEtag | null          | null
+        null     | null       | null        | receivedEtag  | null
+        null     | null       | null         | null         | "\"notfoo\" = 'notbar'"
     }
 
     @Unroll
@@ -1605,6 +1781,9 @@ class BlobAPITest extends APISpec {
         setup:
         def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         bu2.upload(defaultFlux, defaultDataSize).block()
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bu2.setTags(t).block()
         match = setupBlobMatchCondition(bu2, match)
         leaseID = setupBlobLeaseCondition(bu2, leaseID)
         def bac = new BlobRequestConditions()
@@ -1613,22 +1792,24 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac, Duration.ofSeconds(1))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac, getPollingDuration(1000))
         def response = poller.blockLast()
 
         then:
         response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -1644,6 +1825,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
         bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null)
@@ -1652,12 +1834,13 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Abort copy lease fail"() {
@@ -1679,7 +1862,7 @@ class BlobAPITest extends APISpec {
         def blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId)
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobRequestConditions, Duration.ofMillis(500))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobRequestConditions, getPollingDuration(500))
         def response = poller.poll()
 
         assert response.getStatus() != LongRunningOperationStatus.FAILED
@@ -1710,7 +1893,7 @@ class BlobAPITest extends APISpec {
         def bu2 = cu2.getBlobClient(generateBlobName())
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, null, Duration.ofSeconds(1))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, null, getPollingDuration(1000))
         def lastResponse = poller.poll()
 
         assert lastResponse != null
@@ -1747,7 +1930,7 @@ class BlobAPITest extends APISpec {
         def blobAccess = new BlobRequestConditions().setLeaseId(leaseId)
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccess, Duration.ofSeconds(1))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccess, getPollingDuration(1000))
         def lastResponse = poller.poll()
 
         then:
@@ -1915,6 +2098,9 @@ class BlobAPITest extends APISpec {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bu2.upload(defaultInputStream.get(), defaultDataSize)
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bu2.setTags(t)
         match = setupBlobMatchCondition(bu2, match)
         leaseID = setupBlobLeaseCondition(bu2, leaseID)
         def bac = new BlobRequestConditions()
@@ -1923,18 +2109,20 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         expect:
         bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null).getStatusCode() == 202
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -1951,6 +2139,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
         bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null)
@@ -1959,12 +2148,13 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Sync copy error"() {
@@ -2018,6 +2208,9 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Delete AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def bac = new BlobRequestConditions()
@@ -2026,18 +2219,20 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         expect:
         bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null).getStatusCode() == 202
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -2051,6 +2246,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
         bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null)
@@ -2059,12 +2255,13 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Blob delete error"() {
@@ -2189,10 +2386,58 @@ class BlobAPITest extends APISpec {
         cc.listBlobs().iterator().next().getProperties().getArchiveStatus() == status
 
         where:
-        sourceTier         | destTier        | priority                   | status
-        AccessTier.ARCHIVE | AccessTier.COOL | RehydratePriority.STANDARD | ArchiveStatus.REHYDRATE_PENDING_TO_COOL
-        AccessTier.ARCHIVE | AccessTier.HOT  | RehydratePriority.STANDARD | ArchiveStatus.REHYDRATE_PENDING_TO_HOT
-        AccessTier.ARCHIVE | AccessTier.HOT  | RehydratePriority.HIGH     | ArchiveStatus.REHYDRATE_PENDING_TO_HOT
+        sourceTier         | destTier        || status
+        AccessTier.ARCHIVE | AccessTier.COOL || ArchiveStatus.REHYDRATE_PENDING_TO_COOL
+        AccessTier.ARCHIVE | AccessTier.HOT  || ArchiveStatus.REHYDRATE_PENDING_TO_HOT
+        AccessTier.ARCHIVE | AccessTier.HOT  || ArchiveStatus.REHYDRATE_PENDING_TO_HOT
+    }
+
+    @Unroll
+    def "Set tier rehydrate priority"() {
+        setup:
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE)
+
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority), null, null)
+        }
+
+        when:
+        def resp = bc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        resp.getStatusCode() == 200
+        resp.getValue().getRehydratePriority() == rehydratePriority
+
+        where:
+        rehydratePriority          || _
+        null                       || _
+        RehydratePriority.STANDARD || _
+        RehydratePriority.HIGH     || _
+    }
+
+    def "Set tier snapshot"() {
+        setup:
+        def bc2 = bc.createSnapshot()
+
+        when:
+        bc2.setAccessTier(AccessTier.COOL)
+
+        then:
+        bc2.getProperties().getAccessTier() == AccessTier.COOL
+        bc.getProperties().getAccessTier() != AccessTier.COOL
+    }
+
+    def "Set tier snapshot error"() {
+        setup:
+        bc.createSnapshotWithResponse(null, null, null, null)
+        String fakeVersion = "2020-04-17T20:37:16.5129130Z"
+        def bc2 = bc.getSnapshotClient(fakeVersion)
+
+        when:
+        bc2.setAccessTier(AccessTier.COOL)
+
+        then:
+        thrown(BlobStorageException)
     }
 
     def "Set tier error"() {
@@ -2222,7 +2467,6 @@ class BlobAPITest extends APISpec {
 
     def "Set tier lease"() {
         setup:
-
         def cc = blobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
@@ -2246,6 +2490,38 @@ class BlobAPITest extends APISpec {
 
         when:
         bc.setAccessTierWithResponse(AccessTier.HOT, null, "garbage", null, null)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Set tier tags"() {
+        setup:
+        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc.upload(defaultInputStream.get(), defaultDataSize)
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
+
+        when:
+        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setTagsConditions("\"foo\" = 'bar'"), null, null)
+
+        then:
+        notThrown(BlobStorageException)
+
+        cleanup:
+        cc.delete()
+    }
+
+    def "Set tier tags fail"() {
+        setup:
+        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setTagsConditions("\"foo\" = 'bar'"), null, null)
 
         then:
         thrown(BlobStorageException)
@@ -2285,7 +2561,6 @@ class BlobAPITest extends APISpec {
 
         when:
         def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
-
         bc.getProperties()
 
         then:

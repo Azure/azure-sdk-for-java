@@ -11,6 +11,7 @@ import java.util.UUID;
  */
 public class AsyncSample {
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String SASTOKEN = Configuration.getGlobalConfiguration().get("SAS_TOKEN");
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
@@ -24,6 +25,7 @@ public class AsyncSample {
     public static void main(String[] args) {
         // Create a file service client
         ShareServiceAsyncClient fileServiceAsyncClient = new ShareServiceClientBuilder().endpoint(ENDPOINT)
+                                                            .sasToken(SASTOKEN)
                                                             .buildAsyncClient();
         // Create a share
         String shareName = generateRandomName();

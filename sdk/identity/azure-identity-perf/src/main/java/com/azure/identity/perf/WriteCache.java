@@ -9,8 +9,6 @@ import com.azure.identity.perf.core.ServiceTest;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-
 public class WriteCache extends ServiceTest<PerfStressOptions> {
     private final SharedTokenCacheCredential credential;
 
@@ -18,7 +16,6 @@ public class WriteCache extends ServiceTest<PerfStressOptions> {
         super(options);
         credential = new SharedTokenCacheCredentialBuilder()
                 .clientId(CLI_CLIENT_ID)
-                .tokenRefreshOffset(Duration.ofMinutes(60))
                 .build();
     }
 

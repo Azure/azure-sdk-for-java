@@ -5,7 +5,6 @@
 package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -14,7 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class SubscriptionDescriptionEntryContent {
     /*
-     * Type of content in queue response
+     * Type of content in subscription response
      */
     @JacksonXmlProperty(localName = "type", isAttribute = true)
     private String type;
@@ -28,7 +27,7 @@ public final class SubscriptionDescriptionEntryContent {
     private SubscriptionDescription subscriptionDescription;
 
     /**
-     * Get the type property: Type of content in queue response.
+     * Get the type property: Type of content in subscription response.
      *
      * @return the type value.
      */
@@ -37,7 +36,7 @@ public final class SubscriptionDescriptionEntryContent {
     }
 
     /**
-     * Set the type property: Type of content in queue response.
+     * Set the type property: Type of content in subscription response.
      *
      * @param type the type value to set.
      * @return the SubscriptionDescriptionEntryContent object itself.
