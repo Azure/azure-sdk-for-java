@@ -1,5 +1,8 @@
 # Release History
 
+## 4.6.0-beta.1 (Unreleased)
+
+
 ## 4.5.0 (2020-09-16)
 ### New Features
 * Increased robustness of the Rntbd stack in case of intermittent connectivity issues.
