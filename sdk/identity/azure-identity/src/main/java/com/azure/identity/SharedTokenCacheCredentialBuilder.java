@@ -3,7 +3,6 @@
 
 package com.azure.identity;
 
-import com.azure.identity.implementation.AuthenticationRecord;
 
 /**
  * Fluent credential builder for instantiating a {@link SharedTokenCacheCredential}.
@@ -26,13 +25,13 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
     }
 
     /**
-     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is restricted by default.
+     * Disallows the use of an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is enabled by default.
      *
      * @return An updated instance of this builder.
      */
-    SharedTokenCacheCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.allowUnencryptedCache();
+    public SharedTokenCacheCredentialBuilder disallowUnencryptedCache() {
+        this.identityClientOptions.setAllowUnencryptedCache(false);
         return this;
     }
 
@@ -43,7 +42,7 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      *
      * @return An updated instance of this builder with the configured authentication record.
      */
-    SharedTokenCacheCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+    public SharedTokenCacheCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
         return this;
     }
@@ -55,6 +54,6 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      */
     public SharedTokenCacheCredential build() {
         return new SharedTokenCacheCredential(username, clientId, tenantId,
-                identityClientOptions.enablePersistentCache().allowUnencryptedCache());
+                identityClientOptions.enablePersistentCache().setAllowUnencryptedCache(true));
     }
 }

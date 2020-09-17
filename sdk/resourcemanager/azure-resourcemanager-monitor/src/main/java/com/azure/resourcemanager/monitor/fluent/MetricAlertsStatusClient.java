@@ -39,7 +39,7 @@ public final class MetricAlertsStatusClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public MetricAlertsStatusClient(MonitorClient client) {
+    MetricAlertsStatusClient(MonitorClient client) {
         this.service =
             RestProxy.create(MetricAlertsStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

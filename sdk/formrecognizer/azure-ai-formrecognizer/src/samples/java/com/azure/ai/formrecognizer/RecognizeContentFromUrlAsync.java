@@ -32,7 +32,7 @@ public class RecognizeContentFromUrlAsync {
             .buildAsyncClient();
 
         PollerFlux<FormRecognizerOperationResult, List<FormPage>> recognizeContentPoller =
-            client.beginRecognizeContentFromUrl("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/forms/layout1.jpg");
+            client.beginRecognizeContentFromUrl("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/forms/Form_1.jpg");
 
         Mono<List<FormPage>> contentPageResults = recognizeContentPoller
             .last()

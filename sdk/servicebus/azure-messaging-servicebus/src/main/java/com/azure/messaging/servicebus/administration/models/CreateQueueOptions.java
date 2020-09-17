@@ -8,6 +8,8 @@ import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsy
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_DUPLICATE_DETECTION_DURATION;
@@ -24,6 +26,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  */
 @Fluent
 public class CreateQueueOptions {
+    private final List<AuthorizationRule> authorizationRules;
+
     private Duration autoDeleteOnIdle;
     private Duration defaultMessageTimeToLive;
     private boolean deadLetteringOnMessageExpiration;
@@ -62,6 +66,7 @@ public class CreateQueueOptions {
      * @throws IllegalArgumentException if {@code queueName} is an empty string.
      */
     public CreateQueueOptions() {
+        this.authorizationRules = new ArrayList<>();
         this.autoDeleteOnIdle = MAX_DURATION;
         this.defaultMessageTimeToLive = MAX_DURATION;
         this.duplicateDetectionHistoryTimeWindow = DEFAULT_DUPLICATE_DETECTION_DURATION;
@@ -85,6 +90,7 @@ public class CreateQueueOptions {
     public CreateQueueOptions(QueueProperties queue) {
         Objects.requireNonNull(queue, "'queue' cannot be null.");
 
+        this.authorizationRules = new ArrayList<>(queue.getAuthorizationRules());
         this.autoDeleteOnIdle = queue.getAutoDeleteOnIdle();
         this.defaultMessageTimeToLive = queue.getDefaultMessageTimeToLive();
 
@@ -104,6 +110,15 @@ public class CreateQueueOptions {
         this.requiresSession = queue.requiresSession();
         this.status = queue.getStatus();
         this.userMetadata = queue.getUserMetadata();
+    }
+
+    /**
+     * Gets the authorization rules to control user access at entity level.
+     *
+     * @return The authorization rules to control user access at entity level.
+     */
+    public List<AuthorizationRule> getAuthorizationRules() {
+        return authorizationRules;
     }
 
     /**

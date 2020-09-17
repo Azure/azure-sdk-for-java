@@ -25,8 +25,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.inner.DeletedSiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.DeletedWebAppCollectionInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.DeletedWebAppCollection;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DeletedWebApps. */
@@ -44,7 +44,7 @@ public final class DeletedWebAppsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DeletedWebAppsClient(WebSiteManagementClient client) {
+    DeletedWebAppsClient(WebSiteManagementClient client) {
         this.service =
             RestProxy.create(DeletedWebAppsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -61,7 +61,7 @@ public final class DeletedWebAppsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DeletedWebAppCollectionInner>> list(
+        Mono<Response<DeletedWebAppCollection>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -71,7 +71,7 @@ public final class DeletedWebAppsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/deletedSites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DeletedWebAppCollectionInner>> listByLocation(
+        Mono<Response<DeletedWebAppCollection>> listByLocation(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @PathParam("subscriptionId") String subscriptionId,
@@ -95,14 +95,14 @@ public final class DeletedWebAppsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DeletedWebAppCollectionInner>> listNext(
+        Mono<Response<DeletedWebAppCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DeletedWebAppCollectionInner>> listByLocationNext(
+        Mono<Response<DeletedWebAppCollection>> listByLocationNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

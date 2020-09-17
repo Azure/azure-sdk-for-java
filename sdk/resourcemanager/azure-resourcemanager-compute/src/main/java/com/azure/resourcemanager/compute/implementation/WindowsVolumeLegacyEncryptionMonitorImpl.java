@@ -133,7 +133,7 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
                             if (EncryptionExtensionIdentifier.isEncryptionPublisherName(extension.publisher())
                                 && EncryptionExtensionIdentifier
                                     .isEncryptionTypeName(
-                                        extension.virtualMachineExtensionType(), OperatingSystemTypes.WINDOWS)) {
+                                        extension.typePropertiesType(), OperatingSystemTypes.WINDOWS)) {
                                 self.encryptionExtension = extension;
                                 break;
                             }

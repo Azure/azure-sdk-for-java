@@ -233,7 +233,7 @@ class EventHubImpl
             .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
             .withSendAccess()
             .createAsync()
-            .last());
+            .cast(Indexable.class));
         return this;
     }
 
@@ -244,7 +244,7 @@ class EventHubImpl
             .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
             .withListenAccess()
             .createAsync()
-            .last());
+            .cast(Indexable.class));
         return this;
     }
 
@@ -255,7 +255,7 @@ class EventHubImpl
             .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
             .withSendAndListenAccess()
             .createAsync()
-            .last());
+            .cast(Indexable.class));
         return this;
     }
 
@@ -266,7 +266,7 @@ class EventHubImpl
             .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
             .withManageAccess()
             .createAsync()
-            .last());
+            .cast(Indexable.class));
         return this;
     }
 
@@ -284,7 +284,7 @@ class EventHubImpl
             .define(name)
             .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
             .createAsync()
-            .last());
+            .cast(Indexable.class));
         return this;
     }
 
@@ -295,7 +295,7 @@ class EventHubImpl
             .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
             .withUserMetadata(metadata)
             .createAsync()
-            .last());
+            .cast(Indexable.class));
         return this;
     }
 
@@ -410,9 +410,8 @@ class EventHubImpl
             //
             addDependency(context -> creatableStorageAccount
                 .createAsync()
-                .last()
                 .flatMap(indexable -> {
-                    StorageAccount storageAccount = (StorageAccount) indexable;
+                    StorageAccount storageAccount = indexable;
                     ensureSettings().destination().withStorageAccountResourceId(storageAccount.id());
                     return createContainerIfNotExistsAsync(storageAccount, containerName);
                 }));
@@ -518,8 +517,7 @@ class EventHubImpl
                     .defineContainer(containerName)
                     .withExistingBlobService(storageAccount.resourceGroupName(), storageAccount.name())
                     .withPublicAccess(PublicAccess.CONTAINER)
-                    .createAsync()
-                    .last());
+                    .createAsync());
         }
 
         private CaptureDescription cloneCurrentSettings() {

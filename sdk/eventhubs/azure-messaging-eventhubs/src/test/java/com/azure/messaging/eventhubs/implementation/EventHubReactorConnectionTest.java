@@ -18,6 +18,7 @@ import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Receiver;
@@ -49,6 +50,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EventHubReactorConnectionTest {
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String HOSTNAME = "test-event-hub.servicebus.windows.net/";
 
@@ -89,7 +91,7 @@ public class EventHubReactorConnectionTest {
     @BeforeEach
     public void setup() throws IOException {
         final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, product,
-            clientVersion);
+            clientVersion, CLIENT_OPTIONS);
 
         MockitoAnnotations.initMocks(this);
 
@@ -105,7 +107,7 @@ public class EventHubReactorConnectionTest {
         final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(), proxy,
-            scheduler);
+            scheduler, CLIENT_OPTIONS);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -117,7 +119,7 @@ public class EventHubReactorConnectionTest {
             reactorDispatcher, Duration.ofSeconds(20));
 
         when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, AmqpTransportType.AMQP, proxy, product,
-            clientVersion))
+            clientVersion, CLIENT_OPTIONS))
             .thenReturn(connectionHandler);
         when(handlerProvider.createSessionHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), any(Duration.class)))
             .thenReturn(sessionHandler);

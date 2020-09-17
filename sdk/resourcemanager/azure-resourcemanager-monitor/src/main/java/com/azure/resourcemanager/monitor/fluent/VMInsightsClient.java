@@ -39,7 +39,7 @@ public final class VMInsightsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VMInsightsClient(MonitorClient client) {
+    VMInsightsClient(MonitorClient client) {
         this.service =
             RestProxy.create(VMInsightsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

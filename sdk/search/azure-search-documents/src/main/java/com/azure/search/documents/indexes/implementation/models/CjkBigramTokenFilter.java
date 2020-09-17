@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.CjkBigramTokenFilterScripts;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -33,9 +34,13 @@ public class CjkBigramTokenFilter extends TokenFilter {
     @JsonProperty(value = "outputUnigrams")
     private Boolean outputUnigrams;
 
-    /** Creates an instance of CjkBigramTokenFilter class. */
+    /**
+     * Creates an instance of CjkBigramTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public CjkBigramTokenFilter(@JsonProperty(value = "name") String name) {
+    public CjkBigramTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -79,15 +84,5 @@ public class CjkBigramTokenFilter extends TokenFilter {
     public CjkBigramTokenFilter setOutputUnigrams(Boolean outputUnigrams) {
         this.outputUnigrams = outputUnigrams;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

@@ -12,15 +12,15 @@ microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_even
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # "{x-version-update-start;com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder;current}"
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>spring-cloud-azure-eventhubs-stream-binder</artifactId>
-    <version>1.2.8-beta.1</version>
+    <version>1.2.8</version>
 </dependency>
 ```
-[//]: # "{x-version-update-end}"
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 
