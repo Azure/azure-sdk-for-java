@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.FormSelectionMark;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -32,7 +33,7 @@ public class RecognizeContentWithSelectionMarks {
                                           .buildClient();
 
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-                                       + "selectionMark/selectionmarl_form1.pdf");
+                                       + "selectionMark/selectionmark_form1.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
@@ -63,6 +64,12 @@ public class RecognizeContentWithSelectionMarks {
                         boundingBoxStr);
                 });
                 System.out.println();
+            }
+            // Selection Mark information
+            final List<FormSelectionMark> selectionMarks = formPage.getSelectionMarks();
+            for (int j = 0; j < selectionMarks.size(); j++) {
+                final FormSelectionMark selectionMark = selectionMarks.get(i);
+                System.out.printf("Selection Mark, %s, has state = %s.%n", selectionMark.getText(), selectionMark.getState());
             }
         }
     }
