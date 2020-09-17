@@ -14,7 +14,7 @@ import com.azure.storage.blob.BlobServiceClient;
 @Fluent
 public final class BlobContainerListDetails {
     private boolean retrieveMetadata;
-     private boolean retrieveDeleted;
+    private boolean retrieveDeleted;
 
     /**
      * Constructs an unpopulated {@link BlobContainerListDetails}.
