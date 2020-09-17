@@ -53,7 +53,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
     // Cosmos public emulator only test; this test will fail if run against Azure Cosmos endpoint at this time.
     //   We customize the Aad token to be specifically constructed for the Cosmos public emulator only; for Azure Cosmos
     //   the token will be requested and generated from an Azure Identity service.
-    @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT)
+    //@Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT)
     public void createAadTokenCredential() throws InterruptedException {
         CosmosAsyncDatabase db = null;
 
