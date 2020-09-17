@@ -35,11 +35,13 @@ public final class ComponentMetadata {
     }
 
     /**
-     * Sets the model-defined writable properties' request state.
+     * Adds additional writable properties to the model-defined writable properties' request state.
+     * @param key The key of the additional property to be added to the component metadata.
+     * @param value The value of the additional property to be added to the component metadata.
      * @return The ComponentMetadata object itself.
      */
     @JsonAnySetter
-    ComponentMetadata setWritableProperties(String key, Object value) {
+    public ComponentMetadata addWritableProperties(String key, Object value) {
         this.writeableProperties.put(key, value);
         return this;
     }

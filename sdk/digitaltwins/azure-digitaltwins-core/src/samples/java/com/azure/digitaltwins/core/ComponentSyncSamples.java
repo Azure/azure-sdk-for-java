@@ -94,15 +94,15 @@ public class ComponentSyncSamples {
             .addCustomProperty(
                 "Component1",
                 new ModelProperties()
-                    .setCustomProperties("ComponentProp1", "Component value 1")
-                    .setCustomProperties("ComponentProp2", 123)
+                    .addCustomProperties("ComponentProp1", "Component value 1")
+                    .addCustomProperties("ComponentProp2", 123)
             );
 
         String basicDigitalTwinPayload = mapper.writeValueAsString(basicTwin);
 
-        client.createDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);
+        BasicDigitalTwin basicTwinResponse = client.createDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);
 
-        ConsoleLogger.print("Created digital twin " + basicDigitalTwinId);
+        ConsoleLogger.print("Created digital twin " + basicTwinResponse.getId());
 
         // You can get a digital twin in json string format and deserialize it on your own
         Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, Context.NONE);

@@ -53,13 +53,13 @@ public final class ModelProperties {
     }
 
     /**
-     * Sets the custom properties
-     * @param key The key of the additional property to be added to the digital twin.
-     * @param value The value of the additional property to be added to the digital twin.
+     * Adds additional custom properties to the model.
+     * @param key The key of the additional property to be added to the model.
+     * @param value The value of the additional property to be added to the model.
      * @return The ModelProperties object itself.
      */
     @JsonAnySetter
-    public ModelProperties setCustomProperties(String key, Object value) {
+    public ModelProperties addCustomProperties(String key, Object value) {
         this.customProperties.put(key, value);
         return this;
     }
