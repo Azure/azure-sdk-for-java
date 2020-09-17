@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.CreateCompositeModelOptions;
 import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
@@ -22,6 +23,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.time.Duration;
+import java.util.List;
 
 /**
  * This class provides a synchronous client that contains model management the operations that apply
@@ -342,5 +344,16 @@ public final class FormTrainingClient {
     public Response<CopyAuthorization> getCopyAuthorizationWithResponse(String resourceId, String resourceRegion,
         Context context) {
         return client.getCopyAuthorizationWithResponse(resourceId, resourceRegion, context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginCreateCompositeModel(List<String> modelIds) {
+        return beginCreateCompositeModel(modelIds, null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginCreateCompositeModel(List<String> modelIds,
+        CreateCompositeModelOptions createCompositeModelOptions, Context context) {
+        return null;
     }
 }

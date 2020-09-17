@@ -14,6 +14,8 @@ import java.util.Map;
 @Immutable
 public final class CustomFormSubmodel {
 
+    private String modelId;
+
     /*
      * Estimated extraction accuracy for this model.
      */
@@ -72,5 +74,9 @@ public final class CustomFormSubmodel {
      */
     public Map<String, CustomFormModelField> getFields() {
         return this.fields;
+    }
+
+    public String getModelId() {
+        return modelId;
     }
 }

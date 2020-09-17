@@ -16,6 +16,9 @@ import java.util.List;
 @Immutable
 public final class CustomFormModel {
 
+    private String displayName;
+    private CustomModelProperties modelProperties;
+
     /*
      * List of errors returned during the training operation.
      */
@@ -140,5 +143,13 @@ public final class CustomFormModel {
      */
     public List<TrainingDocumentInfo> getTrainingDocuments() {
         return this.trainingDocuments;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public CustomModelProperties getModelProperties() {
+        return modelProperties;
     }
 }

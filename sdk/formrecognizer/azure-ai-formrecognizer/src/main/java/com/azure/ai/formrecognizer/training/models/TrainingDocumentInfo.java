@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Immutable
 public final class TrainingDocumentInfo {
+    private String modelId;
 
     /*
      * Training document name.
@@ -44,7 +45,7 @@ public final class TrainingDocumentInfo {
      * @param errors the list of errors.
      */
     public TrainingDocumentInfo(final String name, final TrainingStatus status, final int pageCount,
-                                final List<FormRecognizerError> errors) {
+        final List<FormRecognizerError> errors) {
         this.name = name;
         this.status = status;
         this.pageCount = pageCount;
@@ -86,5 +87,9 @@ public final class TrainingDocumentInfo {
      */
     public List<FormRecognizerError> getErrors() {
         return this.errors;
+    }
+
+    public String getModelId() {
+        return modelId;
     }
 }

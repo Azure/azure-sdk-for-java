@@ -20,6 +20,7 @@ import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.CreateCompositeModelOptions;
 import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
@@ -46,6 +47,7 @@ import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
@@ -470,6 +472,17 @@ public final class FormTrainingAsyncClient {
         }
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<FormRecognizerOperationResult, CustomFormModel> beginCreateCompositeModel(List<String> modelIds) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<FormRecognizerOperationResult, CustomFormModel> beginCreateCompositeModel(List<String> modelIds,
+        CreateCompositeModelOptions createCompositeModelOptions) {
+        return null;
+    }
+
     Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(String resourceId, String resourceRegion,
         Context context) {
         Objects.requireNonNull(resourceId, "'resourceId' cannot be null");
@@ -519,7 +532,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<CustomFormModelInfo>>
-        fetchCopyModelResultOperation(
+    fetchCopyModelResultOperation(
         String modelId, String copyModelId, Context context) {
         return (pollingContext) -> {
             try {
@@ -543,7 +556,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<PollResponse<FormRecognizerOperationResult>>>
-        createCopyPollOperation(String modelId, Context context) {
+    createCopyPollOperation(String modelId, Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<FormRecognizerOperationResult> operationResultPollResponse =
@@ -560,7 +573,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
-        getCopyActivationOperation(
+    getCopyActivationOperation(
         String modelId, CopyAuthorization target, Context context) {
         return (pollingContext) -> {
             try {
@@ -611,7 +624,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<CustomFormModel>>
-        fetchTrainingModelResultOperation(Context context) {
+    fetchTrainingModelResultOperation(Context context) {
         return (pollingContext) -> {
             try {
                 final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
@@ -625,7 +638,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<PollResponse<FormRecognizerOperationResult>>>
-        createTrainingPollOperation(Context context) {
+    createTrainingPollOperation(Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<FormRecognizerOperationResult> operationResultPollResponse =
@@ -642,7 +655,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
-        getTrainingActivationOperation(
+    getTrainingActivationOperation(
         String trainingFilesUrl, boolean includeSubfolders, String filePrefix, boolean useTrainingLabels,
         Context context) {
         return (pollingContext) -> {
