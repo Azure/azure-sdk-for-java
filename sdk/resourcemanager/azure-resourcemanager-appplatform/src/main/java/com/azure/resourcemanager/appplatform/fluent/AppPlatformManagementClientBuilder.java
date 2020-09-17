@@ -70,6 +70,22 @@ public final class AppPlatformManagementClientBuilder {
     }
 
     /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     *
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the AppPlatformManagementClientBuilder.
+     */
+    public AppPlatformManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -101,22 +117,6 @@ public final class AppPlatformManagementClientBuilder {
         return this;
     }
 
-    /*
-     * The default poll interval for long-running operation
-     */
-    private Duration defaultPollInterval;
-
-    /**
-     * Sets The default poll interval for long-running operation.
-     *
-     * @param defaultPollInterval the defaultPollInterval value.
-     * @return the AppPlatformManagementClientBuilder.
-     */
-    public AppPlatformManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
-        this.defaultPollInterval = defaultPollInterval;
-        return this;
-    }
-
     /**
      * Builds an instance of AppPlatformManagementClient with the provided parameters.
      *
@@ -129,6 +129,9 @@ public final class AppPlatformManagementClientBuilder {
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
         }
+        if (defaultPollInterval == null) {
+            this.defaultPollInterval = Duration.ofSeconds(30);
+        }
         if (pipeline == null) {
             this.pipeline =
                 new HttpPipelineBuilder()
@@ -137,9 +140,6 @@ public final class AppPlatformManagementClientBuilder {
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = new AzureJacksonAdapter();
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
         }
         AppPlatformManagementClient client =
             new AppPlatformManagementClient(

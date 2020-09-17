@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerregistry.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.TasksClient;
+import com.azure.resourcemanager.containerregistry.fluent.inner.TaskInner;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
 import com.azure.resourcemanager.containerregistry.models.BaseImageTrigger;
@@ -37,19 +38,17 @@ import com.azure.resourcemanager.containerregistry.models.TriggerProperties;
 import com.azure.resourcemanager.containerregistry.models.TriggerStatus;
 import com.azure.resourcemanager.containerregistry.models.TriggerUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.Variant;
-import com.azure.resourcemanager.containerregistry.fluent.inner.TaskInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, RegistryTask.Update {
 
@@ -412,16 +411,16 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public RegistryTask create() {
-        return (RegistryTask) createAsync().blockLast();
+        return createAsync().block();
     }
 
     @Override
-    public Flux<Indexable> createAsync() {
+    public Mono<RegistryTask> createAsync() {
         final RegistryTaskImpl self = this;
         return this
             .tasksInner
             .createAsync(this.resourceGroupName, this.registryName, this.taskName, this.inner)
-            .flatMapMany(
+            .flatMap(
                 taskInner -> {
                     self.inner = taskInner;
                     self.taskUpdateParameters = new TaskUpdateParameters();

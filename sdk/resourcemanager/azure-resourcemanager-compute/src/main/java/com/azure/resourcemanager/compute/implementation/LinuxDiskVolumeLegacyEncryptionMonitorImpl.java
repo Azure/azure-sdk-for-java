@@ -140,7 +140,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
                             if (EncryptionExtensionIdentifier.isEncryptionPublisherName(extension.publisher())
                                 && EncryptionExtensionIdentifier
                                     .isEncryptionTypeName(
-                                        extension.virtualMachineExtensionType(), OperatingSystemTypes.LINUX)) {
+                                        extension.typePropertiesType(), OperatingSystemTypes.LINUX)) {
                                 return retrieveExtensionWithInstanceViewAsync(extension);
                             }
                         }

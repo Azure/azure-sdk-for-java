@@ -13,6 +13,7 @@ import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerSettings;
 import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
 import com.azure.resourcemanager.appplatform.models.Sku;
+import com.azure.resourcemanager.appplatform.models.SkuName;
 import com.azure.resourcemanager.appplatform.models.SpringApps;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServiceCertificates;
@@ -115,6 +116,11 @@ public class SpringServiceImpl
     @Override
     public SpringServiceImpl withSku(String skuName) {
         return withSku(new Sku().withName(skuName));
+    }
+
+    @Override
+    public SpringServiceImpl withSku(SkuName skuName) {
+        return withSku(skuName.toString());
     }
 
     @Override

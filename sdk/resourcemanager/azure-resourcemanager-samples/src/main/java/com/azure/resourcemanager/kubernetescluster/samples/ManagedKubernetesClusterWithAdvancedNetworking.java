@@ -113,7 +113,7 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
             KubernetesCluster kubernetesCluster = azure.kubernetesClusters().define(aksName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
-                .withLatestVersion()
+                .withDefaultVersion()
                 .withRootUsername(rootUserName)
                 .withSshKey(sshKeys.getSshPublicKey())
                 .withServicePrincipalClientId(servicePrincipalClientId)
@@ -144,7 +144,9 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
             t1 = new Date();
 
             kubernetesCluster.update()
-                .withAgentPoolVirtualMachineCount(2)
+                .updateAgentPool("agentpool")
+                    .withAgentPoolVirtualMachineCount(2)
+                    .parent()
                 .apply();
 
             t2 = new Date();

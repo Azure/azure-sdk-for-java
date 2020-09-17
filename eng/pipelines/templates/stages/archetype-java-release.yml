@@ -104,7 +104,7 @@ stages:
                         ReleaseSha: $(Build.SourceVersion)
                         RepoId: Azure/azure-sdk-for-java
 
-          - ${{if ne(artifact.options.skipPublishPackage, 'true')}}:
+          - ${{if ne(artifact.skipPublishPackage, 'true')}}:
             - deployment: PublishPackage
               displayName: "Publish to Maven Central"
               condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
@@ -144,7 +144,7 @@ stages:
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
 
-          - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
+          - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
             - deployment: PublicDocsMs
               displayName: "Publish Updates for Docs.MS"
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
@@ -180,7 +180,7 @@ stages:
                           GHReviewersVariable: 'OwningGHUser'
                           CIConfigs: $(CIConfigs)
 
-          - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
+          - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
               displayName: Publish Docs to GitHubIO Blob Storage
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
@@ -209,7 +209,7 @@ stages:
                           # we override the regular script path because we have cloned the build tools repo as a separate artifact.
                           ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
 
-          - ${{if ne(artifact.options.skipUpdatePackageVersion, 'true')}}:
+          - ${{if ne(artifact.skipUpdatePackageVersion, 'true')}}:
             - deployment: UpdatePackageVersion
               displayName: "Update Package Version"
               condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
@@ -286,12 +286,13 @@ stages:
         - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 
         - ${{ each artifact in parameters.Artifacts }}:
-          - template: /eng/pipelines/templates/steps/java-publishing.yml
-            parameters:
-              ArtifactID: ${{artifact.name}}
-              GroupID: ${{artifact.groupId}}
-              ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-              RepositoryUrl: $(RepositoryUrl)
-              Target: JavaDevFeed
-              BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-              JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+          - ${{if ne(artifact.skipPublishDevFeed, 'true')}}:
+            - template: /eng/pipelines/templates/steps/java-publishing.yml
+              parameters:
+                ArtifactID: ${{artifact.name}}
+                GroupID: ${{artifact.groupId}}
+                ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                RepositoryUrl: $(RepositoryUrl)
+                Target: JavaDevFeed
+                BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java

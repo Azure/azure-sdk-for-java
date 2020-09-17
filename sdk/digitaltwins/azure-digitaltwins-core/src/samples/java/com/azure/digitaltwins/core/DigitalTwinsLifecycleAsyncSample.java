@@ -118,15 +118,6 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Create all the relationships
         connectTwinsTogether();
-
-        // TODO: Creating event route
-        // createEventRoute();
-
-        // TODO: Get all event routes
-        // listEventRoutes();
-
-        // TODO: Deleting event route
-        // deleteEventRoute();
     }
 
     /**

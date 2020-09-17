@@ -4,6 +4,9 @@ import com.azure.core.annotation.Fluent;
 
 import java.util.List;
 
+/**
+ * The optional parameters when listing models.
+ */
 @Fluent
 public final class ListModelOptions {
 
@@ -14,8 +17,8 @@ public final class ListModelOptions {
     private Integer maxItemCount;
 
     /**
-     * Get the maxItemCount property.
-     *
+     * Gets the maximum number of items to retrieve per request. The server may choose to return less than the
+     * requested max.
      * @return the maxItemCount value.
      */
     public Integer getMaxItemCount() {
@@ -23,8 +26,8 @@ public final class ListModelOptions {
     }
 
     /**
-     * Set the maxItemCount property.
-     *
+     * Sets the maximum number of items to retrieve per request. The server may choose to return less than the
+     * requested max.
      * @param maxItemCount the maxItemCount value to set.
      * @return the ListModelOptions object itself.
      */
@@ -40,15 +43,13 @@ public final class ListModelOptions {
     private Boolean includeModelDefinition = false;
 
     /**
-     * Get the includeModelDefinition property.
-     *
+     * Gets whether to include the model definition in the result. If false, only the model metadata will be returned.
      * @return the includeModelDefinition value.
      */
     public Boolean getIncludeModelDefinition() { return this.includeModelDefinition; }
 
     /**
-     * Set the includeModelDefinition property.
-     *
+     * Sets whether to include the model definition in the result. If false, only the model metadata will be returned.
      * @param includeModelDefinition the includeModelDefinition value to set.
      * @return the ListModelOptions object itself.
      */
@@ -63,15 +64,13 @@ public final class ListModelOptions {
     private List<String> dependenciesFor;
 
     /**
-     * Get the dependenciesFor property.
-     *
+     * Gets the model Ids that will have their dependencies retrieved.
      * @return the dependenciesFor value.
      */
     public List<String> getDependenciesFor() { return this.dependenciesFor; }
 
     /**
-     * Set the dependenciesFor property.
-     *
+     * Sets the model Ids that will have their dependencies retrieved.
      * @param dependenciesFor the dependenciesFor value to set.
      * @return the ListModelOptions object itself.
      */
