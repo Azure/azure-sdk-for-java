@@ -49,6 +49,12 @@ public class NetworkProfile {
     private String appNetworkResourceGroup;
 
     /**
+     * Desired outbound IP resources for Azure Spring Cloud instance.
+     */
+    @JsonProperty(value = "outboundIPs", access = JsonProperty.Access.WRITE_ONLY)
+    private NetworkProfileOutboundIPs outboundIPs;
+
+    /**
      * Get fully qualified resource Id of the subnet to host Azure Spring Cloud Service Runtime.
      *
      * @return the serviceRuntimeSubnetId value
@@ -146,6 +152,15 @@ public class NetworkProfile {
     public NetworkProfile withAppNetworkResourceGroup(String appNetworkResourceGroup) {
         this.appNetworkResourceGroup = appNetworkResourceGroup;
         return this;
+    }
+
+    /**
+     * Get desired outbound IP resources for Azure Spring Cloud instance.
+     *
+     * @return the outboundIPs value
+     */
+    public NetworkProfileOutboundIPs outboundIPs() {
+        return this.outboundIPs;
     }
 
 }

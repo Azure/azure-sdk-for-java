@@ -19,6 +19,9 @@ public final class UserSourceType extends ExpandableStringEnum<UserSourceType> {
     /** Static value Jar for UserSourceType. */
     public static final UserSourceType JAR = fromString("Jar");
 
+    /** Static value NetCoreZip for UserSourceType. */
+    public static final UserSourceType NET_CORE_ZIP = fromString("NetCoreZip");
+
     /** Static value Source for UserSourceType. */
     public static final UserSourceType SOURCE = fromString("Source");
 

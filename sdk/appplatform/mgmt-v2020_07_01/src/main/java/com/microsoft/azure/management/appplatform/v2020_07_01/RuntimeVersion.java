@@ -22,6 +22,9 @@ public final class RuntimeVersion extends ExpandableStringEnum<RuntimeVersion> {
     /** Static value Java_11 for RuntimeVersion. */
     public static final RuntimeVersion JAVA_11 = fromString("Java_11");
 
+    /** Static value NetCore_31 for RuntimeVersion. */
+    public static final RuntimeVersion NET_CORE_31 = fromString("NetCore_31");
+
     /**
      * Creates or finds a RuntimeVersion from its string representation.
      * @param name a name to look for
