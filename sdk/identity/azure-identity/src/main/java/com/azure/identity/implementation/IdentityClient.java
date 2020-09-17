@@ -582,7 +582,7 @@ public class IdentityClient {
                                                       Consumer<DeviceCodeInfo> deviceCodeConsumer) {
 
         final Consumer<DeviceCodeInfo> deviceCodeInfoConsumer;
-        if (deviceCodeConsumer == null) {
+        if (deviceCodeConsumer != null) {
             deviceCodeInfoConsumer = deviceCodeConsumer;
         } else {
             deviceCodeInfoConsumer = deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
