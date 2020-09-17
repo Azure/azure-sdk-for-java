@@ -1,10 +1,10 @@
-# Release History
+## Release History
 
-## 3.0.0-beta.2 (Unreleased)
+### 3.0.0-beta.2 (Unreleased)
 
 
-## 3.0.0-beta.1 (2020-08-17)
-### New features
+### 3.0.0-beta.1 (2020-08-17)
+#### New features
 * Updated group id to `com.azure`.
 * Updated artifact id to `azure-spring-data-cosmos-core`.
 * Updated azure-cosmos SDK dependency to `4.3.2-beta.2`.
@@ -16,7 +16,7 @@
 * Exposed `CosmosClientBuilder` from Cosmos SDK as spring bean to `@Configuration` class.
 * Updated `CosmosConfig` to contain query metrics and response diagnostics processor implementation.
 * Support for returning `Optional` data type for single result queries.
-### Renames
+#### Renames
 * `CosmosDbFactory` to `CosmosFactory`.
 * `CosmosDBConfig` to `CosmosConfig`.
 * `CosmosDBAccessException` to `CosmosAccessException`.
@@ -24,7 +24,7 @@
 * `DocumentIndexingPolicy` annotation to `CosmosIndexingPolicy` annotation.
 * `DocumentQuery` to `CosmosQuery`.
 * application.properties flag `populateQueryMetrics` to `queryMetricsEnabled`.
-### Key bug fixes
+#### Key bug fixes
 * Scheduling diagnostics logging task to `Parallel` threads to avoid blocking Netty I/O threads.
 * Fixed optimistic locking on delete operation.
 * Fixed issue with escaping queries for `IN` clause.
