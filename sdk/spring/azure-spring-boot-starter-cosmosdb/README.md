@@ -11,7 +11,7 @@
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure:azure-cosmos-spring-boot-starter;current})
+[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-cosmos;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>

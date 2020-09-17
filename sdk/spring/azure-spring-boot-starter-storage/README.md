@@ -5,7 +5,7 @@ We are deprecating this starter.
 If the Spring Boot version less than 2.3.0, use this package (Deprecated).
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
+    <groupId>com.azure</groupId>
     <artifactId>azure-spring-boot-starter-storage</artifactId>
 </dependency>
 ```

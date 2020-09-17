@@ -14,7 +14,7 @@ while protecting the identities of your customers at the same time.
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # "{x-version-update-start;com.azure:azure-active-directory-b2c-spring-boot-starter;current}"
+[//]: # "{x-version-update-start;com.azure:azure-spring-boot-starter-active-directory-b2c;current}"
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
