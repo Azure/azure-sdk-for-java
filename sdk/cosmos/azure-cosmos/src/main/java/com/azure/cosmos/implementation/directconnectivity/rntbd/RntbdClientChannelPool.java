@@ -58,6 +58,44 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
  * A {@link ChannelPool} implementation that enforces a maximum number of concurrent direct TCP Cosmos connections.
+ *
+ * RntbdClientChannelPool: Actors
+ * 	- acquire (RntbdServiceEndpoint): acquire a channel to use
+ * 	- release (RntbdServiceEndpoint): channel usage is complete and returning it back to pool
+ * 	- Channel.closeChannel() Future: Event handling notifying the channel termination to refresh bookkeeping
+ * 	- acquisitionTimeoutTimer: channel acquisition wait-out handler
+ * 	- monitoring (through RntbdServiceEndpoint): get monitoring metrics
+ *
+ * 	Behaviors/Expectations:
+ * 	    - Bounds: MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT (NOT A GUARANTEE)
+ * 	    - NewChannel vs ReUseChannel:
+ * 	        - NewChannels are serially created (current state NOT by-design)
+ * 	        - Will re-use an existing channel when possible (with MAX_REQUESTS_ENDPOINT constraint)
+ * 	        - No guarantees on fairness per channel with-in bounds of MAX_REQUESTS_ENDPOINT. I.e. some channel might have high request concurrency compared to others
+ * 	    - Channel serving guarantees:
+ * 	        - Ordered delivery is not guaranteed (by-design)
+ * 	        - Fairness is attempted but not a guarantee
+ * 	        - [UNRELATED TO CHANNEL-POOL] [CURRENT DESIGN]: RntbdServiceEndpoint.write releases Channel before its usage -> acquisition order and channel user order might differ.
+ * 	    - AcquisitionTimeout: if not can't be served in an expected time, fails gracefully
+ * 	    - Metrics: are approximations and might be in-consistent(by-design) as well
+ *
+ * 	Design Notes:
+ * 	    - channelPool.eventLoop{@Link executor}: (executes on a single & same thread, serially)
+ * 	        - Schedule only when it can be served immediately
+ * 	        - Updates to below data structures should be done only when inside eventLoop
+ * 	            - {@Link acquiredChannels}
+ * 	            - {@Link availableChannels}
+ * 	            - {@Link pendingAcquisitions}
+ * 	    - RntbdServiceEndpoint.write:
+ * 	        - Promise which will success with Channel to use or AcquisitionTimeout
+ * 	        - RntbdServiceEndpoint.writeWhenConnected
+ * 	            - releaseToPool immediately -> unblocks next acquisition if-any
+ * 	            - **Uses Channel even after release**, in channelEventLoop [Not a functional issue but to be noted]
+ * 	                - Possible that acquisition order might differ the ChannelWrite order
+ * 	    - MAX_REQUESTS_ENDPOINT: Truth managed by RntbdRequestManager in Channel.Pipeline
+ * 	        - RequestManager only known when the Channel process them.
+ * 	        - In-flight scheduled ones are unknown -> its a SOFT BOUND
+ *
  */
 @JsonSerialize(using = RntbdClientChannelPool.JsonSerializer.class)
 public final class RntbdClientChannelPool implements ChannelPool {
@@ -131,7 +169,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         Comparator.comparingLong((task) -> task.originalPromise.getExpiryTimeInNanos()));
 
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
-    
+
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
      *
@@ -575,7 +613,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }
 
             // make sure to retrieve the actual channel count to avoid establishing more
-            // TCP connections than allowed. 
+            // TCP connections than allowed.
             final int channelCount = this.channels(false);
 
             if (channelCount < this.maxChannels) {
@@ -1136,7 +1174,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             return first;  // because this.close -> this.close0 -> this.pollChannel
         }
 
-        // Only return channels as servicable here if less than maxPendingRequests 
+        // Only return channels as servicable here if less than maxPendingRequests
         // are queued on them
         if (this.isChannelServiceable(first)) {
             return first;
@@ -1149,7 +1187,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             if (next.isActive()) {
 
-                // Only return channels as servicable here if less than maxPendingRequests 
+                // Only return channels as servicable here if less than maxPendingRequests
                 // are queued on them
                 if (this.isChannelServiceable(next)) {
                     return next;
