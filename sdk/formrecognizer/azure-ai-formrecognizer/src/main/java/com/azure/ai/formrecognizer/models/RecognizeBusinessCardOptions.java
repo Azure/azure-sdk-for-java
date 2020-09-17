@@ -16,6 +16,7 @@ public final class RecognizeBusinessCardOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
+    private String locale;
 
     /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
@@ -79,6 +80,15 @@ public final class RecognizeBusinessCardOptions {
      */
     public RecognizeBusinessCardOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
+        return this;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public RecognizeBusinessCardOptions setLocale(final String locale) {
+        this.locale = locale;
         return this;
     }
 }
