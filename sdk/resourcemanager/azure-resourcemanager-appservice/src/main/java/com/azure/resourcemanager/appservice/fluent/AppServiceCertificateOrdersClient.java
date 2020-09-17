@@ -32,15 +32,14 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateCollectionInner;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateOrderCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateOrderInner;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CertificateEmailInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CertificateOrderActionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.NameIdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SiteSealInner;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateCollection;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderCollection;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderPatchResource;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificatePatchResource;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
@@ -73,7 +72,7 @@ public final class AppServiceCertificateOrdersClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AppServiceCertificateOrdersClient(WebSiteManagementClient client) {
+    AppServiceCertificateOrdersClient(WebSiteManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -92,7 +91,7 @@ public final class AppServiceCertificateOrdersClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateOrderCollectionInner>> list(
+        Mono<Response<AppServiceCertificateOrderCollection>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -117,7 +116,7 @@ public final class AppServiceCertificateOrdersClient
                 + "/Microsoft.CertificateRegistration/certificateOrders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateOrderCollectionInner>> listByResourceGroup(
+        Mono<Response<AppServiceCertificateOrderCollection>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -188,7 +187,7 @@ public final class AppServiceCertificateOrdersClient
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateCollectionInner>> listCertificates(
+        Mono<Response<AppServiceCertificateCollection>> listCertificates(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("certificateOrderName") String certificateOrderName,
@@ -378,21 +377,21 @@ public final class AppServiceCertificateOrdersClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateOrderCollectionInner>> listNext(
+        Mono<Response<AppServiceCertificateOrderCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateOrderCollectionInner>> listByResourceGroupNext(
+        Mono<Response<AppServiceCertificateOrderCollection>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceCertificateCollectionInner>> listCertificatesNext(
+        Mono<Response<AppServiceCertificateCollection>> listCertificatesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

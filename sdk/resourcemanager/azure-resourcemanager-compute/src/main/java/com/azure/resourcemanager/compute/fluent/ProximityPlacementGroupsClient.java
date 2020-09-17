@@ -29,9 +29,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupInner;
-import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupListResultInner;
+import com.azure.resourcemanager.compute.models.ProximityPlacementGroupListResult;
 import com.azure.resourcemanager.compute.models.UpdateResource;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -57,7 +56,7 @@ public final class ProximityPlacementGroupsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ProximityPlacementGroupsClient(ComputeManagementClient client) {
+    ProximityPlacementGroupsClient(ComputeManagementClient client) {
         this.service =
             RestProxy
                 .create(ProximityPlacementGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -134,7 +133,7 @@ public final class ProximityPlacementGroupsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/proximityPlacementGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProximityPlacementGroupListResultInner>> list(
+        Mono<Response<ProximityPlacementGroupListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -146,7 +145,7 @@ public final class ProximityPlacementGroupsClient
                 + "/proximityPlacementGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProximityPlacementGroupListResultInner>> listByResourceGroup(
+        Mono<Response<ProximityPlacementGroupListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -157,14 +156,14 @@ public final class ProximityPlacementGroupsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProximityPlacementGroupListResultInner>> listBySubscriptionNext(
+        Mono<Response<ProximityPlacementGroupListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProximityPlacementGroupListResultInner>> listByResourceGroupNext(
+        Mono<Response<ProximityPlacementGroupListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -935,6 +934,24 @@ public final class ProximityPlacementGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the proximity placement group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProximityPlacementGroupInner getByResourceGroup(
+        String resourceGroupName, String proximityPlacementGroupName) {
+        final String includeColocationStatus = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, proximityPlacementGroupName, includeColocationStatus).block();
+    }
+
+    /**
+     * Retrieves information about a proximity placement group .
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
      *     resources in the proximity placement group.
      * @param context The context to associate with this operation.
@@ -948,24 +965,6 @@ public final class ProximityPlacementGroupsClient
         String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus, Context context) {
         return getByResourceGroupAsync(resourceGroupName, proximityPlacementGroupName, includeColocationStatus, context)
             .block();
-    }
-
-    /**
-     * Retrieves information about a proximity placement group .
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProximityPlacementGroupInner getByResourceGroup(
-        String resourceGroupName, String proximityPlacementGroupName) {
-        final String includeColocationStatus = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, proximityPlacementGroupName, includeColocationStatus).block();
     }
 
     /**

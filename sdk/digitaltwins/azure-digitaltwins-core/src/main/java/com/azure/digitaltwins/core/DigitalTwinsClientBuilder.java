@@ -198,7 +198,7 @@ public final class DigitalTwinsClientBuilder {
      * @param tokenCredential the authentication token provider.
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      */
-    public DigitalTwinsClientBuilder tokenCredential(TokenCredential tokenCredential) {
+    public DigitalTwinsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }

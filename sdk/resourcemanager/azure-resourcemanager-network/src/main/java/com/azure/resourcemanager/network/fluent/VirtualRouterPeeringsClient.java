@@ -30,10 +30,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VirtualRouterPeeringInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualRouterPeeringListResultInner;
 import com.azure.resourcemanager.network.models.ErrorException;
+import com.azure.resourcemanager.network.models.VirtualRouterPeeringListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public final class VirtualRouterPeeringsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualRouterPeeringsClient(NetworkManagementClient client) {
+    VirtualRouterPeeringsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(VirtualRouterPeeringsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -119,7 +118,7 @@ public final class VirtualRouterPeeringsClient {
                 + "/virtualRouters/{virtualRouterName}/peerings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VirtualRouterPeeringListResultInner>> list(
+        Mono<Response<VirtualRouterPeeringListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualRouterName") String virtualRouterName,
@@ -131,7 +130,7 @@ public final class VirtualRouterPeeringsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VirtualRouterPeeringListResultInner>> listNext(
+        Mono<Response<VirtualRouterPeeringListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

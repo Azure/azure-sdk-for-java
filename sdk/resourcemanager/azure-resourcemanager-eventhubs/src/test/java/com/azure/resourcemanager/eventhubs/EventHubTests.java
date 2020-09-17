@@ -23,7 +23,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorization
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceSkuType;
 import com.azure.resourcemanager.eventhubs.models.ProvisioningStateDR;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;

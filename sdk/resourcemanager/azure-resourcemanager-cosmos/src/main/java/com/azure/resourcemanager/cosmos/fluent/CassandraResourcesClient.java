@@ -31,14 +31,13 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.CassandraKeyspaceGetResultsInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.CassandraKeyspaceListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.CassandraTableGetResultsInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.CassandraTableListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.ThroughputSettingsGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceListResult;
 import com.azure.resourcemanager.cosmos.models.CassandraTableCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.CassandraTableListResult;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -59,7 +58,7 @@ public final class CassandraResourcesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public CassandraResourcesClient(CosmosDBManagementClient client) {
+    CassandraResourcesClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy.create(CassandraResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -78,7 +77,7 @@ public final class CassandraResourcesClient {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CassandraKeyspaceListResultInner>> listCassandraKeyspaces(
+        Mono<Response<CassandraKeyspaceListResult>> listCassandraKeyspaces(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -170,7 +169,7 @@ public final class CassandraResourcesClient {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CassandraTableListResultInner>> listCassandraTables(
+        Mono<Response<CassandraTableListResult>> listCassandraTables(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,

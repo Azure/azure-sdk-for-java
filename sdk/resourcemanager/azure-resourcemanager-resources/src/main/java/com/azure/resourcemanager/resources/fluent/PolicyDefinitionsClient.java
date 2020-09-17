@@ -28,9 +28,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.PolicyClient;
 import com.azure.resourcemanager.resources.fluent.inner.PolicyDefinitionInner;
-import com.azure.resourcemanager.resources.fluent.inner.PolicyDefinitionListResultInner;
+import com.azure.resourcemanager.resources.models.PolicyDefinitionListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicyDefinitions. */
@@ -48,7 +47,7 @@ public final class PolicyDefinitionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PolicyDefinitionsClient(PolicyClient client) {
+    PolicyDefinitionsClient(PolicyClient client) {
         this.service =
             RestProxy.create(PolicyDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -155,7 +154,7 @@ public final class PolicyDefinitionsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyDefinitionListResultInner>> list(
+        Mono<Response<PolicyDefinitionListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -165,7 +164,7 @@ public final class PolicyDefinitionsClient {
         @Get("/providers/Microsoft.Authorization/policyDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyDefinitionListResultInner>> listBuiltIn(
+        Mono<Response<PolicyDefinitionListResult>> listBuiltIn(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -174,7 +173,7 @@ public final class PolicyDefinitionsClient {
                 + "/policyDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyDefinitionListResultInner>> listByManagementGroup(
+        Mono<Response<PolicyDefinitionListResult>> listByManagementGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("managementGroupId") String managementGroupId,
@@ -184,21 +183,21 @@ public final class PolicyDefinitionsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyDefinitionListResultInner>> listNext(
+        Mono<Response<PolicyDefinitionListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyDefinitionListResultInner>> listBuiltInNext(
+        Mono<Response<PolicyDefinitionListResult>> listBuiltInNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyDefinitionListResultInner>> listByManagementGroupNext(
+        Mono<Response<PolicyDefinitionListResult>> listByManagementGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -28,7 +28,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionsListResultInner;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionUpdate;
@@ -51,7 +50,7 @@ public final class VirtualMachineExtensionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualMachineExtensionsClient(ComputeManagementClient client) {
+    VirtualMachineExtensionsClient(ComputeManagementClient client) {
         this.service =
             RestProxy
                 .create(VirtualMachineExtensionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -1261,6 +1260,24 @@ public final class VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine Extension.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName) {
+        final String expand = null;
+        final Context context = null;
+        return getAsync(resourceGroupName, vmName, vmExtensionName, expand).block();
+    }
+
+    /**
+     * The operation to get the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine containing the extension.
+     * @param vmExtensionName The name of the virtual machine extension.
      * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1272,24 +1289,6 @@ public final class VirtualMachineExtensionsClient {
     public VirtualMachineExtensionInner get(
         String resourceGroupName, String vmName, String vmExtensionName, String expand, Context context) {
         return getAsync(resourceGroupName, vmName, vmExtensionName, expand, context).block();
-    }
-
-    /**
-     * The operation to get the extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the extension.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName) {
-        final String expand = null;
-        final Context context = null;
-        return getAsync(resourceGroupName, vmName, vmExtensionName, expand).block();
     }
 
     /**
@@ -1485,6 +1484,23 @@ public final class VirtualMachineExtensionsClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Extension operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineExtensionsListResultInner list(String resourceGroupName, String vmName) {
+        final String expand = null;
+        final Context context = null;
+        return listAsync(resourceGroupName, vmName, expand).block();
+    }
+
+    /**
+     * The operation to get all extensions of a Virtual Machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine containing the extension.
      * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1496,22 +1512,5 @@ public final class VirtualMachineExtensionsClient {
     public VirtualMachineExtensionsListResultInner list(
         String resourceGroupName, String vmName, String expand, Context context) {
         return listAsync(resourceGroupName, vmName, expand, context).block();
-    }
-
-    /**
-     * The operation to get all extensions of a Virtual Machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Extension operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineExtensionsListResultInner list(String resourceGroupName, String vmName) {
-        final String expand = null;
-        final Context context = null;
-        return listAsync(resourceGroupName, vmName, expand).block();
     }
 }

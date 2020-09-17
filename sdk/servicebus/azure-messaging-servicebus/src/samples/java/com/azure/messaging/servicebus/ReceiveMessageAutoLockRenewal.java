@@ -42,15 +42,15 @@ public class ReceiveMessageAutoLockRenewal {
 
         Disposable subscription = receiver.receiveMessages()
             .flatMap(context -> {
-                receiver.getAutoRenewMessageLock(context.getMessage().getLockToken(), Duration.ofSeconds(120));
+                receiver.renewMessageLock(context.getMessage(), Duration.ofSeconds(120));
                 boolean messageProcessed = false;
                 // Process the context and its message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
                 if (messageProcessed) {
-                    return receiver.complete(context.getMessage().getLockToken());
+                    return receiver.complete(context.getMessage());
                 } else {
-                    return receiver.abandon(context.getMessage().getLockToken());
+                    return receiver.abandon(context.getMessage());
                 }
             }).subscribe();
 

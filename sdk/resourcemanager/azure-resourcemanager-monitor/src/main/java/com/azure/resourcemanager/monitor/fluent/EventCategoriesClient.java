@@ -24,9 +24,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
-import com.azure.resourcemanager.monitor.fluent.inner.EventCategoryCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.LocalizableStringInner;
+import com.azure.resourcemanager.monitor.models.EventCategoryCollection;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EventCategories. */
@@ -44,7 +43,7 @@ public final class EventCategoriesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public EventCategoriesClient(MonitorClient client) {
+    EventCategoriesClient(MonitorClient client) {
         this.service =
             RestProxy.create(EventCategoriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -61,7 +60,7 @@ public final class EventCategoriesClient {
         @Get("/providers/microsoft.insights/eventcategories")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventCategoryCollectionInner>> list(
+        Mono<Response<EventCategoryCollection>> list(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
     }
 

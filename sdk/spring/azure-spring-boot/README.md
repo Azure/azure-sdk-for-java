@@ -28,12 +28,12 @@ Note that there is no need to add a `version` as those are managed already by th
 
 Alternatively you may want to use the [starters](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter)
 
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current})
+[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-keyvault-secrets;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
-    <version>2.3.3</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
+    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -43,8 +43,7 @@ This project provides auto-configuration for the following Azure services:
 
 - [Azure Active Directory](../azure-spring-boot-starter-active-directory)
 - [Azure Active Directory B2C](../azure-spring-boot-starter-active-directory-b2c)
-- [Spring Boot 2.2 for Cosmos DB SQL API](../azure-spring-boot-2-2-starter-cosmosdb)
-- [Spring Boot 2.3 for Cosmos DB SQL API](../azure-spring-boot-2-3-starter-cosmosdb)
+- [Cosmos DB SQL API](../azure-spring-boot-starter-cosmosdb)
 - [Gremlin SQL API](../azure-spring-boot-starter-data-gremlin)
 - [Key Vault Secrets](../azure-spring-boot-starter-keyvault-secrets)
 - [Metrics Service](../azure-spring-boot-starter-metrics)
@@ -71,7 +70,7 @@ The following section provides sample projects illustrating how to use the Azure
 
 ## Troubleshooting
 ### Enable client logging
-Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Enable Spring logging
 Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
@@ -84,7 +83,7 @@ logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
  
 
 ## Next steps

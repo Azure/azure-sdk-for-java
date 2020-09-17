@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AvailableDelegationInner;
-import com.azure.resourcemanager.network.fluent.inner.AvailableDelegationsResultInner;
+import com.azure.resourcemanager.network.models.AvailableDelegationsResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailableDelegations. */
@@ -45,7 +44,7 @@ public final class AvailableDelegationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AvailableDelegationsClient(NetworkManagementClient client) {
+    AvailableDelegationsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(AvailableDelegationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -63,7 +62,7 @@ public final class AvailableDelegationsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/availableDelegations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailableDelegationsResultInner>> list(
+        Mono<Response<AvailableDelegationsResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
@@ -74,7 +73,7 @@ public final class AvailableDelegationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailableDelegationsResultInner>> listNext(
+        Mono<Response<AvailableDelegationsResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

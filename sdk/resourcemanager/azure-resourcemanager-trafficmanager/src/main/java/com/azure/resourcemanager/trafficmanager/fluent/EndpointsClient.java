@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.trafficmanager.TrafficManagerManagementClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.DeleteOperationResultInner;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
 import reactor.core.publisher.Mono;
@@ -45,7 +44,7 @@ public final class EndpointsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public EndpointsClient(TrafficManagerManagementClient client) {
+    EndpointsClient(TrafficManagerManagementClient client) {
         this.service =
             RestProxy.create(EndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -360,15 +359,14 @@ public final class EndpointsClient {
      * @return class representing a Traffic Manager endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EndpointInner> updateWithResponse(
+    public EndpointInner update(
         String resourceGroupName,
         String profileName,
         String endpointType,
         String endpointName,
         EndpointInner parameters,
         Context context) {
-        return updateWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters, context)
-            .block();
+        return updateAsync(resourceGroupName, profileName, endpointType, endpointName, parameters, context).block();
     }
 
     /**
@@ -565,9 +563,9 @@ public final class EndpointsClient {
      * @return a Traffic Manager endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EndpointInner> getWithResponse(
+    public EndpointInner get(
         String resourceGroupName, String profileName, String endpointType, String endpointName, Context context) {
-        return getWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, context).block();
+        return getAsync(resourceGroupName, profileName, endpointType, endpointName, context).block();
     }
 
     /**
@@ -812,15 +810,14 @@ public final class EndpointsClient {
      * @return class representing a Traffic Manager endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EndpointInner> createOrUpdateWithResponse(
+    public EndpointInner createOrUpdate(
         String resourceGroupName,
         String profileName,
         String endpointType,
         String endpointName,
         EndpointInner parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, profileName, endpointType, endpointName, parameters, context)
+        return createOrUpdateAsync(resourceGroupName, profileName, endpointType, endpointName, parameters, context)
             .block();
     }
 
@@ -1019,8 +1016,8 @@ public final class EndpointsClient {
      * @return the result of the request or operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeleteOperationResultInner> deleteWithResponse(
+    public DeleteOperationResultInner delete(
         String resourceGroupName, String profileName, String endpointType, String endpointName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, context).block();
+        return deleteAsync(resourceGroupName, profileName, endpointType, endpointName, context).block();
     }
 }

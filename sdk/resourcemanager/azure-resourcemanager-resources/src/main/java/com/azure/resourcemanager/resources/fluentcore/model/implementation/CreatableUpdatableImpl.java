@@ -5,13 +5,12 @@ package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
+import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -208,16 +207,20 @@ public abstract class CreatableUpdatableImpl<
     }
 
     @Override
-    public Flux<Indexable> createAsync() {
-        return taskGroup.invokeAsync(this.taskGroup.newInvocationContext());
+    public Mono<FluentModelT> createAsync() {
+        return createOrUpdateAsync();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Mono<FluentModelT> applyAsync() {
-        return taskGroup.invokeAsync(this.taskGroup.newInvocationContext())
-                .last()
-                .map(indexable -> (FluentModelT) indexable);
+        return createOrUpdateAsync();
+    }
+
+    @SuppressWarnings("unchecked")
+    public Mono<FluentModelT> createOrUpdateAsync() {
+        return taskGroup.invokeAsync()
+            .map(indexable -> (FluentModelT) indexable)
+            .onErrorMap(AggregatedManagementException::convertToManagementException);
     }
 
     @Override
@@ -229,7 +232,7 @@ public abstract class CreatableUpdatableImpl<
 
     @Override
     public FluentModelT create() {
-        return Utils.<FluentModelT>rootResource(createAsync().last()).block();
+        return createAsync().block();
     }
 
     @Override

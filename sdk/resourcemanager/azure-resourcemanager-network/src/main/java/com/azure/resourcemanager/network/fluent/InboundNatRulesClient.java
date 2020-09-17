@@ -31,9 +31,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleListResultInner;
+import com.azure.resourcemanager.network.models.InboundNatRuleListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public final class InboundNatRulesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public InboundNatRulesClient(NetworkManagementClient client) {
+    InboundNatRulesClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(InboundNatRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -72,7 +71,7 @@ public final class InboundNatRulesClient {
                 + "/loadBalancers/{loadBalancerName}/inboundNatRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InboundNatRuleListResultInner>> list(
+        Mono<Response<InboundNatRuleListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("loadBalancerName") String loadBalancerName,
@@ -131,7 +130,7 @@ public final class InboundNatRulesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InboundNatRuleListResultInner>> listNext(
+        Mono<Response<InboundNatRuleListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -782,6 +781,24 @@ public final class InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound nat rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified load balancer inbound nat rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InboundNatRuleInner get(String resourceGroupName, String loadBalancerName, String inboundNatRuleName) {
+        final String expand = null;
+        final Context context = null;
+        return getAsync(resourceGroupName, loadBalancerName, inboundNatRuleName, expand).block();
+    }
+
+    /**
+     * Gets the specified load balancer inbound nat rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param inboundNatRuleName The name of the inbound nat rule.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -793,24 +810,6 @@ public final class InboundNatRulesClient {
     public InboundNatRuleInner get(
         String resourceGroupName, String loadBalancerName, String inboundNatRuleName, String expand, Context context) {
         return getAsync(resourceGroupName, loadBalancerName, inboundNatRuleName, expand, context).block();
-    }
-
-    /**
-     * Gets the specified load balancer inbound nat rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param inboundNatRuleName The name of the inbound nat rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer inbound nat rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InboundNatRuleInner get(String resourceGroupName, String loadBalancerName, String inboundNatRuleName) {
-        final String expand = null;
-        final Context context = null;
-        return getAsync(resourceGroupName, loadBalancerName, inboundNatRuleName, expand).block();
     }
 
     /**

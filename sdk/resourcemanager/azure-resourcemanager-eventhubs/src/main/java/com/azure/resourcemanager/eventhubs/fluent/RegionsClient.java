@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.eventhubs.EventHubManagementClient;
 import com.azure.resourcemanager.eventhubs.fluent.inner.MessagingRegionsInner;
-import com.azure.resourcemanager.eventhubs.fluent.inner.MessagingRegionsListResultInner;
+import com.azure.resourcemanager.eventhubs.models.MessagingRegionsListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Regions. */
@@ -45,7 +44,7 @@ public final class RegionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public RegionsClient(EventHubManagementClient client) {
+    RegionsClient(EventHubManagementClient client) {
         this.service = RestProxy.create(RegionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -61,7 +60,7 @@ public final class RegionsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/sku/{sku}/regions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MessagingRegionsListResultInner>> listBySku(
+        Mono<Response<MessagingRegionsListResult>> listBySku(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -72,7 +71,7 @@ public final class RegionsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MessagingRegionsListResultInner>> listBySkuNext(
+        Mono<Response<MessagingRegionsListResult>> listBySkuNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -31,6 +31,7 @@ public class Configs {
     private static final Protocol DEFAULT_PROTOCOL = Protocol.TCP;
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
+    private static final String GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS = "COSMOS.GLOBAL_ENDPOINT_MANAGER_MAX_INIT_TIME_IN_SECONDS";
 
     private static final String MAX_HTTP_BODY_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_BODY_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES";
@@ -57,6 +58,7 @@ public class Configs {
     private static final int SHORT_BARRIER_RETRY_INTERVAL_IN_MS_FOR_MULTI_REGION = 10;
     private static final int CPU_CNT = Runtime.getRuntime().availableProcessors();
     private static final int DEFAULT_DIRECT_HTTPS_POOL_SIZE = CPU_CNT * 500;
+    private static final int DEFAULT_GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS = 2 * 60;
 
     //  Reactor Netty Constants
     private static final Duration MAX_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
@@ -152,6 +154,10 @@ public class Configs {
 
     public int getUnavailableLocationsExpirationTimeInSeconds() {
         return getJVMConfigAsInt(UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS, DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS);
+    }
+
+    public int getGlobalEndpointManagerMaxInitializationTimeInSeconds() {
+        return getJVMConfigAsInt(GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS, DEFAULT_GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS);
     }
 
     public String getReactorNettyConnectionPoolName() {

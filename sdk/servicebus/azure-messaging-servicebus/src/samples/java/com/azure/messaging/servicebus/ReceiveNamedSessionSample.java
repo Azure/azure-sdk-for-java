@@ -56,9 +56,9 @@ public class ReceiveNamedSessionSample {
                 boolean isSuccessfullyProcessed = processMessage(message);
 
                 if (isSuccessfullyProcessed) {
-                    receiver.complete(message.getLockToken(), message.getSessionId());
+                    receiver.complete(message);
                 } else {
-                    receiver.abandon(message.getLockToken(), null, message.getSessionId());
+                    receiver.abandon(message, null);
                 }
             }
         }

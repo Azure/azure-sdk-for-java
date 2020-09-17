@@ -34,11 +34,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.inner.GenericResourceExpandedInner;
 import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
-import com.azure.resourcemanager.resources.fluent.inner.ResourceListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.azure.resourcemanager.resources.models.ResourceListResult;
 import com.azure.resourcemanager.resources.models.ResourcesMoveInfo;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -59,7 +58,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ResourcesClient(ResourceManagementClient client) {
+    ResourcesClient(ResourceManagementClient client) {
         this.service =
             RestProxy.create(ResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -76,7 +75,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceListResultInner>> listByResourceGroup(
+        Mono<Response<ResourceListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("$filter") String filter,
@@ -114,7 +113,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Get("/subscriptions/{subscriptionId}/resources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceListResultInner>> list(
+        Mono<Response<ResourceListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("$expand") String expand,
@@ -266,14 +265,14 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceListResultInner>> listByResourceGroupNext(
+        Mono<Response<ResourceListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceListResultInner>> listNext(
+        Mono<Response<ResourceListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

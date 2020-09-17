@@ -31,10 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.IpGroupInner;
-import com.azure.resourcemanager.network.fluent.inner.IpGroupListResultInner;
 import com.azure.resourcemanager.network.models.ErrorException;
+import com.azure.resourcemanager.network.models.IpGroupListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -60,7 +59,7 @@ public final class IpGroupsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public IpGroupsClient(NetworkManagementClient client) {
+    IpGroupsClient(NetworkManagementClient client) {
         this.service = RestProxy.create(IpGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -135,7 +134,7 @@ public final class IpGroupsClient
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<IpGroupListResultInner>> listByResourceGroup(
+        Mono<Response<IpGroupListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -146,7 +145,7 @@ public final class IpGroupsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/ipGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<IpGroupListResultInner>> list(
+        Mono<Response<IpGroupListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -156,14 +155,14 @@ public final class IpGroupsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<IpGroupListResultInner>> listByResourceGroupNext(
+        Mono<Response<IpGroupListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<IpGroupListResultInner>> listNext(
+        Mono<Response<IpGroupListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -364,6 +363,23 @@ public final class IpGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified ipGroups.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IpGroupInner getByResourceGroup(String resourceGroupName, String ipGroupsName) {
+        final String expand = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, ipGroupsName, expand).block();
+    }
+
+    /**
+     * Gets the specified ipGroups.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
      * @param expand Expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
      *     resource.
      * @param context The context to associate with this operation.
@@ -376,23 +392,6 @@ public final class IpGroupsClient
     public IpGroupInner getByResourceGroup(
         String resourceGroupName, String ipGroupsName, String expand, Context context) {
         return getByResourceGroupAsync(resourceGroupName, ipGroupsName, expand, context).block();
-    }
-
-    /**
-     * Gets the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified ipGroups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpGroupInner getByResourceGroup(String resourceGroupName, String ipGroupsName) {
-        final String expand = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, ipGroupsName, expand).block();
     }
 
     /**

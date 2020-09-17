@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.inner.ListVpnSiteLinkConnectionsResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VpnSiteLinkConnectionInner;
+import com.azure.resourcemanager.network.models.ListVpnSiteLinkConnectionsResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VpnLinkConnections. */
@@ -45,7 +44,7 @@ public final class VpnLinkConnectionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VpnLinkConnectionsClient(NetworkManagementClient client) {
+    VpnLinkConnectionsClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(VpnLinkConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -64,7 +63,7 @@ public final class VpnLinkConnectionsClient {
                 + "/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVpnSiteLinkConnectionsResultInner>> listByVpnConnection(
+        Mono<Response<ListVpnSiteLinkConnectionsResult>> listByVpnConnection(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -77,7 +76,7 @@ public final class VpnLinkConnectionsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVpnSiteLinkConnectionsResultInner>> listByVpnConnectionNext(
+        Mono<Response<ListVpnSiteLinkConnectionsResult>> listByVpnConnectionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

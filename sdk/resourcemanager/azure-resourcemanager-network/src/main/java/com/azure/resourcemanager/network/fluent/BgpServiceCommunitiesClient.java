@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.BgpServiceCommunityInner;
-import com.azure.resourcemanager.network.fluent.inner.BgpServiceCommunityListResultInner;
+import com.azure.resourcemanager.network.models.BgpServiceCommunityListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BgpServiceCommunities. */
@@ -45,7 +44,7 @@ public final class BgpServiceCommunitiesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public BgpServiceCommunitiesClient(NetworkManagementClient client) {
+    BgpServiceCommunitiesClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(BgpServiceCommunitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -63,7 +62,7 @@ public final class BgpServiceCommunitiesClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/bgpServiceCommunities")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BgpServiceCommunityListResultInner>> list(
+        Mono<Response<BgpServiceCommunityListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -73,7 +72,7 @@ public final class BgpServiceCommunitiesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BgpServiceCommunityListResultInner>> listNext(
+        Mono<Response<BgpServiceCommunityListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

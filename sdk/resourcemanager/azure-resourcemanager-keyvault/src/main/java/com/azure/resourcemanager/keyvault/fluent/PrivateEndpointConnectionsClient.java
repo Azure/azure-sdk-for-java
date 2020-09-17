@@ -27,7 +27,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.keyvault.KeyVaultManagementClient;
 import com.azure.resourcemanager.keyvault.fluent.inner.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.keyvault.models.PrivateEndpointConnectionsPutResponse;
 import java.nio.ByteBuffer;
@@ -49,7 +48,7 @@ public final class PrivateEndpointConnectionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PrivateEndpointConnectionsClient(KeyVaultManagementClient client) {
+    PrivateEndpointConnectionsClient(KeyVaultManagementClient client) {
         this.service =
             RestProxy
                 .create(

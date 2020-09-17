@@ -28,10 +28,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.OAuth2PermissionGrantInner;
-import com.azure.resourcemanager.authorization.fluent.inner.OAuth2PermissionGrantListResultInner;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
+import com.azure.resourcemanager.authorization.models.OAuth2PermissionGrantListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OAuth2PermissionGrants. */
@@ -49,7 +48,7 @@ public final class OAuth2PermissionGrantsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public OAuth2PermissionGrantsClient(GraphRbacManagementClient client) {
+    OAuth2PermissionGrantsClient(GraphRbacManagementClient client) {
         this.service =
             RestProxy
                 .create(OAuth2PermissionGrantsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -67,7 +66,7 @@ public final class OAuth2PermissionGrantsClient {
         @Get("/{tenantID}/oauth2PermissionGrants")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OAuth2PermissionGrantListResultInner>> list(
+        Mono<Response<OAuth2PermissionGrantListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
@@ -100,7 +99,7 @@ public final class OAuth2PermissionGrantsClient {
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<OAuth2PermissionGrantListResultInner>> listNext(
+        Mono<Response<OAuth2PermissionGrantListResult>> listNext(
             @HostParam("$host") String endpoint,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,
@@ -435,6 +434,20 @@ public final class OAuth2PermissionGrantsClient {
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OAuth2PermissionGrantInner create() {
+        final OAuth2PermissionGrantInner body = null;
+        final Context context = null;
+        return createAsync(body).block();
+    }
+
+    /**
+     * Grants OAuth2 permissions for the relevant resource Ids of an app.
+     *
      * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -445,20 +458,6 @@ public final class OAuth2PermissionGrantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OAuth2PermissionGrantInner create(OAuth2PermissionGrantInner body, Context context) {
         return createAsync(body, context).block();
-    }
-
-    /**
-     * Grants OAuth2 permissions for the relevant resource Ids of an app.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OAuth2PermissionGrantInner create() {
-        final OAuth2PermissionGrantInner body = null;
-        final Context context = null;
-        return createAsync(body).block();
     }
 
     /**

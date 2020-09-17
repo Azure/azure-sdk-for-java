@@ -7,7 +7,8 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.azure.search.documents.indexes.models.FieldMapping;
+import com.azure.search.documents.indexes.models.IndexingSchedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public final class SearchIndexer {
     /*
      * The name of the indexer.
      */
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
 
     /*
@@ -29,7 +30,7 @@ public final class SearchIndexer {
     /*
      * The name of the datasource from which this indexer reads data.
      */
-    @JsonProperty(value = "dataSourceName", required = true)
+    @JsonProperty(value = "dataSourceName")
     private String dataSourceName;
 
     /*
@@ -41,7 +42,7 @@ public final class SearchIndexer {
     /*
      * The name of the index to which this indexer writes data.
      */
-    @JsonProperty(value = "targetIndexName", required = true)
+    @JsonProperty(value = "targetIndexName")
     private String targetIndexName;
 
     /*
@@ -82,17 +83,6 @@ public final class SearchIndexer {
     @JsonProperty(value = "@odata.etag")
     private String eTag;
 
-    /** Creates an instance of SearchIndexer class. */
-    @JsonCreator
-    public SearchIndexer(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "dataSourceName") String dataSourceName,
-            @JsonProperty(value = "targetIndexName") String targetIndexName) {
-        this.name = name;
-        this.dataSourceName = dataSourceName;
-        this.targetIndexName = targetIndexName;
-    }
-
     /**
      * Get the name property: The name of the indexer.
      *
@@ -108,6 +98,11 @@ public final class SearchIndexer {
      * @param name the name value to set.
      * @return the SearchIndexer object itself.
      */
+    public SearchIndexer setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     /**
      * Get the description property: The description of the indexer.
      *
@@ -143,6 +138,11 @@ public final class SearchIndexer {
      * @param dataSourceName the dataSourceName value to set.
      * @return the SearchIndexer object itself.
      */
+    public SearchIndexer setDataSourceName(String dataSourceName) {
+        this.dataSourceName = dataSourceName;
+        return this;
+    }
+
     /**
      * Get the skillsetName property: The name of the skillset executing with this indexer.
      *
@@ -178,6 +178,11 @@ public final class SearchIndexer {
      * @param targetIndexName the targetIndexName value to set.
      * @return the SearchIndexer object itself.
      */
+    public SearchIndexer setTargetIndexName(String targetIndexName) {
+        this.targetIndexName = targetIndexName;
+        return this;
+    }
+
     /**
      * Get the schedule property: The schedule for this indexer.
      *
@@ -300,34 +305,5 @@ public final class SearchIndexer {
     public SearchIndexer setETag(String eTag) {
         this.eTag = eTag;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model SearchIndexer");
-        }
-        if (getDataSourceName() == null) {
-            throw new IllegalArgumentException("Missing required property dataSourceName in model SearchIndexer");
-        }
-        if (getTargetIndexName() == null) {
-            throw new IllegalArgumentException("Missing required property targetIndexName in model SearchIndexer");
-        }
-        if (getSchedule() != null) {
-            getSchedule().validate();
-        }
-        if (getParameters() != null) {
-            getParameters().validate();
-        }
-        if (getFieldMappings() != null) {
-            getFieldMappings().forEach(e -> e.validate());
-        }
-        if (getOutputFieldMappings() != null) {
-            getOutputFieldMappings().forEach(e -> e.validate());
-        }
     }
 }

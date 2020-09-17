@@ -32,24 +32,23 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CapabilityInner;
-import com.azure.resourcemanager.appservice.fluent.inner.CsmUsageQuotaCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmUsageQuotaInner;
-import com.azure.resourcemanager.appservice.fluent.inner.HybridConnectionCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.HybridConnectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.HybridConnectionKeyInner;
 import com.azure.resourcemanager.appservice.fluent.inner.HybridConnectionLimitsInner;
-import com.azure.resourcemanager.appservice.fluent.inner.ResourceCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.inner.VnetGatewayInner;
 import com.azure.resourcemanager.appservice.fluent.inner.VnetInfoInner;
 import com.azure.resourcemanager.appservice.fluent.inner.VnetRouteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WebAppCollectionInner;
+import com.azure.resourcemanager.appservice.models.AppServicePlanCollection;
 import com.azure.resourcemanager.appservice.models.AppServicePlanPatchResource;
+import com.azure.resourcemanager.appservice.models.CsmUsageQuotaCollection;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.HybridConnectionCollection;
+import com.azure.resourcemanager.appservice.models.ResourceCollection;
+import com.azure.resourcemanager.appservice.models.WebAppCollection;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -76,7 +75,7 @@ public final class AppServicePlansClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AppServicePlansClient(WebSiteManagementClient client) {
+    AppServicePlansClient(WebSiteManagementClient client) {
         this.service =
             RestProxy.create(AppServicePlansService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -93,7 +92,7 @@ public final class AppServicePlansClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServicePlanCollectionInner>> list(
+        Mono<Response<AppServicePlanCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("detailed") Boolean detailed,
             @PathParam("subscriptionId") String subscriptionId,
@@ -104,7 +103,7 @@ public final class AppServicePlansClient
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServicePlanCollectionInner>> listByResourceGroup(
+        Mono<Response<AppServicePlanCollection>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -237,7 +236,7 @@ public final class AppServicePlansClient
                 + "/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/sites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceCollectionInner>> listWebAppsByHybridConnection(
+        Mono<Response<ResourceCollection>> listWebAppsByHybridConnection(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -267,7 +266,7 @@ public final class AppServicePlansClient
                 + "/{name}/hybridConnectionRelays")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<HybridConnectionCollectionInner>> listHybridConnections(
+        Mono<Response<HybridConnectionCollection>> listHybridConnections(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -296,7 +295,7 @@ public final class AppServicePlansClient
                 + "/{name}/sites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WebAppCollectionInner>> listWebApps(
+        Mono<Response<WebAppCollection>> listWebApps(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -327,7 +326,7 @@ public final class AppServicePlansClient
                 + "/{name}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CsmUsageQuotaCollectionInner>> listUsages(
+        Mono<Response<CsmUsageQuotaCollection>> listUsages(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -498,42 +497,42 @@ public final class AppServicePlansClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServicePlanCollectionInner>> listNext(
+        Mono<Response<AppServicePlanCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServicePlanCollectionInner>> listByResourceGroupNext(
+        Mono<Response<AppServicePlanCollection>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceCollectionInner>> listWebAppsByHybridConnectionNext(
+        Mono<Response<ResourceCollection>> listWebAppsByHybridConnectionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<HybridConnectionCollectionInner>> listHybridConnectionsNext(
+        Mono<Response<HybridConnectionCollection>> listHybridConnectionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WebAppCollectionInner>> listWebAppsNext(
+        Mono<Response<WebAppCollection>> listWebAppsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CsmUsageQuotaCollectionInner>> listUsagesNext(
+        Mono<Response<CsmUsageQuotaCollection>> listUsagesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -3137,6 +3136,22 @@ public final class AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restartWebApps(String resourceGroupName, String name) {
+        final Boolean softRestart = null;
+        final Context context = null;
+        restartWebAppsAsync(resourceGroupName, name, softRestart).block();
+    }
+
+    /**
+     * Description for Restart all apps in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to perform a soft restart, applies the configuration
      *     settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always
      *     restarts and reprovisions the apps.
@@ -3148,22 +3163,6 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restartWebApps(String resourceGroupName, String name, Boolean softRestart, Context context) {
         restartWebAppsAsync(resourceGroupName, name, softRestart, context).block();
-    }
-
-    /**
-     * Description for Restart all apps in an App Service plan.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restartWebApps(String resourceGroupName, String name) {
-        final Boolean softRestart = null;
-        final Context context = null;
-        restartWebAppsAsync(resourceGroupName, name, softRestart).block();
     }
 
     /**

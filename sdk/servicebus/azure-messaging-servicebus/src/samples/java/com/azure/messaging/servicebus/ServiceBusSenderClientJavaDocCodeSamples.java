@@ -80,11 +80,11 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             .buildClient();
 
         final ServiceBusMessage firstMessage = new ServiceBusMessage("message-1".getBytes(UTF_8));
-        firstMessage.getProperties().put("telemetry", "latency");
+        firstMessage.getApplicationProperties().put("telemetry", "latency");
         final ServiceBusMessage secondMessage = new ServiceBusMessage("message-2".getBytes(UTF_8));
-        secondMessage.getProperties().put("telemetry", "cpu-temperature");
+        secondMessage.getApplicationProperties().put("telemetry", "cpu-temperature");
         final ServiceBusMessage thirdMessage = new ServiceBusMessage("message-3".getBytes(UTF_8));
-        thirdMessage.getProperties().put("telemetry", "fps");
+        thirdMessage.getApplicationProperties().put("telemetry", "fps");
 
         // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createBatch#CreateBatchOptions-int
 

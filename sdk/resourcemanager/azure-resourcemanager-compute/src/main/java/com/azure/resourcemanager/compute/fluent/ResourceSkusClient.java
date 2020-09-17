@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.ResourceSkuInner;
-import com.azure.resourcemanager.compute.fluent.inner.ResourceSkusResultInner;
+import com.azure.resourcemanager.compute.models.ResourceSkusResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceSkus. */
@@ -45,7 +44,7 @@ public final class ResourceSkusClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ResourceSkusClient(ComputeManagementClient client) {
+    ResourceSkusClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(ResourceSkusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -62,7 +61,7 @@ public final class ResourceSkusClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceSkusResultInner>> list(
+        Mono<Response<ResourceSkusResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -73,7 +72,7 @@ public final class ResourceSkusClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceSkusResultInner>> listNext(
+        Mono<Response<ResourceSkusResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

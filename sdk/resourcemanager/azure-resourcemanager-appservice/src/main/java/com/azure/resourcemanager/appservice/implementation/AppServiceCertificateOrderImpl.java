@@ -18,7 +18,6 @@ import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 
@@ -246,7 +245,7 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public AppServiceCertificateOrderImpl withNewKeyVault(String vaultName, Region region) {
-        Mono<Indexable> resourceStream =
+        this.bindingVault =
             myManager
                 .keyVaultManager()
                 .vaults()
@@ -261,9 +260,7 @@ class AppServiceCertificateOrderImpl
                 .forServicePrincipal("abfa0a7c-a6b6-4736-8310-5855508787cd")
                 .allowSecretPermissions(SecretPermissions.GET)
                 .attach()
-                .createAsync()
-                .last();
-        this.bindingVault = Utils.rootResource(resourceStream);
+                .createAsync();
         return this;
     }
 }

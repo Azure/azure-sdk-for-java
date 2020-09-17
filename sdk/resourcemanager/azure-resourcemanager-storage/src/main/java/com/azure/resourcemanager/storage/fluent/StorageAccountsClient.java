@@ -36,14 +36,12 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.BlobRestoreStatusInner;
 import com.azure.resourcemanager.storage.fluent.inner.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.storage.fluent.inner.ListAccountSasResponseInner;
 import com.azure.resourcemanager.storage.fluent.inner.ListServiceSasResponseInner;
 import com.azure.resourcemanager.storage.fluent.inner.StorageAccountInner;
 import com.azure.resourcemanager.storage.fluent.inner.StorageAccountListKeysResultInner;
-import com.azure.resourcemanager.storage.fluent.inner.StorageAccountListResultInner;
 import com.azure.resourcemanager.storage.models.AccountSasParameters;
 import com.azure.resourcemanager.storage.models.BlobRestoreParameters;
 import com.azure.resourcemanager.storage.models.BlobRestoreRange;
@@ -52,6 +50,7 @@ import com.azure.resourcemanager.storage.models.ServiceSasParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountCreateParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountExpand;
+import com.azure.resourcemanager.storage.models.StorageAccountListResult;
 import com.azure.resourcemanager.storage.models.StorageAccountRegenerateKeyParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountUpdateParameters;
 import java.nio.ByteBuffer;
@@ -78,7 +77,7 @@ public final class StorageAccountsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public StorageAccountsClient(StorageManagementClient client) {
+    StorageAccountsClient(StorageManagementClient client) {
         this.service =
             RestProxy.create(StorageAccountsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -165,7 +164,7 @@ public final class StorageAccountsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageAccountListResultInner>> list(
+        Mono<Response<StorageAccountListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -177,7 +176,7 @@ public final class StorageAccountsClient
                 + "/storageAccounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageAccountListResultInner>> listByResourceGroup(
+        Mono<Response<StorageAccountListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -291,7 +290,7 @@ public final class StorageAccountsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageAccountListResultInner>> listNext(
+        Mono<Response<StorageAccountListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -1141,6 +1140,26 @@ public final class StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the storage account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StorageAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
+        final StorageAccountExpand expand = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, accountName, expand).block();
+    }
+
+    /**
+     * Returns the properties for the specified storage account including but not limited to name, SKU name, location,
+     * and account status. The ListKeys operation should be used to retrieve storage keys.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param expand May be used to expand the properties within account's properties. By default, data is not included
      *     when fetching properties. Currently we only support geoReplicationStats and blobRestoreStatus.
      * @param context The context to associate with this operation.
@@ -1153,26 +1172,6 @@ public final class StorageAccountsClient
     public StorageAccountInner getByResourceGroup(
         String resourceGroupName, String accountName, StorageAccountExpand expand, Context context) {
         return getByResourceGroupAsync(resourceGroupName, accountName, expand, context).block();
-    }
-
-    /**
-     * Returns the properties for the specified storage account including but not limited to name, SKU name, location,
-     * and account status. The ListKeys operation should be used to retrieve storage keys.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
-        final StorageAccountExpand expand = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, accountName, expand).block();
     }
 
     /**
@@ -1908,6 +1907,25 @@ public final class StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the ListKeys operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StorageAccountListKeysResultInner listKeys(String resourceGroupName, String accountName) {
+        final ListKeyExpand expand = null;
+        final Context context = null;
+        return listKeysAsync(resourceGroupName, accountName, expand).block();
+    }
+
+    /**
+     * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param expand Specifies type of the key to be listed. Possible value is kerb.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1919,25 +1937,6 @@ public final class StorageAccountsClient
     public StorageAccountListKeysResultInner listKeys(
         String resourceGroupName, String accountName, ListKeyExpand expand, Context context) {
         return listKeysAsync(resourceGroupName, accountName, expand, context).block();
-    }
-
-    /**
-     * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListKeys operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageAccountListKeysResultInner listKeys(String resourceGroupName, String accountName) {
-        final ListKeyExpand expand = null;
-        final Context context = null;
-        return listKeysAsync(resourceGroupName, accountName, expand).block();
     }
 
     /**

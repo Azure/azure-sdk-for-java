@@ -31,10 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryInner;
-import com.azure.resourcemanager.compute.fluent.inner.GalleryListInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
+import com.azure.resourcemanager.compute.models.GalleryList;
 import com.azure.resourcemanager.compute.models.GalleryUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -59,7 +58,7 @@ public final class GalleriesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public GalleriesClient(ComputeManagementClient client) {
+    GalleriesClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(GalleriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -134,7 +133,7 @@ public final class GalleriesClient
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<GalleryListInner>> listByResourceGroup(
+        Mono<Response<GalleryList>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -145,7 +144,7 @@ public final class GalleriesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/galleries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<GalleryListInner>> list(
+        Mono<Response<GalleryList>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -155,14 +154,14 @@ public final class GalleriesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<GalleryListInner>> listByResourceGroupNext(
+        Mono<Response<GalleryList>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<GalleryListInner>> listNext(
+        Mono<Response<GalleryList>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

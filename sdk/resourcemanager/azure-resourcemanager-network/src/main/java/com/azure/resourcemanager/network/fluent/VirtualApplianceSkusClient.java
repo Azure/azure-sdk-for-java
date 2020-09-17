@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.NetworkVirtualApplianceSkuInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkVirtualApplianceSkuListResultInner;
+import com.azure.resourcemanager.network.models.NetworkVirtualApplianceSkuListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualApplianceSkus. */
@@ -45,7 +44,7 @@ public final class VirtualApplianceSkusClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualApplianceSkusClient(NetworkManagementClient client) {
+    VirtualApplianceSkusClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(VirtualApplianceSkusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -63,7 +62,7 @@ public final class VirtualApplianceSkusClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualApplianceSkus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkVirtualApplianceSkuListResultInner>> list(
+        Mono<Response<NetworkVirtualApplianceSkuListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -84,7 +83,7 @@ public final class VirtualApplianceSkusClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkVirtualApplianceSkuListResultInner>> listNext(
+        Mono<Response<NetworkVirtualApplianceSkuListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

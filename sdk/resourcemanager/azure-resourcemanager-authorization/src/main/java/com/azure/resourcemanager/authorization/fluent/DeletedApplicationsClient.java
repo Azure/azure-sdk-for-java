@@ -26,9 +26,8 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
-import com.azure.resourcemanager.authorization.fluent.inner.ApplicationListResultInner;
+import com.azure.resourcemanager.authorization.models.ApplicationListResult;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import reactor.core.publisher.Mono;
 
@@ -47,7 +46,7 @@ public final class DeletedApplicationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DeletedApplicationsClient(GraphRbacManagementClient client) {
+    DeletedApplicationsClient(GraphRbacManagementClient client) {
         this.service =
             RestProxy.create(DeletedApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -75,7 +74,7 @@ public final class DeletedApplicationsClient {
         @Get("/{tenantID}/deletedApplications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ApplicationListResultInner>> list(
+        Mono<Response<ApplicationListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
@@ -97,7 +96,7 @@ public final class DeletedApplicationsClient {
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ApplicationListResultInner>> listNext(
+        Mono<Response<ApplicationListResult>> listNext(
             @HostParam("$host") String endpoint,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,

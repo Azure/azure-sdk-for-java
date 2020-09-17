@@ -9,6 +9,9 @@ trigger:
   paths:
     include:
       - sdk/resourcemanager/
+    exclude:
+      - sdk/resourcemanager/docs/
+      - sdk/resourcemanager/tools/
 
 pr:
   branches:
@@ -20,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/resourcemanager/
+    exclude:
+      - sdk/resourcemanager/docs/
+      - sdk/resourcemanager/tools/
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -56,6 +62,9 @@ extends:
       - name: azure-resourcemanager-dns
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdns
+      - name: azure-resourcemanager-eventhubs
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagereventhubs
       - name: azure-resourcemanager-keyvault
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerkeyvault
@@ -68,6 +77,12 @@ extends:
       - name: azure-resourcemanager-network
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagernetwork
+      - name: azure-resourcemanager-privatedns
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerprivatedns
+      - name: azure-resourcemanager-redis
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerredis
       - name: azure-resourcemanager-resources
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresources
@@ -80,3 +95,6 @@ extends:
       - name: azure-resourcemanager-storage
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerstorage
+      - name: azure-resourcemanager-trafficmanager
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagertrafficmanager

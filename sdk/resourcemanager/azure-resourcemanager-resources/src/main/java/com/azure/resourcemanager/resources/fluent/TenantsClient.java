@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.SubscriptionClient;
 import com.azure.resourcemanager.resources.fluent.inner.TenantIdDescriptionInner;
-import com.azure.resourcemanager.resources.fluent.inner.TenantListResultInner;
+import com.azure.resourcemanager.resources.models.TenantListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Tenants. */
@@ -45,7 +44,7 @@ public final class TenantsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public TenantsClient(SubscriptionClient client) {
+    TenantsClient(SubscriptionClient client) {
         this.service = RestProxy.create(TenantsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -61,14 +60,14 @@ public final class TenantsClient {
         @Get("/tenants")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TenantListResultInner>> list(
+        Mono<Response<TenantListResult>> list(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TenantListResultInner>> listNext(
+        Mono<Response<TenantListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

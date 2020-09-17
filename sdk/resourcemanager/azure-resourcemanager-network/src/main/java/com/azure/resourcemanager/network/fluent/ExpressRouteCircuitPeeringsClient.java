@@ -31,9 +31,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringListResultInner;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public final class ExpressRouteCircuitPeeringsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ExpressRouteCircuitPeeringsClient(NetworkManagementClient client) {
+    ExpressRouteCircuitPeeringsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -120,7 +119,7 @@ public final class ExpressRouteCircuitPeeringsClient {
                 + "/expressRouteCircuits/{circuitName}/peerings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCircuitPeeringListResultInner>> list(
+        Mono<Response<ExpressRouteCircuitPeeringListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("circuitName") String circuitName,
@@ -132,7 +131,7 @@ public final class ExpressRouteCircuitPeeringsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCircuitPeeringListResultInner>> listNext(
+        Mono<Response<ExpressRouteCircuitPeeringListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

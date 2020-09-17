@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.inner.ListVirtualWansResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualWanInner;
+import com.azure.resourcemanager.network.models.ListVirtualWansResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -60,7 +59,7 @@ public final class VirtualWansClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualWansClient(NetworkManagementClient client) {
+    VirtualWansClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(VirtualWansService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -137,7 +136,7 @@ public final class VirtualWansClient
                 + "/virtualWans")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVirtualWansResultInner>> listByResourceGroup(
+        Mono<Response<ListVirtualWansResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -148,7 +147,7 @@ public final class VirtualWansClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualWans")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVirtualWansResultInner>> list(
+        Mono<Response<ListVirtualWansResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -158,14 +157,14 @@ public final class VirtualWansClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVirtualWansResultInner>> listByResourceGroupNext(
+        Mono<Response<ListVirtualWansResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVirtualWansResultInner>> listNext(
+        Mono<Response<ListVirtualWansResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

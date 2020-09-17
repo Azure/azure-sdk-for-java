@@ -33,10 +33,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryListCredentialsResultInner;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryListResultInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryNameStatusInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryPoliciesInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryUsageListResultInner;
@@ -45,6 +43,7 @@ import com.azure.resourcemanager.containerregistry.fluent.inner.SourceUploadDefi
 import com.azure.resourcemanager.containerregistry.models.ImportImageParameters;
 import com.azure.resourcemanager.containerregistry.models.PasswordName;
 import com.azure.resourcemanager.containerregistry.models.RegenerateCredentialParameters;
+import com.azure.resourcemanager.containerregistry.models.RegistryListResult;
 import com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest;
 import com.azure.resourcemanager.containerregistry.models.RegistryUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.RunRequest;
@@ -71,7 +70,7 @@ public final class RegistriesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public RegistriesClient(ContainerRegistryManagementClient client) {
+    RegistriesClient(ContainerRegistryManagementClient client) {
         this.service =
             RestProxy.create(RegistriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -174,7 +173,7 @@ public final class RegistriesClient
                 + "/registries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegistryListResultInner>> listByResourceGroup(
+        Mono<Response<RegistryListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -185,7 +184,7 @@ public final class RegistriesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegistryListResultInner>> list(
+        Mono<Response<RegistryListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -296,14 +295,14 @@ public final class RegistriesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegistryListResultInner>> listByResourceGroupNext(
+        Mono<Response<RegistryListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegistryListResultInner>> listNext(
+        Mono<Response<RegistryListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -1,14 +1,25 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.9.0-beta.1 (Unreleased)
 
+
+## 1.8.1 (2020-09-08)
+
+- Fixed bug where some `HttpRequests` would have their body consumed before being sent resulting in an exception being thrown.
+
+## 1.8.0 (2020-09-03)
+
+- General performance fixes for serialization, URL modification and parsing, and more.
+- New `InputStream` and `OutputStream` APIs for serialization and deserialization.
+- Added logging for the request attempt count to better correlate when requests are retried.
+- Improved request and response body logging performance by using bulk `ByteBuffer` reading instead of byte by byte reading.
+- Fixed bug where header logging checked for a log level of not equals `verbose` instead of equals `verbose`.
+- Updated `reactor-core` version to `3.3.9.RELEASE`.
+- Updated FasterXML Jackson versions to `2.11.2`.
 
 ## 1.7.0 (2020-08-07)
 
 - Updated `reactor-core` version to `3.3.8.RELEASE`.
-- Updated `reactor-netty` version to `0.9.10.RELEASE`.
-- Updated `netty` version to `4.1.51.Final`.
-- Updated `netty-tcnative` version to `2.0.31.Final`.
 - Updated handling of `OffsetDateTime` serialization to implicitly convert date strings missing time zone into UTC.
 - Updated `PollerFlux` and `SyncPoller` to propagate exceptions when polling instead of only on failed statuses.
 - Redesigned `SimpleTokenCache` to gracefully attempt a token refresh 5 minutes before actual expiry

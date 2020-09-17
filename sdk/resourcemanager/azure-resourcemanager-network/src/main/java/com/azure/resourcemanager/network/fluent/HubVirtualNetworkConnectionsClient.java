@@ -31,9 +31,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.HubVirtualNetworkConnectionInner;
-import com.azure.resourcemanager.network.fluent.inner.ListHubVirtualNetworkConnectionsResultInner;
+import com.azure.resourcemanager.network.models.ListHubVirtualNetworkConnectionsResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public final class HubVirtualNetworkConnectionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public HubVirtualNetworkConnectionsClient(NetworkManagementClient client) {
+    HubVirtualNetworkConnectionsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -120,7 +119,7 @@ public final class HubVirtualNetworkConnectionsClient {
                 + "/{virtualHubName}/hubVirtualNetworkConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListHubVirtualNetworkConnectionsResultInner>> list(
+        Mono<Response<ListHubVirtualNetworkConnectionsResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -132,7 +131,7 @@ public final class HubVirtualNetworkConnectionsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListHubVirtualNetworkConnectionsResultInner>> listNext(
+        Mono<Response<ListHubVirtualNetworkConnectionsResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

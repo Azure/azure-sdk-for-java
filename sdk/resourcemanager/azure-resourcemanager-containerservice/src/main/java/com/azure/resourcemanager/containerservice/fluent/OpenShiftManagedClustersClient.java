@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.containerservice.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.inner.OpenShiftManagedClusterInner;
-import com.azure.resourcemanager.containerservice.fluent.inner.OpenShiftManagedClusterListResultInner;
+import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterListResult;
 import com.azure.resourcemanager.containerservice.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class OpenShiftManagedClustersClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public OpenShiftManagedClustersClient(ContainerServiceManagementClient client) {
+    OpenShiftManagedClustersClient(ContainerServiceManagementClient client) {
         this.service =
             RestProxy
                 .create(OpenShiftManagedClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -80,7 +79,7 @@ public final class OpenShiftManagedClustersClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/openShiftManagedClusters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OpenShiftManagedClusterListResultInner>> list(
+        Mono<Response<OpenShiftManagedClusterListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -92,7 +91,7 @@ public final class OpenShiftManagedClustersClient
                 + "/openShiftManagedClusters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OpenShiftManagedClusterListResultInner>> listByResourceGroup(
+        Mono<Response<OpenShiftManagedClusterListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -161,14 +160,14 @@ public final class OpenShiftManagedClustersClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OpenShiftManagedClusterListResultInner>> listNext(
+        Mono<Response<OpenShiftManagedClusterListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OpenShiftManagedClusterListResultInner>> listByResourceGroupNext(
+        Mono<Response<OpenShiftManagedClusterListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

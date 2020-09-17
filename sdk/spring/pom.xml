@@ -13,8 +13,7 @@
     <module>azure-spring-boot-starter</module>
     <module>azure-spring-boot-starter-active-directory</module>
     <module>azure-spring-boot-starter-active-directory-b2c</module>
-    <module>azure-spring-boot-2-2-starter-cosmosdb</module>
-    <module>azure-spring-boot-2-3-starter-cosmosdb</module>
+    <module>azure-spring-boot-starter-cosmosdb</module>
     <module>azure-spring-boot-starter-data-gremlin</module>
     <module>azure-spring-boot-starter-keyvault-secrets</module>
     <module>azure-spring-boot-starter-metrics</module>
@@ -73,12 +72,11 @@
     <module>azure-spring-integration-storage-queue</module>
     <module>azure-spring-integration-test</module>
     <module>azure-spring-cloud-messaging</module>
-    <module>azure-spring-cloud-starter-appconfiguration-config</module>
     <module>azure-spring-cloud-starter-cache</module>
     <module>azure-spring-cloud-starter-eventhubs</module>
     <module>azure-spring-cloud-starter-eventhubs-kafka</module>
     <module>azure-spring-cloud-starter-servicebus</module>
-    <module>azure-spring-cloud-starter-storage</module>
+    <module>azure-spring-starter-storage</module>
     <module>azure-spring-cloud-starter-storage-queue</module>
     <module>azure-spring-cloud-servicebus-stream-binder-core</module>
     <module>azure-spring-cloud-stream-binder-test</module>

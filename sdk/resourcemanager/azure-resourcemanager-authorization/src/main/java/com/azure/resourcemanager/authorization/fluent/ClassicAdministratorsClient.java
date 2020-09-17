@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.AuthorizationManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.ClassicAdministratorInner;
-import com.azure.resourcemanager.authorization.fluent.inner.ClassicAdministratorListResultInner;
+import com.azure.resourcemanager.authorization.models.ClassicAdministratorListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ClassicAdministrators. */
@@ -45,7 +44,7 @@ public final class ClassicAdministratorsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ClassicAdministratorsClient(AuthorizationManagementClient client) {
+    ClassicAdministratorsClient(AuthorizationManagementClient client) {
         this.service =
             RestProxy
                 .create(ClassicAdministratorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -63,7 +62,7 @@ public final class ClassicAdministratorsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClassicAdministratorListResultInner>> list(
+        Mono<Response<ClassicAdministratorListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -73,7 +72,7 @@ public final class ClassicAdministratorsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClassicAdministratorListResultInner>> listNext(
+        Mono<Response<ClassicAdministratorListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

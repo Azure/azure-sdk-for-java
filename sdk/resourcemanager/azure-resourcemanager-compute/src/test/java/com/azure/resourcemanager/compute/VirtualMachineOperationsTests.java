@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
@@ -31,16 +32,18 @@ import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
-import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,8 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private String rgName = "";
@@ -194,6 +195,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canCreateVirtualMachineSyncPoll() throws Exception {
+        final long defaultDelayInMillis = 10 * 1000;
+
         Accepted<VirtualMachine> acceptedVirtualMachine = computeManager
             .virtualMachines()
             .define(vmName)
@@ -215,17 +218,17 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNotEquals("Succeeded", createdVirtualMachine.provisioningState());
 
         LongRunningOperationStatus pollStatus = acceptedVirtualMachine.getActivationResponse().getStatus();
-        int delayInMills = acceptedVirtualMachine.getActivationResponse().getRetryAfter() == null
-            ? 0
-            : (int) acceptedVirtualMachine.getActivationResponse().getRetryAfter().toMillis();
+        long delayInMills = acceptedVirtualMachine.getActivationResponse().getRetryAfter() == null
+            ? defaultDelayInMillis
+            : acceptedVirtualMachine.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
             PollResponse<?> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
-                : (int) pollResponse.getRetryAfter().toMillis();
+                ? defaultDelayInMillis
+                : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         VirtualMachine virtualMachine = acceptedVirtualMachine.getFinalResult();
@@ -236,7 +239,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         pollStatus = acceptedDelete.getActivationResponse().getStatus();
         delayInMills = acceptedDelete.getActivationResponse().getRetryAfter() == null
-            ? 0
+            ? defaultDelayInMillis
             : (int) acceptedDelete.getActivationResponse().getRetryAfter().toMillis();
 
         while (!pollStatus.isComplete()) {
@@ -245,7 +248,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             PollResponse<?> pollResponse = acceptedDelete.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
+                ? defaultDelayInMillis
                 : (int) pollResponse.getRetryAfter().toMillis();
         }
 
@@ -645,12 +648,20 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     resourceCount.incrementAndGet();
                     return createdResource;
                 })
-            .collectList()
-            .block();
-        // 1 resource group, 1 storage, 5 network, 5 publicIp, 5 nic, 5 virtual machines
-        // Additional one for CreatableUpdatableResourceRoot.
-        // TODO: - ans - We should not emit CreatableUpdatableResourceRoot.
-        Assertions.assertEquals(resourceCount.get(), 23);
+            .blockLast();
+
+        networkNames.forEach(name -> {
+            Assertions.assertNotNull(networkManager.networks().getByResourceGroup(rgName, name));
+        });
+
+        publicIPAddressNames.forEach(name -> {
+            Assertions.assertNotNull(networkManager.publicIpAddresses().getByResourceGroup(rgName, name));
+        });
+
+        Assertions.assertEquals(1, storageManager.storageAccounts().listByResourceGroup(rgName).stream().count());
+        Assertions.assertEquals(count, networkManager.networkInterfaces().listByResourceGroup(rgName).stream().count());
+
+        Assertions.assertEquals(count, resourceCount.get());
     }
 
     @Test

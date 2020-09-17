@@ -1,7 +1,16 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
+
+## 1.0.0-beta.4 (2020-09-08)
+
+- Updated `azure-core` version to pickup bug fix.
+
+## 1.0.0-beta.3 (2020-09-03)
+
+- Added `AvroSerializer` interface containing Avro specific serializer APIs.
+- Added `AvroSerializerProvider` interface as a service provider for `AvroSerializer`.
 
 ## 1.0.0-beta.2 (2020-08-07)
 

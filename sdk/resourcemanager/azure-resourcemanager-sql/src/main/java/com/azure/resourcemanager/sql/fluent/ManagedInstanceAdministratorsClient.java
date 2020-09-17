@@ -32,7 +32,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.ManagedInstanceAdministratorInner;
 import com.azure.resourcemanager.sql.fluent.inner.ManagedInstanceAdministratorListResultInner;
 import java.nio.ByteBuffer;

@@ -31,9 +31,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.SecurityRuleListResultInner;
+import com.azure.resourcemanager.network.models.SecurityRuleListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public final class SecurityRulesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public SecurityRulesClient(NetworkManagementClient client) {
+    SecurityRulesClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(SecurityRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -118,7 +117,7 @@ public final class SecurityRulesClient {
                 + "/networkSecurityGroups/{networkSecurityGroupName}/securityRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityRuleListResultInner>> list(
+        Mono<Response<SecurityRuleListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkSecurityGroupName") String networkSecurityGroupName,
@@ -130,7 +129,7 @@ public final class SecurityRulesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityRuleListResultInner>> listNext(
+        Mono<Response<SecurityRuleListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

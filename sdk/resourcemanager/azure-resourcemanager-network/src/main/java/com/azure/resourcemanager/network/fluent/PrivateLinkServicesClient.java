@@ -32,16 +32,15 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AutoApprovedPrivateLinkServiceInner;
-import com.azure.resourcemanager.network.fluent.inner.AutoApprovedPrivateLinkServicesResultInner;
 import com.azure.resourcemanager.network.fluent.inner.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.network.fluent.inner.PrivateEndpointConnectionListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.PrivateLinkServiceInner;
-import com.azure.resourcemanager.network.fluent.inner.PrivateLinkServiceListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.PrivateLinkServiceVisibilityInner;
+import com.azure.resourcemanager.network.models.AutoApprovedPrivateLinkServicesResult;
 import com.azure.resourcemanager.network.models.CheckPrivateLinkServiceVisibilityRequest;
 import com.azure.resourcemanager.network.models.ErrorException;
+import com.azure.resourcemanager.network.models.PrivateEndpointConnectionListResult;
+import com.azure.resourcemanager.network.models.PrivateLinkServiceListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -67,7 +66,7 @@ public final class PrivateLinkServicesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PrivateLinkServicesClient(NetworkManagementClient client) {
+    PrivateLinkServicesClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(PrivateLinkServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -130,7 +129,7 @@ public final class PrivateLinkServicesClient
                 + "/privateLinkServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<PrivateLinkServiceListResultInner>> listByResourceGroup(
+        Mono<Response<PrivateLinkServiceListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -141,7 +140,7 @@ public final class PrivateLinkServicesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateLinkServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<PrivateLinkServiceListResultInner>> list(
+        Mono<Response<PrivateLinkServiceListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -200,7 +199,7 @@ public final class PrivateLinkServicesClient
                 + "/privateLinkServices/{serviceName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<PrivateEndpointConnectionListResultInner>> listPrivateEndpointConnections(
+        Mono<Response<PrivateEndpointConnectionListResult>> listPrivateEndpointConnections(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
@@ -243,7 +242,7 @@ public final class PrivateLinkServicesClient
                 + "/autoApprovedPrivateLinkServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoApprovedPrivateLinkServicesResultInner>> listAutoApprovedPrivateLinkServices(
+        Mono<Response<AutoApprovedPrivateLinkServicesResult>> listAutoApprovedPrivateLinkServices(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
@@ -256,7 +255,7 @@ public final class PrivateLinkServicesClient
                 + "/{location}/autoApprovedPrivateLinkServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoApprovedPrivateLinkServicesResultInner>> listAutoApprovedPrivateLinkServicesByResourceGroup(
+        Mono<Response<AutoApprovedPrivateLinkServicesResult>> listAutoApprovedPrivateLinkServicesByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -268,37 +267,36 @@ public final class PrivateLinkServicesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<PrivateLinkServiceListResultInner>> listNext(
+        Mono<Response<PrivateLinkServiceListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<PrivateLinkServiceListResultInner>> listBySubscriptionNext(
+        Mono<Response<PrivateLinkServiceListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<PrivateEndpointConnectionListResultInner>> listPrivateEndpointConnectionsNext(
+        Mono<Response<PrivateEndpointConnectionListResult>> listPrivateEndpointConnectionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoApprovedPrivateLinkServicesResultInner>> listAutoApprovedPrivateLinkServicesNext(
+        Mono<Response<AutoApprovedPrivateLinkServicesResult>> listAutoApprovedPrivateLinkServicesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoApprovedPrivateLinkServicesResultInner>>
-            listAutoApprovedPrivateLinkServicesByResourceGroupNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<AutoApprovedPrivateLinkServicesResult>> listAutoApprovedPrivateLinkServicesByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -718,6 +716,23 @@ public final class PrivateLinkServicesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private link service by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkServiceInner getByResourceGroup(String resourceGroupName, String serviceName) {
+        final String expand = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, serviceName, expand).block();
+    }
+
+    /**
+     * Gets the specified private link service by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceName The name of the private link service.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -729,23 +744,6 @@ public final class PrivateLinkServicesClient
     public PrivateLinkServiceInner getByResourceGroup(
         String resourceGroupName, String serviceName, String expand, Context context) {
         return getByResourceGroupAsync(resourceGroupName, serviceName, expand, context).block();
-    }
-
-    /**
-     * Gets the specified private link service by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the private link service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link service by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkServiceInner getByResourceGroup(String resourceGroupName, String serviceName) {
-        final String expand = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, serviceName, expand).block();
     }
 
     /**
@@ -1516,6 +1514,25 @@ public final class PrivateLinkServicesClient
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specific private end point connection by specific private link service in the resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner getPrivateEndpointConnection(
+        String resourceGroupName, String serviceName, String peConnectionName) {
+        final String expand = null;
+        final Context context = null;
+        return getPrivateEndpointConnectionAsync(resourceGroupName, serviceName, peConnectionName, expand).block();
+    }
+
+    /**
+     * Get the specific private end point connection by specific private link service in the resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceName The name of the private link service.
+     * @param peConnectionName The name of the private end point connection.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1528,25 +1545,6 @@ public final class PrivateLinkServicesClient
         String resourceGroupName, String serviceName, String peConnectionName, String expand, Context context) {
         return getPrivateEndpointConnectionAsync(resourceGroupName, serviceName, peConnectionName, expand, context)
             .block();
-    }
-
-    /**
-     * Get the specific private end point connection by specific private link service in the resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the private link service.
-     * @param peConnectionName The name of the private end point connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private end point connection by specific private link service in the resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner getPrivateEndpointConnection(
-        String resourceGroupName, String serviceName, String peConnectionName) {
-        final String expand = null;
-        final Context context = null;
-        return getPrivateEndpointConnectionAsync(resourceGroupName, serviceName, peConnectionName, expand).block();
     }
 
     /**

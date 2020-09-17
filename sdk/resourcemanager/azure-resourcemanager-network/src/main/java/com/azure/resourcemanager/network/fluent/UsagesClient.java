@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.UsageInner;
-import com.azure.resourcemanager.network.fluent.inner.UsagesListResultInner;
+import com.azure.resourcemanager.network.models.UsagesListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Usages. */
@@ -45,7 +44,7 @@ public final class UsagesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public UsagesClient(NetworkManagementClient client) {
+    UsagesClient(NetworkManagementClient client) {
         this.service = RestProxy.create(UsagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -61,7 +60,7 @@ public final class UsagesClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UsagesListResultInner>> list(
+        Mono<Response<UsagesListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
@@ -72,7 +71,7 @@ public final class UsagesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UsagesListResultInner>> listNext(
+        Mono<Response<UsagesListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

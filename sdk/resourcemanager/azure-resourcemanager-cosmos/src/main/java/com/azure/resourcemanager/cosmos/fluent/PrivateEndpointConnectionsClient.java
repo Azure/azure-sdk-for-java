@@ -31,9 +31,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionListResultInner;
+import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnectionListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public final class PrivateEndpointConnectionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PrivateEndpointConnectionsClient(CosmosDBManagementClient client) {
+    PrivateEndpointConnectionsClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -74,7 +73,7 @@ public final class PrivateEndpointConnectionsClient {
                 + "/databaseAccounts/{accountName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionListResultInner>> listByDatabaseAccount(
+        Mono<Response<PrivateEndpointConnectionListResult>> listByDatabaseAccount(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,

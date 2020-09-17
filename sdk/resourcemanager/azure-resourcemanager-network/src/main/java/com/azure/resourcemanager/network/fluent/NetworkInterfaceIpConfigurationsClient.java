@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationListResultInner;
+import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NetworkInterfaceIpConfigurations. */
@@ -45,7 +44,7 @@ public final class NetworkInterfaceIpConfigurationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public NetworkInterfaceIpConfigurationsClient(NetworkManagementClient client) {
+    NetworkInterfaceIpConfigurationsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -68,7 +67,7 @@ public final class NetworkInterfaceIpConfigurationsClient {
                 + "/networkInterfaces/{networkInterfaceName}/ipConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceIpConfigurationListResultInner>> list(
+        Mono<Response<NetworkInterfaceIpConfigurationListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkInterfaceName") String networkInterfaceName,
@@ -95,7 +94,7 @@ public final class NetworkInterfaceIpConfigurationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceIpConfigurationListResultInner>> listNext(
+        Mono<Response<NetworkInterfaceIpConfigurationListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

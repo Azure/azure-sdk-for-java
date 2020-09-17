@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.DedicatedHostInner;
-import com.azure.resourcemanager.compute.fluent.inner.DedicatedHostListResultInner;
+import com.azure.resourcemanager.compute.models.DedicatedHostListResult;
 import com.azure.resourcemanager.compute.models.DedicatedHostUpdate;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import java.nio.ByteBuffer;
@@ -56,7 +55,7 @@ public final class DedicatedHostsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DedicatedHostsClient(ComputeManagementClient client) {
+    DedicatedHostsClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(DedicatedHostsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -138,7 +137,7 @@ public final class DedicatedHostsClient {
                 + "/{hostGroupName}/hosts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedHostListResultInner>> listByHostGroup(
+        Mono<Response<DedicatedHostListResult>> listByHostGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hostGroupName") String hostGroupName,
@@ -150,7 +149,7 @@ public final class DedicatedHostsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedHostListResultInner>> listByHostGroupNext(
+        Mono<Response<DedicatedHostListResult>> listByHostGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -1220,6 +1219,24 @@ public final class DedicatedHostsClient {
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the Dedicated host.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DedicatedHostInner get(String resourceGroupName, String hostGroupName, String hostname) {
+        final InstanceViewTypes expand = null;
+        final Context context = null;
+        return getAsync(resourceGroupName, hostGroupName, hostname, expand).block();
+    }
+
+    /**
+     * Retrieves information about a dedicated host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
      * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1231,24 +1248,6 @@ public final class DedicatedHostsClient {
     public DedicatedHostInner get(
         String resourceGroupName, String hostGroupName, String hostname, InstanceViewTypes expand, Context context) {
         return getAsync(resourceGroupName, hostGroupName, hostname, expand, context).block();
-    }
-
-    /**
-     * Retrieves information about a dedicated host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hostGroupName The name of the dedicated host group.
-     * @param hostname The name of the dedicated host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Dedicated host.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedHostInner get(String resourceGroupName, String hostGroupName, String hostname) {
-        final InstanceViewTypes expand = null;
-        final Context context = null;
-        return getAsync(resourceGroupName, hostGroupName, hostname, expand).block();
     }
 
     /**

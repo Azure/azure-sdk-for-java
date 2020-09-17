@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.FileServiceItemsInner;
 import com.azure.resourcemanager.storage.fluent.inner.FileServicePropertiesInner;
 import com.azure.resourcemanager.storage.models.CorsRules;
@@ -45,7 +44,7 @@ public final class FileServicesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public FileServicesClient(StorageManagementClient client) {
+    FileServicesClient(StorageManagementClient client) {
         this.service =
             RestProxy.create(FileServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

@@ -20,7 +20,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.trafficmanager.TrafficManagerManagementClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.TrafficManagerGeographicHierarchyInner;
 import reactor.core.publisher.Mono;
 
@@ -39,7 +38,7 @@ public final class GeographicHierarchiesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public GeographicHierarchiesClient(TrafficManagerManagementClient client) {
+    GeographicHierarchiesClient(TrafficManagerManagementClient client) {
         this.service =
             RestProxy
                 .create(GeographicHierarchiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -166,7 +165,7 @@ public final class GeographicHierarchiesClient {
      * @return the default Geographic Hierarchy used by the Geographic traffic routing method.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrafficManagerGeographicHierarchyInner> getDefaultWithResponse(Context context) {
-        return getDefaultWithResponseAsync(context).block();
+    public TrafficManagerGeographicHierarchyInner getDefault(Context context) {
+        return getDefaultAsync(context).block();
     }
 }

@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.inner.LoadBalancerLoadBalancingRuleListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.LoadBalancingRuleInner;
+import com.azure.resourcemanager.network.models.LoadBalancerLoadBalancingRuleListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LoadBalancerLoadBalancingRules. */
@@ -45,7 +44,7 @@ public final class LoadBalancerLoadBalancingRulesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public LoadBalancerLoadBalancingRulesClient(NetworkManagementClient client) {
+    LoadBalancerLoadBalancingRulesClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -68,7 +67,7 @@ public final class LoadBalancerLoadBalancingRulesClient {
                 + "/loadBalancers/{loadBalancerName}/loadBalancingRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadBalancerLoadBalancingRuleListResultInner>> list(
+        Mono<Response<LoadBalancerLoadBalancingRuleListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("loadBalancerName") String loadBalancerName,
@@ -95,7 +94,7 @@ public final class LoadBalancerLoadBalancingRulesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadBalancerLoadBalancingRuleListResultInner>> listNext(
+        Mono<Response<LoadBalancerLoadBalancingRuleListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

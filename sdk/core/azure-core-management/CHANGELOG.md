@@ -2,6 +2,7 @@
 
 ## 1.0.0-beta.4 (Unreleased)
 
+- Added `Region` class.
 
 ## 1.0.0-beta.3 (2020-08-07)
 

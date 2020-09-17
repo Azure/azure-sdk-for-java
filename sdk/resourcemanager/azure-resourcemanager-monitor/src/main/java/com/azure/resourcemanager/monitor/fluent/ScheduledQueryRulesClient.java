@@ -29,9 +29,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
-import com.azure.resourcemanager.monitor.fluent.inner.LogSearchRuleResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.LogSearchRuleResourceInner;
+import com.azure.resourcemanager.monitor.models.LogSearchRuleResourceCollection;
 import com.azure.resourcemanager.monitor.models.LogSearchRuleResourcePatch;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -56,7 +55,7 @@ public final class ScheduledQueryRulesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ScheduledQueryRulesClient(MonitorClient client) {
+    ScheduledQueryRulesClient(MonitorClient client) {
         this.service =
             RestProxy.create(ScheduledQueryRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -131,7 +130,7 @@ public final class ScheduledQueryRulesClient
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/scheduledQueryRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogSearchRuleResourceCollectionInner>> list(
+        Mono<Response<LogSearchRuleResourceCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
@@ -144,7 +143,7 @@ public final class ScheduledQueryRulesClient
                 + "/scheduledQueryRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogSearchRuleResourceCollectionInner>> listByResourceGroup(
+        Mono<Response<LogSearchRuleResourceCollection>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,

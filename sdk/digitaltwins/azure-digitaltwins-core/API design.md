@@ -678,7 +678,7 @@ public <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digital
  * Patch a component on a digital twin.
  * @param digitalTwinId The Id of the digital twin that has the component to patch.
  * @param componentPath The path of the component on the digital twin.
- * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+ * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.models.UpdateOperationUtility} for building
  *                                  this argument.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
@@ -688,7 +688,7 @@ public Mono<Void> updateComponent(String digitalTwinId, String componentPath, Li
  * Patch a component on a digital twin.
  * @param digitalTwinId The Id of the digital twin that has the component to patch.
  * @param componentPath The path of the component on the digital twin.
- * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+ * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.models.UpdateOperationUtility} for building
  *                                  this argument.
  * @param requestOptions The optional parameters for this request.
  * @return A {@link DigitalTwinsResponse} containing an empty Mono.
@@ -750,7 +750,7 @@ public <T> DigitalTwinsResponse<T> getComponentWithResponse(String digitalTwinId
  * Patch a component on a digital twin.
  * @param digitalTwinId The Id of the digital twin that has the component to patch.
  * @param componentPath The path of the component on the digital twin.
- * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+ * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.models.UpdateOperationUtility} for building
  *                                  this argument.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
@@ -760,23 +760,13 @@ public void updateComponent(String digitalTwinId, String componentPath, List<Obj
  * Patch a component on a digital twin.
  * @param digitalTwinId The Id of the digital twin that has the component to patch.
  * @param componentPath The path of the component on the digital twin.
- * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+ * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.models.UpdateOperationUtility} for building
  *                                  this argument.
  * @param requestOptions The optional parameters for this request.
  * @return The http response.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
 public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions requestOptions, Context context)
-```
-</details>
-
-## Query
-<details>
-<summary><b>APIs</b></summary>
-
-
-```java
-TODO:
 ```
 </details>
 

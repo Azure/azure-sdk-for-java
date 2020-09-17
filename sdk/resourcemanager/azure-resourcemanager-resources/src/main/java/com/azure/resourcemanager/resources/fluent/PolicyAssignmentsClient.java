@@ -28,11 +28,10 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.PolicyClient;
 import com.azure.resourcemanager.resources.fluent.inner.PolicyAssignmentInner;
-import com.azure.resourcemanager.resources.fluent.inner.PolicyAssignmentListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.azure.resourcemanager.resources.models.PolicyAssignmentListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicyAssignments. */
@@ -51,7 +50,7 @@ public final class PolicyAssignmentsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PolicyAssignmentsClient(PolicyClient client) {
+    PolicyAssignmentsClient(PolicyClient client) {
         this.service =
             RestProxy.create(PolicyAssignmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -104,7 +103,7 @@ public final class PolicyAssignmentsClient
                 + "/policyAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyAssignmentListResultInner>> listByResourceGroup(
+        Mono<Response<PolicyAssignmentListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam(value = "$filter", encoded = true) String filter,
@@ -119,7 +118,7 @@ public final class PolicyAssignmentsClient
                 + "/policyAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyAssignmentListResultInner>> listForResource(
+        Mono<Response<PolicyAssignmentListResult>> listForResource(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
@@ -137,7 +136,7 @@ public final class PolicyAssignmentsClient
                 + "/policyAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyAssignmentListResultInner>> listForManagementGroup(
+        Mono<Response<PolicyAssignmentListResult>> listForManagementGroup(
             @HostParam("$host") String endpoint,
             @PathParam("managementGroupId") String managementGroupId,
             @QueryParam(value = "$filter", encoded = true) String filter,
@@ -148,7 +147,7 @@ public final class PolicyAssignmentsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyAssignmentListResultInner>> list(
+        Mono<Response<PolicyAssignmentListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
@@ -190,28 +189,28 @@ public final class PolicyAssignmentsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyAssignmentListResultInner>> listForResourceGroupNext(
+        Mono<Response<PolicyAssignmentListResult>> listForResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyAssignmentListResultInner>> listForResourceNext(
+        Mono<Response<PolicyAssignmentListResult>> listForResourceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyAssignmentListResultInner>> listForManagementGroupNext(
+        Mono<Response<PolicyAssignmentListResult>> listForManagementGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyAssignmentListResultInner>> listNext(
+        Mono<Response<PolicyAssignmentListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

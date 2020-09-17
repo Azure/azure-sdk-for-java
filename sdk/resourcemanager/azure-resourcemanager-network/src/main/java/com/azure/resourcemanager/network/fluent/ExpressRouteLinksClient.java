@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteLinkInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteLinkListResultInner;
+import com.azure.resourcemanager.network.models.ExpressRouteLinkListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExpressRouteLinks. */
@@ -45,7 +44,7 @@ public final class ExpressRouteLinksClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ExpressRouteLinksClient(NetworkManagementClient client) {
+    ExpressRouteLinksClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(ExpressRouteLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -79,7 +78,7 @@ public final class ExpressRouteLinksClient {
                 + "/ExpressRoutePorts/{expressRoutePortName}/links")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteLinkListResultInner>> list(
+        Mono<Response<ExpressRouteLinkListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -91,7 +90,7 @@ public final class ExpressRouteLinksClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteLinkListResultInner>> listNext(
+        Mono<Response<ExpressRouteLinkListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

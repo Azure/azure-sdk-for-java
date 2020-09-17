@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.inner.DeploymentOperationInner;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentOperationsListResultInner;
+import com.azure.resourcemanager.resources.models.DeploymentOperationsListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DeploymentOperations. */
@@ -45,7 +44,7 @@ public final class DeploymentOperationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DeploymentOperationsClient(ResourceManagementClient client) {
+    DeploymentOperationsClient(ResourceManagementClient client) {
         this.service =
             RestProxy
                 .create(DeploymentOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -75,7 +74,7 @@ public final class DeploymentOperationsClient {
         @Get("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResultInner>> listAtScope(
+        Mono<Response<DeploymentOperationsListResult>> listAtScope(
             @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("deploymentName") String deploymentName,
@@ -98,7 +97,7 @@ public final class DeploymentOperationsClient {
         @Get("/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResultInner>> listAtTenantScope(
+        Mono<Response<DeploymentOperationsListResult>> listAtTenantScope(
             @HostParam("$host") String endpoint,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("$top") Integer top,
@@ -125,7 +124,7 @@ public final class DeploymentOperationsClient {
                 + "/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResultInner>> listAtManagementGroupScope(
+        Mono<Response<DeploymentOperationsListResult>> listAtManagementGroupScope(
             @HostParam("$host") String endpoint,
             @PathParam("groupId") String groupId,
             @PathParam("deploymentName") String deploymentName,
@@ -151,7 +150,7 @@ public final class DeploymentOperationsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResultInner>> listAtSubscriptionScope(
+        Mono<Response<DeploymentOperationsListResult>> listAtSubscriptionScope(
             @HostParam("$host") String endpoint,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("$top") Integer top,
@@ -180,7 +179,7 @@ public final class DeploymentOperationsClient {
                 + "/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResultInner>> listByResourceGroup(
+        Mono<Response<DeploymentOperationsListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentName") String deploymentName,
@@ -193,35 +192,35 @@ public final class DeploymentOperationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResultInner>> listAtScopeNext(
+        Mono<Response<DeploymentOperationsListResult>> listAtScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResultInner>> listAtTenantScopeNext(
+        Mono<Response<DeploymentOperationsListResult>> listAtTenantScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResultInner>> listAtManagementGroupScopeNext(
+        Mono<Response<DeploymentOperationsListResult>> listAtManagementGroupScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResultInner>> listAtSubscriptionScopeNext(
+        Mono<Response<DeploymentOperationsListResult>> listAtSubscriptionScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResultInner>> listNext(
+        Mono<Response<DeploymentOperationsListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

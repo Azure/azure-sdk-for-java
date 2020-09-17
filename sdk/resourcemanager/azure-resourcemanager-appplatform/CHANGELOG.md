@@ -1,9 +1,13 @@
 # Release History
 
-## 2.0.0-beta.4 (Unreleased)
+## 2.0.0-beta.5 (Unreleased)
+
+- Added `withSku(SkuName)` in SpringService
+
+## 2.0.0-beta.4 (2020-09-02)
 
 - Updated `api-version` to `2020-07-01`
-- Add `defineActiveDeployment` and `getActiveDeployment` in SpringApp
+- Added `defineActiveDeployment` and `getActiveDeployment` in SpringApp
 - Removed `withoutTemporaryDisk` and `withoutPersistentDisk` in SpringAppDeployment
 - Removed `withSettingsFromDeployment` in SpringAppDeployment
 - Removed `deployJar` and `deploySource` in SpringApp

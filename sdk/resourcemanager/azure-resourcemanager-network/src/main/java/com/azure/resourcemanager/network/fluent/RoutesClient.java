@@ -31,9 +31,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.RouteInner;
-import com.azure.resourcemanager.network.fluent.inner.RouteListResultInner;
+import com.azure.resourcemanager.network.models.RouteListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public final class RoutesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public RoutesClient(NetworkManagementClient client) {
+    RoutesClient(NetworkManagementClient client) {
         this.service = RestProxy.create(RoutesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -117,7 +116,7 @@ public final class RoutesClient {
                 + "/{routeTableName}/routes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RouteListResultInner>> list(
+        Mono<Response<RouteListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("routeTableName") String routeTableName,
@@ -129,7 +128,7 @@ public final class RoutesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RouteListResultInner>> listNext(
+        Mono<Response<RouteListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

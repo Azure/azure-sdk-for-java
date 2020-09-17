@@ -23,7 +23,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.resourcemanager.trafficmanager.TrafficManagerManagementClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.HeatMapModelInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -43,7 +42,7 @@ public final class HeatMapsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public HeatMapsClient(TrafficManagerManagementClient client) {
+    HeatMapsClient(TrafficManagerManagementClient client) {
         this.service = RestProxy.create(HeatMapsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -312,8 +311,8 @@ public final class HeatMapsClient {
      * @return latest heatmap for Traffic Manager profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HeatMapModelInner> getWithResponse(
+    public HeatMapModelInner get(
         String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight, Context context) {
-        return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight, context).block();
+        return getAsync(resourceGroupName, profileName, topLeft, botRight, context).block();
     }
 }

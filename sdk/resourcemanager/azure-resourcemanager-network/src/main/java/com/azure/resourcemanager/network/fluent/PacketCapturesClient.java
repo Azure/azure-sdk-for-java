@@ -32,11 +32,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.PacketCaptureInner;
-import com.azure.resourcemanager.network.fluent.inner.PacketCaptureListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.PacketCaptureQueryStatusResultInner;
 import com.azure.resourcemanager.network.fluent.inner.PacketCaptureResultInner;
+import com.azure.resourcemanager.network.models.PacketCaptureListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -56,7 +55,7 @@ public final class PacketCapturesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PacketCapturesClient(NetworkManagementClient client) {
+    PacketCapturesClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(PacketCapturesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -151,7 +150,7 @@ public final class PacketCapturesClient {
                 + "/networkWatchers/{networkWatcherName}/packetCaptures")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PacketCaptureListResultInner>> list(
+        Mono<Response<PacketCaptureListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkWatcherName") String networkWatcherName,

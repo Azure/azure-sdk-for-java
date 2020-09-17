@@ -5,6 +5,8 @@ package com.azure.resourcemanager.containerregistry;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.containerregistry.fluent.ContainerRegistryManagementClient;
+import com.azure.resourcemanager.containerregistry.fluent.ContainerRegistryManagementClientBuilder;
 import com.azure.resourcemanager.containerregistry.implementation.RegistriesImpl;
 import com.azure.resourcemanager.containerregistry.implementation.RegistryTaskRunsImpl;
 import com.azure.resourcemanager.containerregistry.implementation.RegistryTasksImpl;
@@ -13,7 +15,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryTaskRuns;
 import com.azure.resourcemanager.containerregistry.models.RegistryTasks;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
