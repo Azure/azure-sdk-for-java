@@ -57,8 +57,8 @@ public class RecognizeContentWithSelectionMarks {
                 formTable.getCells().forEach(formTableCell -> {
                     final StringBuilder boundingBoxStr = new StringBuilder();
                     if (formTableCell.getBoundingBox() != null) {
-                        formTableCell.getBoundingBox().getPoints().forEach(point ->
-                                                                               boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
+                        formTableCell.getBoundingBox().getPoints().forEach(
+                            point -> boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
                     }
                     System.out.printf("Cell has text '%s', within bounding box %s.%n", formTableCell.getText(),
                         boundingBoxStr);
@@ -69,7 +69,8 @@ public class RecognizeContentWithSelectionMarks {
             final List<FormSelectionMark> selectionMarks = formPage.getSelectionMarks();
             for (int j = 0; j < selectionMarks.size(); j++) {
                 final FormSelectionMark selectionMark = selectionMarks.get(i);
-                System.out.printf("Selection Mark, %s, has state = %s.%n", selectionMark.getText(), selectionMark.getState());
+                System.out.printf("Selection Mark: %s, state: %s, confidence: %.2f%n", selectionMark.getText(),
+                    selectionMark.getState(), selectionMark.getConfidence());
             }
         }
     }
