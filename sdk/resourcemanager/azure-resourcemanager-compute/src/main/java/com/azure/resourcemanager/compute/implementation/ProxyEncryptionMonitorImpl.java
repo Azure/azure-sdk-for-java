@@ -128,7 +128,7 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
             for (VirtualMachineExtensionInner extension : vm.resources()) {
                 if (EncryptionExtensionIdentifier.isEncryptionPublisherName(extension.publisher())
                     && EncryptionExtensionIdentifier
-                        .isEncryptionTypeName(extension.virtualMachineExtensionType(), osType())) {
+                        .isEncryptionTypeName(extension.typePropertiesType(), osType())) {
                     return extension;
                 }
             }

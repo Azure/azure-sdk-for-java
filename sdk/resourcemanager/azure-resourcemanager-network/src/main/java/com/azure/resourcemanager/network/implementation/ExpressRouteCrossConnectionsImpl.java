@@ -77,7 +77,6 @@ public class ExpressRouteCrossConnectionsImpl
         return wrapPageAsync(inner().listAsync());
     }
 
-    @Override
     public ExpressRouteCrossConnectionsClient inner() {
         return manager.inner().getExpressRouteCrossConnections();
     }

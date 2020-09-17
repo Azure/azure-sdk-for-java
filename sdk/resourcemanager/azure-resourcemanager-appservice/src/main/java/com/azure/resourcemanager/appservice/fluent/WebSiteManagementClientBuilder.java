@@ -68,6 +68,22 @@ public final class WebSiteManagementClientBuilder {
     }
 
     /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     *
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the WebSiteManagementClientBuilder.
+     */
+    public WebSiteManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -99,22 +115,6 @@ public final class WebSiteManagementClientBuilder {
         return this;
     }
 
-    /*
-     * The default poll interval for long-running operation
-     */
-    private Duration defaultPollInterval;
-
-    /**
-     * Sets The default poll interval for long-running operation.
-     *
-     * @param defaultPollInterval the defaultPollInterval value.
-     * @return the WebSiteManagementClientBuilder.
-     */
-    public WebSiteManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
-        this.defaultPollInterval = defaultPollInterval;
-        return this;
-    }
-
     /**
      * Builds an instance of WebSiteManagementClient with the provided parameters.
      *
@@ -127,6 +127,9 @@ public final class WebSiteManagementClientBuilder {
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
         }
+        if (defaultPollInterval == null) {
+            this.defaultPollInterval = Duration.ofSeconds(30);
+        }
         if (pipeline == null) {
             this.pipeline =
                 new HttpPipelineBuilder()
@@ -135,9 +138,6 @@ public final class WebSiteManagementClientBuilder {
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = new AzureJacksonAdapter();
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
         }
         WebSiteManagementClient client =
             new WebSiteManagementClient(

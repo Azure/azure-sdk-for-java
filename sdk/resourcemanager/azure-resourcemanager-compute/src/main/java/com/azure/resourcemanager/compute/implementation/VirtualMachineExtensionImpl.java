@@ -59,7 +59,7 @@ class VirtualMachineExtensionImpl
 
     @Override
     public String typeName() {
-        return this.inner().virtualMachineExtensionType();
+        return this.inner().typePropertiesType();
     }
 
     @Override
@@ -126,7 +126,7 @@ class VirtualMachineExtensionImpl
         this
             .inner()
             .withPublisher(image.publisherName())
-            .withVirtualMachineExtensionType(image.typeName())
+            .withTypePropertiesType(image.typeName())
             .withTypeHandlerVersion(image.versionName());
         return this;
     }
@@ -165,7 +165,7 @@ class VirtualMachineExtensionImpl
 
     @Override
     public VirtualMachineExtensionImpl withType(String extensionImageTypeName) {
-        this.inner().withVirtualMachineExtensionType(extensionImageTypeName);
+        this.inner().withTypePropertiesType(extensionImageTypeName);
         return this;
     }
 
@@ -243,7 +243,7 @@ class VirtualMachineExtensionImpl
                     resource -> {
                         inner()
                             .withPublisher(resource.publisher())
-                            .withVirtualMachineExtensionType(resource.virtualMachineExtensionType())
+                            .withTypePropertiesType(resource.typePropertiesType())
                             .withTypeHandlerVersion(resource.typeHandlerVersion());
                         if (inner().autoUpgradeMinorVersion() == null) {
                             inner().withAutoUpgradeMinorVersion(resource.autoUpgradeMinorVersion());

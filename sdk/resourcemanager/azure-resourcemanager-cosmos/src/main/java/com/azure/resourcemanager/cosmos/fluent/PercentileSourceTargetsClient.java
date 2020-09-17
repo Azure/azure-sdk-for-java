@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.inner.PercentileMetricInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.PercentileMetricListResultInner;
+import com.azure.resourcemanager.cosmos.models.PercentileMetricListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PercentileSourceTargets. */
@@ -44,7 +44,7 @@ public final class PercentileSourceTargetsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PercentileSourceTargetsClient(CosmosDBManagementClient client) {
+    PercentileSourceTargetsClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy
                 .create(PercentileSourceTargetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -65,7 +65,7 @@ public final class PercentileSourceTargetsClient {
                 + "/metrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PercentileMetricListResultInner>> listMetrics(
+        Mono<Response<PercentileMetricListResult>> listMetrics(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,

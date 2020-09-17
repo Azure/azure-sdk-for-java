@@ -47,7 +47,7 @@ public final class LogAnalyticsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public LogAnalyticsClient(ComputeManagementClient client) {
+    LogAnalyticsClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(LogAnalyticsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

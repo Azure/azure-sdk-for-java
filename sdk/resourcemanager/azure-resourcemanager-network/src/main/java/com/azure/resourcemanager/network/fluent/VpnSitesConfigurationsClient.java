@@ -45,7 +45,7 @@ public final class VpnSitesConfigurationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VpnSitesConfigurationsClient(NetworkManagementClient client) {
+    VpnSitesConfigurationsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(VpnSitesConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());

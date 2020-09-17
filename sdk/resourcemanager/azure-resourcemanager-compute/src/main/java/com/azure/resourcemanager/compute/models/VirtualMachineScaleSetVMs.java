@@ -4,16 +4,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.Collection;
 import reactor.core.publisher.Mono;
 
 /** Entry point to virtual machine scale set instance management API. */
 @Fluent
 public interface VirtualMachineScaleSetVMs
-    extends SupportsListing<VirtualMachineScaleSetVM>, HasInner<VirtualMachineScaleSetVMsClient> {
+    extends SupportsListing<VirtualMachineScaleSetVM> {
     /**
      * Deletes the specified virtual machine instances from the scale set.
      *
