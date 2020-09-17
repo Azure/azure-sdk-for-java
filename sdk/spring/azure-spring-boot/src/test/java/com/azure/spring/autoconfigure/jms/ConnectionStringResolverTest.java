@@ -3,8 +3,6 @@
 
 package com.azure.spring.autoconfigure.jms;
 
-import com.azure.spring.autoconfigure.jms.ConnectionStringResolver;
-import com.azure.spring.autoconfigure.jms.ServiceBusKey;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import com.azure.spring.autoconfigure.b2c.AADB2CURL;
 import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;

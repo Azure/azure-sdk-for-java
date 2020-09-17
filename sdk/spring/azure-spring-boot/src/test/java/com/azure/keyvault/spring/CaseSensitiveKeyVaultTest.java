@@ -9,8 +9,6 @@ import static org.junit.Assert.assertEquals;
 import com.azure.security.keyvault.secrets.SecretClient;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-
-import com.azure.keyvault.spring.KeyVaultOperation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

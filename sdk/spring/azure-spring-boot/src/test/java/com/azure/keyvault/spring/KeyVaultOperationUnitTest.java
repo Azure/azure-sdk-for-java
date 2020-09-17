@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
-
-import com.azure.keyvault.spring.KeyVaultOperation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

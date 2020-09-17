@@ -3,8 +3,6 @@
 
 package com.azure.spring.autoconfigure.jms;
 
-import com.azure.spring.autoconfigure.jms.AzureServiceBusJMSProperties;
-import com.azure.spring.autoconfigure.jms.ServiceBusJMSAutoConfiguration;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
