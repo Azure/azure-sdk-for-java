@@ -99,16 +99,12 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting
-     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure {@link UserAgentPolicy}
-     * for telemetry/monitoring purpose.
-     * <p>
-     * More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     * Sets the {@link ClientOptions} to be sent from the client built from this builder, enabling customization of
+     * certain properties, as well as support the addition of custom header information. Refer to the 
+     * {@link ClientOptions} documentation for more information.
      *
      * @param clientOptions to be set on the client.
-     *
      * @return The updated {@link ServiceBusClientBuilder} object.
-     * @see ClientOptions
      */
     public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
