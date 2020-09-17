@@ -80,31 +80,6 @@ public final class FormPage {
     }
 
     /**
-     * Constructs a FormPage object.
-     *
-     * @param height the height of the image/PDF in pixels/inches, respectively.
-     * @param textAngle the general orientation of the text in clockwise direction.
-     * @param unit the unit used by the width, height and boundingBox properties.
-     * @param width the width of the image/PDF in pixels/inches, respectively.
-     * @param lines when includeFieldElements is set to true, a list of recognized text lines.
-     * @param tables list of data tables extracted from the page.
-     * @param pageNumber the 1-based page number in the input document.
-     * @param selectionMarks the selection marks in the input document.
-     */
-    public FormPage(final float height, final float textAngle, final LengthUnit unit,
-        final float width, final List<FormLine> lines, final List<FormTable> tables, final int pageNumber,
-        final List<FormSelectionMark> selectionMarks) {
-        this.height = height;
-        this.textAngle = textAngle > 180 ? textAngle - 360 : textAngle;
-        this.unit = unit;
-        this.width = width;
-        this.lines = lines == null ? null : Collections.unmodifiableList(lines);
-        this.tables = tables == null ? null : Collections.unmodifiableList(tables);
-        this.pageNumber = pageNumber;
-        this.selectionMarks = selectionMarks == null ? null : Collections.unmodifiableList(selectionMarks);
-    }
-
-    /**
      * Get the height property: The height of the image/PDF in pixels/inches,
      * respectively.
      *
