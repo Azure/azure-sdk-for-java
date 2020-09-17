@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import org.mockito.invocation.Invocation;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -29,7 +28,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -40,23 +38,20 @@ import java.util.stream.Collectors;
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockingDetails;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 /**
- * Tests {@link SearchBatchClient}.
+ * Tests {@link SearchIndexingBufferedSender}.
  */
-public class SearchBatchClientTests extends SearchTestBase {
+public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     private static final JacksonAdapter JACKSON_ADAPTER;
     private String indexToDelete;
     private SearchClientBuilder clientBuilder;
@@ -86,18 +81,6 @@ public class SearchBatchClientTests extends SearchTestBase {
     }
 
     /**
-     * Tests that construction of a batching client fails is a batch size of less than one is used.
-     */
-    @Test
-    public void clientThrowsIfBatchSizeIsLessThanOne() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchBatchClientBuilder().batchSize(0));
-        assertThrows(IllegalArgumentException.class, () -> getSearchClientBuilder("index").buildAsyncClient()
-            .getSearchBatchAsyncClient(null, null, 0, null));
-        assertThrows(IllegalArgumentException.class, () -> getSearchClientBuilder("index").buildClient()
-            .getSearchBatchClient(null, null, 0, null));
-    }
-
-    /**
      * Tests that flushing the batch sends the documents to the service.
      */
     @Test
@@ -105,8 +88,10 @@ public class SearchBatchClientTests extends SearchTestBase {
         setupIndex();
 
         SearchClient client = clientBuilder.buildClient();
-        SearchBatchClient batchingClient = client
-            .getSearchBatchClient(false, null, null, null);
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
+            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setAutoFlush(false)
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
         batchingClient.flush();
@@ -125,8 +110,11 @@ public class SearchBatchClientTests extends SearchTestBase {
         setupIndex();
 
         SearchClient client = clientBuilder.buildClient();
-        SearchBatchClient batchingClient = client
-            .getSearchBatchClient(true, Duration.ofMinutes(5), 10, null);
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
+            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setFlushWindow(Duration.ofMinutes(5))
+                .setBatchSize(10)
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -143,8 +131,10 @@ public class SearchBatchClientTests extends SearchTestBase {
         setupIndex();
 
         SearchClient client = clientBuilder.buildClient();
-        SearchBatchClient batchingClient = client
-            .getSearchBatchClient(true, Duration.ofSeconds(3), 1000, null);
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
+            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setFlushWindow(Duration.ofSeconds(3))
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -161,8 +151,9 @@ public class SearchBatchClientTests extends SearchTestBase {
         setupIndex();
 
         SearchClient client = clientBuilder.buildClient();
-        SearchBatchClient batchingClient = client
-            .getSearchBatchClient(true, Duration.ofMinutes(5), 1000, null);
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
+            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
         batchingClient.close();
@@ -181,8 +172,11 @@ public class SearchBatchClientTests extends SearchTestBase {
         setupIndex();
 
         SearchClient client = clientBuilder.buildClient();
-        SearchBatchClient batchingClient = client
-            .getSearchBatchClient(true, Duration.ofMinutes(5), 1000, null);
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
+            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setFlushWindow(Duration.ofMinutes(5))
+                .setBatchSize(1000)
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -196,9 +190,13 @@ public class SearchBatchClientTests extends SearchTestBase {
         setupIndex();
 
         SearchClient client = clientBuilder.buildClient();
-        SearchBatchAsyncClient spyClient = spy(clientBuilder.buildAsyncClient()
-            .getSearchBatchAsyncClient(true, Duration.ofSeconds(5), 10, null));
-        SearchBatchClient batchingClient = new SearchBatchClient(spyClient);
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> spyClient = spy(clientBuilder.buildAsyncClient()
+            .getSearchIndexingBufferedAsyncSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setFlushWindow(Duration.ofSeconds(5))
+                .setBatchSize(10)
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId")))));
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient =
+            new SearchIndexingBufferedSender<>(spyClient);
 
         List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
         for (int i = 0; i < 100; i++) {
@@ -223,9 +221,12 @@ public class SearchBatchClientTests extends SearchTestBase {
      */
     @Test
     public void emptyBatchIsNeverSent() {
-        SearchBatchAsyncClient spyClient = spy(getSearchClientBuilder("index").buildAsyncClient()
-            .getSearchBatchAsyncClient());
-        SearchBatchClient batchingClient = new SearchBatchClient(spyClient);
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> spyClient = spy(getSearchClientBuilder("index")
+            .buildAsyncClient()
+            .getSearchIndexingBufferedAsyncSender());
+
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient =
+            new SearchIndexingBufferedSender<>(spyClient);
 
         batchingClient.flush();
 
@@ -234,14 +235,15 @@ public class SearchBatchClientTests extends SearchTestBase {
     }
 
     /**
-     * Tests that a batch can timeout will indexing.
+     * Tests that a batch can timeout while indexing.
      */
     @Test
     public void flushTimesOut() {
-        SearchBatchClient batchingClient = getSearchClientBuilder("index")
+        SearchIndexingBufferedSender<Integer> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.<HttpResponse>empty().delayElement(Duration.ofSeconds(5)))
             .buildClient()
-            .getSearchBatchClient();
+            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Integer>()
+                .setDocumentKeyRetriever(String::valueOf));
 
         batchingClient.addUploadActions(Collections.singletonList(1));
 
@@ -253,31 +255,31 @@ public class SearchBatchClientTests extends SearchTestBase {
      */
     @Test
     public void batchHasSomeFailures() {
-        IndexingHook hook = mock(IndexingHook.class);
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger removedCount = new AtomicInteger();
 
-        SearchBatchClient batchingClient = getSearchClientBuilder("index")
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
-                createMockResponseData(201, 400, 201, 404, 200, 200, 404, 400, 400, 201))))
+                createMockResponseData(0, 201, 400, 201, 404, 200, 200, 404, 400, 400, 201))))
             .buildClient()
-            .getSearchBatchClient(false, null, null, hook);
+            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setOnActionAdded(action -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(action -> successCount.incrementAndGet())
+                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
+                .setOnActionRemoved(action -> removedCount.incrementAndGet())
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
         // Exception is thrown as the batch has partial failures.
         assertThrows(RuntimeException.class, batchingClient::flush);
 
-        /*
-         * The hook should have 30 overall interactions. 10 for the number of documents added to the batch, 5 for
-         * successful indexing, 5 for unsuccessful indexing, and 10 for actions removed for reaching a terminal state.
-         */
-        Collection<Invocation> invocations = mockingDetails(hook).getInvocations();
-        assertEquals(30, invocations.size());
-
-        Map<String, AtomicInteger> callMapping = getIndexingHookInvocationDetails(invocations);
-        assertEquals(10, callMapping.get("actionAdded").get());
-        assertEquals(5, callMapping.get("actionSuccess").get());
-        assertEquals(5, callMapping.get("actionError").get());
-        assertEquals(10, callMapping.get("actionRemoved").get());
+        assertEquals(10, addedCount.get());
+        assertEquals(5, successCount.get());
+        assertEquals(5, errorCount.get());
+        assertEquals(10, removedCount.get());
 
         /*
          * No documents failed with retryable errors, so we should expect zero documents are added back into the batch.
@@ -290,31 +292,31 @@ public class SearchBatchClientTests extends SearchTestBase {
      */
     @Test
     public void retryableDocumentsAreAddedBackToTheBatch() {
-        IndexingHook hook = mock(IndexingHook.class);
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger removedCount = new AtomicInteger();
 
-        SearchBatchClient batchingClient = getSearchClientBuilder("index")
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
-                createMockResponseData(201, 409, 201, 422, 200, 200, 503, 409, 422, 201))))
+                createMockResponseData(0, 201, 409, 201, 422, 200, 200, 503, 409, 422, 201))))
             .buildClient()
-            .getSearchBatchClient(false, null, null, hook);
+            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setOnActionAdded(action -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(action -> successCount.incrementAndGet())
+                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
+                .setOnActionRemoved(action -> removedCount.incrementAndGet())
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
         // Exception is thrown as the batch has partial failures.
         assertThrows(RuntimeException.class, batchingClient::flush);
 
-        /*
-         * The hook should have 20 overall interactions. 10 for the number of documents added to the batch, 5 for
-         * successful indexing, 0 for unsuccessful indexing, and 5 for actions removed for reaching a terminal state.
-         */
-        Collection<Invocation> invocations = mockingDetails(hook).getInvocations();
-        assertEquals(20, invocations.size());
-
-        Map<String, AtomicInteger> callMapping = getIndexingHookInvocationDetails(invocations);
-        assertEquals(10, callMapping.get("actionAdded").get());
-        assertEquals(5, callMapping.get("actionSuccess").get());
-        assertFalse(callMapping.containsKey("actionError"));
-        assertEquals(5, callMapping.get("actionRemoved").get());
+        assertEquals(10, addedCount.get());
+        assertEquals(5, successCount.get());
+        assertEquals(0, errorCount.get());
+        assertEquals(5, removedCount.get());
 
         /*
          * 5 documents failed with retryable errors, so we should expect 5 documents are added back into the batch.
@@ -327,33 +329,42 @@ public class SearchBatchClientTests extends SearchTestBase {
      */
     @Test
     public void batchSplits() {
-        IndexingHook hook = mock(IndexingHook.class);
         AtomicInteger callCount = new AtomicInteger();
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger removedCount = new AtomicInteger();
 
-        SearchBatchClient batchingClient = getSearchClientBuilder("index")
-            .httpClient(request -> (callCount.getAndIncrement() == 0)
-                ? Mono.just(new MockHttpResponse(request, 413))
-                : createMockBatchSplittingResponse(request, 5))
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
+            .httpClient(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.just(new MockHttpResponse(request, 413));
+                } else if (count == 1) {
+                    return createMockBatchSplittingResponse(request, 0, 5);
+                } else if (count == 2) {
+                    return createMockBatchSplittingResponse(request, 5, 5);
+                } else {
+                    return Mono.error(new IllegalStateException("Unexpected request."));
+                }
+            })
             .buildClient()
-            .getSearchBatchClient(false, null, null, hook);
+            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setOnActionAdded(action -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(action -> successCount.incrementAndGet())
+                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
+                .setOnActionRemoved(action -> removedCount.incrementAndGet())
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
         // No exception is thrown as the batch splits and retries successfully.
         assertDoesNotThrow((Executable) batchingClient::flush);
 
-        /*
-         * The hook should have 30 overall interactions. 10 for the number of documents added to the batch, 10 for
-         * successful indexing, 0 for unsuccessful indexing, and 10 for actions removed for reaching a terminal state.
-         */
-        Collection<Invocation> invocations = mockingDetails(hook).getInvocations();
-        assertEquals(30, invocations.size());
-
-        Map<String, AtomicInteger> callMapping = getIndexingHookInvocationDetails(invocations);
-        assertEquals(10, callMapping.get("actionAdded").get());
-        assertEquals(10, callMapping.get("actionSuccess").get());
-        assertFalse(callMapping.containsKey("actionError"));
-        assertEquals(10, callMapping.get("actionRemoved").get());
+        assertEquals(10, addedCount.get());
+        assertEquals(10, successCount.get());
+        assertEquals(0, errorCount.get());
+        assertEquals(10, removedCount.get());
 
         /*
          * No documents failed, so we should expect zero documents are added back into the batch.
@@ -366,13 +377,21 @@ public class SearchBatchClientTests extends SearchTestBase {
      */
     @Test
     public void batchRetriesUntilLimit() {
-        IndexingHook hook = mock(IndexingHook.class);
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger removedCount = new AtomicInteger();
 
-        SearchBatchClient batchingClient = getSearchClientBuilder("index")
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
-                createMockResponseData(409))))
+                createMockResponseData(0, 409))))
             .buildClient()
-            .getSearchBatchClient(false, null, null, hook);
+            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setOnActionAdded(action -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(action -> successCount.incrementAndGet())
+                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
+                .setOnActionRemoved(action -> removedCount.incrementAndGet())
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1));
 
@@ -387,18 +406,10 @@ public class SearchBatchClientTests extends SearchTestBase {
         // Final call which will trigger the retry limit for the document.
         assertThrows(RuntimeException.class, batchingClient::flush);
 
-        /*
-         * The hook should have 3 overall interactions. 1 for the number of documents added to the batch, 0 for
-         * successful indexing, 1 for unsuccessful indexing, and 1 for actions removed for reaching a terminal state.
-         */
-        Collection<Invocation> invocations = mockingDetails(hook).getInvocations();
-        assertEquals(3, invocations.size());
-
-        Map<String, AtomicInteger> callMapping = getIndexingHookInvocationDetails(invocations);
-        assertEquals(1, callMapping.get("actionAdded").get());
-        assertEquals(1, callMapping.get("actionError").get());
-        assertFalse(callMapping.containsKey("actionSuccess"));
-        assertEquals(1, callMapping.get("actionRemoved").get());
+        assertEquals(1, addedCount.get());
+        assertEquals(1, errorCount.get());
+        assertEquals(0, successCount.get());
+        assertEquals(1, removedCount.get());
 
         /*
          * All documents failed, so we should expect zero documents are added back into the batch.
@@ -412,30 +423,30 @@ public class SearchBatchClientTests extends SearchTestBase {
      */
     @Test
     public void batchSplitsUntilOneAndFails() {
-        IndexingHook hook = mock(IndexingHook.class);
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger removedCount = new AtomicInteger();
 
-        SearchBatchClient batchingClient = getSearchClientBuilder("index")
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 413)))
             .buildClient()
-            .getSearchBatchClient(false, null, null, hook);
+            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setOnActionAdded(action -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(action -> successCount.incrementAndGet())
+                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
+                .setOnActionRemoved(action -> removedCount.incrementAndGet())
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2));
 
         // Batch split until it was size of one and failed.
         assertThrows(RuntimeException.class, batchingClient::flush);
 
-        /*
-         * The hook should have 6 overall interactions. 2 for the number of documents added to the batch, 0 for
-         * successful indexing, 2 for unsuccessful indexing, and 2 for actions removed for reaching a terminal state.
-         */
-        Collection<Invocation> invocations = mockingDetails(hook).getInvocations();
-        assertEquals(6, invocations.size());
-
-        Map<String, AtomicInteger> callMapping = getIndexingHookInvocationDetails(invocations);
-        assertEquals(2, callMapping.get("actionAdded").get());
-        assertEquals(2, callMapping.get("actionError").get());
-        assertFalse(callMapping.containsKey("actionSuccess"));
-        assertEquals(2, callMapping.get("actionRemoved").get());
+        assertEquals(2, addedCount.get());
+        assertEquals(2, errorCount.get());
+        assertEquals(0, successCount.get());
+        assertEquals(2, removedCount.get());
 
         /*
          * No documents failed, so we should expect zero documents are added back into the batch.
@@ -449,33 +460,33 @@ public class SearchBatchClientTests extends SearchTestBase {
      */
     @Test
     public void batchSplitsUntilOneAndPartiallyFails() {
-        IndexingHook hook = mock(IndexingHook.class);
         AtomicInteger callCount = new AtomicInteger();
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger removedCount = new AtomicInteger();
 
-        SearchBatchClient batchingClient = getSearchClientBuilder("index")
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> (callCount.getAndIncrement() < 2)
                 ? Mono.just(new MockHttpResponse(request, 413))
-                : createMockBatchSplittingResponse(request, 1))
+                : createMockBatchSplittingResponse(request, 1, 1))
             .buildClient()
-            .getSearchBatchClient(false, null, null, hook);
+            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setOnActionAdded(action -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(action -> successCount.incrementAndGet())
+                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
+                .setOnActionRemoved(action -> removedCount.incrementAndGet())
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2));
 
         // Batch split until it was size of one and failed.
         assertThrows(RuntimeException.class, batchingClient::flush);
 
-        /*
-         * The hook should have 6 overall interactions. 2 for the number of documents added to the batch, 1 for
-         * successful indexing, 1 for unsuccessful indexing, and 2 for actions removed for reaching a terminal state.
-         */
-        Collection<Invocation> invocations = mockingDetails(hook).getInvocations();
-        assertEquals(6, invocations.size());
-
-        Map<String, AtomicInteger> callMapping = getIndexingHookInvocationDetails(invocations);
-        assertEquals(2, callMapping.get("actionAdded").get());
-        assertEquals(1, callMapping.get("actionError").get());
-        assertEquals(1, callMapping.get("actionSuccess").get());
-        assertEquals(2, callMapping.get("actionRemoved").get());
+        assertEquals(2, addedCount.get());
+        assertEquals(1, errorCount.get());
+        assertEquals(1, successCount.get());
+        assertEquals(2, removedCount.get());
 
         /*
          * No documents failed, so we should expect zero documents are added back into the batch.
@@ -487,12 +498,13 @@ public class SearchBatchClientTests extends SearchTestBase {
      * Helper method that creates mock results with the status codes given. This will create a mock indexing result
      * and turn it into a byte[] so it can be put in a mock response.
      */
-    private static byte[] createMockResponseData(int... statusCodes) {
+    private static byte[] createMockResponseData(int keyIdOffset, int... statusCodes) {
         List<IndexingResult> results = new ArrayList<>();
 
         for (int i = 0; i < statusCodes.length; i++) {
             int statusCode = statusCodes[i];
-            results.add(new IndexingResult(String.valueOf(i + 1), statusCode == 200 || statusCode == 201, statusCode));
+            results.add(new IndexingResult(String.valueOf(keyIdOffset + i + 1), statusCode == 200 || statusCode == 201,
+                statusCode));
         }
 
         try {
@@ -517,24 +529,8 @@ public class SearchBatchClientTests extends SearchTestBase {
         }
     }
 
-    /*
-     * Helper method which converts the invocations of an IndexingHook mock into a method call-count map.
-     */
-    private static Map<String, AtomicInteger> getIndexingHookInvocationDetails(Collection<Invocation> invocations) {
-        Map<String, AtomicInteger> callMapping = new HashMap<>();
-        for (Invocation invocation : invocations) {
-            String methodName = invocation.getMethod().getName();
-            if (callMapping.containsKey(methodName)) {
-                callMapping.get(methodName).incrementAndGet();
-            } else {
-                callMapping.put(methodName, new AtomicInteger(1));
-            }
-        }
-
-        return callMapping;
-    }
-
-    private static Mono<HttpResponse> createMockBatchSplittingResponse(HttpRequest request, int expectedBatchSize) {
+    private static Mono<HttpResponse> createMockBatchSplittingResponse(HttpRequest request, int keyIdOffset,
+        int expectedBatchSize) {
         return FluxUtil.collectBytesInByteBufferStream(request.getBody())
             .flatMap(bodyBytes -> {
                 try {
@@ -549,7 +545,7 @@ public class SearchBatchClientTests extends SearchTestBase {
                     Arrays.fill(statusCodes, 200);
 
                     return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
-                        createMockResponseData(statusCodes)));
+                        createMockResponseData(keyIdOffset, statusCodes)));
                 } catch (IOException e) {
                     return Mono.error(e);
                 }

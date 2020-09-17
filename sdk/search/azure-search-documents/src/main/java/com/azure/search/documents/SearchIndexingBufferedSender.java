@@ -11,16 +11,15 @@ import java.time.Duration;
 import java.util.Collection;
 
 /**
- * This class provides a client that contains operations for conveniently indexing documents to an Azure Search index.
- *
- * @see SearchBatchClientBuilder
+ * This class provides a buffered sender that contains operations for conveniently indexing documents to an Azure Search
+ * index.
  */
-public final class SearchBatchClient {
+public final class SearchIndexingBufferedSender<T> {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofDays(1);
 
-    private final SearchBatchAsyncClient client;
+    private final SearchIndexingBufferedAsyncSender<T> client;
 
-    SearchBatchClient(SearchBatchAsyncClient client) {
+    SearchIndexingBufferedSender(SearchIndexingBufferedAsyncSender<T> client) {
         this.client = client;
     }
 
@@ -50,7 +49,7 @@ public final class SearchBatchClient {
      *
      * @param documents Documents to be uploaded.
      */
-    public void addUploadActions(Collection<?> documents) {
+    public void addUploadActions(Collection<T> documents) {
         addUploadActions(documents, DEFAULT_TIMEOUT, Context.NONE);
     }
 
@@ -64,7 +63,7 @@ public final class SearchBatchClient {
      * @param timeout Duration before the operation times out.
      * @param context Additional context that is passed through the HTTP pipeline.
      */
-    public void addUploadActions(Collection<?> documents, Duration timeout, Context context) {
+    public void addUploadActions(Collection<T> documents, Duration timeout, Context context) {
         client.createAndAddActions(documents, IndexActionType.UPLOAD, context).block(timeout);
     }
 
@@ -76,7 +75,7 @@ public final class SearchBatchClient {
      *
      * @param documents Documents to be deleted.
      */
-    public void addDeleteActions(Collection<?> documents) {
+    public void addDeleteActions(Collection<T> documents) {
         addDeleteActions(documents, DEFAULT_TIMEOUT, Context.NONE);
     }
 
@@ -90,7 +89,7 @@ public final class SearchBatchClient {
      * @param timeout Duration before the operation times out.
      * @param context Additional context that is passed through the HTTP pipeline.
      */
-    public void addDeleteActions(Collection<?> documents, Duration timeout, Context context) {
+    public void addDeleteActions(Collection<T> documents, Duration timeout, Context context) {
         client.createAndAddActions(documents, IndexActionType.DELETE, context).block(timeout);
     }
 
@@ -102,7 +101,7 @@ public final class SearchBatchClient {
      *
      * @param documents Documents to be merged.
      */
-    public void addMergeActions(Collection<?> documents) {
+    public void addMergeActions(Collection<T> documents) {
         addMergeActions(documents, DEFAULT_TIMEOUT, Context.NONE);
     }
 
@@ -116,7 +115,7 @@ public final class SearchBatchClient {
      * @param timeout Duration before the operation times out.
      * @param context Additional context that is passed through the HTTP pipeline.
      */
-    public void addMergeActions(Collection<?> documents, Duration timeout, Context context) {
+    public void addMergeActions(Collection<T> documents, Duration timeout, Context context) {
         client.createAndAddActions(documents, IndexActionType.MERGE, context).block(timeout);
     }
 
@@ -128,7 +127,7 @@ public final class SearchBatchClient {
      *
      * @param documents Documents to be merged or uploaded.
      */
-    public void addMergeOrUploadActions(Collection<?> documents) {
+    public void addMergeOrUploadActions(Collection<T> documents) {
         addMergeOrUploadActions(documents, DEFAULT_TIMEOUT, Context.NONE);
     }
 
@@ -142,7 +141,7 @@ public final class SearchBatchClient {
      * @param timeout Duration before the operation times out.
      * @param context Additional context that is passed through the HTTP pipeline.
      */
-    public void addMergeOrUploadActions(Collection<?> documents, Duration timeout, Context context) {
+    public void addMergeOrUploadActions(Collection<T> documents, Duration timeout, Context context) {
         client.createAndAddActions(documents, IndexActionType.MERGE_OR_UPLOAD, context).block(timeout);
     }
 
@@ -154,7 +153,7 @@ public final class SearchBatchClient {
      *
      * @param actions Index actions.
      */
-    public void addActions(Collection<IndexAction<?>> actions) {
+    public void addActions(Collection<IndexAction<T>> actions) {
         addActions(actions, DEFAULT_TIMEOUT, Context.NONE);
     }
 
@@ -168,7 +167,7 @@ public final class SearchBatchClient {
      * @param timeout Duration before the operation times out.
      * @param context Additional context that is passed through the HTTP pipeline.
      */
-    public void addActions(Collection<IndexAction<?>> actions, Duration timeout, Context context) {
+    public void addActions(Collection<IndexAction<T>> actions, Duration timeout, Context context) {
         client.addActions(actions, context).block(timeout);
     }
 

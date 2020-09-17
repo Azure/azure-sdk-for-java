@@ -6,7 +6,6 @@ package com.azure.search.documents;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
@@ -15,64 +14,91 @@ import com.azure.search.documents.models.IndexingResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * This class provides a client that contains operations for conveniently indexing documents to an Azure Search index.
- *
- * @see SearchBatchClientBuilder
+ * This class provides a buffered sender that contains operations for conveniently indexing documents to an Azure Search
+ * index.
  */
-public final class SearchBatchAsyncClient {
-    private static final int DEFAULT_BATCH_SIZE = 1000;
-    private static final long DEFAULT_FLUSH_WINDOW = TimeUnit.SECONDS.toMillis(60);
-    private static final int TRY_LIMIT = 10;
-
+public final class SearchIndexingBufferedAsyncSender<T> {
     private final SearchAsyncClient client;
     private final boolean autoFlush;
     private final long flushWindowMillis;
     private final int batchSize;
-    private final IndexingHook indexingHook;
+    private final int documentTryLimit;
+
+    private final Consumer<IndexAction<T>> onActionAddedConsumer;
+    private final Consumer<IndexAction<T>> onActionSucceededConsumer;
+    private final BiConsumer<IndexAction<T>, Throwable> onActionErrorBiConsumer;
+    private final Consumer<IndexAction<T>> onActionRemovedConsumer;
+
+    private final Function<T, String> documentKeyRetriever;
+
     private final Timer autoFlushTimer;
 
-    private final Object actionsMutex = 0;
-    private List<TryTrackingIndexAction> actions = new ArrayList<>();
+    private final Object actionsMutex = new Object();
+    private List<TryTrackingIndexAction<T>> actions = new ArrayList<>();
 
     private final AtomicReference<TimerTask> flushTask = new AtomicReference<>();
 
-    SearchBatchAsyncClient(SearchAsyncClient client, Boolean autoFlush, Duration flushWindow,
-        Integer batchSize, IndexingHook indexingHook) {
-        ClientLogger logger = new ClientLogger(SearchBatchAsyncClient.class);
-
-        if (batchSize != null && batchSize < 1) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'batchSize' cannot be less than one."));
-        }
+    SearchIndexingBufferedAsyncSender(SearchAsyncClient client, SearchIndexingBufferedSenderOptions<T> options) {
+        SearchIndexingBufferedSenderOptions<T> buildOptions = (options == null)
+            ? new SearchIndexingBufferedSenderOptions<>()
+            : options;
 
         this.client = client;
-        this.autoFlush = autoFlush == null || autoFlush;
+        this.autoFlush = buildOptions.getAutoFlush();
+        this.flushWindowMillis = Math.max(0, buildOptions.getFlushWindow().toMillis());
+        this.batchSize = buildOptions.getBatchSize();
+        this.documentTryLimit = buildOptions.getDocumentTryLimit();
 
-        if (flushWindow == null) {
-            this.flushWindowMillis = DEFAULT_FLUSH_WINDOW;
-        } else if (flushWindow.isZero() || flushWindow.isNegative()) {
-            this.flushWindowMillis = 0;
-        } else {
-            this.flushWindowMillis = flushWindow.toMillis();
-        }
+        this.onActionAddedConsumer = (action) -> {
+            if (buildOptions.getOnActionAdded() != null) {
+                buildOptions.getOnActionAdded().accept(action);
+            }
+        };
 
-        this.batchSize = (batchSize == null) ? DEFAULT_BATCH_SIZE : batchSize;
-        this.indexingHook = indexingHook;
+        this.onActionSucceededConsumer = (action) -> {
+            if (buildOptions.getOnActionSucceeded() != null) {
+                buildOptions.getOnActionSucceeded().accept(action);
+            }
+        };
+
+        this.onActionErrorBiConsumer = (action, throwable) -> {
+            if (buildOptions.getOnActionError() != null) {
+                buildOptions.getOnActionError().accept(action, throwable);
+            }
+        };
+
+        this.onActionRemovedConsumer = (action) -> {
+            if (buildOptions.getOnActionRemoved() != null) {
+                buildOptions.getOnActionRemoved().accept(action);
+            }
+        };
+
+        this.documentKeyRetriever = (buildOptions.getDocumentKeyRetriever() != null)
+            ? buildOptions.getDocumentKeyRetriever()
+            : buildDocumentKeyRetriever(buildOptions.getClass().getGenericSuperclass());
+
         this.autoFlushTimer = (this.autoFlush) ? new Timer(true) : null;
+    }
+
+    private Function<T, String> buildDocumentKeyRetriever(Type clazz) {
+        return null;
     }
 
     /**
@@ -102,7 +128,7 @@ public final class SearchBatchAsyncClient {
      * @param documents Documents to be uploaded.
      * @return A reactive response indicating that the documents have been added to the batch.
      */
-    public Mono<Void> addUploadActions(Collection<?> documents) {
+    public Mono<Void> addUploadActions(Collection<T> documents) {
         return withContext(context -> createAndAddActions(documents, IndexActionType.UPLOAD, context));
     }
 
@@ -115,7 +141,7 @@ public final class SearchBatchAsyncClient {
      * @param documents Documents to be deleted.
      * @return A reactive response indicating that the documents have been added to the batch.
      */
-    public Mono<Void> addDeleteActions(Collection<?> documents) {
+    public Mono<Void> addDeleteActions(Collection<T> documents) {
         return withContext(context -> createAndAddActions(documents, IndexActionType.DELETE, context));
     }
 
@@ -128,7 +154,7 @@ public final class SearchBatchAsyncClient {
      * @param documents Documents to be merged.
      * @return A reactive response indicating that the documents have been added to the batch.
      */
-    public Mono<Void> addMergeActions(Collection<?> documents) {
+    public Mono<Void> addMergeActions(Collection<T> documents) {
         return withContext(context -> createAndAddActions(documents, IndexActionType.MERGE, context));
     }
 
@@ -141,7 +167,7 @@ public final class SearchBatchAsyncClient {
      * @param documents Documents to be merged or uploaded.
      * @return A reactive response indicating that the documents have been added to the batch.
      */
-    public Mono<Void> addMergeOrUploadActions(Collection<?> documents) {
+    public Mono<Void> addMergeOrUploadActions(Collection<T> documents) {
         return withContext(context -> createAndAddActions(documents, IndexActionType.MERGE_OR_UPLOAD, context));
     }
 
@@ -154,23 +180,23 @@ public final class SearchBatchAsyncClient {
      * @param actions Index actions.
      * @return A reactive response indicating that the documents have been added to the batch.
      */
-    public Mono<Void> addActions(Collection<IndexAction<?>> actions) {
+    public Mono<Void> addActions(Collection<IndexAction<T>> actions) {
         return withContext(context -> addActions(actions, context));
     }
 
-    Mono<Void> createAndAddActions(Collection<?> documents, IndexActionType actionType, Context context) {
+    Mono<Void> createAndAddActions(Collection<T> documents, IndexActionType actionType, Context context) {
         return addActions(createDocumentActions(documents, actionType), context);
     }
 
-    Mono<Void> addActions(Collection<IndexAction<?>> actions, Context context) {
+    Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context) {
         synchronized (actionsMutex) {
-            actions.stream().map(TryTrackingIndexAction::new).forEach(this.actions::add);
+            actions.stream()
+                .map(action -> new TryTrackingIndexAction<>(action,
+                    documentKeyRetriever.apply(action.getDocument())))
+                .forEach(this.actions::add);
         }
 
-        if (indexingHook != null) {
-            actions.forEach(indexingHook::actionAdded);
-        }
-
+        actions.forEach(onActionAddedConsumer);
         return processIfNeeded(context);
     }
 
@@ -184,7 +210,7 @@ public final class SearchBatchAsyncClient {
     }
 
     Mono<Void> flush(Context context) {
-        List<TryTrackingIndexAction> actions;
+        List<TryTrackingIndexAction<T>> actions;
         synchronized (actionsMutex) {
             actions = this.actions;
             this.actions = new ArrayList<>();
@@ -223,7 +249,8 @@ public final class SearchBatchAsyncClient {
         Context context) {
         return client.indexDocumentsWithResponse(actions, true, context)
             .flatMapMany(response -> Flux
-                .just(new IndexBatchResponse(response.getValue().getResults(), actionsOffset, actions.size(), false)))
+                .just(
+                    new IndexBatchResponse(response.getValue().getResults(), actionsOffset, actions.size(), false)))
             .onErrorResume(IndexBatchException.class, exception -> Flux
                 .just(new IndexBatchResponse(exception.getIndexingResults(), actionsOffset, actions.size(), true)))
             .onErrorResume(HttpResponseException.class, exception -> {
@@ -249,38 +276,45 @@ public final class SearchBatchAsyncClient {
             });
     }
 
-    private void handleResponse(List<TryTrackingIndexAction> actions, IndexBatchResponse batchResponse) {
+    private void handleResponse(List<TryTrackingIndexAction<T>> actions, IndexBatchResponse batchResponse) {
         /*
          * Batch has been split until it had one document in it and it returned a 413 response.
          */
         if (batchResponse.getResults() == null && batchResponse.getCount() == 1) {
-            if (indexingHook != null) {
-                IndexAction<?> action = actions.get(batchResponse.getOffset()).getAction();
-                indexingHook.actionError(action);
-                indexingHook.actionRemoved(action);
-            }
-
+            IndexAction<T> action = actions.get(batchResponse.getOffset()).getAction();
+            onActionErrorBiConsumer.accept(action,
+                new RuntimeException("Document is too large to be indexed and won't be tried again."));
+            onActionRemovedConsumer.accept(action);
             return;
         }
 
-        List<TryTrackingIndexAction> actionsToRetry = new ArrayList<>();
-        for (int i = 0; i < batchResponse.getResults().size(); i++) {
-            IndexingResult result = batchResponse.getResults().get(i);
-            TryTrackingIndexAction action = actions.get(batchResponse.getOffset() + i);
+        if (batchResponse.getResults() == null) {
+            return;
+        }
+
+        List<TryTrackingIndexAction<T>> actionsToRetry = new ArrayList<>();
+        for (IndexingResult result : batchResponse.getResults()) {
+            String key = result.getKey();
+            TryTrackingIndexAction<T> action = actions.stream().skip(batchResponse.getOffset())
+                .filter(a -> key.equals(a.getKey()))
+                .findFirst()
+                .get();
 
             if (isSuccess(result.getStatusCode())) {
-                if (indexingHook != null) {
-                    indexingHook.actionSuccess(action.getAction());
-                    indexingHook.actionRemoved(action.getAction());
+                onActionSucceededConsumer.accept(action.getAction());
+                onActionRemovedConsumer.accept(action.getAction());
+            } else if (isRetryable(result.getStatusCode())) {
+                if (action.getTryCount() < documentTryLimit) {
+                    action.incrementTryCount();
+                    actionsToRetry.add(action);
+                } else {
+                    onActionErrorBiConsumer.accept(action.getAction(),
+                        new RuntimeException("Document has reached retry limit and won't be tried again."));
+                    onActionRemovedConsumer.accept(action.getAction());
                 }
-            } else if (isRetryable(result.getStatusCode()) && action.getTryCount() < TRY_LIMIT) {
-                action.incrementTryCount();
-                actionsToRetry.add(action);
             } else {
-                if (indexingHook != null) {
-                    indexingHook.actionError(action.getAction());
-                    indexingHook.actionRemoved(action.getAction());
-                }
+                onActionErrorBiConsumer.accept(action.getAction(), new RuntimeException(result.getErrorMessage()));
+                onActionRemovedConsumer.accept(action.getAction());
             }
         }
 
@@ -345,9 +379,9 @@ public final class SearchBatchAsyncClient {
         return flush(context);
     }
 
-    private static Collection<IndexAction<?>> createDocumentActions(Collection<?> documents,
+    private static <T> Collection<IndexAction<T>> createDocumentActions(Collection<T> documents,
         IndexActionType actionType) {
-        return documents.stream().map(document -> new IndexAction<>()
+        return documents.stream().map(document -> new IndexAction<T>()
             .setActionType(actionType)
             .setDocument(document))
             .collect(Collectors.toList());
@@ -364,17 +398,23 @@ public final class SearchBatchAsyncClient {
     /*
      * Helper class which contains the IndexAction and the number of times it has tried to be indexed.
      */
-    private static final class TryTrackingIndexAction {
-        private final IndexAction<?> action;
+    private static final class TryTrackingIndexAction<T> {
+        private final IndexAction<T> action;
+        private final String key;
 
         private int tryCount = 1;
 
-        private TryTrackingIndexAction(IndexAction<?> action) {
+        private TryTrackingIndexAction(IndexAction<T> action, String key) {
             this.action = action;
+            this.key = key;
         }
 
-        public IndexAction<?> getAction() {
+        public IndexAction<T> getAction() {
             return action;
+        }
+
+        public String getKey() {
+            return key;
         }
 
         public int getTryCount() {
