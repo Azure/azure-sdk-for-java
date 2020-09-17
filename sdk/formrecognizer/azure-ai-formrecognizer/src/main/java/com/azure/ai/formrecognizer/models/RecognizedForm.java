@@ -15,6 +15,8 @@ import java.util.Map;
 @Immutable
 public final class RecognizedForm {
 
+    private float formTypeConfidence;
+    private String modelId;
     /*
      * A map of the fields recognized from the input document.
      * For models trained with labels, this is the training-time label of the field. For models trained with forms
@@ -90,4 +92,13 @@ public final class RecognizedForm {
     public List<FormPage> getPages() {
         return this.pages;
     }
+
+    public float getFormTypeConfidence() {
+        return formTypeConfidence;
+    }
+
+    public String getModelId() {
+        return modelId;
+    }
+
 }

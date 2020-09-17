@@ -39,7 +39,9 @@ public class RecognizeCustomFormsFromUrl {
         for (int i = 0; i < recognizedForms.size(); i++) {
             final RecognizedForm form = recognizedForms.get(i);
             System.out.printf("----------- Recognized custom form info for page %d -----------%n", i);
+            System.out.printf("Model Id used for recognizing this form: %s%n", form.getModelId());
             System.out.printf("Form type: %s%n", form.getFormType());
+            System.out.printf("Form type confidence: %s%n", form.getFormTypeConfidence());
             form.getFields().forEach((label, formField) ->
                 // label data is populated if you are using a model trained with unlabeled data,
                 // since the service needs to make predictions for labels if not explicitly given to it.

@@ -7,7 +7,9 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
 /**
@@ -36,12 +38,14 @@ public class TrainModelWithLabels {
         // Train custom model
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl, true);
+        SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl, true,
+            new TrainingOptions().setDisplayName("user_friendly_model_name"), Context.NONE);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();
 
         // Model Info
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
+        System.out.printf("Model display name: %s%n", customFormModel.getDisplayName());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
         System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
         System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());

@@ -12,6 +12,7 @@ import java.time.Duration;
  */
 @Fluent
 public final class TrainingOptions {
+    private String displayName;
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private TrainingFileFilter trainingFileFilter;
@@ -58,6 +59,15 @@ public final class TrainingOptions {
      */
     public TrainingOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
+        return this;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public TrainingOptions setDisplayName(final String displayName) {
+        this.displayName = displayName;
         return this;
     }
 }
