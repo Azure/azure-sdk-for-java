@@ -44,6 +44,7 @@ parameters:
   PreRunSteps: []
   PostRunSteps: []
   TestName: LiveTest
+  TestCanary: false
   TimeoutInMinutes: 60
   TestStepMavenInputs:
     options: '-Dmaven.wagon.http.pool=false -DtrimStackTrace=false $(DefaultOptions) -pl $(ProjectList)'
@@ -73,7 +74,16 @@ jobs:
         value: ${{ parameters.Location }}
 
     strategy:
-      matrix: ${{ parameters.Matrix }}
+      matrix: 
+        ${{ parameters.Matrix }}        
+        ${{ if eq(parameters.TestCanary, 'true') }}:          
+          Linux - Java 8 (AzureCloudCanary):            
+            OSVmImage: 'ubuntu-18.04'            
+            JavaTestVersion: '1.8'            
+            DisplayName: 'Linux - Java 8'            
+            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)            
+            Location: centraluseuap            
+            AZURE_TEST_HTTP_CLIENTS: netty
       maxParallel: ${{ parameters.MaxParallel }}
 
     pool:
