@@ -64,6 +64,9 @@ public final class DigitalTwinsClientBuilder {
 
     private Configuration configuration;
 
+    /**
+     * Public constructor for DigitalTwinsClientBuilder
+     */
     public DigitalTwinsClientBuilder()
     {
         additionalPolicies = new ArrayList<>();

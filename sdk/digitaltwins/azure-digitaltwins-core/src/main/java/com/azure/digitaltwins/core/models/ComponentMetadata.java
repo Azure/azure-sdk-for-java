@@ -22,6 +22,9 @@ public final class ComponentMetadata {
     @JsonIgnore
     private final Map<String, Object> writeableProperties = new HashMap<>();
 
+    /**
+     * The public constructor for the ComponentMetadata.
+     */
     public ComponentMetadata() {}
 
     /**

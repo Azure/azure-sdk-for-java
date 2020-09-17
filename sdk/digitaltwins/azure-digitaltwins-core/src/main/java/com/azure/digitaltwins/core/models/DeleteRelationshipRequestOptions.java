@@ -16,6 +16,11 @@ public final class DeleteRelationshipRequestOptions extends RequestOptions {
     // API versions and so that we don't have to expose that new optional parameter for other APIs like deleteDigitalTwin
 
     // Need to override this method so that the returned value is of type DeleteRelationshipRequestOptions instead of type RequestOptions
+    /**
+     * Sets the ifMatch condition on on the DeleteRelationshipRequestOptions
+     * @param ifMatch A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
+     * @return The DeleteRelationshipRequestOptions itself.
+     */
     @Override
     public DeleteRelationshipRequestOptions setIfMatch(String ifMatch) {
         super.setIfMatch(ifMatch);
