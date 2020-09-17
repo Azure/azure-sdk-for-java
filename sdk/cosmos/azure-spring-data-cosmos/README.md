@@ -725,7 +725,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [source_code]: src
 [cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
 [cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
-[jdk]: https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable
+[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
@@ -741,7 +741,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [address_repository_it_test]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos-test/src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java
 [azure_spring_data_cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sdk-java-spring-v3
 [spring_data_custom_query]: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details
-[sql_queries_in_cosmos]: https://docs.microsoft.com/en-us/azure/cosmos-db/tutorial-query-sql-api
-[sql_queries_getting_started]: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-query-getting-started
+[sql_queries_in_cosmos]: https://docs.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
+[sql_queries_getting_started]: https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)

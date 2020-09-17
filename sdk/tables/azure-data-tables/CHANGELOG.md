@@ -11,8 +11,8 @@ our efforts can be found in the [Azure SDK Design Guidelines for Java](https://a
 
 ### Features
 
-- Support for both [Azure Table storage](https://docs.microsoft.com/en-us/azure/cosmos-db/table-storage-overview) and
-  the [Cosmos DB Table API](https://docs.microsoft.com/en-us/azure/cosmos-db/table-introduction).
+- Support for both [Azure Table storage](https://docs.microsoft.com/azure/cosmos-db/table-storage-overview) and
+  the [Cosmos DB Table API](https://docs.microsoft.com/azure/cosmos-db/table-introduction).
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 - Create, list, query, and delete tables.
 - Insert, update, upsert, merge, list, query, and delete table entities.
