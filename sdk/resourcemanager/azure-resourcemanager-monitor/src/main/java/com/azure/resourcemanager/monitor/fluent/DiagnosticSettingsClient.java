@@ -44,7 +44,7 @@ public final class DiagnosticSettingsClient implements InnerSupportsDelete<Void>
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DiagnosticSettingsClient(MonitorClient client) {
+    DiagnosticSettingsClient(MonitorClient client) {
         this.service =
             RestProxy.create(DiagnosticSettingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
