@@ -12,8 +12,8 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-spring-boot-starter-cosmosdb</artifactId>
-  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot-starter-cosmosdb;current} -->
+  <artifactId>azure-spring-boot-starter-cosmos</artifactId>
+  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot-starter-cosmos;current} -->
 
   <name>Azure Cosmos DB Spring Boot Starter</name>
   <description>Spring Boot Starter for Azure Document DB service</description>
@@ -52,7 +52,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:azure-spring-boot:[3.0.0-beta.1]</include> <!-- {x-include-update;com.azure:azure-spring-boot;current} -->
                 <include>com.microsoft.azure:spring-data-cosmosdb:[2.3.0]</include> <!-- {x-include-update;com.microsoft.azure:spring-data-cosmosdb;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-validation:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->

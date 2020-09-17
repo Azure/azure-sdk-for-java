@@ -19,9 +19,9 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 [//]: # "{x-version-update-start;com.microsoft.azure:azure-active-directory-spring-boot-starter;current}"
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-active-directory-spring-boot-starter</artifactId>
-    <version>2.3.5</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-spring-boot-starter-active-directory</artifactId>
+    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
