@@ -224,10 +224,15 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
     display_version_info(version_map)
     display_version_info(ext_dep_map)
 
-    if target_file:
+    if not target_file:
+        target_file = '.'
+    if not os.path.exists(target_file):
+        raise IOError("Target File {} not found".format(target_file))
+
+    if os.path.isfile(target_file):
         update_versions(update_type, version_map, ext_dep_map, target_file, skip_readme, auto_version_increment)
     else:
-        for root, _, files in os.walk("."):
+        for root, _, files in os.walk(target_file):
             for file_name in files:
                 file_path = root + os.sep + file_name
                 if (file_name.endswith('.md') and not skip_readme) or (file_name.startswith('pom.') and file_name.endswith('.xml')):
