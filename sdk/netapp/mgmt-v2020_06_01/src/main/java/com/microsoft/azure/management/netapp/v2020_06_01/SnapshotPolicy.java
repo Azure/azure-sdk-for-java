@@ -26,7 +26,7 @@ public interface SnapshotPolicy extends HasInner<SnapshotPolicyInner>, Indexable
     /**
      * @return the dailySchedule value.
      */
-    Object dailySchedule();
+    DailySchedule dailySchedule();
 
     /**
      * @return the enabled value.
@@ -36,7 +36,7 @@ public interface SnapshotPolicy extends HasInner<SnapshotPolicyInner>, Indexable
     /**
      * @return the hourlySchedule value.
      */
-    Object hourlySchedule();
+    HourlySchedule hourlySchedule();
 
     /**
      * @return the id value.
@@ -51,12 +51,22 @@ public interface SnapshotPolicy extends HasInner<SnapshotPolicyInner>, Indexable
     /**
      * @return the monthlySchedule value.
      */
-    Object monthlySchedule();
+    MonthlySchedule monthlySchedule();
 
     /**
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the name1 value.
+     */
+    String name1();
+
+    /**
+     * @return the provisioningState value.
+     */
+    String provisioningState();
 
     /**
      * @return the tags value.
@@ -71,7 +81,7 @@ public interface SnapshotPolicy extends HasInner<SnapshotPolicyInner>, Indexable
     /**
      * @return the weeklySchedule value.
      */
-    Object weeklySchedule();
+    WeeklySchedule weeklySchedule();
 
     /**
      * The entirety of the SnapshotPolicy definition.
@@ -123,7 +133,7 @@ public interface SnapshotPolicy extends HasInner<SnapshotPolicyInner>, Indexable
              * @param dailySchedule Schedule for daily snapshots
              * @return the next definition stage
              */
-            WithCreate withDailySchedule(Object dailySchedule);
+            WithCreate withDailySchedule(DailySchedule dailySchedule);
         }
 
         /**
@@ -147,7 +157,7 @@ public interface SnapshotPolicy extends HasInner<SnapshotPolicyInner>, Indexable
              * @param hourlySchedule Schedule for hourly snapshots
              * @return the next definition stage
              */
-            WithCreate withHourlySchedule(Object hourlySchedule);
+            WithCreate withHourlySchedule(HourlySchedule hourlySchedule);
         }
 
         /**
@@ -159,7 +169,7 @@ public interface SnapshotPolicy extends HasInner<SnapshotPolicyInner>, Indexable
              * @param monthlySchedule Schedule for monthly snapshots
              * @return the next definition stage
              */
-            WithCreate withMonthlySchedule(Object monthlySchedule);
+            WithCreate withMonthlySchedule(MonthlySchedule monthlySchedule);
         }
 
         /**
@@ -183,7 +193,7 @@ public interface SnapshotPolicy extends HasInner<SnapshotPolicyInner>, Indexable
              * @param weeklySchedule Schedule for weekly snapshots
              * @return the next definition stage
              */
-            WithCreate withWeeklySchedule(Object weeklySchedule);
+            WithCreate withWeeklySchedule(WeeklySchedule weeklySchedule);
         }
 
         /**
@@ -213,7 +223,7 @@ public interface SnapshotPolicy extends HasInner<SnapshotPolicyInner>, Indexable
              * @param dailySchedule Schedule for daily snapshots
              * @return the next update stage
              */
-            Update withDailySchedule(Object dailySchedule);
+            Update withDailySchedule(DailySchedule dailySchedule);
         }
 
         /**
@@ -237,7 +247,7 @@ public interface SnapshotPolicy extends HasInner<SnapshotPolicyInner>, Indexable
              * @param hourlySchedule Schedule for hourly snapshots
              * @return the next update stage
              */
-            Update withHourlySchedule(Object hourlySchedule);
+            Update withHourlySchedule(HourlySchedule hourlySchedule);
         }
 
         /**
@@ -261,7 +271,7 @@ public interface SnapshotPolicy extends HasInner<SnapshotPolicyInner>, Indexable
              * @param monthlySchedule Schedule for monthly snapshots
              * @return the next update stage
              */
-            Update withMonthlySchedule(Object monthlySchedule);
+            Update withMonthlySchedule(MonthlySchedule monthlySchedule);
         }
 
         /**
@@ -285,7 +295,7 @@ public interface SnapshotPolicy extends HasInner<SnapshotPolicyInner>, Indexable
              * @param weeklySchedule Schedule for weekly snapshots
              * @return the next update stage
              */
-            Update withWeeklySchedule(Object weeklySchedule);
+            Update withWeeklySchedule(WeeklySchedule weeklySchedule);
         }
 
     }
