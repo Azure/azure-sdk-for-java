@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.0.0-beta.2 (Unreleased)
+## 3.0.0-beta.2 (2020-09-17)
 #### New features
 * Updated artifact id to `azure-spring-data-cosmos`.
 * Updated azure-cosmos dependency to `4.5.0`.
