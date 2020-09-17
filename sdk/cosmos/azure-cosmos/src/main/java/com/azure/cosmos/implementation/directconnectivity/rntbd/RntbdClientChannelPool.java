@@ -1450,33 +1450,27 @@ public final class RntbdClientChannelPool implements ChannelPool {
             long currentNanoTime = System.nanoTime();
 
             while (true) {
-                try {
-                    AcquireListener removedTask = this.pool.pendingAcquisitions.poll();
-                    if (removedTask == null) {
-                        // queue is empty
-                        break;
-                    }
+                AcquireListener removedTask = this.pool.pendingAcquisitions.poll();
+                if (removedTask == null) {
+                    // queue is empty
+                    break;
+                }
 
-                    long expiryTime = removedTask.getAcquisitionTimeoutInNanos();
+                long expiryTime = removedTask.getAcquisitionTimeoutInNanos();
 
-                    // Compare nanoTime as described in the System.nanoTime documentation
-                    // See:
-                    // * https://docs.oracle.com/javase/7/docs/api/java/lang/System.html#nanoTime()
-                    // * https://github.com/netty/netty/issues/3705
-                    if (expiryTime - currentNanoTime < 0) {
-                        this.onTimeout(removedTask);
-                    } else {
-                        if (!this.pool.pendingAcquisitions.offer(removedTask)) {
-                            logger.error("Unexpected failure when returning the removed task"
-                                    + " to pending acquisition queue. current size [{}]",
-                                this.pool.pendingAcquisitions.size());
-                        }
-                        break;
+                // Compare nanoTime as described in the System.nanoTime documentation
+                // See:
+                // * https://docs.oracle.com/javase/7/docs/api/java/lang/System.html#nanoTime()
+                // * https://github.com/netty/netty/issues/3705
+                if (expiryTime - currentNanoTime < 0) {
+                    this.onTimeout(removedTask);
+                } else {
+                    if (!this.pool.pendingAcquisitions.offer(removedTask)) {
+                        logger.error("Unexpected failure when returning the removed task"
+                                + " to pending acquisition queue. current size [{}]",
+                            this.pool.pendingAcquisitions.size());
                     }
-                } catch (Exception e) {
-                    logger.error("Unexpected failure in clearing the expired tasks"
-                        + " in pending acquisition queue. current size [{}]",
-                        this.pool.pendingAcquisitions.size(), e);
+                    break;
                 }
             }
         }
