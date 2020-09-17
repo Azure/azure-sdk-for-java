@@ -15,6 +15,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.patch.PatchOperation;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -426,6 +427,46 @@ public class CosmosContainer {
                                                  PartitionKey partitionKey,
                                                  CosmosItemRequestOptions options) {
         return this.blockItemResponse(asyncContainer.replaceItem(item, itemId, partitionKey, options));
+    }
+
+    /**
+     * Run patch operations on an Item.
+     *
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param patchOperations patchOperations.
+     * @param itemType the item type.
+     * @return the Cosmos item response.
+     */
+    public <T> CosmosItemResponse<T> patchItem(
+        String itemId,
+        PartitionKey partitionKey,
+        List<PatchOperation<?>> patchOperations,
+        Class<T> itemType) {
+
+        return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, patchOperations, itemType));
+    }
+
+    /**
+     * Run patch operations on an Item.
+     *
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param patchOperations patchOperations.
+     * @param options the request options.
+     * @param itemType the item type.
+     * @return the Cosmos item response.
+     */
+    public <T> CosmosItemResponse<T> patchItem(
+        String itemId,
+        PartitionKey partitionKey,
+        List<PatchOperation<?>> patchOperations,
+        CosmosItemRequestOptions options,
+        Class<T> itemType) {
+
+        return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, patchOperations, options, itemType));
     }
 
     /**

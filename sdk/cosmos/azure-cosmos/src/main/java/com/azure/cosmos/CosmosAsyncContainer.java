@@ -674,7 +674,6 @@ public class CosmosAsyncContainer {
         return withContext(context -> replaceItemInternal(itemType, itemId, doc, requestOptions, context));
     }
 
-
     /**
      * Run patch operations on an Item.
      * <p>

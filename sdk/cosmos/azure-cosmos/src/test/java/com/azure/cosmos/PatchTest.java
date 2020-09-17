@@ -28,8 +28,8 @@ import static org.testng.Assert.assertTrue;
 
 public class PatchTest extends TestSuiteBase {
 
-    private CosmosAsyncClient client;
-    private CosmosAsyncContainer container;
+    private CosmosClient client;
+    private CosmosContainer container;
 
     @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public PatchTest(CosmosClientBuilder clientBuilder) {
@@ -39,8 +39,8 @@ public class PatchTest extends TestSuiteBase {
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_PatchTest() {
         assertThat(this.client).isNull();
-        this.client = getClientBuilder().contentResponseOnWriteEnabled(true).buildAsyncClient();
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client);
+        this.client = getClientBuilder().contentResponseOnWriteEnabled(true).buildClient();
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
@@ -70,7 +70,7 @@ public class PatchTest extends TestSuiteBase {
             new PartitionKey(testItem.status),
             patchOperations,
             options,
-            ToDoActivity.class).block();
+            ToDoActivity.class);
 
         assertEquals(HttpResponseStatus.OK.code(), response.getStatusCode());
 
@@ -80,7 +80,7 @@ public class PatchTest extends TestSuiteBase {
         response = this.container.readItem(
             testItem.id,
             new PartitionKey(testItem.status),
-            options, ToDoActivity.class).block();
+            options, ToDoActivity.class);
 
         assertEquals(HttpResponseStatus.OK.code(), response.getStatusCode());
         Assert.assertNotNull(response.getItem());
@@ -105,7 +105,7 @@ public class PatchTest extends TestSuiteBase {
                 UUID.randomUUID().toString(),
                 new PartitionKey(testItem.status),
                 patchOperations,
-                ToDoActivity.class).block();
+                ToDoActivity.class);
             Assert.fail("Patch operation should fail if the item doesn't exist.");
         }
         catch (CosmosException ex) {
@@ -119,7 +119,7 @@ public class PatchTest extends TestSuiteBase {
                 testItem.id,
                 new PartitionKey(testItem.status),
                 patchOperations,
-                ToDoActivity.class).block();
+                ToDoActivity.class);
 
             Assert.fail("Patch operation should fail for malformed PatchSpecification.");
         }
@@ -139,7 +139,7 @@ public class PatchTest extends TestSuiteBase {
                 new PartitionKey(testItem.status),
                 patchOperations,
                 requestOptions,
-                ToDoActivity.class).block();
+                ToDoActivity.class);
 
             Assert.fail("Patch operation should fail in case of pre-condition failure.");
         } catch (CosmosException ex) {
@@ -206,12 +206,12 @@ public class PatchTest extends TestSuiteBase {
             return result;
         }
 
-        public static ToDoActivity createRandomItem(CosmosAsyncContainer container) {
+        public static ToDoActivity createRandomItem(CosmosContainer container) {
 
             String pk = "TBD" + UUID.randomUUID().toString();
             ToDoActivity toDoActivity = ToDoActivity.createRandomToDoActivity(pk);
 
-            CosmosItemResponse<ToDoActivity> response = container.createItem(toDoActivity, new PartitionKey(toDoActivity.status), null).block();
+            CosmosItemResponse<ToDoActivity> response = container.createItem(toDoActivity, new PartitionKey(toDoActivity.status), null);
 
             Assert.assertEquals(response.getStatusCode(), HttpResponseStatus.CREATED.code());
             return toDoActivity;
