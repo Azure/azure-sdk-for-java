@@ -39,7 +39,7 @@ public final class ServiceAssociationLinksClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ServiceAssociationLinksClient(NetworkManagementClient client) {
+    ServiceAssociationLinksClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(ServiceAssociationLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());

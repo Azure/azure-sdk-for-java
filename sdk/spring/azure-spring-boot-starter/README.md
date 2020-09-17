@@ -10,12 +10,12 @@ This repository is for Spring Boot Starters of Azure services. It helps Spring B
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the Package
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-spring-boot-starter;current})
+[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
+    <groupId>com.azure</groupId>
     <artifactId>azure-spring-boot-starter</artifactId>
-    <version>2.3.5</version>
+    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

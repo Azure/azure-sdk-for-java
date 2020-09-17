@@ -35,15 +35,15 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.network.fluent.inner.BastionActiveSessionInner;
-import com.azure.resourcemanager.network.fluent.inner.BastionActiveSessionListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.BastionSessionDeleteResultInner;
 import com.azure.resourcemanager.network.fluent.inner.BastionSessionStateInner;
 import com.azure.resourcemanager.network.fluent.inner.BastionShareableLinkInner;
-import com.azure.resourcemanager.network.fluent.inner.BastionShareableLinkListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.DnsNameAvailabilityResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualWanSecurityProvidersInner;
 import com.azure.resourcemanager.network.fluent.inner.VpnProfileResponseInner;
+import com.azure.resourcemanager.network.models.BastionActiveSessionListResult;
+import com.azure.resourcemanager.network.models.BastionSessionDeleteResult;
 import com.azure.resourcemanager.network.models.BastionShareableLinkListRequest;
+import com.azure.resourcemanager.network.models.BastionShareableLinkListResult;
 import com.azure.resourcemanager.network.models.SessionIds;
 import com.azure.resourcemanager.network.models.VirtualWanVpnProfileParameters;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
@@ -1315,6 +1315,18 @@ public final class NetworkManagementClient extends AzureServiceClient {
         return this.hubRouteTables;
     }
 
+    /** The WebApplicationFirewallPoliciesClient object to access its operations. */
+    private final WebApplicationFirewallPoliciesClient webApplicationFirewallPolicies;
+
+    /**
+     * Gets the WebApplicationFirewallPoliciesClient object to access its operations.
+     *
+     * @return the WebApplicationFirewallPoliciesClient object.
+     */
+    public WebApplicationFirewallPoliciesClient getWebApplicationFirewallPolicies() {
+        return this.webApplicationFirewallPolicies;
+    }
+
     /**
      * Initializes an instance of NetworkManagementClient client.
      *
@@ -1437,6 +1449,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         this.virtualHubBgpConnections = new VirtualHubBgpConnectionsClient(this);
         this.virtualHubIpConfigurations = new VirtualHubIpConfigurationsClient(this);
         this.hubRouteTables = new HubRouteTablesClient(this);
+        this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesClient(this);
         this.service =
             RestProxy.create(NetworkManagementClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -1484,7 +1497,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
                 + "/bastionHosts/{bastionHostName}/getShareableLinks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BastionShareableLinkListResultInner>> getBastionShareableLink(
+        Mono<Response<BastionShareableLinkListResult>> getBastionShareableLink(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("bastionHostName") String bastionHostname,
@@ -1513,7 +1526,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
                 + "/bastionHosts/{bastionHostName}/disconnectActiveSessions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BastionSessionDeleteResultInner>> disconnectActiveSessions(
+        Mono<Response<BastionSessionDeleteResult>> disconnectActiveSessions(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("bastionHostName") String bastionHostname,
@@ -1568,28 +1581,28 @@ public final class NetworkManagementClient extends AzureServiceClient {
         @Get("{nextLink}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BastionShareableLinkListResultInner>> putBastionShareableLinkNext(
+        Mono<Response<BastionShareableLinkListResult>> putBastionShareableLinkNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BastionShareableLinkListResultInner>> getBastionShareableLinkNext(
+        Mono<Response<BastionShareableLinkListResult>> getBastionShareableLinkNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BastionActiveSessionListResultInner>> getActiveSessionsNext(
+        Mono<Response<BastionActiveSessionListResult>> getActiveSessionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BastionSessionDeleteResultInner>> disconnectActiveSessionsNext(
+        Mono<Response<BastionSessionDeleteResult>> disconnectActiveSessionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -1648,11 +1661,11 @@ public final class NetworkManagementClient extends AzureServiceClient {
                         .zip(
                             mono,
                             this
-                                .<BastionShareableLinkListResultInner, BastionShareableLinkListResultInner>getLroResult(
+                                .<BastionShareableLinkListResult, BastionShareableLinkListResult>getLroResult(
                                     mono,
                                     this.getHttpPipeline(),
-                                    BastionShareableLinkListResultInner.class,
-                                    BastionShareableLinkListResultInner.class,
+                                    BastionShareableLinkListResult.class,
+                                    BastionShareableLinkListResult.class,
                                     Context.NONE)
                                 .last()
                                 .flatMap(this::getLroFinalResultOrError));
@@ -1723,11 +1736,11 @@ public final class NetworkManagementClient extends AzureServiceClient {
             .zip(
                 mono,
                 this
-                    .<BastionShareableLinkListResultInner, BastionShareableLinkListResultInner>getLroResult(
+                    .<BastionShareableLinkListResult, BastionShareableLinkListResult>getLroResult(
                         mono,
                         this.getHttpPipeline(),
-                        BastionShareableLinkListResultInner.class,
-                        BastionShareableLinkListResultInner.class,
+                        BastionShareableLinkListResult.class,
+                        BastionShareableLinkListResult.class,
                         context)
                     .last()
                     .flatMap(this::getLroFinalResultOrError))
@@ -2307,11 +2320,11 @@ public final class NetworkManagementClient extends AzureServiceClient {
                         .zip(
                             mono,
                             this
-                                .<BastionActiveSessionListResultInner, BastionActiveSessionListResultInner>getLroResult(
+                                .<BastionActiveSessionListResult, BastionActiveSessionListResult>getLroResult(
                                     mono,
                                     this.getHttpPipeline(),
-                                    BastionActiveSessionListResultInner.class,
-                                    BastionActiveSessionListResultInner.class,
+                                    BastionActiveSessionListResult.class,
+                                    BastionActiveSessionListResult.class,
                                     Context.NONE)
                                 .last()
                                 .flatMap(this::getLroFinalResultOrError));
@@ -2375,11 +2388,11 @@ public final class NetworkManagementClient extends AzureServiceClient {
             .zip(
                 mono,
                 this
-                    .<BastionActiveSessionListResultInner, BastionActiveSessionListResultInner>getLroResult(
+                    .<BastionActiveSessionListResult, BastionActiveSessionListResult>getLroResult(
                         mono,
                         this.getHttpPipeline(),
-                        BastionActiveSessionListResultInner.class,
-                        BastionActiveSessionListResultInner.class,
+                        BastionActiveSessionListResult.class,
+                        BastionActiveSessionListResult.class,
                         context)
                     .last()
                     .flatMap(this::getLroFinalResultOrError))

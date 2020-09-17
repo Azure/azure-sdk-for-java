@@ -34,7 +34,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerregistry.fluent.inner.TaskInner;
-import com.azure.resourcemanager.containerregistry.fluent.inner.TaskListResultInner;
+import com.azure.resourcemanager.containerregistry.models.TaskListResult;
 import com.azure.resourcemanager.containerregistry.models.TaskUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -55,7 +55,7 @@ public final class TasksClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public TasksClient(ContainerRegistryManagementClient client) {
+    TasksClient(ContainerRegistryManagementClient client) {
         this.service = RestProxy.create(TasksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -73,7 +73,7 @@ public final class TasksClient {
                 + "/registries/{registryName}/tasks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TaskListResultInner>> list(
+        Mono<Response<TaskListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -162,7 +162,7 @@ public final class TasksClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TaskListResultInner>> listNext(
+        Mono<Response<TaskListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

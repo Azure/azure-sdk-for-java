@@ -212,7 +212,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
         Assertions.assertNotNull(virtualMachine.managedServiceIdentityType());
         Assertions
             .assertTrue(
-                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
+                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         //
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
@@ -223,7 +223,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
         Assertions.assertNotNull(virtualMachine.managedServiceIdentityType());
         Assertions
             .assertTrue(
-                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
+                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         //
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
@@ -237,7 +237,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
         Assertions.assertNotNull(virtualMachine.managedServiceIdentityType());
         Assertions
             .assertTrue(
-                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
+                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
         // Remove identities one by one (second one)
@@ -466,7 +466,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
         Assertions.assertNotNull(virtualMachine.managedServiceIdentityType());
         Assertions
             .assertTrue(
-                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
+                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
         Assertions.assertEquals(1, virtualMachine.userAssignedManagedServiceIdentityIds().size());

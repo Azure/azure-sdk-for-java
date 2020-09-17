@@ -13,6 +13,7 @@ import io.netty.handler.ssl.SslContext;
 
 import java.net.SocketAddress;
 import java.net.URI;
+import java.time.Instant;
 import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient.Options;
@@ -34,9 +35,24 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     int concurrentRequests();
 
+    /**
+     * @return returns approximate number of connections in the connecting mode.
+     */
+    int gettingEstablishedConnectionsMetrics();
+
+    Instant getCreatedTime();
+
+    long lastRequestNanoTime();
+
+    int channelsMetrics();
+
+    int executorTaskQueueMetrics();
+
     long id();
 
     boolean isClosed();
+
+    int maxChannels();
 
     SocketAddress remoteAddress();
 
