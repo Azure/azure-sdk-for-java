@@ -13,17 +13,31 @@ def read_module(root = os.curdir):
         ci = yaml.safe_load(fin)
 
     return [
-        module['name'] for module in ci['extends']['parameters']['Artifacts'] if module['name'] != 'azure-resourcemanager-samples'
+        module for module in ci['extends']['parameters']['Artifacts'] if module['name'] != 'azure-resourcemanager-samples'
     ]
 
+def get_version(module: dict, version_file: str):
+    module_name = '{}:{}'.format(module['groupId'], module['name'])
+    with open(version_file) as fin:
+        for line in fin.readlines():
+            line = line.strip()
+            if line and not line.startswith('#'):
+                name, _, version = line.split(';')
+                if name == module_name:
+                    return version
+
+    raise KeyError('Cannot found version of {} in {}'.format(module_name, version_file))
 
 def main():
     basedir = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), '..')
+    os.chdir(basedir)
+
+    version_file = '../../eng/versioning/version_client.txt'
     version_pattern = '\n## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((.*?)\)'
     date = datetime.date(datetime.now())
 
-    for folder in read_module(basedir):
-        filename = os.path.join(basedir, folder, 'CHANGELOG.md')
+    for module in read_module():
+        filename = os.path.join(module['name'], 'CHANGELOG.md')
 
         with open(filename) as fin:
             changelog = fin.read()
@@ -41,9 +55,9 @@ def main():
             left = left[:second_version.start()]
             current_changelog = left if left.strip() else '\n\n- Updated core dependency from resources\n'
 
-        version: str = first_version.group().replace(first_version.group(2), str(date))
-        if len(sys.argv) > 1:
-            version = version.replace(first_version.group(1), sys.argv[1])
+        version: str = first_version.group().replace(
+            first_version.group(2), str(date)).replace(
+                first_version.group(1), get_version(module, version_file))
 
         new_changelog = changelog[:first_version.start()] + version + current_changelog
         if second_version:
@@ -54,5 +68,4 @@ def main():
 
 if __name__ == "__main__":
     logging.basicConfig(format = '%(asctime)s %(levelname)s %(message)s')
-    print('Usage: {} [version]'.format(sys.argv[0]))
     main()
