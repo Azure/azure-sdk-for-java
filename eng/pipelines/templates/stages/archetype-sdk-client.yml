@@ -24,6 +24,9 @@ parameters:
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
+- name: TestPipeline
+  type: boolean
+  default: false
 
 stages:
   - stage: Build
@@ -36,7 +39,7 @@ stages:
         AdditionalModules: ${{ parameters.AdditionalModules }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+  - ${{if and(or(ne(variables['Build.Reason'], 'PullRequest'), eq(parameters.TestPipeline, 'true')), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-java-release.yml
       parameters:
         DependsOn: Build
@@ -45,5 +48,6 @@ stages:
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
         TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
-        TargetDocRepoName: ${{parameters.TargetDocRepoName}} 
+        TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+        TestPipeline: ${{parameters.TestPipeline}}
 
