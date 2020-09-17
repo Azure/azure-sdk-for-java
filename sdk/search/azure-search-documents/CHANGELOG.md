@@ -1,5 +1,25 @@
 # Release History
 
+## 11.2.0-beta.2 (Unreleased)
+
+
+## 11.2.0-beta.1 (2020-09-10)
+
+### New Features
+
+- Added `SearchBatchClient` and `SearchBatchAsyncClient` which handle automatically creating and sending document batches.
+- Added `IndexingHook` interface to provide callback functionality when indexing documents with batching clients.
+- Added `IndexingParametersConfiguration`, and related enums, to offer strongly type configuration for `IndexingParameters`.
+- Added `ScoringStatistics` and `SessionId` to `SearchOptions`.
+
+### Breaking Changes
+
+- Updated Jackson annotations to include `required = true` when service must receive or return the property.
+
+### Bug Fixes
+
+- Changed `Fluent` annotations to `Immutable` when the class is immutable.
+
 ## 11.1.0 (2020-09-09)
 
 ### New Features

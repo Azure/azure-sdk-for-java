@@ -43,7 +43,7 @@ public final class TableServicesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public TableServicesClient(StorageManagementClient client) {
+    TableServicesClient(StorageManagementClient client) {
         this.service =
             RestProxy.create(TableServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

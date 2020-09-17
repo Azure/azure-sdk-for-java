@@ -13,15 +13,15 @@ For Spring Integration on Event Hubs, please refer to the [source code][source_c
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # "{x-version-update-start;com.microsoft.azure:spring-cloud-starter-azure-eventhubs;current}"
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-starter-azure-eventhubs;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>spring-cloud-starter-azure-eventhubs</artifactId>
-    <version>1.2.8-beta.1</version>
+    <version>1.2.8</version>
 </dependency>
 ```
-[//]: # "{x-version-update-end}"
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 Azure Event Hubs is a big data streaming platform and event ingestion service. It can receive and process millions of events per second. Data sent to an event hub can be transformed and stored by using any real-time analytics provider or batching/storage adapters.

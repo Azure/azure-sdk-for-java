@@ -239,6 +239,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.Utility.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.storage.common.implementation.StorageImplUtils.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.CoreUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.http.ProxyOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.blob.changefeed.implementation.util.DownloadUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.SerializerEncoding.java"/>
@@ -416,7 +417,7 @@
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder"/>
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl"/>
-  <suppress checks="." files="com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.data.schemaregistry.implementation.*"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder"/>
@@ -432,6 +433,7 @@
 
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]schemaregistry[/\\].*"/>
 
   <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
@@ -541,4 +543,7 @@
 
   <!-- Suppress Anomaly Detector checks as it's fully generated code for now -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-ai-anomalydetector[/\\]src[/\\]"/>
+
+  <!-- Suppress Event Grid checks for now -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-messaging-eventgrid[/\\]src[/\\]"/>
 </suppressions>

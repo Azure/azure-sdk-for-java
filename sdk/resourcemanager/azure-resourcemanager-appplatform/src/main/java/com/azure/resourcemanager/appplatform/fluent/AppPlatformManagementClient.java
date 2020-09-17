@@ -201,6 +201,18 @@ public final class AppPlatformManagementClient extends AzureServiceClient {
         return this.operations;
     }
 
+    /** The RuntimeVersionsClient object to access its operations. */
+    private final RuntimeVersionsClient runtimeVersions;
+
+    /**
+     * Gets the RuntimeVersionsClient object to access its operations.
+     *
+     * @return the RuntimeVersionsClient object.
+     */
+    public RuntimeVersionsClient getRuntimeVersions() {
+        return this.runtimeVersions;
+    }
+
     /** The SkusClient object to access its operations. */
     private final SkusClient skus;
 
@@ -244,6 +256,7 @@ public final class AppPlatformManagementClient extends AzureServiceClient {
         this.customDomains = new CustomDomainsClient(this);
         this.deployments = new DeploymentsClient(this);
         this.operations = new OperationsClient(this);
+        this.runtimeVersions = new RuntimeVersionsClient(this);
         this.skus = new SkusClient(this);
     }
 }

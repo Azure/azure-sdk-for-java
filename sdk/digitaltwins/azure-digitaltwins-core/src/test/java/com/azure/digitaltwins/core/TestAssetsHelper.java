@@ -1,16 +1,11 @@
 package com.azure.digitaltwins.core;
 
-import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.util.UpdateOperationUtility;
-import org.opentest4j.AssertionFailedError;
+import com.azure.digitaltwins.core.models.UpdateOperationUtility;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.function.Consumer;
 
 public class TestAssetsHelper {
     // Remove all new line characters as they are different in different Operaing Systems.
@@ -137,14 +132,14 @@ public class TestAssetsHelper {
     // This method assumes that the file name is a json file under the test-assets folder within the resources directory
     public static String readResourceFile(String fileName)
     {
-        String resourceFileContents = "";
+        StringBuilder resourceFileContents = new StringBuilder();
         try (InputStream inputStream = TestAssetsHelper.class.getResourceAsStream("/test-assets/" + fileName + ".json")) {
             Scanner s = new Scanner(inputStream);
             while (s.hasNext()) {
-                resourceFileContents += s.next();
+                resourceFileContents.append(s.next());
             }
 
-            return resourceFileContents;
+            return resourceFileContents.toString();
         } catch (IOException e) {
             throw new RuntimeException("Cannot find file /test-assets/" + fileName + ".json in the resources folder", e);
         }

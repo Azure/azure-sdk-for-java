@@ -12,15 +12,15 @@ Event Hubs is a fully managed, real-time data ingestion service that’s simple,
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # "{x-version-update-start;com.microsoft.azure:spring-integration-eventhubs;current}"
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-integration-eventhubs;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>spring-integration-eventhubs</artifactId>
-    <version>1.2.8-beta.1</version>
+    <version>1.2.8</version>
 </dependency>
 ```
-[//]: # "{x-version-update-end}"
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 Spring Integration enables lightweight messaging within Spring-based applications and supports integration with external systems via declarative adapters. Those adapters provide a higher-level of abstraction over Spring’s support for remoting, messaging, and scheduling.

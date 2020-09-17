@@ -67,6 +67,22 @@ public final class ResourceManagementClientBuilder {
     }
 
     /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     *
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the ResourceManagementClientBuilder.
+     */
+    public ResourceManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -98,22 +114,6 @@ public final class ResourceManagementClientBuilder {
         return this;
     }
 
-    /*
-     * The default poll interval for long-running operation
-     */
-    private Duration defaultPollInterval;
-
-    /**
-     * Sets The default poll interval for long-running operation.
-     *
-     * @param defaultPollInterval the defaultPollInterval value.
-     * @return the ResourceManagementClientBuilder.
-     */
-    public ResourceManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
-        this.defaultPollInterval = defaultPollInterval;
-        return this;
-    }
-
     /**
      * Builds an instance of ResourceManagementClient with the provided parameters.
      *
@@ -126,6 +126,9 @@ public final class ResourceManagementClientBuilder {
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
         }
+        if (defaultPollInterval == null) {
+            this.defaultPollInterval = Duration.ofSeconds(30);
+        }
         if (pipeline == null) {
             this.pipeline =
                 new HttpPipelineBuilder()
@@ -134,9 +137,6 @@ public final class ResourceManagementClientBuilder {
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = new AzureJacksonAdapter();
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
         }
         ResourceManagementClient client =
             new ResourceManagementClient(

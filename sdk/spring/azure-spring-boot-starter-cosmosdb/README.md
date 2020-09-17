@@ -11,12 +11,12 @@
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-cosmosdb-spring-boot-starter;current})
+[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-cosmos;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
-    <version>2.3.3</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-spring-boot-starter-cosmos</artifactId>
+    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -231,7 +231,7 @@ For more information about setting loging in pring, please refer to the [officia
 
 ## Next steps
 
-Besides using this Azure CosmosDb Spring Boot Starter, you can directly use Spring Data for Azure CosmosDb package for more complex scenarios. Please refer to [Spring Data for Azure CosmosDB](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core) for more details.
+Besides using this Azure CosmosDb Spring Boot Starter, you can directly use Spring Data for Azure CosmosDb package for more complex scenarios. Please refer to [Spring Data for Azure CosmosDB](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos) for more details.
 
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code

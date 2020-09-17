@@ -4,7 +4,6 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.CosmosManager;
-import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -14,7 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -24,7 +22,6 @@ import java.util.List;
 public interface CosmosDBAccounts
     extends SupportsCreating<CosmosDBAccount.DefinitionStages.Blank>,
         HasManager<CosmosManager>,
-        HasInner<DatabaseAccountsClient>,
         SupportsBatchCreation<CosmosDBAccount>,
         SupportsGettingById<CosmosDBAccount>,
         SupportsDeletingById,

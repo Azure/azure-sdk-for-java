@@ -4,7 +4,7 @@
 package com.microsoft.azure.aad.controller;
 
 import com.microsoft.azure.aad.model.TodoItem;
-import com.microsoft.azure.spring.autoconfigure.aad.AADGraphApiObjectType;
+import com.microsoft.azure.spring.autoconfigure.aad.Constants;
 import com.microsoft.azure.spring.autoconfigure.aad.UserGroup;
 import com.microsoft.azure.spring.autoconfigure.aad.UserPrincipal;
 import org.springframework.http.HttpStatus;
@@ -94,7 +94,7 @@ public class TodoListController {
         final UserPrincipal current = (UserPrincipal) authToken.getPrincipal();
         UserGroup userGroup = new UserGroup(
             "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            AADGraphApiObjectType.GROUP,
+            Constants.OBJECT_TYPE_GROUP,
             "group1");
         if (current.isMemberOf(userGroup)) {
             return todoList.stream()

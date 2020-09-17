@@ -38,18 +38,18 @@ import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountGetResultsIn
 import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountListConnectionStringsResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountListKeysResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountListReadOnlyKeysResultInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountsListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.MetricDefinitionInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.MetricDefinitionsListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.MetricInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.MetricListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.UsageInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.UsagesResultInner;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountRegenerateKeyParameters;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountsListResult;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicies;
+import com.azure.resourcemanager.cosmos.models.MetricDefinitionsListResult;
+import com.azure.resourcemanager.cosmos.models.MetricListResult;
 import com.azure.resourcemanager.cosmos.models.RegionForOnlineOffline;
+import com.azure.resourcemanager.cosmos.models.UsagesResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -75,7 +75,7 @@ public final class DatabaseAccountsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DatabaseAccountsClient(CosmosDBManagementClient client) {
+    DatabaseAccountsClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy.create(DatabaseAccountsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -165,7 +165,7 @@ public final class DatabaseAccountsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseAccountsListResultInner>> list(
+        Mono<Response<DatabaseAccountsListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -177,7 +177,7 @@ public final class DatabaseAccountsClient
                 + "/databaseAccounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseAccountsListResultInner>> listByResourceGroup(
+        Mono<Response<DatabaseAccountsListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -301,7 +301,7 @@ public final class DatabaseAccountsClient
                 + "/databaseAccounts/{accountName}/metrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetricListResultInner>> listMetrics(
+        Mono<Response<MetricListResult>> listMetrics(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -316,7 +316,7 @@ public final class DatabaseAccountsClient
                 + "/databaseAccounts/{accountName}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UsagesResultInner>> listUsages(
+        Mono<Response<UsagesResult>> listUsages(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -331,7 +331,7 @@ public final class DatabaseAccountsClient
                 + "/databaseAccounts/{accountName}/metricDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetricDefinitionsListResultInner>> listMetricDefinitions(
+        Mono<Response<MetricDefinitionsListResult>> listMetricDefinitions(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,

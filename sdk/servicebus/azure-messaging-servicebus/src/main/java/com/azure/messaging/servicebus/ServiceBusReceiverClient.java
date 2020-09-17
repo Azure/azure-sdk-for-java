@@ -70,8 +70,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message}. This will make the message available
-     * again for processing. Abandoning a message will increase the delivery count on the message.
+     * Abandon a {@link ServiceBusReceivedMessage message}. This will make the message available again for processing.
+     * Abandoning a message will increase the delivery count on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
@@ -84,9 +84,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message} updates the message's properties.
-     * This will make the message available again for processing. Abandoning a message will increase the delivery count
-     * on the message.
+     * Abandon a {@link ServiceBusReceivedMessage message} updates the message's properties. This will make the message
+     * available again for processing. Abandoning a message will increase the delivery count on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Properties to modify on the message.
@@ -100,17 +99,17 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message} updates the message's properties.
-     * This will make the message available again for processing. Abandoning a message will increase the delivery count
-     * on the message.
+     * Abandon a {@link ServiceBusReceivedMessage message} updates the message's properties. This will make the message
+     * available again for processing. Abandoning a message will increase the delivery count on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Properties to modify on the message.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first
+     *     by {@link ServiceBusReceiverClient#createTransaction()} or
+     *     {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
+     *     transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
@@ -134,15 +133,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the
-     * service.
+     * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the service.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first
+     *     by {@link ServiceBusReceiverClient#createTransaction()} or
+     *     {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
+     *     transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
@@ -151,8 +150,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Defers a {@link ServiceBusReceivedMessage message}. This will move message into the deferred
-     * subqueue.
+     * Defers a {@link ServiceBusReceivedMessage message}. This will move message into the deferred subqueue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
@@ -182,16 +180,17 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will
-     * move message into the deferred subqueue.
+     * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will move message into
+     * the deferred subqueue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Message properties to modify.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first
+     *     by {@link ServiceBusReceiverClient#createTransaction()} or
+     *     {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
+     *     transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
@@ -237,59 +236,18 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
+     * @param transactionContext in which this operation is taking part in. The transaction should be created first
+     *     by {@link ServiceBusReceiverClient#createTransaction()} or
+     *     {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
+     *     transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
     public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions,
         ServiceBusTransactionContext transactionContext) {
         asyncClient.deadLetter(message, deadLetterOptions, transactionContext).block(operationTimeout);
-    }
-
-    /**
-     * Gets and starts the auto lock renewal for a message with the given lock.
-     *
-     * @param lockToken Lock token of the message.
-     * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
-     * @param onError A function to call when an error occurs during lock renewal.
-     * @throws NullPointerException if {@code lockToken} or {@code maxLockRenewalDuration} is null.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty string.
-     * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
-     */
-    public void getAutoRenewMessageLock(String lockToken, Duration maxLockRenewalDuration,
-        Consumer<Throwable> onError) {
-        final Consumer<Throwable> throwableConsumer = onError != null
-            ? onError
-            : error -> logger.warning("Exception occurred while renewing lock token: '{}'.", lockToken, error);
-
-        asyncClient.getAutoRenewMessageLock(lockToken, maxLockRenewalDuration).subscribe(
-            v -> logger.verbose("Completed renewing lock token: '{}'", lockToken),
-                throwableConsumer);
-    }
-
-    /**
-     * Gets and starts the auto lock renewal for a session with the given lock.
-     *
-     * @param sessionId Id for the session to renew.
-     * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
-     * @param onError A function to call when an error occurs during lock renewal.
-     * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
-     * @throws IllegalArgumentException if {@code sessionId} is an empty string.
-     * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
-     */
-    public void getAutoRenewSessionLock(String sessionId, Duration maxLockRenewalDuration,
-        Consumer<Throwable> onError) {
-        final Consumer<Throwable> throwableConsumer = onError != null
-            ? onError
-            : error -> logger.warning("Exception occurred while renewing session: '{}'.", sessionId, error);
-
-        asyncClient.getAutoRenewSessionLock(sessionId, maxLockRenewalDuration).subscribe(
-            v -> logger.verbose("Completed renewing session: '{}'", sessionId),
-                throwableConsumer);
     }
 
     /**
@@ -445,7 +403,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public IterableStream<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber,
-                                                                    String sessionId) {
+        String sessionId) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
@@ -461,13 +419,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
-     * The receive operation will wait for a default 1 minute for receiving a message before it times out. You can it
+     * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. The
+     * receive operation will wait for a default 1 minute for receiving a message before it times out. You can it
      * override by using {@link #receiveMessages(int, Duration)}.
      *
      * @param maxMessages The maximum number of messages to receive.
-     * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      *
+     * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      * @throws IllegalArgumentException if {@code maxMessages} is zero or a negative value.
      */
     public IterableStream<ServiceBusReceivedMessageContext> receiveMessages(int maxMessages) {
@@ -476,13 +434,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
     /**
      * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. The
-     * default receive mode is {@link ReceiveMode#PEEK_LOCK } unless it is changed during creation of
-     * {@link ServiceBusReceiverClient} using {@link ServiceBusReceiverClientBuilder#receiveMode(ReceiveMode)}.
+     * default receive mode is {@link ReceiveMode#PEEK_LOCK } unless it is changed during creation of {@link
+     * ServiceBusReceiverClient} using {@link ServiceBusReceiverClientBuilder#receiveMode(ReceiveMode)}.
      *
      * @param maxMessages The maximum number of messages to receive.
      * @param maxWaitTime The time the client waits for receiving a message before it times out.
-     * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      *
+     * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      * @throws IllegalArgumentException if {@code maxMessages} or {@code maxWaitTime} is zero or a negative value.
      */
     public IterableStream<ServiceBusReceivedMessageContext> receiveMessages(int maxMessages,
@@ -576,17 +534,39 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * message requires longer than this duration, the lock needs to be renewed. For each renewal, the lock is reset to
      * the entity's LockDuration value.
      *
-     * @param lockToken Lock token of the message to renew.
+     * @param message The {@link ServiceBusReceivedMessage} to perform lock renewal.
      *
      * @return The new expiration time for the message.
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @throws IllegalStateException if the receiver is a session receiver.
      */
-    public OffsetDateTime renewMessageLock(String lockToken) {
-        return asyncClient.renewMessageLock(lockToken).block(operationTimeout);
+    public OffsetDateTime renewMessageLock(ServiceBusReceivedMessage message) {
+        return asyncClient.renewMessageLock(message).block(operationTimeout);
+    }
+
+    /**
+     * Starts the auto lock renewal for a message with the given lock.
+     *
+     * @param message The {@link ServiceBusReceivedMessage} to perform auto-lock renewal.
+     * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
+     * @param onError A function to call when an error occurs during lock renewal.
+     *
+     * @throws NullPointerException if {@code message} or {@code maxLockRenewalDuration} is null.
+     * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
+     */
+    public void renewMessageLock(ServiceBusReceivedMessage message, Duration maxLockRenewalDuration,
+        Consumer<Throwable> onError) {
+        final String lockToken = message != null ? message.getLockToken() : "null";
+        final Consumer<Throwable> throwableConsumer = onError != null
+            ? onError
+            : error -> logger.warning("Exception occurred while renewing lock token '{}'.", lockToken, error);
+
+        asyncClient.renewMessageLock(message, maxLockRenewalDuration).subscribe(
+            v -> logger.verbose("Completed renewing lock token: '{}'", lockToken),
+            throwableConsumer,
+            () -> logger.verbose("Auto message lock renewal operation completed: {}", lockToken));
     }
 
     /**
@@ -595,10 +575,34 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Identifier of session to get.
      *
      * @return The next expiration time for the session lock.
+     * @throws NullPointerException if {@code sessionId} is null.
+     * @throws IllegalArgumentException if {@code sessionId} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
     public OffsetDateTime renewSessionLock(String sessionId) {
         return asyncClient.renewSessionLock(sessionId).block(operationTimeout);
+    }
+
+    /**
+     * Starts the auto lock renewal for a session id.
+     *
+     * @param sessionId Id for the session to renew.
+     * @param maxLockRenewalDuration Maximum duration to keep renewing the session.
+     * @param onError A function to call when an error occurs during lock renewal.
+     *
+     * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
+     * @throws IllegalArgumentException if {@code sessionId} is an empty string.
+     * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
+     */
+    public void renewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
+        final Consumer<Throwable> throwableConsumer = onError != null
+            ? onError
+            : error -> logger.warning("Exception occurred while renewing session: '{}'.", sessionId, error);
+
+        asyncClient.renewSessionLock(sessionId, maxLockRenewalDuration).subscribe(
+            v -> logger.verbose("Completed renewing session: '{}'", sessionId),
+            throwableConsumer,
+            () -> logger.verbose("Auto session lock renewal operation completed: {}", sessionId));
     }
 
     /**
@@ -615,12 +619,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
     /**
      * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
-     * {@link ServiceBusReceivedMessage} or {@code lockToken} to all operations that needs to be in
-     * this transaction.
-     *
-     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     * {@link ServiceBusReceivedMessage} or {@code lockToken} to all operations that needs to be in this transaction.
      *
      * @return a new {@link ServiceBusTransactionContext}.
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
+     *     null.
      */
     public ServiceBusTransactionContext createTransaction() {
         return asyncClient.createTransaction().block(operationTimeout);
@@ -631,7 +634,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param transactionContext to be committed.
      *
-     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
+     *     null.
      */
     public void commitTransaction(ServiceBusTransactionContext transactionContext) {
         asyncClient.commitTransaction(transactionContext).block(operationTimeout);
@@ -641,7 +645,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
      *
      * @param transactionContext to be rollbacked.
-     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     *
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
+     *     null.
      */
     public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         asyncClient.rollbackTransaction(transactionContext).block(operationTimeout);

@@ -120,6 +120,13 @@ public interface SpringService
             /**
              * Specifies the sku of the spring service.
              * @param skuName the sku name
+             * @return the next stage of spring service definition
+             */
+            WithCreate withSku(SkuName skuName);
+
+            /**
+             * Specifies the sku of the spring service.
+             * @param skuName the sku name
              * @param capacity the capacity for the spring service
              * @return the next stage of spring service definition
              */
