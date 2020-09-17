@@ -491,11 +491,6 @@
             This rule is used to enforce that all modules depend on the same version of particular dependencies or
             plugins.
             -->
-            <requireSameVersions>
-              <dependencies>
-                <dependency>com.azure.*</dependency>
-              </dependencies>
-            </requireSameVersions>
           </rules>
           <fail>true</fail>
         </configuration>
