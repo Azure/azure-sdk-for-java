@@ -20,7 +20,6 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -100,7 +99,7 @@ public final class ServiceBusClientBuilder {
 
     /**
      * Sets the {@link ClientOptions} to be sent from the client built from this builder, enabling customization of
-     * certain properties, as well as support the addition of custom header information. Refer to the 
+     * certain properties, as well as support the addition of custom header information. Refer to the
      * {@link ClientOptions} documentation for more information.
      *
      * @param clientOptions to be set on the client.
