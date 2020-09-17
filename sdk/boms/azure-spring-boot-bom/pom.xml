@@ -78,7 +78,7 @@
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
-        <artifactId>azure-spring-boot-starter-cosmosdb</artifactId>
+        <artifactId>azure-spring-boot-starter-cosmos</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
 
