@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
+import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
@@ -139,7 +140,9 @@ public class BlobClient extends BlobClientBase {
     /**
      * Creates a new blob. By default this method will not overwrite an existing blob.
      *
-     * @param data The data to write to the blob.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider opening a {@link BlobOutputStream()} and writing to the returned stream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      */
@@ -150,7 +153,9 @@ public class BlobClient extends BlobClientBase {
     /**
      * Creates a new blob, or updates the content of an existing blob.
      *
-     * @param data The data to write to the blob.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider opening a {@link BlobOutputStream()} and writing to the returned stream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
@@ -168,7 +173,9 @@ public class BlobClient extends BlobClientBase {
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
-     * @param data The data to write to the blob.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider opening a {@link BlobOutputStream()} and writing to the returned stream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
