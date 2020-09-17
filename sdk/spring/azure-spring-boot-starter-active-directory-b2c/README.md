@@ -14,12 +14,12 @@ while protecting the identities of your customers at the same time.
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # "{x-version-update-start;com.microsoft.azure:azure-active-directory-b2c-spring-boot-starter;current}"
+[//]: # "{x-version-update-start;com.azure:azure--spring-boot-starter-active-directory-b2c;current}"
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-active-directory-b2c-spring-boot-starter</artifactId>
-    <version>2.3.5</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
+    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
