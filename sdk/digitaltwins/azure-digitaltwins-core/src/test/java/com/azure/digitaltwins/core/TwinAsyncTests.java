@@ -4,6 +4,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.models.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.opentest4j.AssertionFailedError;
@@ -26,8 +27,7 @@ public class TwinAsyncTests extends TwinTestBase
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void digitalTwinLifecycle(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
-    {
+    public void digitalTwinLifecycle(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
         String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
@@ -46,7 +46,7 @@ public class TwinAsyncTests extends TwinTestBase
                 .verifyComplete();
 
             // Create a Twin
-            StepVerifier.create(asyncClient.createDigitalTwin(roomTwinId, roomTwin, BasicDigitalTwin.class))
+            StepVerifier.create(asyncClient.createDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class))
                 .assertNext(createdTwin -> {
                     assertEquals(createdTwin.getId(), roomTwinId);
                     logger.info("Created {} twin successfully", createdTwin.getId());

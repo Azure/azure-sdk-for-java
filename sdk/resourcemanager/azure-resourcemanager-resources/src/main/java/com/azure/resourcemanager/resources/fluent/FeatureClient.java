@@ -30,8 +30,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluent.inner.OperationInner;
-import com.azure.resourcemanager.resources.fluent.inner.OperationListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import com.azure.resourcemanager.resources.models.OperationListResult;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
@@ -163,14 +163,14 @@ public final class FeatureClient extends AzureServiceClient {
         @Get("/providers/Microsoft.Features/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationListResultInner>> listOperations(
+        Mono<Response<OperationListResult>> listOperations(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationListResultInner>> listOperationsNext(
+        Mono<Response<OperationListResult>> listOperationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

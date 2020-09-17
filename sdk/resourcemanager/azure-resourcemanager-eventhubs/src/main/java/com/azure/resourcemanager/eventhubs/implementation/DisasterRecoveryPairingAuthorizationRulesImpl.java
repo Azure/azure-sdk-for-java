@@ -80,7 +80,6 @@ public final class DisasterRecoveryPairingAuthorizationRulesImpl
         return this.manager;
     }
 
-    @Override
     public DisasterRecoveryConfigsClient inner() {
         return this.manager.inner().getDisasterRecoveryConfigs();
     }

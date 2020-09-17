@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 
+import java.net.SocketAddress;
 import java.net.URI;
 import java.util.Map;
 
@@ -73,6 +74,23 @@ public class RequestTimeoutException extends CosmosException {
             HttpConstants.StatusCodes.REQUEST_TIMEOUT,
             requestUrl != null
                 ? requestUrl.toString()
+                : null);
+    }
+
+    /**
+     * Instantiates a new Request timeout exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param remoteAddress the remote address
+     */
+    public RequestTimeoutException(String message, HttpHeaders headers, SocketAddress remoteAddress) {
+        super(message,
+            null,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+            remoteAddress != null
+                ? remoteAddress.toString()
                 : null);
     }
 

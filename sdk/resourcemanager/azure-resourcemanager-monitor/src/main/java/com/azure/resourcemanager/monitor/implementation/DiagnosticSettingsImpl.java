@@ -64,7 +64,6 @@ public class DiagnosticSettingsImpl
         return this.manager;
     }
 
-    @Override
     public DiagnosticSettingsClient inner() {
         return this.manager().inner().getDiagnosticSettings();
     }
@@ -73,7 +72,7 @@ public class DiagnosticSettingsImpl
     public List<DiagnosticSettingsCategory> listCategoriesByResource(String resourceId) {
         List<DiagnosticSettingsCategory> categories = new ArrayList<>();
         DiagnosticSettingsCategoryResourceCollectionInner collection =
-            this.manager().inner().getDiagnosticSettingsCategorys().list(resourceId);
+            this.manager().inner().getDiagnosticSettingsCategories().list(resourceId);
         if (collection != null) {
             for (DiagnosticSettingsCategoryResourceInner category : collection.value()) {
                 categories.add(new DiagnosticSettingsCategoryImpl(category));
@@ -89,7 +88,7 @@ public class DiagnosticSettingsImpl
                 this
                     .manager
                     .inner()
-                    .getDiagnosticSettingsCategorys()
+                    .getDiagnosticSettingsCategories()
                     .listAsync(resourceId)
                     .map(DiagnosticSettingsCategoryResourceCollectionInner::value))
             .mapPage(DiagnosticSettingsCategoryImpl::new);
@@ -98,7 +97,7 @@ public class DiagnosticSettingsImpl
     @Override
     public DiagnosticSettingsCategory getCategory(String resourceId, String name) {
         return new DiagnosticSettingsCategoryImpl(
-            this.manager().inner().getDiagnosticSettingsCategorys().get(resourceId, name));
+            this.manager().inner().getDiagnosticSettingsCategories().get(resourceId, name));
     }
 
     @Override
@@ -106,7 +105,7 @@ public class DiagnosticSettingsImpl
         return this
             .manager()
             .inner()
-            .getDiagnosticSettingsCategorys()
+            .getDiagnosticSettingsCategories()
             .getAsync(resourceId, name)
             .map(DiagnosticSettingsCategoryImpl::new);
     }

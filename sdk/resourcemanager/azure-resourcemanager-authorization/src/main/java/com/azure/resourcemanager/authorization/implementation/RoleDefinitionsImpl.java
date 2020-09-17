@@ -85,7 +85,6 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
         return this.manager;
     }
 
-    @Override
     public RoleDefinitionsClient inner() {
         return manager().roleInner().getRoleDefinitions();
     }

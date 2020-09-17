@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.9.0-beta.1 (Unreleased)
-
+- Added a Constant that represented the default storage scope for TokenCredentials.
 
 ## 12.8.0 (2020-08-13)
 - Added support for setting tags and filterTags operations on SAS by adding to AccountSASPermissions.

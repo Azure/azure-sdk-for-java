@@ -47,7 +47,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VpnServerConfigurationsAssociatedWithVirtualWansClient(NetworkManagementClient client) {
+    VpnServerConfigurationsAssociatedWithVirtualWansClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(

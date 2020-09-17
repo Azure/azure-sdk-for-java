@@ -602,7 +602,7 @@ class FunctionAppImpl
     }
 
     @Override
-    public Flux<Indexable> createAsync() {
+    public Mono<FunctionApp> createAsync() {
         if (this.isInCreateMode()) {
             if (inner().serverFarmId() == null) {
                 withNewConsumptionPlan();
