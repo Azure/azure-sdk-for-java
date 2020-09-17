@@ -17,6 +17,11 @@ public final class UpdateRelationshipRequestOptions extends RequestOptions {
     // updateComponent, etc.
 
     // Need to override this method so that the returned value is of type UpdateRelationshipRequestOptions instead of type RequestOptions
+    /**
+     * Sets the ifMatch condition on on the UpdateRelationshipRequestOptions
+     * @param ifMatch A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
+     * @return The UpdateRelationshipRequestOptions itself.
+     */
     @Override
     public UpdateRelationshipRequestOptions setIfMatch(String ifMatch) {
         super.setIfMatch(ifMatch);
