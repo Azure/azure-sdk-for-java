@@ -28,12 +28,12 @@ Note that there is no need to add a `version` as those are managed already by th
 
 Alternatively you may want to use the [starters](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter)
 
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current})
+[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-keyvault-secrets;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
-    <version>2.3.5</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
+    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
