@@ -6,7 +6,7 @@ package com.azure.data.appconfiguration.perf;
 import com.azure.perf.test.core.PerfStressProgram;
 
 /**
- * Runs the Storage performance test.
+ * Runs the App Configuration performance test.
  *
  * <p>To run from command line. Package the project into a jar with dependencies via mvn clean package.
  * Then run the program via java -jar 'compiled-jar-with-dependencies-path' </p>
@@ -21,7 +21,8 @@ public class App {
 
         try {
             testClasses = new Class<?>[]{
-                Class.forName("com.azure.data.appconfiguration.perf.GetConfigurationSettingTest")
+                Class.forName("com.azure.data.appconfiguration.perf.GetConfigurationSettingTest"),
+                Class.forName("com.azure.data.appconfiguration.perf.SetConfigurationSettingTest")
             };
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
