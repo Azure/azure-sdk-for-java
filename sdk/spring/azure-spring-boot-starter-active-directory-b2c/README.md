@@ -70,7 +70,7 @@ application to use the Spring annotations and classes to protect the web app.
    ```xml
    <dependency>
        <groupId>com.azure</groupId>
-       <artifactId>azure--spring-boot-starter-active-directory-b2c</artifactId>
+       <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
    </dependency>
    <dependency>
        <groupId>org.springframework.boot</groupId>
