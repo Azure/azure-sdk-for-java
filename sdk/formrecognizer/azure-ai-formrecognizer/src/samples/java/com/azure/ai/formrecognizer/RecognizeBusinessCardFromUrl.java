@@ -176,7 +176,7 @@ public class RecognizeBusinessCardFromUrl {
                 }
             }
 
-            FormField companyName = recognizedFields.get("CompanyName");
+            FormField companyName = recognizedFields.get("CompanyNames");
             if (companyName != null) {
                 if (FieldValueType.LIST == companyName.getValue().getValueType()) {
                     List<FormField> companyNameItems = companyName.getValue().asList();
