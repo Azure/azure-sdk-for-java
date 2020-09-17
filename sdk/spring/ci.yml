@@ -44,7 +44,7 @@ extends:
         safeName: azurespringbootstarteractivedirectoryb2c
       - name: azure-spring-boot-starter-cosmos
         groupId: com.azure
-        safeName: azurespringbootstartercosmosdb
+        safeName: azurespringbootstartercosmos
       - name: azure-spring-boot-starter-data-gremlin
         groupId: com.azure
         safeName: azurespringbootstarterdatagremlin
