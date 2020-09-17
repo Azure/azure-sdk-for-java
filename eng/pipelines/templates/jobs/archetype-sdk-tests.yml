@@ -75,7 +75,9 @@ jobs:
 
     strategy:
       matrix: 
-        ${{ parameters.Matrix }}        
+        ${{ each matrixEntry in parameters.Matrix }}:
+          ${{ insert }}: ${{ matrixEntry }}
+       
         ${{ if eq(parameters.TestCanary, 'true') }}:          
           Linux - Java 8 (AzureCloudCanary):            
             OSVmImage: 'ubuntu-18.04'            
