@@ -7,8 +7,7 @@ package com.azure.storage.file.share
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
-import com.azure.storage.file.share.models.ProtocolSettings
-
+import com.azure.storage.file.share.models.Protocol
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareItem
@@ -17,8 +16,9 @@ import com.azure.storage.file.share.models.ShareProperties
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.models.Smb
 import com.azure.storage.file.share.models.SmbMultichannel
-import com.azure.storage.file.share.models.SmbSettings
+
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
@@ -238,10 +238,10 @@ class FileServiceAPITests extends APISpec {
         def retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3)
         def metrics = new ShareMetrics().setEnabled(true).setIncludeApis(false)
             .setRetentionPolicy(retentionPolicy).setVersion("1.0")
-        def protocolSettings = new ProtocolSettings().setSmbSettings(new SmbSettings().setMultichannel(new SmbMultichannel().setEnabled(true)))
+        def protocolSettings = new Protocol().setSmb(new Smb().setMultichannel(new SmbMultichannel().setEnabled(true)))
         def updatedProperties = new ShareServiceProperties().setHourMetrics(metrics)
             .setMinuteMetrics(metrics).setCors(new ArrayList<>())
-            .setProtocolSettings(protocolSettings)
+            .setProtocol(protocolSettings)
 
         when:
         def getPropertiesBeforeResponse = premiumFileServiceClient.getPropertiesWithResponse(null, null)

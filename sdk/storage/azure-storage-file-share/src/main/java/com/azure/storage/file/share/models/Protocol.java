@@ -13,30 +13,30 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "ProtocolSettings")
 @Fluent
-public final class ProtocolSettings {
+public final class Protocol {
     /*
      * Settings for SMB protocol.
      */
     @JsonProperty(value = "SMB")
-    private SmbSettings smbSettings;
+    private Smb smb;
 
     /**
-     * Get the smbSettings property: Settings for SMB protocol.
+     * Get the smb property: Settings for SMB protocol.
      *
-     * @return the smbSettings value.
+     * @return the smb value.
      */
-    public SmbSettings getSmbSettings() {
-        return this.smbSettings;
+    public Smb getSmb() {
+        return this.smb;
     }
 
     /**
-     * Set the smbSettings property: Settings for SMB protocol.
+     * Set the smb property: Settings for SMB protocol.
      *
-     * @param smbSettings the smbSettings value to set.
-     * @return the ProtocolSettings object itself.
+     * @param smb the smb value to set.
+     * @return the Protocol object itself.
      */
-    public ProtocolSettings setSmbSettings(SmbSettings smbSettings) {
-        this.smbSettings = smbSettings;
+    public Protocol setSmb(Smb smb) {
+        this.smb = smb;
         return this;
     }
 }

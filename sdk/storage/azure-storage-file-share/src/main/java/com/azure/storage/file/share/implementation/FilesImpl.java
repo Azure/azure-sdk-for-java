@@ -173,7 +173,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param filePath The path of the target file.
-     * @param fileContentLength Specifies the maximum size for the file, up to 1 TB.
+     * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
      * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
@@ -203,7 +203,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param filePath The path of the target file.
-     * @param fileContentLength Specifies the maximum size for the file, up to 1 TB.
+     * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
      * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
