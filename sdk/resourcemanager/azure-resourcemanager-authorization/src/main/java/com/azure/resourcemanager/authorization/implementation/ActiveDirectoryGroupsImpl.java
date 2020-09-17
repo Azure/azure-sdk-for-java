@@ -90,7 +90,6 @@ public class ActiveDirectoryGroupsImpl
         return this.manager;
     }
 
-    @Override
     public GroupsClient inner() {
         return manager().inner().getGroups();
     }

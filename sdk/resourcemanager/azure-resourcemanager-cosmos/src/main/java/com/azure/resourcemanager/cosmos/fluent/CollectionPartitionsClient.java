@@ -26,9 +26,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.inner.PartitionMetricInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.PartitionMetricListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.PartitionUsageInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.PartitionUsagesResultInner;
+import com.azure.resourcemanager.cosmos.models.PartitionMetricListResult;
+import com.azure.resourcemanager.cosmos.models.PartitionUsagesResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CollectionPartitions. */
@@ -46,7 +46,7 @@ public final class CollectionPartitionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public CollectionPartitionsClient(CosmosDBManagementClient client) {
+    CollectionPartitionsClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy
                 .create(CollectionPartitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -67,7 +67,7 @@ public final class CollectionPartitionsClient {
                 + "/metrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartitionMetricListResultInner>> listMetrics(
+        Mono<Response<PartitionMetricListResult>> listMetrics(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -85,7 +85,7 @@ public final class CollectionPartitionsClient {
                 + "/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartitionUsagesResultInner>> listUsages(
+        Mono<Response<PartitionUsagesResult>> listUsages(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,

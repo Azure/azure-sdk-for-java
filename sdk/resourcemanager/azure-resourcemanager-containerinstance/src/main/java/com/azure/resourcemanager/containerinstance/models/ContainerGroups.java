@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
-import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -18,7 +17,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point to the container instance management API. */
@@ -26,7 +24,6 @@ import reactor.core.publisher.Mono;
 public interface ContainerGroups
     extends SupportsCreating<ContainerGroup.DefinitionStages.Blank>,
         HasManager<ContainerInstanceManager>,
-        HasInner<ContainerGroupsClient>,
         SupportsBatchCreation<ContainerGroup>,
         SupportsGettingByResourceGroup<ContainerGroup>,
         SupportsGettingById<ContainerGroup>,

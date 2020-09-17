@@ -106,7 +106,9 @@ public class Components1Q1Og48SchemasManagedclusterAllof1 {
     private Boolean enableRbac;
 
     /*
-     * (PREVIEW) Whether to enable Kubernetes Pod security policy.
+     * (DEPRECATING) Whether to enable Kubernetes pod security policy
+     * (preview). This feature is set for removal on October 15th, 2020. Learn
+     * more at aka.ms/aks/azpodpolicy.
      */
     @JsonProperty(value = "properties.enablePodSecurityPolicy")
     private Boolean enablePodSecurityPolicy;
@@ -392,7 +394,8 @@ public class Components1Q1Og48SchemasManagedclusterAllof1 {
     }
 
     /**
-     * Get the enablePodSecurityPolicy property: (PREVIEW) Whether to enable Kubernetes Pod security policy.
+     * Get the enablePodSecurityPolicy property: (DEPRECATING) Whether to enable Kubernetes pod security policy
+     * (preview). This feature is set for removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
      *
      * @return the enablePodSecurityPolicy value.
      */
@@ -401,7 +404,8 @@ public class Components1Q1Og48SchemasManagedclusterAllof1 {
     }
 
     /**
-     * Set the enablePodSecurityPolicy property: (PREVIEW) Whether to enable Kubernetes Pod security policy.
+     * Set the enablePodSecurityPolicy property: (DEPRECATING) Whether to enable Kubernetes pod security policy
+     * (preview). This feature is set for removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
      *
      * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
      * @return the Components1Q1Og48SchemasManagedclusterAllof1 object itself.

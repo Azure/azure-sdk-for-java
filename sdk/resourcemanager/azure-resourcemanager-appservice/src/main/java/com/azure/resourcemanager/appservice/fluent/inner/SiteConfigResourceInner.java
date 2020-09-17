@@ -124,6 +124,18 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     private Boolean httpLoggingEnabled;
 
     /*
+     * Flag to use Managed Identity Creds for ACR pull
+     */
+    @JsonProperty(value = "properties.acrUseManagedIdentityCreds")
+    private Boolean acrUseManagedIdentityCreds;
+
+    /*
+     * If using user managed identity, the user managed identity ClientId
+     */
+    @JsonProperty(value = "properties.acrUserManagedIdentityID")
+    private String acrUserManagedIdentityId;
+
+    /*
      * HTTP logs directory size limit.
      */
     @JsonProperty(value = "properties.logsDirectorySizeLimit")
@@ -660,6 +672,46 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     public SiteConfigResourceInner withHttpLoggingEnabled(Boolean httpLoggingEnabled) {
         this.httpLoggingEnabled = httpLoggingEnabled;
+        return this;
+    }
+
+    /**
+     * Get the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
+     *
+     * @return the acrUseManagedIdentityCreds value.
+     */
+    public Boolean acrUseManagedIdentityCreds() {
+        return this.acrUseManagedIdentityCreds;
+    }
+
+    /**
+     * Set the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
+     *
+     * @param acrUseManagedIdentityCreds the acrUseManagedIdentityCreds value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withAcrUseManagedIdentityCreds(Boolean acrUseManagedIdentityCreds) {
+        this.acrUseManagedIdentityCreds = acrUseManagedIdentityCreds;
+        return this;
+    }
+
+    /**
+     * Get the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
+     *
+     * @return the acrUserManagedIdentityId value.
+     */
+    public String acrUserManagedIdentityId() {
+        return this.acrUserManagedIdentityId;
+    }
+
+    /**
+     * Set the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
+     *
+     * @param acrUserManagedIdentityId the acrUserManagedIdentityId value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withAcrUserManagedIdentityId(String acrUserManagedIdentityId) {
+        this.acrUserManagedIdentityId = acrUserManagedIdentityId;
         return this;
     }
 

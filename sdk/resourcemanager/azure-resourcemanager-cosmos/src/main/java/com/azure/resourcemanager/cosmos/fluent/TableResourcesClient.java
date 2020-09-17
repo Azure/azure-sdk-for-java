@@ -32,9 +32,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.inner.TableGetResultsInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.TableListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.ThroughputSettingsGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.TableCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.TableListResult;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -55,7 +55,7 @@ public final class TableResourcesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public TableResourcesClient(CosmosDBManagementClient client) {
+    TableResourcesClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy.create(TableResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -74,7 +74,7 @@ public final class TableResourcesClient {
                 + "/databaseAccounts/{accountName}/tables")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TableListResultInner>> listTables(
+        Mono<Response<TableListResult>> listTables(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
