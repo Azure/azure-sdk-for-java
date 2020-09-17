@@ -52,7 +52,7 @@ public final class ShareServiceProperties {
      * Protocol settings
      */
     @JsonProperty(value = "ProtocolSettings")
-    private ProtocolSettings protocolSettings;
+    private ShareProtocolSettings protocol;
 
     /**
      * Get the hourMetrics property: A summary of request statistics grouped by
@@ -122,22 +122,22 @@ public final class ShareServiceProperties {
     }
 
     /**
-     * Get the protocolSettings property: Protocol settings.
+     * Get the protocol property: Protocol settings.
      *
-     * @return the protocolSettings value.
+     * @return the protocol value.
      */
-    public ProtocolSettings getProtocolSettings() {
-        return this.protocolSettings;
+    public ShareProtocolSettings getProtocol() {
+        return this.protocol;
     }
 
     /**
-     * Set the protocolSettings property: Protocol settings.
+     * Set the protocol property: Protocol settings.
      *
-     * @param protocolSettings the protocolSettings value to set.
+     * @param protocol the protocol value to set.
      * @return the ShareServiceProperties object itself.
      */
-    public ShareServiceProperties setProtocolSettings(ProtocolSettings protocolSettings) {
-        this.protocolSettings = protocolSettings;
+    public ShareServiceProperties setProtocol(ShareProtocolSettings protocol) {
+        this.protocol = protocol;
         return this;
     }
 }

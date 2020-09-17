@@ -33,12 +33,6 @@ public final class ShareReleaseLeaseHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * Approximate time remaining in the lease period, in seconds.
-     */
-    @JsonProperty(value = "x-ms-lease-time")
-    private Integer leaseTime;
-
-    /*
      * If a client request id header is sent in the request, this header will
      * be present in the response with the same value.
      */
@@ -123,28 +117,6 @@ public final class ShareReleaseLeaseHeaders {
         } else {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        return this;
-    }
-
-    /**
-     * Get the leaseTime property: Approximate time remaining in the lease
-     * period, in seconds.
-     *
-     * @return the leaseTime value.
-     */
-    public Integer getLeaseTime() {
-        return this.leaseTime;
-    }
-
-    /**
-     * Set the leaseTime property: Approximate time remaining in the lease
-     * period, in seconds.
-     *
-     * @param leaseTime the leaseTime value to set.
-     * @return the ShareReleaseLeaseHeaders object itself.
-     */
-    public ShareReleaseLeaseHeaders setLeaseTime(Integer leaseTime) {
-        this.leaseTime = leaseTime;
         return this;
     }
 
