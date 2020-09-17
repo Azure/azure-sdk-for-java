@@ -10,6 +10,8 @@ package com.microsoft.azure.management.appplatform.v2019_05_01_preview.implement
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
@@ -172,6 +174,32 @@ public class AppPlatformManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The CertificatesInner object to access its operations.
+     */
+    private CertificatesInner certificates;
+
+    /**
+     * Gets the CertificatesInner object to access its operations.
+     * @return the CertificatesInner object.
+     */
+    public CertificatesInner certificates() {
+        return this.certificates;
+    }
+
+    /**
+     * The CustomDomainsInner object to access its operations.
+     */
+    private CustomDomainsInner customDomains;
+
+    /**
+     * Gets the CustomDomainsInner object to access its operations.
+     * @return the CustomDomainsInner object.
+     */
+    public CustomDomainsInner customDomains() {
+        return this.customDomains;
+    }
+
+    /**
      * The DeploymentsInner object to access its operations.
      */
     private DeploymentsInner deployments;
@@ -195,6 +223,32 @@ public class AppPlatformManagementClientImpl extends AzureServiceClient {
      */
     public OperationsInner operations() {
         return this.operations;
+    }
+
+    /**
+     * The RuntimeVersionsInner object to access its operations.
+     */
+    private RuntimeVersionsInner runtimeVersions;
+
+    /**
+     * Gets the RuntimeVersionsInner object to access its operations.
+     * @return the RuntimeVersionsInner object.
+     */
+    public RuntimeVersionsInner runtimeVersions() {
+        return this.runtimeVersions;
+    }
+
+    /**
+     * The SkusInner object to access its operations.
+     */
+    private SkusInner skus;
+
+    /**
+     * Gets the SkusInner object to access its operations.
+     * @return the SkusInner object.
+     */
+    public SkusInner skus() {
+        return this.skus;
     }
 
     /**
@@ -235,8 +289,12 @@ public class AppPlatformManagementClientImpl extends AzureServiceClient {
         this.services = new ServicesInner(restClient().retrofit(), this);
         this.apps = new AppsInner(restClient().retrofit(), this);
         this.bindings = new BindingsInner(restClient().retrofit(), this);
+        this.certificates = new CertificatesInner(restClient().retrofit(), this);
+        this.customDomains = new CustomDomainsInner(restClient().retrofit(), this);
         this.deployments = new DeploymentsInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.runtimeVersions = new RuntimeVersionsInner(restClient().retrofit(), this);
+        this.skus = new SkusInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

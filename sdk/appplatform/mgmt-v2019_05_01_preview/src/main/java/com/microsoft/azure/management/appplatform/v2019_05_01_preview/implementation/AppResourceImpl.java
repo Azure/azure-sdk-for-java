@@ -13,15 +13,12 @@ import com.microsoft.azure.management.appplatform.v2019_05_01_preview.AppResourc
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.appplatform.v2019_05_01_preview.AppResourceProperties;
-import org.joda.time.DateTime;
-import rx.functions.Func1;
+import com.microsoft.azure.management.appplatform.v2019_05_01_preview.ManagedIdentityProperties;
 
 class AppResourceImpl extends CreatableUpdatableImpl<AppResource, AppResourceInner, AppResourceImpl> implements AppResource, AppResource.Definition, AppResource.Update {
     private String resourceGroupName;
     private String serviceName;
     private String appName;
-    private AppResourceProperties cproperties;
-    private AppResourceProperties uproperties;
     private final AppPlatformManager manager;
 
     AppResourceImpl(String name, AppPlatformManager manager) {
@@ -30,8 +27,6 @@ class AppResourceImpl extends CreatableUpdatableImpl<AppResource, AppResourceInn
         // Set resource name
         this.appName = name;
         //
-        this.cproperties = new AppResourceProperties();
-        this.uproperties = new AppResourceProperties();
     }
 
     AppResourceImpl(AppResourceInner inner, AppPlatformManager manager) {
@@ -44,8 +39,6 @@ class AppResourceImpl extends CreatableUpdatableImpl<AppResource, AppResourceInn
         this.serviceName = IdParsingUtils.getValueFromIdByName(inner.id(), "Spring");
         this.appName = IdParsingUtils.getValueFromIdByName(inner.id(), "apps");
         // set other parameters for create and update
-        this.cproperties = new AppResourceProperties();
-        this.uproperties = new AppResourceProperties();
     }
 
     @Override
@@ -56,28 +49,14 @@ class AppResourceImpl extends CreatableUpdatableImpl<AppResource, AppResourceInn
     @Override
     public Observable<AppResource> createResourceAsync() {
         AppsInner client = this.manager().inner().apps();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.serviceName, this.appName, this.cproperties)
-            .map(new Func1<AppResourceInner, AppResourceInner>() {
-               @Override
-               public AppResourceInner call(AppResourceInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
+        return client.createOrUpdateAsync(this.resourceGroupName, this.serviceName, this.appName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<AppResource> updateResourceAsync() {
         AppsInner client = this.manager().inner().apps();
-        return client.updateAsync(this.resourceGroupName, this.serviceName, this.appName, this.uproperties)
-            .map(new Func1<AppResourceInner, AppResourceInner>() {
-               @Override
-               public AppResourceInner call(AppResourceInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
+        return client.updateAsync(this.resourceGroupName, this.serviceName, this.appName, this.inner())
             .map(innerToFluentMap(this));
     }
 
@@ -92,14 +71,20 @@ class AppResourceImpl extends CreatableUpdatableImpl<AppResource, AppResourceInn
         return this.inner().id() == null;
     }
 
-    private void resetCreateUpdateParameters() {
-        this.cproperties = new AppResourceProperties();
-        this.uproperties = new AppResourceProperties();
-    }
 
     @Override
     public String id() {
         return this.inner().id();
+    }
+
+    @Override
+    public ManagedIdentityProperties identity() {
+        return this.inner().identity();
+    }
+
+    @Override
+    public String location() {
+        return this.inner().location();
     }
 
     @Override
@@ -130,12 +115,20 @@ class AppResourceImpl extends CreatableUpdatableImpl<AppResource, AppResourceInn
     }
 
     @Override
+    public AppResourceImpl withIdentity(ManagedIdentityProperties identity) {
+        this.inner().withIdentity(identity);
+        return this;
+    }
+
+    @Override
+    public AppResourceImpl withLocation(String location) {
+        this.inner().withLocation(location);
+        return this;
+    }
+
+    @Override
     public AppResourceImpl withProperties(AppResourceProperties properties) {
-        if (isInCreateMode()) {
-            this.cproperties = properties;
-        } else {
-            this.uproperties = properties;
-        }
+        this.inner().withProperties(properties);
         return this;
     }
 
