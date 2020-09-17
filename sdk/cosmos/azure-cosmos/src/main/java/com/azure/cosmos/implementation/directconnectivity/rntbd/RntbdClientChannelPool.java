@@ -1482,7 +1482,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 // See:
                 // * https://docs.oracle.com/javase/7/docs/api/java/lang/System.html#nanoTime()
                 // * https://github.com/netty/netty/issues/3705
-                if (expiryTime - currentNanoTime < 0) {
+                if (expiryTime - currentNanoTime <= 0) {
                     this.onTimeout(removedTask);
                 } else {
                     if (!this.pool.pendingAcquisitions.offer(removedTask)) {
