@@ -72,11 +72,14 @@ public final class RntbdTransportClient extends TransportClient {
      * log the throwable with DEBUG level instead of the ERROR level used in the default hook.
      * This is safe here because we guarantee resource clean-up with the doFinally-lambda
      */
-    private final Consumer<? super Throwable> onErrorDropHookWithReduceLogLevel =
-        throwable -> logger.debug(
-            "RntbdTransportClient#{} - Extra error - on error dropped - operator called :",
-            this.id(),
-            throwable);
+    private static final Consumer<? super Throwable> onErrorDropHookWithReduceLogLevel =
+        throwable -> {
+            if (logger.isDebugEnabled()) {
+                logger.debug(
+                    "Extra error - on error dropped - operator called :",
+                    throwable);
+            }
+        };
 
     private final AtomicBoolean closed = new AtomicBoolean();
     private final RntbdEndpoint.Provider endpointProvider;
