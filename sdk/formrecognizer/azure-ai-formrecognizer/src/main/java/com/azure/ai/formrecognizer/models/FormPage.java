@@ -30,6 +30,11 @@ public final class FormPage {
     private final List<FormTable> tables;
 
     /*
+     * List of selection marks extracted from the page.
+     */
+    private final List<FormSelectionMark> selectionMarks;
+
+    /*
      * The general orientation of the text in clockwise direction, measured in
      * degrees between (-180, 180].
      */
@@ -71,6 +76,32 @@ public final class FormPage {
         this.lines = lines == null ? null : Collections.unmodifiableList(lines);
         this.tables = tables == null ? null : Collections.unmodifiableList(tables);
         this.pageNumber = pageNumber;
+        this.selectionMarks = null;
+    }
+
+    /**
+     * Constructs a FormPage object.
+     *
+     * @param height the height of the image/PDF in pixels/inches, respectively.
+     * @param textAngle the general orientation of the text in clockwise direction.
+     * @param unit the unit used by the width, height and boundingBox properties.
+     * @param width the width of the image/PDF in pixels/inches, respectively.
+     * @param lines when includeFieldElements is set to true, a list of recognized text lines.
+     * @param tables list of data tables extracted from the page.
+     * @param pageNumber the 1-based page number in the input document.
+     * @param selectionMarks the selection marks in the input document.
+     */
+    public FormPage(final float height, final float textAngle, final LengthUnit unit,
+        final float width, final List<FormLine> lines, final List<FormTable> tables, final int pageNumber,
+        final List<FormSelectionMark> selectionMarks) {
+        this.height = height;
+        this.textAngle = textAngle > 180 ? textAngle - 360 : textAngle;
+        this.unit = unit;
+        this.width = width;
+        this.lines = lines == null ? null : Collections.unmodifiableList(lines);
+        this.tables = tables == null ? null : Collections.unmodifiableList(tables);
+        this.pageNumber = pageNumber;
+        this.selectionMarks = selectionMarks == null ? null : Collections.unmodifiableList(selectionMarks);
     }
 
     /**
@@ -139,6 +170,15 @@ public final class FormPage {
      */
     public Integer getPageNumber() {
         return this.pageNumber;
+    }
+
+    /**
+     * Get the selection marks in the input document.
+     *
+     * @return the selection marks.
+     */
+    public List<FormSelectionMark> getSelectionMarks() {
+        return this.selectionMarks;
     }
 }
 

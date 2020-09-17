@@ -27,5 +27,8 @@ public enum FieldValueType {
     LIST,
 
     /** Enum value map. */
-    MAP;
+    MAP,
+
+    /** Enum value selectionMark. */
+    SELECTION_MARK;
 }
