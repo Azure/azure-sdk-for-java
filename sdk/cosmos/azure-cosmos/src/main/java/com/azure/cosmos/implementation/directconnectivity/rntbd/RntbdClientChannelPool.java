@@ -95,13 +95,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
         true,
         Thread.NORM_PRIORITY));
 
-    // this is only for debugging monitoring of the health of RNTBD
-    // TODO: once we are certain no task gets stuck in the rntbd queue remove this
-    private static final EventExecutor monitoringRntbdChannelPool = new DefaultEventExecutor(new RntbdThreadFactory(
-        "monitoring-rntbd-channel-pool",
-        true,
-        Thread.MIN_PRIORITY));
-
     private static final HashedWheelTimer acquisitionAndIdleEndpointDetectionTimer =
         new HashedWheelTimer(new RntbdThreadFactory(
             "channel-acquisition-timer",
@@ -114,6 +107,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final Runnable acquisitionTimeoutTask;
     private final PooledByteBufAllocatorMetric allocatorMetric;
     private final Bootstrap bootstrap;
+    private final RntbdServiceEndpoint endpoint;
     private final EventExecutor executor;
     private final ChannelHealthChecker healthChecker;
     // private final ScheduledFuture<?> idleStateDetectionScheduledFuture;
@@ -137,11 +131,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         Comparator.comparingLong((task) -> task.originalPromise.getExpiryTimeInNanos()));
 
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
-
-    // this is only for debugging monitoring of the health of RNTBD
-    // TODO: once we are certain no task gets stuck in the rntbd queue remove this
-    private final ScheduledFuture<?> monitoringFuture;
-
+    
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
      *
@@ -163,6 +153,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         checkNotNull(config, "expected non-null config");
         checkNotNull(healthChecker, "expected non-null healthChecker");
 
+        this.endpoint = endpoint;
         this.poolHandler = new RntbdClientChannelHandler(config, healthChecker);
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
@@ -231,7 +222,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
 //                this.runTasksInPendingAcquisitionQueue();
 //
 //            }, requestTimerResolutionInNanos, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
-        monitoringFuture = startMonitoring();
     }
 
     // region Accessors
@@ -272,6 +262,38 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     public int channelsAvailableMetrics() {
         return this.availableChannels.size();
+    }
+
+    /**
+     * Gets the number of connections which are getting established.
+     *
+     * @return the number of connections which are getting established.
+     */
+    public int attemptingToConnectMetrics() {
+        return this.connecting.get() ? 1 : 0;
+    }
+
+    /**
+     * Gets the current tasks in the executor pool
+     *
+     * NOTE: this only provides approximation for metrics
+     *
+     * @return the current tasks in the executor pool
+     */
+    public int executorTaskQueueMetrics() {
+        try {
+            SingleThreadEventExecutor singleThreadEventExecutor = Utils.as(this.executor,
+                SingleThreadEventExecutor.class);
+
+            if (singleThreadEventExecutor != null) {
+                return singleThreadEventExecutor.pendingTasks();
+            }
+        } catch (RuntimeException e) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("task-queue unexpected monitoring failure", e);
+            }
+        }
+        return -1;
     }
 
     /**
@@ -410,9 +432,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 this.executor.submit(this::doClose).awaitUninterruptibly(); // block until complete
             }
         }
-
         this.pendingAcquisitionExpirationFuture.cancel(false);
-        this.monitoringFuture.cancel(false);
     }
 
     /**
@@ -1533,37 +1553,4 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
     // endregion
 
-    // TODO: remove when we are confident of RNTBD OOM bug
-    private ScheduledFuture<?> startMonitoring() {
-        return monitoringRntbdChannelPool.scheduleAtFixedRate(() -> {
-            int i = getTaskCount();
-            if (isInterestingEndpoint()) {
-                logger.debug("{} total number of tasks on the executor [{}], remote address: [{}], connecting [{}], acquiredChannel [{}], availableChannel [{}], pending acquisition [{}]",
-                    this.hashCode(), i, this.remoteAddress(), connecting.get(), acquiredChannels.size(), availableChannels.size(), pendingAcquisitions.size());
-            }
-        }, 0, 60, TimeUnit.SECONDS);
-    }
-
-    // TODO: remove when we are confident of RNTBD OOM bug
-    private boolean isInterestingEndpoint() {
-        return true;
-    }
-
-    // TODO: remove when we are confident of RNTBD OOM bug
-    public int getTaskCount() {
-
-        try {
-            SingleThreadEventExecutor singleThreadEventExecutor = Utils.as(this.executor,
-                SingleThreadEventExecutor.class);
-
-            if (singleThreadEventExecutor != null) {
-                return singleThreadEventExecutor.pendingTasks();
-            }
-        } catch (RuntimeException e) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("task-queue unexpected monitoring failure", e);
-            }
-        }
-        return -1;
-    }
 }

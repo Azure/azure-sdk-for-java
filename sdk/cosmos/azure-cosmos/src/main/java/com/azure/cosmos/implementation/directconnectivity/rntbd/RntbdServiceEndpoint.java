@@ -20,7 +20,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
+import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.DefaultThreadFactory;
+import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +30,12 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -59,6 +65,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final AtomicInteger concurrentRequests;
     private final long id;
     private final AtomicLong lastRequestNanoTime;
+
+    private final Instant createdTime;
     private final RntbdMetrics metrics;
     private final Provider provider;
     private final SocketAddress remoteAddress;
@@ -87,6 +95,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .option(ChannelOption.SO_KEEPALIVE, true)
             .remoteAddress(physicalAddress.getHost(), physicalAddress.getPort());
 
+        this.createdTime = Instant.now();
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);
         this.remoteAddress = bootstrap.config().remoteAddress();
         this.concurrentRequests = new AtomicInteger();
@@ -133,6 +142,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     @Override
+    public int gettingEstablishedConnectionsMetrics() {
+        return this.channelPool.attemptingToConnectMetrics();
+    }
+
+    @Override
     public long id() {
         return this.id;
     }
@@ -142,8 +156,27 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         return this.closed.get();
     }
 
+    @Override
+    public int maxChannels() {
+        return this.channelPool.channels(true);
+    }
+
     public long lastRequestNanoTime() {
         return this.lastRequestNanoTime.get();
+    }
+
+    @Override
+    public int channelsMetrics() {
+        return this.channelPool.channels(true);
+    }
+
+    @Override
+    public int executorTaskQueueMetrics() {
+        return this.channelPool.executorTaskQueueMetrics();
+    }
+
+    public Instant getCreatedTime() {
+        return this.createdTime;
     }
 
     @Override
@@ -222,7 +255,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     // endregion
 
     // region Privates
-
+    
     private void ensureSuccessWhenReleasedToPool(Channel channel, Future<Void> released) {
         if (released.isSuccess()) {
             logger.debug("\n  [{}]\n  {}\n  release succeeded", this, channel);
@@ -338,6 +371,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final ConcurrentHashMap<String, RntbdEndpoint> endpoints;
         private final NioEventLoopGroup eventLoopGroup;
         private final AtomicInteger evictions;
+        private final RntbdEndpointMonitoringProvider monitoring;
         private final RntbdRequestTimer requestTimer;
         private final RntbdTransportClient transportClient;
 
@@ -370,12 +404,15 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             this.endpoints = new ConcurrentHashMap<>();
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();
+            this.monitoring = new RntbdEndpointMonitoringProvider(this);
+            this.monitoring.init();
         }
 
         @Override
         public void close() {
 
             if (this.closed.compareAndSet(false, true)) {
+                this.monitoring.close();
 
                 for (final RntbdEndpoint endpoint : this.endpoints.values()) {
                     endpoint.close();
@@ -434,6 +471,88 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             if (this.endpoints.remove(endpoint.remoteAddress().toString()) != null) {
                 this.evictions.incrementAndGet();
             }
+        }
+    }
+
+    public static class RntbdEndpointMonitoringProvider implements AutoCloseable {
+        private final Logger logger = LoggerFactory.getLogger(RntbdEndpointMonitoringProvider.class);
+        // this is only for debugging monitoring of the health of RNTBD
+        // TODO: once we are certain no task gets stuck in the rntbd queue remove this
+        private static final EventExecutor monitoringRntbdChannelPool = new DefaultEventExecutor(new RntbdThreadFactory(
+            "monitoring-rntbd-endpoints",
+            true,
+            Thread.MIN_PRIORITY));
+        private static final Duration MONITORING_PERIOD = Duration.ofSeconds(60);
+        private final Provider provider;
+        private final static int MAX_TASK_LIMIT = 5_000;
+
+        private ScheduledFuture<?> future;
+
+        RntbdEndpointMonitoringProvider(Provider provider) {
+            this.provider = provider;
+        }
+        
+        synchronized void init() {
+            logger.info("Starting RntbdClientChannelPoolMonitoringProvider ...");
+            this.future = RntbdEndpointMonitoringProvider.monitoringRntbdChannelPool.scheduleAtFixedRate(() -> {
+                logAllPools();
+            }, 0, MONITORING_PERIOD.toMillis(), TimeUnit.MILLISECONDS);
+        }
+
+        @Override
+        public synchronized void close() {
+            logger.info("Shutting down RntbdClientChannelPoolMonitoringProvider ...");
+            this.future.cancel(false);
+            this.future = null;
+        }
+
+        synchronized void logAllPools() {
+            try {
+                logger.debug("Total number of RntbdClientChannelPool [{}].", provider.endpoints.size());
+                for (RntbdEndpoint endpoint : provider.endpoints.values()) {
+                    logEndpoint(endpoint);
+                }
+            } catch (Exception e) {
+                logger.error("monitoring unexpected failure", e);
+            }
+        }
+
+        private void logEndpoint(RntbdEndpoint endpoint) {
+            if (this.logger.isWarnEnabled() &&
+                (endpoint.executorTaskQueueMetrics() > MAX_TASK_LIMIT ||
+                endpoint.requestQueueLength() > MAX_TASK_LIMIT ||
+                endpoint.gettingEstablishedConnectionsMetrics() > 0 ||
+                endpoint.channelsMetrics() > endpoint.maxChannels())) {
+                logger.warn("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
+            } else if (this.logger.isDebugEnabled()) {
+                logger.debug("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
+            }
+        }
+
+        private String getPoolStat(RntbdEndpoint endpoint) {
+            return "[ "
+                + "poolTaskExecutorSize " + endpoint.executorTaskQueueMetrics()
+                + ", lastRequestNanoTime " + Instant.now().minusNanos(
+                System.nanoTime() - endpoint.lastRequestNanoTime())
+                + ", connecting " + endpoint.gettingEstablishedConnectionsMetrics()
+                + ", acquiredChannel " + endpoint.channelsAcquiredMetric()
+                + ", availableChannel " + endpoint.channelsAvailableMetric()
+                + ", pendingAcquisitionSize " + endpoint.requestQueueLength()
+                + ", closed " + endpoint.isClosed()
+                + " ]";
+        }
+
+        private String getPoolId(RntbdEndpoint endpoint) {
+            if (endpoint == null) {
+                return "null";
+            }
+
+            return "[RntbdEndpoint" +
+                ", id " + endpoint.id() +
+                ", remoteAddress " + endpoint.remoteAddress() +
+                ", creationTime " + endpoint.getCreatedTime() +
+                ", hashCode " + endpoint.hashCode() +
+                "]";
         }
     }
 
