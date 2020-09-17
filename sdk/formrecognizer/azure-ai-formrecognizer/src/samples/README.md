@@ -44,11 +44,12 @@ Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 Check out the [API reference documentation][java_fr_ref_docs] to learn more about
 what you can do with the Azure Form Recognizer client library.
 Following section provides code samples for some of the advanced scenarios in Form Recognizer Client library:
-|**Advanced Sample File Name**|**Description**|
-|----------------|-------------|
-|[StronglyTypedRecognizedForm][strongly_typed_sample]|Use the fields in your recognized forms to create a receipt object with strongly-typed US receipt fields|
-|[GetBoundingBoxes][get_bounding_boxes] and [GetBoundingBoxesAsync][get_bounding_boxes_async]|Get info to visualize the outlines of form content and fields, which can be used for manual validation|
-|[AdvancedDiffCustomFormsLabeledUnlabeledData][differentiate_custom_forms_with_labeled_and_unlabeled_models] and [AdvancedDiffCustomFormsLabeledUnlabeledDataAsync][differentiate_custom_forms_with_labeled_and_unlabeled_models_async]|See the differences in output when using a custom model trained with labeled data and one trained with unlabeled data|
+
+| **Advanced Sample File Name**                                                                                                                                                                                                          | **Description**                                                                                                       |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| [StronglyTypedRecognizedForm][strongly_typed_sample]                                                                                                                                                                                   | Use the fields in your recognized forms to create a receipt object with strongly-typed US receipt fields              |
+| [GetBoundingBoxes][get_bounding_boxes] and [GetBoundingBoxesAsync][get_bounding_boxes_async]                                                                                                                                           | Get info to visualize the outlines of form content and fields, which can be used for manual validation                |
+| [AdvancedDiffCustomFormsLabeledUnlabeledData][differentiate_custom_forms_with_labeled_and_unlabeled_models] and [AdvancedDiffCustomFormsLabeledUnlabeledDataAsync][differentiate_custom_forms_with_labeled_and_unlabeled_models_async] | See the differences in output when using a custom model trained with labeled data and one trained with unlabeled data |
 
 ## Contributing
 If you would like to become an active contributor to this project please refer to our [Contribution
