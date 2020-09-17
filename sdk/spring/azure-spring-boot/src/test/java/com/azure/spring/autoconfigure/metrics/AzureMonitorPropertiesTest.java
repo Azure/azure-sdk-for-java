@@ -3,7 +3,6 @@
 
 package com.azure.spring.autoconfigure.metrics;
 
-import com.azure.spring.autoconfigure.metrics.AzureMonitorProperties;
 import io.micrometer.azuremonitor.AzureMonitorConfig;
 import io.micrometer.core.instrument.step.StepRegistryConfig;
 import org.junit.Test;

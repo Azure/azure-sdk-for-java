@@ -3,7 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.Before;
 import org.junit.Test;
 

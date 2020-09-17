@@ -3,8 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.autoconfigure.aad.Constants;
-import com.azure.spring.autoconfigure.aad.UserGroup;
 import org.junit.Assert;
 import org.junit.Test;
 

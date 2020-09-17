@@ -7,7 +7,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ManagedIdentityCredential;
-import com.azure.keyvault.spring.KeyVaultEnvironmentPostProcessorTest;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Test;

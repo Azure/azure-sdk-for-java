@@ -8,10 +8,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import com.azure.spring.autoconfigure.aad.ServiceEndpoints;
-import com.azure.spring.autoconfigure.aad.ServiceEndpointsProperties;
-import com.azure.spring.autoconfigure.aad.UserPrincipalManager;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;

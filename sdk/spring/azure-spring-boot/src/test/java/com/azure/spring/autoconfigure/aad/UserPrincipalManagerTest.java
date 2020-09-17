@@ -3,8 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.autoconfigure.aad.UserPrincipal;
-import com.azure.spring.autoconfigure.aad.UserPrincipalManager;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;

@@ -7,8 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import com.azure.keyvault.spring.KeyVaultOperation;
-import com.azure.keyvault.spring.KeyVaultPropertySource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
