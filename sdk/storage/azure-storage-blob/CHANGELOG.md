@@ -3,6 +3,7 @@
 ## 12.9.0-beta.1 (Unreleased)
 - Added support for the 2019-02-10 service version.
 - Added support to specify Arrow Output Serialization when querying a blob. 
+- Added support to undelete a container. 
 
 - Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
 - Fixed a bug where Default Azure Credential would not work with Azurite.

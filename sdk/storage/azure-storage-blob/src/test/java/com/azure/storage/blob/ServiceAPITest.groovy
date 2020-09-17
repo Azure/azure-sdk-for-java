@@ -161,7 +161,6 @@ class ServiceAPITest extends APISpec {
         containers.each { container -> container.delete() }
     }
 
-    @Ignore // Container soft delete
     def "List deleted"() {
         given:
         def NUM_CONTAINERS = 5
@@ -188,7 +187,6 @@ class ServiceAPITest extends APISpec {
         listResult.size() == NUM_CONTAINERS
     }
 
-    @Ignore // Container soft delete
     def "List with all details"() {
         given:
         def NUM_CONTAINERS = 5
