@@ -470,13 +470,23 @@
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
+  <!-- Storage Perf -->
   <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
   <suppress checks="GoodLogging" files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
+  
+  <!-- Perf Test Core -->
   <suppress checks="GoodLogging" files=".*[/\\]com.azure.perf.test.core[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files=".*[/\\]com.azure.perf.test.core[/\\].*"/>
+            
+  <!-- App Data Configuration Perf -->
+  <suppress checks="Javadoc" files=".*[/\\]azure-data-appconfiguration-perf[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
+  <suppress checks="GoodLogging" files=".*[/\\]azure-data-appconfiguration-perf[/\\].*\.java"/>
+
 
   <!-- Internal smoke test classes in Java perf framework need the public modifier -->
   <suppress checks="RedundantModifier" files="com.azure.perf.test.core.NoOpTest.java"/>
