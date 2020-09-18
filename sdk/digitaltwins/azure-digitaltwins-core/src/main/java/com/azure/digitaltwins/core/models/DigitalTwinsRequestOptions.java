@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * General request options that are applicable, but optional, for many APIs.
  */
 @Fluent
-public class RequestOptions {
+abstract class DigitalTwinsRequestOptions {
 
     String ifMatch;
 
@@ -34,7 +34,7 @@ public class RequestOptions {
      * @param ifMatch A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @return The RequestOptions object itself.
      */
-    public RequestOptions setIfMatch(String ifMatch) {
+    public DigitalTwinsRequestOptions setIfMatch(String ifMatch) {
         this.ifMatch = ifMatch;
         return this;
     }

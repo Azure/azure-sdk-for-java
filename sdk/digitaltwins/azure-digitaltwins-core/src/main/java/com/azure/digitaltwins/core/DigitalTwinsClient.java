@@ -6,7 +6,6 @@ package com.azure.digitaltwins.core;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -471,11 +470,11 @@ public final class DigitalTwinsClient {
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A List of created models. Each {@link ModelData} instance in this list
+     * @return A List of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public List<ModelData> createModels(List<String> models) {
+    public List<DigitalTwinsModelData> createModels(List<String> models) {
         return createModelsWithResponse(models, Context.NONE).getValue();
     }
 
@@ -483,21 +482,21 @@ public final class DigitalTwinsClient {
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} containing the list of created models. Each {@link ModelData} instance in this list
+     * @return A {@link Response} containing the list of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<List<ModelData>> createModelsWithResponse(List<String> models, Context context) {
+    public Response<List<DigitalTwinsModelData>> createModelsWithResponse(List<String> models, Context context) {
         return digitalTwinsAsyncClient.createModelsWithResponse(models, context).block();
     }
 
     /**
      * Gets a model, including the model metadata and the model definition.
      * @param modelId The Id of the model.
-     * @return A {@link ModelData} instance that contains the model and its metadata.
+     * @return A {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModelData getModel(String modelId) {
+    public DigitalTwinsModelData getModel(String modelId) {
 
         return getModelWithResponse(modelId, Context.NONE).getValue();
     }
@@ -506,19 +505,19 @@ public final class DigitalTwinsClient {
      * Gets a model, including the model metadata and the model definition.
      * @param modelId The Id of the model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} containing a {@link ModelData} instance that contains the model and its metadata.
+     * @return A {@link Response} containing a {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ModelData> getModelWithResponse(String modelId, Context context) {
+    public Response<DigitalTwinsModelData> getModelWithResponse(String modelId, Context context) {
         return digitalTwinsAsyncClient.getModelWithResponse(modelId, context).block();
     }
 
     /**
      * List all of the models in this digital twins instance.
-     * @return A {@link PagedFlux} of {@link ModelData} that enumerates all the models.
+     * @return A {@link PagedFlux} of {@link DigitalTwinsModelData} that enumerates all the models.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelData> listModels() {
+    public PagedIterable<DigitalTwinsModelData> listModels() {
         return new PagedIterable<>(digitalTwinsAsyncClient.listModels());
     }
 
@@ -526,10 +525,10 @@ public final class DigitalTwinsClient {
      * List the models in this digital twins instance based on some options.
      * @param listModelOptions The options to follow when listing the models.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} containing the retrieved {@link ModelData} instances.
+     * @return A {@link PagedIterable} containing the retrieved {@link DigitalTwinsModelData} instances.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelData> listModels(ListModelOptions listModelOptions, Context context) {
+    public PagedIterable<DigitalTwinsModelData> listModels(ListModelOptions listModelOptions, Context context) {
         return new PagedIterable<>(
             digitalTwinsAsyncClient.listModels(listModelOptions, context));
     }

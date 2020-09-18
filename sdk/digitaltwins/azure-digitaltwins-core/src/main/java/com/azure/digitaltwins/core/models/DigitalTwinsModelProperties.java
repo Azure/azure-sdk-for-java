@@ -11,7 +11,7 @@ import java.util.Map;
  */
 @Fluent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public final class ModelProperties {
+public final class DigitalTwinsModelProperties {
 
     /**
      * Information about the model a component conforms to. This field is present on every digital twin.
@@ -36,9 +36,9 @@ public final class ModelProperties {
     /**
      * Sets the model metadata.
      * @param metadata Model metadata.
-     * @return The ModelProperties object itself.
+     * @return The DigitalTwinsModelProperties object itself.
      */
-    public ModelProperties setMetadata(ComponentMetadata metadata) {
+    public DigitalTwinsModelProperties setMetadata(ComponentMetadata metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -56,10 +56,10 @@ public final class ModelProperties {
      * Adds additional custom properties to the model.
      * @param key The key of the additional property to be added to the model.
      * @param value The value of the additional property to be added to the model.
-     * @return The ModelProperties object itself.
+     * @return The DigitalTwinsModelProperties object itself.
      */
     @JsonAnySetter
-    public ModelProperties addCustomProperties(String key, Object value) {
+    public DigitalTwinsModelProperties addCustomProperties(String key, Object value) {
         this.customProperties.put(key, value);
         return this;
     }
