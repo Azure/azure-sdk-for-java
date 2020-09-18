@@ -68,7 +68,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.0.0-beta.1</version>
+    <version>3.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -253,6 +253,27 @@ public class UserSample {
 
 }
 ```
+#### Nested Partition Key support
+
+- Spring Data Cosmos SDK supports nested partition key. To add nested partition key, use `partitionKeyPath` field in `@Container` annotation.
+- `partitionKeyPath` should only be used to support nested partition key path. For general partition key support, use the `@PartitionKey` annotation.
+- By default `@PartitionKey` annotation will take precedence, unless not specified.
+- Below example shows how to properly use Nested Partition key feature.
+
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/NestedPartitionKeyEntitySample.java#L7-L11 -->
+```java
+@Container(containerName = "nested-partition-key", partitionKeyPath = "/nestedEntitySample/nestedPartitionKey")
+public class NestedPartitionKeyEntitySample {
+
+    private NestedEntitySample nestedEntitySample;
+}
+```
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/NestedEntitySample.java#L5-L7 -->
+```java
+public class NestedEntitySample {
+    private String nestedPartitionKey;
+}
+```
 
 ### Create repositories
 Extends CosmosRepository interface, which provides Spring Data repository support.
@@ -268,7 +289,7 @@ public interface UserRepository extends CosmosRepository<User, String> {
 
 - `findByFirstName` method is custom query method, it will find items per firstName.
 
-#### Using annotated queries in repositories
+#### QueryAnnotation : Using annotated queries in repositories
 Azure spring data cosmos supports specifying annotated queries in the repositories using `@Query`.
 - Examples for annotated queries in synchronous CosmosRepository:
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserRepositoryCodeSnippet.java#L11-L17 -->
@@ -725,7 +746,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [source_code]: src
 [cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
 [cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
-[jdk]: https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable
+[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
@@ -741,7 +762,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [address_repository_it_test]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos-test/src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java
 [azure_spring_data_cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sdk-java-spring-v3
 [spring_data_custom_query]: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details
-[sql_queries_in_cosmos]: https://docs.microsoft.com/en-us/azure/cosmos-db/tutorial-query-sql-api
-[sql_queries_getting_started]: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-query-getting-started
+[sql_queries_in_cosmos]: https://docs.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
+[sql_queries_getting_started]: https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)

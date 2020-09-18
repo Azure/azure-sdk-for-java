@@ -414,11 +414,11 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[source]: src
+[source]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/src
 [samples_readme]: src/samples/README.md
 [docs]: http://azure.github.io/azure-sdk-for-java/
-[rest_docs]: https://docs.microsoft.com/en-us/rest/api/storageservices/data-lake-storage-gen2
-[product_docs]: https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction
+[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/data-lake-storage-gen2
+[product_docs]: https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
@@ -426,8 +426,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
 [storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
-[samples]: src/samples
-[error_codes]: https://docs.microsoft.com/en-us/rest/api/storageservices/data-lake-storage-gen2
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/src/samples
+[error_codes]: https://docs.microsoft.com/rest/api/storageservices/data-lake-storage-gen2
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

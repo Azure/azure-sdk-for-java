@@ -73,7 +73,7 @@ Log messages can be seen in the output window by:
 
 <!-- Links -->
 [design-guidelines]: https://azure.github.io/azure-sdk/java_design.html#
-[event_hubs_create]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create
+[event_hubs_create]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create
 [github-general]: https://github.com/Azure/azure-sdk
 [java-spec]: https://azure.github.io/azure-sdk/java_introduction.html
 [log-level]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java#L38

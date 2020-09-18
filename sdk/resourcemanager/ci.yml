@@ -89,6 +89,9 @@ extends:
       - name: azure-resourcemanager-samples
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersamples
+      - name: azure-resourcemanager-servicebus
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerservicebus        
       - name: azure-resourcemanager-sql
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersql

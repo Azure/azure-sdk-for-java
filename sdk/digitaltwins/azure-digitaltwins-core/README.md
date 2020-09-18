@@ -63,7 +63,7 @@ You can familiarize yourself with different APIs using [samples for Digital Twin
 
 A local copy of the swagger file that defines the structure of the REST APIs supported by the Azure Digital Twins service.
 
-To regenerate the code, run the powershell script [generate.ps1](./generate.ps1).
+To regenerate the code, run the powershell script [generate.ps1](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/generate.ps1).
 
 ## Troubleshooting
 
@@ -103,17 +103,17 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
 <!-- LINKS -->
-[microsoft_sdk_download]: https://azure.microsoft.com/en-us/downloads/?sdk=java
+[microsoft_sdk_download]: https://azure.microsoft.com/downloads/?sdk=java
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [nuget]: https://www.nuget.org/
 [azure_portal]: https://portal.azure.com/
-[azure_rest_api]: https://docs.microsoft.com/en-us/rest/api/azure/
+[azure_rest_api]: https://docs.microsoft.com/rest/api/azure/
 [azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core
-[token_credential]: https://docs.microsoft.com/en-us/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable
-[digital_twins_documentation]: https://docs.microsoft.com/en-us/azure/digital-twins/
-[azure_cli]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest
-[iot_cli_extension]: https://docs.microsoft.com/en-us/azure/iot-pnp/howto-use-iot-pnp-cli
-[iot_cli_doc]: https://docs.microsoft.com/en-us/cli/azure/ext/azure-iot/dt?view=azure-cli-latest
+[token_credential]: https://docs.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable
+[digital_twins_documentation]: https://docs.microsoft.com/azure/digital-twins/
+[azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest
+[iot_cli_extension]: https://docs.microsoft.com/azure/iot-pnp/howto-use-iot-pnp-cli
+[iot_cli_doc]: https://docs.microsoft.com/cli/azure/ext/azure-iot/dt?view=azure-cli-latest
