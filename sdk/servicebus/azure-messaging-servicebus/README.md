@@ -139,7 +139,7 @@ receiving [`ServiceBusMessage`][ServiceBusMessage] from a specific queue or topi
 
 ## Examples
  - [Send messages](#send-messages)
- - [Receive messages](#receive-messages)
+ - [Receive messages and lock renew](#receive-messages-and-renew-lock)
  - [Settle messages](#settle-messages)
  - [Send and receive from session enabled queues or topics](#send-and-receive-from-session-enabled-queues-or-topics) 
  - [Create a dead-letter queue Receiver](#create-a-dead-letter-queue-receiver)
@@ -169,7 +169,7 @@ sender.sendMessages(messages);
 sender.close();
 ```
 
-### Receive messages
+### Receive messages and renew lock
 
 You'll need to create an asynchronous [`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient] or a synchronous
 [`ServiceBusReceiverClient`][ServiceBusReceiverClient] to receive messages. Each receiver can consume messages from
@@ -179,7 +179,8 @@ By default, the receive mode is [`ReceiveMode.PEEK_LOCK`][ReceiveMode]. This tel
 wants to manage settlement of received messages explicitly. The message is made available for the receiver to process,
 while held under an exclusive lock in the service so that other, competing receivers cannot see it.
 `ServiceBusReceivedMessage.getLockedUntil()` indicates when the lock expires and can be extended by the client using
-`receiver.renewMessageLock()`.
+`receiver.renewMessageLock()`. A session lock can be extended by `receiver.renewSessionLock()` for a session enabled 
+queue or topic/subscriber.
 
 #### Receive a batch of messages
 
@@ -324,13 +325,14 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
 
 Azure Service Bus queues and topic subscriptions provide a secondary sub-queue, called a dead-letter queue (DLQ).
 The dead-letter queue doesn't need to be explicitly created and can't be deleted or otherwise managed independent 
-of the main entity. Learn more about dead-letter queue [here][dead-letter-queue].
+of the main entity. For session enabled or non-session queue or topic subscriptions, the dead-letter receiver can be 
+created same way as shown below. Learn more about dead-letter queue [here][dead-letter-queue].
 
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L200-L206 -->
 ```java
 ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-    .receiver()
+    .receiver() // Use this for session or non-session enabled queue or topic/subscriptions
     .topicName("<< TOPIC NAME >>")
     .subscriptionName("<< SUBSCRIPTION NAME >>")
     .subQueue(SubQueue.DEAD_LETTER_QUEUE)
