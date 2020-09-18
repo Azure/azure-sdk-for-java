@@ -7,10 +7,10 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * The ModelData representing the model and its corresponding metadata.
+ * The DigitalTwinsModelData representing the model and its corresponding metadata.
  */
 @Fluent
-public final class ModelData {
+public final class DigitalTwinsModelData {
 
     /*
      * A language map that contains the localized display names as specified in
@@ -68,7 +68,7 @@ public final class ModelData {
      * @param displayName the displayName value to set.
      * @return the ModelData object itself.
      */
-    public ModelData setDisplayName(Map<String, String> displayName) {
+    public DigitalTwinsModelData setDisplayName(Map<String, String> displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -88,9 +88,9 @@ public final class ModelData {
      * definition.
      *
      * @param description the description value to set.
-     * @return the ModelData object itself.
+     * @return the DigitalTwinsModelData object itself.
      */
-    public ModelData setDescription(Map<String, String> description) {
+    public DigitalTwinsModelData setDescription(Map<String, String> description) {
         this.description = description;
         return this;
     }
@@ -108,9 +108,9 @@ public final class ModelData {
      * Set the id property: The id of the model as specified in the model definition.
      *
      * @param id the id value to set.
-     * @return the ModelData object itself.
+     * @return the DigitalTwinsModelData object itself.
      */
-    public ModelData setId(String id) {
+    public DigitalTwinsModelData setId(String id) {
         this.id = id;
         return this;
     }
@@ -128,9 +128,9 @@ public final class ModelData {
      * Set the uploadTime property: The time the model was uploaded to the service.
      *
      * @param uploadTime the uploadTime value to set.
-     * @return the ModelData object itself.
+     * @return the DigitalTwinsModelData object itself.
      */
-    public ModelData setUploadTime(OffsetDateTime uploadTime) {
+    public DigitalTwinsModelData setUploadTime(OffsetDateTime uploadTime) {
         this.uploadTime = uploadTime;
         return this;
     }
@@ -150,9 +150,9 @@ public final class ModelData {
      * referenced by newly created digital twins.
      *
      * @param decommissioned the decommissioned value to set.
-     * @return the ModelData object itself.
+     * @return the DigitalTwinsModelData object itself.
      */
-    public ModelData setDecommissioned(boolean decommissioned) {
+    public DigitalTwinsModelData setDecommissioned(boolean decommissioned) {
         this.decommissioned = decommissioned;
         return this;
     }
@@ -170,9 +170,9 @@ public final class ModelData {
      * Set the model property: The model definition.
      *
      * @param model the model value to set.
-     * @return the ModelData object itself.
+     * @return the DigitalTwinsModelData object itself.
      */
-    public ModelData setModel(String model) {
+    public DigitalTwinsModelData setModel(String model) {
         this.model = model;
         return this;
     }

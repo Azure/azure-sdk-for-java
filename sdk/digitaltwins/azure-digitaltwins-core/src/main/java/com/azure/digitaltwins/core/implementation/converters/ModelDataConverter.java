@@ -1,20 +1,20 @@
 package com.azure.digitaltwins.core.implementation.converters;
 
-import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A converter between {@link com.azure.digitaltwins.core.implementation.models.ModelData} and
- * {@link ModelData}.
+ * {@link DigitalTwinsModelData}.
  */
 public final class ModelDataConverter {
 
     /**
      * Maps from {@link com.azure.digitaltwins.core.implementation.models.ModelData} to
-     * {@link ModelData}.
+     * {@link DigitalTwinsModelData}.
      */
-    public static ModelData map(com.azure.digitaltwins.core.implementation.models.ModelData input) {
+    public static DigitalTwinsModelData map(com.azure.digitaltwins.core.implementation.models.ModelData input) {
         String modelStringValue = null;
 
         if (input.getModel() != null){
@@ -25,7 +25,7 @@ public final class ModelDataConverter {
             }
         }
 
-        return new ModelData()
+        return new DigitalTwinsModelData()
             .setId(input.getId())
             .setUploadTime(input.getUploadTime())
             .setDisplayName(input.getDisplayName())
