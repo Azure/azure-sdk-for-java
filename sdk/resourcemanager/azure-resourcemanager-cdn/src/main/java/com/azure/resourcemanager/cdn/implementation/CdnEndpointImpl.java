@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.cdn.fluent.inner.CustomDomainInner;
 import com.azure.resourcemanager.cdn.fluent.inner.EndpointInner;
-import com.azure.resourcemanager.cdn.fluent.inner.OriginInner;
 import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
@@ -119,12 +118,13 @@ class CdnEndpointImpl
                 .withHttpPort(originInner.httpPort())
                 .withHttpsPort(originInner.httpsPort());
 
-        Mono<OriginInner> originUpdateTask = this.parent().manager().inner().getOrigins().updateAsync(
+        Mono<EndpointInner> originUpdateTask = this.parent().manager().inner().getOrigins().updateAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
                 originInner.name(),
-                originUpdateParameters);
+                originUpdateParameters)
+            .then(Mono.empty());
 
         Mono<EndpointInner> endpointUpdateTask = this.parent().manager().inner().getEndpoints().updateAsync(
                 this.parent().resourceGroupName(),
@@ -149,12 +149,13 @@ class CdnEndpointImpl
                 itemToDelete.name()
             ), 32, 32);
 
-        Flux<CustomDomainInner> customDomainTask = Flux.concat(customDomainCreateTask, customDomainDeleteTask);
+        Mono<EndpointInner> customDomainTask = Flux.concat(customDomainCreateTask, customDomainDeleteTask)
+            .then(Mono.empty());
 
-        return customDomainTask.then(originUpdateTask).then(endpointUpdateTask)
+        return Flux.mergeDelayError(32, customDomainTask, originUpdateTask, endpointUpdateTask)
+            .last()
             .map(inner -> {
                 self.setInner(inner);
-                self.customDomainList.clear();
                 self.deletedCustomDomainList.clear();
                 return self;
             });
