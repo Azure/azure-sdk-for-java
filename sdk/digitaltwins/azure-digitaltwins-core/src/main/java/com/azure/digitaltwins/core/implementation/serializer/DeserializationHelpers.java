@@ -12,7 +12,7 @@ public class DeserializationHelpers {
      * In case of any other type that the user decides to deserialize the payload, we will use mapper.convertValue to perform the casting.
      */
     @SuppressWarnings("unchecked")
-    public static <T> T castValue(ObjectMapper mapper, Object payload, Class<T> clazz) throws JsonProcessingException {
+    public static <T> T castObject(ObjectMapper mapper, Object payload, Class<T> clazz) throws JsonProcessingException {
         if (clazz.isAssignableFrom(String.class)){
             return (T)mapper.writeValueAsString(payload);
         }
