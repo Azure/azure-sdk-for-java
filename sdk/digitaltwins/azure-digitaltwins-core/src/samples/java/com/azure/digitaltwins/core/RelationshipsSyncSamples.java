@@ -76,9 +76,9 @@ public class RelationshipsSyncSamples {
             .replace(SamplesConstants.RELATIONSHIP_NAME, "containedIn")
             .replace(SamplesConstants.RELATIONSHIP_TARGET_MODEL_ID, sampleBuildingModelId);
 
-        List<ModelData> createdModels = client.createModels(new ArrayList<>(Arrays.asList(buildingModelPayload, floorModelPayload)));
+        List<DigitalTwinsModelData> createdModels = client.createModels(new ArrayList<>(Arrays.asList(buildingModelPayload, floorModelPayload)));
 
-        for (ModelData model : createdModels) {
+        for (DigitalTwinsModelData model : createdModels) {
             ConsoleLogger.print("Created model " + model.getId());
         }
 

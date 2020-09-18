@@ -64,6 +64,9 @@ public final class DigitalTwinsClientBuilder {
 
     private Configuration configuration;
 
+    /**
+     * Public constructor for DigitalTwinsClientBuilder
+     */
     public DigitalTwinsClientBuilder()
     {
         additionalPolicies = new ArrayList<>();
@@ -278,7 +281,7 @@ public final class DigitalTwinsClientBuilder {
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      */
-    public DigitalTwinsClientBuilder httpPipeline(HttpPipeline httpPipeline) {
+    public DigitalTwinsClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;
     }
