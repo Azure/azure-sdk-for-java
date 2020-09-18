@@ -54,8 +54,8 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 roomModelId,
                 hvacModelId,
                 modelsList -> {
-                    List<DigitalTwinsModelData> createdModels = client.createModels(modelsList);
-                    logger.info("Created {} models successfully", createdModels.size());
+                    Iterable<DigitalTwinsModelData> createdModels = client.createModels(modelsList);
+                    logger.info("Created models successfully");
                 }
             );
 

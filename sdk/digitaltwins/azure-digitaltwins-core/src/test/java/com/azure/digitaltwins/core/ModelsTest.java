@@ -33,10 +33,10 @@ public class ModelsTest extends ModelsTestBase {
         // Create some models to test the lifecycle of
         final List<DigitalTwinsModelData> createdModels = new ArrayList<>();
         createModelsRunner(client, (modelsList) -> {
-            List<DigitalTwinsModelData> createdModelsResponseList = client.createModels(modelsList);
+            Iterable<DigitalTwinsModelData> createdModelsResponseList = client.createModels(modelsList);
             createdModelsResponseList.forEach((modelData) -> {
                 createdModels.add(modelData);
-                logger.info("Created {} models successfully", createdModelsResponseList.size());
+                logger.info("Created models successfully");
             });
         });
 
@@ -89,7 +89,7 @@ public class ModelsTest extends ModelsTestBase {
         final String wardModelPayload = TestAssetsHelper.getWardModelPayload(wardModelId);
         modelsToCreate.add(wardModelPayload);
 
-        List<DigitalTwinsModelData> createdModels = client.createModels(modelsToCreate);
+        Iterable<DigitalTwinsModelData> createdModels = client.createModels(modelsToCreate);
         createdModels.forEach(Assertions::assertNotNull);
 
         assertRestException(

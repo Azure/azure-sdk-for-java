@@ -46,8 +46,8 @@ public class ComponentsTests extends ComponentsTestBase {
 
         try {
             // Create models and components to test the lifecycle.
-            List<DigitalTwinsModelData> createdList = client.createModels(modelsList);
-            logger.info("Created {} models successfully", createdList.size());
+            Iterable<DigitalTwinsModelData> createdList = client.createModels(modelsList);
+            logger.info("Created models successfully");
 
             BasicDigitalTwin createdTwin = client.createDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
 

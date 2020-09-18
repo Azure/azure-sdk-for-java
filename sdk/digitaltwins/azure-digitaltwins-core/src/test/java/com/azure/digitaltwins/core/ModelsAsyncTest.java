@@ -34,8 +34,8 @@ public class ModelsAsyncTest extends ModelsTestBase {
         List<DigitalTwinsModelData> createdModels = new ArrayList<>();
         createModelsRunner(asyncClient, (modelsList) -> StepVerifier.create(asyncClient.createModels(modelsList))
             .assertNext(createdModelsResponseList -> {
-                createdModels.addAll(createdModelsResponseList);
-                logger.info("Created {} models successfully", createdModelsResponseList.size());
+                createdModelsResponseList.forEach(item -> createdModels.add(item));
+                logger.info("Created {} models successfully");
             })
             .verifyComplete());
 

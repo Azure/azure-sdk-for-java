@@ -95,7 +95,7 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
 
         StepVerifier
             .create(asyncClient.createModels(new ArrayList<>(Arrays.asList(wifiModelPayload, roomWithWifiModelPayload))))
-            .assertNext(createResponseList -> logger.info("Created {} models successfully", createResponseList.size()))
+            .assertNext(createResponseList -> logger.info("Created models successfully"))
             .verifyComplete();
 
         String roomWithWifiTwinPayload = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
