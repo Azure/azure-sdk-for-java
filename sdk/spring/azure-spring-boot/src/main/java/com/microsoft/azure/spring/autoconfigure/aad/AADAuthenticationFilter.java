@@ -8,8 +8,10 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jose.util.ResourceRetriever;
+import com.nimbusds.jwt.proc.BadJWTException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,35 +43,35 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final String TOKEN_HEADER = "Authorization";
     private static final String TOKEN_TYPE = "Bearer ";
 
-    private AADAuthenticationProperties aadAuthProps;
-    private ServiceEndpointsProperties serviceEndpointsProps;
-    private UserPrincipalManager principalManager;
+    private final AADAuthenticationProperties aadAuthenticationProperties;
+    private final ServiceEndpointsProperties serviceEndpointsProperties;
+    private final UserPrincipalManager userPrincipalManager;
 
-    public AADAuthenticationFilter(AADAuthenticationProperties aadAuthProps,
-                                   ServiceEndpointsProperties serviceEndpointsProps,
+    public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
+                                   ServiceEndpointsProperties serviceEndpointsProperties,
                                    ResourceRetriever resourceRetriever) {
         this(
-            aadAuthProps,
-            serviceEndpointsProps,
+            aadAuthenticationProperties,
+            serviceEndpointsProperties,
             new UserPrincipalManager(
-                serviceEndpointsProps,
-                aadAuthProps,
+                serviceEndpointsProperties,
+                aadAuthenticationProperties,
                 resourceRetriever,
                 false
             )
         );
     }
 
-    public AADAuthenticationFilter(AADAuthenticationProperties aadAuthProps,
-                                   ServiceEndpointsProperties serviceEndpointsProps,
+    public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
+                                   ServiceEndpointsProperties serviceEndpointsProperties,
                                    ResourceRetriever resourceRetriever,
                                    JWKSetCache jwkSetCache) {
         this(
-            aadAuthProps,
-            serviceEndpointsProps,
+            aadAuthenticationProperties,
+            serviceEndpointsProperties,
             new UserPrincipalManager(
-                serviceEndpointsProps,
-                aadAuthProps,
+                serviceEndpointsProperties,
+                aadAuthenticationProperties,
                 resourceRetriever,
                 false,
                 jwkSetCache
@@ -77,23 +79,77 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
         );
     }
 
-    public AADAuthenticationFilter(AADAuthenticationProperties aadAuthProps,
-                                   ServiceEndpointsProperties serviceEndpointsProps,
+    public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
+                                   ServiceEndpointsProperties serviceEndpointsProperties,
                                    UserPrincipalManager userPrincipalManager) {
-        this.aadAuthProps = aadAuthProps;
-        this.serviceEndpointsProps = serviceEndpointsProps;
-        this.principalManager = userPrincipalManager;
+        this.aadAuthenticationProperties = aadAuthenticationProperties;
+        this.serviceEndpointsProperties = serviceEndpointsProperties;
+        this.userPrincipalManager = userPrincipalManager;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
+                                    HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader(TOKEN_HEADER);
         if (!alreadyAuthenticated() && authHeader != null && authHeader.startsWith(TOKEN_TYPE)) {
-            verifyToken(request.getSession(), authHeader.replace(TOKEN_TYPE, ""));
+            String token = authHeader.replace(TOKEN_TYPE, "");
+            if (!userPrincipalManager.isTokenIssuedByAAD(token)) {
+                LOGGER.info("Token {} is not issued by AAD", token);
+                return;
+            }
+            try {
+                HttpSession httpSession = request.getSession();
+                String currentToken = getStringAttribute(httpSession, CURRENT_USER_PRINCIPAL_JWT_TOKEN);
+                String graphApiToken = getStringAttribute(httpSession, CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN);
+                UserPrincipal principal = (UserPrincipal) httpSession.getAttribute(CURRENT_USER_PRINCIPAL);
+                final AzureADGraphClient azureADGraphClient = new AzureADGraphClient(
+                    aadAuthenticationProperties.getClientId(),
+                    aadAuthenticationProperties.getClientSecret(),
+                    aadAuthenticationProperties,
+                    serviceEndpointsProperties
+                );
+                if (principal == null || graphApiToken == null || !token.equals(currentToken)) {
+                    principal = userPrincipalManager.buildUserPrincipal(token);
+                    String tenantId = principal.getClaim().toString();
+                    graphApiToken = azureADGraphClient.acquireTokenForGraphApi(token, tenantId).accessToken();
+                    principal.setUserGroups(azureADGraphClient.getGroups(graphApiToken));
+                    httpSession.setAttribute(CURRENT_USER_PRINCIPAL, principal);
+                    httpSession.setAttribute(CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN, graphApiToken);
+                    httpSession.setAttribute(CURRENT_USER_PRINCIPAL_JWT_TOKEN, token);
+                }
+                final Authentication authentication = new PreAuthenticatedAuthenticationToken(
+                    principal,
+                    null,
+                    azureADGraphClient.convertGroupsToGrantedAuthorities(principal.getUserGroups())
+                );
+                LOGGER.info("Request token verification success. {}", authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (MalformedURLException | ParseException | JOSEException | BadJOSEException ex) {
+                boolean causedByJWTExpired = Optional.of(ex)
+                                                     .filter(cause -> cause instanceof BadJWTException)
+                                                     .map(e -> (BadJWTException) e)
+                                                     .map(BadJWTException::getMessage)
+                                                     .filter(message -> message.equals("Expired JWT"))
+                                                     .isPresent();
+                if (causedByJWTExpired) {
+                    httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
+                    return;
+                }
+                LOGGER.error("Failed to initialize UserPrincipal.", ex);
+                throw new ServletException(ex);
+            } catch (ServiceUnavailableException ex) {
+                LOGGER.error("Failed to acquire graph api token.", ex);
+                throw new ServletException(ex);
+            } catch (MsalServiceException ex) {
+                if (ex.claims() != null && !ex.claims().isEmpty()) {
+                    throw new ServletException("Handle conditional access policy", ex);
+                } else {
+                    throw ex;
+                }
+            }
         }
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, httpServletResponse);
     }
 
     private boolean alreadyAuthenticated() {
@@ -103,49 +159,11 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                        .orElse(false);
     }
 
-    private void verifyToken(HttpSession session, String token) throws IOException, ServletException {
-        if (!principalManager.isTokenIssuedByAAD(token)) {
-            LOGGER.info("Token {} is not issued by AAD", token);
-            return;
-        }
-        try {
-            final String currentToken = (String) session.getAttribute(CURRENT_USER_PRINCIPAL_JWT_TOKEN);
-            UserPrincipal principal = (UserPrincipal) session.getAttribute(CURRENT_USER_PRINCIPAL);
-            String graphApiToken = (String) session.getAttribute(CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN);
-            final AzureADGraphClient client = new AzureADGraphClient(
-                aadAuthProps.getClientId(),
-                aadAuthProps.getClientSecret(),
-                aadAuthProps,
-                serviceEndpointsProps
-            );
-            if (principal == null || graphApiToken == null || graphApiToken.isEmpty() || !token.equals(currentToken)) {
-                principal = principalManager.buildUserPrincipal(token);
-                final String tenantId = principal.getClaim().toString();
-                graphApiToken = client.acquireTokenForGraphApi(token, tenantId).accessToken();
-                principal.setUserGroups(client.getGroups(graphApiToken));
-                session.setAttribute(CURRENT_USER_PRINCIPAL, principal);
-                session.setAttribute(CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN, graphApiToken);
-                session.setAttribute(CURRENT_USER_PRINCIPAL_JWT_TOKEN, token);
-            }
-            final Authentication authentication = new PreAuthenticatedAuthenticationToken(
-                principal,
-                null,
-                client.convertGroupsToGrantedAuthorities(principal.getUserGroups())
-            );
-            LOGGER.info("Request token verification success. {}", authentication);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (MalformedURLException | ParseException | BadJOSEException | JOSEException ex) {
-            LOGGER.error("Failed to initialize UserPrincipal.", ex);
-            throw new ServletException(ex);
-        } catch (ServiceUnavailableException ex) {
-            LOGGER.error("Failed to acquire graph api token.", ex);
-            throw new ServletException(ex);
-        } catch (MsalServiceException ex) {
-            if (ex.claims() != null && !ex.claims().isEmpty()) {
-                throw new ServletException("Handle conditional access policy", ex);
-            } else {
-                throw ex;
-            }
-        }
+    private String getStringAttribute(HttpSession httpSession, String attributeName) {
+        return Optional.ofNullable(httpSession)
+                       .map(s -> (String) s.getAttribute(attributeName))
+                       .map(String::trim)
+                       .filter(s -> !s.isEmpty())
+                       .orElse(null);
     }
 }
