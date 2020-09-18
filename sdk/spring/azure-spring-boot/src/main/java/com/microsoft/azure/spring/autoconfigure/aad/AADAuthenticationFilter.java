@@ -125,17 +125,12 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                 );
                 LOGGER.info("Request token verification success. {}", authentication);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            } catch (BadJWTException ex) {
+                // Invalid JWT. Either expired or not yet valid.
+                httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
+                return;
             } catch (MalformedURLException | ParseException | JOSEException | BadJOSEException ex) {
-                boolean causedByJWTExpired = Optional.of(ex)
-                                                     .filter(cause -> cause instanceof BadJWTException)
-                                                     .map(e -> (BadJWTException) e)
-                                                     .map(BadJWTException::getMessage)
-                                                     .filter(message -> message.equals("Expired JWT"))
-                                                     .isPresent();
-                if (causedByJWTExpired) {
-                    httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
-                    return;
-                }
                 LOGGER.error("Failed to initialize UserPrincipal.", ex);
                 throw new ServletException(ex);
             } catch (ServiceUnavailableException ex) {
