@@ -17,9 +17,9 @@ To use the APIs in the Azure Management Libraries for Java, as the first step yo
 
 ## Prerequisites
 
-* An [Azure tenant](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-create-new-tenant) for Graph RBAC.
-* An [Azure subscription](https://azure.microsoft.com/en-us/free/) for resource management.
-* An Azure Active Directory service principal. You can create a service principal via [Azure Portal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal), [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) or [Azure Powershell](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-authenticate-service-principal-powershell).
+* An [Azure tenant](https://docs.microsoft.com/azure/active-directory/develop/quickstart-create-new-tenant) for Graph RBAC.
+* An [Azure subscription](https://azure.microsoft.com/free/) for resource management.
+* An Azure Active Directory service principal. You can create a service principal via [Azure Portal](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal), [Azure CLI](https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli) or [Azure Powershell](https://docs.microsoft.com/azure/active-directory/develop/howto-authenticate-service-principal-powershell).
 
 ## Simple Authentication
 
