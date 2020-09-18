@@ -87,7 +87,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("testuser")
                 .withRootPassword("12NewPA$$w0rd!")
-                .withSize(VirtualMachineSizeTypes.STANDARD_A9)
+                .withSize(VirtualMachineSizeTypes.STANDARD_A2)
                 .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable)
                 .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable2)
                 .create();
