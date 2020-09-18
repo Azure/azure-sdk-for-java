@@ -18,7 +18,7 @@ public final class SupportedRuntimeVersion {
      * The raw value which could be passed to deployment CRUD operations.
      */
     @JsonProperty(value = "value")
-    private SupportedRuntimeVersionEnum value;
+    private SupportedRuntimeValue value;
 
     /*
      * The platform of this runtime version (possible values: "Java" or
@@ -38,7 +38,7 @@ public final class SupportedRuntimeVersion {
      *
      * @return the value value.
      */
-    public SupportedRuntimeVersionEnum value() {
+    public SupportedRuntimeValue value() {
         return this.value;
     }
 
@@ -48,7 +48,7 @@ public final class SupportedRuntimeVersion {
      * @param value the value value to set.
      * @return the SupportedRuntimeVersion object itself.
      */
-    public SupportedRuntimeVersion withValue(SupportedRuntimeVersionEnum value) {
+    public SupportedRuntimeVersion withValue(SupportedRuntimeValue value) {
         this.value = value;
         return this;
     }
