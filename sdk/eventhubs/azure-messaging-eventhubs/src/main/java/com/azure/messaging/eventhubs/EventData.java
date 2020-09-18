@@ -267,24 +267,24 @@ public class EventData {
         return publishedOwnerLevel;
     }
 
-    void setProducerGroupIdInSysProperties(Long internalProducerGroupId) {
+    void setProducerGroupIdInSysProperties(Long producerGroupId) {
         this.getSystemProperties().put(
             AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue(),
-            internalProducerGroupId
+            producerGroupId
         );
     }
 
-    void setProducerOwnerLevelInSysProperties(Short internalProducerOwnerLevel) {
+    void setProducerOwnerLevelInSysProperties(Short producerOwnerLevel) {
         this.getSystemProperties().put(
             AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue(),
-            internalProducerOwnerLevel
+            producerOwnerLevel
         );
     }
 
-    void setPublishedSequenceNumberInSysProperties(Integer internalPublishedSequenceNumber) {
+    void setPublishedSequenceNumberInSysProperties(Integer publishedSequenceNumber) {
         this.getSystemProperties().put(
             AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
-            internalPublishedSequenceNumber);
+            publishedSequenceNumber);
     }
 
     void commitProducerDataFromSysProperties() {
