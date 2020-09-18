@@ -344,7 +344,7 @@ public final class DigitalTwinsClient {
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public List<DigitalTwinsModelData> createModels(List<String> models) {
+    public Iterable<DigitalTwinsModelData> createModels(Iterable<String> models) {
         return createModelsWithResponse(models, Context.NONE).getValue();
     }
 
@@ -356,7 +356,7 @@ public final class DigitalTwinsClient {
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<List<DigitalTwinsModelData>> createModelsWithResponse(List<String> models, Context context) {
+    public Response<Iterable<DigitalTwinsModelData>> createModelsWithResponse(Iterable<String> models, Context context) {
         return digitalTwinsAsyncClient.createModelsWithResponse(models, context).block();
     }
 

@@ -42,7 +42,7 @@ public class TwinAsyncTests extends TwinTestBase
             // Create models to test the Twin lifecycle.
             StepVerifier
                 .create(asyncClient.createModels(modelsList))
-                .assertNext(createResponseList -> logger.info("Created {} models successfully", createResponseList.size()))
+                .assertNext(createResponseList -> logger.info("Created models successfully"))
                 .verifyComplete();
 
             // Create a Twin

@@ -542,7 +542,7 @@ public final class DigitalTwinsAsyncClient {
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<DigitalTwinsModelData>> createModels(List<String> models) {
+    public Mono<Iterable<DigitalTwinsModelData>> createModels(Iterable<String> models) {
         return createModelsWithResponse(models)
             .map(Response::getValue);
     }
@@ -554,11 +554,11 @@ public final class DigitalTwinsAsyncClient {
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<List<DigitalTwinsModelData>>> createModelsWithResponse(List<String> models) {
+    public Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> models) {
         return withContext(context -> createModelsWithResponse(models, context));
     }
 
-    Mono<Response<List<DigitalTwinsModelData>>> createModelsWithResponse(List<String> models, Context context) {
+    Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> models, Context context) {
         List<Object> modelsPayload = new ArrayList<>();
         for (String model: models) {
             try {
@@ -572,7 +572,7 @@ public final class DigitalTwinsAsyncClient {
 
         return protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload, context)
             .map(listResponse -> {
-                List<DigitalTwinsModelData> convertedList = listResponse.getValue().stream()
+                Iterable<DigitalTwinsModelData> convertedList = listResponse.getValue().stream()
                     .map(ModelDataConverter::map)
                     .collect(Collectors.toList());
 
