@@ -30,6 +30,11 @@ public final class FormPage {
     private final List<FormTable> tables;
 
     /*
+     * List of selection marks extracted from the page.
+     */
+    private final List<FormSelectionMark> selectionMarks;
+
+    /*
      * The general orientation of the text in clockwise direction, measured in
      * degrees between (-180, 180].
      */
@@ -71,6 +76,7 @@ public final class FormPage {
         this.lines = lines == null ? null : Collections.unmodifiableList(lines);
         this.tables = tables == null ? null : Collections.unmodifiableList(tables);
         this.pageNumber = pageNumber;
+        this.selectionMarks = null;
     }
 
     /**
@@ -139,6 +145,15 @@ public final class FormPage {
      */
     public Integer getPageNumber() {
         return this.pageNumber;
+    }
+
+    /**
+     * Get the selection marks in the input document.
+     *
+     * @return the selection marks.
+     */
+    public List<FormSelectionMark> getSelectionMarks() {
+        return this.selectionMarks;
     }
 }
 
