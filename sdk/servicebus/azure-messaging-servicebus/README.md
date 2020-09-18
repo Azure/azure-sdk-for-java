@@ -139,7 +139,7 @@ receiving [`ServiceBusMessage`][ServiceBusMessage] from a specific queue or topi
 
 ## Examples
  - [Send messages](#send-messages)
- - [Receive messages and lock renew](#receive-messages-and-renew-lock)
+ - [Receive messages and renew lock](#receive-messages-and-renew-lock)
  - [Settle messages](#settle-messages)
  - [Send and receive from session enabled queues or topics](#send-and-receive-from-session-enabled-queues-or-topics) 
  - [Create a dead-letter queue Receiver](#create-a-dead-letter-queue-receiver)
@@ -326,7 +326,7 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
 Azure Service Bus queues and topic subscriptions provide a secondary sub-queue, called a dead-letter queue (DLQ).
 The dead-letter queue doesn't need to be explicitly created and can't be deleted or otherwise managed independent 
 of the main entity. For session enabled or non-session queue or topic subscriptions, the dead-letter receiver can be 
-created same way as shown below. Learn more about dead-letter queue [here][dead-letter-queue].
+created the same way as shown below. Learn more about dead-letter queue [here][dead-letter-queue].
 
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L200-L206 -->
 ```java
