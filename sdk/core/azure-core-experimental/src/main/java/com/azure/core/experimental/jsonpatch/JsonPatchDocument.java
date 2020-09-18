@@ -51,9 +51,10 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} or {@code rawJsonValue} is null.
      */
     public JsonPatchDocument appendAdd(String path, String rawJsonValue) {
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.ADD,
-            Objects.requireNonNull(path, "'path' cannot be null."), null,
-            Objects.requireNonNull(rawJsonValue, "'rawJsonValue' cannot be null.")));
+        Objects.requireNonNull(path, "'path' cannot be null.");
+        Objects.requireNonNull(rawJsonValue, "'rawJsonValue' cannot be null.");
+
+        operations.add(new JsonPatchOperation(JsonPatchOperationKind.ADD, path, null, rawJsonValue));
         return this;
     }
 
@@ -72,9 +73,10 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} or {@code rawJsonValue} is null.
      */
     public JsonPatchDocument appendReplace(String path, String rawJsonValue) {
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.REPLACE,
-            Objects.requireNonNull(path, "'path' cannot be null."), null,
-            Objects.requireNonNull(rawJsonValue, "'rawJsonValue' cannot be null.")));
+        Objects.requireNonNull(path, "'path' cannot be null.");
+        Objects.requireNonNull(rawJsonValue, "'rawJsonValue' cannot be null.");
+
+        operations.add(new JsonPatchOperation(JsonPatchOperationKind.REPLACE, path, null, rawJsonValue));
         return this;
     }
 
@@ -93,9 +95,10 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code from} or {@code path} is null.
      */
     public JsonPatchDocument appendCopy(String from, String path) {
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.COPY,
-            Objects.requireNonNull(path, "'path' cannot be null."),
-            Objects.requireNonNull(from, "'from' cannot be null."), null));
+        Objects.requireNonNull(from, "'from' cannot be null.");
+        Objects.requireNonNull(path, "'path' cannot be null.");
+
+        operations.add(new JsonPatchOperation(JsonPatchOperationKind.COPY, path, from, null));
         return this;
     }
 
@@ -116,9 +119,10 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code from} or {@code path} is null.
      */
     public JsonPatchDocument appendMove(String from, String path) {
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.MOVE,
-            Objects.requireNonNull(path, "'path' cannot be null."),
-            Objects.requireNonNull(from, "'from' cannot be null."), null));
+        Objects.requireNonNull(from, "'from' cannot be null.");
+        Objects.requireNonNull(path, "'path' cannot be null.");
+
+        operations.add(new JsonPatchOperation(JsonPatchOperationKind.MOVE, path, from, null));
         return this;
     }
 
@@ -136,8 +140,9 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendRemove(String path) {
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.REMOVE,
-            Objects.requireNonNull(path, "'path' cannot be null."), null, null));
+        Objects.requireNonNull(path, "'path' cannot be null.");
+
+        operations.add(new JsonPatchOperation(JsonPatchOperationKind.REMOVE, path, null, null));
         return this;
     }
 
@@ -156,9 +161,10 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} or {@code rawJsonValue} is null.
      */
     public JsonPatchDocument appendTest(String path, String rawJsonValue) {
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.TEST,
-            Objects.requireNonNull(path, "'path' cannot be null."), null,
-            Objects.requireNonNull(rawJsonValue, "'rawJsonValue' cannot be null.")));
+        Objects.requireNonNull(path, "'path' cannot be null.");
+        Objects.requireNonNull(rawJsonValue, "'rawJsonValue' cannot be null.");
+
+        operations.add(new JsonPatchOperation(JsonPatchOperationKind.TEST, path, null, rawJsonValue));
         return this;
     }
 
