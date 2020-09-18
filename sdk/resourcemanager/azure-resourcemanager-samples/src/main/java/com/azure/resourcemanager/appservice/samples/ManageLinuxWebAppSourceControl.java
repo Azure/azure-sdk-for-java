@@ -209,6 +209,7 @@ public final class ManageLinuxWebAppSourceControl {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getResourceManagerEndpoint())
                 .build();
 
             Azure azure = Azure
