@@ -275,13 +275,13 @@ When updating a relationship edge, the patch string follows the below format
 
 <details><summary><b>Async APIs</b></summary>
 
-These APIs have been implemented. Refer to [DigitalTwinsAsyncClient](./src/main/java/com/azure/digitaltwins/core/DigitalTwinsAsyncClient.java).
+These APIs have been implemented. Refer to [DigitalTwinsAsyncClient](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/src/main/java/com/azure/digitaltwins/core/DigitalTwinsAsyncClient.java).
 
 </details>
 
 <details><summary><b>Sync APIs</b></summary>
 
-These APIs have been implemented. Refer to [DigitalTwinsClient](./src/main/java/com/azure/digitaltwins/core/DigitalTwinsClient.java).
+These APIs have been implemented. Refer to [DigitalTwinsClient](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/digitaltwins/azure-digitaltwins-core/src/main/java/com/azure/digitaltwins/core/DigitalTwinsClient.java).
 
 </details>
 

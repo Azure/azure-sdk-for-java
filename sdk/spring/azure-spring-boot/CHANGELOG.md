@@ -1,6 +1,6 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 3.0.0-beta.1 (Unreleased)
 
 
 ## 2.3.5 (2020-09-14)
