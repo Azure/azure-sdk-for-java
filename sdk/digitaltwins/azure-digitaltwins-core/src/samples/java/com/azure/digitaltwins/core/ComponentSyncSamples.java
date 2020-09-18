@@ -105,7 +105,7 @@ public class ComponentSyncSamples {
         ConsoleLogger.print("Created digital twin " + basicTwinResponse.getId());
 
         // You can get a digital twin in json string format and deserialize it on your own
-        Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, Context.NONE);
+        Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, String.class, Context.NONE);
         ConsoleLogger.print("Successfully retrieved digital twin as a json string \n" + getStringDigitalTwinResponse.getValue());
 
         BasicDigitalTwin deserializedDigitalTwin = mapper.readValue(getStringDigitalTwinResponse.getValue(), BasicDigitalTwin.class);
@@ -146,7 +146,7 @@ public class ComponentSyncSamples {
         ConsoleLogger.print("Updated component for digital twin: " + basicDigitalTwinId);
 
         ConsoleLogger.printHeader("Get Component");
-        String getComponentResponse = client.getComponent(basicDigitalTwinId, "Component1");
+        String getComponentResponse = client.getComponent(basicDigitalTwinId, "Component1", String.class);
         ConsoleLogger.print("Retrieved component for digital twin " + basicDigitalTwinId + " :\n" + getComponentResponse);
 
         // Clean up

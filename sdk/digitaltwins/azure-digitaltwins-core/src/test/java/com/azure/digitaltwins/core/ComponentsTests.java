@@ -55,7 +55,7 @@ public class ComponentsTests extends ComponentsTestBase {
             assertEquals(createdTwin.getId(), roomWithWifiTwinId);
 
             // Get the component
-            Response<String> getComponentResponse = client.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName, Context.NONE);
+            Response<String> getComponentResponse = client.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName, String.class, Context.NONE);
             assertEquals(getComponentResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
 
             // Update component

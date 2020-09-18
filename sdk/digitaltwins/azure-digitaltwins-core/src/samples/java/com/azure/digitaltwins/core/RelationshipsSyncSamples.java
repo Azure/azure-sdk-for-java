@@ -97,9 +97,9 @@ public class RelationshipsSyncSamples {
             .setMetadata(new DigitalTwinMetadata()
                 .setModelId(sampleFloorModelId));
 
-        client.createDigitalTwin(floorTwinId, mapper.writeValueAsString(floorDigitalTwin));
+        BasicDigitalTwin createdTwin = client.createDigitalTwin(floorTwinId, floorDigitalTwin, BasicDigitalTwin.class);
 
-        ConsoleLogger.print("Created twin" + floorDigitalTwin.getId());
+        ConsoleLogger.print("Created twin with Id:" + createdTwin.getId());
 
         ConsoleLogger.printHeader("Create relationships");
 
