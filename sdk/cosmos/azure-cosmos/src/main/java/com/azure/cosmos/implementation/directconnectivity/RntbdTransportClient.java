@@ -62,6 +62,9 @@ public final class RntbdTransportClient extends TransportClient {
     private static final Logger logger = LoggerFactory.getLogger(RntbdTransportClient.class);
 
     /**
+     * NOTE: This context key name has been copied from {link Hooks#KEY_ON_ERROR_DROPPED} which is
+     * not exposed as public Api but package internal only
+     *
      * A key that can be used to store a sequence-specific {@link Hooks#onErrorDropped(Consumer)}
      * hook in a {@link Context}, as a {@link Consumer Consumer&lt;Throwable&gt;}.
      */
