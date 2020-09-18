@@ -156,6 +156,7 @@ class CdnEndpointImpl
             .last()
             .map(inner -> {
                 self.setInner(inner);
+                self.customDomainList.clear();
                 self.deletedCustomDomainList.clear();
                 return self;
             });
