@@ -1,7 +1,15 @@
 ## Release History
 
-### 3.0.0-beta.2 (Unreleased)
-
+## 3.0.0-beta.2 (2020-09-17)
+#### New features
+* Updated artifact id to `azure-spring-data-cosmos`.
+* Updated azure-cosmos dependency to `4.5.0`.
+* `Query Annotation` support for native queries.
+* Support for Java 11.
+* Added support for Nested Partition Key by exposing `partitionKeyPath` field in `@Container` annotation.
+* Added support for `limit` query type allowing `top` and `first` to be used when defining repository APIs.
+#### Key bug fixes
+* Fixed nested partition key bug when used with `@GeneratedValue` annotation.
 
 ### 3.0.0-beta.1 (2020-08-17)
 #### New features

@@ -68,7 +68,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.0.0-beta.1</version>
+    <version>3.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -253,6 +253,27 @@ public class UserSample {
 
 }
 ```
+#### Nested Partition Key support
+
+- Spring Data Cosmos SDK supports nested partition key. To add nested partition key, use `partitionKeyPath` field in `@Container` annotation.
+- `partitionKeyPath` should only be used to support nested partition key path. For general partition key support, use the `@PartitionKey` annotation.
+- By default `@PartitionKey` annotation will take precedence, unless not specified.
+- Below example shows how to properly use Nested Partition key feature.
+
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/NestedPartitionKeyEntitySample.java#L7-L11 -->
+```java
+@Container(containerName = "nested-partition-key", partitionKeyPath = "/nestedEntitySample/nestedPartitionKey")
+public class NestedPartitionKeyEntitySample {
+
+    private NestedEntitySample nestedEntitySample;
+}
+```
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/NestedEntitySample.java#L5-L7 -->
+```java
+public class NestedEntitySample {
+    private String nestedPartitionKey;
+}
+```
 
 ### Create repositories
 Extends CosmosRepository interface, which provides Spring Data repository support.
@@ -268,7 +289,7 @@ public interface UserRepository extends CosmosRepository<User, String> {
 
 - `findByFirstName` method is custom query method, it will find items per firstName.
 
-#### Using annotated queries in repositories
+#### QueryAnnotation : Using annotated queries in repositories
 Azure spring data cosmos supports specifying annotated queries in the repositories using `@Query`.
 - Examples for annotated queries in synchronous CosmosRepository:
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserRepositoryCodeSnippet.java#L11-L17 -->
