@@ -81,7 +81,7 @@ public class JsonPatchDocument {
     /**
      * Appends a "copy" operation to this JSON Patch document.
      * <p>
-     * See <a href="https://tools.ietf.org/html/rfc6902#section-4.5>JSON Patch copy</a> for more information.
+     * See <a href="https://tools.ietf.org/html/rfc6902#section-4.5">JSON Patch copy</a> for more information.
      *
      * <p><strong>Code Samples</strong></p>
      *
