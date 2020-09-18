@@ -115,7 +115,8 @@ computeManager.virtualMachines().list()
 ```
 
 It is worth noting that page is requested on demand. Therefore, after result found, it helps to `break` in for-loop, or to `findFirst` in stream, by avoiding unnecessary requests.
-Also there is no caching for the `PagedIterable<T>` instance. Therefore, try not to iterate `PagedIterable<T>` multiple times.
+
+Also, there is no caching for requested pages or items in the `PagedIterable<T>` instance. Therefore, if you iterate `PagedIterable<T>` a second times, it will again request pages even if they are already iterated in the first iteration.
 
 ### Conditional request
 
