@@ -42,7 +42,7 @@ public final class HeatMapsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public HeatMapsClient(TrafficManagerManagementClient client) {
+    HeatMapsClient(TrafficManagerManagementClient client) {
         this.service = RestProxy.create(HeatMapsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -249,6 +249,7 @@ public final class HeatMapsClient {
     public Mono<HeatMapModelInner> getAsync(String resourceGroupName, String profileName) {
         final List<Double> topLeft = null;
         final List<Double> botRight = null;
+        final Context context = null;
         return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight)
             .flatMap(
                 (Response<HeatMapModelInner> res) -> {
@@ -292,6 +293,7 @@ public final class HeatMapsClient {
     public HeatMapModelInner get(String resourceGroupName, String profileName) {
         final List<Double> topLeft = null;
         final List<Double> botRight = null;
+        final Context context = null;
         return getAsync(resourceGroupName, profileName, topLeft, botRight).block();
     }
 
@@ -309,8 +311,8 @@ public final class HeatMapsClient {
      * @return latest heatmap for Traffic Manager profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HeatMapModelInner> getWithResponse(
+    public HeatMapModelInner get(
         String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight, Context context) {
-        return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight, context).block();
+        return getAsync(resourceGroupName, profileName, topLeft, botRight, context).block();
     }
 }

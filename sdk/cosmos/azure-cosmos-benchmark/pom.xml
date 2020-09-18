@@ -43,7 +43,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
@@ -130,6 +130,12 @@ Licensed under the MIT License.
       <artifactId>testng</artifactId>
       <version>6.14.3</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mpierce.metrics.reservoir</groupId>
+      <artifactId>hdrhistogram-metrics-reservoir</artifactId>
+      <version>1.1.0</version><!-- {x-version-update;cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -228,6 +234,7 @@ Licensed under the MIT License.
                 <include>org.apache.logging.log4j:log4j-api:[2.13.3]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-core:[2.13.3]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.13.3]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+                <include>org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir:[1.1.0]</include> <!-- {x-include-update;cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

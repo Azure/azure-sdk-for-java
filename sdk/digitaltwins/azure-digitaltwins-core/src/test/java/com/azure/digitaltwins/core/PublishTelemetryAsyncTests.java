@@ -56,12 +56,10 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
             Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
             telemetryPayload.put("ComponentTelemetry1", 9);
 
-            String telemetryStringPayload = new ObjectMapper().writeValueAsString(telemetryPayload);
-
             StepVerifier.create(client.publishComponentTelemetryWithResponse(
                 roomWithWifiTwinId,
                 TestAssetDefaults.WIFI_COMPONENT_NAME,
-                telemetryStringPayload,
+                telemetryPayload,
                 componentTelemetryRequestOptions,
                 Context.NONE))
                 .assertNext(createResponse -> assertThat(createResponse.getStatusCode())

@@ -68,7 +68,7 @@ public final class BuilderHelper {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(getUserAgentPolicy(configuration));
+        policies.add(getUserAgentPolicy(configuration, logOptions));
         policies.add(new RequestIdPolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -80,8 +80,7 @@ public final class BuilderHelper {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
-            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential,
-                String.format("%s/.default", getPrimaryEndpointForTokenAuth(endpoint)));
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE);
         } else if (sasTokenCredential != null) {
             credentialPolicy =  new SasTokenCredentialPolicy(sasTokenCredential);
         } else {
@@ -106,19 +105,6 @@ public final class BuilderHelper {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-    }
-
-    /**
-     *
-     * @param endpoint The endpoint passed by the customer.
-     * @return The primary endpoint for the account. It may be the same endpoint passed if it is already a primary or it
-     * may have had "-secondary" stripped from the end of the account name.
-     */
-    private static String getPrimaryEndpointForTokenAuth(String endpoint) {
-        String[] parts = endpoint.split("\\.");
-        parts[0] = parts[0].endsWith("-secondary") ? parts[0].substring(0, parts[0].length() - "-secondary".length())
-            : parts[0];
-        return String.join(".", parts);
     }
 
     /**
@@ -165,14 +151,15 @@ public final class BuilderHelper {
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
      * @param configuration Configuration store used to determine whether telemetry information should be included.
+     * @param logOptions Logging options to set in the logging policy.
      * @return The default {@link UserAgentPolicy} for the module.
      */
-    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
+    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, HttpLogOptions logOptions) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
         String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(), clientName, clientVersion,
+        return new UserAgentPolicy(logOptions.getApplicationId(), clientName, clientVersion,
             configuration);
     }
 

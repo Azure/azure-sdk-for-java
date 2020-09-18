@@ -12,7 +12,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>spring-cloud-azure-storage</artifactId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-storage;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-storage;current} -->
 
   <name>Azure Spring Cloud Storage</name>
 
@@ -20,7 +20,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-context</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
     </dependency>
 
     <dependency>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-integration-storage-queue</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-storage-queue;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-storage-queue;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -134,8 +134,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-context:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
-                <include>com.microsoft.azure:spring-integration-storage-queue:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-storage-queue;current} -->
+                <include>com.microsoft.azure:spring-cloud-azure-context:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
+                <include>com.microsoft.azure:spring-integration-storage-queue:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-storage-queue;current} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.1.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->

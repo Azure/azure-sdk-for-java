@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A utility to create the application/json-patch+json operations payload required for update operations.
+ * A utility to create the JSON patch payload required for update operations such as update digital twin,
+ * update relationship, and update component.
  */
 @Fluent
 public final class UpdateOperationUtility {
@@ -24,8 +25,8 @@ public final class UpdateOperationUtility {
     private final List<UpdateOperation> operations = new ArrayList<>();
 
     /**
-     * Gets the application/json-patch+json operations payload required for update operations.
-     * @return The application/json-patch+json operations payload required for update operations.
+     * Gets the JSON patch payload required for update operations.
+     * @return The JSON patch payload required for update operations.
      */
     public List<Object> getUpdateOperations() {
         return operations.stream().map(op -> mapper.convertValue(op, Object.class)).collect(Collectors.toList());

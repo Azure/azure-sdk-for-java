@@ -7,6 +7,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.fluent.inner.ConnectionStringDictionaryInner;
+import com.azure.resourcemanager.appservice.fluent.inner.HostnameBindingInner;
+import com.azure.resourcemanager.appservice.fluent.inner.MSDeployStatusInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteAuthSettingsInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SlotConfigNamesResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.AppSetting;
@@ -42,18 +54,6 @@ import com.azure.resourcemanager.appservice.models.VirtualApplication;
 import com.azure.resourcemanager.appservice.models.WebAppAuthentication;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebContainer;
-import com.azure.resourcemanager.appservice.fluent.inner.ConnectionStringDictionaryInner;
-import com.azure.resourcemanager.appservice.fluent.inner.HostnameBindingInner;
-import com.azure.resourcemanager.appservice.fluent.inner.MSDeployStatusInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteAuthSettingsInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SlotConfigNamesResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.models.WebSiteBase;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
@@ -65,6 +65,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
@@ -82,10 +87,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * The implementation for WebAppBase.
@@ -893,7 +894,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     Mono<FluentT> submitHostNameBindings() {
         final List<Mono<HostnameBinding>> bindingObservables = new ArrayList<>();
         for (HostnameBindingImpl<FluentT, FluentImplT> binding : hostNameBindingsToCreate.values()) {
-            bindingObservables.add(Utils.<HostnameBinding>rootResource(binding.createAsync().last()));
+            bindingObservables.add(binding.createAsync());
         }
         for (String binding : hostNameBindingsToDelete) {
             bindingObservables.add(deleteHostnameBinding(binding).then(Mono.empty()));

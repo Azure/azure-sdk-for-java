@@ -10,12 +10,12 @@ Azure Key Vault Secrets Spring boot starter is Spring starter for [Azure Key Vau
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current})
+[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-keyvault-secrets;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
-    <version>2.3.5</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
+    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,7 +41,7 @@ will get back.
 
 The new case sensitive mode allows you to use case sensitive Key Vault names. Note
 that the Key Vault secret key still needs to honor the naming limitation as 
-described in the “keyvault-name” element of [About keys, secrets, and certificates](https://docs.microsoft.com/en-us/azure/key-vault/general/about-keys-secrets-certificates).
+described in the “keyvault-name” element of [About keys, secrets, and certificates](https://docs.microsoft.com/azure/key-vault/general/about-keys-secrets-certificates).
 
 If your Spring property is using a name that does not honor the Key Vault secret
 key limitation use the following technique as described by 
@@ -100,7 +100,7 @@ You can use the following Azure CLI command to save secrets, if Key Vault is alr
 az keyvault secret set --name <your-property-name> --value <your-secret-property-value> --vault-name <your-keyvault-name>
 ```
 > NOTE
-> To get detail steps on how setup Azure Key Vault, please refer to sample code readme section ["Setup Azure Key Vault"](../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets/README.md)
+> To get detail steps on how setup Azure Key Vault, please refer to sample code readme section ["Setup Azure Key Vault"](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets/README.md)
 
 > **IMPORTANT** 
 > Allowed secret name pattern in Azure Key Vault is ^[0-9a-zA-Z-]+$, for some Spring system properties contains `.` like spring.datasource.url, do below workaround when you save it into Azure Key Vault: simply replace `.` to `-`. `spring.datasource.url` will be saved with name `spring-datasource-url` in Azure Key Vault. While in client application, use original `spring.datasource.url` to retrieve property value, this starter will take care of transformation for you. Purpose of using this way is to integrate with Spring existing property setting.
@@ -182,12 +182,12 @@ For more information about setting logging in spring, please refer to the [offic
 ## Next steps
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code
-- [Key Vault Secrets](../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets)
+- [Key Vault Secrets](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets)
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.
+Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
 
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault

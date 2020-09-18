@@ -3,15 +3,14 @@
 package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation;
 
 import com.azure.core.management.Resource;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.publisher.Mono;
@@ -80,7 +79,6 @@ public abstract class GroupableResourcesImpl<
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String groupName, String name) {
         return this.deleteInnerAsync(groupName, name)
-            .onErrorMap(AggregatedManagementException::convertToManagementException)
             .subscribeOn(SdkContext.getReactorScheduler());
     }
 

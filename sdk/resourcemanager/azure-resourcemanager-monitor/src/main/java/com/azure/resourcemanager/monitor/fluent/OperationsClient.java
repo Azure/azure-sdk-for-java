@@ -38,7 +38,7 @@ public final class OperationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public OperationsClient(MonitorClient client) {
+    OperationsClient(MonitorClient client) {
         this.service =
             RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

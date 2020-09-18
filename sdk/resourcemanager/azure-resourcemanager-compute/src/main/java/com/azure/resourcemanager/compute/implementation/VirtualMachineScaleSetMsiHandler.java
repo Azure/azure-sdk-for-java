@@ -72,7 +72,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
         } else if (this.scaleSet.inner().identity().type().equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
             this.scaleSet.inner().identity().withType(ResourceIdentityType.NONE);
         } else if (this.scaleSet.inner().identity().type().equals(
-            ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
+            ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
             this.scaleSet.inner().identity().withType(ResourceIdentityType.USER_ASSIGNED);
         }
         return this;
@@ -218,7 +218,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
                     if (currentIdentity == null || currentIdentity.type() == null) {
                         vmssUpdate
                             .withIdentity(new VirtualMachineScaleSetIdentity().withType(ResourceIdentityType.NONE));
-                    } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
+                    } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
                         vmssUpdate.withIdentity(currentIdentity);
                         vmssUpdate.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
                     } else if (currentIdentity.type().equals(ResourceIdentityType.USER_ASSIGNED)) {
@@ -264,7 +264,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
             || scaleSetInner.identity().type().equals(identityType)) {
             scaleSetInner.identity().withType(identityType);
         } else {
-            scaleSetInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
+            scaleSetInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
         }
     }
 }

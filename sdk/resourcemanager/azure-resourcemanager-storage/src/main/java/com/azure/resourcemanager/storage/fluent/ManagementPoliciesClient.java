@@ -44,7 +44,7 @@ public final class ManagementPoliciesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ManagementPoliciesClient(StorageManagementClient client) {
+    ManagementPoliciesClient(StorageManagementClient client) {
         this.service =
             RestProxy.create(ManagementPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

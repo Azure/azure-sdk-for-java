@@ -48,7 +48,7 @@ public final class PrivateEndpointConnectionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PrivateEndpointConnectionsClient(ContainerServiceManagementClient client) {
+    PrivateEndpointConnectionsClient(ContainerServiceManagementClient client) {
         this.service =
             RestProxy
                 .create(
