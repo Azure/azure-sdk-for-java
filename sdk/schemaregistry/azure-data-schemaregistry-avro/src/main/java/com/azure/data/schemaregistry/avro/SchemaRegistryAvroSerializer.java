@@ -131,6 +131,7 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                     outputStream.write(recordFormatIndicatorBuffer.array());
                     outputStream.write(idBuffer.array());
                     outputStream.write(avroSchemaRegistryUtils.encode(object));
+                    sink.complete();
                 } catch (IOException e) {
                     sink.error(new UncheckedIOException(e.getMessage(), e));
                 }
