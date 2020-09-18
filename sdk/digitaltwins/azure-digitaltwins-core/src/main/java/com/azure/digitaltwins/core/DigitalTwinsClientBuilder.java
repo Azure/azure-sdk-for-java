@@ -65,7 +65,7 @@ public final class DigitalTwinsClientBuilder {
     private Configuration configuration;
 
     /**
-     * Public constructor for DigitalTwinsClientBuilder
+     * The public constructor for DigitalTwinsClientBuilder
      */
     public DigitalTwinsClientBuilder()
     {

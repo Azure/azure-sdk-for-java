@@ -13,7 +13,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
-import com.azure.digitaltwins.core.implementation.converters.ContinuationTokenSerializer;
+import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
+import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
@@ -157,10 +158,17 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin, context)
-            .map(response -> {
-                T genericResponse = mapper.convertValue(response.getValue(), clazz);
+            .flatMap(response -> {
+                T genericResponse = null;
+                try {
+                    genericResponse = DeserializationHelpers.castValue(mapper, response.getValue(), clazz);
+                } catch (JsonProcessingException e) {
+                    logger.error("JsonProcessingException occurred while creating digital twin: ", e);
+                    return Mono.error(e);
+                }
+
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders);
+                return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
 
@@ -238,10 +246,16 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer
             .getDigitalTwins()
             .getByIdWithResponseAsync(digitalTwinId, context)
-            .map(response -> {
-                T genericResponse = mapper.convertValue(response.getValue(), clazz);
+            .flatMap(response -> {
+                T genericResponse = null;
+                try {
+                    genericResponse = DeserializationHelpers.castValue(mapper, response.getValue(), clazz);
+                } catch (JsonProcessingException e) {
+                    logger.error("JsonProcessingException occurred while getting digital twin: ", e);
+                    return Mono.error(e);
+                }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders);
+                return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
 
@@ -400,10 +414,16 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer
             .getDigitalTwins()
             .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, context)
-            .map(response -> {
-                T genericResponse = mapper.convertValue(response.getValue(), clazz);
+            .flatMap(response -> {
+                T genericResponse = null;
+                try {
+                    genericResponse = DeserializationHelpers.castValue(mapper, response.getValue(), clazz);
+                } catch (JsonProcessingException e) {
+                    logger.error("JsonProcessingException occurred while creating relationship: ", e);
+                    return Mono.error(e);
+                }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders);
+                return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
 
@@ -481,10 +501,16 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer
             .getDigitalTwins()
             .getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId, context)
-            .map(response -> {
-                T genericResponse = mapper.convertValue(response.getValue(), clazz);
+            .flatMap(response -> {
+                T genericResponse = null;
+                try {
+                    genericResponse = DeserializationHelpers.castValue(mapper, response.getValue(), clazz);
+                } catch (JsonProcessingException e) {
+                    logger.error("JsonProcessingException occurred while getting relationship: ", e);
+                    return Mono.error(e);
+                }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders);
+                return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
 
@@ -617,7 +643,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         stringList,
-                        ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
+                        SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -644,7 +670,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
+                    SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -685,7 +711,14 @@ public final class DigitalTwinsAsyncClient {
             .map(
                 objectPagedResponse -> {
                     List<T> list = objectPagedResponse.getValue().stream()
-                        .map(object -> mapper.convertValue(object, clazz))
+                        .map(object -> {
+                            try {
+                                return DeserializationHelpers.castValue(mapper, object, clazz);
+                            } catch (JsonProcessingException e) {
+                                logger.error("JsonProcessingException occurred while retrieving relationships: ", e);
+                                throw new RuntimeException("JsonProcessingException occurred while retrieving relationships", e);
+                            }
+                        })
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                     return new PagedResponseBase<>(
@@ -693,7 +726,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         list,
-                        ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
+                        SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -705,7 +738,14 @@ public final class DigitalTwinsAsyncClient {
             .listRelationshipsNextSinglePageAsync(nextLink, context)
             .map(objectPagedResponse -> {
                 List<T> stringList = objectPagedResponse.getValue().stream()
-                    .map(object -> mapper.convertValue(object, clazz))
+                    .map(object -> {
+                        try {
+                            return DeserializationHelpers.castValue(mapper, object, clazz);
+                        } catch (JsonProcessingException e) {
+                            logger.error("JsonProcessingException occurred while retrieving relationships: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while retrieving relationships", e);
+                        }
+                    })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
                 return new PagedResponseBase<>(
@@ -713,7 +753,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
+                    SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -895,7 +935,7 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(),
                 objectPagedResponse.getHeaders(),
                 convertedList,
-                ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
+                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
                 ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
         });
     }
@@ -1025,7 +1065,13 @@ public final class DigitalTwinsAsyncClient {
     <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentPath, Class<T> clazz, Context context) {
         return protocolLayer.getDigitalTwins().getComponentWithResponseAsync(digitalTwinId, componentPath, context)
             .flatMap(response -> {
-                T genericResponse = mapper.convertValue(response.getValue(), clazz);
+                T genericResponse = null;
+                try {
+                    genericResponse = DeserializationHelpers.castValue(mapper, response.getValue(), clazz);
+                } catch (JsonProcessingException e) {
+                    logger.error("JsonProcessingException occurred while getting component: ", e);
+                    return Mono.error(e);
+                }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return Mono.just(new DigitalTwinsResponse<T>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
@@ -1091,27 +1137,6 @@ public final class DigitalTwinsAsyncClient {
             nextLink -> queryNextPage(nextLink, context));
     }
 
-    /**
-     * Query digital twins.
-     * @param query The query string, in SQL-like syntax.
-     * @param clazz The model class to deserialize each queried digital twin into. Since the queried twins may not all
-     *              have the same model class, it is recommended to use a common denominator class such as {@link BasicDigitalTwin}.
-     * @param <T> The generic type to deserialize each queried digital twin into.
-     * @return A {@link PagedFlux} of deserialized digital twins.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedFlux<T> query(String query, Class<T> clazz) {
-        return new PagedFlux<T>(
-            () -> withContext(context -> queryFirstPage(query, clazz, context)),
-            nextLink -> withContext(context -> queryNextPage(nextLink, clazz, context)));
-    }
-
-    <T> PagedFlux<T> query(String query, Class<T> clazz, Context context) {
-        return new PagedFlux<>(
-            () -> queryFirstPage(query, clazz, context),
-            nextLink -> queryNextPage(nextLink, clazz, context));
-    }
-
     Mono<PagedResponse<String>> queryFirstPage(String query, Context context) {
         QuerySpecification querySpecification = new QuerySpecification().setQuery(query);
 
@@ -1133,25 +1158,7 @@ public final class DigitalTwinsAsyncClient {
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
-                objectPagedResponse.getDeserializedHeaders()));
-    }
-
-    <T> Mono<PagedResponse<T>> queryFirstPage(String query, Class<T> clazz, Context context) {
-        QuerySpecification querySpecification = new QuerySpecification().setQuery(query);
-
-        return protocolLayer
-            .getQueries()
-            .queryTwinsWithResponseAsync(querySpecification, context)
-            .map(objectPagedResponse -> new PagedResponseBase<>(
-                objectPagedResponse.getRequest(),
-                objectPagedResponse.getStatusCode(),
-                objectPagedResponse.getHeaders(),
-                objectPagedResponse.getValue().getItems().stream()
-                    .map(object -> mapper.convertValue(object, clazz))
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList()),
-                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
+                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1176,7 +1183,55 @@ public final class DigitalTwinsAsyncClient {
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
+                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
+                objectPagedResponse.getDeserializedHeaders()));
+    }
+
+    /**
+     * Query digital twins.
+     * @param query The query string, in SQL-like syntax.
+     * @param clazz The model class to deserialize each queried digital twin into. Since the queried twins may not all
+     *              have the same model class, it is recommended to use a common denominator class such as {@link BasicDigitalTwin}.
+     * @param <T> The generic type to deserialize each queried digital twin into.
+     * @return A {@link PagedFlux} of deserialized digital twins.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T> PagedFlux<T> query(String query, Class<T> clazz) {
+        return new PagedFlux<T>(
+            () -> withContext(context -> queryFirstPage(query, clazz, context)),
+            nextLink -> withContext(context -> queryNextPage(nextLink, clazz, context)));
+    }
+
+    <T> PagedFlux<T> query(String query, Class<T> clazz, Context context) {
+        return new PagedFlux<>(
+            () -> queryFirstPage(query, clazz, context),
+            nextLink -> queryNextPage(nextLink, clazz, context));
+    }
+
+
+
+    <T> Mono<PagedResponse<T>> queryFirstPage(String query, Class<T> clazz, Context context) {
+        QuerySpecification querySpecification = new QuerySpecification().setQuery(query);
+
+        return protocolLayer
+            .getQueries()
+            .queryTwinsWithResponseAsync(querySpecification, context)
+            .map(objectPagedResponse -> new PagedResponseBase<>(
+                objectPagedResponse.getRequest(),
+                objectPagedResponse.getStatusCode(),
+                objectPagedResponse.getHeaders(),
+                objectPagedResponse.getValue().getItems().stream()
+                    .map(object -> {
+                        try {
+                            return DeserializationHelpers.castValue(mapper, object, clazz);
+                        } catch (JsonProcessingException e) {
+                            logger.error("JsonProcessingException occurred while running a query: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while running a query", e);
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()),
+                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1191,10 +1246,17 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(),
                 objectPagedResponse.getHeaders(),
                 objectPagedResponse.getValue().getItems().stream()
-                    .map(object -> mapper.convertValue(object, clazz))
+                    .map(object -> {
+                        try {
+                            return DeserializationHelpers.castValue(mapper, object, clazz);
+                        } catch (JsonProcessingException e) {
+                            logger.error("JsonProcessingException occurred while running a query: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while running a query", e);
+                        }
+                    })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
+                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 

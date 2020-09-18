@@ -81,9 +81,10 @@ public class PublishTelemetrySyncSamples {
         String twinPayload = SamplesConstants.TEMPORARY_TWIN_PAYLOAD
             .replace(SamplesConstants.MODEL_ID, modelId);
 
-        client.createDigitalTwin(digitalTwinId, twinPayload);
+        String digitalTwinResponse = client.createDigitalTwin(digitalTwinId, twinPayload, String.class);
 
-        ConsoleLogger.printSuccess("Created digital twin " + digitalTwinId);
+        ConsoleLogger.printSuccess("Created digital twin with Id: " + digitalTwinId + "\n" + digitalTwinResponse);
+
         try
         {
             ConsoleLogger.printHeader("Publish Telemetry");

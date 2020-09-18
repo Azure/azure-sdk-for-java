@@ -222,7 +222,7 @@ You can also retrieve the application/json string payload from disk and pass it 
 
 ```java
 String payload = <Load the file content into memory>;
-String digitalTwinCreateResponse = syncClient.createDigitalTwin(twinId, payload);
+String digitalTwinCreateResponse = syncClient.createDigitalTwin(twinId, payload, String.class);
 ```
 
 ### Get and deserialize a digital twin
@@ -232,7 +232,7 @@ You can get a digital twin in 2 separate formats
 - In a String format by just calling:
 
 ```java
-String stringDt = syncClient.getDigitalTwin(twinId);
+String stringDt = syncClient.getDigitalTwin(twinId, String.class);
 ```
 
 - Choose what type you would like the twin to be deserialized as:
@@ -250,7 +250,7 @@ Query the Azure Digital Twins instance for digital twins using the [Azure Digita
 // happens under the covers.
 
 // You can either get a String representation of your query response
-PagedIterable<String> pageableResponse = syncClient.query("SELECT * FROM digitaltwins");
+PagedIterable<String> pageableResponse = syncClient.query("SELECT * FROM digitaltwins", String.class);
 
 // Iterate over the twin instances in the pageable response.
 foreach (String response in pageableResponse)
@@ -295,7 +295,7 @@ client.updateComponent(basicDigitalTwinId, "Component1", updateOperationUtility.
 Get a component by providing name of a component and Id of digital twin to which it belongs.
 
 ```java
-String getComponentResponse = client.getComponent(digitalTwinId, "Component1");
+String getComponentResponse = client.getComponent(digitalTwinId, "Component1", String.class);
 ```
 
 ## Create, get,  list and delete digital twin relationships
