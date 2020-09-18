@@ -14,7 +14,7 @@ For users new to the Java SDK for resource management libraries, please see the 
   * [Customized Policy](#customized-policy)
   * [Custom HTTP Client](#custom-http-client)
   * [Error Handling](#error-handling)
-  * [Pagination](pagination)
+  * [Pagination](#pagination)
   * [rxJava -> Reactor](#rxjava-to-reactor)
 * [Additional Samples](#additional-samples)
 
