@@ -185,6 +185,22 @@
         "code": "java\\.annotation\\.attributeAdded",
         "new": "^parameter\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(AnalyzedTokenInfo|CorsOptions|FieldMapping|IndexerExecutionResult|SearchIndexerStatus|SearchServiceCounters|TextWeights|AutocompleteResult)::<init>\\(.+\\)$",
         "justification": "Annotations attributes better indicate which parameters are required when handling service requests and responses."
+      },
+
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class com.azure.data.schemaregistry.SchemaRegistryAsyncClient",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class com.azure.data.schemaregistry.models.SchemaProperties",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class com.azure.data.schemaregistry.models.SerializationType",
+        "justification": "This is a preview release"
       }
     ]
   }
