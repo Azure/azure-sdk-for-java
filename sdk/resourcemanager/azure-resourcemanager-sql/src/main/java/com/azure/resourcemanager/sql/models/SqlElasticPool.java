@@ -15,9 +15,10 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolInner;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.List;
-import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL Elastic Pool. */
 @Fluent
@@ -206,11 +207,9 @@ public interface SqlElasticPool
             /**
              * Sets the edition for the SQL Elastic Pool.
              *
-             * @deprecated use specific edition instead
              * @param edition edition to be set for elastic pool.
              * @return The next stage of the definition.
              */
-            @Deprecated
             SqlElasticPool.DefinitionStages.WithAttach<ParentT> withEdition(ElasticPoolEdition edition);
 
             /**
@@ -372,11 +371,9 @@ public interface SqlElasticPool
             /**
              * Sets the minimum DTU all SQL Azure Databases are guaranteed.
              *
-             * @deprecated use specific edition instead
              * @param databaseDtuMin minimum DTU for all SQL Azure databases
              * @return The next stage of the definition.
              */
-            @Deprecated
             SqlElasticPool.DefinitionStages.WithAttach<ParentT> withDatabaseDtuMin(double databaseDtuMin);
         }
 
@@ -389,11 +386,9 @@ public interface SqlElasticPool
             /**
              * Sets the maximum DTU any one SQL Azure Database can consume.
              *
-             * @deprecated use specific edition instead
              * @param databaseDtuMax maximum DTU any one SQL Azure Database can consume
              * @return The next stage of the definition.
              */
-            @Deprecated
             SqlElasticPool.DefinitionStages.WithAttach<ParentT> withDatabaseDtuMax(double databaseDtuMax);
         }
 
@@ -406,11 +401,9 @@ public interface SqlElasticPool
             /**
              * Sets the total shared DTU for the SQL Azure Database Elastic Pool.
              *
-             * @deprecated use specific edition instead
              * @param dtu total shared DTU for the SQL Azure Database Elastic Pool
              * @return The next stage of the definition.
              */
-            @Deprecated
             SqlElasticPool.DefinitionStages.WithAttach<ParentT> withDtu(int dtu);
         }
 
@@ -423,11 +416,9 @@ public interface SqlElasticPool
             /**
              * Sets the storage limit for the SQL Azure Database Elastic Pool in Bytes.
              *
-             * @deprecated use specific edition instead
              * @param storageCapacity storage limit for the SQL Azure Database Elastic Pool in Bytes
              * @return The next stage of the definition.
              */
-            @Deprecated
             SqlElasticPool.DefinitionStages.WithAttach<ParentT> withStorageCapacity(Long storageCapacity);
         }
 
@@ -468,11 +459,9 @@ public interface SqlElasticPool
             /**
              * Sets the minimum DTU all SQL Azure Databases are guaranteed.
              *
-             * @deprecated use specific edition instead
              * @param databaseDtuMin minimum DTU for all SQL Azure databases
              * @return The next stage of definition.
              */
-            @Deprecated
             Update withDatabaseDtuMin(double databaseDtuMin);
         }
 
@@ -481,11 +470,9 @@ public interface SqlElasticPool
             /**
              * Sets the maximum DTU any one SQL Azure Database can consume.
              *
-             * @deprecated use specific edition instead
              * @param databaseDtuMax maximum DTU any one SQL Azure Database can consume
              * @return The next stage of definition.
              */
-            @Deprecated
             Update withDatabaseDtuMax(double databaseDtuMax);
         }
 
@@ -494,11 +481,9 @@ public interface SqlElasticPool
             /**
              * Sets the total shared DTU for the SQL Azure Database Elastic Pool.
              *
-             * @deprecated use specific edition instead
              * @param dtu total shared DTU for the SQL Azure Database Elastic Pool
              * @return The next stage of definition.
              */
-            @Deprecated
             Update withDtu(int dtu);
         }
 
@@ -509,11 +494,9 @@ public interface SqlElasticPool
             /**
              * Sets the storage limit for the SQL Azure Database Elastic Pool in Bytes.
              *
-             * @deprecated use specific edition instead
              * @param storageCapacity storage limit for the SQL Azure Database Elastic Pool in Bytes
              * @return The next stage of definition.
              */
-            @Deprecated
             Update withStorageCapacity(Long storageCapacity);
         }
 
