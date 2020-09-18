@@ -32,12 +32,14 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     public ReceiveAndLockMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEK_LOCK);
         this.options = options;
+        System.out.println("!!!! ReceiveAndLockMessageTest constructor..");
     }
 
     @Override
     public Mono<Void> globalSetupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
         return Mono.defer(() -> {
+            System.out.println("!!!! globalSetupAsync  ..");
             int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
             List<ServiceBusMessage> messages = new ArrayList<>();
             for (int i = 0; i < total; ++i) {
@@ -51,12 +53,13 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     @Override
     public void run() {
+        System.out.println("!!!! run...");
         IterableStream<ServiceBusReceivedMessageContext> messages = receiver
             .receiveMessages(options.getMessagesToReceive());
 
         int count = 0;
         for (ServiceBusReceivedMessageContext messageContext : messages) {
-            receiver.complete(messageContext.getMessage().getLockToken());
+            receiver.complete(messageContext.getMessage());
             ++count;
         }
 
@@ -67,17 +70,20 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     @Override
     public Mono<Void> runAsync() {
+        System.out.println("!!!! in runAsync");
         return receiverAsync
             .receiveMessages()
             .take(options.getMessagesToReceive())
-            .map(messageContext -> receiverAsync.complete(messageContext.getMessage().getLockToken()))
-            .count()
-            .handle((aLong, sink) -> {
+            .flatMap(messageContext -> {
+                System.out.println("Receiver received message lockToken: " + messageContext.getMessage().getLockToken());
+                return receiverAsync.complete(messageContext.getMessage());
+            }).then();
+            /*.handle((aLong, sink) -> {
                 System.out.println("!!!! runAsync messages received : " + aLong);
                 if (aLong <= 0) {
                     sink.error(new RuntimeException("Error. Should have received some messages."));
                 }
                 sink.complete();
-            });
+            });*/
     }
 }

@@ -77,6 +77,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
         return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive())
             .thenComposeAsync(iMessages -> {
                 for (IMessage message : iMessages) {
+                    System.out.println("Receiver received message lockToken: " + message.getLockToken());
                     completeTask.thenComposeAsync(ignore -> receiver.completeAsync(message.getLockToken()));
                 }
                 return completeTask;

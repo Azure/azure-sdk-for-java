@@ -74,11 +74,12 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
     @Override
     public Mono<Void> runAsync() {
+        System.out.println("Async received  Entry");
         return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive()))
             .handle((messages, synchronousSink) -> {
                 int count = messages.size();
                 logger.verbose(" Async received  size of received : {}", count);
-
+                System.out.println("Async received  size of received " + count);
                 if (count <= 0) {
                     synchronousSink.error(new RuntimeException("Error. Should have received some messages."));
                 }
