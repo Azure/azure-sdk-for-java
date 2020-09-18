@@ -9,7 +9,7 @@ public class DeserializationHelpers {
      * Converts the payload object into a generic type.
      * There are two different paths we will have to take based on the type T
      * In case of a String, we need to write the value of the payload as a String
-     * In case of any other type that the user decides to deserialize the payload, we will use mapper.convertValue to perform the casting.
+     * In case of any other type that the user decides to deserialize the payload, we will use mapper.convertValue to perform the conversion.
      */
     @SuppressWarnings("unchecked")
     public static <T> T castObject(ObjectMapper mapper, Object payload, Class<T> clazz) throws JsonProcessingException {

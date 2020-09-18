@@ -163,7 +163,7 @@ public final class DigitalTwinsAsyncClient {
                 try {
                     genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while creating digital twin: ", e);
+                    logger.error("JsonProcessingException occurred while deserializing the response: ", e);
                     return Mono.error(e);
                 }
 
@@ -251,7 +251,7 @@ public final class DigitalTwinsAsyncClient {
                 try {
                     genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while getting digital twin: ", e);
+                    logger.error("JsonProcessingException occurred while deserializing the digital twin get response: ", e);
                     return Mono.error(e);
                 }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
@@ -419,7 +419,7 @@ public final class DigitalTwinsAsyncClient {
                 try {
                     genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while creating relationship: ", e);
+                    logger.error("JsonProcessingException occurred while deserializing the create relationship response: ", e);
                     return Mono.error(e);
                 }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
@@ -506,7 +506,7 @@ public final class DigitalTwinsAsyncClient {
                 try {
                     genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while getting relationship: ", e);
+                    logger.error("JsonProcessingException occurred while deserializing the get relationship response: ", e);
                     return Mono.error(e);
                 }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
@@ -715,8 +715,8 @@ public final class DigitalTwinsAsyncClient {
                             try {
                                 return DeserializationHelpers.castObject(mapper, object, clazz);
                             } catch (JsonProcessingException e) {
-                                logger.error("JsonProcessingException occurred while retrieving relationships: ", e);
-                                throw new RuntimeException("JsonProcessingException occurred while retrieving relationships", e);
+                                logger.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
+                                throw new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e);
                             }
                         })
                         .filter(Objects::nonNull)
@@ -742,8 +742,8 @@ public final class DigitalTwinsAsyncClient {
                         try {
                             return DeserializationHelpers.castObject(mapper, object, clazz);
                         } catch (JsonProcessingException e) {
-                            logger.error("JsonProcessingException occurred while retrieving relationships: ", e);
-                            throw new RuntimeException("JsonProcessingException occurred while retrieving relationships", e);
+                            logger.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e);
                         }
                     })
                     .filter(Objects::nonNull)
@@ -1069,7 +1069,7 @@ public final class DigitalTwinsAsyncClient {
                 try {
                     genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while getting component: ", e);
+                    logger.error("JsonProcessingException occurred while deserializing the get component response: ", e);
                     return Mono.error(e);
                 }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
@@ -1225,8 +1225,8 @@ public final class DigitalTwinsAsyncClient {
                         try {
                             return DeserializationHelpers.castObject(mapper, object, clazz);
                         } catch (JsonProcessingException e) {
-                            logger.error("JsonProcessingException occurred while running a query: ", e);
-                            throw new RuntimeException("JsonProcessingException occurred while running a query", e);
+                            logger.error("JsonProcessingException occurred while deserializing the query response: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e);
                         }
                     })
                     .filter(Objects::nonNull)
@@ -1250,8 +1250,8 @@ public final class DigitalTwinsAsyncClient {
                         try {
                             return DeserializationHelpers.castObject(mapper, object, clazz);
                         } catch (JsonProcessingException e) {
-                            logger.error("JsonProcessingException occurred while running a query: ", e);
-                            throw new RuntimeException("JsonProcessingException occurred while running a query", e);
+                            logger.error("JsonProcessingException occurred while deserializing the query response: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e);
                         }
                     })
                     .filter(Objects::nonNull)
