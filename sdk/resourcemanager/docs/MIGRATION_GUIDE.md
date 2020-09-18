@@ -3,7 +3,7 @@
 This document is intended for users that are familiar with an older version of the Java SDK for managment libraries (`com.microsoft.azure.management.**`) and wish to migrate their application 
 to the next version of Azure resource management libraries (`com.azure.resourcemanager.**`)
 
-For users new to the Java SDK for resource management libraries, please see the [README for 'com.azure.resourcemanager.*`](http://aka.ms/azure-sdk-java-mgmt)
+For users new to the Java SDK for resource management libraries, please see the [README for 'com.azure.resourcemanager.*`](https://aka.ms/azsdk/java/mgmt)
 
 ## Table of contents
 
@@ -284,7 +284,7 @@ Flux.merge(
 ## Additional Samples 
 
 More samples can be found at :
-- [README for new version of SDK](http://aka.ms/azure-sdk-java-mgmt)
+- [README for new version of SDK](https://aka.ms/azsdk/java/mgmt)
 - [Code Samples for Resource Management Libraries](SAMPLE.md)
 - [Authentication Documentation](AUTH.md)
 
