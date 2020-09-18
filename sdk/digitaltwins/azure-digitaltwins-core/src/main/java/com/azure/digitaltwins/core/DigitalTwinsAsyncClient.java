@@ -750,11 +750,11 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A List of created models. Each {@link ModelData} instance in this list
+     * @return A List of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<ModelData>> createModels(List<String> models) {
+    public Mono<List<DigitalTwinsModelData>> createModels(List<String> models) {
         return createModelsWithResponse(models)
             .map(Response::getValue);
     }
@@ -762,15 +762,15 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A {@link Response} containing the list of created models. Each {@link ModelData} instance in this list
+     * @return A {@link Response} containing the list of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<List<ModelData>>> createModelsWithResponse(List<String> models) {
+    public Mono<Response<List<DigitalTwinsModelData>>> createModelsWithResponse(List<String> models) {
         return withContext(context -> createModelsWithResponse(models, context));
     }
 
-    Mono<Response<List<ModelData>>> createModelsWithResponse(List<String> models, Context context) {
+    Mono<Response<List<DigitalTwinsModelData>>> createModelsWithResponse(List<String> models, Context context) {
         List<Object> modelsPayload = new ArrayList<>();
         for (String model: models) {
             try {
@@ -784,7 +784,7 @@ public final class DigitalTwinsAsyncClient {
 
         return protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload, context)
             .map(listResponse -> {
-                List<ModelData> convertedList = listResponse.getValue().stream()
+                List<DigitalTwinsModelData> convertedList = listResponse.getValue().stream()
                     .map(ModelDataConverter::map)
                     .collect(Collectors.toList());
 
@@ -795,10 +795,10 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Gets a model, including the model metadata and the model definition.
      * @param modelId The Id of the model.
-     * @return A {@link ModelData} instance that contains the model and its metadata.
+     * @return A {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ModelData> getModel(String modelId) {
+    public Mono<DigitalTwinsModelData> getModel(String modelId) {
         return getModelWithResponse(modelId)
             .map(Response::getValue);
     }
@@ -806,14 +806,14 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Gets a model, including the model metadata and the model definition.
      * @param modelId The Id of the model.
-     * @return A {@link Response} containing a {@link ModelData} instance that contains the model and its metadata.
+     * @return A {@link Response} containing a {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ModelData>> getModelWithResponse(String modelId) {
+    public Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId) {
         return withContext(context -> getModelWithResponse(modelId, context));
     }
 
-    Mono<Response<ModelData>> getModelWithResponse(String modelId, Context context){
+    Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId, Context context){
         return protocolLayer
             .getDigitalTwinModels()
             .getByIdWithResponseAsync(modelId, includeModelDefinitionOnGet, context)
@@ -829,38 +829,38 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * List all of the models in this digital twins instance.
-     * @return A {@link PagedFlux} of {@link ModelData} that enumerates all the models.
+     * @return A {@link PagedFlux} of {@link DigitalTwinsModelData} that enumerates all the models.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> listModels() {
+    public PagedFlux<DigitalTwinsModelData> listModels() {
         return listModels(new ListModelOptions());
     }
 
     /**
      * List the models in this digital twins instance based on some options.
      * @param listModelOptions The options to follow when listing the models.
-     * @return A {@link PagedFlux} containing the retrieved {@link ModelData} instances.
+     * @return A {@link PagedFlux} containing the retrieved {@link DigitalTwinsModelData} instances.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> listModels(ListModelOptions listModelOptions) {
+    public PagedFlux<DigitalTwinsModelData> listModels(ListModelOptions listModelOptions) {
         return new PagedFlux<>(
             () -> withContext(context -> listModelsSinglePageAsync(listModelOptions, context)),
             nextLink -> withContext(context -> listModelsNextSinglePageAsync(nextLink, context)));
     }
 
-    PagedFlux<ModelData> listModels(Context context){
+    PagedFlux<DigitalTwinsModelData> listModels(Context context){
         return new PagedFlux<>(
             () -> listModelsSinglePageAsync(new ListModelOptions(), context),
             nextLink -> listModelsNextSinglePageAsync(nextLink, context));
     }
 
-    PagedFlux<ModelData> listModels(ListModelOptions listModelOptions, Context context){
+    PagedFlux<DigitalTwinsModelData> listModels(ListModelOptions listModelOptions, Context context){
         return new PagedFlux<>(
             () -> listModelsSinglePageAsync(listModelOptions, context),
             nextLink -> listModelsNextSinglePageAsync(nextLink, context));
     }
 
-    Mono<PagedResponse<ModelData>> listModelsSinglePageAsync(ListModelOptions listModelOptions, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ListModelOptions listModelOptions, Context context){
         return protocolLayer.getDigitalTwinModels().listSinglePageAsync(
             listModelOptions.getDependenciesFor(),
             listModelOptions.getIncludeModelDefinition(),
@@ -868,7 +868,7 @@ public final class DigitalTwinsAsyncClient {
             context)
             .map(
                 objectPagedResponse -> {
-                    List<ModelData> convertedList = objectPagedResponse.getValue().stream()
+                    List<DigitalTwinsModelData> convertedList = objectPagedResponse.getValue().stream()
                         .map(ModelDataConverter::map)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
@@ -883,10 +883,10 @@ public final class DigitalTwinsAsyncClient {
             );
     }
 
-    Mono<PagedResponse<ModelData>> listModelsNextSinglePageAsync(String nextLink, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsNextSinglePageAsync(String nextLink, Context context){
         return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(nextLink, context)
             .map(objectPagedResponse -> {
-            List<ModelData> convertedList = objectPagedResponse.getValue().stream()
+            List<DigitalTwinsModelData> convertedList = objectPagedResponse.getValue().stream()
                 .map(ModelDataConverter::map)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

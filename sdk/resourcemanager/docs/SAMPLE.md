@@ -14,7 +14,7 @@ Azure azure = Azure
     .withDefaultSubscription();
 ```
 
-To learn more about authentication in the Azure Management Libraries for Java, see [AUTH.md](AUTH.md).
+To learn more about authentication in the Azure Management Libraries for Java, see [https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md).
 
 ### Virtual Machines
 
