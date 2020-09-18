@@ -51,33 +51,6 @@ public final class DigitalTwinsClient {
      * Creates a digital twin.
      *
      * @param digitalTwinId The Id of the digital twin.
-     * @param digitalTwin The application/json string representing the digital twin to create.
-     * @return The application/json string representing the digital twin created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String createDigitalTwin(String digitalTwinId, String digitalTwin)
-    {
-        return createDigitalTwinWithResponse(digitalTwinId, digitalTwin, Context.NONE).getValue();
-    }
-
-    /**
-     * Creates a digital twin.
-     *
-     * @param digitalTwinId The Id of the digital twin.
-     * @param digitalTwin The application/json string representing the digital twin to create.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link DigitalTwinsResponse} containing the application/json string representing the digital twin created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin, Context context)
-    {
-        return digitalTwinsAsyncClient.createDigitalTwinWithResponse(digitalTwinId, digitalTwin, context).block();
-    }
-
-    /**
-     * Creates a digital twin.
-     *
-     * @param digitalTwinId The Id of the digital twin.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
      * @param digitalTwin The application/json object representing the digital twin to create.
@@ -103,31 +76,6 @@ public final class DigitalTwinsClient {
     public <T> Response<T> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, Context context)
     {
         return digitalTwinsAsyncClient.createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, context).block();
-    }
-
-    /**
-     * Gets a digital twin.
-     *
-     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
-     * @return The application/json string representing the digital twin.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getDigitalTwin(String digitalTwinId)
-    {
-        return getDigitalTwinWithResponse(digitalTwinId, Context.NONE).getValue();
-    }
-
-    /**
-     * Gets a digital twin.
-     *
-     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link DigitalTwinsResponse} containing the application/json string representing the digital twin.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<String> getDigitalTwinWithResponse(String digitalTwinId, Context context)
-    {
-        return digitalTwinsAsyncClient.getDigitalTwinWithResponse(digitalTwinId, context).block();
     }
 
     /**
@@ -221,33 +169,6 @@ public final class DigitalTwinsClient {
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
-     * @param relationship The application/json string representing the relationship to be created.
-     * @return The application/json string representing the relationship created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String createRelationship(String digitalTwinId, String relationshipId, String relationship) {
-        return createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, Context.NONE).getValue();
-    }
-
-    /**
-     * Creates a relationship on a digital twin.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipId The Id of the relationship to be created.
-     * @param relationship The application/json string representing the relationship to be created.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link DigitalTwinsResponse} containing the application/json string representing the relationship created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<String> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship, Context context) {
-        return digitalTwinsAsyncClient.createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, context).block();
-    }
-
-    /**
-     * Creates a relationship on a digital twin.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipId The Id of the relationship to be created.
      * @param relationship The application/json object representing the relationship to be created.
      * @param clazz The model class of the relationship.
      * @param <T> The generic type of the relationship.
@@ -272,31 +193,6 @@ public final class DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> DigitalTwinsResponse<T> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, Context context) {
         return digitalTwinsAsyncClient.createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, context).block();
-    }
-
-    /**
-     * Gets a relationship on a digital twin.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipId The Id of the relationship to retrieve.
-     * @return The application/json string representing the relationship.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getRelationship(String digitalTwinId, String relationshipId) {
-        return getRelationshipWithResponse(digitalTwinId, relationshipId, Context.NONE).getValue();
-    }
-
-    /**
-     * Gets a relationship on a digital twin.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipId The Id of the relationship to retrieve.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link DigitalTwinsResponse} containing the application/json string representing the relationship.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<String> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Context context) {
-        return digitalTwinsAsyncClient.getRelationshipWithResponse(digitalTwinId, relationshipId, context).block();
     }
 
     /**
@@ -380,32 +276,6 @@ public final class DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DeleteRelationshipRequestOptions options, Context context) {
         return digitalTwinsAsyncClient.deleteRelationshipWithResponse(digitalTwinId, relationshipId, options, context).block();
-    }
-
-    /**
-     * List the relationships that have a given digital twin as the source.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @return A {@link PagedIterable} of application/json strings representing the relationships belonging to the
-     * specified digital twin.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRelationships(String digitalTwinId) {
-        return listRelationships(digitalTwinId, null, Context.NONE);
-    }
-
-    /**
-     * List the relationships that have a given digital twin as the source and that have the given relationship name.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipName The name of a relationship to filter to.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} of application/json stinrgs representing the relationships belonging to
-     * the specified digital twin.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRelationships(String digitalTwinId, String relationshipName, Context context) {
-        return new PagedIterable<>(digitalTwinsAsyncClient.listRelationships(digitalTwinId, relationshipName, context));
     }
 
     /**
@@ -581,29 +451,6 @@ public final class DigitalTwinsClient {
      * Get a component of a digital twin.
      * @param digitalTwinId The Id of the digital twin to get the component from.
      * @param componentPath The path of the component on the digital twin to retrieve.
-     * @return The application/json string representing the component of the digital twin.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getComponent(String digitalTwinId, String componentPath) {
-        return getComponentWithResponse(digitalTwinId, componentPath, Context.NONE).getValue();
-    }
-
-    /**
-     * Get a component of a digital twin.
-     * @param digitalTwinId The Id of the digital twin to get the component from.
-     * @param componentPath The path of the component on the digital twin to retrieve.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link DigitalTwinsResponse} containing the application/json string representing the component of the digital twin.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<String> getComponentWithResponse(String digitalTwinId, String componentPath, Context context) {
-        return digitalTwinsAsyncClient.getComponentWithResponse(digitalTwinId, componentPath, context).block();
-    }
-
-    /**
-     * Get a component of a digital twin.
-     * @param digitalTwinId The Id of the digital twin to get the component from.
-     * @param componentPath The path of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.
      * @param <T> The generic type to deserialize the application/json component into.
      * @return The deserialized application/json object representing the component of the digital twin.
@@ -657,29 +504,6 @@ public final class DigitalTwinsClient {
     //endregion Component APIs
 
     //region Query APIs
-
-    /**
-     * Query digital twins.
-     *
-     * @param query The query string, in SQL-like syntax.
-     * @return A {@link PagedIterable} of application/json query result items.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> query(String query) {
-        return query(query, Context.NONE);
-    }
-
-    /**
-     * Query digital twins.
-     *
-     * @param query The query string, in SQL-like syntax.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} of application/json strings.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> query(String query, Context context) {
-        return new PagedIterable<>(digitalTwinsAsyncClient.query(query, context));
-    }
 
     /**
      * Query digital twins.
