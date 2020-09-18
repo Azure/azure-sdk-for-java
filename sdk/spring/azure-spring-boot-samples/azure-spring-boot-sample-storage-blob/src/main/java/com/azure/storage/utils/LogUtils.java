@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.storage.utils;
+package com.azure.storage.utils;
 
 public class LogUtils {
 

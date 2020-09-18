@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.storage.service;
+package com.azure.storage.service;
 
 import com.azure.storage.blob.BlobAsyncClient;
 
 import java.io.File;
 
-import static com.microsoft.azure.storage.utils.LogUtils.logError;
-import static com.microsoft.azure.storage.utils.LogUtils.logInfo;
+import static com.azure.storage.utils.LogUtils.logError;
+import static com.azure.storage.utils.LogUtils.logInfo;
 
 public class BlobService {
 
