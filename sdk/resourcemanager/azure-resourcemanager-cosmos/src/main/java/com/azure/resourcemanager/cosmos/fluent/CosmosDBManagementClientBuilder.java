@@ -67,6 +67,22 @@ public final class CosmosDBManagementClientBuilder {
     }
 
     /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     *
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the CosmosDBManagementClientBuilder.
+     */
+    public CosmosDBManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -98,22 +114,6 @@ public final class CosmosDBManagementClientBuilder {
         return this;
     }
 
-    /*
-     * The default poll interval for long-running operation
-     */
-    private Duration defaultPollInterval;
-
-    /**
-     * Sets The default poll interval for long-running operation.
-     *
-     * @param defaultPollInterval the defaultPollInterval value.
-     * @return the CosmosDBManagementClientBuilder.
-     */
-    public CosmosDBManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
-        this.defaultPollInterval = defaultPollInterval;
-        return this;
-    }
-
     /**
      * Builds an instance of CosmosDBManagementClient with the provided parameters.
      *
@@ -126,6 +126,9 @@ public final class CosmosDBManagementClientBuilder {
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
         }
+        if (defaultPollInterval == null) {
+            this.defaultPollInterval = Duration.ofSeconds(30);
+        }
         if (pipeline == null) {
             this.pipeline =
                 new HttpPipelineBuilder()
@@ -134,9 +137,6 @@ public final class CosmosDBManagementClientBuilder {
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = new AzureJacksonAdapter();
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
         }
         CosmosDBManagementClient client =
             new CosmosDBManagementClient(

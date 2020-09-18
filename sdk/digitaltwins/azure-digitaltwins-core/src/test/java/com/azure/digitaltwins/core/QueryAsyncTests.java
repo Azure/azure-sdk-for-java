@@ -43,7 +43,7 @@ public class QueryAsyncTests extends QueryTestBase{
             // Create a room twin with property "IsOccupied" : true
             String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
 
-            StepVerifier.create(asyncClient.createDigitalTwinWithResponse(roomTwinId, roomTwin))
+            StepVerifier.create(asyncClient.createDigitalTwinWithResponse(roomTwinId, roomTwin, String.class))
                 .assertNext(response ->
                     assertThat(response.getStatusCode())
                         .as("Created digitaltwin successfully")

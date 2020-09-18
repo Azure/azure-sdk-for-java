@@ -8,9 +8,5 @@ jobs:
         - name: azure-ai-textanalytics
           groupId: com.azure
           safeName: azureaitextanalytics
-      # resource creation is disabled because we are trying to test the private endpoint.
-      # Will enable it when service rolls out the changes to all region.
-      DisableAzureResourceCreation: true
       EnvVars:
-        AZURE_TEXT_ANALYTICS_API_KEY: $(java-textanalytics-test-api-key)
-        AZURE_TEXT_ANALYTICS_ENDPOINT: $(java-textanalytics-test-ppe-endpoint-string)
+        AZURE_TEST_MODE: RECORD

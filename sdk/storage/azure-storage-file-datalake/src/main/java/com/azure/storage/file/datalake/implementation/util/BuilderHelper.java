@@ -81,8 +81,7 @@ public final class BuilderHelper {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
             // The endpoint scope for the BearerToken is the blob endpoint not dfs
-            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential,
-                String.format("%s/.default", DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "blob", "dfs")));
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE);
         } else if (sasTokenCredential != null) {
             credentialPolicy =  new SasTokenCredentialPolicy(sasTokenCredential);
         } else {

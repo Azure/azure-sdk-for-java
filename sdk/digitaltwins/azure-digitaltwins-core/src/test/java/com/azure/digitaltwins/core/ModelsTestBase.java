@@ -1,7 +1,7 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
-import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public abstract class ModelsTestBase extends DigitalTwinsTestBase {
         deleteModelRunner.accept(modelId);
     }
 
-    static void assertModelDataAreEqual(ModelData expected, ModelData actual, boolean compareModel) {
+    static void assertModelDataAreEqual(DigitalTwinsModelData expected, DigitalTwinsModelData actual, boolean compareModel) {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getUploadTime(), actual.getUploadTime());
 
