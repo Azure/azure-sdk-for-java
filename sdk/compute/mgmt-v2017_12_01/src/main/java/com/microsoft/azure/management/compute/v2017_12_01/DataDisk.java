@@ -75,7 +75,7 @@ public class DataDisk {
 
     /**
      * Specifies the size of an empty data disk in gigabytes. This element can
-     * be used to overwrite the name of the disk in a virtual machine image.
+     * be used to overwrite the size of the disk in a virtual machine image.
      * &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      */
     @JsonProperty(value = "diskSizeGB")
@@ -88,7 +88,7 @@ public class DataDisk {
     private ManagedDiskParameters managedDisk;
 
     /**
-     * Get the lun value.
+     * Get specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
      *
      * @return the lun value
      */
@@ -97,7 +97,7 @@ public class DataDisk {
     }
 
     /**
-     * Set the lun value.
+     * Set specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
      *
      * @param lun the lun value to set
      * @return the DataDisk object itself.
@@ -108,7 +108,7 @@ public class DataDisk {
     }
 
     /**
-     * Get the name value.
+     * Get the disk name.
      *
      * @return the name value
      */
@@ -117,7 +117,7 @@ public class DataDisk {
     }
 
     /**
-     * Set the name value.
+     * Set the disk name.
      *
      * @param name the name value to set
      * @return the DataDisk object itself.
@@ -128,7 +128,7 @@ public class DataDisk {
     }
 
     /**
-     * Get the vhd value.
+     * Get the virtual hard disk.
      *
      * @return the vhd value
      */
@@ -137,7 +137,7 @@ public class DataDisk {
     }
 
     /**
-     * Set the vhd value.
+     * Set the virtual hard disk.
      *
      * @param vhd the vhd value to set
      * @return the DataDisk object itself.
@@ -148,7 +148,7 @@ public class DataDisk {
     }
 
     /**
-     * Get the image value.
+     * Get the source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist.
      *
      * @return the image value
      */
@@ -157,7 +157,7 @@ public class DataDisk {
     }
 
     /**
-     * Set the image value.
+     * Set the source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist.
      *
      * @param image the image value to set
      * @return the DataDisk object itself.
@@ -168,7 +168,7 @@ public class DataDisk {
     }
 
     /**
-     * Get the caching value.
+     * Get specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite** &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite'.
      *
      * @return the caching value
      */
@@ -177,7 +177,7 @@ public class DataDisk {
     }
 
     /**
-     * Set the caching value.
+     * Set specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite** &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite'.
      *
      * @param caching the caching value to set
      * @return the DataDisk object itself.
@@ -188,7 +188,7 @@ public class DataDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled value.
+     * Get specifies whether writeAccelerator should be enabled or disabled on the disk.
      *
      * @return the writeAcceleratorEnabled value
      */
@@ -197,7 +197,7 @@ public class DataDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled value.
+     * Set specifies whether writeAccelerator should be enabled or disabled on the disk.
      *
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set
      * @return the DataDisk object itself.
@@ -208,7 +208,7 @@ public class DataDisk {
     }
 
     /**
-     * Get the createOption value.
+     * Get specifies how the virtual machine should be created.&lt;br&gt;&lt;br&gt; Possible values are:&lt;br&gt;&lt;br&gt; **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.&lt;br&gt;&lt;br&gt; **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'FromImage', 'Empty', 'Attach'.
      *
      * @return the createOption value
      */
@@ -217,7 +217,7 @@ public class DataDisk {
     }
 
     /**
-     * Set the createOption value.
+     * Set specifies how the virtual machine should be created.&lt;br&gt;&lt;br&gt; Possible values are:&lt;br&gt;&lt;br&gt; **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.&lt;br&gt;&lt;br&gt; **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'FromImage', 'Empty', 'Attach'.
      *
      * @param createOption the createOption value to set
      * @return the DataDisk object itself.
@@ -228,7 +228,7 @@ public class DataDisk {
     }
 
     /**
-     * Get the diskSizeGB value.
+     * Get specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      *
      * @return the diskSizeGB value
      */
@@ -237,7 +237,7 @@ public class DataDisk {
     }
 
     /**
-     * Set the diskSizeGB value.
+     * Set specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      *
      * @param diskSizeGB the diskSizeGB value to set
      * @return the DataDisk object itself.
@@ -248,7 +248,7 @@ public class DataDisk {
     }
 
     /**
-     * Get the managedDisk value.
+     * Get the managed disk parameters.
      *
      * @return the managedDisk value
      */
@@ -257,7 +257,7 @@ public class DataDisk {
     }
 
     /**
-     * Set the managedDisk value.
+     * Set the managed disk parameters.
      *
      * @param managedDisk the managedDisk value to set
      * @return the DataDisk object itself.

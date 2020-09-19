@@ -27,7 +27,7 @@ public class InnerError {
     private String errordetail;
 
     /**
-     * Get the exceptiontype value.
+     * Get the exception type.
      *
      * @return the exceptiontype value
      */
@@ -36,7 +36,7 @@ public class InnerError {
     }
 
     /**
-     * Set the exceptiontype value.
+     * Set the exception type.
      *
      * @param exceptiontype the exceptiontype value to set
      * @return the InnerError object itself.
@@ -47,7 +47,7 @@ public class InnerError {
     }
 
     /**
-     * Get the errordetail value.
+     * Get the internal error message or exception dump.
      *
      * @return the errordetail value
      */
@@ -56,7 +56,7 @@ public class InnerError {
     }
 
     /**
-     * Set the errordetail value.
+     * Set the internal error message or exception dump.
      *
      * @param errordetail the errordetail value to set
      * @return the InnerError object itself.
