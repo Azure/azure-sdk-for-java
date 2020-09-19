@@ -94,10 +94,12 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
  * 	            - {@Link acquiredChannels}
  * 	            - {@Link availableChannels}
  * 	        - acquire()
- * 	            -
+ * 	    - AcquisitionTimeout handling:
+ * 	        - A global single threaded scheduler
+ * 	        - [***] Each channel independently schedules acquisitionTimeout handlers
+ * 	        - touches {@Link pendingAcquisitions} might result in impacting the fairness
  * 	    - RntbdServiceEndpoint.write:
  * 	        - Promise<Channel> might AcquisitionTimeout
- * 	        -
  * 	        - RntbdServiceEndpoint.writeWhenConnected
  * 	            - releaseToPool immediately -> unblocks next acquisition if-any
  * 	            - **Uses Channel even after release**, in channelEventLoop [Not a functional issue but to be noted]
