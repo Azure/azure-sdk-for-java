@@ -63,15 +63,21 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
  * 	- acquire (RntbdServiceEndpoint): acquire a channel to use
  * 	- release (RntbdServiceEndpoint): channel usage is complete and returning it back to pool
  * 	- Channel.closeChannel() Future: Event handling notifying the channel termination to refresh bookkeeping
- * 	- acquisitionTimeoutTimer: channel acquisition wait-out handler
+ * 	- acquisitionTimeoutTimer: channel acquisition time-out handler
  * 	- monitoring (through RntbdServiceEndpoint): get monitoring metrics
  *
  * 	Behaviors/Expectations:
- * 	    - Bounds: MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT (NOT A GUARANTEE)
+ * 	    - Bounds:
+ * 	        - MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT (NOT A GUARANTEE)
+ * 	        - AvailableChannels.size() + AcquiredChannels.size() <= MAX_CHANNELS_PER_ENDPOINT
+ * 	        - PendingAcquisition queue: default --> Max(10_000, MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT)
+ * 	        - ChannelEventLoop task queue length: MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT + newInFlightAcquisitions (not yet in pendingAcquisitionQueue)
  * 	    - NewChannel vs ReUseChannel:
- * 	        - NewChannels are serially created (current state NOT by-design)
- * 	        - Will re-use an existing channel when possible (with MAX_REQUESTS_ENDPOINT constraint)
- * 	        - No guarantees on fairness per channel with-in bounds of MAX_REQUESTS_ENDPOINT. I.e. some channel might have high request concurrency compared to others
+ * 	        - NewChannels are serially created (reasonable current state, possible future change DON'T TAKE any dependency)
+ * 	        - Will re-use an existing channel when possible (with MAX_REQUESTS_ENDPOINT attempt not GUARANTEED)
+ * 	        - Channel usage fairness: fairness is attempted but not guaranteed
+ * 	            - When loadFactor is > 90%, fairness is attempted by selecting Channel with less concurrency
+ * 	            - Otherwise no guarantees on fairness per channel with-in bounds of MAX_REQUESTS_ENDPOINT. I.e. some channel might have high request concurrency compared to others
  * 	    - Channel serving guarantees:
  * 	        - Ordered delivery is not guaranteed (by-design)
  * 	        - Fairness is attempted but not a guarantee
@@ -81,13 +87,17 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
  *
  * 	Design Notes:
  * 	    - channelPool.eventLoop{@Link executor}: (executes on a single & same thread, serially)
+ * 	        - Each channelPool gets an EventLoop (selection is round-robin)
  * 	        - Schedule only when it can be served immediately
- * 	        - Updates to below data structures should be done only when inside eventLoop
+ * 	        - Updates and reads that depend on "strong consistency" - like whether to create a new connection or not.
+ * 	            - Updates to below data structures should be done only when inside eventLoop
  * 	            - {@Link acquiredChannels}
  * 	            - {@Link availableChannels}
- * 	            - {@Link pendingAcquisitions}
+ * 	        - acquire()
+ * 	            -
  * 	    - RntbdServiceEndpoint.write:
- * 	        - Promise which will success with Channel to use or AcquisitionTimeout
+ * 	        - Promise<Channel> might AcquisitionTimeout
+ * 	        -
  * 	        - RntbdServiceEndpoint.writeWhenConnected
  * 	            - releaseToPool immediately -> unblocks next acquisition if-any
  * 	            - **Uses Channel even after release**, in channelEventLoop [Not a functional issue but to be noted]
