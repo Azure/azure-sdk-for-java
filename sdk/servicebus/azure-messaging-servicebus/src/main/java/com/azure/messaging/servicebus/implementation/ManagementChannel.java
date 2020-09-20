@@ -148,7 +148,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber, String sessionId, String associatedLinkName) {
         return peek(fromSequenceNumber, sessionId, associatedLinkName, 1)
-            .last();
+            .next();
     }
 
     /**
@@ -449,8 +449,29 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 }
 
                 final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
-                final String statusDescription = RequestResponseUtils.getStatusDescription(response);
+
+                if (statusCode == AmqpResponseCode.NO_CONTENT) {
+                    sink.next(response);
+                    return;
+                }
+
                 final String errorCondition = RequestResponseUtils.getErrorCondition(response);
+
+                if (statusCode == AmqpResponseCode.NOT_FOUND) {
+                    final AmqpErrorCondition amqpErrorCondition = AmqpErrorCondition.fromString(errorCondition);
+
+                    if (amqpErrorCondition == AmqpErrorCondition.MESSAGE_NOT_FOUND) {
+                        logger.info("There was no matching message found.");
+                        sink.next(response);
+                        return;
+                    } else if (amqpErrorCondition == AmqpErrorCondition.SESSION_NOT_FOUND) {
+                        logger.info("There was no matching session found.");
+                        sink.next(response);
+                        return;
+                    }
+                }
+
+                final String statusDescription = RequestResponseUtils.getStatusDescription(response);
                 final Throwable throwable = ExceptionUtil.toException(errorCondition, statusDescription,
                     channel.getErrorContext());
 
