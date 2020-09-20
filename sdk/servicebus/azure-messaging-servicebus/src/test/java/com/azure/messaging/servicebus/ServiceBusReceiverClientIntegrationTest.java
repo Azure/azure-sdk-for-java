@@ -9,7 +9,6 @@ import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,6 +20,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -411,36 +411,15 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    void peekMessageEmptyMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
+    void peekMessageEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
 
         // Act
-        ServiceBusReceivedMessage receivedMessage = receiver.peekMessage();
+        final ServiceBusReceivedMessage receivedMessage = receiver.peekMessage();
 
         // Assert
         assertNull(receivedMessage);
-    }
-
-    /**
-     * Verifies that we can send and peek a message.
-     */
-    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    @ParameterizedTest
-    void peekMessageEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
-        // Arrange
-        setSenderAndReceiver(entityType, 20, isSessionEnabled);
-
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-
-        sendMessage(message);
-
-        // Act
-        ServiceBusReceivedMessage receivedMessage = receiver.peekMessage();
-
-        // Assert
-        assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
     }
 
     /**
@@ -467,7 +446,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Act
-        ServiceBusReceivedMessage receivedPeekMessage = receiver.peekMessageAt(receivedMessage.getSequenceNumber());
+        final ServiceBusReceivedMessage receivedPeekMessage = receiver.peekMessageAt(receivedMessage.getSequenceNumber());
 
         // Assert
         assertEquals(receivedMessage.getSequenceNumber(), receivedPeekMessage.getSequenceNumber());
@@ -482,7 +461,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    void peekBatchMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
+    void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
@@ -494,10 +473,30 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message);
 
         // Act
-        IterableStream<ServiceBusReceivedMessage> iterableMessages = receiver.peekMessages(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> messages = receiver.peekMessages(maxMessages);
 
         // Assert
-        Assertions.assertEquals(maxMessages, (int) iterableMessages.stream().count());
+        assertEquals(maxMessages, (int) messages.stream().count());
+    }
+
+    /**
+     * Verifies that an empty entity does not error when a batch is peeked.
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
+    @ParameterizedTest
+    void peekMessagesEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
+        final int maxMessages = 10;
+
+        // Act
+        final IterableStream<ServiceBusReceivedMessage> messages = receiver.peekMessages(maxMessages);
+
+        // Assert
+        assertNotNull(messages);
+
+        final Optional<ServiceBusReceivedMessage> anyMessages = messages.stream().findAny();
+        assertTrue(anyMessages.isEmpty());
     }
 
     /**
@@ -505,7 +504,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
-    void peekBatchMessagesFromSequence(MessagingEntityType entityType) {
+    void peekMessagesFromSequence(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, 0, false);
 
