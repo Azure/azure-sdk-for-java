@@ -69,6 +69,7 @@ public final class ExceptionUtil {
             case SESSION_CANNOT_BE_LOCKED:
             case ENTITY_ALREADY_EXISTS:
             case MESSAGE_NOT_FOUND:
+            case SESSION_NOT_FOUND:
                 isTransient = false;
                 break;
             case NOT_IMPLEMENTED:

@@ -133,6 +133,10 @@ public enum AmqpErrorCondition {
      */
     MESSAGE_NOT_FOUND("com.microsoft:message-not-found"),
     /**
+     * Error condition when a receiver attempts to receive from a session that does not exist.
+     */
+    SESSION_NOT_FOUND("com.microsoft:session-not-found"),
+    /**
      * Error condition when a subscription client tries to create a rule with the name of an already existing rule.
      */
     ENTITY_ALREADY_EXISTS("com.microsoft:entity-already-exists");
