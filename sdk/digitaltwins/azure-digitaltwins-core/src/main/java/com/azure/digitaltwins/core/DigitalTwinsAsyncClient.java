@@ -485,7 +485,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         list,
-                        SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken(), this.serializer),
+                        SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -512,7 +512,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken(), this.serializer),
+                    SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -562,7 +562,7 @@ public final class DigitalTwinsAsyncClient {
             pagedIncomingRelationshipResponse.getStatusCode(),
             pagedIncomingRelationshipResponse.getHeaders(),
             convertedList,
-            SerializationHelpers.serializeContinuationToken(pagedIncomingRelationshipResponse.getContinuationToken(), this.serializer),
+            SerializationHelpers.serializeContinuationToken(pagedIncomingRelationshipResponse.getContinuationToken()),
             ((PagedResponseBase)pagedIncomingRelationshipResponse).getDeserializedHeaders());
     };
 
@@ -718,7 +718,7 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(),
                 objectPagedResponse.getHeaders(),
                 convertedList,
-                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken(), this.serializer),
+                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
                 ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
         });
     }
@@ -907,7 +907,7 @@ public final class DigitalTwinsAsyncClient {
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken(), this.serializer),
+                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -932,7 +932,7 @@ public final class DigitalTwinsAsyncClient {
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken(), this.serializer),
+                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1089,7 +1089,7 @@ public final class DigitalTwinsAsyncClient {
             pagedEventRouteResponse.getStatusCode(),
             pagedEventRouteResponse.getHeaders(),
             convertedList,
-            SerializationHelpers.serializeContinuationToken(pagedEventRouteResponse.getContinuationToken(), this.serializer),
+            SerializationHelpers.serializeContinuationToken(pagedEventRouteResponse.getContinuationToken()),
             ((PagedResponseBase) pagedEventRouteResponse).getDeserializedHeaders());
     };
 
