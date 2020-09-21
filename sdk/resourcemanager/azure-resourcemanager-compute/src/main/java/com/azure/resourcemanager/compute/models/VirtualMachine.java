@@ -1123,15 +1123,6 @@ public interface VirtualMachine
              */
             WithCreate withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
 
-            /**
-             * Specifies the size of the OSDisk in GB.
-             *
-             * @param size the VHD size
-             * @return the next stage of the definition
-             * @deprecated use {@link #withOSDiskSizeInGB(int)} instead
-             */
-            @Deprecated
-            WithCreate withOSDiskSizeInGB(Integer size);
 
             /**
              * Specifies the size of the OSDisk in GB.
@@ -2190,19 +2181,6 @@ public interface VirtualMachine
          * @return the next stage of the update
          */
         Update withOSDiskCaching(CachingTypes cachingType);
-
-        /**
-         * Specifies the size of the OS disk in GB.
-         *
-         * <p>Only unmanaged disks may be resized as part of a VM update. Managed disks must be resized separately,
-         * using managed disk API.
-         *
-         * @param size a disk size.
-         * @return the next stage of the update
-         * @deprecated use {@link #withOSDiskSizeInGB(int)} instead.
-         */
-        @Deprecated
-        Update withOSDiskSizeInGB(Integer size);
 
         /**
          * Specifies the size of the OS disk in GB.
