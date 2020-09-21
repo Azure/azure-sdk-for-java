@@ -59,7 +59,6 @@ import com.azure.resourcemanager.resources.models.Location;
 import com.azure.resourcemanager.resources.models.RegionCategory;
 import com.azure.resourcemanager.resources.models.RegionType;
 import com.azure.resourcemanager.resources.models.Subscription;
-import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -1081,7 +1080,7 @@ public class AzureTests extends ResourceManagerTestBase {
                 .define(storageAccountName)
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup()
-                .withSku(StorageAccountSkuType.fromSkuName(SkuName.PREMIUM_LRS))
+                .withSku(StorageAccountSkuType.PREMIUM_LRS)
                 .create();
 
         Assertions.assertEquals(storageAccount.name(), storageAccountName);
