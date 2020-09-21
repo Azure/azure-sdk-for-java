@@ -3,12 +3,11 @@
 
 package com.microsoft.azure.spring.autoconfigure.cosmosdb;
 
-import com.azure.data.cosmos.ConnectionPolicy;
-import com.azure.data.cosmos.CosmosClient;
-import com.microsoft.azure.spring.data.cosmosdb.config.AbstractCosmosConfiguration;
-import com.microsoft.azure.spring.data.cosmosdb.config.CosmosDBConfig;
-import com.microsoft.azure.spring.data.cosmosdb.core.CosmosTemplate;
-import org.springframework.beans.factory.ObjectProvider;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,32 +23,31 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(CosmosDBProperties.class)
 public class CosmosAutoConfiguration extends AbstractCosmosConfiguration {
     private final CosmosDBProperties properties;
-    private final ConnectionPolicy policy;
 
-    public CosmosAutoConfiguration(CosmosDBProperties properties,
-                                   ObjectProvider<ConnectionPolicy> connectionPolicyObjectProvider) {
+    public CosmosAutoConfiguration(CosmosDBProperties properties) {
         this.properties = properties;
-        this.policy = connectionPolicyObjectProvider.getIfAvailable();
-        configConnectionPolicy(properties, policy);
+    }
+
+    @Override
+    protected String getDatabaseName() {
+        return properties.getDatabase();
     }
 
     @Bean
-    public CosmosDBConfig cosmosDBConfig() {
-
-        return CosmosDBConfig.builder(
-                properties.getUri(), properties.getKey(), properties.getDatabase())
-                             .consistencyLevel(properties.getConsistencyLevel())
-                             .allowTelemetry(properties.isAllowTelemetry())
-                             .connectionPolicy(properties.getConnectionPolicy())
-                             .responseDiagnosticsProcessor(properties.getResponseDiagnosticsProcessor())
-                             .populateQueryMetrics(properties.isPopulateQueryMetrics())
-                             .build();
+    public CosmosClientBuilder cosmosClientBuilder() {
+        return new CosmosClientBuilder()
+            .consistencyLevel(properties.getConsistencyLevel())
+            .key(properties.getKey())
+            .endpoint(properties.getUri())
+            .contentResponseOnWriteEnabled(true);
     }
 
-    private void configConnectionPolicy(CosmosDBProperties properties, ConnectionPolicy connectionPolicy) {
-        // This is a temp fix as CosmosDbFactory does not support loading ConnectionPolicy bean from context
-        final ConnectionPolicy policy = connectionPolicy == null ? ConnectionPolicy.defaultPolicy() : connectionPolicy;
-
-        properties.setConnectionPolicy(policy);
+    @Bean
+    @Override
+    public CosmosConfig cosmosConfig() {
+        return CosmosConfig.builder()
+                           .enableQueryMetrics(properties.isPopulateQueryMetrics())
+                           .responseDiagnosticsProcessor(properties.getResponseDiagnosticsProcessor())
+                           .build();
     }
 }

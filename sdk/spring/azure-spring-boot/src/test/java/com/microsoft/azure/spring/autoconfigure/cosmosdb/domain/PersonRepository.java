@@ -3,7 +3,7 @@
 
 package com.microsoft.azure.spring.autoconfigure.cosmosdb.domain;
 
-import com.microsoft.azure.spring.data.cosmosdb.repository.CosmosRepository;
+import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

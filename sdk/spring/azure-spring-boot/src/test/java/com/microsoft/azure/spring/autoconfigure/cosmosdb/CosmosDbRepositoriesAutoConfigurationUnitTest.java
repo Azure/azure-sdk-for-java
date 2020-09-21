@@ -3,10 +3,10 @@
 
 package com.microsoft.azure.spring.autoconfigure.cosmosdb;
 
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import com.microsoft.azure.spring.autoconfigure.cosmosdb.domain.Person;
 import com.microsoft.azure.spring.autoconfigure.cosmosdb.domain.PersonRepository;
-import com.microsoft.azure.spring.data.cosmosdb.core.CosmosTemplate;
-import com.microsoft.azure.spring.data.cosmosdb.repository.config.EnableCosmosRepositories;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;

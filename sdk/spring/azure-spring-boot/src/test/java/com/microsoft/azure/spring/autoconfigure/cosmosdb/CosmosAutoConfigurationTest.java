@@ -3,8 +3,8 @@
 package com.microsoft.azure.spring.autoconfigure.cosmosdb;
 
 
-import com.azure.data.cosmos.ConnectionPolicy;
-import com.azure.data.cosmos.RetryOptions;
+import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -27,25 +27,23 @@ public class CosmosAutoConfigurationTest {
     static class ConnectionPolicyConfig {
         @Bean
         public ConnectionPolicy connectionPolicy() {
-            final ConnectionPolicy connectionPolicy = ConnectionPolicy.defaultPolicy();
+            final ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
 
-            connectionPolicy.requestTimeoutInMillis(PropertySettingUtil.REQUEST_TIMEOUT);
-            connectionPolicy.connectionMode(PropertySettingUtil.CONNECTION_MODE);
-            connectionPolicy.maxPoolSize(PropertySettingUtil.MAX_POOL_SIZE);
-            connectionPolicy.idleConnectionTimeoutInMillis(PropertySettingUtil.IDLE_CONNECTION_TIMEOUT);
+            connectionPolicy.setRequestTimeout(PropertySettingUtil.REQUEST_TIMEOUT);
+            connectionPolicy.setConnectionMode(PropertySettingUtil.CONNECTION_MODE);
+            connectionPolicy.setMaxConnectionPoolSize(PropertySettingUtil.MAX_CONNECTION_POOL_SIZE);
+            connectionPolicy.setIdleHttpConnectionTimeout(PropertySettingUtil.IDLE_HTTP_CONNECTION_TIMEOUT);
+            connectionPolicy.setIdleTcpConnectionTimeout(PropertySettingUtil.IDLE_TCP_CONNECTION_TIMEOUT);
             // TODO (data) User agent from configured ConnectionPolicy is not taken
-            connectionPolicy.userAgentSuffix(PropertySettingUtil.USER_AGENT_SUFFIX);
+            connectionPolicy.setUserAgentSuffix(PropertySettingUtil.USER_AGENT_SUFFIX);
+            final ThrottlingRetryOptions retryOptions = new ThrottlingRetryOptions();
+            retryOptions.setMaxRetryAttemptsOnThrottledRequests(
+                PropertySettingUtil.RETRY_OPTIONS_MAX_RETRY_ATTEMPTS_ON_THROTTLED_REQUESTS);
+            retryOptions.setMaxRetryWaitTime(PropertySettingUtil.MAX_RETRY_WAIT_TIME);
+            connectionPolicy.setThrottlingRetryOptions(retryOptions);
 
-            final RetryOptions retryOptions = new RetryOptions();
-            retryOptions.maxRetryAttemptsOnThrottledRequests(
-                    PropertySettingUtil.RETRY_OPTIONS_MAX_RETRY_ATTEMPTS_ON_THROTTLED_REQUESTS);
-            retryOptions.maxRetryWaitTimeInSeconds(
-                    PropertySettingUtil.RETRY_OPTIONS_MAX_RETRY_WAIT_TIME_IN_SECONDS);
-            connectionPolicy.retryOptions(retryOptions);
-
-            connectionPolicy.enableEndpointDiscovery(PropertySettingUtil.ENABLE_ENDPOINT_DISCOVERY);
-            connectionPolicy.preferredLocations(PropertySettingUtil.PREFERRED_LOCATIONS);
-
+            connectionPolicy.setEndpointDiscoveryEnabled(PropertySettingUtil.ENDPOINT_DISCOVERY_ENABLED);
+            connectionPolicy.setPreferredRegions(PropertySettingUtil.PREFERRED_REGIONS);
             return connectionPolicy;
         }
     }

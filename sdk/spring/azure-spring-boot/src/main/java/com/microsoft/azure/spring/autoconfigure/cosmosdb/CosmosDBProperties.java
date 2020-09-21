@@ -3,9 +3,9 @@
 
 package com.microsoft.azure.spring.autoconfigure.cosmosdb;
 
-import com.azure.data.cosmos.ConnectionPolicy;
-import com.azure.data.cosmos.ConsistencyLevel;
-import com.microsoft.azure.spring.data.cosmosdb.core.ResponseDiagnosticsProcessor;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -50,11 +50,6 @@ public class CosmosDBProperties {
     private boolean populateQueryMetrics;
 
     /**
-     * Whether allow Microsoft to collect telemetry data.
-     */
-    private boolean allowTelemetry = true;
-
-    /**
      * Response Diagnostics processor
      * Default implementation is to log the response diagnostics string
      */
@@ -65,7 +60,7 @@ public class CosmosDBProperties {
             }
         };
 
-    private ConnectionPolicy connectionPolicy = ConnectionPolicy.defaultPolicy();
+    private ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
 
     public String getUri() {
         return uri;
@@ -97,14 +92,6 @@ public class CosmosDBProperties {
 
     public void setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
-    }
-
-    public boolean isAllowTelemetry() {
-        return allowTelemetry;
-    }
-
-    public void setAllowTelemetry(boolean allowTelemetry) {
-        this.allowTelemetry = allowTelemetry;
     }
 
     public ConnectionPolicy getConnectionPolicy() {

@@ -3,8 +3,8 @@
 
 package com.microsoft.azure.spring.autoconfigure.cosmosdb;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosDatabaseResponse;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +37,16 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
 
     @Override
     protected void doHealthCheck(Builder builder) throws Exception {
-        CosmosDatabaseResponse response = this.cosmosClient.getDatabase(dbName).read().block();
+        CosmosDatabaseResponse response = this.cosmosClient.getDatabase(dbName).read();
 
         if (response != null) {
             LOGGER.info("The health indicator cost {} RUs, cosmos uri: {}, dbName: {}",
-                response.requestCharge(), uri, dbName);
+                response.getRequestCharge(), uri, dbName);
         }
         if (response == null) {
             builder.down();
         } else {
-            builder.up().withDetail("database", response.database().id());
+            builder.up().withDetail("database", response.getProperties().getId());
         }
 
     }
