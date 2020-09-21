@@ -854,7 +854,6 @@ public final class BlobServiceAsyncClient {
         ).flatMap(FluxUtil::toMono);
     }
 
-
     /**
      * Restores a previously deleted container. The restored container
      * will be renamed to the <code>destinationContainerName</code> if provided in <code>options</code>.
@@ -897,5 +896,4 @@ public final class BlobServiceAsyncClient {
             .map(response -> new SimpleResponse<>(response,
                 getBlobContainerAsyncClient(finalDestinationContainerName)));
     }
-
 }
