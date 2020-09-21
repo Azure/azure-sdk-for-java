@@ -5,6 +5,7 @@ module com.azure.resourcemanager {
     requires transitive com.azure.resourcemanager.resources;
     requires transitive com.azure.resourcemanager.appplatform;
     requires transitive com.azure.resourcemanager.appservice;
+    requires transitive com.azure.resourcemanager.cdn;
     requires transitive com.azure.resourcemanager.compute;
     requires transitive com.azure.resourcemanager.containerinstance;
     requires transitive com.azure.resourcemanager.containerregistry;

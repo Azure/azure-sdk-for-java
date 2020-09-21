@@ -3,7 +3,6 @@
 
 module com.azure.resourcemanager.resources {
     requires transitive com.azure.core.management;
-    requires com.github.spotbugs.annotations;
 
     // export public APIs of resources
     exports com.azure.resourcemanager.resources;
@@ -29,6 +28,7 @@ module com.azure.resourcemanager.resources {
         com.azure.resourcemanager.appplatform,
         com.azure.resourcemanager.appservice,
         com.azure.resourcemanager.authorization,
+        com.azure.resourcemanager.cdn,
         com.azure.resourcemanager.compute,
         com.azure.resourcemanager.containerinstance,
         com.azure.resourcemanager.containerregistry,
@@ -50,6 +50,7 @@ module com.azure.resourcemanager.resources {
         com.azure.resourcemanager.appplatform,
         com.azure.resourcemanager.appservice,
         com.azure.resourcemanager.authorization,
+        com.azure.resourcemanager.cdn,
         com.azure.resourcemanager.compute,
         com.azure.resourcemanager.containerinstance,
         com.azure.resourcemanager.containerregistry,
@@ -72,6 +73,7 @@ module com.azure.resourcemanager.resources {
         com.azure.resourcemanager.appplatform,
         com.azure.resourcemanager.appservice,
         com.azure.resourcemanager.authorization,
+        com.azure.resourcemanager.cdn,
         com.azure.resourcemanager.compute,
         com.azure.resourcemanager.containerinstance,
         com.azure.resourcemanager.containerregistry,
@@ -93,6 +95,7 @@ module com.azure.resourcemanager.resources {
         com.azure.resourcemanager.appplatform,
         com.azure.resourcemanager.appservice,
         com.azure.resourcemanager.authorization,
+        com.azure.resourcemanager.cdn,
         com.azure.resourcemanager.compute,
         com.azure.resourcemanager.containerinstance,
         com.azure.resourcemanager.containerregistry,
