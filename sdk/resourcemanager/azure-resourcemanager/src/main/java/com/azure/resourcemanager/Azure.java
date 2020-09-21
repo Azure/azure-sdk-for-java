@@ -22,6 +22,8 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
 import com.azure.resourcemanager.authorization.models.RoleAssignments;
 import com.azure.resourcemanager.authorization.models.RoleDefinitions;
 import com.azure.resourcemanager.authorization.models.ServicePrincipals;
+import com.azure.resourcemanager.cdn.CdnManager;
+import com.azure.resourcemanager.cdn.models.CdnProfiles;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySets;
 import com.azure.resourcemanager.compute.models.ComputeSkus;
@@ -127,7 +129,7 @@ public final class Azure {
     //    private final BatchManager batchManager;
     private final TrafficManager trafficManager;
     private final RedisManager redisManager;
-    //    private final CdnManager cdnManager;
+    private final CdnManager cdnManager;
     private final DnsZoneManager dnsZoneManager;
     private final AppServiceManager appServiceManager;
     private final SqlServerManager sqlServerManager;
@@ -376,7 +378,7 @@ public final class Azure {
         //        this.batchManager = BatchManager.authenticate(restClient, subscriptionId, sdkContext);
         this.trafficManager = TrafficManager.authenticate(httpPipeline, profile, sdkContext);
         this.redisManager = RedisManager.authenticate(httpPipeline, profile, sdkContext);
-        //        this.cdnManager = CdnManager.authenticate(restClient, subscriptionId, sdkContext);
+        this.cdnManager = CdnManager.authenticate(httpPipeline, profile, sdkContext);
         this.dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
         this.appServiceManager = AppServiceManager.authenticate(httpPipeline, profile, sdkContext);
         this.sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile, sdkContext);
@@ -638,12 +640,12 @@ public final class Azure {
         return redisManager.redisCaches();
     }
 
-    //    /**
-    //     * @return entry point to managing cdn manager profiles.
-    //     */
-    //    public CdnProfiles cdnProfiles() {
-    //        return cdnManager.profiles();
-    //    }
+    /**
+     * @return entry point to managing cdn manager profiles.
+     */
+    public CdnProfiles cdnProfiles() {
+        return cdnManager.profiles();
+    }
 
     /** @return entry point to managing DNS zones. */
     public DnsZones dnsZones() {
