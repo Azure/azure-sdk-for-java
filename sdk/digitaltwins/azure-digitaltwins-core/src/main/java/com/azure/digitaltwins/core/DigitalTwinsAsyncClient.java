@@ -59,7 +59,7 @@ public final class DigitalTwinsAsyncClient {
     private static final Boolean includeModelDefinitionOnGet = true;
     private JsonSerializer serializer = null;
 
-    DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host, JsonSerializer jsonSerializer) {
+    DigitalTwinsAsyncClient(String serviceEndpoint, HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, JsonSerializer jsonSerializer) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
         stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, mapper));
 
@@ -73,7 +73,7 @@ public final class DigitalTwinsAsyncClient {
         this.serializer = jsonSerializer;
 
         this.protocolLayer = new AzureDigitalTwinsAPIImplBuilder()
-            .host(host)
+            .host(serviceEndpoint)
             .pipeline(pipeline)
             .serializerAdapter(jacksonAdapter)
             .buildClient();

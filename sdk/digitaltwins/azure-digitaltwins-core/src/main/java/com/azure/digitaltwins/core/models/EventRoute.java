@@ -3,6 +3,7 @@
 
 package com.azure.digitaltwins.core.models;
 
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 // This class exists so that the public APIs don't directly consume a generated type and so that we can avoid exposing a validate() method
 // that the generated type comes with when client side validation is enabled.
+@Fluent
 public class EventRoute {
     /*
      * The id of the event route.
