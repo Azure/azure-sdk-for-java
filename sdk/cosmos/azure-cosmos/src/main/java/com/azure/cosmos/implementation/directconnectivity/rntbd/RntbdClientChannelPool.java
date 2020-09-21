@@ -68,12 +68,13 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
  *
  * 	Behaviors/Expectations:
  * 	    - Bounds:
- * 	        - MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT (NOT A GUARANTEE)
+ * 	        - max requests in-flight per channelPool: MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT (NOT A GUARANTEE)
  * 	        - AvailableChannels.size() + AcquiredChannels.size() <= MAX_CHANNELS_PER_ENDPOINT
- * 	        - PendingAcquisition queue: default --> Max(10_000, MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT)
- * 	        - ChannelEventLoop task queue length: MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT + newInFlightAcquisitions (not yet in pendingAcquisitionQueue)
+ * 	        - PendingAcquisition queue default-size: Max(10_000, MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT)
+ * 	        - ChannelPool executor event-loop task queue length: MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT + newInFlightAcquisitions (not yet in pendingAcquisitionQueue)
+ * 	            - newInFlightAcquisitions: is expected to very very short. Hard-bound to ADMINSSON_CONTROL (upstream in RntbdServiceEndpoint)
  * 	    - NewChannel vs ReUseChannel:
- * 	        - NewChannels are serially created (reasonable current state, possible future change DON'T TAKE any dependency)
+ * 	        - NewChannels are serially created (reasonable current state, possible future change, upstream please DON'T TAKE any dependency)
  * 	        - Will re-use an existing channel when possible (with MAX_REQUESTS_ENDPOINT attempt not GUARANTEED)
  * 	        - Channel usage fairness: fairness is attempted but not guaranteed
  * 	            - When loadFactor is > 90%, fairness is attempted by selecting Channel with less concurrency
@@ -84,6 +85,8 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
  * 	        - [UNRELATED TO CHANNEL-POOL] [CURRENT DESIGN]: RntbdServiceEndpoint.write releases Channel before its usage -> acquisition order and channel user order might differ.
  * 	    - AcquisitionTimeout: if not can't be served in an expected time, fails gracefully
  * 	    - Metrics: are approximations and might be in-consistent(by-design) as well
+ * 	    - EventLoop
+ * 	        - ChannelPool executor might be shared across ChannelPools or Channel
  *
  * 	Design Notes:
  * 	    - channelPool.eventLoop{@Link executor}: (executes on a single & same thread, serially)
@@ -93,7 +96,6 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
  * 	            - Updates to below data structures should be done only when inside eventLoop
  * 	            - {@Link acquiredChannels}
  * 	            - {@Link availableChannels}
- * 	        - acquire()
  * 	    - AcquisitionTimeout handling:
  * 	        - A global single threaded scheduler
  * 	        - [***] Each channel independently schedules acquisitionTimeout handlers
