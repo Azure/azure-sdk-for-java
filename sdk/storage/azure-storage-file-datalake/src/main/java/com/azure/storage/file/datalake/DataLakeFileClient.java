@@ -13,6 +13,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryResponse;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
@@ -563,10 +564,11 @@ public class DataLakeFileClient extends DataLakePathClient {
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response = blockBlobClient.downloadToFileWithResponse(
-                filePath, Transforms.toBlobRange(range),
-                Transforms.toBlobParallelTransferOptions(parallelTransferOptions),
-                Transforms.toBlobDownloadRetryOptions(downloadRetryOptions),
-                Transforms.toBlobRequestConditions(requestConditions), rangeGetContentMd5, openOptions, timeout,
+                new BlobDownloadToFileOptions(filePath)
+                    .setRange(Transforms.toBlobRange(range)).setParallelTransferOptions(parallelTransferOptions)
+                    .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(downloadRetryOptions))
+                    .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
+                    .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
                 context);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
         }, logger);
