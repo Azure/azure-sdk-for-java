@@ -54,10 +54,14 @@ class ServerAdvisorsImpl extends WrapperImpl<ServerAdvisorsInner> implements Ser
     public Observable<ServerAdvisor> getAsync(String resourceGroupName, String serverName, String advisorName) {
         ServerAdvisorsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, advisorName)
-        .map(new Func1<AdvisorInner, ServerAdvisor>() {
+        .flatMap(new Func1<AdvisorInner, Observable<ServerAdvisor>>() {
             @Override
-            public ServerAdvisor call(AdvisorInner inner) {
-                return wrapModel(inner);
+            public Observable<ServerAdvisor> call(AdvisorInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerAdvisor)wrapModel(inner));
+                }
             }
        });
     }
