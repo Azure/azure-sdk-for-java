@@ -375,11 +375,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
 
-        final int maxMessages = 10;
         final int fromSequenceNumber = 1;
 
         // Assert & Act
-        StepVerifier.create(receiver.peekMessagesAt(maxMessages, fromSequenceNumber))
+        StepVerifier.create(receiver.peekMessageAt(fromSequenceNumber))
             .verifyComplete();
     }
 
