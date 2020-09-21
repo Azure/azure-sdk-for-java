@@ -305,7 +305,7 @@ public final class DigitalTwinsClientBuilder {
     /**
      * Custom JSON serializer that is used to handle model types that are not contained in the Azure Digital Twins library.
      *
-     * @param jsonSerializer The serializer to serialize user defined models.
+     * @param jsonSerializer The serializer to deserialize response payloads into user defined models.
      * @return The updated DigitalTwinsClientBuilder object.
      */
     public DigitalTwinsClientBuilder serializer(JsonSerializer jsonSerializer) {
