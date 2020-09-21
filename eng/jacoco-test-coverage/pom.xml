@@ -53,6 +53,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-analytics-monitorexporter</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-monitorexporter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
