@@ -64,7 +64,7 @@ public class ActuatorIT {
         }
     }
 
-    @SpringBootApplication(scanBasePackages = {"com.microsoft.azure.keyvault.spring"})
+    @SpringBootApplication(scanBasePackages = {"com.azure.spring"})
     public static class ActuatorTestApp {
 
     }
