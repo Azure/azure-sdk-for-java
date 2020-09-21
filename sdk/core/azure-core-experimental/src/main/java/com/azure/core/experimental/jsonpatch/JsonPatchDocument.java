@@ -12,7 +12,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -22,15 +25,36 @@ public class JsonPatchDocument {
     private static final ObjectMapper MAPPER = ((JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter())
         .serializer();
 
+    private static final String OP = "op";
+    private static final String FROM = "from";
+    private static final String PATH = "path";
+    private static final String VALUE = "value";
+
+    private static final String ADD = "add";
+    private static final String REMOVE = "remove";
+    private static final String REPLACE = "replace";
+    private static final String MOVE = "move";
+    private static final String COPY = "copy";
+    private static final String TEST = "test";
+
     private final ClientLogger logger = new ClientLogger(JsonPatchDocument.class);
 
-    private final List<JsonPatchOperation> operations;
+    private final List<Map<String, Object>> operations;
 
     /**
      * Creates a new JSON Patch document.
      */
     public JsonPatchDocument() {
         this.operations = new ArrayList<>();
+    }
+
+    /**
+     * Gets the JSON Patch operations in this document.
+     *
+     * @return The JSON Patch operations in this document.
+     */
+    public List<Object> getJsonPatchOperations() {
+        return Collections.unmodifiableList(operations);
     }
 
     /**
@@ -46,16 +70,15 @@ public class JsonPatchDocument {
      * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendAdd#String-String}
      *
      * @param path The path to apply the addition.
-     * @param rawJsonValue The raw JSON value to add to the path.
+     * @param value The value to add to the path.
      * @return The updated JsonPatchDocument object.
-     * @throws NullPointerException If {@code path} or {@code rawJsonValue} is null.
+     * @throws NullPointerException If {@code path} or {@code value} is null.
      */
-    public JsonPatchDocument appendAdd(String path, String rawJsonValue) {
+    public JsonPatchDocument appendAdd(String path, Object value) {
         Objects.requireNonNull(path, "'path' cannot be null.");
-        Objects.requireNonNull(rawJsonValue, "'rawJsonValue' cannot be null.");
+        Objects.requireNonNull(value, "'value' cannot be null.");
 
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.ADD, path, null, rawJsonValue));
-        return this;
+        return appendOperation(ADD, null, path, value);
     }
 
     /**
@@ -65,19 +88,18 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendReplace#String-String}
+     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendReplace#String-Object}
      *
      * @param path The path to replace.
-     * @param rawJsonValue The raw JSON value to use as the replacement.
+     * @param value The value to use as the replacement.
      * @return The updated JsonPatchDocument object.
-     * @throws NullPointerException If {@code path} or {@code rawJsonValue} is null.
+     * @throws NullPointerException If {@code path} or {@code value} is null.
      */
-    public JsonPatchDocument appendReplace(String path, String rawJsonValue) {
+    public JsonPatchDocument appendReplace(String path, Object value) {
         Objects.requireNonNull(path, "'path' cannot be null.");
-        Objects.requireNonNull(rawJsonValue, "'rawJsonValue' cannot be null.");
+        Objects.requireNonNull(value, "'value' cannot be null.");
 
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.REPLACE, path, null, rawJsonValue));
-        return this;
+        return appendOperation(REPLACE, null, path, value);
     }
 
     /**
@@ -98,8 +120,7 @@ public class JsonPatchDocument {
         Objects.requireNonNull(from, "'from' cannot be null.");
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.COPY, path, from, null));
-        return this;
+        return appendOperation(COPY, from, path, null);
     }
 
     /**
@@ -122,8 +143,7 @@ public class JsonPatchDocument {
         Objects.requireNonNull(from, "'from' cannot be null.");
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.MOVE, path, from, null));
-        return this;
+        return appendOperation(MOVE, from, path, null);
     }
 
     /**
@@ -142,8 +162,7 @@ public class JsonPatchDocument {
     public JsonPatchDocument appendRemove(String path) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.REMOVE, path, null, null));
-        return this;
+        return appendOperation(REMOVE, null, path, null);
     }
 
     /**
@@ -153,18 +172,35 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendTest#String-String}
+     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendTest#String-Object}
      *
      * @param path The path to test.
-     * @param rawJsonValue The raw JSON value to test against.
+     * @param value The value to test against.
      * @return The updated JsonPatchDocument object.
-     * @throws NullPointerException If {@code path} or {@code rawJsonValue} is null.
+     * @throws NullPointerException If {@code path} or {@code value} is null.
      */
-    public JsonPatchDocument appendTest(String path, String rawJsonValue) {
+    public JsonPatchDocument appendTest(String path, Object value) {
         Objects.requireNonNull(path, "'path' cannot be null.");
-        Objects.requireNonNull(rawJsonValue, "'rawJsonValue' cannot be null.");
+        Objects.requireNonNull(value, "'value' cannot be null.");
 
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.TEST, path, null, rawJsonValue));
+        return appendOperation(TEST, null, path, value);
+    }
+
+    private JsonPatchDocument appendOperation(String op, String from, String path, Object value) {
+        Map<String, Object> operation = new LinkedHashMap<>();
+        operation.put(OP, op);
+
+        if (from != null) {
+            operation.put(FROM, from);
+        }
+
+        operation.put(PATH, path);
+
+        if (value != null) {
+            operation.put(VALUE, value);
+        }
+
+        operations.add(operation);
         return this;
     }
 
@@ -181,7 +217,7 @@ public class JsonPatchDocument {
             JsonGenerator generator = MAPPER.createGenerator(outputStream);
             generator.writeStartArray();
 
-            for (JsonPatchOperation operation : operations) {
+            for (Map<String, Object> operation : operations) {
                 writeOperation(generator, operation);
             }
 
@@ -195,20 +231,22 @@ public class JsonPatchDocument {
         }
     }
 
-    private static void writeOperation(JsonGenerator generator, JsonPatchOperation operation) throws IOException {
+    private static void writeOperation(JsonGenerator generator, Map<String, Object> operation) throws IOException {
         generator.writeStartObject();
 
-        generator.writeStringField("op", operation.getKind().toString());
+        generator.writeStringField(OP, String.valueOf(operation.get(OP)));
 
-        if (operation.getFrom() != null) {
-            generator.writeStringField("from", operation.getFrom());
+        Object from = operation.get(FROM);
+        if (from != null) {
+            generator.writeStringField(FROM, String.valueOf(from));
         }
 
-        generator.writeStringField("path", operation.getPath());
+        generator.writeStringField(PATH, String.valueOf(operation.get(PATH)));
 
-        if (operation.getRawJsonValue() != null) {
-            generator.writeFieldName("value");
-            generator.writeTree(MAPPER.readTree(operation.getRawJsonValue()));
+        Object value = operation.get(VALUE);
+        if (value != null) {
+            generator.writeFieldName(VALUE);
+            generator.writeTree(MAPPER.valueToTree(value));
         }
 
         generator.writeEndObject();
