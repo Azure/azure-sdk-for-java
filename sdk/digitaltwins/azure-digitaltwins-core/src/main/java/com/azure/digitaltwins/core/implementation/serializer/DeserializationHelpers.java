@@ -22,17 +22,16 @@ public class DeserializationHelpers {
     @SuppressWarnings("unchecked")
     public static <T> T deserializeObject(ObjectMapper mapper, Object payload, Class<T> clazz, JsonSerializer customJsonSerializer) throws JsonProcessingException {
         if (customJsonSerializer == null) {
-            if (clazz.isAssignableFrom(String.class)){
+            if (clazz.isAssignableFrom(String.class)) {
                 return (T)mapper.writeValueAsString(payload);
             }
             else {
                 return mapper.convertValue(payload, clazz);
             }
         }
-        else {
-            ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
-            customJsonSerializer.serialize(sourceStream, payload);
-            return customJsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), createInstance(clazz));
-        }
+
+        ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
+        customJsonSerializer.serialize(sourceStream, payload);
+        return customJsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), createInstance(clazz));
     }
 }

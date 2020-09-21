@@ -23,19 +23,17 @@ public class SerializationHelpers {
             try {
                 return new JacksonAdapter().serialize(continuationToken, SerializerEncoding.JSON);
             }
-            catch (Exception e){
+            catch (Exception e) {
                 throw new IllegalArgumentException("Invalid continuation token", e);
             }
         }
-        else {
-            try {
-                ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
-                serializer.serialize(sourceStream, continuationToken);
-                return sourceStream.toString();
-            }
-            catch (Exception e){
-                throw new IllegalArgumentException("Invalid continuation token", e);
-            }
+        try {
+            ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
+            serializer.serialize(sourceStream, continuationToken);
+            return sourceStream.toString();
+        }
+        catch (Exception e) {
+            throw new IllegalArgumentException("Invalid continuation token", e);
         }
     }
 }
