@@ -86,12 +86,6 @@
       <version>3.3.9.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-      <scope>test</scope>
-    </dependency>
     <!-- for file lock tests, ideally should be removed in the future -->
     <dependency>
       <groupId>com.google.code.gson</groupId>
