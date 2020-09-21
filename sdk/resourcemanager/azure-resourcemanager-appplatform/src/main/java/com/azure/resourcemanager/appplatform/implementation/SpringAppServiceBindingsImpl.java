@@ -91,7 +91,6 @@ public class SpringAppServiceBindingsImpl
             .mapPage(this::wrapModel);
     }
 
-    @Override
     public BindingsClient inner() {
         return manager().inner().getBindings();
     }

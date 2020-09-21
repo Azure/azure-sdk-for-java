@@ -14,7 +14,7 @@ Azure azure = Azure
     .withDefaultSubscription();
 ```
 
-To learn more about authentication in the Azure Management Libraries for Java, see [AUTH.md](AUTH.md).
+To learn more about authentication in the Azure Management Libraries for Java, see [https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md).
 
 ### Virtual Machines
 
@@ -455,7 +455,6 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/ManageResourceGroup.java">Manage resource groups</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/ManageResource.java">Manage resources</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/locks/mgmt-v2016_09_01/src/main/java/com/microsoft/azure/management/locks/v2016_09_01/ManagementLocks.java">Manage resource locks</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/WebServerWithDelegatedCredentials.java">Manage delegated credentials</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/DeployUsingARMTemplate.java">Deploy resources with ARM templates</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/DeployUsingARMTemplateAsync.java">Deploy resources with ARM templates asynchronously</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/DeployUsingARMTemplateWithDeploymentOperations.java">Deploy resources with ARM templates with deployment operations</a></li>

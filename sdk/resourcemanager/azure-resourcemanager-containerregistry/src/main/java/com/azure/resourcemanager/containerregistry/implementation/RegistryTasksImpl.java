@@ -80,7 +80,6 @@ public class RegistryTasksImpl implements RegistryTasks {
         return new RegistryTaskImpl(this.registryManager, innerModel);
     }
 
-    @Override
     public TasksClient inner() {
         return this.registryManager.inner().getTasks();
     }

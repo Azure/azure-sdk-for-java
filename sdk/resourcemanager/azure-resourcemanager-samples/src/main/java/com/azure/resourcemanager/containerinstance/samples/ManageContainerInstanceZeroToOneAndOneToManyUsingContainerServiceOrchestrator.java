@@ -264,7 +264,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             KubernetesCluster azureKubernetesCluster = azure.kubernetesClusters().define(acsName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withLatestVersion()
+                .withDefaultVersion()
                 .withRootUsername(rootUserName)
                 .withSshKey(sshKeys.getSshPublicKey())
                 .withServicePrincipalClientId(servicePrincipalClientId)
@@ -504,6 +504,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
             Azure azure = Azure

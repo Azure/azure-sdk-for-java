@@ -56,12 +56,10 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
             Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
             telemetryPayload.put("ComponentTelemetry1", 9);
 
-            String telemetryStringPayload = new ObjectMapper().writeValueAsString(telemetryPayload);
-
             StepVerifier.create(client.publishComponentTelemetryWithResponse(
                 roomWithWifiTwinId,
                 TestAssetDefaults.WIFI_COMPONENT_NAME,
-                telemetryStringPayload,
+                telemetryPayload,
                 componentTelemetryRequestOptions,
                 Context.NONE))
                 .assertNext(createResponse -> assertThat(createResponse.getStatusCode())
@@ -97,13 +95,13 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
 
         StepVerifier
             .create(asyncClient.createModels(new ArrayList<>(Arrays.asList(wifiModelPayload, roomWithWifiModelPayload))))
-            .assertNext(createResponseList -> logger.info("Created {} models successfully", createResponseList.size()))
+            .assertNext(createResponseList -> logger.info("Created models successfully"))
             .verifyComplete();
 
         String roomWithWifiTwinPayload = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
         StepVerifier
-            .create(asyncClient.createDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload))
+            .create(asyncClient.createDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class))
             .assertNext(createResponse -> logger.info("Created {} digitalTwin successfully", createResponse))
             .verifyComplete();
     }

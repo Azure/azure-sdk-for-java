@@ -88,7 +88,7 @@ public class ManageKubernetesCluster {
             KubernetesCluster kubernetesCluster = azure.kubernetesClusters().define(aksName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withLatestVersion()
+                .withDefaultVersion()
                 .withRootUsername(rootUserName)
                 .withSshKey(sshKeys.getSshPublicKey())
                 .withServicePrincipalClientId(servicePrincipalClientId)
@@ -112,7 +112,9 @@ public class ManageKubernetesCluster {
             t1 = new Date();
 
             kubernetesCluster.update()
-                .withAgentPoolVirtualMachineCount(2)
+                .updateAgentPool("agentpool")
+                    .withAgentPoolVirtualMachineCount(2)
+                    .parent()
                 .apply();
 
             t2 = new Date();
@@ -145,6 +147,7 @@ public class ManageKubernetesCluster {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
             Azure azure = Azure

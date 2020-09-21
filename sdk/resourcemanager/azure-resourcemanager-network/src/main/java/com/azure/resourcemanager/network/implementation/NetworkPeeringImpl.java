@@ -4,19 +4,20 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeering;
 import com.azure.resourcemanager.network.models.NetworkPeering.DefinitionStages.WithCreate;
 import com.azure.resourcemanager.network.models.NetworkPeeringGatewayUse;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.util.Collections;
 import java.util.List;
-import reactor.core.publisher.Mono;
 
 /** Implementation for network peering. */
 class NetworkPeeringImpl
@@ -416,7 +417,7 @@ class NetworkPeeringImpl
                                         localPeering.remoteForwarding = null;
                                         localPeering.startGatewayUseByRemoteNetwork = null;
                                         localPeering.allowGatewayUseOnRemoteNetwork = null;
-                                        return remotePeeringDefinition.createAsync().last();
+                                        return remotePeeringDefinition.createAsync();
                                     }));
                 })
 

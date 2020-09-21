@@ -94,13 +94,15 @@ public final class ManageVirtualMachineScaleSetAsync {
                             .defineSubnet("Front-end")
                                 .withAddressPrefix("172.16.1.0/24")
                                 .attach()
-                            .createAsync(),
+                            .createAsync()
+                            .cast(Indexable.class),
                     azure.publicIpAddresses().define(publicIpName)
                             .withRegion(region)
                             .withExistingResourceGroup(rgName)
                             .withLeafDomainLabel(publicIpName)
                             .createAsync()
-                            .flatMap(indexable -> {
+                            .cast(Indexable.class)
+                            .flatMapMany(indexable -> {
                                 if (indexable instanceof PublicIpAddress) {
                                     PublicIpAddress publicIp = (PublicIpAddress) indexable;
                                     //=============================================================
@@ -177,7 +179,8 @@ public final class ManageVirtualMachineScaleSetAsync {
                                             .withRequestPath("/")
                                             .withPort(443)
                                             .attach()
-                                            .createAsync());
+                                            .createAsync()
+                                            .cast(Indexable.class));
                                 }
                                 return Flux.just(indexable);
                             })
@@ -218,7 +221,7 @@ public final class ManageVirtualMachineScaleSetAsync {
 
             final Date t1 = new Date();
 
-            VirtualMachineScaleSet virtualMachineScaleSet = (VirtualMachineScaleSet) azure.virtualMachineScaleSets()
+            VirtualMachineScaleSet virtualMachineScaleSet = azure.virtualMachineScaleSets()
                     .define(vmssName)
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)
@@ -253,7 +256,7 @@ public final class ManageVirtualMachineScaleSetAsync {
                         System.out.println();
                         return indexable;
                     })
-                    .last().block();
+                    .block();
 
             if (virtualMachineScaleSet == null) {
                 return false;
@@ -341,6 +344,7 @@ public final class ManageVirtualMachineScaleSetAsync {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
             Azure azure = Azure

@@ -170,6 +170,7 @@ public final class ManageWebAppCosmosDbByMsi {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             final Configuration configuration = Configuration.getGlobalConfiguration();
 

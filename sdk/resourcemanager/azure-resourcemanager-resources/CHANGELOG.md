@@ -3,6 +3,7 @@
 ## 2.0.0-beta.5 (Unreleased)
 
 - Added `AggregatedManagementException` exception class for aggregation of multiple `ManagementException`.
+- Changed `Creatabele.createAsync()` return `Mono<ResourceT>` and `SupportsBatchCreation.createAsync()` return `Flux<ResourceT>`
 
 ## 2.0.0-beta.4 (2020-09-02)
 

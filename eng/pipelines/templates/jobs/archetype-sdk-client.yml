@@ -90,13 +90,6 @@ jobs:
 
       - template: ../steps/cache-maven-repository.yml
 
-      - template: /eng/common/pipelines/templates/steps/replace-relative-links.yml
-        parameters:
-          TargetFolder: $(Build.SourcesDirectory)
-          RootFolder: $(Build.SourcesDirectory)
-          BuildSHA: $(Build.SourceVersion)
-          RepoId: 'Azure/azure-sdk-for-java'
-
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
@@ -164,6 +157,7 @@ jobs:
       - template: ../../../common/pipelines/templates/steps/verify-links.yml
         parameters:
           Directory: sdk/${{ parameters.ServiceDirectory }}
+          CheckLinkGuidance: $true
 
       - ${{ each artifact in parameters.Artifacts }}:
         - template: /eng/common/pipelines/templates/steps/verify-changelog.yml

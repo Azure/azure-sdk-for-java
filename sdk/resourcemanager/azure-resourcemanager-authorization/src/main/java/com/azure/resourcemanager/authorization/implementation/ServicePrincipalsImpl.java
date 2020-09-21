@@ -100,7 +100,6 @@ public class ServicePrincipalsImpl
         return this.manager;
     }
 
-    @Override
     public ServicePrincipalsClient inner() {
         return manager().inner().getServicePrincipals();
     }

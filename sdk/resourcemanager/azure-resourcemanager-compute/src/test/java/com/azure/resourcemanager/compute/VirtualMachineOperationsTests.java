@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
@@ -31,16 +32,18 @@ import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
-import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.storage.models.SkuName;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,8 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private String rgName = "";
@@ -647,12 +648,20 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     resourceCount.incrementAndGet();
                     return createdResource;
                 })
-            .collectList()
-            .block();
-        // 1 resource group, 1 storage, 5 network, 5 publicIp, 5 nic, 5 virtual machines
-        // Additional one for CreatableUpdatableResourceRoot.
-        // TODO: - ans - We should not emit CreatableUpdatableResourceRoot.
-        Assertions.assertEquals(resourceCount.get(), 23);
+            .blockLast();
+
+        networkNames.forEach(name -> {
+            Assertions.assertNotNull(networkManager.networks().getByResourceGroup(rgName, name));
+        });
+
+        publicIPAddressNames.forEach(name -> {
+            Assertions.assertNotNull(networkManager.publicIpAddresses().getByResourceGroup(rgName, name));
+        });
+
+        Assertions.assertEquals(1, storageManager.storageAccounts().listByResourceGroup(rgName).stream().count());
+        Assertions.assertEquals(count, networkManager.networkInterfaces().listByResourceGroup(rgName).stream().count());
+
+        Assertions.assertEquals(count, resourceCount.get());
     }
 
     @Test
@@ -666,7 +675,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .define(storageName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withSku(SkuName.PREMIUM_LRS)
+                .withSku(StorageAccountSkuType.PREMIUM_LRS)
                 .create();
 
         // Creates a virtual machine with an unmanaged data disk that gets stored in the above

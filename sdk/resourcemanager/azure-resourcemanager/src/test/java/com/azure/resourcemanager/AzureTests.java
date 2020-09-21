@@ -44,6 +44,7 @@ import com.azure.resourcemanager.network.models.PcStatus;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
+import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -58,7 +59,6 @@ import com.azure.resourcemanager.resources.models.Location;
 import com.azure.resourcemanager.resources.models.RegionCategory;
 import com.azure.resourcemanager.resources.models.RegionType;
 import com.azure.resourcemanager.resources.models.Subscription;
-import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -1080,7 +1080,7 @@ public class AzureTests extends ResourceManagerTestBase {
                 .define(storageAccountName)
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup()
-                .withSku(SkuName.PREMIUM_LRS)
+                .withSku(StorageAccountSkuType.PREMIUM_LRS)
                 .create();
 
         Assertions.assertEquals(storageAccount.name(), storageAccountName);
@@ -1095,9 +1095,6 @@ public class AzureTests extends ResourceManagerTestBase {
 
     @Test
     public void testTrafficManager() throws Exception {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         new TestTrafficManager(azure.publicIpAddresses())
                 .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
     }
@@ -1115,17 +1112,11 @@ public class AzureTests extends ResourceManagerTestBase {
 
     @Test
     public void testDnsZones() throws Exception {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         new TestDns().runTest(azure.dnsZones(), azure.resourceGroups());
     }
 
     @Test
     public void testPrivateDnsZones() throws Exception {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         new TestPrivateDns().runTest(azure.privateDnsZones(), azure.resourceGroups());
     }
 
