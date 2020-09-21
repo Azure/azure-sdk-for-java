@@ -39,7 +39,7 @@ public final class PrivateLinkResourcesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PrivateLinkResourcesClient(StorageManagementClient client) {
+    PrivateLinkResourcesClient(StorageManagementClient client) {
         this.service =
             RestProxy
                 .create(PrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());

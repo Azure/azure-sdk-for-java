@@ -3,11 +3,11 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
-import com.azure.digitaltwins.core.util.UpdateComponentRequestOptions;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
+import com.azure.digitaltwins.core.models.UpdateComponentRequestOptions;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.opentest4j.AssertionFailedError;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
@@ -26,7 +26,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void componentLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void componentLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
         String wifiComponentName = "wifiAccessPoint";
@@ -44,17 +44,17 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
             // Create models and components to test the lifecycle.
             StepVerifier
                 .create(asyncClient.createModels(modelsList))
-                .assertNext(createResponseList -> logger.info("Created {} models successfully", createResponseList.size()))
+                .assertNext(createResponseList -> logger.info("Created models successfully"))
                 .verifyComplete();
 
-            StepVerifier.create(asyncClient.createDigitalTwin(roomWithWifiTwinId, roomWithWifiTwin, BasicDigitalTwin.class))
+            StepVerifier.create(asyncClient.createDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class))
                 .assertNext(createdTwin -> {
                     assertEquals(createdTwin.getId(), roomWithWifiTwinId);
                     logger.info("Created {} twin successfully", createdTwin.getId());
                 })
                 .verifyComplete();
 
-            StepVerifier.create(asyncClient.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName))
+            StepVerifier.create(asyncClient.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName, String.class))
                 .assertNext(createResponse -> {
                     assertEquals(createResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
                     logger.info("Got component successfully");

@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/thisIsNotAValidModelId?includeModelDefinition=true&api-version=2020-05-31-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.1 (1.8.0_265; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0229ab25-69eb-4ebb-a2fd-ee6ed928868d"
+      "x-ms-client-request-id" : "e85d8b0a-19b7-41c6-9c72-0e5f9f8482ee"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
@@ -12,7 +12,7 @@
       "Content-Length" : "198",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidArgument\",\"message\":\"The format of the Model ID thisIsNotAValidModelId provided is not supported. See model documentation(http://aka.ms/ADTv2Models) for supported format.\"}}",
-      "Date" : "Wed, 09 Sep 2020 22:46:28 GMT",
+      "Date" : "Fri, 11 Sep 2020 23:07:13 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

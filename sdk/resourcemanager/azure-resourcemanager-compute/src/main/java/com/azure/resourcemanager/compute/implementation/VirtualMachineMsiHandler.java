@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineIdentityUserAssign
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineUpdateInner;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -78,7 +78,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
             .inner()
             .identity()
             .type()
-            .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
+            .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
             this.virtualMachine.inner().identity().withType(ResourceIdentityType.USER_ASSIGNED);
         }
         return this;
@@ -223,7 +223,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
                     // identities]
                     if (currentIdentity == null || currentIdentity.type() == null) {
                         vmUpdate.withIdentity(new VirtualMachineIdentity().withType(ResourceIdentityType.NONE));
-                    } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
+                    } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
                         vmUpdate.withIdentity(currentIdentity);
                         vmUpdate.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
                     } else if (currentIdentity.type().equals(ResourceIdentityType.USER_ASSIGNED)) {
@@ -268,7 +268,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
             || virtualMachineInner.identity().type().equals(identityType)) {
             virtualMachineInner.identity().withType(identityType);
         } else {
-            virtualMachineInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
+            virtualMachineInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
         }
     }
 }

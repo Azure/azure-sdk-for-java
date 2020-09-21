@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point for web app management API. */
 @Fluent
@@ -27,8 +25,7 @@ public interface FunctionApps
         SupportsGettingByResourceGroup<FunctionApp>,
         SupportsGettingById<FunctionApp>,
         SupportsDeletingByResourceGroup,
-        HasManager<AppServiceManager>,
-        HasInner<WebAppsClient> {
+        HasManager<AppServiceManager> {
 
     /**
      * List function information elements.

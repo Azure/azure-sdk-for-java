@@ -45,7 +45,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualMachineScaleSetRollingUpgradesClient(ComputeManagementClient client) {
+    VirtualMachineScaleSetRollingUpgradesClient(ComputeManagementClient client) {
         this.service =
             RestProxy
                 .create(

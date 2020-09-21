@@ -31,9 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.inner.TagDetailsInner;
 import com.azure.resourcemanager.resources.fluent.inner.TagValueInner;
-import com.azure.resourcemanager.resources.fluent.inner.TagsListResultInner;
 import com.azure.resourcemanager.resources.fluent.inner.TagsResourceInner;
 import com.azure.resourcemanager.resources.models.Tags;
+import com.azure.resourcemanager.resources.models.TagsListResult;
 import com.azure.resourcemanager.resources.models.TagsPatchResource;
 import reactor.core.publisher.Mono;
 
@@ -52,7 +52,7 @@ public final class TagOperationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public TagOperationsClient(ResourceManagementClient client) {
+    TagOperationsClient(ResourceManagementClient client) {
         this.service =
             RestProxy.create(TagOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -115,7 +115,7 @@ public final class TagOperationsClient {
         @Get("/subscriptions/{subscriptionId}/tagNames")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagsListResultInner>> list(
+        Mono<Response<TagsListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -167,7 +167,7 @@ public final class TagOperationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagsListResultInner>> listNext(
+        Mono<Response<TagsListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

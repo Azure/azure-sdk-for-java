@@ -81,16 +81,6 @@ public interface ApplicationGatewayBackendHttpConfiguration
          */
         interface WithProtocol<ReturnT> {
             /**
-             * Specifies the transport protocol.
-             *
-             * @param protocol a transport protocol
-             * @return the next stage of the definition
-             * @deprecated use {@link #withHttps()} instead (HTTP is the default)
-             */
-            @Deprecated
-            WithAttach<ReturnT> withProtocol(ApplicationGatewayProtocol protocol);
-
-            /**
              * Specifies HTTPS as the protocol.
              *
              * @return the next stage of the definition
@@ -348,16 +338,6 @@ public interface ApplicationGatewayBackendHttpConfiguration
 
         /** The stage of an application gateway backend HTTP configuration allowing to specify the protocol. */
         interface WithProtocol {
-            /**
-             * Specifies the transport protocol.
-             *
-             * @param protocol a transport protocol
-             * @return the next stage of the update
-             * @deprecated use {@link #withHttp()} or {@link #withHttps()} instead
-             */
-            @Deprecated
-            Update withProtocol(ApplicationGatewayProtocol protocol);
-
             /**
              * Specifies HTTPS as the protocol.
              *
@@ -694,16 +674,6 @@ public interface ApplicationGatewayBackendHttpConfiguration
          *     definition
          */
         interface WithProtocol<ReturnT> {
-            /**
-             * Specifies the transport protocol.
-             *
-             * @param protocol a transport protocol
-             * @return the next stage of the definition
-             * @deprecated use {@link #withHttps()} instead (HTTP is the default)
-             */
-            @Deprecated
-            WithAttach<ReturnT> withProtocol(ApplicationGatewayProtocol protocol);
-
             /**
              * Specifies HTTPS as the protocol.
              *

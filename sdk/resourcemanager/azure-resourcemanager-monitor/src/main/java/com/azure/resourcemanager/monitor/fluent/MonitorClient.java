@@ -149,16 +149,16 @@ public final class MonitorClient extends AzureServiceClient {
         return this.diagnosticSettings;
     }
 
-    /** The DiagnosticSettingsCategorysClient object to access its operations. */
-    private final DiagnosticSettingsCategorysClient diagnosticSettingsCategorys;
+    /** The DiagnosticSettingsCategoriesClient object to access its operations. */
+    private final DiagnosticSettingsCategoriesClient diagnosticSettingsCategories;
 
     /**
-     * Gets the DiagnosticSettingsCategorysClient object to access its operations.
+     * Gets the DiagnosticSettingsCategoriesClient object to access its operations.
      *
-     * @return the DiagnosticSettingsCategorysClient object.
+     * @return the DiagnosticSettingsCategoriesClient object.
      */
-    public DiagnosticSettingsCategorysClient getDiagnosticSettingsCategorys() {
-        return this.diagnosticSettingsCategorys;
+    public DiagnosticSettingsCategoriesClient getDiagnosticSettingsCategories() {
+        return this.diagnosticSettingsCategories;
     }
 
     /** The ActionGroupsClient object to access its operations. */
@@ -356,7 +356,7 @@ public final class MonitorClient extends AzureServiceClient {
         this.alertRules = new AlertRulesClient(this);
         this.logProfiles = new LogProfilesClient(this);
         this.diagnosticSettings = new DiagnosticSettingsClient(this);
-        this.diagnosticSettingsCategorys = new DiagnosticSettingsCategorysClient(this);
+        this.diagnosticSettingsCategories = new DiagnosticSettingsCategoriesClient(this);
         this.actionGroups = new ActionGroupsClient(this);
         this.activityLogAlerts = new ActivityLogAlertsClient(this);
         this.activityLogs = new ActivityLogsClient(this);

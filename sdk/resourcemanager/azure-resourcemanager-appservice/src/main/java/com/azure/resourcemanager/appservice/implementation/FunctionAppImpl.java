@@ -277,24 +277,6 @@ class FunctionAppImpl
     }
 
     @Override
-    public FunctionAppImpl withNewStorageAccount(String name, com.azure.resourcemanager.storage.models.SkuName sku) {
-        StorageAccount.DefinitionStages.WithGroup storageDefine =
-            manager().storageManager().storageAccounts().define(name).withRegion(regionName());
-        if (super.creatableGroup != null && isInCreateMode()) {
-            storageAccountCreatable =
-                storageDefine.withNewResourceGroup(super.creatableGroup).withGeneralPurposeAccountKind().withSku(sku);
-        } else {
-            storageAccountCreatable =
-                storageDefine
-                    .withExistingResourceGroup(resourceGroupName())
-                    .withGeneralPurposeAccountKind()
-                    .withSku(sku);
-        }
-        this.addDependency(storageAccountCreatable);
-        return this;
-    }
-
-    @Override
     public FunctionAppImpl withNewStorageAccount(String name, StorageAccountSkuType sku) {
         StorageAccount.DefinitionStages.WithGroup storageDefine =
             manager().storageManager().storageAccounts().define(name).withRegion(regionName());
@@ -602,7 +584,7 @@ class FunctionAppImpl
     }
 
     @Override
-    public Flux<Indexable> createAsync() {
+    public Mono<FunctionApp> createAsync() {
         if (this.isInCreateMode()) {
             if (inner().serverFarmId() == null) {
                 withNewConsumptionPlan();
@@ -610,7 +592,7 @@ class FunctionAppImpl
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
                     this.manager().sdkContext().randomResourceName(name(), 20),
-                    com.azure.resourcemanager.storage.models.SkuName.STANDARD_GRS);
+                    StorageAccountSkuType.STANDARD_GRS);
             }
         }
         return super.createAsync();
