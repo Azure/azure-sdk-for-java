@@ -17,6 +17,6 @@ public class CdnSampleLiveOnlyTests extends SamplesTestBase {
             return;
         }
 
-        Assertions.assertTrue(ManageCdnProfileWithWebApp.runSample(azure));
+        Assertions.assertTrue(ManageCdnProfileWithWebApp.runSample(azureResourceManager));
     }
 }

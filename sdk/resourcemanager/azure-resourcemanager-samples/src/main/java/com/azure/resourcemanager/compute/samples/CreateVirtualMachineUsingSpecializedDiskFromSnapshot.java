@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskSkuTypes;
@@ -35,19 +35,19 @@ import java.util.List;
 public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String linuxVMName1 = azure.sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azure.sdkContext().randomResourceName("VM2", 15);
-        final String managedOSSnapshotName = azure.sdkContext().randomResourceName("ss-os-", 15);
-        final String managedDataDiskSnapshotPrefix = azure.sdkContext().randomResourceName("ss-data-", 15);
-        final String managedNewOSDiskName = azure.sdkContext().randomResourceName("ds-os-nw-", 15);
-        final String managedNewDataDiskNamePrefix = azure.sdkContext().randomResourceName("ds-data-nw-", 15);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String linuxVMName1 = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
+        final String linuxVMName2 = azureResourceManager.sdkContext().randomResourceName("VM2", 15);
+        final String managedOSSnapshotName = azureResourceManager.sdkContext().randomResourceName("ss-os-", 15);
+        final String managedDataDiskSnapshotPrefix = azureResourceManager.sdkContext().randomResourceName("ss-data-", 15);
+        final String managedNewOSDiskName = azureResourceManager.sdkContext().randomResourceName("ds-os-nw-", 15);
+        final String managedNewDataDiskNamePrefix = azureResourceManager.sdkContext().randomResourceName("ds-data-nw-", 15);
 
-        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIpDnsLabel = azure.sdkContext().randomResourceName("pip", 15);
+        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
+        final String publicIpDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;
@@ -64,7 +64,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
             System.out.println("Creating a un-managed Linux VM");
 
-            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName1)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -91,10 +91,10 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
             // Gets the specialized managed OS and Data disks of the virtual machine
             //
-            Disk osDisk = azure.disks().getById(linuxVM.osDiskId());
+            Disk osDisk = azureResourceManager.disks().getById(linuxVM.osDiskId());
             List<Disk> dataDisks = new ArrayList<>();
             for (VirtualMachineDataDisk disk : linuxVM.dataDisks().values()) {
-                Disk dataDisk = azure.disks().getById(disk.id());
+                Disk dataDisk = azureResourceManager.disks().getById(disk.id());
                 dataDisks.add(dataDisk);
             }
 
@@ -102,7 +102,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
             // Delete the virtual machine
             System.out.println("Deleting VM: " + linuxVM.id());
 
-            azure.virtualMachines().deleteById(linuxVM.id());
+            azureResourceManager.virtualMachines().deleteById(linuxVM.id());
 
             System.out.println("Deleted the VM");
 
@@ -111,7 +111,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
             System.out.println(String.format("Creating managed snapshot from the managed disk (holding specialized OS): %s ", osDisk.id()));
 
-            Snapshot osSnapshot = azure.snapshots().define(managedOSSnapshotName)
+            Snapshot osSnapshot = azureResourceManager.snapshots().define(managedOSSnapshotName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withLinuxFromDisk(osDisk)
@@ -128,7 +128,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
             for (Disk dataDisk : dataDisks) {
                 System.out.println(String.format("Creating managed snapshot from the managed disk (holding data): %s ", dataDisk.id()));
 
-                Snapshot dataSnapshot = azure.snapshots().define(managedDataDiskSnapshotPrefix + "-" + i)
+                Snapshot dataSnapshot = azureResourceManager.snapshots().define(managedDataDiskSnapshotPrefix + "-" + i)
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)
                         .withDataFromDisk(dataDisk)
@@ -146,7 +146,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
             System.out.println(String.format("Creating managed disk from the snapshot holding OS: %s ", osSnapshot.id()));
 
-            Disk newOSDisk = azure.disks().define(managedNewOSDiskName)
+            Disk newOSDisk = azureResourceManager.disks().define(managedNewOSDiskName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withLinuxFromSnapshot(osSnapshot)
@@ -164,7 +164,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
             for (Snapshot dataSnapshot : dataSnapshots) {
                 System.out.println(String.format("Creating managed disk from the Data snapshot: %s ", dataSnapshot.id()));
 
-                Disk dataDisk = azure.disks().define(managedNewDataDiskNamePrefix + "-" + i)
+                Disk dataDisk = azureResourceManager.disks().define(managedNewDataDiskNamePrefix + "-" + i)
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)
                         .withData()
@@ -183,7 +183,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
             System.out.println("Creating a Linux VM using specialized OS and data disks");
 
-            VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVMName2)
+            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines().define(linuxVMName2)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -201,14 +201,14 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
             //
             System.out.println("Deleting OS snapshot - " + osSnapshot.id());
 
-            azure.snapshots().deleteById(osSnapshot.id());
+            azureResourceManager.snapshots().deleteById(osSnapshot.id());
 
             System.out.println("Deleted OS snapshot");
 
             for (Snapshot dataSnapshot : dataSnapshots) {
                 System.out.println("Deleting data snapshot - " + dataSnapshot.id());
 
-                azure.snapshots().deleteById(dataSnapshot.id());
+                azureResourceManager.snapshots().deleteById(dataSnapshot.id());
 
                 System.out.println("Deleted data snapshot");
             }
@@ -226,7 +226,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
             System.out.println("Getting OS and data disks SAS Uris");
 
             // OS Disk SAS Uri
-            osDisk = azure.disks().getById(linuxVM2.osDiskId());
+            osDisk = azureResourceManager.disks().getById(linuxVM2.osDiskId());
 
             String osDiskSasUri = osDisk.grantAccess(24 * 60);
 
@@ -234,7 +234,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
             // Data disks SAS Uri
             for (VirtualMachineDataDisk disk : linuxVM2.dataDisks().values()) {
-                Disk dataDisk = azure.disks().getById(disk.id());
+                Disk dataDisk = azureResourceManager.disks().getById(disk.id());
                 String dataDiskSasUri = dataDisk.grantAccess(24 * 60);
                 System.out.println(String.format("Data disk (lun: %d) SAS Uri: %s", disk.lun(), dataDiskSasUri));
             }
@@ -242,7 +242,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -267,16 +267,16 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

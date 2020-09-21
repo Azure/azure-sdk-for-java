@@ -80,8 +80,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class AzureTests extends ResourceManagerTestBase {
-    private Azure azure;
+public class AzureResourceManagerTests extends ResourceManagerTestBase {
+    private AzureResourceManager azureResourceManager;
     private MSIManager msiManager;
 
     @Override
@@ -107,8 +107,8 @@ public class AzureTests extends ResourceManagerTestBase {
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        Azure.Authenticated azureAuthed = Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
-        azure = azureAuthed.withDefaultSubscription();
+        AzureResourceManager.Authenticated azureAuthed = AzureResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        azureResourceManager = azureAuthed.withDefaultSubscription();
         this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
@@ -227,11 +227,11 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testDeployments() throws Exception {
-        String testId = azure.deployments().manager().sdkContext().randomResourceName("", 8);
-        PagedIterable<Deployment> deployments = azure.deployments().list();
+        String testId = azureResourceManager.deployments().manager().sdkContext().randomResourceName("", 8);
+        PagedIterable<Deployment> deployments = azureResourceManager.deployments().list();
         System.out.println("Deployments: " + TestUtilities.getSize(deployments));
         Deployment deployment =
-            azure
+            azureResourceManager
                 .deployments()
                 .define("depl" + testId)
                 .withNewResourceGroup("rg" + testId, Region.US_WEST)
@@ -245,7 +245,7 @@ public class AzureTests extends ResourceManagerTestBase {
                 .create();
         System.out.println("Created deployment: " + deployment.correlationId());
 
-        azure.resourceGroups().beginDeleteByName("rg" + testId);
+        azureResourceManager.resourceGroups().beginDeleteByName("rg" + testId);
     }
 
     /**
@@ -257,27 +257,27 @@ public class AzureTests extends ResourceManagerTestBase {
     public void testGenericResources() throws Exception {
         // Create some resources
         NetworkSecurityGroup nsg =
-            azure
+            azureResourceManager
                 .networkSecurityGroups()
-                .define(azure.networkSecurityGroups().manager().sdkContext().randomResourceName("nsg", 13))
+                .define(azureResourceManager.networkSecurityGroups().manager().sdkContext().randomResourceName("nsg", 13))
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .create();
-        azure
+        azureResourceManager
             .publicIpAddresses()
-            .define(azure.networkSecurityGroups().manager().sdkContext().randomResourceName("pip", 13))
+            .define(azureResourceManager.networkSecurityGroups().manager().sdkContext().randomResourceName("pip", 13))
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(nsg.resourceGroupName())
             .create();
 
         PagedIterable<GenericResource> resources =
-            azure.genericResources().listByResourceGroup(nsg.resourceGroupName());
+            azureResourceManager.genericResources().listByResourceGroup(nsg.resourceGroupName());
         Assertions.assertEquals(2, TestUtilities.getSize(resources));
         GenericResource firstResource = resources.iterator().next();
 
-        GenericResource resourceById = azure.genericResources().getById(firstResource.id());
+        GenericResource resourceById = azureResourceManager.genericResources().getById(firstResource.id());
         GenericResource resourceByDetails =
-            azure
+            azureResourceManager
                 .genericResources()
                 .get(
                     firstResource.resourceGroupName(),
@@ -285,7 +285,7 @@ public class AzureTests extends ResourceManagerTestBase {
                     firstResource.resourceType(),
                     firstResource.name());
         Assertions.assertTrue(resourceById.id().equalsIgnoreCase(resourceByDetails.id()));
-        azure.resourceGroups().beginDeleteByName(nsg.resourceGroupName());
+        azureResourceManager.resourceGroups().beginDeleteByName(nsg.resourceGroupName());
     }
 
     //    /**
@@ -505,7 +505,7 @@ public class AzureTests extends ResourceManagerTestBase {
     @Test
     public void testVMImages() throws ManagementException, IOException {
         PagedIterable<VirtualMachinePublisher> publishers =
-            azure.virtualMachineImages().publishers().listByRegion(Region.US_WEST);
+            azureResourceManager.virtualMachineImages().publishers().listByRegion(Region.US_WEST);
         Assertions.assertTrue(TestUtilities.getSize(publishers) > 0);
         for (VirtualMachinePublisher p : publishers.stream().limit(5).toArray(VirtualMachinePublisher[]::new)) {
             System.out.println(String.format("Publisher name: %s, region: %s", p.name(), p.region()));
@@ -517,7 +517,7 @@ public class AzureTests extends ResourceManagerTestBase {
             }
         }
         // TODO: limit vm images by filter
-        PagedIterable<VirtualMachineImage> images = azure.virtualMachineImages().listByRegion(Region.US_WEST);
+        PagedIterable<VirtualMachineImage> images = azureResourceManager.virtualMachineImages().listByRegion(Region.US_WEST);
         Assertions.assertTrue(TestUtilities.getSize(images) > 0);
         // Seems to help avoid connection refused error on subsequent mock test
         SdkContext.sleep(2000);
@@ -530,7 +530,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testNetworkSecurityGroups() throws Exception {
-        new TestNSG().runTest(azure.networkSecurityGroups(), azure.resourceGroups());
+        new TestNSG().runTest(azureResourceManager.networkSecurityGroups(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -540,8 +540,8 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testLoadBalancersNatRules() throws Exception {
-        new TestLoadBalancer().new InternetWithNatRule(azure.virtualMachines().manager())
-            .runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer().new InternetWithNatRule(azureResourceManager.virtualMachines().manager())
+            .runTest(azureResourceManager.loadBalancers(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -551,8 +551,8 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testLoadBalancersNatPools() throws Exception {
-        new TestLoadBalancer().new InternetWithNatPool(azure.virtualMachines().manager())
-            .runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer().new InternetWithNatPool(azureResourceManager.virtualMachines().manager())
+            .runTest(azureResourceManager.loadBalancers(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -562,8 +562,8 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
-        new TestLoadBalancer().new InternetMinimal(azure.virtualMachines().manager())
-            .runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer().new InternetMinimal(azureResourceManager.virtualMachines().manager())
+            .runTest(azureResourceManager.loadBalancers(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -573,8 +573,8 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testLoadBalancersNatOnly() throws Exception {
-        new TestLoadBalancer().new InternetNatOnly(azure.virtualMachines().manager())
-            .runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer().new InternetNatOnly(azureResourceManager.virtualMachines().manager())
+            .runTest(azureResourceManager.loadBalancers(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -584,8 +584,8 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testLoadBalancersInternalMinimum() throws Exception {
-        new TestLoadBalancer().new InternalMinimal(azure.virtualMachines().manager())
-            .runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer().new InternalMinimal(azureResourceManager.virtualMachines().manager())
+            .runTest(azureResourceManager.loadBalancers(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -596,18 +596,18 @@ public class AzureTests extends ResourceManagerTestBase {
     @Test
     @Disabled("Though valid scenario, NRP is failing")
     public void testLoadBalancersInternalWithAvailabilityZone() throws Exception {
-        new TestLoadBalancer().new InternalWithZone(azure.virtualMachines().manager())
-            .runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer().new InternalWithZone(azureResourceManager.virtualMachines().manager())
+            .runTest(azureResourceManager.loadBalancers(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testManagedDiskVMUpdate() throws Exception {
-        SdkContext context = azure.disks().manager().sdkContext();
+        SdkContext context = azureResourceManager.disks().manager().sdkContext();
         final String rgName = context.randomResourceName("rg", 13);
         final String linuxVM2Name = context.randomResourceName("vm" + "-", 10);
         final String linuxVM2Pip = context.randomResourceName("pip" + "-", 18);
         VirtualMachine linuxVM2 =
-            azure
+            azureResourceManager
                 .virtualMachines()
                 .define(linuxVM2Name)
                 .withRegion(Region.US_EAST)
@@ -627,7 +627,7 @@ public class AzureTests extends ResourceManagerTestBase {
 
         linuxVM2.deallocate();
         linuxVM2.update().withoutDataDisk(2).withNewDataDisk(200).apply();
-        azure.resourceGroups().beginDeleteByName(rgName);
+        azureResourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     /**
@@ -637,7 +637,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testPublicIPAddresses() throws Exception {
-        new TestPublicIPAddress().runTest(azure.publicIpAddresses(), azure.resourceGroups());
+        new TestPublicIPAddress().runTest(azureResourceManager.publicIpAddresses(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -647,7 +647,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testPublicIPPrefixes() throws Exception {
-        new TestPublicIPPrefix().runTest(azure.publicIpPrefixes(), azure.resourceGroups());
+        new TestPublicIPPrefix().runTest(azureResourceManager.publicIpPrefixes(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -657,7 +657,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testAvailabilitySets() throws Exception {
-        new TestAvailabilitySet().runTest(azure.availabilitySets(), azure.resourceGroups());
+        new TestAvailabilitySet().runTest(azureResourceManager.availabilitySets(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -667,7 +667,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testNetworks() throws Exception {
-        new TestNetwork().new WithSubnets().runTest(azure.networks(), azure.resourceGroups());
+        new TestNetwork().new WithSubnets().runTest(azureResourceManager.networks(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -677,7 +677,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testNetworkWithAccessFromServiceToSubnet() throws Exception {
-        new TestNetwork().new WithAccessFromServiceToSubnet().runTest(azure.networks(), azure.resourceGroups());
+        new TestNetwork().new WithAccessFromServiceToSubnet().runTest(azureResourceManager.networks(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -687,7 +687,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testNetworkPeerings() throws Exception {
-        new TestNetwork().new WithPeering().runTest(azure.networks(), azure.resourceGroups());
+        new TestNetwork().new WithPeering().runTest(azureResourceManager.networks(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -697,7 +697,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testDdosAndVmProtection() throws Exception {
-        new TestNetwork().new WithDDosProtectionPlanAndVmProtection().runTest(azure.networks(), azure.resourceGroups());
+        new TestNetwork().new WithDDosProtectionPlanAndVmProtection().runTest(azureResourceManager.networks(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -707,7 +707,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testNetworkUpdateTags() throws Exception {
-        new TestNetwork().new WithUpdateTags().runTest(azure.networks(), azure.resourceGroups());
+        new TestNetwork().new WithUpdateTags().runTest(azureResourceManager.networks(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -717,7 +717,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testRouteTables() throws Exception {
-        new TestRouteTables().new Minimal().runTest(azure.routeTables(), azure.resourceGroups());
+        new TestRouteTables().new Minimal().runTest(azureResourceManager.routeTables(), azureResourceManager.resourceGroups());
     }
 
     /** Tests the regions enum. */
@@ -751,7 +751,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testNetworkInterfaces() throws Exception {
-        new TestNetworkInterface().runTest(azure.networkInterfaces(), azure.resourceGroups());
+        new TestNetworkInterface().runTest(azureResourceManager.networkInterfaces(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -761,7 +761,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testNetworkWatchers() throws Exception {
-        new TestNetworkWatcher().runTest(azure.networkWatchers(), azure.resourceGroups());
+        new TestNetworkWatcher().runTest(azureResourceManager.networkWatchers(), azureResourceManager.resourceGroups());
     }
 
     @Test
@@ -772,7 +772,7 @@ public class AzureTests extends ResourceManagerTestBase {
         try {
             TestNetworkWatcher tnw = new TestNetworkWatcher();
 
-            NetworkWatcher nw = tnw.createResource(azure.networkWatchers());
+            NetworkWatcher nw = tnw.createResource(azureResourceManager.networkWatchers());
 
             tnwrg = tnw.groupName();
             nwrg = nw.resourceGroupName();
@@ -781,9 +781,9 @@ public class AzureTests extends ResourceManagerTestBase {
             VirtualMachine[] virtualMachines =
                 tnw
                     .ensureNetwork(
-                        azure.networkWatchers().manager().networks(),
-                        azure.virtualMachines(),
-                        azure.networkInterfaces());
+                        azureResourceManager.networkWatchers().manager().networks(),
+                        azureResourceManager.virtualMachines(),
+                        azureResourceManager.networkInterfaces());
 
             ConnectionMonitor connectionMonitor =
                 nw
@@ -823,7 +823,7 @@ public class AzureTests extends ResourceManagerTestBase {
 
             FlowLogSettings flowLogSettings =
                 nw.getFlowLogSettings(virtualMachines[0].getPrimaryNetworkInterface().networkSecurityGroupId());
-            StorageAccount storageAccount = tnw.ensureStorageAccount(azure.storageAccounts());
+            StorageAccount storageAccount = tnw.ensureStorageAccount(azureResourceManager.storageAccounts());
             flowLogSettings
                 .update()
                 .withLogging()
@@ -901,15 +901,15 @@ public class AzureTests extends ResourceManagerTestBase {
 
             ConnectionMonitorQueryResult queryResult = connectionMonitor.query();
 
-            azure.virtualMachines().deleteById(virtualMachines[1].id());
+            azureResourceManager.virtualMachines().deleteById(virtualMachines[1].id());
             topology.execute();
             //            Assertions.assertEquals(10, topology.resources().size());     // not sure why it is 18 now
         } finally {
             if (nwrg != null) {
-                azure.resourceGroups().beginDeleteByName(nwrg);
+                azureResourceManager.resourceGroups().beginDeleteByName(nwrg);
             }
             if (tnwrg != null) {
-                azure.resourceGroups().beginDeleteByName(tnwrg);
+                azureResourceManager.resourceGroups().beginDeleteByName(tnwrg);
             }
         }
     }
@@ -921,7 +921,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testLocalNetworkGateways() throws Exception {
-        new TestLocalNetworkGateway().runTest(azure.localNetworkGateways(), azure.resourceGroups());
+        new TestLocalNetworkGateway().runTest(azureResourceManager.localNetworkGateways(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -931,7 +931,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testExpressRouteCircuits() throws Exception {
-        new TestExpressRouteCircuit().new Basic().runTest(azure.expressRouteCircuits(), azure.resourceGroups());
+        new TestExpressRouteCircuit().new Basic().runTest(azureResourceManager.expressRouteCircuits(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -942,7 +942,7 @@ public class AzureTests extends ResourceManagerTestBase {
     @Test
     public void testExpressRouteCircuitPeering() throws Exception {
         new TestExpressRouteCircuit().new ExpressRouteCircuitPeering()
-            .runTest(azure.expressRouteCircuits(), azure.resourceGroups());
+            .runTest(azureResourceManager.expressRouteCircuits(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -955,7 +955,7 @@ public class AzureTests extends ResourceManagerTestBase {
     public void testVirtualMachines() throws Exception {
         // Future: This method needs to have a better specific name since we are going to include unit test for
         // different vm scenarios.
-        new TestVirtualMachine().runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachine().runTest(azureResourceManager.virtualMachines(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -965,7 +965,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testVirtualMachineDataDisk() throws Exception {
-        new TestVirtualMachineDataDisk().runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachineDataDisk().runTest(azureResourceManager.virtualMachines(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -975,7 +975,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testVirtualMachineNics() throws Exception {
-        new TestVirtualMachineNics(azure.networks().manager()).runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachineNics(azureResourceManager.networks().manager()).runTest(azureResourceManager.virtualMachines(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -985,7 +985,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testVirtualMachineSSh() throws Exception {
-        new TestVirtualMachineSsh(azure.publicIpAddresses()).runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachineSsh(azureResourceManager.publicIpAddresses()).runTest(azureResourceManager.virtualMachines(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -995,24 +995,24 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void testVirtualMachineSizes() throws Exception {
-        new TestVirtualMachineSizes().runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachineSizes().runTest(azureResourceManager.virtualMachines(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testVirtualMachineCustomData() throws Exception {
-        new TestVirtualMachineCustomData(azure.publicIpAddresses())
-            .runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachineCustomData(azureResourceManager.publicIpAddresses())
+            .runTest(azureResourceManager.virtualMachines(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testVirtualMachineInAvailabilitySet() throws Exception {
-        new TestVirtualMachineInAvailabilitySet().runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachineInAvailabilitySet().runTest(azureResourceManager.virtualMachines(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testVirtualMachineSyncPoller() throws Exception {
-        new TestVirtualMachineSyncPoller(azure.networks().manager())
-            .runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachineSyncPoller(azureResourceManager.networks().manager())
+            .runTest(azureResourceManager.virtualMachines(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -1022,10 +1022,10 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void listSubscriptions() throws Exception {
-        Assertions.assertTrue(0 < TestUtilities.getSize(azure.subscriptions().list()));
-        Subscription subscription = azure.getCurrentSubscription();
+        Assertions.assertTrue(0 < TestUtilities.getSize(azureResourceManager.subscriptions().list()));
+        Subscription subscription = azureResourceManager.getCurrentSubscription();
         Assertions.assertNotNull(subscription);
-        Assertions.assertTrue(azure.subscriptionId().equalsIgnoreCase(subscription.subscriptionId()));
+        Assertions.assertTrue(azureResourceManager.subscriptionId().equalsIgnoreCase(subscription.subscriptionId()));
     }
 
     /**
@@ -1035,7 +1035,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void listLocations() throws Exception {
-        Subscription subscription = azure.getCurrentSubscription();
+        Subscription subscription = azureResourceManager.getCurrentSubscription();
         Assertions.assertNotNull(subscription);
         for (Location location : subscription.listLocations()) {
             Region region = Region.fromName(location.name());
@@ -1056,7 +1056,7 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void listResourceGroups() throws Exception {
-        int groupCount = TestUtilities.getSize(azure.resourceGroups().list());
+        int groupCount = TestUtilities.getSize(azureResourceManager.resourceGroups().list());
         System.out.println(String.format("Group count: %s", groupCount));
         Assertions.assertTrue(0 < groupCount);
     }
@@ -1068,14 +1068,14 @@ public class AzureTests extends ResourceManagerTestBase {
      */
     @Test
     public void listStorageAccounts() throws Exception {
-        Assertions.assertTrue(0 < TestUtilities.getSize(azure.storageAccounts().list()));
+        Assertions.assertTrue(0 < TestUtilities.getSize(azureResourceManager.storageAccounts().list()));
     }
 
     @Test
     public void createStorageAccount() throws Exception {
         String storageAccountName = generateRandomResourceName("testsa", 12);
         StorageAccount storageAccount =
-            azure
+            azureResourceManager
                 .storageAccounts()
                 .define(storageAccountName)
                 .withRegion(Region.ASIA_EAST)
@@ -1085,7 +1085,7 @@ public class AzureTests extends ResourceManagerTestBase {
 
         Assertions.assertEquals(storageAccount.name(), storageAccountName);
 
-        azure.resourceGroups().beginDeleteByName(storageAccount.resourceGroupName());
+        azureResourceManager.resourceGroups().beginDeleteByName(storageAccount.resourceGroupName());
     }
 
     //    @Test
@@ -1095,13 +1095,13 @@ public class AzureTests extends ResourceManagerTestBase {
 
     @Test
     public void testTrafficManager() throws Exception {
-        new TestTrafficManager(azure.publicIpAddresses())
-                .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
+        new TestTrafficManager(azureResourceManager.publicIpAddresses())
+                .runTest(azureResourceManager.trafficManagerProfiles(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testRedis() throws Exception {
-        new TestRedis().runTest(azure.redisCaches(), azure.resourceGroups());
+        new TestRedis().runTest(azureResourceManager.redisCaches(), azureResourceManager.resourceGroups());
     }
 
     //    @Test
@@ -1112,33 +1112,33 @@ public class AzureTests extends ResourceManagerTestBase {
 
     @Test
     public void testDnsZones() throws Exception {
-        new TestDns().runTest(azure.dnsZones(), azure.resourceGroups());
+        new TestDns().runTest(azureResourceManager.dnsZones(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testPrivateDnsZones() throws Exception {
-        new TestPrivateDns().runTest(azure.privateDnsZones(), azure.resourceGroups());
+        new TestPrivateDns().runTest(azureResourceManager.privateDnsZones(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testSqlServer() throws Exception {
-        new TestSql().runTest(azure.sqlServers(), azure.resourceGroups());
+        new TestSql().runTest(azureResourceManager.sqlServers(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testResourceStreaming() throws Exception {
-        new TestResourceStreaming(azure.storageAccounts()).runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestResourceStreaming(azureResourceManager.storageAccounts()).runTest(azureResourceManager.virtualMachines(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testKubernetesCluster() throws Exception {
-        new TestKubernetesCluster().runTest(azure.kubernetesClusters(), azure.resourceGroups());
+        new TestKubernetesCluster().runTest(azureResourceManager.kubernetesClusters(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testContainerInstanceWithPublicIpAddressWithSystemAssignedMsi() throws Exception {
         new TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI()
-            .runTest(azure.containerGroups(), azure.resourceGroups(), azure.subscriptionId());
+            .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups(), azureResourceManager.subscriptionId());
     }
 
     @Test
@@ -1168,7 +1168,7 @@ public class AzureTests extends ResourceManagerTestBase {
         List<String> dnsServers = new ArrayList<String>();
         dnsServers.add("dnsServer1");
         ContainerGroup containerGroup =
-            azure
+            azureResourceManager
                 .containerGroups()
                 .define(cgName)
                 .withRegion(Region.US_EAST2)
@@ -1246,16 +1246,16 @@ public class AzureTests extends ResourceManagerTestBase {
 
         // TODO: add network and dns testing when questions have been answered
 
-        ContainerGroup containerGroup2 = azure.containerGroups().getByResourceGroup(rgName, cgName);
+        ContainerGroup containerGroup2 = azureResourceManager.containerGroups().getByResourceGroup(rgName, cgName);
 
         List<ContainerGroup> containerGroupList =
-            azure.containerGroups().listByResourceGroup(rgName).stream().collect(Collectors.toList());
+            azureResourceManager.containerGroups().listByResourceGroup(rgName).stream().collect(Collectors.toList());
         Assertions.assertTrue(containerGroupList.size() > 0);
 
         containerGroup.refresh();
 
         Set<Operation> containerGroupOperations =
-            azure.containerGroups().listOperations().stream().collect(Collectors.toSet());
+            azureResourceManager.containerGroups().listOperations().stream().collect(Collectors.toSet());
         // Number of supported operation can change hence don't assert with a predefined number.
         Assertions.assertTrue(containerGroupOperations.size() > 0);
     }
@@ -1266,18 +1266,18 @@ public class AzureTests extends ResourceManagerTestBase {
         // LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID
         if (!isPlaybackMode()) {
             new TestContainerInstanceWithPrivateIpAddress()
-                .runTest(azure.containerGroups(), azure.resourceGroups(), azure.subscriptionId());
+                .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups(), azureResourceManager.subscriptionId());
         }
     }
 
     @Test
     public void testContainerRegistry() throws Exception {
-        new TestContainerRegistry().runTest(azure.containerRegistries(), azure.resourceGroups());
+        new TestContainerRegistry().runTest(azureResourceManager.containerRegistries(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testCosmosDB() throws Exception {
-        new TestCosmosDB().runTest(azure.cosmosDBAccounts(), azure.resourceGroups());
+        new TestCosmosDB().runTest(azureResourceManager.cosmosDBAccounts(), azureResourceManager.resourceGroups());
     }
 
     //    @Test
@@ -1312,7 +1312,7 @@ public class AzureTests extends ResourceManagerTestBase {
         StringBuilder sb = new StringBuilder();
 
         PagedIterable<Location> locations =
-            azure
+            azureResourceManager
                 .getCurrentSubscription()
                 .listLocations(); // note the region is not complete since it depends on current subscription
 

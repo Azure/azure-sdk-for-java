@@ -6,7 +6,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -31,14 +31,14 @@ public class ManageKubernetesCluster {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @param clientId secondary service principal client ID
      * @param secret secondary service principal secret
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId, String secret) throws IOException, JSchException {
-        final String rgName = azure.sdkContext().randomResourceName("rgaks", 15);
-        final String aksName = azure.sdkContext().randomResourceName("akssample", 30);
+    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, JSchException {
+        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgaks", 15);
+        final String aksName = azureResourceManager.sdkContext().randomResourceName("akssample", 30);
         final Region region = Region.US_EAST;
         String servicePrincipalClientId = clientId; // replace with a real service principal client id
         String servicePrincipalSecret = secret; // and corresponding secret
@@ -85,7 +85,7 @@ public class ManageKubernetesCluster {
 
             Date t1 = new Date();
 
-            KubernetesCluster kubernetesCluster = azure.kubernetesClusters().define(aksName)
+            KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters().define(aksName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDefaultVersion()
@@ -125,7 +125,7 @@ public class ManageKubernetesCluster {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -150,16 +150,16 @@ public class ManageKubernetesCluster {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure, "", "");
+            runSample(azureResourceManager, "", "");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
