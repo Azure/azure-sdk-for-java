@@ -9,7 +9,6 @@ import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
 import com.azure.resourcemanager.storage.fluent.inner.ListServiceSasResponseInner;
 import com.azure.resourcemanager.storage.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.storage.models.ServiceSasParameters;
-import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
@@ -41,8 +40,7 @@ public class StorageAccountsImpl
 
     @Override
     public StorageAccountImpl define(String name) {
-        return wrapModel(name)
-            .withSku(StorageAccountSkuType.fromSkuName(SkuName.STANDARD_GRS)).withGeneralPurposeAccountKind();
+        return wrapModel(name).withSku(StorageAccountSkuType.STANDARD_GRS).withGeneralPurposeAccountKind();
     }
 
     @Override

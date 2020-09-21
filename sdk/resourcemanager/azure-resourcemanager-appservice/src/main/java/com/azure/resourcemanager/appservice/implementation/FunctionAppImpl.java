@@ -592,7 +592,7 @@ class FunctionAppImpl
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
                     this.manager().sdkContext().randomResourceName(name(), 20),
-                    StorageAccountSkuType.fromSkuName(com.azure.resourcemanager.storage.models.SkuName.STANDARD_GRS));
+                    StorageAccountSkuType.STANDARD_GRS);
             }
         }
         return super.createAsync();

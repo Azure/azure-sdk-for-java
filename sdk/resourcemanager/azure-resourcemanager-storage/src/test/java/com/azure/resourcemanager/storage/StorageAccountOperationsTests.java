@@ -111,7 +111,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
 
         // Update
         storageAccount = storageAccount.update()
-            .withSku(StorageAccountSkuType.fromSkuName(SkuName.STANDARD_LRS)).withTag("tag2", "value2").apply();
+            .withSku(StorageAccountSkuType.STANDARD_LRS).withTag("tag2", "value2").apply();
         Assertions.assertEquals(SkuName.STANDARD_LRS, storageAccount.skuType().name());
         Assertions.assertEquals(2, storageAccount.tags().size());
     }
