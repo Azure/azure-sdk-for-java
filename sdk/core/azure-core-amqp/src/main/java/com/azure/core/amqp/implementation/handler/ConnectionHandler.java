@@ -33,7 +33,6 @@ public class ConnectionHandler extends Handler {
     static final Symbol FRAMEWORK = Symbol.valueOf("framework");
     static final Symbol USER_AGENT = Symbol.valueOf("user-agent");
 
-    static final int MAX_USER_AGENT_LENGTH = 128;
     static final int AMQPS_PORT = 5671;
     static final int MAX_FRAME_SIZE = 65536;
 
