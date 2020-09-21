@@ -163,7 +163,7 @@ public final class ManageUsersGroupsAndRoles {
         try {
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
-                .authorityHost(profile.getEnvironment().getResourceManagerEndpoint())
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
             Azure.Authenticated authenticated = Azure
