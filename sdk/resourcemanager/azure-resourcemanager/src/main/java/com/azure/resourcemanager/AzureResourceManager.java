@@ -355,7 +355,8 @@ public final class AzureResourceManager {
 
         @Override
         public AzureResourceManager withSubscription(String subscriptionId) {
-            return new AzureResourceManager(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
+            return new AzureResourceManager(
+                httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
         }
 
         @Override
@@ -363,7 +364,8 @@ public final class AzureResourceManager {
             if (subscriptionId == null) {
                 subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
             }
-            return new AzureResourceManager(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
+            return new AzureResourceManager(
+                httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
         }
     }
 
