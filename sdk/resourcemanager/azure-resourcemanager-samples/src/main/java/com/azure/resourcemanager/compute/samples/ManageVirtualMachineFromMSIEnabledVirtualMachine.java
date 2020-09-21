@@ -34,14 +34,14 @@ public final class ManageVirtualMachineFromMSIEnabledVirtualMachine {
             // see https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
             //
 
-            final String usage = "Usage: mvn clean compile exec:java -Dexec.args=\"<subscription-id> <rg-name> <client-id>\"";
+            final String usage = "Usage: mvn clean compile exec:java -Dexec.args=\"<subscription-id> <rg-name> [<client-id>]\"";
             if (args.length < 2) {
                 throw new IllegalArgumentException(usage);
             }
 
             final String subscriptionId = args[0];
             final String resourceGroupName = args[1];
-            final String clientId = args[2];
+            final String clientId = args.length > 2 ? args[2] : null;
             final String linuxVMName = "yourVirtualMachineName";
             final String userName = "tirekicker";
             final String password = Utils.password();
