@@ -51,8 +51,10 @@ public class BlobParallelUploadOptions {
     /**
      * Constructs a new {@code BlobParalleUploadOptions}.
      *
-     * @param dataStream The data to write to the blob. Unlike other upload methods, this method does not require that
-     * the {@code InputStream} be markable.
+     * @param dataStream The data to write to the blob. The data must be markable. This is in order to support retries.
+     * If the data is not markable, consider opening a {@link com.azure.storage.blob.specialized.BlobOutputStream} and
+     * writing to the returned stream. Alternatively, consider wrapping your data source in a
+     * {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      */
@@ -227,7 +229,7 @@ public class BlobParallelUploadOptions {
 
     /**
      * Sets the timeout.
-     * 
+     *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The updated options
      *
