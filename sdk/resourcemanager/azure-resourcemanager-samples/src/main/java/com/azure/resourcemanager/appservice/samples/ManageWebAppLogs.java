@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -38,15 +38,15 @@ public final class ManageWebAppLogs {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws IOException {
+    public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         // New resources
         final String suffix = ".azurewebsites.net";
-        final String appName = azure.sdkContext().randomResourceName("webapp1-", 20);
+        final String appName = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
         final String appUrl = appName + suffix;
-        final String rgName = azure.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 
@@ -55,7 +55,7 @@ public final class ManageWebAppLogs {
 
             System.out.println("Creating web app " + appName + " in resource group " + rgName + "...");
 
-            final WebApp app = azure.webApps().define(appName)
+            final WebApp app = azureResourceManager.webApps().define(appName)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .withNewWindowsPlan(PricingTier.BASIC_B1)
@@ -155,7 +155,7 @@ public final class ManageWebAppLogs {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -181,16 +181,16 @@ public final class ManageWebAppLogs {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

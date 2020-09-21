@@ -120,7 +120,7 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
 import java.util.Objects;
 
 /** The entry point for accessing resource management APIs in Azure. */
-public final class Azure {
+public final class AzureResourceManager {
     private final ResourceManager resourceManager;
     private final StorageManager storageManager;
     private final ComputeManager computeManager;
@@ -193,7 +193,7 @@ public final class Azure {
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public Authenticated authenticate(TokenCredential credential, AzureProfile profile) {
-            return Azure.authenticate(buildHttpPipeline(credential, profile), profile);
+            return AzureResourceManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 
@@ -251,7 +251,7 @@ public final class Azure {
          * @param subscriptionId the ID of the subscription
          * @return an authenticated Azure client configured to work with the specified subscription
          */
-        Azure withSubscription(String subscriptionId);
+        AzureResourceManager withSubscription(String subscriptionId);
 
         /**
          * Selects the default subscription as the subscription for the APIs to work with.
@@ -263,7 +263,7 @@ public final class Azure {
          * @throws IllegalStateException when no subscription or more than one subscription found in the tenant.
          * @return an authenticated Azure client configured to work with the default subscription
          */
-        Azure withDefaultSubscription();
+        AzureResourceManager withDefaultSubscription();
     }
 
     /** The implementation for the Authenticated interface. */
@@ -354,20 +354,20 @@ public final class Azure {
         }
 
         @Override
-        public Azure withSubscription(String subscriptionId) {
-            return new Azure(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
+        public AzureResourceManager withSubscription(String subscriptionId) {
+            return new AzureResourceManager(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
         }
 
         @Override
-        public Azure withDefaultSubscription() {
+        public AzureResourceManager withDefaultSubscription() {
             if (subscriptionId == null) {
                 subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
             }
-            return new Azure(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
+            return new AzureResourceManager(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
         }
     }
 
-    private Azure(HttpPipeline httpPipeline, AzureProfile profile, Authenticated authenticated) {
+    private AzureResourceManager(HttpPipeline httpPipeline, AzureProfile profile, Authenticated authenticated) {
         this.sdkContext = authenticated.sdkContext();
         this.resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
