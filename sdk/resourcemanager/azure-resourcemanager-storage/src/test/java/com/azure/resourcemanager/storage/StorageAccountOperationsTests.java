@@ -110,7 +110,8 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertTrue(fileServiceEncryptionStatus.isEnabled()); // Service will enable this by default
 
         // Update
-        storageAccount = storageAccount.update().withSku(SkuName.STANDARD_LRS).withTag("tag2", "value2").apply();
+        storageAccount = storageAccount.update()
+            .withSku(StorageAccountSkuType.STANDARD_LRS).withTag("tag2", "value2").apply();
         Assertions.assertEquals(SkuName.STANDARD_LRS, storageAccount.skuType().name());
         Assertions.assertEquals(2, storageAccount.tags().size());
     }
