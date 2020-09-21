@@ -105,8 +105,8 @@ public class AADAppRoleAuthenticationFilterTest {
         assertNull("Authentication has not been cleaned up!", SecurityContextHolder.getContext().getAuthentication());
     }
 
-    @Test(expected = ServletException.class)
-    public void testDoFilterShouldRethrowJWTException()
+    @Test
+    public void testDoFilterShouldNotRethrowJWTException()
         throws ParseException, JOSEException, BadJOSEException, ServletException, IOException {
 
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + TOKEN);
