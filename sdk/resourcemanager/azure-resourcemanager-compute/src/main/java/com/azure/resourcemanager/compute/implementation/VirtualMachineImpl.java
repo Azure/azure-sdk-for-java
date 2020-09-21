@@ -442,7 +442,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(Creatable<Network> creatable) {
         this.nicDefinitionWithPrivateIp =
-            this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
+            this.preparePrimaryNetworkInterface(this.namer.getRandomName("nic", 20))
                 .withNewPrimaryNetwork(creatable);
         return this;
     }
@@ -450,7 +450,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(String addressSpace) {
         this.nicDefinitionWithPrivateIp =
-            this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
+            this.preparePrimaryNetworkInterface(this.namer.getRandomName("nic", 20))
                 .withNewPrimaryNetwork(addressSpace);
         return this;
     }
@@ -458,7 +458,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withExistingPrimaryNetwork(Network network) {
         this.nicDefinitionWithSubnet =
-            this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
+            this.preparePrimaryNetworkInterface(this.namer.getRandomName("nic", 20))
                 .withExistingPrimaryNetwork(network);
         return this;
     }
@@ -498,7 +498,7 @@ class VirtualMachineImpl
             this
                 .networkManager
                 .publicIpAddresses()
-                .define(this.namer.randomName("pip", 15))
+                .define(this.namer.getRandomName("pip", 15))
                 .withRegion(this.regionName());
         PublicIpAddress.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.creatableGroup != null) {
@@ -1711,7 +1711,7 @@ class VirtualMachineImpl
                         this
                             .storageManager
                             .storageAccounts()
-                            .define(this.namer.randomName("stg", 24).replace("-", ""))
+                            .define(this.namer.getRandomName("stg", 24).replace("-", ""))
                             .withRegion(this.regionName())
                             .withNewResourceGroup(this.creatableGroup);
                 } else {
@@ -1719,7 +1719,7 @@ class VirtualMachineImpl
                         this
                             .storageManager
                             .storageAccounts()
-                            .define(this.namer.randomName("stg", 24).replace("-", ""))
+                            .define(this.namer.getRandomName("stg", 24).replace("-", ""))
                             .withRegion(this.regionName())
                             .withExistingResourceGroup(this.resourceGroupName());
                 }
@@ -1965,11 +1965,11 @@ class VirtualMachineImpl
             if (this.inner().osProfile().computerName() == null) {
                 // VM name cannot contain only numeric values and cannot exceed 15 chars
                 if (vmName.matches("[0-9]+")) {
-                    this.inner().osProfile().withComputerName(namer.randomName("vm", 15));
+                    this.inner().osProfile().withComputerName(namer.getRandomName("vm", 15));
                 } else if (vmName.length() <= 15) {
                     this.inner().osProfile().withComputerName(vmName);
                 } else {
-                    this.inner().osProfile().withComputerName(namer.randomName("vm", 15));
+                    this.inner().osProfile().withComputerName(namer.getRandomName("vm", 15));
                 }
             }
         } else {
@@ -2586,7 +2586,7 @@ class VirtualMachineImpl
                 || this.vmImpl.existingStorageAccountToAssociate != null) {
                 return;
             }
-            String accountName = this.vmImpl.namer.randomName("stg", 24).replace("-", "");
+            String accountName = this.vmImpl.namer.getRandomName("stg", 24).replace("-", "");
             Creatable<StorageAccount> storageAccountCreatable;
             if (this.vmImpl.creatableGroup != null) {
                 storageAccountCreatable =

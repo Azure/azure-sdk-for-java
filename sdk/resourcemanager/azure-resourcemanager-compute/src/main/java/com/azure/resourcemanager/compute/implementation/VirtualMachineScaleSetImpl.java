@@ -1619,11 +1619,11 @@ public class VirtualMachineScaleSetImpl
             if (this.computerNamePrefix() == null) {
                 // VM name cannot contain only numeric values and cannot exceed 15 chars
                 if (this.name().matches("[0-9]+")) {
-                    withComputerNamePrefix(this.namer.randomName("vmss-vm", 12));
+                    withComputerNamePrefix(this.namer.getRandomName("vmss-vm", 12));
                 } else if (this.name().length() <= 12) {
                     withComputerNamePrefix(this.name() + "-vm");
                 } else {
-                    withComputerNamePrefix(this.namer.randomName("vmss-vm", 12));
+                    withComputerNamePrefix(this.namer.getRandomName("vmss-vm", 12));
                 }
             }
         } else {
@@ -1695,7 +1695,7 @@ public class VirtualMachineScaleSetImpl
         if (this.isInCreateMode()
             && this.creatableStorageAccountKeys.isEmpty()
             && this.existingStorageAccountsToAssociate.isEmpty()) {
-            String accountName = this.namer.randomName("stg", 24).replace("-", "");
+            String accountName = this.namer.getRandomName("stg", 24).replace("-", "");
             Creatable<StorageAccount> storageAccountCreatable;
             if (this.creatableGroup != null) {
                 storageAccountCreatable =
@@ -2907,7 +2907,7 @@ public class VirtualMachineScaleSetImpl
                 return;
             }
 
-            String accountName = this.vmssImpl.namer.randomName("stg", 24).replace("-", "");
+            String accountName = this.vmssImpl.namer.getRandomName("stg", 24).replace("-", "");
             Creatable<StorageAccount> storageAccountCreatable;
             if (this.vmssImpl.creatableGroup != null) {
                 storageAccountCreatable =
