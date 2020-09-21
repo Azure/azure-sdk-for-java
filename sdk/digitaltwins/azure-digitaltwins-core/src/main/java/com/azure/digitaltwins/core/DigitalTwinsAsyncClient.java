@@ -996,7 +996,7 @@ public final class DigitalTwinsAsyncClient {
     Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId, Context context)
     {
         return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(eventRouteId, context)
-            .map(eventRouteResponse -> new SimpleResponse(
+            .map(eventRouteResponse -> new SimpleResponse<>(
                 eventRouteResponse.getRequest(),
                 eventRouteResponse.getStatusCode(),
                 eventRouteResponse.getHeaders(),
