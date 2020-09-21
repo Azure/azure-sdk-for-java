@@ -5,6 +5,7 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerEncoding;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Encodes the continuation token as a json encoded string
@@ -30,7 +31,7 @@ public class SerializationHelpers {
         try {
             ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
             serializer.serialize(sourceStream, continuationToken);
-            return sourceStream.toString();
+            return sourceStream.toString(StandardCharsets.UTF_8.name());
         }
         catch (Exception e) {
             throw new IllegalArgumentException("Invalid continuation token", e);
