@@ -182,7 +182,7 @@ public final class DigitalTwinsClientBuilder {
                 this.properties);
         }
 
-        return new DigitalTwinsAsyncClient(this.httpPipeline, serviceVersion, this.endpoint, this.jsonSerializer);
+        return new DigitalTwinsAsyncClient(this.endpoint, this.httpPipeline, serviceVersion, this.jsonSerializer);
     }
 
     /**
