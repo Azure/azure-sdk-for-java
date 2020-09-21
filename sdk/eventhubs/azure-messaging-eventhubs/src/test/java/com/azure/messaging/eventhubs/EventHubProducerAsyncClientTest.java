@@ -17,6 +17,7 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
@@ -79,6 +80,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 class EventHubProducerAsyncClientTest {
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
     private static final String ENTITY_PATH = HOSTNAME + ".servicebus.windows.net";
@@ -137,7 +139,7 @@ class EventHubProducerAsyncClientTest {
         tracerProvider = new TracerProvider(Collections.emptyList());
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, testScheduler);
+            ProxyOptions.SYSTEM_DEFAULTS, testScheduler, CLIENT_OPTIONS);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);

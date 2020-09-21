@@ -36,7 +36,7 @@ public class QueryTests extends QueryTestBase{
 
             // Create a room twin with property "IsOccupied" : true
             String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
-            client.createDigitalTwinWithResponse(roomTwinId, roomTwin, Context.NONE);
+            client.createDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, Context.NONE);
 
             String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";
 

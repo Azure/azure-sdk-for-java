@@ -18,11 +18,11 @@ public class UniqueIdHelper {
     }
 
     public static String getUniqueDigitalTwinId(String baseName, DigitalTwinsAsyncClient client, Function<Integer, String> randomIntegerStringGenerator) {
-        return getUniqueId(baseName, (digitalTwinId -> client.getDigitalTwin(digitalTwinId).block()), randomIntegerStringGenerator);
+        return getUniqueId(baseName, (digitalTwinId -> client.getDigitalTwin(digitalTwinId, String.class).block()), randomIntegerStringGenerator);
     }
 
     public static String getUniqueDigitalTwinId(String baseName, DigitalTwinsClient client, Function<Integer, String> randomIntegerStringGenerator) {
-        return getUniqueId(baseName, (client::getDigitalTwin), randomIntegerStringGenerator);
+        return getUniqueId(baseName, (digitalTwinId -> client.getDigitalTwin(digitalTwinId, String.class)), randomIntegerStringGenerator);
     }
 
     // Taking randomIntegerStringGenerator as a parameter here because e2e tests use a special function for recording and replaying "random" numbers
