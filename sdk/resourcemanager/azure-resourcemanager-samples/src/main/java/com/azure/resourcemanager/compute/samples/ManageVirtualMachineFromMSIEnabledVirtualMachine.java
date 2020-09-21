@@ -25,68 +25,66 @@ public final class ManageVirtualMachineFromMSIEnabledVirtualMachine {
      * @param args the parameters
      */
     public static void main(String[] args) {
-        try {
-            final Region region = Region.US_WEST_CENTRAL;
+        final Region region = Region.US_WEST_CENTRAL;
 
-            // This sample required to be run from a ManagedIdentityCredential (User Assigned or System Assigned) enabled virtual
-            // machine with role based contributor access to the resource group specified as the second command line argument.
-            //
-            // see https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
-            //
+        // This sample required to be run from a ManagedIdentityCredential (User Assigned or System Assigned) enabled virtual
+        // machine with role based contributor access to the resource group specified as the second command line argument.
+        //
+        // see https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
+        //
 
-            final String usage = "Usage: mvn clean compile exec:java -Dexec.args=\"<subscription-id> <rg-name> [<client-id>]\"";
-            if (args.length < 2) {
-                throw new IllegalArgumentException(usage);
-            }
-
-            final String subscriptionId = args[0];
-            final String resourceGroupName = args[1];
-            final String clientId = args.length > 2 ? args[2] : null;
-            final String linuxVMName = "yourVirtualMachineName";
-            final String userName = "tirekicker";
-            final String password = Utils.password();
-
-            //=============================================================
-            // ManagedIdentityCredential Authenticate
-
-            ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
-                .clientId(clientId)
-                .build();
-
-            AzureProfile profile = new AzureProfile(null, subscriptionId, AzureEnvironment.AZURE);
-
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credential, profile)
-                    .withSubscription(subscriptionId);
-
-            // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
-
-            //=============================================================
-            // Create a Linux VM using MSI credentials
-
-            System.out.println("Creating a Linux VM using ManagedIdentityCredential.");
-
-            VirtualMachine virtualMachine = azure.virtualMachines()
-                    .define(linuxVMName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroupName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withRootPassword(password)
-                    .create();
-
-            System.out.println("Created virtual machine using ManagedIdentityCredential.");
-            Utils.print(virtualMachine);
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+        final String usage = "Usage: mvn clean compile exec:java -Dexec.args=\"<subscription-id> <rg-name> [<client-id>]\"";
+        if (args.length < 2) {
+            throw new IllegalArgumentException(usage);
         }
+
+        final String subscriptionId = args[0];
+        final String resourceGroupName = args[1];
+        final String clientId = args.length > 2 ? args[2] : null;
+        final String linuxVMName = "yourVirtualMachineName";
+        final String userName = "tirekicker";
+        final String password = Utils.password();
+
+        //=============================================================
+        // ManagedIdentityCredential Authenticate
+
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
+            .clientId(clientId)
+            .build();
+
+        AzureProfile profile = new AzureProfile(null, subscriptionId, AzureEnvironment.AZURE);
+
+        Azure azure = Azure.configure()
+            .withLogLevel(HttpLogDetailLevel.BASIC)
+            .authenticate(credential, profile)
+            .withSubscription(subscriptionId);
+
+        // Print selected subscription
+        System.out.println("Selected subscription: " + azure.subscriptionId());
+
+        //=============================================================
+        // Create a Linux VM using MSI credentials
+
+        System.out.println("Creating a Linux VM using ManagedIdentityCredential.");
+
+        VirtualMachine virtualMachine = azure.virtualMachines()
+            .define(linuxVMName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroupName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername(userName)
+            .withRootPassword(password)
+            .create();
+
+        System.out.println("Created virtual machine using ManagedIdentityCredential.");
+        Utils.print(virtualMachine);
+
+        System.out.println("Deleting resource group: " + resourceGroupName);
+        azure.resourceGroups().deleteByName(resourceGroupName);
+        System.out.println("Deleted resource group: " + resourceGroupName);
     }
 
     private ManageVirtualMachineFromMSIEnabledVirtualMachine() {
