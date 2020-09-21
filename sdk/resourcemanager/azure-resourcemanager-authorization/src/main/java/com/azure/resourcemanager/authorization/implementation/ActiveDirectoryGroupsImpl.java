@@ -90,8 +90,17 @@ public class ActiveDirectoryGroupsImpl
         return this.manager;
     }
 
-    @Override
     public GroupsClient inner() {
         return manager().inner().getGroups();
+    }
+
+    @Override
+    public PagedIterable<ActiveDirectoryGroup> listByFilter(String filter) {
+        return new PagedIterable<>(listByFilterAsync(filter));
+    }
+
+    @Override
+    public PagedFlux<ActiveDirectoryGroup> listByFilterAsync(String filter) {
+        return inner().listAsync(filter).mapPage(this::wrapModel);
     }
 }

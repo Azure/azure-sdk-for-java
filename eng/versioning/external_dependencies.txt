@@ -69,12 +69,11 @@ org.apache.logging.log4j:log4j-slf4j-impl;2.13.3
 org.apache.qpid:proton-j;0.33.4
 org.apache.qpid:qpid-jms-client;0.53.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
-org.asynchttpclient:async-http-client;2.10.5
+org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
 org.hibernate.validator:hibernate-validator;6.1.5.Final
 org.javatuples:javatuples;1.2
-org.json:json;20140107
 org.linguafranca.pwdb:KeePassJava2;2.1.4
 org.powermock:powermock-api-mockito2;2.0.2
 org.powermock:powermock-module-junit4;2.0.2
@@ -153,7 +152,7 @@ com.microsoft.azure:azure-mgmt-resources;1.3.0
 com.microsoft.azure:azure-mgmt-search;1.24.1
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
-com.microsoft.azure:msal4j;1.6.1
+com.microsoft.azure:msal4j;1.6.2
 com.microsoft.azure:msal4j-persistence-extension;1.0.0
 com.sun.activation:jakarta.activation;1.2.2
 io.opentelemetry:opentelemetry-api;0.6.0
@@ -161,6 +160,7 @@ io.opentelemetry:opentelemetry-sdk;0.6.0
 io.grpc:grpc-context;1.30.2
 io.projectreactor:reactor-test;3.3.9.RELEASE
 junit:junit;4.13
+commons-cli:commons-cli;1.3
 org.apache.maven:maven-compat;3.6.2
 org.apache.maven:maven-embedder;3.6.2
 org.apache.maven.wagon:wagon-http;3.3.4
@@ -247,7 +247,6 @@ org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.jacoco:jacoco-maven-plugin;0.8.5
 org.jacoco:org.jacoco.agent;0.8.5
 org.mockito:mockito-core;3.3.3
-org.nanohttpd:nanohttpd;2.3.1
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
 
@@ -269,12 +268,13 @@ org.revapi:revapi-maven-plugin;0.11.2
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
-cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.10.1
+cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.11.2
 cosmos_com.google.guava:guava;25.0-jre
 cosmos_io.dropwizard.metrics:metrics-core;4.1.0
 cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
 cosmos_org.mockito:mockito-core;1.10.19
+cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
 
 # sdk\core\azure-core-serializer-avro-jackson\pom.xml
 # This dependency is needed since Jackson Avro uses an older dependency on Apache Avro which is another library.
@@ -311,14 +311,8 @@ media_com.microsoft.azure:adal4j;1.2.0
 # sdk\resourcemanager\azure-resourcemanager-compute\pom.xml
 resourcemanager_com.jcraft:jsch;0.1.55
 
-# sdk\resourcemanager\azure-resourcemanager-compute\pom.xml
-resourcemanager_com.microsoft.azure:azure-storage;6.1.0
-
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0
 
 # sdk\spring\azure-spring-boot\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
-
-# sdk\cosmos
-springdata22_org.springframework.data:spring-data-commons;2.2.9.RELEASE

@@ -22,9 +22,11 @@ import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
+
+import java.io.IOException;
 
 /**
  * Azure DNS sample for managing DNS zones.
@@ -46,7 +48,7 @@ public class ManageDns {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         final String customDomainName         = "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
         final String rgName                   = azure.sdkContext().randomResourceName("rgNEMV_", 24);
         final String webAppName               = azure.sdkContext().randomResourceName("webapp1-", 20);
@@ -257,9 +259,6 @@ public class ManageDns {
             System.out.println("Deleted child DNS zone " + partnersDnsZone.name());
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -271,7 +270,6 @@ public class ManageDns {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

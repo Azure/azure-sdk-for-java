@@ -33,15 +33,14 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAvailableSslOptionsInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAvailableSslPredefinedPoliciesInner;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAvailableWafRuleSetsResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayBackendHealthInner;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayBackendHealthOnDemandInner;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewaySslPredefinedPolicyInner;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAvailableSslPredefinedPolicies;
+import com.azure.resourcemanager.network.models.ApplicationGatewayListResult;
 import com.azure.resourcemanager.network.models.ApplicationGatewayOnDemandProbe;
 import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -72,7 +71,7 @@ public final class ApplicationGatewaysClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ApplicationGatewaysClient(NetworkManagementClient client) {
+    ApplicationGatewaysClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(ApplicationGatewaysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -149,7 +148,7 @@ public final class ApplicationGatewaysClient
                 + "/applicationGateways")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationGatewayListResultInner>> listByResourceGroup(
+        Mono<Response<ApplicationGatewayListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -160,7 +159,7 @@ public final class ApplicationGatewaysClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGateways")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationGatewayListResultInner>> list(
+        Mono<Response<ApplicationGatewayListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -282,7 +281,7 @@ public final class ApplicationGatewaysClient
                 + "/predefinedPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationGatewayAvailableSslPredefinedPoliciesInner>> listAvailableSslPredefinedPolicies(
+        Mono<Response<ApplicationGatewayAvailableSslPredefinedPolicies>> listAvailableSslPredefinedPolicies(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -305,21 +304,21 @@ public final class ApplicationGatewaysClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationGatewayListResultInner>> listNext(
+        Mono<Response<ApplicationGatewayListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationGatewayListResultInner>> listAllNext(
+        Mono<Response<ApplicationGatewayListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationGatewayAvailableSslPredefinedPoliciesInner>> listAvailableSslPredefinedPoliciesNext(
+        Mono<Response<ApplicationGatewayAvailableSslPredefinedPolicies>> listAvailableSslPredefinedPoliciesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

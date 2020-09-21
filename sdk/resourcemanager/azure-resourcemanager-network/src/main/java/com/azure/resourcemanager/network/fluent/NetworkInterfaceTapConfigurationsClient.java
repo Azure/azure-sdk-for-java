@@ -31,9 +31,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceTapConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceTapConfigurationListResultInner;
+import com.azure.resourcemanager.network.models.NetworkInterfaceTapConfigurationListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public NetworkInterfaceTapConfigurationsClient(NetworkManagementClient client) {
+    NetworkInterfaceTapConfigurationsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -122,7 +121,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
                 + "/networkInterfaces/{networkInterfaceName}/tapConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceTapConfigurationListResultInner>> list(
+        Mono<Response<NetworkInterfaceTapConfigurationListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkInterfaceName") String networkInterfaceName,
@@ -134,7 +133,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceTapConfigurationListResultInner>> listNext(
+        Mono<Response<NetworkInterfaceTapConfigurationListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

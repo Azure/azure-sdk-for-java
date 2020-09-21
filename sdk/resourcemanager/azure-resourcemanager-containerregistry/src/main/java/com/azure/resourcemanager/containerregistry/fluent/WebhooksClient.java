@@ -33,14 +33,13 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.fluent.inner.CallbackConfigInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.EventInfoInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.EventInner;
-import com.azure.resourcemanager.containerregistry.fluent.inner.EventListResultInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.WebhookInner;
-import com.azure.resourcemanager.containerregistry.fluent.inner.WebhookListResultInner;
+import com.azure.resourcemanager.containerregistry.models.EventListResult;
 import com.azure.resourcemanager.containerregistry.models.WebhookCreateParameters;
+import com.azure.resourcemanager.containerregistry.models.WebhookListResult;
 import com.azure.resourcemanager.containerregistry.models.WebhookUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -61,7 +60,7 @@ public final class WebhooksClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public WebhooksClient(ContainerRegistryManagementClient client) {
+    WebhooksClient(ContainerRegistryManagementClient client) {
         this.service = RestProxy.create(WebhooksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -141,7 +140,7 @@ public final class WebhooksClient {
                 + "/registries/{registryName}/webhooks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WebhookListResultInner>> list(
+        Mono<Response<WebhookListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -185,7 +184,7 @@ public final class WebhooksClient {
                 + "/registries/{registryName}/webhooks/{webhookName}/listEvents")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventListResultInner>> listEvents(
+        Mono<Response<EventListResult>> listEvents(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -198,14 +197,14 @@ public final class WebhooksClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WebhookListResultInner>> listNext(
+        Mono<Response<WebhookListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventListResultInner>> listEventsNext(
+        Mono<Response<EventListResult>> listEventsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -33,9 +33,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceCollectionInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
+import com.azure.resourcemanager.appplatform.models.AppResourceCollection;
 import com.azure.resourcemanager.appplatform.models.CustomDomainValidatePayload;
 import com.azure.resourcemanager.appplatform.models.CustomDomainValidateResult;
 import com.azure.resourcemanager.appplatform.models.ResourceUploadDefinition;
@@ -58,7 +57,7 @@ public final class AppsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AppsClient(AppPlatformManagementClient client) {
+    AppsClient(AppPlatformManagementClient client) {
         this.service = RestProxy.create(AppsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -139,7 +138,7 @@ public final class AppsClient {
                 + "/{serviceName}/apps")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AppResourceCollectionInner>> list(
+        Mono<Response<AppResourceCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -182,7 +181,7 @@ public final class AppsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AppResourceCollectionInner>> listNext(
+        Mono<Response<AppResourceCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -399,6 +398,25 @@ public final class AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an App and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppResourceInner get(String resourceGroupName, String serviceName, String appName) {
+        final String syncStatus = null;
+        final Context context = null;
+        return getAsync(resourceGroupName, serviceName, appName, syncStatus).block();
+    }
+
+    /**
+     * Get an App and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
      * @param syncStatus Indicates whether sync status.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -410,25 +428,6 @@ public final class AppsClient {
     public AppResourceInner get(
         String resourceGroupName, String serviceName, String appName, String syncStatus, Context context) {
         return getAsync(resourceGroupName, serviceName, appName, syncStatus, context).block();
-    }
-
-    /**
-     * Get an App and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an App and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppResourceInner get(String resourceGroupName, String serviceName, String appName) {
-        final String syncStatus = null;
-        final Context context = null;
-        return getAsync(resourceGroupName, serviceName, appName, syncStatus).block();
     }
 
     /**

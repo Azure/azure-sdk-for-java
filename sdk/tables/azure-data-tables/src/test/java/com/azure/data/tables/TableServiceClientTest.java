@@ -4,11 +4,16 @@
 package com.azure.data.tables;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 public class TableServiceClientTest extends TestBase {
     private TableServiceClient serviceClient;
@@ -23,11 +28,13 @@ public class TableServiceClientTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else {
-            builder.httpClient(HttpClient.createDefault())
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy());
+            builder.httpClient(HttpClient.createDefault());
+            if (!interceptorManager.isLiveMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
+                Duration.ofSeconds(100))));
         }
-
         serviceClient = builder.buildClient();
     }
 
@@ -36,8 +43,38 @@ public class TableServiceClientTest extends TestBase {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
-        // Act
+        // Act & Assert
         serviceClient.createTable(tableName);
+    }
+
+    @Test
+    void serviceCreateTableFailsIfExists() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+        serviceClient.createTable(tableName);
+
+        // Act & Assert
+        Assertions.assertThrows(TableServiceErrorException.class,
+            () -> serviceClient.createTable(tableName));
+    }
+
+    @Test
+    void serviceCreateTableIfNotExists() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+
+        // Act & Assert
+        serviceClient.createTableIfNotExists(tableName);
+    }
+
+    @Test
+    void serviceCreateTableIfNotExistsSucceedsIfExists() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+        serviceClient.createTable(tableName);
+
+        //Act & Assert
+        serviceClient.createTableIfNotExists(tableName);
     }
 
     @Test

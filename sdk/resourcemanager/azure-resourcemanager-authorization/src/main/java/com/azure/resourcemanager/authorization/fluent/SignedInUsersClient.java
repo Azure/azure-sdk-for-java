@@ -24,10 +24,9 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectInner;
-import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectListResultInner;
 import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
+import com.azure.resourcemanager.authorization.models.DirectoryObjectListResult;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import reactor.core.publisher.Mono;
 
@@ -46,7 +45,7 @@ public final class SignedInUsersClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public SignedInUsersClient(GraphRbacManagementClient client) {
+    SignedInUsersClient(GraphRbacManagementClient client) {
         this.service =
             RestProxy.create(SignedInUsersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -73,7 +72,7 @@ public final class SignedInUsersClient {
         @Get("/{tenantID}/me/ownedObjects")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResultInner>> listOwnedObjects(
+        Mono<Response<DirectoryObjectListResult>> listOwnedObjects(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -83,7 +82,7 @@ public final class SignedInUsersClient {
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResultInner>> listOwnedObjectsNext(
+        Mono<Response<DirectoryObjectListResult>> listOwnedObjectsNext(
             @HostParam("$host") String endpoint,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,

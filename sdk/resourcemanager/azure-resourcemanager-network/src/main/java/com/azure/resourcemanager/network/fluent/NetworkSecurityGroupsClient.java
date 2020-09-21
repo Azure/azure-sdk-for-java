@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupListResultInner;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroupListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class NetworkSecurityGroupsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public NetworkSecurityGroupsClient(NetworkManagementClient client) {
+    NetworkSecurityGroupsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(NetworkSecurityGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -139,7 +138,7 @@ public final class NetworkSecurityGroupsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkSecurityGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkSecurityGroupListResultInner>> list(
+        Mono<Response<NetworkSecurityGroupListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -151,7 +150,7 @@ public final class NetworkSecurityGroupsClient
                 + "/networkSecurityGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkSecurityGroupListResultInner>> listByResourceGroup(
+        Mono<Response<NetworkSecurityGroupListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -162,14 +161,14 @@ public final class NetworkSecurityGroupsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkSecurityGroupListResultInner>> listAllNext(
+        Mono<Response<NetworkSecurityGroupListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkSecurityGroupListResultInner>> listNext(
+        Mono<Response<NetworkSecurityGroupListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -605,6 +604,23 @@ public final class NetworkSecurityGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network security group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkSecurityGroupInner getByResourceGroup(String resourceGroupName, String networkSecurityGroupName) {
+        final String expand = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, networkSecurityGroupName, expand).block();
+    }
+
+    /**
+     * Gets the specified network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -616,23 +632,6 @@ public final class NetworkSecurityGroupsClient
     public NetworkSecurityGroupInner getByResourceGroup(
         String resourceGroupName, String networkSecurityGroupName, String expand, Context context) {
         return getByResourceGroupAsync(resourceGroupName, networkSecurityGroupName, expand, context).block();
-    }
-
-    /**
-     * Gets the specified network security group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkSecurityGroupInner getByResourceGroup(String resourceGroupName, String networkSecurityGroupName) {
-        final String expand = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, networkSecurityGroupName, expand).block();
     }
 
     /**

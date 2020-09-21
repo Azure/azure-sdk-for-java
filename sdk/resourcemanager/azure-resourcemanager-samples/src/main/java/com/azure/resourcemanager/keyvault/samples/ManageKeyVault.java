@@ -13,7 +13,7 @@ import com.azure.resourcemanager.keyvault.models.KeyPermissions;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 /**
@@ -128,8 +128,6 @@ public final class ManageKeyVault {
             System.out.println("Deleted the key vaults");
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -141,8 +139,6 @@ public final class ManageKeyVault {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
     /**
      * Main entry point.

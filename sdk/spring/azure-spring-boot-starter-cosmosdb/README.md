@@ -11,12 +11,12 @@
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-cosmosdb-spring-boot-starter;current})
+[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-cosmos;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
-    <version>2.3.3</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-spring-boot-starter-cosmos</artifactId>
+    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -76,7 +76,7 @@ Include actuator dependencies.
 </dependency>
 ```
 
-Call `http://{hostname}:{port}/actuator/health/cosmos` to get the CosmosDB health info. **Please note**: it will calculate [RUs](https://docs.microsoft.com/en-us/azure/cosmos-db/request-units).
+Call `http://{hostname}:{port}/actuator/health/cosmos` to get the CosmosDB health info. **Please note**: it will calculate [RUs](https://docs.microsoft.com/azure/cosmos-db/request-units).
 
 ### Define an entity
 Define a simple entity as Document in Cosmos DB.
@@ -231,16 +231,16 @@ For more information about setting loging in pring, please refer to the [officia
 
 ## Next steps
 
-Besides using this Azure CosmosDb Spring Boot Starter, you can directly use Spring Data for Azure CosmosDb package for more complex scenarios. Please refer to [Spring Data for Azure CosmosDB](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core) for more details.
+Besides using this Azure CosmosDb Spring Boot Starter, you can directly use Spring Data for Azure CosmosDb package for more complex scenarios. Please refer to [Spring Data for Azure CosmosDB](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos) for more details.
 
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code
-- [Cosmos DB SQL API](../azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb)
+- [Cosmos DB SQL API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb)
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.
+Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
 
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-cosmos-db

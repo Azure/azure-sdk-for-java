@@ -13,7 +13,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
+import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
 import reactor.core.publisher.Mono;
 
@@ -152,6 +152,7 @@ final class GenericResourceImpl
         String name = isInCreateMode() ? this.name() : ResourceUtils.nameFromResourceId(inner().id());
 
         return AcceptedImpl.newAccepted(logger,
+            this.manager().inner(),
             () -> this.manager().inner().getResources()
                 .createOrUpdateWithResponseAsync(
                     resourceGroupName(),
@@ -162,8 +163,6 @@ final class GenericResourceImpl
                     apiVersion,
                     inner()).block(),
             inner -> new GenericResourceImpl(inner.id(), inner, this.manager()),
-            this.manager().inner().getSerializerAdapter(),
-            this.manager().inner().getHttpPipeline(),
             GenericResourceInner.class,
             null,
             this::setInner);

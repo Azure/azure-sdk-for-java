@@ -307,11 +307,10 @@ public final class DeploymentImpl extends
     @Override
     public Accepted<Deployment> beginCreate() {
         return AcceptedImpl.newAccepted(logger,
+            this.manager().inner(),
             () -> this.manager().inner().getDeployments()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters).block(),
             inner -> new DeploymentImpl(inner, inner.name(), resourceManager),
-            this.manager().inner().getSerializerAdapter(),
-            this.manager().inner().getHttpPipeline(),
             DeploymentExtendedInner.class,
             () -> {
                 if (this.creatableResourceGroup != null) {
@@ -329,7 +328,7 @@ public final class DeploymentImpl extends
         return Mono.just(creatableResourceGroup)
                 .flatMap(resourceGroupCreatable -> {
                     if (resourceGroupCreatable != null) {
-                        return creatableResourceGroup.createAsync().last();
+                        return creatableResourceGroup.createAsync();
                     } else {
                         return Mono.just((Indexable) DeploymentImpl.this);
                     }

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.DockerUtils;
 import com.azure.resourcemanager.samples.SSHShell;
@@ -26,6 +26,7 @@ import com.github.dockerjava.api.model.AuthConfig;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PushImageResultCallback;
+import com.jcraft.jsch.JSchException;
 import io.fabric8.kubernetes.api.model.LoadBalancerIngress;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
@@ -44,6 +45,7 @@ import org.apache.commons.codec.binary.Base64;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -76,7 +78,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
      * @param secret secondary service principal secret
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId, String secret) {
+    public static boolean runSample(Azure azure, String clientId, String secret) throws IOException, JSchException, InterruptedException {
         final String rgName = azure.sdkContext().randomResourceName("rgaks", 15);
         final String acrName = azure.sdkContext().randomResourceName("acrsample", 20);
         final String aksName = azure.sdkContext().randomResourceName("akssample", 30);
@@ -135,7 +137,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
             KubernetesCluster kubernetesCluster = azure.kubernetesClusters().define(aksName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withLatestVersion()
+                .withDefaultVersion()
                 .withRootUsername(rootUserName)
                 .withSshKey(sshKeys.getSshPublicKey())
                 .withServicePrincipalClientId(servicePrincipalClientId)
@@ -429,9 +431,6 @@ public class DeployImageFromContainerRegistryToKubernetes {
             kubernetesClient.namespaces().delete(ns);
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -443,7 +442,6 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

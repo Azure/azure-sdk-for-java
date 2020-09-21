@@ -31,10 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryApplicationVersionInner;
-import com.azure.resourcemanager.compute.fluent.inner.GalleryApplicationVersionListInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
+import com.azure.resourcemanager.compute.models.GalleryApplicationVersionList;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionUpdate;
 import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
 import java.nio.ByteBuffer;
@@ -56,7 +55,7 @@ public final class GalleryApplicationVersionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public GalleryApplicationVersionsClient(ComputeManagementClient client) {
+    GalleryApplicationVersionsClient(ComputeManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -144,7 +143,7 @@ public final class GalleryApplicationVersionsClient {
                 + "/{galleryName}/applications/{galleryApplicationName}/versions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<GalleryApplicationVersionListInner>> listByGalleryApplication(
+        Mono<Response<GalleryApplicationVersionList>> listByGalleryApplication(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -157,7 +156,7 @@ public final class GalleryApplicationVersionsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<GalleryApplicationVersionListInner>> listByGalleryApplicationNext(
+        Mono<Response<GalleryApplicationVersionList>> listByGalleryApplicationNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -1342,6 +1341,31 @@ public final class GalleryApplicationVersionsClient {
      * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version
      *     resides.
      * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Version that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GalleryApplicationVersionInner get(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        String galleryApplicationVersionName) {
+        final ReplicationStatusTypes expand = null;
+        final Context context = null;
+        return getAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, expand)
+            .block();
+    }
+
+    /**
+     * Retrieves information about a gallery Application Version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version
+     *     resides.
+     * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
      * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1359,31 +1383,6 @@ public final class GalleryApplicationVersionsClient {
         Context context) {
         return getAsync(
                 resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, expand, context)
-            .block();
-    }
-
-    /**
-     * Retrieves information about a gallery Application Version.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
-     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version
-     *     resides.
-     * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Version that you want to create or update.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GalleryApplicationVersionInner get(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        String galleryApplicationVersionName) {
-        final ReplicationStatusTypes expand = null;
-        final Context context = null;
-        return getAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, expand)
             .block();
     }
 

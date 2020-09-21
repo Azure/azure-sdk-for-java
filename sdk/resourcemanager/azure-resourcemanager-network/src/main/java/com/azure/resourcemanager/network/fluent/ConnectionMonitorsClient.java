@@ -33,11 +33,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorInner;
-import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorQueryResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
+import com.azure.resourcemanager.network.models.ConnectionMonitorListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -59,7 +58,7 @@ public final class ConnectionMonitorsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ConnectionMonitorsClient(NetworkManagementClient client) {
+    ConnectionMonitorsClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(ConnectionMonitorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -185,7 +184,7 @@ public final class ConnectionMonitorsClient {
                 + "/networkWatchers/{networkWatcherName}/connectionMonitors")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectionMonitorListResultInner>> list(
+        Mono<Response<ConnectionMonitorListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkWatcherName") String networkWatcherName,

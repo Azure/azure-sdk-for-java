@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
-import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressListResultInner;
+import com.azure.resourcemanager.network.models.PublicIpAddressListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class PublicIpAddressesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PublicIpAddressesClient(NetworkManagementClient client) {
+    PublicIpAddressesClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(PublicIpAddressesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -138,7 +137,7 @@ public final class PublicIpAddressesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/publicIPAddresses")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIpAddressListResultInner>> list(
+        Mono<Response<PublicIpAddressListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -150,7 +149,7 @@ public final class PublicIpAddressesClient
                 + "/publicIPAddresses")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIpAddressListResultInner>> listByResourceGroup(
+        Mono<Response<PublicIpAddressListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -163,7 +162,7 @@ public final class PublicIpAddressesClient
                 + "/virtualMachineScaleSets/{virtualMachineScaleSetName}/publicipaddresses")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIpAddressListResultInner>> listVirtualMachineScaleSetPublicIpAddresses(
+        Mono<Response<PublicIpAddressListResult>> listVirtualMachineScaleSetPublicIpAddresses(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualMachineScaleSetName") String virtualMachineScaleSetName,
@@ -178,7 +177,7 @@ public final class PublicIpAddressesClient
                 + "/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIpAddressListResultInner>> listVirtualMachineScaleSetVMPublicIpAddresses(
+        Mono<Response<PublicIpAddressListResult>> listVirtualMachineScaleSetVMPublicIpAddresses(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualMachineScaleSetName") String virtualMachineScaleSetName,
@@ -214,28 +213,28 @@ public final class PublicIpAddressesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIpAddressListResultInner>> listAllNext(
+        Mono<Response<PublicIpAddressListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIpAddressListResultInner>> listNext(
+        Mono<Response<PublicIpAddressListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIpAddressListResultInner>> listVirtualMachineScaleSetPublicIpAddressesNext(
+        Mono<Response<PublicIpAddressListResult>> listVirtualMachineScaleSetPublicIpAddressesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIpAddressListResultInner>> listVirtualMachineScaleSetVMPublicIpAddressesNext(
+        Mono<Response<PublicIpAddressListResult>> listVirtualMachineScaleSetVMPublicIpAddressesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -665,6 +664,23 @@ public final class PublicIpAddressesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified public IP address in a specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PublicIpAddressInner getByResourceGroup(String resourceGroupName, String publicIpAddressName) {
+        final String expand = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, publicIpAddressName, expand).block();
+    }
+
+    /**
+     * Gets the specified public IP address in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -676,23 +692,6 @@ public final class PublicIpAddressesClient
     public PublicIpAddressInner getByResourceGroup(
         String resourceGroupName, String publicIpAddressName, String expand, Context context) {
         return getByResourceGroupAsync(resourceGroupName, publicIpAddressName, expand, context).block();
-    }
-
-    /**
-     * Gets the specified public IP address in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PublicIpAddressInner getByResourceGroup(String resourceGroupName, String publicIpAddressName) {
-        final String expand = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, publicIpAddressName, expand).block();
     }
 
     /**
@@ -2262,6 +2261,41 @@ public final class PublicIpAddressesClient
      * @param networkInterfaceName The name of the network interface.
      * @param ipConfigurationName The name of the IP configuration.
      * @param publicIpAddressName The name of the public IP Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified public IP address in a virtual machine scale set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PublicIpAddressInner getVirtualMachineScaleSetPublicIpAddress(
+        String resourceGroupName,
+        String virtualMachineScaleSetName,
+        String virtualmachineIndex,
+        String networkInterfaceName,
+        String ipConfigurationName,
+        String publicIpAddressName) {
+        final String expand = null;
+        final Context context = null;
+        return getVirtualMachineScaleSetPublicIpAddressAsync(
+                resourceGroupName,
+                virtualMachineScaleSetName,
+                virtualmachineIndex,
+                networkInterfaceName,
+                ipConfigurationName,
+                publicIpAddressName,
+                expand)
+            .block();
+    }
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2288,41 +2322,6 @@ public final class PublicIpAddressesClient
                 publicIpAddressName,
                 expand,
                 context)
-            .block();
-    }
-
-    /**
-     * Get the specified public IP address in a virtual machine scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @param virtualmachineIndex The virtual machine index.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the IP configuration.
-     * @param publicIpAddressName The name of the public IP Address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a virtual machine scale set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PublicIpAddressInner getVirtualMachineScaleSetPublicIpAddress(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName,
-        String ipConfigurationName,
-        String publicIpAddressName) {
-        final String expand = null;
-        final Context context = null;
-        return getVirtualMachineScaleSetPublicIpAddressAsync(
-                resourceGroupName,
-                virtualMachineScaleSetName,
-                virtualmachineIndex,
-                networkInterfaceName,
-                ipConfigurationName,
-                publicIpAddressName,
-                expand)
             .block();
     }
 

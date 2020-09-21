@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.inner.ListVpnSiteLinksResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VpnSiteLinkInner;
+import com.azure.resourcemanager.network.models.ListVpnSiteLinksResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VpnSiteLinks. */
@@ -45,7 +44,7 @@ public final class VpnSiteLinksClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VpnSiteLinksClient(NetworkManagementClient client) {
+    VpnSiteLinksClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(VpnSiteLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -79,7 +78,7 @@ public final class VpnSiteLinksClient {
                 + "/{vpnSiteName}/vpnSiteLinks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVpnSiteLinksResultInner>> listByVpnSite(
+        Mono<Response<ListVpnSiteLinksResult>> listByVpnSite(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -91,7 +90,7 @@ public final class VpnSiteLinksClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVpnSiteLinksResultInner>> listByVpnSiteNext(
+        Mono<Response<ListVpnSiteLinksResult>> listByVpnSiteNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

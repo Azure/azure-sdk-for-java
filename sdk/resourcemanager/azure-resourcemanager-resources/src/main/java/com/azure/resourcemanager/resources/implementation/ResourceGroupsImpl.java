@@ -98,10 +98,9 @@ public final class ResourceGroupsImpl
     @Override
     public Accepted<Void> beginDeleteByName(String name) {
         return AcceptedImpl.newAccepted(logger,
+            manager().inner(),
             () -> this.manager().inner().getResourceGroups().deleteWithResponseAsync(name).block(),
             Function.identity(),
-            manager().inner().getSerializerAdapter(),
-            manager().inner().getHttpPipeline(),
             Void.class,
             null);
     }

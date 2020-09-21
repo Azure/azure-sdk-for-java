@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.PartitionMetricInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.PartitionMetricListResultInner;
+import com.azure.resourcemanager.cosmos.models.PartitionMetricListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PartitionKeyRangeIds. */
@@ -45,7 +44,7 @@ public final class PartitionKeyRangeIdsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PartitionKeyRangeIdsClient(CosmosDBManagementClient client) {
+    PartitionKeyRangeIdsClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy
                 .create(PartitionKeyRangeIdsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -66,7 +65,7 @@ public final class PartitionKeyRangeIdsClient {
                 + "/partitionKeyRangeId/{partitionKeyRangeId}/metrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartitionMetricListResultInner>> listMetrics(
+        Mono<Response<PartitionMetricListResult>> listMetrics(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,

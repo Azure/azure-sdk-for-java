@@ -16,14 +16,14 @@ public final class ChangePointDetectRequest {
      * ascending order to match the change point detection result.
      */
     @JsonProperty(value = "series", required = true)
-    private List<Point> series;
+    private List<TimeSeriesPoint> series;
 
     /*
      * Can only be one of yearly, monthly, weekly, daily, hourly, minutely or
      * secondly. Granularity is used for verify whether input series is valid.
      */
     @JsonProperty(value = "granularity", required = true)
-    private Granularity granularity;
+    private TimeGranularity granularity;
 
     /*
      * Custom Interval is used to set non-standard time interval, for example,
@@ -61,7 +61,7 @@ public final class ChangePointDetectRequest {
      *
      * @return the series value.
      */
-    public List<Point> getSeries() {
+    public List<TimeSeriesPoint> getSeries() {
         return this.series;
     }
 
@@ -72,7 +72,7 @@ public final class ChangePointDetectRequest {
      * @param series the series value to set.
      * @return the ChangePointDetectRequest object itself.
      */
-    public ChangePointDetectRequest setSeries(List<Point> series) {
+    public ChangePointDetectRequest setSeries(List<TimeSeriesPoint> series) {
         this.series = series;
         return this;
     }
@@ -83,7 +83,7 @@ public final class ChangePointDetectRequest {
      *
      * @return the granularity value.
      */
-    public Granularity getGranularity() {
+    public TimeGranularity getGranularity() {
         return this.granularity;
     }
 
@@ -94,7 +94,7 @@ public final class ChangePointDetectRequest {
      * @param granularity the granularity value to set.
      * @return the ChangePointDetectRequest object itself.
      */
-    public ChangePointDetectRequest setGranularity(Granularity granularity) {
+    public ChangePointDetectRequest setGranularity(TimeGranularity granularity) {
         this.granularity = granularity;
         return this;
     }

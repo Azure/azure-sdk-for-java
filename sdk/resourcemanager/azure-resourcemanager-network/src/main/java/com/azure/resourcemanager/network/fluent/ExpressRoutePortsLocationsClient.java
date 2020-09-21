@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRoutePortsLocationInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRoutePortsLocationListResultInner;
+import com.azure.resourcemanager.network.models.ExpressRoutePortsLocationListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExpressRoutePortsLocations. */
@@ -45,7 +44,7 @@ public final class ExpressRoutePortsLocationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ExpressRoutePortsLocationsClient(NetworkManagementClient client) {
+    ExpressRoutePortsLocationsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -64,7 +63,7 @@ public final class ExpressRoutePortsLocationsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePortsLocations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRoutePortsLocationListResultInner>> list(
+        Mono<Response<ExpressRoutePortsLocationListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -85,7 +84,7 @@ public final class ExpressRoutePortsLocationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRoutePortsLocationListResultInner>> listNext(
+        Mono<Response<ExpressRoutePortsLocationListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

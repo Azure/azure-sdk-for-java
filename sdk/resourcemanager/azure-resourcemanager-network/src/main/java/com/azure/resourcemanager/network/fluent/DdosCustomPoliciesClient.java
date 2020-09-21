@@ -28,7 +28,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.DdosCustomPolicyInner;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -54,7 +53,7 @@ public final class DdosCustomPoliciesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DdosCustomPoliciesClient(NetworkManagementClient client) {
+    DdosCustomPoliciesClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(DdosCustomPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

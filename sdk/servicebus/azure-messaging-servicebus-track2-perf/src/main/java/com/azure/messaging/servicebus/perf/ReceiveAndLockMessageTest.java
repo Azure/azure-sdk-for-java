@@ -16,7 +16,6 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Performance test.
@@ -32,19 +31,17 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     public ReceiveAndLockMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEK_LOCK);
         this.options = options;
-        System.out.println("!!!! ReceiveAndLockMessageTest constructor..");
     }
 
     @Override
     public Mono<Void> globalSetupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
         return Mono.defer(() -> {
-            System.out.println("!!!! globalSetupAsync  ..");
             int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
             List<ServiceBusMessage> messages = new ArrayList<>();
             for (int i = 0; i < total; ++i) {
                 ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
-                message.setMessageId(UUID.randomUUID().toString());
+                message.setMessageId((i + 1) + "");
                 messages.add(message);
             }
             return senderAsync.sendMessages(messages);
@@ -53,7 +50,6 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     @Override
     public void run() {
-        System.out.println("!!!! run...");
         IterableStream<ServiceBusReceivedMessageContext> messages = receiver
             .receiveMessages(options.getMessagesToReceive());
 
@@ -70,20 +66,18 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     @Override
     public Mono<Void> runAsync() {
-        System.out.println("!!!! in runAsync");
         return receiverAsync
             .receiveMessages()
             .take(options.getMessagesToReceive())
             .flatMap(messageContext -> {
-                System.out.println("Receiver received message lockToken: " + messageContext.getMessage().getLockToken());
-                return receiverAsync.complete(messageContext.getMessage());
-            }).then();
-            /*.handle((aLong, sink) -> {
-                System.out.println("!!!! runAsync messages received : " + aLong);
+                return receiverAsync.complete(messageContext.getMessage()).thenReturn(true);
+            })
+            .count()
+            .handle((aLong, sink) -> {
                 if (aLong <= 0) {
                     sink.error(new RuntimeException("Error. Should have received some messages."));
                 }
                 sink.complete();
-            });*/
+            });
     }
 }

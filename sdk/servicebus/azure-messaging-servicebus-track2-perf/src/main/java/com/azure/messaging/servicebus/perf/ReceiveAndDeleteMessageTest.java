@@ -31,8 +31,6 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     public ReceiveAndDeleteMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.RECEIVE_AND_DELETE);
         this.options = options;
-        System.out.println("!!!! ReceiveAndDeleteMessageTest constructor..");
-        logger.info("!!!! logger  ReceiveAndDeleteMessageTest constructor..");
     }
 
     @Override

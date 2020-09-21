@@ -9,7 +9,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SqlServer;
@@ -18,6 +18,7 @@ import com.azure.resourcemanager.sql.models.SqlServerDnsAlias;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
@@ -37,7 +38,7 @@ public class ManageSqlServerDnsAliases {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws ClassNotFoundException, SQLException {
         final String sqlServerForTestName = azure.sdkContext().randomResourceName("sqltest", 20);
         final String sqlServerForProdName = azure.sdkContext().randomResourceName("sqlprod", 20);
         final String sqlServerDnsAlias = azure.sdkContext().randomResourceName("sqlserver", 20);
@@ -199,9 +200,6 @@ public class ManageSqlServerDnsAliases {
             azure.sqlServers().deleteById(sqlServerForTest.id());
             azure.sqlServers().deleteById(sqlServerForProd.id());
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -211,7 +209,6 @@ public class ManageSqlServerDnsAliases {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

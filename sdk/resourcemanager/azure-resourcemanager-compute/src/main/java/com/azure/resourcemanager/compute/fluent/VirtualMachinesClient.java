@@ -33,20 +33,19 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.RunCommandResultInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineCaptureResultInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInstanceViewInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineListResultInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineSizeInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineSizeListResultInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineUpdateInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
+import com.azure.resourcemanager.compute.models.VirtualMachineListResult;
 import com.azure.resourcemanager.compute.models.VirtualMachineReimageParameters;
+import com.azure.resourcemanager.compute.models.VirtualMachineSizeListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -72,7 +71,7 @@ public final class VirtualMachinesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualMachinesClient(ComputeManagementClient client) {
+    VirtualMachinesClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(VirtualMachinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -89,7 +88,7 @@ public final class VirtualMachinesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/virtualMachines")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineListResultInner>> listByLocation(
+        Mono<Response<VirtualMachineListResult>> listByLocation(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
@@ -232,7 +231,7 @@ public final class VirtualMachinesClient
                 + "/virtualMachines")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineListResultInner>> listByResourceGroup(
+        Mono<Response<VirtualMachineListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -243,7 +242,7 @@ public final class VirtualMachinesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineListResultInner>> list(
+        Mono<Response<VirtualMachineListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -256,7 +255,7 @@ public final class VirtualMachinesClient
                 + "/virtualMachines/{vmName}/vmSizes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineSizeListResultInner>> listAvailableSizes(
+        Mono<Response<VirtualMachineSizeListResult>> listAvailableSizes(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vmName") String vmName,
@@ -397,21 +396,21 @@ public final class VirtualMachinesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineListResultInner>> listByLocationNext(
+        Mono<Response<VirtualMachineListResult>> listByLocationNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineListResultInner>> listNext(
+        Mono<Response<VirtualMachineListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineListResultInner>> listAllNext(
+        Mono<Response<VirtualMachineListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -1792,6 +1791,23 @@ public final class VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineInner getByResourceGroup(String resourceGroupName, String vmName) {
+        final InstanceViewTypes expand = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, vmName, expand).block();
+    }
+
+    /**
+     * Retrieves information about the model view or the instance view of a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1803,23 +1819,6 @@ public final class VirtualMachinesClient
     public VirtualMachineInner getByResourceGroup(
         String resourceGroupName, String vmName, InstanceViewTypes expand, Context context) {
         return getByResourceGroupAsync(resourceGroupName, vmName, expand, context).block();
-    }
-
-    /**
-     * Retrieves information about the model view or the instance view of a virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineInner getByResourceGroup(String resourceGroupName, String vmName) {
-        final InstanceViewTypes expand = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, vmName, expand).block();
     }
 
     /**

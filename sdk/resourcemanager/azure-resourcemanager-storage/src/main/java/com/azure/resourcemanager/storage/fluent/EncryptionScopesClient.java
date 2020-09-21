@@ -28,9 +28,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.EncryptionScopeInner;
-import com.azure.resourcemanager.storage.fluent.inner.EncryptionScopeListResultInner;
+import com.azure.resourcemanager.storage.models.EncryptionScopeListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EncryptionScopes. */
@@ -48,7 +47,7 @@ public final class EncryptionScopesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public EncryptionScopesClient(StorageManagementClient client) {
+    EncryptionScopesClient(StorageManagementClient client) {
         this.service =
             RestProxy.create(EncryptionScopesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -114,7 +113,7 @@ public final class EncryptionScopesClient {
                 + "/storageAccounts/{accountName}/encryptionScopes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EncryptionScopeListResultInner>> list(
+        Mono<Response<EncryptionScopeListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -126,7 +125,7 @@ public final class EncryptionScopesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EncryptionScopeListResultInner>> listNext(
+        Mono<Response<EncryptionScopeListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

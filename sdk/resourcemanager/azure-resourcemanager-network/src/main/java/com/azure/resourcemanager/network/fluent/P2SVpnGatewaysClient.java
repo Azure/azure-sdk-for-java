@@ -33,12 +33,11 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.inner.ListP2SVpnGatewaysResultInner;
 import com.azure.resourcemanager.network.fluent.inner.P2SVpnConnectionHealthInner;
 import com.azure.resourcemanager.network.fluent.inner.P2SVpnGatewayInner;
 import com.azure.resourcemanager.network.fluent.inner.VpnProfileResponseInner;
 import com.azure.resourcemanager.network.models.AuthenticationMethod;
+import com.azure.resourcemanager.network.models.ListP2SVpnGatewaysResult;
 import com.azure.resourcemanager.network.models.P2SVpnConnectionHealthRequest;
 import com.azure.resourcemanager.network.models.P2SVpnConnectionRequest;
 import com.azure.resourcemanager.network.models.P2SVpnProfileParameters;
@@ -70,7 +69,7 @@ public final class P2SVpnGatewaysClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public P2SVpnGatewaysClient(NetworkManagementClient client) {
+    P2SVpnGatewaysClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(P2SVpnGatewaysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -147,7 +146,7 @@ public final class P2SVpnGatewaysClient
                 + "/p2svpnGateways")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListP2SVpnGatewaysResultInner>> listByResourceGroup(
+        Mono<Response<ListP2SVpnGatewaysResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -158,7 +157,7 @@ public final class P2SVpnGatewaysClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/p2svpnGateways")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListP2SVpnGatewaysResultInner>> list(
+        Mono<Response<ListP2SVpnGatewaysResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -227,14 +226,14 @@ public final class P2SVpnGatewaysClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListP2SVpnGatewaysResultInner>> listByResourceGroupNext(
+        Mono<Response<ListP2SVpnGatewaysResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListP2SVpnGatewaysResultInner>> listNext(
+        Mono<Response<ListP2SVpnGatewaysResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

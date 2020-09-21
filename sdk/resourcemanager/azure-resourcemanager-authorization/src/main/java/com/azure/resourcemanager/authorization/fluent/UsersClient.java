@@ -28,13 +28,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
-import com.azure.resourcemanager.authorization.fluent.inner.UserGetMemberGroupsResultInner;
 import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
-import com.azure.resourcemanager.authorization.fluent.inner.UserListResultInner;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import com.azure.resourcemanager.authorization.models.UserCreateParameters;
 import com.azure.resourcemanager.authorization.models.UserGetMemberGroupsParameters;
+import com.azure.resourcemanager.authorization.models.UserGetMemberGroupsResult;
+import com.azure.resourcemanager.authorization.models.UserListResult;
 import com.azure.resourcemanager.authorization.models.UserUpdateParameters;
 import reactor.core.publisher.Mono;
 
@@ -53,7 +52,7 @@ public final class UsersClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public UsersClient(GraphRbacManagementClient client) {
+    UsersClient(GraphRbacManagementClient client) {
         this.service = RestProxy.create(UsersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -80,7 +79,7 @@ public final class UsersClient {
         @Get("/{tenantID}/users")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserListResultInner>> list(
+        Mono<Response<UserListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("$expand") String expand,
@@ -126,7 +125,7 @@ public final class UsersClient {
         @Post("/{tenantID}/users/{objectId}/getMemberGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserGetMemberGroupsResultInner>> getMemberGroups(
+        Mono<Response<UserGetMemberGroupsResult>> getMemberGroups(
             @HostParam("$host") String endpoint,
             @PathParam("objectId") String objectId,
             @QueryParam("api-version") String apiVersion,
@@ -138,7 +137,7 @@ public final class UsersClient {
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserListResultInner>> listNext(
+        Mono<Response<UserListResult>> listNext(
             @HostParam("$host") String endpoint,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,

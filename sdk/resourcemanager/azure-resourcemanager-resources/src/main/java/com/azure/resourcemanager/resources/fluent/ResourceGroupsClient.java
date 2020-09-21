@@ -34,11 +34,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupExportResultInner;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
-import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupListResultInner;
 import com.azure.resourcemanager.resources.models.ExportTemplateRequest;
+import com.azure.resourcemanager.resources.models.ResourceGroupListResult;
 import com.azure.resourcemanager.resources.models.ResourceGroupPatchable;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -59,7 +58,7 @@ public final class ResourceGroupsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ResourceGroupsClient(ResourceManagementClient client) {
+    ResourceGroupsClient(ResourceManagementClient client) {
         this.service =
             RestProxy.create(ResourceGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -145,7 +144,7 @@ public final class ResourceGroupsClient {
         @Get("/subscriptions/{subscriptionId}/resourcegroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceGroupListResultInner>> list(
+        Mono<Response<ResourceGroupListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("$top") Integer top,
@@ -157,7 +156,7 @@ public final class ResourceGroupsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceGroupListResultInner>> listNext(
+        Mono<Response<ResourceGroupListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

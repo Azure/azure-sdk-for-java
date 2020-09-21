@@ -28,9 +28,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
-import com.azure.resourcemanager.storage.fluent.inner.ListTableResourceInner;
 import com.azure.resourcemanager.storage.fluent.inner.TableInner;
+import com.azure.resourcemanager.storage.models.ListTableResource;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Tables. */
@@ -48,7 +47,7 @@ public final class TablesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public TablesClient(StorageManagementClient client) {
+    TablesClient(StorageManagementClient client) {
         this.service = RestProxy.create(TablesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -126,7 +125,7 @@ public final class TablesClient {
                 + "/storageAccounts/{accountName}/tableServices/default/tables")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListTableResourceInner>> list(
+        Mono<Response<ListTableResource>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -138,7 +137,7 @@ public final class TablesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListTableResourceInner>> listNext(
+        Mono<Response<ListTableResource>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

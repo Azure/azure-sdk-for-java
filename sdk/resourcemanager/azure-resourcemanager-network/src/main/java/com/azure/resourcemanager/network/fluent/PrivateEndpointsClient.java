@@ -30,10 +30,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.PrivateEndpointInner;
-import com.azure.resourcemanager.network.fluent.inner.PrivateEndpointListResultInner;
 import com.azure.resourcemanager.network.models.ErrorException;
+import com.azure.resourcemanager.network.models.PrivateEndpointListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -59,7 +58,7 @@ public final class PrivateEndpointsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PrivateEndpointsClient(NetworkManagementClient client) {
+    PrivateEndpointsClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(PrivateEndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -122,7 +121,7 @@ public final class PrivateEndpointsClient
                 + "/privateEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<PrivateEndpointListResultInner>> listByResourceGroup(
+        Mono<Response<PrivateEndpointListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -133,7 +132,7 @@ public final class PrivateEndpointsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<PrivateEndpointListResultInner>> list(
+        Mono<Response<PrivateEndpointListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -143,14 +142,14 @@ public final class PrivateEndpointsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<PrivateEndpointListResultInner>> listNext(
+        Mono<Response<PrivateEndpointListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<PrivateEndpointListResultInner>> listBySubscriptionNext(
+        Mono<Response<PrivateEndpointListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -580,6 +579,23 @@ public final class PrivateEndpointsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointInner getByResourceGroup(String resourceGroupName, String privateEndpointName) {
+        final String expand = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, privateEndpointName, expand).block();
+    }
+
+    /**
+     * Gets the specified private endpoint by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param privateEndpointName The name of the private endpoint.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -591,23 +607,6 @@ public final class PrivateEndpointsClient
     public PrivateEndpointInner getByResourceGroup(
         String resourceGroupName, String privateEndpointName, String expand, Context context) {
         return getByResourceGroupAsync(resourceGroupName, privateEndpointName, expand, context).block();
-    }
-
-    /**
-     * Gets the specified private endpoint by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointInner getByResourceGroup(String resourceGroupName, String privateEndpointName) {
-        final String expand = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, privateEndpointName, expand).block();
     }
 
     /**

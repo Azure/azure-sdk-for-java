@@ -72,13 +72,15 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     @Override
     public Mono<Void> runAsync() {
-        CompletableFuture<Void> completeTask = CompletableFuture.runAsync(() -> {
-        });
         return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive())
             .thenComposeAsync(iMessages -> {
+                CompletableFuture<Void> completeTask = CompletableFuture.runAsync(() -> { });
                 for (IMessage message : iMessages) {
-                    System.out.println("Receiver received message lockToken: " + message.getLockToken());
-                    completeTask.thenComposeAsync(ignore -> receiver.completeAsync(message.getLockToken()));
+                    if (completeTask == null) {
+                        completeTask = receiver.completeAsync(message.getLockToken());
+                    } else {
+                        completeTask = completeTask.thenCompose(ignore -> receiver.completeAsync(message.getLockToken()));
+                    }
                 }
                 return completeTask;
             }));

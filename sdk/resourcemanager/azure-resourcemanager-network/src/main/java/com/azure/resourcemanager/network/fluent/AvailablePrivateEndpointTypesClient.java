@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AvailablePrivateEndpointTypeInner;
-import com.azure.resourcemanager.network.fluent.inner.AvailablePrivateEndpointTypesResultInner;
+import com.azure.resourcemanager.network.models.AvailablePrivateEndpointTypesResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailablePrivateEndpointTypes. */
@@ -45,7 +44,7 @@ public final class AvailablePrivateEndpointTypesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AvailablePrivateEndpointTypesClient(NetworkManagementClient client) {
+    AvailablePrivateEndpointTypesClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -68,7 +67,7 @@ public final class AvailablePrivateEndpointTypesClient {
                 + "/availablePrivateEndpointTypes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailablePrivateEndpointTypesResultInner>> list(
+        Mono<Response<AvailablePrivateEndpointTypesResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
@@ -81,7 +80,7 @@ public final class AvailablePrivateEndpointTypesClient {
                 + "/{location}/availablePrivateEndpointTypes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailablePrivateEndpointTypesResultInner>> listByResourceGroup(
+        Mono<Response<AvailablePrivateEndpointTypesResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -93,14 +92,14 @@ public final class AvailablePrivateEndpointTypesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailablePrivateEndpointTypesResultInner>> listNext(
+        Mono<Response<AvailablePrivateEndpointTypesResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailablePrivateEndpointTypesResultInner>> listByResourceGroupNext(
+        Mono<Response<AvailablePrivateEndpointTypesResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

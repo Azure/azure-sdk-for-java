@@ -633,7 +633,6 @@
           name="com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials$AuthorizationHeaderProvider"/>
       <Class name="com.azure.messaging.eventhubs.EventData$SystemProperties"/>
       <Class name="com.azure.messaging.eventhubs.implementation.ReactorSender$WeightedDeliveryTag"/>
-      <Class name="com.azure.identity.implementation.AuthorizationCodeListener"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
@@ -990,6 +989,20 @@
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
     <Field name="targetEndpoint"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Field name="errorMessage"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Field name="inflightRequest"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -2142,6 +2155,15 @@
                   RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
+  
+  <!-- Exclude BC_UNCONFIRMED_CAST_OF_RETURN_VALUE as false positive -->
+  <Match>
+    <Or>
+      <Class name="com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup"/>
+      <Class name="com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup$ProxyTaskGroupWrapper"/>  
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>  
 
   <!-- Exclude from spring related classes -->
   <Match>
@@ -2253,4 +2275,13 @@
     <Bug pattern="EI_EXPOSE_REP"/>
     <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
   </Match>
+
+  <!-- EventGrid swagger naming -->
+  <Match>
+    <Or>
+      <Class name="com.azure.messaging.eventgrid.implementation.models.CloudEvent"/>
+      <Class name="com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData"/>
+    </Or>
+  </Match>
+  <Bug pattern="NM_CONFUSING"/>
 </FindBugsFilter>

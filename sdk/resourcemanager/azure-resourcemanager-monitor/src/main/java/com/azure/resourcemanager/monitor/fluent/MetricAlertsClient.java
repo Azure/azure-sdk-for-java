@@ -29,9 +29,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
-import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceInner;
+import com.azure.resourcemanager.monitor.models.MetricAlertResourceCollection;
 import com.azure.resourcemanager.monitor.models.MetricAlertResourcePatch;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -56,7 +55,7 @@ public final class MetricAlertsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public MetricAlertsClient(MonitorClient client) {
+    MetricAlertsClient(MonitorClient client) {
         this.service =
             RestProxy.create(MetricAlertsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -73,7 +72,7 @@ public final class MetricAlertsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metricAlerts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetricAlertResourceCollectionInner>> list(
+        Mono<Response<MetricAlertResourceCollection>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -85,7 +84,7 @@ public final class MetricAlertsClient
                 + "/metricAlerts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetricAlertResourceCollectionInner>> listByResourceGroup(
+        Mono<Response<MetricAlertResourceCollection>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,

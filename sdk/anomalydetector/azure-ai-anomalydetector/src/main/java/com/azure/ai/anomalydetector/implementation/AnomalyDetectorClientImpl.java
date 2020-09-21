@@ -4,12 +4,12 @@
 
 package com.azure.ai.anomalydetector.implementation;
 
-import com.azure.ai.anomalydetector.models.ApiErrorException;
+import com.azure.ai.anomalydetector.models.AnomalyDetectorErrorException;
 import com.azure.ai.anomalydetector.models.ChangePointDetectRequest;
 import com.azure.ai.anomalydetector.models.ChangePointDetectResponse;
+import com.azure.ai.anomalydetector.models.DetectRequest;
 import com.azure.ai.anomalydetector.models.EntireDetectResponse;
 import com.azure.ai.anomalydetector.models.LastDetectResponse;
-import com.azure.ai.anomalydetector.models.Request;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Host;
@@ -119,20 +119,24 @@ public final class AnomalyDetectorClientImpl {
     private interface AnomalyDetectorClientService {
         @Post("/timeseries/entire/detect")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<EntireDetectResponse>> entireDetect(
-                @HostParam("Endpoint") String endpoint, @BodyParam("application/json") Request body, Context context);
+        @UnexpectedResponseExceptionType(AnomalyDetectorErrorException.class)
+        Mono<Response<EntireDetectResponse>> detectEntireSeries(
+                @HostParam("Endpoint") String endpoint,
+                @BodyParam("application/json") DetectRequest body,
+                Context context);
 
         @Post("/timeseries/last/detect")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<LastDetectResponse>> lastDetect(
-                @HostParam("Endpoint") String endpoint, @BodyParam("application/json") Request body, Context context);
+        @UnexpectedResponseExceptionType(AnomalyDetectorErrorException.class)
+        Mono<Response<LastDetectResponse>> detectLastPoint(
+                @HostParam("Endpoint") String endpoint,
+                @BodyParam("application/json") DetectRequest body,
+                Context context);
 
-        @Post("/timeseries/changePoint/detect")
+        @Post("/timeseries/changepoint/detect")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<ChangePointDetectResponse>> changePointDetect(
+        @UnexpectedResponseExceptionType(AnomalyDetectorErrorException.class)
+        Mono<Response<ChangePointDetectResponse>> detectChangePoint(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") ChangePointDetectRequest body,
                 Context context);
@@ -145,13 +149,13 @@ public final class AnomalyDetectorClientImpl {
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EntireDetectResponse>> entireDetectWithResponseAsync(Request body) {
-        return FluxUtil.withContext(context -> service.entireDetect(this.getEndpoint(), body, context));
+    public Mono<Response<EntireDetectResponse>> detectEntireSeriesWithResponseAsync(DetectRequest body) {
+        return FluxUtil.withContext(context -> service.detectEntireSeries(this.getEndpoint(), body, context));
     }
 
     /**
@@ -162,13 +166,14 @@ public final class AnomalyDetectorClientImpl {
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EntireDetectResponse>> entireDetectWithResponseAsync(Request body, Context context) {
-        return service.entireDetect(this.getEndpoint(), body, context);
+    public Mono<Response<EntireDetectResponse>> detectEntireSeriesWithResponseAsync(
+            DetectRequest body, Context context) {
+        return service.detectEntireSeries(this.getEndpoint(), body, context);
     }
 
     /**
@@ -178,13 +183,13 @@ public final class AnomalyDetectorClientImpl {
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntireDetectResponse> entireDetectAsync(Request body) {
-        return entireDetectWithResponseAsync(body)
+    public Mono<EntireDetectResponse> detectEntireSeriesAsync(DetectRequest body) {
+        return detectEntireSeriesWithResponseAsync(body)
                 .flatMap(
                         (Response<EntireDetectResponse> res) -> {
                             if (res.getValue() != null) {
@@ -203,13 +208,13 @@ public final class AnomalyDetectorClientImpl {
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntireDetectResponse> entireDetectAsync(Request body, Context context) {
-        return entireDetectWithResponseAsync(body, context)
+    public Mono<EntireDetectResponse> detectEntireSeriesAsync(DetectRequest body, Context context) {
+        return detectEntireSeriesWithResponseAsync(body, context)
                 .flatMap(
                         (Response<EntireDetectResponse> res) -> {
                             if (res.getValue() != null) {
@@ -227,13 +232,13 @@ public final class AnomalyDetectorClientImpl {
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntireDetectResponse entireDetect(Request body) {
-        return entireDetectAsync(body).block();
+    public EntireDetectResponse detectEntireSeries(DetectRequest body) {
+        return detectEntireSeriesAsync(body).block();
     }
 
     /**
@@ -244,13 +249,13 @@ public final class AnomalyDetectorClientImpl {
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntireDetectResponse> entireDetectWithResponse(Request body, Context context) {
-        return entireDetectWithResponseAsync(body, context).block();
+    public Response<EntireDetectResponse> detectEntireSeriesWithResponse(DetectRequest body, Context context) {
+        return detectEntireSeriesWithResponseAsync(body, context).block();
     }
 
     /**
@@ -260,13 +265,13 @@ public final class AnomalyDetectorClientImpl {
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LastDetectResponse>> lastDetectWithResponseAsync(Request body) {
-        return FluxUtil.withContext(context -> service.lastDetect(this.getEndpoint(), body, context));
+    public Mono<Response<LastDetectResponse>> detectLastPointWithResponseAsync(DetectRequest body) {
+        return FluxUtil.withContext(context -> service.detectLastPoint(this.getEndpoint(), body, context));
     }
 
     /**
@@ -277,13 +282,13 @@ public final class AnomalyDetectorClientImpl {
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LastDetectResponse>> lastDetectWithResponseAsync(Request body, Context context) {
-        return service.lastDetect(this.getEndpoint(), body, context);
+    public Mono<Response<LastDetectResponse>> detectLastPointWithResponseAsync(DetectRequest body, Context context) {
+        return service.detectLastPoint(this.getEndpoint(), body, context);
     }
 
     /**
@@ -293,13 +298,13 @@ public final class AnomalyDetectorClientImpl {
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LastDetectResponse> lastDetectAsync(Request body) {
-        return lastDetectWithResponseAsync(body)
+    public Mono<LastDetectResponse> detectLastPointAsync(DetectRequest body) {
+        return detectLastPointWithResponseAsync(body)
                 .flatMap(
                         (Response<LastDetectResponse> res) -> {
                             if (res.getValue() != null) {
@@ -318,13 +323,13 @@ public final class AnomalyDetectorClientImpl {
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LastDetectResponse> lastDetectAsync(Request body, Context context) {
-        return lastDetectWithResponseAsync(body, context)
+    public Mono<LastDetectResponse> detectLastPointAsync(DetectRequest body, Context context) {
+        return detectLastPointWithResponseAsync(body, context)
                 .flatMap(
                         (Response<LastDetectResponse> res) -> {
                             if (res.getValue() != null) {
@@ -342,13 +347,13 @@ public final class AnomalyDetectorClientImpl {
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LastDetectResponse lastDetect(Request body) {
-        return lastDetectAsync(body).block();
+    public LastDetectResponse detectLastPoint(DetectRequest body) {
+        return detectLastPointAsync(body).block();
     }
 
     /**
@@ -359,13 +364,13 @@ public final class AnomalyDetectorClientImpl {
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LastDetectResponse> lastDetectWithResponse(Request body, Context context) {
-        return lastDetectWithResponseAsync(body, context).block();
+    public Response<LastDetectResponse> detectLastPointWithResponse(DetectRequest body, Context context) {
+        return detectLastPointWithResponseAsync(body, context).block();
     }
 
     /**
@@ -374,13 +379,13 @@ public final class AnomalyDetectorClientImpl {
      * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
      *     request if needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChangePointDetectResponse>> changePointDetectWithResponseAsync(ChangePointDetectRequest body) {
-        return FluxUtil.withContext(context -> service.changePointDetect(this.getEndpoint(), body, context));
+    public Mono<Response<ChangePointDetectResponse>> detectChangePointWithResponseAsync(ChangePointDetectRequest body) {
+        return FluxUtil.withContext(context -> service.detectChangePoint(this.getEndpoint(), body, context));
     }
 
     /**
@@ -390,14 +395,14 @@ public final class AnomalyDetectorClientImpl {
      *     request if needed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChangePointDetectResponse>> changePointDetectWithResponseAsync(
+    public Mono<Response<ChangePointDetectResponse>> detectChangePointWithResponseAsync(
             ChangePointDetectRequest body, Context context) {
-        return service.changePointDetect(this.getEndpoint(), body, context);
+        return service.detectChangePoint(this.getEndpoint(), body, context);
     }
 
     /**
@@ -406,13 +411,13 @@ public final class AnomalyDetectorClientImpl {
      * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
      *     request if needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChangePointDetectResponse> changePointDetectAsync(ChangePointDetectRequest body) {
-        return changePointDetectWithResponseAsync(body)
+    public Mono<ChangePointDetectResponse> detectChangePointAsync(ChangePointDetectRequest body) {
+        return detectChangePointWithResponseAsync(body)
                 .flatMap(
                         (Response<ChangePointDetectResponse> res) -> {
                             if (res.getValue() != null) {
@@ -430,13 +435,13 @@ public final class AnomalyDetectorClientImpl {
      *     request if needed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChangePointDetectResponse> changePointDetectAsync(ChangePointDetectRequest body, Context context) {
-        return changePointDetectWithResponseAsync(body, context)
+    public Mono<ChangePointDetectResponse> detectChangePointAsync(ChangePointDetectRequest body, Context context) {
+        return detectChangePointWithResponseAsync(body, context)
                 .flatMap(
                         (Response<ChangePointDetectResponse> res) -> {
                             if (res.getValue() != null) {
@@ -453,13 +458,13 @@ public final class AnomalyDetectorClientImpl {
      * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
      *     request if needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChangePointDetectResponse changePointDetect(ChangePointDetectRequest body) {
-        return changePointDetectAsync(body).block();
+    public ChangePointDetectResponse detectChangePoint(ChangePointDetectRequest body) {
+        return detectChangePointAsync(body).block();
     }
 
     /**
@@ -469,13 +474,13 @@ public final class AnomalyDetectorClientImpl {
      *     request if needed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChangePointDetectResponse> changePointDetectWithResponse(
+    public Response<ChangePointDetectResponse> detectChangePointWithResponse(
             ChangePointDetectRequest body, Context context) {
-        return changePointDetectWithResponseAsync(body, context).block();
+        return detectChangePointWithResponseAsync(body, context).block();
     }
 }

@@ -21,7 +21,7 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
@@ -41,7 +41,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.Base64;
 import java.util.Collections;
 
@@ -68,7 +71,7 @@ public class ManageSpringCloud {
      * @return true if sample runs successfully
      * @throws IllegalStateException unexcepted state
      */
-    public static boolean runSample(Azure azure, String clientId) {
+    public static boolean runSample(Azure azure, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
         final String rgName = azure.sdkContext().randomResourceName("rg", 24);
         final String serviceName  = azure.sdkContext().randomResourceName("service", 24);
         final Region region = Region.US_EAST;
@@ -112,14 +115,13 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app gateway in resource group %s ...%n", rgName);
             SpringApp gateway = service.apps().define("gateway")
+                .defineActiveDeployment("default")
+                    .withSourceCodeTarGzFile(gzFile)
+                    .withTargetModule("gateway")
+                    .attach()
                 .withDefaultPublicEndpoint()
                 .withHttpsOnly()
                 .create();
-            gateway.getActiveDeployment()
-                .update()
-                .withSourceCodeTarGzFile(gzFile)
-                .withTargetModule("gateway")
-                .apply();
 
             System.out.println("Created spring cloud service gateway");
             Utils.print(gateway);
@@ -129,12 +131,11 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app auth-service in resource group %s ...%n", rgName);
             SpringApp authService = service.apps().define("auth-service")
+                .defineActiveDeployment("default")
+                    .withSourceCodeTarGzFile(gzFile)
+                    .withTargetModule("auth-service")
+                    .attach()
                 .create();
-            authService.getActiveDeployment()
-                .update()
-                .withSourceCodeTarGzFile(gzFile)
-                .withTargetModule("auth-service")
-                .apply();
 
             System.out.println("Created spring cloud service auth-service");
             Utils.print(authService);
@@ -144,12 +145,11 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app account-service in resource group %s ...%n", rgName);
             SpringApp accountService = service.apps().define("account-service")
+                .defineActiveDeployment("default")
+                    .withSourceCodeTarGzFile(gzFile)
+                    .withTargetModule("account-service")
+                    .attach()
                 .create();
-            accountService.getActiveDeployment()
-                .update()
-                .withSourceCodeTarGzFile(gzFile)
-                .withTargetModule("account-service")
-                .apply();
 
             System.out.println("Created spring cloud service account-service");
             Utils.print(accountService);
@@ -250,17 +250,14 @@ public class ManageSpringCloud {
                 .withCertificate(certName, vault.vaultUri(), certName)
                 .apply();
 
-            System.out.printf("Updating Spring Cloud App with domain ssl.%s ...", domainName);
+            System.out.printf("Updating Spring Cloud App with domain ssl.%s ...%n", domainName);
             gateway.update()
                 .withCustomDomain(String.format("ssl.%s", domainName), thumbprint)
                 .apply();
 
-            System.out.printf("Successfully expose domain ssl.%s", domainName);
+            System.out.printf("Successfully expose domain ssl.%s%n", domainName);
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Delete Resource Group: " + rgName);
@@ -271,7 +268,6 @@ public class ManageSpringCloud {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

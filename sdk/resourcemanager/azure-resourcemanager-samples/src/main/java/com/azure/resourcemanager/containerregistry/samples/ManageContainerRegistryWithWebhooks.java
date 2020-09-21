@@ -15,7 +15,7 @@ import com.azure.resourcemanager.containerregistry.models.Webhook;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.containerregistry.models.WebhookEventInfo;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.DockerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
@@ -27,6 +27,7 @@ import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PushImageResultCallback;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class ManageContainerRegistryWithWebhooks {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException, InterruptedException {
         final String rgName = azure.sdkContext().randomResourceName("rgACR", 15);
         final String acrName = azure.sdkContext().randomResourceName("acrsample", 20);
         final Region region = Region.US_WEST_CENTRAL;
@@ -177,9 +178,6 @@ public class ManageContainerRegistryWithWebhooks {
             }
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -191,7 +189,6 @@ public class ManageContainerRegistryWithWebhooks {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

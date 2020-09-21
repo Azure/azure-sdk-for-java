@@ -17,8 +17,8 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.models.Subscription;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Defines a few utilities.
@@ -104,19 +106,6 @@ public final class Utils {
         } else {
             return String.format("tagname eq '%s' and tagvalue eq '%s'", tagName, tagValue);
         }
-    }
-
-    /**
-     * Gets a Mono of type {@code U}, where U extends {@link Indexable}, that emits only the root
-     * resource from a given Mono of {@link Indexable}.
-     *
-     * @param stream the input Mono of {@link Indexable}
-     * @param <U> the specialized type of last item in the input stream
-     * @return a Mono that emits last item
-     */
-    @SuppressWarnings("unchecked")
-    public static <U extends Indexable> Mono<U> rootResource(Mono<Indexable> stream) {
-        return stream.map(indexable -> (U) indexable);
     }
 
     /**
@@ -330,5 +319,99 @@ public final class Utils {
         String suffix = environment.getStorageEndpointSuffix().replaceAll("^\\.*", "");
         return String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=%s",
             accountName, accountKey, suffix);
+    }
+
+    /**
+     * Combine {@link Flux#flatMap(Function, Function, Supplier)} with {@link Flux#flatMapSequential(Function)}.
+     * @param flux the original flux
+     * @param mapperOnNext the {@link Function} to call on next data and returning a sequence to merge
+     * @param mapperOnError the {@link Function} to call on error signal and returning a sequence to merge
+     * @param mapperOnComplete the {@link Supplier} to call on complete signal and returning a sequence to merge
+     * @param <T> the original data type
+     * @param <R> the return data type
+     * @return a new flux
+     */
+    public static <T, R> Flux<R> flatMapSequential(Flux<T> flux,
+        Function<? super T, ? extends Publisher<? extends R>> mapperOnNext,
+        Function<? super Throwable, ? extends Publisher<? extends R>> mapperOnError,
+        Supplier<? extends Publisher<? extends R>> mapperOnComplete) {
+        return flux.materialize()
+            .flatMapSequential(signal -> {
+                if ((signal.isOnNext() ? 1 : 0) + (signal.isOnComplete() ? 1 : 0) + (signal.isOnError() ? 1 : 0) != 1) {
+                    return Mono.error(new IllegalStateException(
+                        "Unexpected signal type, signal could only be one of the onNext, onComplete, onError"
+                    ));
+                }
+                if (signal.isOnNext()) {
+                    if (mapperOnNext != null) {
+                        return mapperOnNext.apply(signal.get());
+                    }
+                    return Mono.empty();
+                }
+                if (signal.isOnComplete()) {
+                    if (mapperOnComplete != null) {
+                        return mapperOnComplete.get();
+                    }
+                    return Mono.empty();
+                }
+                Throwable exception = signal.getThrowable();
+                if (mapperOnError != null) {
+                    return mapperOnError.apply(exception);
+                }
+                if (exception != null) {
+                    return Mono.error(exception);
+                } else {
+                    return Mono.error(new IllegalStateException());
+                }
+            });
+    }
+
+    /**
+     * Combine {@link Flux#flatMap(Function, Function, Supplier)}
+     * with {@link Flux#flatMapSequentialDelayError(Function, int, int)}.
+     * @param flux the original flux
+     * @param mapperOnNext the {@link Function} to call on next data and returning a sequence to merge
+     * @param mapperOnError the {@link Function} to call on error signal and returning a sequence to merge
+     * @param mapperOnComplete the {@link Supplier} to call on complete signal and returning a sequence to merge
+     * @param maxConcurrency the maximum number of in-flight inner sequences
+     * @param prefetch the maximum in-flight elements from each inner {@link Publisher} sequence
+     * @param <T> the original data type
+     * @param <R> the return data type
+     * @return a new flux
+     */
+    public static <T, R> Flux<R> flatMapSequentialDelayError(Flux<T> flux,
+        Function<? super T, ? extends Publisher<? extends R>> mapperOnNext,
+        Function<? super Throwable, ? extends Publisher<? extends R>> mapperOnError,
+        Supplier<? extends Publisher<? extends R>> mapperOnComplete,
+        int maxConcurrency, int prefetch) {
+        return flux.materialize()
+            .flatMapSequentialDelayError(signal -> {
+                if ((signal.isOnNext() ? 1 : 0) + (signal.isOnComplete() ? 1 : 0) + (signal.isOnError() ? 1 : 0) != 1) {
+                    return Mono.error(new IllegalStateException(
+                        "Unexpected signal type, signal could only be one of the onNext, onComplete, onError"
+                    ));
+                }
+                if (signal.isOnNext()) {
+                    if (mapperOnNext != null) {
+                        return mapperOnNext.apply(signal.get());
+                    }
+                    return Mono.empty();
+                }
+                if (signal.isOnComplete()) {
+                    if (mapperOnComplete != null) {
+                        return mapperOnComplete.get();
+                    }
+                    return Mono.empty();
+                }
+                Throwable exception = signal.getThrowable();
+                if (mapperOnError != null) {
+                    return mapperOnError.apply(exception);
+                }
+                if (exception != null) {
+                    return Mono.error(exception);
+                } else {
+                    return Mono.error(new IllegalStateException());
+                }
+            }, maxConcurrency, prefetch);
     }
 }

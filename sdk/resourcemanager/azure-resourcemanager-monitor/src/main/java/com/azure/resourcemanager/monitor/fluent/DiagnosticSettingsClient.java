@@ -24,7 +24,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -45,7 +44,7 @@ public final class DiagnosticSettingsClient implements InnerSupportsDelete<Void>
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DiagnosticSettingsClient(MonitorClient client) {
+    DiagnosticSettingsClient(MonitorClient client) {
         this.service =
             RestProxy.create(DiagnosticSettingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

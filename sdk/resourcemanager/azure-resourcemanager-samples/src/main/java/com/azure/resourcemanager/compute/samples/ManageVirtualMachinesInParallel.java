@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -94,11 +94,6 @@ public final class ManageVirtualMachinesInParallel {
 
             System.out.println("Virtual Machines create: (took " + (stopwatch.getTime() / 1000) + " seconds) ");
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -110,8 +105,6 @@ public final class ManageVirtualMachinesInParallel {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
     /**
      * Main entry point.

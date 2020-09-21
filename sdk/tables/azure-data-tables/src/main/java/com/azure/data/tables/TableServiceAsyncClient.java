@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -18,12 +19,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
+import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
 import java.net.URI;
@@ -41,12 +44,14 @@ import static com.azure.core.util.FluxUtil.withContext;
 public class TableServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(TableServiceAsyncClient.class);
     private final AzureTableImpl implementation;
+    private final String accountName;
 
     TableServiceAsyncClient(HttpPipeline pipeline, String url, TablesServiceVersion serviceVersion,
         SerializerAdapter serializerAdapter) {
 
         try {
             final URI uri = URI.create(url);
+            this.accountName = uri.getHost().split("\\.", 2)[0];
             logger.verbose("Table Service URI: {}", uri);
         } catch (IllegalArgumentException ex) {
             throw logger.logExceptionAsError(ex);
@@ -58,6 +63,33 @@ public class TableServiceAsyncClient {
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .buildClient();
+    }
+
+    /**
+     * returns the account for this service
+     *
+     * @return returns the account name
+     */
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * returns Url of this service
+     *
+     * @return Url
+     */
+    public String getServiceUrl() {
+        return implementation.getUrl();
+    }
+
+    /**
+     * returns the version
+     *
+     * @return the version
+     */
+    public TablesServiceVersion getApiVersion() {
+        return TablesServiceVersion.valueOf(implementation.getVersion());
     }
 
     /**
@@ -107,6 +139,39 @@ public class TableServiceAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * creates the table with the given name if it does not exist, otherwise no action is taken.
+     *
+     * @param tableName the name of the table to create
+     * @return mono void
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createTableIfNotExists(String tableName) {
+        return createTableIfNotExistsWithResponse(tableName).flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * creates the table with the given name if it does not exist, otherwise no action is taken.
+     *
+     * @param tableName the name of the table to create
+     * @return a response
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createTableIfNotExistsWithResponse(String tableName) {
+        return withContext(context -> createTableIfNotExistsWithResponse(tableName, context));
+    }
+
+    Mono<Response<Void>> createTableIfNotExistsWithResponse(String tableName, Context context) {
+        return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceErrorException
+                && ((TableServiceErrorException) e).getResponse() != null
+                && ((TableServiceErrorException) e).getResponse().getStatusCode() == 409,
+            e -> {
+                HttpResponse response = ((TableServiceErrorException) e).getResponse();
+                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null));
+            });
     }
 
     /**
@@ -191,7 +256,7 @@ public class TableServiceAsyncClient {
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())
-            .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
+            .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
         return implementation.getTables().queryWithResponseAsync(null, nextTableName, queryOptions, context)
             .flatMap(response -> {
                 TableQueryResponse tableQueryResponse = response.getValue();
@@ -203,7 +268,7 @@ public class TableServiceAsyncClient {
                     return Mono.empty();
                 }
                 final List<TableItem> tables = tableResponsePropertiesList.stream()
-                    .map(e -> new TableItem(e.getTableName())).collect(Collectors.toList());
+                    .map(ModelHelper::createItem).collect(Collectors.toList());
 
                 return Mono.just(new TablePaged(response, tables,
                     response.getDeserializedHeaders().getXMsContinuationNextTableName()));

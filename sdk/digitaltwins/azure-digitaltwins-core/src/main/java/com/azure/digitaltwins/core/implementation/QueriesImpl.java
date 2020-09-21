@@ -16,7 +16,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.models.QueriesQueryTwinsResponse;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
@@ -63,16 +62,25 @@ public final class QueriesImpl {
      *
      * @param querySpecification A query specification containing either a query statement or a continuation token from
      *     a previous query result.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the results of a query operation and an optional continuation token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueriesQueryTwinsResponse> queryTwinsWithResponseAsync(QuerySpecification querySpecification) {
-        return FluxUtil.withContext(
-                context ->
-                        service.queryTwins(
-                                this.client.getHost(), this.client.getApiVersion(), querySpecification, context));
+    public Mono<QueriesQueryTwinsResponse> queryTwinsWithResponseAsync(
+            QuerySpecification querySpecification, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (querySpecification == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter querySpecification is required and cannot be null."));
+        } else {
+            querySpecification.validate();
+        }
+        return service.queryTwins(this.client.getHost(), this.client.getApiVersion(), querySpecification, context);
     }
 }

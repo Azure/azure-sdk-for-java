@@ -14,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.io.File;
 import java.io.InputStream;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,78 +22,7 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Web App or deployment slot. */
 @Fluent
-public interface WebAppBase extends HasName, GroupableResource<AppServiceManager, SiteInner> {
-
-    /** @return state of the web app */
-    String state();
-
-    /** @return hostnames associated with web app */
-    Set<String> hostnames();
-
-    /** @return name of repository site */
-    String repositorySiteName();
-
-    /** @return state indicating whether web app has exceeded its quota usage */
-    UsageState usageState();
-
-    /** @return true if the site is enabled; otherwise, false */
-    boolean enabled();
-
-    /** @return host names for the web app that are enabled */
-    Set<String> enabledHostNames();
-
-    /** @return management information availability state for the web app */
-    SiteAvailabilityState availabilityState();
-
-    /** @return list of SSL states used to manage the SSL bindings for site's hostnames */
-    Map<String, HostnameSslState> hostnameSslStates();
-
-    /** @return The resource ID of the app service plan */
-    String appServicePlanId();
-
-    /** @return Last time web app was modified in UTC */
-    OffsetDateTime lastModifiedTime();
-
-    /** @return list of Azure Traffic manager host names associated with web app */
-    Set<String> trafficManagerHostNames();
-
-    /** @return whether to stop SCM (KUDU) site when the web app is stopped. Default is false. */
-    boolean scmSiteAlsoStopped();
-
-    /** @return which slot this app will swap into */
-    String targetSwapSlot();
-
-    /**
-     * @return if the client affinity is enabled when load balancing http request for multiple instances of the web app
-     */
-    boolean clientAffinityEnabled();
-
-    /** @return if the client certificate is enabled for the web app */
-    boolean clientCertEnabled();
-
-    /**
-     * @return if the public hostnames are disabled the web app. If set to true the app is only accessible via API
-     *     Management process.
-     */
-    boolean hostNamesDisabled();
-
-    /**
-     * @return list of IP addresses that this web app uses for outbound connections. Those can be used when configuring
-     *     firewall rules for databases accessed by this web app.
-     */
-    Set<String> outboundIPAddresses();
-
-    /** @return size of a function container */
-    int containerSize();
-
-    /** @return information about whether the web app is cloned from another */
-    CloningInfo cloningInfo();
-
-    /** @return site is a default container */
-    boolean isDefaultContainer();
-
-    /** @return default hostname of the web app */
-    String defaultHostname();
+public interface WebAppBase extends HasName, GroupableResource<AppServiceManager, SiteInner>, WebSiteBase {
 
     /** @return the default documents */
     List<String> defaultDocuments();
@@ -137,9 +65,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
 
     /** @return the auto swap slot name */
     String autoSwapSlotName();
-
-    /** @return true if the web app is configured to accept only HTTPS requests. HTTP requests will be redirected. */
-    boolean httpsOnly();
 
     /** @return the state of FTP / FTPS service */
     FtpsState ftpsState();
@@ -194,9 +119,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
 
     /** @return the authentication configuration defined on the web app */
     Mono<WebAppAuthentication> getAuthenticationConfigAsync();
-
-    /** @return the operating system the web app is running on */
-    OperatingSystem operatingSystem();
 
     /** @return the architecture of the platform, either 32 bit (x86) or 64 bit (x64). */
     PlatformArchitecture platformArchitecture();

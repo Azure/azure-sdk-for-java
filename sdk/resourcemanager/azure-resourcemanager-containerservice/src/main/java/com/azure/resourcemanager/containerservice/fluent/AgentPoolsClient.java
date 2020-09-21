@@ -31,11 +31,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.containerservice.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.inner.AgentPoolAvailableVersionsInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.AgentPoolInner;
-import com.azure.resourcemanager.containerservice.fluent.inner.AgentPoolListResultInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.AgentPoolUpgradeProfileInner;
+import com.azure.resourcemanager.containerservice.models.AgentPoolListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -55,7 +54,7 @@ public final class AgentPoolsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AgentPoolsClient(ContainerServiceManagementClient client) {
+    AgentPoolsClient(ContainerServiceManagementClient client) {
         this.service =
             RestProxy.create(AgentPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -74,7 +73,7 @@ public final class AgentPoolsClient {
                 + "/managedClusters/{resourceName}/agentPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgentPoolListResultInner>> list(
+        Mono<Response<AgentPoolListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -161,7 +160,7 @@ public final class AgentPoolsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgentPoolListResultInner>> listNext(
+        Mono<Response<AgentPoolListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRule;
@@ -128,9 +128,6 @@ public class ManageSqlVirtualNetworkRules {
             System.out.println("Deleting a Sql Server");
             azure.sqlServers().deleteById(sqlServer.id());
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -140,7 +137,6 @@ public class ManageSqlVirtualNetworkRules {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

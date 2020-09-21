@@ -31,10 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.inner.ListVirtualHubRouteTableV2SResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualHubRouteTableV2Inner;
 import com.azure.resourcemanager.network.models.ErrorException;
+import com.azure.resourcemanager.network.models.ListVirtualHubRouteTableV2SResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -44,7 +43,7 @@ public final class VirtualHubRouteTableV2SClient {
     private final ClientLogger logger = new ClientLogger(VirtualHubRouteTableV2SClient.class);
 
     /** The proxy service used to perform REST calls. */
-    private final VirtualHubRouteTableV2SsService service;
+    private final VirtualHubRouteTableV2SService service;
 
     /** The service client containing this operation class. */
     private final NetworkManagementClient client;
@@ -54,10 +53,10 @@ public final class VirtualHubRouteTableV2SClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualHubRouteTableV2SClient(NetworkManagementClient client) {
+    VirtualHubRouteTableV2SClient(NetworkManagementClient client) {
         this.service =
             RestProxy
-                .create(VirtualHubRouteTableV2SsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+                .create(VirtualHubRouteTableV2SService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,7 +66,7 @@ public final class VirtualHubRouteTableV2SClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface VirtualHubRouteTableV2SsService {
+    private interface VirtualHubRouteTableV2SService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
@@ -120,7 +119,7 @@ public final class VirtualHubRouteTableV2SClient {
                 + "/{virtualHubName}/routeTables")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVirtualHubRouteTableV2SResultInner>> list(
+        Mono<Response<ListVirtualHubRouteTableV2SResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -132,7 +131,7 @@ public final class VirtualHubRouteTableV2SClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVirtualHubRouteTableV2SResultInner>> listNext(
+        Mono<Response<ListVirtualHubRouteTableV2SResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

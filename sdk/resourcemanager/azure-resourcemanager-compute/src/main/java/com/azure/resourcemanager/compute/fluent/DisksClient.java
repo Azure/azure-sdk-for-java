@@ -33,10 +33,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.AccessUriInner;
 import com.azure.resourcemanager.compute.fluent.inner.DiskInner;
-import com.azure.resourcemanager.compute.fluent.inner.DiskListInner;
+import com.azure.resourcemanager.compute.models.DiskList;
 import com.azure.resourcemanager.compute.models.DiskUpdate;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -62,7 +61,7 @@ public final class DisksClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DisksClient(ComputeManagementClient client) {
+    DisksClient(ComputeManagementClient client) {
         this.service = RestProxy.create(DisksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -136,7 +135,7 @@ public final class DisksClient
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskListInner>> listByResourceGroup(
+        Mono<Response<DiskList>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -147,7 +146,7 @@ public final class DisksClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/disks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskListInner>> list(
+        Mono<Response<DiskList>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -186,14 +185,14 @@ public final class DisksClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskListInner>> listByResourceGroupNext(
+        Mono<Response<DiskList>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskListInner>> listNext(
+        Mono<Response<DiskList>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

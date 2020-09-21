@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
@@ -77,9 +77,6 @@ public final class ManageWebAppSlots {
             swapProductionBacktoSlot(slot3);
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + resourceGroupName);
@@ -91,7 +88,6 @@ public final class ManageWebAppSlots {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

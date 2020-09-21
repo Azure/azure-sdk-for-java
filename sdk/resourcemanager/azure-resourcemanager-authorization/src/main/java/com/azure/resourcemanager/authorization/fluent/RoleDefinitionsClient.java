@@ -28,9 +28,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.AuthorizationManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.RoleDefinitionInner;
-import com.azure.resourcemanager.authorization.fluent.inner.RoleDefinitionListResultInner;
+import com.azure.resourcemanager.authorization.models.RoleDefinitionListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
@@ -49,7 +48,7 @@ public final class RoleDefinitionsClient implements InnerSupportsDelete<RoleDefi
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public RoleDefinitionsClient(AuthorizationManagementClient client) {
+    RoleDefinitionsClient(AuthorizationManagementClient client) {
         this.service =
             RestProxy.create(RoleDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -100,7 +99,7 @@ public final class RoleDefinitionsClient implements InnerSupportsDelete<RoleDefi
         @Get("/{scope}/providers/Microsoft.Authorization/roleDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleDefinitionListResultInner>> list(
+        Mono<Response<RoleDefinitionListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("$filter") String filter,
@@ -121,7 +120,7 @@ public final class RoleDefinitionsClient implements InnerSupportsDelete<RoleDefi
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleDefinitionListResultInner>> listNext(
+        Mono<Response<RoleDefinitionListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -21,7 +21,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import reactor.core.publisher.Flux;
@@ -159,33 +159,23 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             azure
                 .virtualMachines()
                 .createAsync(new ArrayList<>(vmDefinitions.values()))
-                .map(createdResource -> {
-                    if (createdResource instanceof Resource) {
-                        Resource resource = (Resource) createdResource;
+                .map(virtualMachine -> {
 
-                        // Report the creation of a resource in the UI
-                        System.out.println(String.format("\tCreated resource of type %s named '%s'",
-                            ResourceUtils.resourceTypeFromResourceId(resource.id()),
-                            ResourceUtils.nameFromResourceId(resource.id())));
+                    // Report the creation of a resource in the UI
+                    System.out.println(String.format("\tCreated resource of type %s named '%s'",
+                        ResourceUtils.resourceTypeFromResourceId(virtualMachine.id()),
+                        ResourceUtils.nameFromResourceId(virtualMachine.id())));
 
-                        if (resource instanceof VirtualMachine) {
-                            // Track the successful creation of virtual machines, so that their related resources do not cleaned up later
-                            VirtualMachine virtualMachine = (VirtualMachine) resource;
+                    // Record that this VM was created successfully
+                    vmDefinitions.remove(virtualMachine.key());
 
-                            // Record that this VM was created successfully
-                            vmDefinitions.remove(virtualMachine.key());
+                    // Remove the associated resources from cleanup list
+                    vmNonNicResourceDefinitions.remove(virtualMachine.key());
 
-                            // Remove the associated resources from cleanup list
-                            vmNonNicResourceDefinitions.remove(virtualMachine.key());
+                    // Remove the associated NIC from cleanup list
+                    nicDefinitions.remove(virtualMachine.key());
 
-                            // Remove the associated NIC from cleanup list
-                            nicDefinitions.remove(virtualMachine.key());
-                        } else {
-                            // Since this is not a VM, add this resource to the potential cleanup list
-                            createdResourceIds.put(resource.key(), resource.id());
-                        }
-                    }
-                    return createdResource;
+                    return virtualMachine;
                 })
                 .onErrorResume(e -> {
                     errors.add(e);
@@ -257,9 +247,6 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             System.out.println(String.format("Remaining availability sets (should be %d): %d", actualVMCount, actualAvailabilitySetCount));
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Starting the deletion of resource group: " + resourceGroupName);
@@ -270,7 +257,6 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

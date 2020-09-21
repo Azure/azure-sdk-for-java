@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceListResultInner;
+import com.azure.resourcemanager.network.models.NetworkInterfaceListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LoadBalancerNetworkInterfaces. */
@@ -45,7 +44,7 @@ public final class LoadBalancerNetworkInterfacesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public LoadBalancerNetworkInterfacesClient(NetworkManagementClient client) {
+    LoadBalancerNetworkInterfacesClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -68,7 +67,7 @@ public final class LoadBalancerNetworkInterfacesClient {
                 + "/loadBalancers/{loadBalancerName}/networkInterfaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResultInner>> list(
+        Mono<Response<NetworkInterfaceListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("loadBalancerName") String loadBalancerName,
@@ -80,7 +79,7 @@ public final class LoadBalancerNetworkInterfacesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResultInner>> listNext(
+        Mono<Response<NetworkInterfaceListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

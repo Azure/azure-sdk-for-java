@@ -12,6 +12,7 @@ import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
+import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileQuerySerialization;
@@ -146,6 +147,57 @@ public class DataLakeFileClientJavaDocSamples {
         System.out.println("Completed download to file");
         // END: com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set-Duration-Context
     }
+
+    /**
+     * Code snippets for {@link DataLakeFileClient#upload(InputStream, long)},
+     * {@link DataLakeFileClient#upload(InputStream, long, boolean)}, and
+     * {@link DataLakeFileClient#uploadWithResponse(FileParallelUploadOptions, Duration, Context)}
+     */
+    public void uploadCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.upload#InputStream-long
+        try {
+            client.upload(data, length);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.upload#InputStream-long
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.upload#InputStream-long-boolean
+        try {
+            boolean overwrite = false;
+            client.upload(data, length, overwrite);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.upload#InputStream-long-boolean
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.uploadWithResponse#FileParallelUploadOptions-Duration-Context
+        PathHttpHeaders headers = new PathHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Long blockSize = 100L * 1024L * 1024L; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
+
+        try {
+            client.uploadWithResponse(new FileParallelUploadOptions(data, length)
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers)
+                .setMetadata(metadata).setRequestConditions(requestConditions)
+                .setPermissions("permissions").setUmask("umask"), timeout, new Context("key", "value"));
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.uploadWithResponse#FileParallelUploadOptions-Duration-Context
+    }
+
     /**
      * Code snippets for {@link DataLakeFileClient#uploadFromFile(String)},
      * {@link DataLakeFileClient#uploadFromFile(String, boolean)} and

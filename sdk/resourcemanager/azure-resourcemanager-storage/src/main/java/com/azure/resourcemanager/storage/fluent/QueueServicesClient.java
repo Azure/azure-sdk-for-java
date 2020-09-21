@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.ListQueueServicesInner;
 import com.azure.resourcemanager.storage.fluent.inner.QueueServicePropertiesInner;
 import com.azure.resourcemanager.storage.models.CorsRules;
@@ -44,7 +43,7 @@ public final class QueueServicesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public QueueServicesClient(StorageManagementClient client) {
+    QueueServicesClient(StorageManagementClient client) {
         this.service =
             RestProxy.create(QueueServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

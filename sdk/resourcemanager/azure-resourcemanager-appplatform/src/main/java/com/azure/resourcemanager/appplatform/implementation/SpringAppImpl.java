@@ -121,8 +121,9 @@ public class SpringAppImpl
     }
 
     @Override
-    public SpringAppDeployments deployments() {
-        return deployments;
+    @SuppressWarnings("unchecked")
+    public <T extends SpringAppDeployment.DefinitionStages.WithCreate<T>> SpringAppDeployments<T> deployments() {
+        return (SpringAppDeployments<T>) deployments;
     }
 
     @Override
@@ -206,23 +207,9 @@ public class SpringAppImpl
     }
 
     @Override
-    public SpringAppImpl withoutTemporaryDisk() {
-        ensureProperty();
-        inner().properties().withTemporaryDisk(null);
-        return this;
-    }
-
-    @Override
     public SpringAppImpl withPersistentDisk(int sizeInGB, String mountPath) {
         ensureProperty();
         inner().properties().withPersistentDisk(new PersistentDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
-        return this;
-    }
-
-    @Override
-    public SpringAppImpl withoutPersistentDisk() {
-        ensureProperty();
-        inner().properties().withPersistentDisk(null);
         return this;
     }
 
@@ -291,10 +278,26 @@ public class SpringAppImpl
         return this;
     }
 
-    public void withDefaultActiveDeployment() {
+    @Override
+    public SpringAppImpl withDefaultActiveDeployment() {
         String defaultDeploymentName = "default";
         withActiveDeployment(defaultDeploymentName);
         springAppDeploymentToCreate = deployments().define(defaultDeploymentName)
             .withExistingSource(UserSourceType.JAR, String.format("<%s>", defaultDeploymentName));
+        return this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends
+        SpringAppDeployment.DefinitionStages.WithAttach<? extends SpringApp.DefinitionStages.WithCreate, T>>
+        SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name) {
+        return (SpringAppDeployment.DefinitionStages.Blank<T>) deployments.define(name);
+    }
+
+    SpringAppImpl addActiveDeployment(SpringAppDeploymentImpl deployment) {
+        withActiveDeployment(deployment.name());
+        springAppDeploymentToCreate = deployment;
+        return this;
     }
 }

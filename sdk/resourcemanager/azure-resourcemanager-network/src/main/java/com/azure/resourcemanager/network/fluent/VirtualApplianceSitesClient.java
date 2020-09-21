@@ -31,9 +31,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.inner.NetworkVirtualApplianceSiteListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualApplianceSiteInner;
+import com.azure.resourcemanager.network.models.NetworkVirtualApplianceSiteListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public final class VirtualApplianceSitesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualApplianceSitesClient(NetworkManagementClient client) {
+    VirtualApplianceSitesClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(VirtualApplianceSitesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -119,7 +118,7 @@ public final class VirtualApplianceSitesClient {
                 + "/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkVirtualApplianceSiteListResultInner>> list(
+        Mono<Response<NetworkVirtualApplianceSiteListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkVirtualApplianceName") String networkVirtualApplianceName,
@@ -131,7 +130,7 @@ public final class VirtualApplianceSitesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkVirtualApplianceSiteListResultInner>> listNext(
+        Mono<Response<NetworkVirtualApplianceSiteListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

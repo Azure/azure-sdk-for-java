@@ -5,6 +5,8 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
+import com.azure.resourcemanager.compute.fluent.ComputeManagementClientBuilder;
 import com.azure.resourcemanager.compute.implementation.AvailabilitySetsImpl;
 import com.azure.resourcemanager.compute.implementation.ComputeSkusImpl;
 import com.azure.resourcemanager.compute.implementation.ComputeUsagesImpl;
@@ -36,8 +38,8 @@ import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -63,6 +65,21 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     private Galleries galleries;
     private GalleryImages galleryImages;
     private GalleryImageVersions galleryImageVersions;
+
+    /** @return the storage manager */
+    public StorageManager storageManager() {
+        return storageManager;
+    }
+
+    /** @return the network manager */
+    public NetworkManager networkManager() {
+        return networkManager;
+    }
+
+    /** @return the authorization manager */
+    public AuthorizationManager authorizationManager() {
+        return authorizationManager;
+    }
 
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
@@ -133,7 +150,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
             profile,
             new ComputeManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .subscriptionId(profile.subscriptionId())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient(),
             sdkContext);
         storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);

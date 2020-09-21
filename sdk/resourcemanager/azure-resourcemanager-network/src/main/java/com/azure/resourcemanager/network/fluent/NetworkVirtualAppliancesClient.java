@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.NetworkVirtualApplianceInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkVirtualApplianceListResultInner;
+import com.azure.resourcemanager.network.models.NetworkVirtualApplianceListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class NetworkVirtualAppliancesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public NetworkVirtualAppliancesClient(NetworkManagementClient client) {
+    NetworkVirtualAppliancesClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(NetworkVirtualAppliancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -141,7 +140,7 @@ public final class NetworkVirtualAppliancesClient
                 + "/networkVirtualAppliances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkVirtualApplianceListResultInner>> listByResourceGroup(
+        Mono<Response<NetworkVirtualApplianceListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -152,7 +151,7 @@ public final class NetworkVirtualAppliancesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualAppliances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkVirtualApplianceListResultInner>> list(
+        Mono<Response<NetworkVirtualApplianceListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -162,14 +161,14 @@ public final class NetworkVirtualAppliancesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkVirtualApplianceListResultInner>> listByResourceGroupNext(
+        Mono<Response<NetworkVirtualApplianceListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkVirtualApplianceListResultInner>> listNext(
+        Mono<Response<NetworkVirtualApplianceListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -610,24 +609,6 @@ public final class NetworkVirtualAppliancesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Network Virtual Appliance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkVirtualApplianceInner getByResourceGroup(
-        String resourceGroupName, String networkVirtualApplianceName, String expand, Context context) {
-        return getByResourceGroupAsync(resourceGroupName, networkVirtualApplianceName, expand, context).block();
-    }
-
-    /**
-     * Gets the specified Network Virtual Appliance.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -639,6 +620,24 @@ public final class NetworkVirtualAppliancesClient
         final String expand = null;
         final Context context = null;
         return getByResourceGroupAsync(resourceGroupName, networkVirtualApplianceName, expand).block();
+    }
+
+    /**
+     * Gets the specified Network Virtual Appliance.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Network Virtual Appliance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkVirtualApplianceInner getByResourceGroup(
+        String resourceGroupName, String networkVirtualApplianceName, String expand, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, networkVirtualApplianceName, expand, context).block();
     }
 
     /**

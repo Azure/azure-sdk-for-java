@@ -32,10 +32,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkTapInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkTapListResultInner;
 import com.azure.resourcemanager.network.models.TagsObject;
+import com.azure.resourcemanager.network.models.VirtualNetworkTapListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -62,7 +61,7 @@ public final class VirtualNetworkTapsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualNetworkTapsClient(NetworkManagementClient client) {
+    VirtualNetworkTapsClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(VirtualNetworkTapsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -137,7 +136,7 @@ public final class VirtualNetworkTapsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualNetworkTaps")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkTapListResultInner>> list(
+        Mono<Response<VirtualNetworkTapListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -149,7 +148,7 @@ public final class VirtualNetworkTapsClient
                 + "/virtualNetworkTaps")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkTapListResultInner>> listByResourceGroup(
+        Mono<Response<VirtualNetworkTapListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -160,14 +159,14 @@ public final class VirtualNetworkTapsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkTapListResultInner>> listAllNext(
+        Mono<Response<VirtualNetworkTapListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkTapListResultInner>> listByResourceGroupNext(
+        Mono<Response<VirtualNetworkTapListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

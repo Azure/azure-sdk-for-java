@@ -33,17 +33,16 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.redis.RedisManagementClient;
 import com.azure.resourcemanager.redis.fluent.inner.NotificationListResponseInner;
 import com.azure.resourcemanager.redis.fluent.inner.RedisAccessKeysInner;
 import com.azure.resourcemanager.redis.fluent.inner.RedisForceRebootResponseInner;
-import com.azure.resourcemanager.redis.fluent.inner.RedisListResultInner;
 import com.azure.resourcemanager.redis.fluent.inner.RedisResourceInner;
 import com.azure.resourcemanager.redis.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.redis.models.ExportRdbParameters;
 import com.azure.resourcemanager.redis.models.ImportRdbParameters;
 import com.azure.resourcemanager.redis.models.RedisCreateParameters;
 import com.azure.resourcemanager.redis.models.RedisKeyType;
+import com.azure.resourcemanager.redis.models.RedisListResult;
 import com.azure.resourcemanager.redis.models.RedisRebootParameters;
 import com.azure.resourcemanager.redis.models.RedisRegenerateKeyParameters;
 import com.azure.resourcemanager.redis.models.RedisUpdateParameters;
@@ -72,7 +71,7 @@ public final class RedisClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public RedisClient(RedisManagementClient client) {
+    RedisClient(RedisManagementClient client) {
         this.service = RestProxy.create(RedisService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -168,7 +167,7 @@ public final class RedisClient
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisListResultInner>> listByResourceGroup(
+        Mono<Response<RedisListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -179,7 +178,7 @@ public final class RedisClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Cache/Redis")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisListResultInner>> list(
+        Mono<Response<RedisListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -263,14 +262,14 @@ public final class RedisClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisListResultInner>> listByResourceGroupNext(
+        Mono<Response<RedisListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisListResultInner>> listNext(
+        Mono<Response<RedisListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

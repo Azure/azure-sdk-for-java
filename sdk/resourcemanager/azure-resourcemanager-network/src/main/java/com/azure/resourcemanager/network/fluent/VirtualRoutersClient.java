@@ -30,10 +30,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VirtualRouterInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualRouterListResultInner;
 import com.azure.resourcemanager.network.models.ErrorException;
+import com.azure.resourcemanager.network.models.VirtualRouterListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -59,7 +58,7 @@ public final class VirtualRoutersClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualRoutersClient(NetworkManagementClient client) {
+    VirtualRoutersClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(VirtualRoutersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -122,7 +121,7 @@ public final class VirtualRoutersClient
                 + "/virtualRouters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VirtualRouterListResultInner>> listByResourceGroup(
+        Mono<Response<VirtualRouterListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -133,7 +132,7 @@ public final class VirtualRoutersClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualRouters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VirtualRouterListResultInner>> list(
+        Mono<Response<VirtualRouterListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -143,14 +142,14 @@ public final class VirtualRoutersClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VirtualRouterListResultInner>> listByResourceGroupNext(
+        Mono<Response<VirtualRouterListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VirtualRouterListResultInner>> listNext(
+        Mono<Response<VirtualRouterListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -578,6 +577,23 @@ public final class VirtualRoutersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Virtual Router.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualRouterInner getByResourceGroup(String resourceGroupName, String virtualRouterName) {
+        final String expand = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, virtualRouterName, expand).block();
+    }
+
+    /**
+     * Gets the specified Virtual Router.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualRouterName The name of the Virtual Router.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -589,23 +605,6 @@ public final class VirtualRoutersClient
     public VirtualRouterInner getByResourceGroup(
         String resourceGroupName, String virtualRouterName, String expand, Context context) {
         return getByResourceGroupAsync(resourceGroupName, virtualRouterName, expand, context).block();
-    }
-
-    /**
-     * Gets the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Router.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualRouterInner getByResourceGroup(String resourceGroupName, String virtualRouterName) {
-        final String expand = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, virtualRouterName, expand).block();
     }
 
     /**

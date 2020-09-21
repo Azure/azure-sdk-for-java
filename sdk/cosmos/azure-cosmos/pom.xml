@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</name>
   <description>This Package contains Microsoft Azure Cosmos SDK (with Reactive Extension Reactor support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
@@ -120,18 +120,12 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-      <exclusions>
-        <exclusion>
-          <groupId>io.netty</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
-      <version>2.10.1</version> <!-- {x-version-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+      <version>2.11.2</version> <!-- {x-version-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -277,7 +271,7 @@ Licensed under the MIT License.
             <bannedDependencies>
               <includes>
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.10.1]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.11.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-core:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
                 <include>io.micrometer:micrometer-core:[1.5.4]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>io.netty:netty-codec-http:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
@@ -491,6 +485,35 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/e2e-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>java-lts</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
+              </argLine>
             </configuration>
           </plugin>
         </plugins>

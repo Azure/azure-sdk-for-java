@@ -26,9 +26,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
-import com.azure.resourcemanager.resources.fluent.inner.ProviderListResultInner;
+import com.azure.resourcemanager.resources.models.ProviderListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Providers. */
@@ -46,7 +45,7 @@ public final class ProvidersClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ProvidersClient(ResourceManagementClient client) {
+    ProvidersClient(ResourceManagementClient client) {
         this.service =
             RestProxy.create(ProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -85,7 +84,7 @@ public final class ProvidersClient {
         @Get("/subscriptions/{subscriptionId}/providers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderListResultInner>> list(
+        Mono<Response<ProviderListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$top") Integer top,
             @QueryParam("$expand") String expand,
@@ -97,7 +96,7 @@ public final class ProvidersClient {
         @Get("/providers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderListResultInner>> listAtTenantScope(
+        Mono<Response<ProviderListResult>> listAtTenantScope(
             @HostParam("$host") String endpoint,
             @QueryParam("$top") Integer top,
             @QueryParam("$expand") String expand,
@@ -131,14 +130,14 @@ public final class ProvidersClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderListResultInner>> listNext(
+        Mono<Response<ProviderListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderListResultInner>> listAtTenantScopeNext(
+        Mono<Response<ProviderListResult>> listAtTenantScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -1015,6 +1014,22 @@ public final class ProvidersClient {
      * Gets the specified resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified resource provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProviderInner get(String resourceProviderNamespace) {
+        final String expand = null;
+        final Context context = null;
+        return getAsync(resourceProviderNamespace, expand).block();
+    }
+
+    /**
+     * Gets the specified resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand The $expand query parameter. For example, to include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @param context The context to associate with this operation.
@@ -1026,22 +1041,6 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderInner get(String resourceProviderNamespace, String expand, Context context) {
         return getAsync(resourceProviderNamespace, expand, context).block();
-    }
-
-    /**
-     * Gets the specified resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderInner get(String resourceProviderNamespace) {
-        final String expand = null;
-        final Context context = null;
-        return getAsync(resourceProviderNamespace, expand).block();
     }
 
     /**
@@ -1209,6 +1208,22 @@ public final class ProvidersClient {
      * Gets the specified resource provider at the tenant level.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified resource provider at the tenant level.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProviderInner getAtTenantScope(String resourceProviderNamespace) {
+        final String expand = null;
+        final Context context = null;
+        return getAtTenantScopeAsync(resourceProviderNamespace, expand).block();
+    }
+
+    /**
+     * Gets the specified resource provider at the tenant level.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand The $expand query parameter. For example, to include property aliases in response, use
      *     $expand=resourceTypes/aliases.
      * @param context The context to associate with this operation.
@@ -1220,22 +1235,6 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderInner getAtTenantScope(String resourceProviderNamespace, String expand, Context context) {
         return getAtTenantScopeAsync(resourceProviderNamespace, expand, context).block();
-    }
-
-    /**
-     * Gets the specified resource provider at the tenant level.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider at the tenant level.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderInner getAtTenantScope(String resourceProviderNamespace) {
-        final String expand = null;
-        final Context context = null;
-        return getAtTenantScopeAsync(resourceProviderNamespace, expand).block();
     }
 
     /**

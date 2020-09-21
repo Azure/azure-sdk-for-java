@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.fluent.inner.ReplicationInner;
-import com.azure.resourcemanager.containerregistry.fluent.inner.ReplicationListResultInner;
+import com.azure.resourcemanager.containerregistry.models.ReplicationListResult;
 import com.azure.resourcemanager.containerregistry.models.ReplicationUpdateParameters;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -56,7 +55,7 @@ public final class ReplicationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ReplicationsClient(ContainerRegistryManagementClient client) {
+    ReplicationsClient(ContainerRegistryManagementClient client) {
         this.service =
             RestProxy.create(ReplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -137,7 +136,7 @@ public final class ReplicationsClient {
                 + "/registries/{registryName}/replications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicationListResultInner>> list(
+        Mono<Response<ReplicationListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -149,7 +148,7 @@ public final class ReplicationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicationListResultInner>> listNext(
+        Mono<Response<ReplicationListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

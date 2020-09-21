@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
-import com.azure.resourcemanager.monitor.fluent.inner.MetricBaselinesResponseInner;
 import com.azure.resourcemanager.monitor.fluent.inner.SingleMetricBaselineInner;
+import com.azure.resourcemanager.monitor.models.MetricBaselinesResponse;
 import com.azure.resourcemanager.monitor.models.ResultType;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
@@ -47,7 +46,7 @@ public final class BaselinesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public BaselinesClient(MonitorClient client) {
+    BaselinesClient(MonitorClient client) {
         this.service =
             RestProxy.create(BaselinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -64,7 +63,7 @@ public final class BaselinesClient {
         @Get("/{resourceUri}/providers/microsoft.insights/metricBaselines")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetricBaselinesResponseInner>> list(
+        Mono<Response<MetricBaselinesResponse>> list(
             @HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("metricnames") String metricnames,

@@ -84,6 +84,11 @@ public class Main {
                     benchmark = new SyncReadBenchmark(cfg);
                     break;
 
+                case WriteLatency:
+                case WriteThroughput:
+                    benchmark = new SyncWriteBenchmark(cfg);
+                    break;
+
                 default:
                     throw new RuntimeException(cfg.getOperationType() + " is not supported");
             }
@@ -120,6 +125,7 @@ public class Main {
                 case QueryTopOrderby:
                 case QueryAggregateTopOrderby:
                 case QueryInClauseParallel:
+                case ReadAllItemsOfLogicalPartition:
                     benchmark = new AsyncQueryBenchmark(cfg);
                     break;
 

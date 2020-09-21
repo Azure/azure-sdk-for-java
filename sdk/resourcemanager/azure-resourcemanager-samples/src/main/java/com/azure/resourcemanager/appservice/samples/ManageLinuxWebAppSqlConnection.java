@@ -11,11 +11,13 @@ import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+
+import java.io.IOException;
 
 /**
  * Azure App Service basic sample for managing web apps.
@@ -33,7 +35,7 @@ public final class ManageLinuxWebAppSqlConnection {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         // New resources
         final String suffix = ".azurewebsites.net";
         final String appName = azure.sdkContext().randomResourceName("webapp1-", 20);
@@ -112,9 +114,6 @@ public final class ManageLinuxWebAppSqlConnection {
             System.in.read();
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -126,7 +125,6 @@ public final class ManageLinuxWebAppSqlConnection {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

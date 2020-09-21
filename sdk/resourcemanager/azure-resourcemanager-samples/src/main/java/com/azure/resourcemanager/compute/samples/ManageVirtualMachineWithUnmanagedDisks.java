@@ -16,7 +16,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.Date;
@@ -229,11 +229,6 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
 
             System.out.println("Deleted VM: " + windowsVM.id());
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -246,7 +241,6 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

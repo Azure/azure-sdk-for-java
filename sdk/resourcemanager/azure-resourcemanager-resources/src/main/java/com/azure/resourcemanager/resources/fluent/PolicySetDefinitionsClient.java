@@ -28,9 +28,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.PolicyClient;
 import com.azure.resourcemanager.resources.fluent.inner.PolicySetDefinitionInner;
-import com.azure.resourcemanager.resources.fluent.inner.PolicySetDefinitionListResultInner;
+import com.azure.resourcemanager.resources.models.PolicySetDefinitionListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicySetDefinitions. */
@@ -48,7 +47,7 @@ public final class PolicySetDefinitionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PolicySetDefinitionsClient(PolicyClient client) {
+    PolicySetDefinitionsClient(PolicyClient client) {
         this.service =
             RestProxy
                 .create(PolicySetDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -116,7 +115,7 @@ public final class PolicySetDefinitionsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionListResultInner>> list(
+        Mono<Response<PolicySetDefinitionListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -126,7 +125,7 @@ public final class PolicySetDefinitionsClient {
         @Get("/providers/Microsoft.Authorization/policySetDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionListResultInner>> listBuiltIn(
+        Mono<Response<PolicySetDefinitionListResult>> listBuiltIn(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -175,7 +174,7 @@ public final class PolicySetDefinitionsClient {
                 + "/policySetDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionListResultInner>> listByManagementGroup(
+        Mono<Response<PolicySetDefinitionListResult>> listByManagementGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("managementGroupId") String managementGroupId,
@@ -185,21 +184,21 @@ public final class PolicySetDefinitionsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionListResultInner>> listNext(
+        Mono<Response<PolicySetDefinitionListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionListResultInner>> listBuiltInNext(
+        Mono<Response<PolicySetDefinitionListResult>> listBuiltInNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionListResultInner>> listByManagementGroupNext(
+        Mono<Response<PolicySetDefinitionListResult>> listByManagementGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

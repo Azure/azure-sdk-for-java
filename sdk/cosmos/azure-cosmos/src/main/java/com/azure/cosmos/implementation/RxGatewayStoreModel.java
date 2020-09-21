@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -246,17 +247,9 @@ class RxGatewayStoreModel implements RxStoreModel {
             HttpHeaders httpResponseHeaders = httpResponse.headers();
             int httpResponseStatus = httpResponse.statusCode();
 
-            Mono<byte[]> contentObservable;
-
-            if (request.getOperationType() == OperationType.Delete) {
-                // for delete we don't expect any body
-                contentObservable = Mono.just(EMPTY_BYTE_ARRAY);
-            } else {
-                // transforms the ByteBufFlux to Flux<String>
-                contentObservable = httpResponse
-                                        .bodyAsByteArray()
-                                        .switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
-            }
+            Mono<byte[]> contentObservable = httpResponse
+                .bodyAsByteArray()
+                .switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
 
             return contentObservable
                        .map(content -> {
@@ -295,20 +288,26 @@ class RxGatewayStoreModel implements RxStoreModel {
                        }
 
                        Exception exception = (Exception) unwrappedException;
+                       CosmosException dce;
                        if (!(exception instanceof CosmosException)) {
                            // wrap in CosmosException
                            logger.error("Network failure", exception);
-                           CosmosException dce = BridgeInternal.createCosmosException(0, exception);
+                           dce = BridgeInternal.createCosmosException(0, exception);
                            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
-                           return Mono.error(dce);
+                       } else {
+                           dce = (CosmosException) exception;
+                       }
+
+                       if (WebExceptionUtility.isNetworkFailure(dce)) {
+                           BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
                        }
 
                        if (request.requestContext.cosmosDiagnostics != null) {
-                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, (CosmosException)exception);
-                           BridgeInternal.setCosmosDiagnostics((CosmosException)exception, request.requestContext.cosmosDiagnostics);
+                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, dce);
+                           BridgeInternal.setCosmosDiagnostics(dce, request.requestContext.cosmosDiagnostics);
                        }
 
-                       return Mono.error(exception);
+                       return Mono.error(dce);
                    });
     }
 

@@ -3,22 +3,21 @@
 
 package com.azure.resourcemanager.resources.fluentcore.utils;
 
+import com.azure.core.management.provider.DelayProvider;
+import com.azure.core.management.provider.IdentifierProvider;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.util.function.Function;
 
 /**
  * The class to contain the common factory methods required for SDK framework.
  */
 public class SdkContext {
-    private ResourceNamerFactory resourceNamerFactory = new ResourceNamerFactory();
-    private static DelayProvider delayProvider = new DelayProvider();
-    private static FileProvider fileProvider = new FileProvider();
-    private static Scheduler reactorScheduler = Schedulers.boundedElastic();
+    private Function<String, IdentifierProvider> identifierFunction = ResourceNamer::new;
+    private static DelayProvider delayProvider = new ResourceDelayProvider();
+    private static Scheduler reactorScheduler = Schedulers.parallel();
 
     /**
      * Default constructor for SdkContext.
@@ -26,21 +25,22 @@ public class SdkContext {
     public SdkContext() { }
 
     /**
-     * Function to override the ResourceNamerFactory.
+     * Sets the resource namer
      *
-     * @param resourceNamerFactory factory to override.
+     * @param identifierFunction the function.
      */
-    public void setResourceNamerFactory(ResourceNamerFactory resourceNamerFactory) {
-        this.resourceNamerFactory = resourceNamerFactory;
+    public void setIdentifierFunction(Function<String, IdentifierProvider> identifierFunction) {
+        this.identifierFunction = identifierFunction;
     }
 
     /**
-     * Gets the current factory for ResourceNamer.
+     * Creates a resource namer
      *
-     * @return resourceNamer factory.
+     * @param name the name value.
+     * @return the new resource namer
      */
-    public ResourceNamerFactory getResourceNamerFactory() {
-        return this.resourceNamerFactory;
+    public IdentifierProvider createIdentifierProvider(String name) {
+        return identifierFunction.apply(name);
     }
 
     /**
@@ -51,8 +51,7 @@ public class SdkContext {
      * @return the random name
      */
     public String randomResourceName(String prefix, int maxLen) {
-        ResourceNamer resourceNamer = getResourceNamerFactory().createResourceNamer("");
-        return resourceNamer.randomName(prefix, maxLen);
+        return identifierFunction.apply("").randomName(prefix, maxLen);
     }
 
     /**
@@ -65,7 +64,7 @@ public class SdkContext {
      */
     public String[] randomResourceNames(String prefix, int maxLen, int count) {
         String[] names = new String[count];
-        ResourceNamer resourceNamer = getResourceNamerFactory().createResourceNamer("");
+        IdentifierProvider resourceNamer = identifierFunction.apply("");
         for (int i = 0; i < count; i++) {
             names[i] = resourceNamer.randomName(prefix, maxLen);
         }
@@ -78,8 +77,7 @@ public class SdkContext {
      * @return the random UUID.
      */
     public String randomUuid() {
-        ResourceNamer resourceNamer = getResourceNamerFactory().createResourceNamer("");
-        return resourceNamer.randomUuid();
+        return identifierFunction.apply("").randomUuid();
     }
 
     /**
@@ -96,17 +94,11 @@ public class SdkContext {
      *
      * @param milliseconds number of millisecond for which thread should put on sleep.
      */
-    public static void sleep(int milliseconds) {
-        delayProvider.sleep(milliseconds);
-    }
-
-    /**
-     * Wrapper for long-running operation retry timeout.
-     *
-     * @param lroRetryTimeout timeout value in seconds
-     */
-    public static void setLroRetryTimeOut(int lroRetryTimeout) {
-        delayProvider.setLroRetryTimeout(lroRetryTimeout);
+    public static void sleep(long milliseconds) {
+        try {
+            Thread.sleep(delayProvider.getDelayDuration(Duration.ofMillis(milliseconds)).toMillis());
+        } catch (InterruptedException e) {
+        }
     }
 
     /**
@@ -118,24 +110,6 @@ public class SdkContext {
     public static Duration getDelayDuration(Duration delay) {
         return delayProvider.getDelayDuration(delay);
     }
-
-    /**
-     * Get long-running operation retry timeout.
-     *
-     * @return the duration
-     */
-    public static Duration getLroRetryDuration() {
-        return delayProvider.getLroRetryTimeout();
-    }
-
-    /**
-     * @return the current date time.
-     */
-    public OffsetDateTime dateTimeNow() {
-        ResourceNamer resourceNamer = getResourceNamerFactory().createResourceNamer("");
-        return resourceNamer.dateTimeNow();
-    }
-
 
     /**
      * Gets the current Rx Scheduler for the SDK framework.
@@ -153,22 +127,5 @@ public class SdkContext {
      */
     public static void setReactorScheduler(Scheduler reactorScheduler) {
         SdkContext.reactorScheduler = reactorScheduler;
-    }
-
-    /**
-     * Sets the FileProvider for SDK framework, by default it does nothing.
-     * @param fileProvider the FileProvider to override.
-     */
-    public static void setFileProvider(FileProvider fileProvider) {
-        SdkContext.fileProvider = fileProvider;
-    }
-
-    /**
-     * Prepares the location for file to be created.
-     * @param files the files to be created.
-     * @throws IOException thrown when failed on IO.
-     */
-    public static void prepareFileLocation(File... files) throws IOException {
-        fileProvider.prepareFileLocation(files);
     }
 }

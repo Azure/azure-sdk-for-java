@@ -67,7 +67,7 @@ public class CosmosFactoryTestIT {
         CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
 
         final String uaSuffix = getUserAgentSuffixValue(cosmosClientBuilder);
-        assertThat(uaSuffix).contains("spring-data");
+        assertThat(uaSuffix).contains(Constants.USER_AGENT_SUFFIX);
     }
 
     private String getUserAgentSuffixValue(CosmosClientBuilder cosmosClientBuilder) throws IllegalAccessException {

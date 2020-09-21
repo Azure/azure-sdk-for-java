@@ -31,7 +31,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -620,7 +619,8 @@ class CosmosDBAccountImpl
                                     .flatMap(
                                         index -> {
                                             data.set(0, data.get(0) + 30);
-                                            return Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(30)));
+                                            return Mono.delay(SdkContext.getDelayDuration(
+                                                manager().inner().getDefaultPollInterval()));
                                         }));
                 });
     }

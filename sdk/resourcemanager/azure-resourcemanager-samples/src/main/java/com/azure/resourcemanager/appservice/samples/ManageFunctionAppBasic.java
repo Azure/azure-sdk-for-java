@@ -9,9 +9,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
+import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
@@ -104,13 +105,13 @@ public final class ManageFunctionAppBasic {
 
             System.out.println("Printing list of function apps in resource group " + rg1Name + "...");
 
-            for (FunctionApp functionApp : azure.functionApps().listByResourceGroup(rg1Name)) {
+            for (FunctionAppBasic functionApp : azure.functionApps().listByResourceGroup(rg1Name)) {
                 Utils.print(functionApp);
             }
 
             System.out.println("Printing list of function apps in resource group " + rg2Name + "...");
 
-            for (FunctionApp functionApp : azure.functionApps().listByResourceGroup(rg2Name)) {
+            for (FunctionAppBasic functionApp : azure.functionApps().listByResourceGroup(rg2Name)) {
                 Utils.print(functionApp);
             }
 
@@ -122,13 +123,10 @@ public final class ManageFunctionAppBasic {
             System.out.println("Deleted function app " + app1Name + "...");
 
             System.out.println("Printing list of function apps in resource group " + rg1Name + " again...");
-            for (FunctionApp functionApp : azure.functionApps().listByResourceGroup(rg1Name)) {
+            for (FunctionAppBasic functionApp : azure.functionApps().listByResourceGroup(rg1Name)) {
                 Utils.print(functionApp);
             }
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rg1Name);
@@ -143,7 +141,6 @@ public final class ManageFunctionAppBasic {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

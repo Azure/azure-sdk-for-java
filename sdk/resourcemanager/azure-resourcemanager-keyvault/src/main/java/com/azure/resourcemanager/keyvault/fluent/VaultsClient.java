@@ -34,18 +34,17 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.keyvault.KeyVaultManagementClient;
 import com.azure.resourcemanager.keyvault.fluent.inner.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultInner;
-import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultListResultInner;
-import com.azure.resourcemanager.keyvault.fluent.inner.ResourceListResultInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.VaultAccessPolicyParametersInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.VaultInner;
-import com.azure.resourcemanager.keyvault.fluent.inner.VaultListResultInner;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyUpdateKind;
+import com.azure.resourcemanager.keyvault.models.DeletedVaultListResult;
+import com.azure.resourcemanager.keyvault.models.ResourceListResult;
 import com.azure.resourcemanager.keyvault.models.VaultAccessPolicyProperties;
 import com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
+import com.azure.resourcemanager.keyvault.models.VaultListResult;
 import com.azure.resourcemanager.keyvault.models.VaultPatchParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -68,7 +67,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VaultsClient(KeyVaultManagementClient client) {
+    VaultsClient(KeyVaultManagementClient client) {
         this.service = RestProxy.create(VaultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -158,7 +157,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VaultListResultInner>> listByResourceGroup(
+        Mono<Response<VaultListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("$top") Integer top,
@@ -170,7 +169,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/vaults")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VaultListResultInner>> listBySubscription(
+        Mono<Response<VaultListResult>> listBySubscription(
             @HostParam("$host") String endpoint,
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
@@ -181,7 +180,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/deletedVaults")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeletedVaultListResultInner>> listDeleted(
+        Mono<Response<DeletedVaultListResult>> listDeleted(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -219,7 +218,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         @Get("/subscriptions/{subscriptionId}/resources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceListResultInner>> list(
+        Mono<Response<ResourceListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("$top") Integer top,
@@ -242,28 +241,28 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VaultListResultInner>> listByResourceGroupNext(
+        Mono<Response<VaultListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VaultListResultInner>> listBySubscriptionNext(
+        Mono<Response<VaultListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeletedVaultListResultInner>> listDeletedNext(
+        Mono<Response<DeletedVaultListResult>> listDeletedNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceListResultInner>> listNext(
+        Mono<Response<ResourceListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -2185,6 +2184,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String filter = "resourceType eq 'Microsoft.KeyVault/vaults'";
+        final String apiVersion = "2015-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2193,7 +2193,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
                             this.client.getEndpoint(),
                             filter,
                             top,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             context))
             .<PagedResponse<Resource>>map(
@@ -2233,15 +2233,10 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String filter = "resourceType eq 'Microsoft.KeyVault/vaults'";
+        final String apiVersion = "2015-11-01";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                filter,
-                top,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context)
+            .list(this.client.getEndpoint(), filter, top, apiVersion, this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(

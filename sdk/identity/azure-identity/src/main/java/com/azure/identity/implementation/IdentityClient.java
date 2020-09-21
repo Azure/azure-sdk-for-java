@@ -33,6 +33,7 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
@@ -42,7 +43,6 @@ import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
 import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessException;
 import com.sun.jna.Platform;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -76,7 +76,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -111,6 +110,10 @@ public class IdentityClient {
     private static final String DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME = DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT;
     private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
+    private static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
+    private static final String MSI_ENDPOINT_VERSION = "2017-09-01";
+    private static final String ADFS_TENANT = "adfs";
+    private static final String HTTP_LOCALHOST = "http://localhost";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
@@ -337,6 +340,10 @@ public class IdentityClient {
                 }
             } else if (authType.equalsIgnoreCase("DC")) {
 
+                if (isADFSTenant()) {
+                    return Mono.error(new CredentialUnavailableException("IntelliJCredential  "
+                                         + "authentication unavailable. ADFS tenant/authorities are not supported."));
+                }
                 JsonNode intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
                 String refreshToken = intelliJCredentials.get("refreshToken").textValue();
 
@@ -592,6 +599,10 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithVsCodeCredential(TokenRequestContext request, String cloud) {
 
+        if (isADFSTenant()) {
+            return Mono.error(new CredentialUnavailableException("VsCodeCredential  "
+                                         + "authentication unavailable. ADFS tenant/authorities are not supported."));
+        }
         VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
 
         String credential = accessor.getCredentials("VS Code Azure", cloud);
@@ -639,39 +650,32 @@ public class IdentityClient {
      * @param port the port on which the HTTP server is listening
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, int port) {
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        return AuthorizationCodeListener.create(port)
-            .flatMap(server -> {
-                URI redirectUri;
-                String browserUri;
-                try {
-                    redirectUri = new URI(String.format("http://localhost:%s", port));
-                    browserUri =
-                        String.format("%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&prompt"
-                                + "=select_account&client_id=%s&redirect_uri=%s&state=%s&scope=%s",
-                            authorityUrl,
-                            clientId,
-                            redirectUri.toString(),
-                            UUID.randomUUID(),
-                            String.join(" ", request.getScopes()));
-                } catch (URISyntaxException e) {
-                    return server.dispose().then(Mono.error(e));
-                }
+    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, Integer port,
+                                                              String redirectUrl) {
+        URI redirectUri;
+        String redirect;
 
-                return server.listen()
-                    .mergeWith(Mono.<String>fromRunnable(() -> {
-                        try {
-                            openUrl(browserUri);
-                        } catch (IOException e) {
-                            throw logger.logExceptionAsError(new IllegalStateException(e));
-                        }
-                    }).subscribeOn(Schedulers.newSingle("browser")))
-                    .next()
-                    .flatMap(code -> authenticateWithAuthorizationCode(request, code, redirectUri))
-                    .onErrorResume(t -> server.dispose().then(Mono.error(t)))
-                    .flatMap(msalToken -> server.dispose().then(Mono.just(msalToken)));
-            });
+        if (port != null) {
+            redirect = HTTP_LOCALHOST + ":" + port;
+        } else if (redirectUrl != null) {
+            redirect = redirectUrl;
+        } else {
+            redirect = HTTP_LOCALHOST;
+        }
+
+        try {
+            redirectUri = new URI(redirect);
+        } catch (URISyntaxException e) {
+            return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
+        }
+        InteractiveRequestParameters parameters = InteractiveRequestParameters.builder(redirectUri)
+                                                     .scopes(new HashSet<>(request.getScopes()))
+                                                     .build();
+        Mono<IAuthenticationResult> acquireToken = publicClientApplicationAccessor.getValue()
+                               .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(parameters)));
+
+        return acquireToken.onErrorMap(t -> new ClientAuthenticationException(
+            "Failed to acquire token with Interactive Browser Authentication.", null, t)).map(MsalToken::new);
     }
 
     /**
@@ -727,14 +731,31 @@ public class IdentityClient {
     /**
      * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
      *
-     * @param msiEndpoint the endpoint to acquire token from
-     * @param msiSecret the secret to acquire token with
+     * @param identityEndpoint the Identity endpoint to acquire token from
+     * @param identityHeader the identity header to acquire token with
+     * @param msiEndpoint the MSI endpoint to acquire token from
+     * @param msiSecret the msi secret to acquire token with
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String msiEndpoint, String msiSecret,
+    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String identityEndpoint, String identityHeader,
+                                                                   String msiEndpoint, String msiSecret,
                                                                    TokenRequestContext request) {
         return Mono.fromCallable(() -> {
+            String endpoint;
+            String headerValue;
+            String endpointVersion;
+
+            if (identityEndpoint != null) {
+                endpoint = identityEndpoint;
+                headerValue = identityHeader;
+                endpointVersion = IDENTITY_ENDPOINT_VERSION;
+            } else {
+                endpoint = msiEndpoint;
+                headerValue = msiSecret;
+                endpointVersion = MSI_ENDPOINT_VERSION;
+            }
+
             String resource = ScopeUtil.scopesToResource(request.getScopes());
             HttpURLConnection connection = null;
             StringBuilder payload = new StringBuilder();
@@ -742,18 +763,26 @@ public class IdentityClient {
             payload.append("resource=");
             payload.append(URLEncoder.encode(resource, "UTF-8"));
             payload.append("&api-version=");
-            payload.append(URLEncoder.encode("2017-09-01", "UTF-8"));
+            payload.append(URLEncoder.encode(endpointVersion, "UTF-8"));
             if (clientId != null) {
-                payload.append("&clientid=");
+                if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
+                    payload.append("&client_id=");
+                } else {
+                    payload.append("&clientid=");
+                }
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
             try {
-                URL url = new URL(String.format("%s?%s", msiEndpoint, payload));
+                URL url = new URL(String.format("%s?%s", endpoint, payload));
                 connection = (HttpURLConnection) url.openConnection();
 
                 connection.setRequestMethod("GET");
-                if (msiSecret != null) {
-                    connection.setRequestProperty("Secret", msiSecret);
+                if (headerValue != null) {
+                    if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
+                        connection.setRequestProperty("X-IDENTITY-HEADER", headerValue);
+                    } else {
+                        connection.setRequestProperty("Secret", headerValue);
+                    }
                 }
                 connection.setRequestProperty("Metadata", "true");
 
@@ -821,7 +850,16 @@ public class IdentityClient {
                         throw logger.logExceptionAsError(new RuntimeException(
                                 String.format("Could not connect to the url: %s.", url), exception));
                     }
-                    int responseCode = connection.getResponseCode();
+                    int responseCode;
+                    try {
+                        responseCode = connection.getResponseCode();
+                    } catch (Exception e) {
+                        throw logger.logExceptionAsError(
+                            new CredentialUnavailableException(
+                                "ManagedIdentityCredential authentication unavailable. "
+                                    + "Connection to IMDS endpoint cannot be established, "
+                                    + e.getMessage() + ".", e));
+                    }
                     if (responseCode == 410
                             || responseCode == 429
                             || responseCode == 404
@@ -984,5 +1022,9 @@ public class IdentityClient {
      */
     public String getClientId() {
         return clientId;
+    }
+
+    private boolean isADFSTenant() {
+        return this.tenantId.equals(ADFS_TENANT);
     }
 }

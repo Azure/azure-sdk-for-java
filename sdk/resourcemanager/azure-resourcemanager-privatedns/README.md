@@ -2,6 +2,8 @@
 
 Azure Resource Manager Private DNS client library for Java
 
+For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
 ## Getting started
 
 ### Prerequisites

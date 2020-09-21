@@ -31,9 +31,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ServiceEndpointPolicyDefinitionInner;
-import com.azure.resourcemanager.network.fluent.inner.ServiceEndpointPolicyDefinitionListResultInner;
+import com.azure.resourcemanager.network.models.ServiceEndpointPolicyDefinitionListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ServiceEndpointPolicyDefinitionsClient(NetworkManagementClient client) {
+    ServiceEndpointPolicyDefinitionsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -125,7 +124,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
                 + "/serviceEndpointPolicies/{serviceEndpointPolicyName}/serviceEndpointPolicyDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceEndpointPolicyDefinitionListResultInner>> listByResourceGroup(
+        Mono<Response<ServiceEndpointPolicyDefinitionListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceEndpointPolicyName") String serviceEndpointPolicyName,
@@ -137,7 +136,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceEndpointPolicyDefinitionListResultInner>> listByResourceGroupNext(
+        Mono<Response<ServiceEndpointPolicyDefinitionListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

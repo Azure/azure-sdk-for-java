@@ -24,9 +24,8 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
-import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationDescriptionInner;
+import com.azure.resourcemanager.appservice.models.CsmOperationCollection;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import reactor.core.publisher.Mono;
 
@@ -45,7 +44,7 @@ public final class DomainRegistrationProvidersClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DomainRegistrationProvidersClient(WebSiteManagementClient client) {
+    DomainRegistrationProvidersClient(WebSiteManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -64,14 +63,14 @@ public final class DomainRegistrationProvidersClient {
         @Get("/providers/Microsoft.DomainRegistration/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CsmOperationCollectionInner>> listOperations(
+        Mono<Response<CsmOperationCollection>> listOperations(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CsmOperationCollectionInner>> listOperationsNext(
+        Mono<Response<CsmOperationCollection>> listOperationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
