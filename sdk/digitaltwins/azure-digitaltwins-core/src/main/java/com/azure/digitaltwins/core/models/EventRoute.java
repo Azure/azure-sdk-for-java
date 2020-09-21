@@ -34,7 +34,10 @@ public class EventRoute {
     @JsonProperty(value = "filter")
     private String filter;
 
-    /** Creates an instance of EventRoute class. */
+    /**
+     * Creates an instance of EventRoute class.
+     * @param endpointName the name of the endpoint that this event route connects to.
+     */
     @JsonCreator
     public EventRoute(@JsonProperty(value = "endpointName", required = true) String endpointName) {
         this.endpointName = endpointName;
