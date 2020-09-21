@@ -10,11 +10,16 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Performs autocomplete operations.
+ * Azure Search test for autocompletion.
  */
 public class AutocompleteTest extends ServiceTest<SearchPerfStressOptions> {
+    /**
+     * Constructs a new Azure Search test for autocompletion.
+     *
+     * @param options Configuration options for the autocompletion test.
+     */
     public AutocompleteTest(SearchPerfStressOptions options) {
-        super(options);
+        super((options == null) ? new SearchPerfStressOptions() : options);
     }
 
     @Override
@@ -23,7 +28,7 @@ public class AutocompleteTest extends ServiceTest<SearchPerfStressOptions> {
          * First, run the global setup in the super class. That will create the index to be used for performance
          * testing. Then populate the index with a given number of documents.
          */
-        return super.globalSetupAsync().then(populateIndex(options.getCount(), options.getDocumentSize()));
+        return super.globalSetupAsync().then(populateIndex(getOptions().getCount(), getOptions().getDocumentSize()));
     }
 
     @Override

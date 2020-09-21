@@ -22,8 +22,16 @@ import com.azure.perf.test.core.PerfStressProgram;
  * Configurations} section. Then run the App's main method.
  */
 public class App {
+
+    /**
+     * Entry point for running Azure Search performance tests.
+     *
+     * @param args Arguments for running Azure Search performance tests.
+     */
     public static void main(String[] args) {
-        PerfStressProgram.run(
-            new Class<?>[]{AutocompleteTest.class, IndexDocumentsTest.class, SearchDocumentsTest.class, SuggestTest.class}, args);
+        PerfStressProgram.run(new Class<?>[]{AutocompleteTest.class,
+            IndexDocumentsTest.class,
+            SearchDocumentsTest.class,
+            SuggestTest.class}, args);
     }
 }

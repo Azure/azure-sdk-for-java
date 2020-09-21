@@ -43,7 +43,7 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
     }
 
     private Mono<Void> createTempFile() {
-        try (InputStream inputStream = createRandomInputStream(options.getSize());
+        try (InputStream inputStream = createRandomInputStream(getOptions().getSize());
              OutputStream outputStream = new FileOutputStream(TEMP_FILE.toString())) {
             copyStream(inputStream, outputStream);
             return Mono.empty();

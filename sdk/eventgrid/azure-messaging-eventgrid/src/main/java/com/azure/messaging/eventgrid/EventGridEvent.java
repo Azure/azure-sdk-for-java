@@ -24,6 +24,7 @@ import java.util.UUID;
 
 /**
  * The EventGridEvent model. This represents events in the EventGrid schema to be used with the EventGrid service.
+ *
  * @see EventGridPublisherAsyncClient
  * @see EventGridPublisherClient
  **/
@@ -43,8 +44,10 @@ public final class EventGridEvent {
 
     /**
      * Create a new instance of the EventGridEvent, with the given required fields.
-     * @param subject     the subject of the event.
-     * @param eventType   the type of the event, e.g. "Contoso.Items.ItemReceived".
+     *
+     * @param subject the subject of the event.
+     * @param eventType the type of the event, e.g. "Contoso.Items.ItemReceived".
+     * @param data The data of the event.
      * @param dataVersion the version of the data sent along with the event.
      */
     public EventGridEvent(String subject, String eventType, Object data, String dataVersion) {
@@ -68,15 +71,16 @@ public final class EventGridEvent {
     /**
      * Parse the EventGrid Event from a JSON string. This can be used to interpret the event at the event destination
      * from raw JSON into rich event(s).
-     * @param json the JSON payload containing one or more events.
      *
+     * @param json the JSON payload containing one or more events.
      * @return all of the events in the payload parsed as CloudEvents.
      */
     public static List<EventGridEvent> parse(String json) {
         return Flux.fromArray(deserializer
             .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
-                TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class))
-            )
+                TypeReference.createInstance(
+                    com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class))
+        )
             .map(event -> {
                 if (event.getData() == null) {
                     return new EventGridEvent(event);
@@ -92,6 +96,7 @@ public final class EventGridEvent {
 
     /**
      * Get the unique id associated with this event.
+     *
      * @return the id.
      */
     public String getId() {
@@ -100,8 +105,8 @@ public final class EventGridEvent {
 
     /**
      * Set the unique id of the event. Note that a random id has already been set by default.
-     * @param id the unique id to set.
      *
+     * @param id the unique id to set.
      * @return the event itself.
      */
     public EventGridEvent setId(String id) {
@@ -114,6 +119,7 @@ public final class EventGridEvent {
 
     /**
      * Get the topic associated with this event if it is associated with a domain.
+     *
      * @return the topic, or null if the topic is not set (i.e. the event came from or is going to a domain).
      */
     public String getTopic() {
@@ -122,8 +128,8 @@ public final class EventGridEvent {
 
     /**
      * Set the topic associated with this event. Used to route events from domain endpoints.
-     * @param topic the topic to set.
      *
+     * @param topic the topic to set.
      * @return the event itself.
      */
     public EventGridEvent setTopic(String topic) {
@@ -133,6 +139,7 @@ public final class EventGridEvent {
 
     /**
      * Get the subject associated with this event.
+     *
      * @return the subject.
      */
     public String getSubject() {
@@ -142,9 +149,9 @@ public final class EventGridEvent {
 
     /**
      * Get the data associated with this event. For use in a parsed event only.
-     * @return If the event was parsed from a Json, this method will return the rich
-     * system event data if it is a system event, and a {@code byte[]} otherwise, such as in the case of custom event
-     * data.
+     *
+     * @return If the event was parsed from a Json, this method will return the rich system event data if it is a system
+     * event, and a {@code byte[]} otherwise, such as in the case of custom event data.
      * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
      */
     public Object getData() {
@@ -163,11 +170,11 @@ public final class EventGridEvent {
     }
 
     /**
-     * Get the deserialized data property from the parsed event. The behavior is undefined if this method is called
-     * on an event that was not created through the parse method.
-     * @param clazz the class of the type to deserialize the data into.
-     * @param <T>   the type to deserialize the data into.
+     * Get the deserialized data property from the parsed event. The behavior is undefined if this method is called on
+     * an event that was not created through the parse method.
      *
+     * @param clazz the class of the type to deserialize the data into.
+     * @param <T> the type to deserialize the data into.
      * @return the data deserialized into the given type using a default deserializer.
      * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
      */
@@ -177,9 +184,9 @@ public final class EventGridEvent {
 
     /**
      * Get the deserialized data property from the parsed event.
-     * @param clazz the class of the type to deserialize the data into.
-     * @param <T>   the type to deserialize the data into.
      *
+     * @param clazz the class of the type to deserialize the data into.
+     * @param <T> the type to deserialize the data into.
      * @return the data deserialized into the given type using a default deserializer, delivered asynchronously through
      * a {@link Mono}.
      * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
@@ -190,10 +197,10 @@ public final class EventGridEvent {
 
     /**
      * Get the deserialized data property from the parsed event.
-     * @param clazz            the class of the type to deserialize the data into.
-     * @param dataDeserializer the deserializer to use.
-     * @param <T>              the type to deserialize the data into.
      *
+     * @param clazz the class of the type to deserialize the data into.
+     * @param dataDeserializer the deserializer to use.
+     * @param <T> the type to deserialize the data into.
      * @return the data deserialized into the given type using the given deserializer.
      * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
      */
@@ -203,10 +210,10 @@ public final class EventGridEvent {
 
     /**
      * Get the deserialized data property from the parsed event.
-     * @param clazz            the class of the type to deserialize the data into.
-     * @param dataDeserializer the deserializer to use.
-     * @param <T>              the type to deserialize the data into.
      *
+     * @param clazz the class of the type to deserialize the data into.
+     * @param dataDeserializer the deserializer to use.
+     * @param <T> the type to deserialize the data into.
      * @return the data deserialized into the given type using the given deserializer, delivered asynchronously through
      * a {@link Mono}.
      * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
@@ -224,6 +231,7 @@ public final class EventGridEvent {
 
     /**
      * Get the type of this event.
+     *
      * @return the event type.
      */
     public String getEventType() {
@@ -232,6 +240,7 @@ public final class EventGridEvent {
 
     /**
      * Get the time associated with the occurrence of this event.
+     *
      * @return the event time.
      */
     public OffsetDateTime getEventTime() {
@@ -241,8 +250,8 @@ public final class EventGridEvent {
     /**
      * Set the time associated with the event. Note that a default time has already been set when the event was
      * constructed.
-     * @param time the time to set.
      *
+     * @param time the time to set.
      * @return the event itself.
      */
     public EventGridEvent setEventTime(OffsetDateTime time) {
@@ -251,7 +260,9 @@ public final class EventGridEvent {
     }
 
     /**
-     * Get the version of the data in the event. This can be used to specify versioning of event data schemas over time.
+     * Get the version of the data in the event. This can be used to specify versioning of event data schemas over
+     * time.
+     *
      * @return the version of the event data.
      */
     public String getDataVersion() {
@@ -260,6 +271,7 @@ public final class EventGridEvent {
 
     /**
      * Get the metadata version of this event. Note that metadata version is a read-only property set by the service.
+     *
      * @return the metadata version of this event.
      */
     public String getMetadataVersion() {

@@ -17,12 +17,12 @@ public class UploadBlockBlobTest extends BlobTestBase<PerfStressOptions> {
 
     @Override
     public void run() {
-        blockBlobClient.upload(createRandomInputStream(options.getSize()), options.getSize(), true);
+        blockBlobClient.upload(createRandomInputStream(getOptions().getSize()), getOptions().getSize(), true);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return blockBlobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), options.getSize(), true)
-            .then();
+        return blockBlobAsyncClient.upload(createRandomByteBufferFlux(getOptions().getSize()), getOptions().getSize(),
+            true).then();
     }
 }

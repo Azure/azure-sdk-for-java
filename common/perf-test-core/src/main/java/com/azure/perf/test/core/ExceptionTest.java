@@ -20,6 +20,7 @@ class ExceptionTest extends PerfStressTest<PerfStressOptions> {
         try {
             throw new IllegalArgumentException();
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

@@ -4,10 +4,10 @@
 package com.azure.search.perf.core;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.search.documents.SearchAsyncClient;
@@ -20,7 +20,6 @@ import com.azure.search.documents.indexes.models.SearchSuggester;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -43,28 +42,32 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     private final SearchIndexAsyncClient searchIndexAsyncClient;
     private final String indexName;
 
+    /**
+     * Creates an Azure Search performance test.
+     *
+     * @param options Configuration options for the Azure Search performance test.
+     * @throws RuntimeException If {@code SEARCH_ENDPOINT} or {@code SEARCH_API_KEY} aren't configured in the
+     * environment.
+     */
     public ServiceTest(TOptions options) {
         super(options);
 
         String searchEndpoint = Configuration.getGlobalConfiguration().get("SEARCH_ENDPOINT");
         if (CoreUtils.isNullOrEmpty(searchEndpoint)) {
-            System.out.printf(CONFIGURATION_ERROR, "SEARCH_ENDPOINT");
-            System.exit(1);
+            throw new RuntimeException(String.format(CONFIGURATION_ERROR, "SEARCH_ENDPOINT"));
         }
 
         String searchApiKey = Configuration.getGlobalConfiguration().get("SEARCH_API_KEY");
         if (CoreUtils.isNullOrEmpty(searchApiKey)) {
-            System.out.printf(CONFIGURATION_ERROR, "SEARCH_API_KEY");
-            System.exit(1);
+            throw new RuntimeException(String.format(CONFIGURATION_ERROR, "SEARCH_API_KEY"));
         }
 
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(searchEndpoint)
             .credential(new AzureKeyCredential(searchApiKey))
-            .httpClient(new NettyAsyncHttpClientBuilder()
-                .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+            .serializer(new JacksonJsonSerializerBuilder()
+                .serializer(((JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter()).serializer())
                 .build());
-            //.httpClient(PerfStressHttpClient.create(options));
 
         this.searchIndexAsyncClient = builder.buildAsyncClient();
 
@@ -90,6 +93,13 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         return searchIndexAsyncClient.deleteIndex(indexName);
     }
 
+    /**
+     * Populates the index being used by the test.
+     *
+     * @param documentCount Number of documents used to populate the index.
+     * @param documentSize Size of the documents.
+     * @return A reactive response indicating that the index has been populated.
+     */
     protected Mono<Void> populateIndex(int documentCount, String documentSize) {
         /*
          * Generate the count of documents using the given size. Then, upload the documents in batches of 100, this

@@ -17,7 +17,7 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
 
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync().then(
-            Flux.range(0, options.getCount())
+            Flux.range(0, getOptions().getCount())
                 .map(i -> "getblobstest-" + UUID.randomUUID())
                 .flatMap(b -> blobContainerAsyncClient.getBlobAsyncClient(b).upload(Flux.empty(), null))
                 .then());

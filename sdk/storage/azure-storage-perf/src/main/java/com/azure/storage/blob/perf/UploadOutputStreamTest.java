@@ -21,7 +21,7 @@ public class UploadOutputStreamTest extends BlobTestBase<PerfStressOptions> {
     public void run() {
         try {
             BlobOutputStream blobOutputStream = blockBlobClient.getBlobOutputStream();
-            writeBytesToOutputStream(blobOutputStream, options.getSize());
+            writeBytesToOutputStream(blobOutputStream, getOptions().getSize());
             blobOutputStream.close();
         } catch (IOException e) {
             throw new RuntimeException(e);

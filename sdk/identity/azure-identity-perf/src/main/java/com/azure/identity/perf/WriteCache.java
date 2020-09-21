@@ -9,14 +9,22 @@ import com.azure.identity.perf.core.ServiceTest;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
 
+/**
+ * Azure Identity test for cache writing.
+ */
 public class WriteCache extends ServiceTest<PerfStressOptions> {
     private final SharedTokenCacheCredential credential;
 
+    /**
+     * Constructs a new Azure Identity test for cache writing.
+     *
+     * @param options Configuration options for the cache writing test.
+     */
     public WriteCache(PerfStressOptions options) {
         super(options);
         credential = new SharedTokenCacheCredentialBuilder()
-                .clientId(CLI_CLIENT_ID)
-                .build();
+            .clientId(CLI_CLIENT_ID)
+            .build();
     }
 
     // Perform the API call to be tested here

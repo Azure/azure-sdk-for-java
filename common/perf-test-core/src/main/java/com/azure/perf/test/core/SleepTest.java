@@ -19,22 +19,13 @@ class SleepTest extends PerfStressTest<PerfStressOptions> {
     public SleepTest(PerfStressOptions options) {
         super(options);
 
-        int instanceCount = SleepTest.INSTANCE_COUNT.incrementAndGet();
-        secondsPerOperation = pow(2, instanceCount);
-    }
-
-    private static int pow(int value, int exponent) {
-        int power = 1;
-        for (int i = 0; i < exponent; i++) {
-            power *= value;
-        }
-        return power;
+        secondsPerOperation = 1 << SleepTest.INSTANCE_COUNT.incrementAndGet();
     }
 
     @Override
     public void run() {
         try {
-            Thread.sleep(secondsPerOperation * 1000);
+            Thread.sleep(secondsPerOperation * 1000L);
         } catch (InterruptedException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }

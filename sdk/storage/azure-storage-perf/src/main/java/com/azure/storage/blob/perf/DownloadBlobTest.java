@@ -32,7 +32,7 @@ public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
     // Required resource setup goes here, upload the file to be downloaded during tests.
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
-            .then(blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null))
+            .then(blobAsyncClient.upload(createRandomByteBufferFlux(getOptions().getSize()), null))
             .then();
     }
 

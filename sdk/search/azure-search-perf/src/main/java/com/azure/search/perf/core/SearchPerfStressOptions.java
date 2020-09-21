@@ -14,11 +14,20 @@ public class SearchPerfStressOptions extends PerfStressOptions {
     private String documentSize = DocumentSize.SMALL.name();
 
     /**
-     * Get the configured document size option for performance test.
+     * Get the configured document size option for performance testing.
      *
      * @return The document size.
      */
     public String getDocumentSize() {
         return documentSize;
+    }
+
+    /**
+     * Sets the configured document size option for performance testing.
+     *
+     * @param documentSize The document size.
+     */
+    public void setDocumentSize(String documentSize) {
+        this.documentSize = documentSize;
     }
 }

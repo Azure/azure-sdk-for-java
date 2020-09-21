@@ -9,9 +9,17 @@ import com.azure.identity.perf.core.ServiceTest;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
 
+/**
+ * Azure Identity test for cache reading.
+ */
 public class ReadCache extends ServiceTest<PerfStressOptions> {
     private final SharedTokenCacheCredential credential;
 
+    /**
+     * Constructs a new Azure Identity test for cache reading.
+     *
+     * @param options Configuration options for the cache reading test.
+     */
     public ReadCache(PerfStressOptions options) {
         super(options);
         credential = new SharedTokenCacheCredentialBuilder()

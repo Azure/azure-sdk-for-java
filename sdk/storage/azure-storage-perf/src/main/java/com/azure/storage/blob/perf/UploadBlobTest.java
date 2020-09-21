@@ -21,7 +21,7 @@ public class UploadBlobTest extends BlobTestBase<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null, true)
+        return blobAsyncClient.upload(createRandomByteBufferFlux(getOptions().getSize()), null, true)
             .then();
     }
 }

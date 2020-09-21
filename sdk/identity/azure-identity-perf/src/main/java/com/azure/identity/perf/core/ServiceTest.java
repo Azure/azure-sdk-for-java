@@ -10,16 +10,26 @@ import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import reactor.core.publisher.Mono;
 
+/**
+ * Base class for Azure Identity performance tests.
+ *
+ * @param <TOptions> Configuration options for an Azure Identity performance test.
+ */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     protected static final String CLI_CLIENT_ID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
     protected static final TokenRequestContext ARM_TOKEN_REQUEST_CONTEXT = new TokenRequestContext()
-            .addScopes("https://management.azure.com/.default");
+        .addScopes("https://management.azure.com/.default");
 
-    private InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
-            .port(8765)
-            .clientId(CLI_CLIENT_ID)
-            .build();
+    private final InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
+        .redirectUrl("http://localhost:8765")
+        .clientId(CLI_CLIENT_ID)
+        .build();
 
+    /**
+     * Creates an Azure Identity performance test.
+     *
+     * @param options Configuration options for the Azure Identity performance test.
+     */
     public ServiceTest(TOptions options) {
         super(options);
     }
@@ -28,7 +38,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     public Mono<Void> globalSetupAsync() {
         // Populate the token cache for tests
         return super.globalSetupAsync()
-                .then(interactiveBrowserCredential.getToken(ARM_TOKEN_REQUEST_CONTEXT))
-                .then();
+            .then(interactiveBrowserCredential.getToken(ARM_TOKEN_REQUEST_CONTEXT))
+            .then();
     }
 }
