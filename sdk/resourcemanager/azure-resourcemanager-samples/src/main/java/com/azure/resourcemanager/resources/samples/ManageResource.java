@@ -12,6 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 
 /**
  * Azure Resource sample for managing resources -
@@ -66,7 +67,7 @@ public final class ManageResource {
             System.out.println("Updating the storage account with name: " + resourceName1);
 
             storageAccount.update()
-                    .withSku(SkuName.STANDARD_RAGRS)
+                    .withSku(StorageAccountSkuType.fromSkuName(SkuName.STANDARD_RAGRS))
                     .apply();
 
             System.out.println("Updated the storage account with name: " + resourceName1);

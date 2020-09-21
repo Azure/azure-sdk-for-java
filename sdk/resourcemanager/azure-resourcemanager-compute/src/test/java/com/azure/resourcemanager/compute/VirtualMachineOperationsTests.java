@@ -41,6 +41,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -675,7 +676,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .define(storageName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withSku(SkuName.PREMIUM_LRS)
+                .withSku(StorageAccountSkuType.fromSkuName(SkuName.PREMIUM_LRS))
                 .create();
 
         // Creates a virtual machine with an unmanaged data disk that gets stored in the above

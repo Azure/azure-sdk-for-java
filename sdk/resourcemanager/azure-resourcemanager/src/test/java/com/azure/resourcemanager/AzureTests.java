@@ -44,6 +44,7 @@ import com.azure.resourcemanager.network.models.PcStatus;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
+import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -1080,7 +1081,7 @@ public class AzureTests extends ResourceManagerTestBase {
                 .define(storageAccountName)
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup()
-                .withSku(SkuName.PREMIUM_LRS)
+                .withSku(StorageAccountSkuType.fromSkuName(SkuName.PREMIUM_LRS))
                 .create();
 
         Assertions.assertEquals(storageAccount.name(), storageAccountName);
