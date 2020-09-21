@@ -150,10 +150,10 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[samples]: src/samples/java/com/azure/data/schemaregistry/avro
-[generated_types]: src/samples/java/com/azure/data/schemaregistry/avro/generatedtestsources
-[source_code]: src
-[samples_code]: src/samples/
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry-avro/src/samples/java/com/azure/data/schemaregistry/avro
+[generated_types]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry-avro/src/samples/java/com/azure/data/schemaregistry/avro/generatedtestsources
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry-avro/src
+[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry-avro/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
 [apache_avro]: http://avro.apache.org/
 [api_reference_doc]: https://aka.ms/schemaregistry
