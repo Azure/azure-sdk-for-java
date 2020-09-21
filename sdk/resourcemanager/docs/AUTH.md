@@ -120,7 +120,7 @@ Once your custom configurations are ready, you can move forward with below authe
 AzureResourceManager azure = AzureResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
 ```
 
-If you want to configure part of http pipeline instead of building new one, you may set via `Azure::configure`.
+If you want to configure part of http pipeline instead of building new one, you may set via `AzureResourceManager::configure`.
 
 ```java
 AzureResourceManager azure = AzureResourceManager.configure()

@@ -2,7 +2,7 @@
 
 ### Azure Authentication
 
-The `Azure` class is the simplest entry point for creating and interacting with Azure resources.
+The `AzureResourceManager` class is the simplest entry point for creating and interacting with Azure resources.
 
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);

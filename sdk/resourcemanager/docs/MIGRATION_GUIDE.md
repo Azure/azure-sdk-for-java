@@ -66,7 +66,7 @@ In addition to this change, the **support for using auth file has been removed**
 **In old version (`com.microsoft.azure.management.**`)**
 
 ```java
-AzureResourceManager azure = AzureResourceManager.authenticate(new File("my.azureauth")).withDefaultSubscription();
+Azure azure = Azure.authenticate(new File("my.azureauth")).withDefaultSubscription();
 ```
 **In new version, this feature has been removed.** If this creates concern on your side, please file an issue to let us know.
 
@@ -85,7 +85,7 @@ So:
 **In old version (`com.microsoft.azure.management.**`)**
 
 ```java
-AzureResourceManager azure = AzureResourceManager.configure()
+Azure azure = Azure.configure()
     .withInterceptor(new CustomizedInterceptor())
     .authenticate(credential)
     .withDefaultSubscription();
@@ -112,7 +112,7 @@ RestClient client = new RestClient.Builder(builder, new Retrofit.Builder())
     .withCredentials(credential)
     .build();
 
-AzureResourceManager azure = AzureResourceManager.authenticate(client, "<TenantId>")
+Azure azure = Azure.authenticate(client, "<TenantId>")
     .withDefaultSubscription();
 ```
 
