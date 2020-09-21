@@ -94,7 +94,7 @@ Azure azure = Azure.configure()
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
 ```java
-Azure azure = Azure.configure()
+AzureResourceManager azure = AzureResourceManager.configure()
     .withPolicy(new CustomizedPolicy())
     .authenticate(credential, profile)
     .withDefaultSubscription();
@@ -123,7 +123,7 @@ HttpClient client = new OkHttpAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)))
     .build();
 
-Azure azure = Azure.configure()
+AzureResourceManager azure = AzureResourceManager.configure()
     .withHttpClient(client)
     .authenticate(credential, profile)
     .withDefaultSubscription();
