@@ -103,6 +103,11 @@ class ExtendedDatabaseBlobAuditingPolicyImpl extends CreatableUpdatableImpl<Exte
     }
 
     @Override
+    public Integer queueDelayMs() {
+        return this.inner().queueDelayMs();
+    }
+
+    @Override
     public Integer retentionDays() {
         return this.inner().retentionDays();
     }
@@ -167,6 +172,12 @@ class ExtendedDatabaseBlobAuditingPolicyImpl extends CreatableUpdatableImpl<Exte
     @Override
     public ExtendedDatabaseBlobAuditingPolicyImpl withPredicateExpression(String predicateExpression) {
         this.inner().withPredicateExpression(predicateExpression);
+        return this;
+    }
+
+    @Override
+    public ExtendedDatabaseBlobAuditingPolicyImpl withQueueDelayMs(Integer queueDelayMs) {
+        this.inner().withQueueDelayMs(queueDelayMs);
         return this;
     }
 
