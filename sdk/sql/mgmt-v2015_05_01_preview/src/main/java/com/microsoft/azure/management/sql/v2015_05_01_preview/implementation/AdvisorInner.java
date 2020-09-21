@@ -18,7 +18,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * Database, Server or Elatic Pool Advisor.
+ * Database, Server or Elastic Pool Advisor.
  */
 @JsonFlatten
 public class AdvisorInner extends ProxyResource {
@@ -53,8 +53,8 @@ public class AdvisorInner extends ProxyResource {
 
     /**
      * Gets the resource from which current value of auto-execute status is
-     * inherited. Auto-execute status can be set on (and inhertied from)
-     * different levels in the resource heirarchy. Possible values are
+     * inherited. Auto-execute status can be set on (and inherited from)
+     * different levels in the resource hierarchy. Possible values are
      * 'Subscription', 'Server', 'ElasticPool', 'Database' and 'Default' (when
      * status is not explicitly set on any level). Possible values include:
      * 'Default', 'Subscription', 'Server', 'ElasticPool', 'Database'.
@@ -132,7 +132,7 @@ public class AdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get gets the resource from which current value of auto-execute status is inherited. Auto-execute status can be set on (and inhertied from) different levels in the resource heirarchy. Possible values are 'Subscription', 'Server', 'ElasticPool', 'Database' and 'Default' (when status is not explicitly set on any level). Possible values include: 'Default', 'Subscription', 'Server', 'ElasticPool', 'Database'.
+     * Get gets the resource from which current value of auto-execute status is inherited. Auto-execute status can be set on (and inherited from) different levels in the resource hierarchy. Possible values are 'Subscription', 'Server', 'ElasticPool', 'Database' and 'Default' (when status is not explicitly set on any level). Possible values include: 'Default', 'Subscription', 'Server', 'ElasticPool', 'Database'.
      *
      * @return the autoExecuteStatusInheritedFrom value
      */

@@ -54,10 +54,14 @@ class DatabaseAdvisorsImpl extends WrapperImpl<DatabaseAdvisorsInner> implements
     public Observable<DatabasisServerAdvisor> getAsync(String resourceGroupName, String serverName, String databaseName, String advisorName) {
         DatabaseAdvisorsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName, advisorName)
-        .map(new Func1<AdvisorInner, DatabasisServerAdvisor>() {
+        .flatMap(new Func1<AdvisorInner, Observable<DatabasisServerAdvisor>>() {
             @Override
-            public DatabasisServerAdvisor call(AdvisorInner inner) {
-                return wrapModel(inner);
+            public Observable<DatabasisServerAdvisor> call(AdvisorInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DatabasisServerAdvisor)wrapModel(inner));
+                }
             }
        });
     }
