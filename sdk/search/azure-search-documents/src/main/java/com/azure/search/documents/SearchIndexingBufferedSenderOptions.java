@@ -22,9 +22,9 @@ import java.util.function.Function;
  */
 public final class SearchIndexingBufferedSenderOptions<T> {
     private static final boolean DEFAULT_AUTO_FLUSH = true;
-    private static final int DEFAULT_BATCH_SIZE = 1000;
+    private static final int DEFAULT_BATCH_SIZE = 100;
     private static final Duration DEFAULT_FLUSH_WINDOW = Duration.ofSeconds(60);
-    private static final int DEFAULT_DOCUMENT_TRY_LIMIT = 10;
+    private static final int DEFAULT_DOCUMENT_TRY_LIMIT = 3;
 
     private final ClientLogger logger = new ClientLogger(SearchIndexingBufferedSenderOptions.class);
 
@@ -64,15 +64,16 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     }
 
     /**
-     * Duration that the a buffered sender will wait between documents being added to the batch before sending them to
-     * the index.
+     * Duration between a buffered sender sending documents to be indexed.
+     * <p>
+     * The buffered sender will reset the duration when documents are sent for indexing, either by reaching {@link
+     * #setBatchSize(Integer)} or by a manual trigger.
      * <p>
      * If {@code flushWindow} is negative or zero and {@link #setAutoFlush(Boolean)} is enabled the buffered sender will
-     * flush when {@link #setBatchSize(Integer)} is met. If {@code flushWindow} is null a default value of 60 seconds is
-     * used.
+     * only flush when {@link #setBatchSize(Integer)} is met. If {@code flushWindow} is null a default value of 60
+     * seconds is used.
      *
-     * @param flushWindow Duration that will be waited between document being added to the batch before they will sent
-     * to the index.
+     * @param flushWindow Duration between document batches being sent for indexing.
      * @return The updated SearchIndexingBufferedSenderOptions object.
      */
     public SearchIndexingBufferedSenderOptions<T> setFlushWindow(Duration flushWindow) {
@@ -81,8 +82,10 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     }
 
     /**
-     * Gets the {@link Duration} that the buffered sender will wait after the last document has been added to the batch
-     * before it automatically flushes.
+     * Gets the {@link Duration} that the buffered sender will wait between sending documents to be indexed.
+     * <p>
+     * The buffered sender will reset the duration when documents are sent for indexing, either by reaching {@link
+     * #setBatchSize(Integer)} or by a manual trigger.
      * <p>
      * If the duration is less than or equal to zero the buffered sender will only flush when {@link #getBatchSize()} is
      * triggered.
@@ -100,7 +103,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * The number of documents before a buffered sender will send the batch to be indexed.
      * <p>
      * This will only trigger a batch to be sent automatically if {@link #flushWindow} is configured. Default value is
-     * {@code 1000}.
+     * {@code 100}.
      *
      * @param batchSize The number of documents in a batch that will trigger it to be indexed.
      * @return The updated SearchIndexingBufferedSenderOptions object.
@@ -130,7 +133,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * <p>
      * Documents are only retried on retryable status codes.
      * <p>
-     * Default value is {@code 10}.
+     * Default value is {@code 3}.
      *
      * @param documentTryLimit The number of times a document will attempt indexing before it is considered failed.
      * @return The updated SearchIndexingBufferedSenderOptions object.

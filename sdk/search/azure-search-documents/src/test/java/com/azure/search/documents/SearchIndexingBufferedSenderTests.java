@@ -387,6 +387,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 createMockResponseData(0, 409))))
             .buildClient()
             .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setDocumentTryLimit(10)
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
                 .setOnActionError((action, throwable) -> errorCount.incrementAndGet())

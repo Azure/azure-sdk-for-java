@@ -40,10 +40,10 @@ public class SearchIndexingBufferedSenderOptionsTests {
     @Test
     public void batchSizeDefaults1000() {
         SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertEquals(1000, options.getBatchSize());
+        assertEquals(100, options.getBatchSize());
 
         options.setBatchSize(null);
-        assertEquals(1000, options.getBatchSize());
+        assertEquals(100, options.getBatchSize());
     }
 
     @Test
@@ -56,10 +56,10 @@ public class SearchIndexingBufferedSenderOptionsTests {
     @Test
     public void documentTryLimitDefaults10() {
         SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertEquals(10, options.getDocumentTryLimit());
+        assertEquals(3, options.getDocumentTryLimit());
 
         options.setDocumentTryLimit(null);
-        assertEquals(10, options.getDocumentTryLimit());
+        assertEquals(3, options.getDocumentTryLimit());
     }
 
     @Test

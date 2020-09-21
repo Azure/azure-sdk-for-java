@@ -18,6 +18,8 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -51,9 +53,11 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     private final Timer autoFlushTimer;
 
     private final Object actionsMutex = new Object();
-    private List<TryTrackingIndexAction<T>> actions = new ArrayList<>();
+    private final Deque<TryTrackingIndexAction<T>> actions = new LinkedList<>();
 
     private final AtomicReference<TimerTask> flushTask = new AtomicReference<>();
+    private final AtomicBoolean batchProcessing = new AtomicBoolean(false);
+    private final AtomicBoolean senderClosed = new AtomicBoolean(false);
 
     SearchIndexingBufferedAsyncSender(SearchAsyncClient client, SearchIndexingBufferedSenderOptions<T> options) {
         SearchIndexingBufferedSenderOptions<T> buildOptions = (options == null)
@@ -191,8 +195,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context) {
         synchronized (actionsMutex) {
             actions.stream()
-                .map(action -> new TryTrackingIndexAction<>(action,
-                    documentKeyRetriever.apply(action.getDocument())))
+                .map(action -> new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())))
                 .forEach(this.actions::add);
         }
 
@@ -210,34 +213,45 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     }
 
     Mono<Void> flush(Context context) {
-        List<TryTrackingIndexAction<T>> actions;
+        final List<TryTrackingIndexAction<T>> batchActions = new ArrayList<>(batchSize);
         synchronized (actionsMutex) {
-            actions = this.actions;
-            this.actions = new ArrayList<>();
+            int size = Math.min(batchSize, this.actions.size());
+            for (int i = 0; i < size; i++) {
+                batchActions.add(actions.pop());
+            }
         }
 
         // If there are no documents to in the batch to index just return.
-        if (CoreUtils.isNullOrEmpty(actions)) {
+        if (CoreUtils.isNullOrEmpty(batchActions)) {
             return Mono.empty();
         }
 
-        List<com.azure.search.documents.implementation.models.IndexAction> convertedActions = actions.stream()
+        List<com.azure.search.documents.implementation.models.IndexAction> convertedActions = batchActions.stream()
             .map(action -> IndexActionConverter.map(action.getAction(), client.serializer))
             .collect(Collectors.toList());
+
+        // A flush is being triggered, reset the timer. But only do so if the sender isn't being closed.
+        if (!senderClosed.get()) {
+            rescheduleFlushTask();
+        }
 
         AtomicBoolean hasError = new AtomicBoolean(false);
         return flushInternal(convertedActions, 0, context)
             .map(response -> {
-                handleResponse(actions, response);
+                handleResponse(batchActions, response);
                 if (response.isError()) {
                     hasError.set(true);
                 }
 
                 return response;
             })
-            .thenEmpty(Mono.defer(() -> hasError.get()
-                ? Mono.error(new RuntimeException("Batching has encountered errors"))
-                : Mono.empty()));
+            .thenEmpty(Mono.defer(() -> {
+                // Indicate that batch processing is complete and another batch can be sent.
+                batchProcessing.set(false);
+                return hasError.get()
+                    ? Mono.error(new RuntimeException("Batching has encountered errors."))
+                    : Mono.empty();
+            }));
     }
 
     /*
@@ -320,17 +334,26 @@ public final class SearchIndexingBufferedAsyncSender<T> {
 
         if (!CoreUtils.isNullOrEmpty(actionsToRetry)) {
             synchronized (actionsMutex) {
-                this.actions.addAll(actionsToRetry);
+                // Push all actions that need to be retried back into the queue.
+                for (int i = actionsToRetry.size() - 1; i >= 0; i--) {
+                    this.actions.push(actionsToRetry.get(i));
+                }
             }
         }
     }
 
     private void rescheduleFlushTask() {
+        if (!autoFlush) {
+            return;
+        }
 
         TimerTask newTask = new TimerTask() {
             @Override
             public void run() {
-                flush().subscribe();
+                // Only trigger a flush if one isn't being processed already.
+                if (batchProcessing.compareAndSet(false, true)) {
+                    flush().subscribe();
+                }
             }
         };
 
@@ -348,13 +371,12 @@ public final class SearchIndexingBufferedAsyncSender<T> {
             return Mono.empty();
         }
 
-        rescheduleFlushTask();
-
         if (actions.size() < batchSize) {
             return Mono.empty();
         }
 
-        return flush(context);
+        // Only trigger a flush if one isn't being processed already.
+        return batchProcessing.compareAndSet(false, true) ? flush(context) : Mono.empty();
     }
 
     /**
@@ -367,6 +389,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     }
 
     Mono<Void> close(Context context) {
+        senderClosed.set(true);
         if (this.autoFlush) {
             TimerTask currentTask = flushTask.get();
             if (currentTask != null) {
