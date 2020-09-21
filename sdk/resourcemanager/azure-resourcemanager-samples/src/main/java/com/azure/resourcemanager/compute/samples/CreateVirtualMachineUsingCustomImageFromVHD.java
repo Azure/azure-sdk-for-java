@@ -251,6 +251,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
             Azure azure = Azure

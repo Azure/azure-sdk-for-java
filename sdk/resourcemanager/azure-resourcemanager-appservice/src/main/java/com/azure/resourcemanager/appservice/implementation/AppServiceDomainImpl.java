@@ -4,6 +4,10 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.fluent.DomainsClient;
+import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
+import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifierInner;
+import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.Contact;
 import com.azure.resourcemanager.appservice.models.DnsType;
@@ -11,15 +15,12 @@ import com.azure.resourcemanager.appservice.models.DomainPurchaseConsent;
 import com.azure.resourcemanager.appservice.models.DomainStatus;
 import com.azure.resourcemanager.appservice.models.Hostname;
 import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
-import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
-import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifierInner;
-import com.azure.resourcemanager.appservice.fluent.DomainsClient;
-import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.time.OffsetDateTime;
@@ -28,9 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** The implementation for AppServiceDomain. */
 class AppServiceDomainImpl
@@ -51,7 +49,7 @@ class AppServiceDomainImpl
     }
 
     @Override
-    public Flux<Indexable> createAsync() {
+    public Mono<AppServiceDomain> createAsync() {
         if (this.isInCreateMode()) {
             // create a default DNS zone, if not specified
             if (this.inner().dnsZoneId() == null && dnsZoneCreatable == null) {

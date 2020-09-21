@@ -182,7 +182,6 @@ public class RegistriesImpl
             .map(sourceUploadDefinitionInner -> new SourceUploadDefinitionImpl(sourceUploadDefinitionInner));
     }
 
-    @Override
     public WebhooksClient webhooks() {
         return new WebhooksClientImpl(this.manager(), null);
     }

@@ -39,7 +39,7 @@ public final class ResourceNavigationLinksClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ResourceNavigationLinksClient(NetworkManagementClient client) {
+    ResourceNavigationLinksClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(ResourceNavigationLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());

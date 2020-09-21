@@ -20,7 +20,7 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 
 ## Examples                                           
 ### Config the sample
-1. Update [application.properties](src/main/resources/application.properties)
+1. Update [application.properties](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic/src/main/resources/application.properties)
 
     ```properties
     # Fill service bus namespace connection string copied from portal
@@ -35,7 +35,7 @@ Running this sample will be charged by Azure. You can check the usage and bill a
     spring.jms.servicebus.idle-timeout=[idle-timeout]
     ```
 
-2. Specify your topic name and subscription name. Update `TOPIC_NAME` in [TopicSendController](src/main/java/com/microsoft/azure/jms/topic/TopicSendController.java) and [TopicReceiveController](src/main/java/com/microsoft/azure/jms/topic/TopicReceiveController.java), and `SUBSCRIPTION_NAME` in [TopicReceiveController](src/main/java/com/microsoft/azure/jms/topic/TopicReceiveController.java).
+2. Specify your topic name and subscription name. Update `TOPIC_NAME` in [TopicSendController](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic/src/main/java/com/azure/jms/topic/TopicSendController.java) and [TopicReceiveController](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic/src/main/java/com/azure/jms/topic/TopicReceiveController.java), and `SUBSCRIPTION_NAME` in [TopicReceiveController](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic/src/main/java/com/azure/jms/topic/TopicReceiveController.java).
 
 ### How to run
 

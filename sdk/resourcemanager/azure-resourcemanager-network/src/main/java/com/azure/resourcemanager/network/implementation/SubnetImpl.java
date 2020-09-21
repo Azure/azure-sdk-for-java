@@ -203,11 +203,6 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     }
 
     @Override
-    public Set<NicIpConfiguration> getNetworkInterfaceIPConfigurations() {
-        return Collections.unmodifiableSet(new TreeSet<NicIpConfiguration>(listNetworkInterfaceIPConfigurations()));
-    }
-
-    @Override
     public Collection<NicIpConfiguration> listNetworkInterfaceIPConfigurations() {
         Collection<NicIpConfiguration> ipConfigs = new ArrayList<>();
         Map<String, NetworkInterface> nics = new TreeMap<>();
@@ -261,8 +256,8 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             this
                 .parent()
                 .manager()
-                .networks()
                 .inner()
+                .getVirtualNetworks()
                 .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
         if (result == null) {
             return ipAddresses;

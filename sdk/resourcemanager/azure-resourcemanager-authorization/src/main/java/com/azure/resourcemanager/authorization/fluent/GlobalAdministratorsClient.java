@@ -37,7 +37,7 @@ public final class GlobalAdministratorsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public GlobalAdministratorsClient(AuthorizationManagementClient client) {
+    GlobalAdministratorsClient(AuthorizationManagementClient client) {
         this.service =
             RestProxy
                 .create(GlobalAdministratorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());

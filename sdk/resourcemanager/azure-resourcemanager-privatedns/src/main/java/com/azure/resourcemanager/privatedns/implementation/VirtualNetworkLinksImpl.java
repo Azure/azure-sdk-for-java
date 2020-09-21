@@ -120,7 +120,6 @@ class VirtualNetworkLinksImpl
             .mapPage(this::wrapModel);
     }
 
-    @Override
     public VirtualNetworkLinksClient inner() {
         return parent().manager().inner().getVirtualNetworkLinks();
     }

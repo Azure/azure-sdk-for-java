@@ -648,8 +648,9 @@ class VirtualMachineScaleSetVMImpl
         this.managedDataDisks.syncToVMDataDisks(this.inner().storageProfile());
         return this
             .parent()
-            .virtualMachines()
+            .manager()
             .inner()
+            .getVirtualMachineScaleSetVMs()
             .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), this.inner())
             .map(
                 vmInner -> {

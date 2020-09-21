@@ -7,12 +7,11 @@ package com.azure.resourcemanager.storage.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
 import reactor.core.publisher.Flux;
 
@@ -50,14 +49,10 @@ public final class ManageStorageAccountAsync {
                             .withRegion(Region.US_EAST)
                             .withNewResourceGroup(rgName)
                             .createAsync())
-                    .map(indexable -> {
-                        if (indexable instanceof StorageAccount) {
-                            StorageAccount storageAccount = (StorageAccount) indexable;
-
-                            System.out.println("Created a Storage Account:");
-                            Utils.print(storageAccount);
-                        }
-                        return indexable;
+                    .map(storageAccount -> {
+                        System.out.println("Created a Storage Account:");
+                        Utils.print(storageAccount);
+                        return storageAccount;
                     }).blockLast();
 
             // ============================================================
@@ -114,6 +109,7 @@ public final class ManageStorageAccountAsync {
         try {
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
             Azure azure = Azure

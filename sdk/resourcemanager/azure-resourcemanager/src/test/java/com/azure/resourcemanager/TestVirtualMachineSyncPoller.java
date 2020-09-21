@@ -131,7 +131,7 @@ public class TestVirtualMachineSyncPoller extends TestTemplate<VirtualMachine, V
                 .withRootUsername("testuser")
                 .withRootPassword(ResourceManagerTestBase.password())
                 .withExistingDataDisk(disk)
-                .withSize(VirtualMachineSizeTypes.STANDARD_A9)
+                .withSize(VirtualMachineSizeTypes.STANDARD_A2)
                 .beginCreate();
         logger.info("{} {}", OffsetDateTime.now(), "polling virtual machine till complete");
         PollResponse<?> virtualMachineResponse = virtualMachineAccepted.getSyncPoller().waitForCompletion();
