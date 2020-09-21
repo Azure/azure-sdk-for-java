@@ -18,7 +18,7 @@ import com.microsoft.azure.management.sql.v2014_04_01.RecommendedElasticPoolMetr
  */
 public interface RecommendedElasticPools extends HasInner<RecommendedElasticPoolsInner> {
     /**
-     * Gets a recommented elastic pool.
+     * Gets a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -39,7 +39,7 @@ public interface RecommendedElasticPools extends HasInner<RecommendedElasticPool
     Observable<RecommendedElasticPool> listByServerAsync(String resourceGroupName, String serverName);
 
     /**
-     * Returns recommented elastic pool metrics.
+     * Returns recommended elastic pool metrics.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.

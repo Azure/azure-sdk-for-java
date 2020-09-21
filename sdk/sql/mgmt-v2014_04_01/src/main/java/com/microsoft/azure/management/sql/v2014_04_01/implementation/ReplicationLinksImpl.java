@@ -46,6 +46,12 @@ class ReplicationLinksImpl extends WrapperImpl<ReplicationLinksInner> implements
     }
 
     @Override
+    public Completable unlinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
+        ReplicationLinksInner client = this.inner();
+        return client.unlinkAsync(resourceGroupName, serverName, databaseName, linkId).toCompletable();
+    }
+
+    @Override
     public Observable<ReplicationLink> listByDatabaseAsync(String resourceGroupName, String serverName, String databaseName) {
         ReplicationLinksInner client = this.inner();
         return client.listByDatabaseAsync(resourceGroupName, serverName, databaseName)
@@ -67,10 +73,14 @@ class ReplicationLinksImpl extends WrapperImpl<ReplicationLinksInner> implements
     public Observable<ReplicationLink> getAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
         ReplicationLinksInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName, linkId)
-        .map(new Func1<ReplicationLinkInner, ReplicationLink>() {
+        .flatMap(new Func1<ReplicationLinkInner, Observable<ReplicationLink>>() {
             @Override
-            public ReplicationLink call(ReplicationLinkInner inner) {
-                return wrapModel(inner);
+            public Observable<ReplicationLink> call(ReplicationLinkInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ReplicationLink)wrapModel(inner));
+                }
             }
        });
     }
