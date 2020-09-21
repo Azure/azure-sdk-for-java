@@ -13,7 +13,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
-import com.azure.digitaltwins.core.implementation.converters.ContinuationTokenSerializer;
+import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
+import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
@@ -85,48 +86,6 @@ public final class DigitalTwinsAsyncClient {
      * Creates a digital twin.
      *
      * @param digitalTwinId The Id of the digital twin.
-     * @param digitalTwin The application/json string representing the digital twin to create.
-     * @return The application/json string representing the digital twin created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> createDigitalTwin(String digitalTwinId, String digitalTwin)
-    {
-        return createDigitalTwinWithResponse(digitalTwinId, digitalTwin)
-            .map(DigitalTwinsResponse::getValue);
-    }
-
-    /**
-     * Creates a digital twin.
-     *
-     * @param digitalTwinId The Id of the digital twin.
-     * @param digitalTwin The application/json string representing the digital twin to create.
-     * @return A {@link DigitalTwinsResponse} containing the application/json string representing the digital twin created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<String>> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin) {
-        return withContext(context -> createDigitalTwinWithResponse(digitalTwinId, digitalTwin, context));
-    }
-
-    Mono<DigitalTwinsResponse<String>> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin, Context context) {
-        return protocolLayer
-            .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin, context)
-            .flatMap(response -> {
-                try {
-                    String jsonResponse = mapper.writeValueAsString(response.getValue());
-                    DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                    return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
-                } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while serializing json object into string ", e);
-                    return Mono.error(e);
-                }
-            });
-    }
-
-    /**
-     * Creates a digital twin.
-     *
-     * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwin The application/json object representing the digital twin to create.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
@@ -157,51 +116,17 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin, context)
-            .map(response -> {
-                T genericResponse = mapper.convertValue(response.getValue(), clazz);
-                DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders);
-            });
-    }
-
-    /**
-     * Gets a digital twin.
-     *
-     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
-     * @return The application/json string representing the digital twin.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getDigitalTwin(String digitalTwinId)
-    {
-        return getDigitalTwinWithResponse(digitalTwinId)
-            .map(DigitalTwinsResponse::getValue);
-    }
-
-    /**
-     * Gets a digital twin.
-     *
-     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
-     * @return A {@link DigitalTwinsResponse} containing the application/json string representing the digital twin.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<String>> getDigitalTwinWithResponse(String digitalTwinId)
-    {
-        return withContext(context -> getDigitalTwinWithResponse(digitalTwinId, context));
-    }
-
-    Mono<DigitalTwinsResponse<String>> getDigitalTwinWithResponse(String digitalTwinId, Context context) {
-        return protocolLayer
-            .getDigitalTwins()
-            .getByIdWithResponseAsync(digitalTwinId, context)
             .flatMap(response -> {
+                T genericResponse = null;
                 try {
-                    String jsonResponse = mapper.writeValueAsString(response.getValue());
-                    DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                    return Mono.justOrEmpty(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
+                    genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while serializing json object into string: ", e);
+                    logger.error("JsonProcessingException occurred while deserializing the response: ", e);
                     return Mono.error(e);
                 }
+
+                DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
 
@@ -238,10 +163,16 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer
             .getDigitalTwins()
             .getByIdWithResponseAsync(digitalTwinId, context)
-            .map(response -> {
-                T genericResponse = mapper.convertValue(response.getValue(), clazz);
+            .flatMap(response -> {
+                T genericResponse = null;
+                try {
+                    genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
+                } catch (JsonProcessingException e) {
+                    logger.error("JsonProcessingException occurred while deserializing the digital twin get response: ", e);
+                    return Mono.error(e);
+                }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders);
+                return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
 
@@ -327,49 +258,6 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
-     * @param relationship The application/json string representing the relationship to be created.
-     * @return The application/json string representing the relationship created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> createRelationship(String digitalTwinId, String relationshipId, String relationship) {
-        return createRelationshipWithResponse(digitalTwinId, relationshipId, relationship)
-            .map(DigitalTwinsResponse::getValue);
-    }
-
-    /**
-     * Creates a relationship on a digital twin.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipId The Id of the relationship to be created.
-     * @param relationship The application/json string representing the relationship to be created.
-     * @return The {@link DigitalTwinsResponse} containing the application/json string representing the relationship created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<String>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship) {
-        return withContext(context -> createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, context));
-    }
-
-    Mono<DigitalTwinsResponse<String>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship, Context context) {
-        return protocolLayer
-            .getDigitalTwins()
-            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, context)
-            .flatMap(response -> {
-                try {
-                    String jsonResponse = mapper.writeValueAsString(response.getValue());
-                    DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                    return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
-                } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while creating a relationship: ", e);
-                    return Mono.error(e);
-                }
-            });
-    }
-
-    /**
-     * Creates a relationship on a digital twin.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipId The Id of the relationship to be created.
      * @param relationship The relationship to be created.
      * @param clazz The model class of the relationship.
      * @param <T> The generic type of the relationship.
@@ -400,51 +288,16 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer
             .getDigitalTwins()
             .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, context)
-            .map(response -> {
-                T genericResponse = mapper.convertValue(response.getValue(), clazz);
-                DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders);
-            });
-    }
-
-    /**
-     * Gets a relationship on a digital twin.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipId The Id of the relationship to retrieve.
-     * @return The application/json string representing the relationship.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getRelationship(String digitalTwinId, String relationshipId) {
-        return getRelationshipWithResponse(digitalTwinId, relationshipId)
-            .map(DigitalTwinsResponse::getValue);
-    }
-
-    /**
-     * Gets a relationship on a digital twin.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipId The Id of the relationship to retrieve.
-     * @return A {@link DigitalTwinsResponse} containing the application/json string representing the relationship.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<String>> getRelationshipWithResponse(String digitalTwinId, String relationshipId) {
-        return withContext(context -> getRelationshipWithResponse(digitalTwinId, relationshipId, context));
-    }
-
-    Mono<DigitalTwinsResponse<String>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Context context) {
-        return protocolLayer
-            .getDigitalTwins()
-            .getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId, context)
             .flatMap(response -> {
+                T genericResponse = null;
                 try {
-                    String jsonResponse = mapper.writeValueAsString(response.getValue());
-                    DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                    return Mono.justOrEmpty(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
+                    genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while retrieving a relationship: ", e);
+                    logger.error("JsonProcessingException occurred while deserializing the create relationship response: ", e);
                     return Mono.error(e);
                 }
+                DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
 
@@ -481,10 +334,16 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer
             .getDigitalTwins()
             .getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId, context)
-            .map(response -> {
-                T genericResponse = mapper.convertValue(response.getValue(), clazz);
+            .flatMap(response -> {
+                T genericResponse = null;
+                try {
+                    genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
+                } catch (JsonProcessingException e) {
+                    logger.error("JsonProcessingException occurred while deserializing the get relationship response: ", e);
+                    return Mono.error(e);
+                }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders);
+                return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
 
@@ -568,91 +427,6 @@ public final class DigitalTwinsAsyncClient {
      * Gets all the relationships on a digital twin by iterating through a collection.
      *
      * @param digitalTwinId The Id of the source digital twin.
-     * @return A {@link PagedFlux} of application/json relationships belonging to the specified digital twin and the http response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRelationships(String digitalTwinId) {
-        return listRelationships(digitalTwinId, (String) null);
-    }
-
-    /**
-     * Gets all the relationships on a digital twin filtered by the relationship name, by iterating through a collection.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipName The name of a relationship to filter to.
-     * @return A {@link PagedFlux} of application/json relationships belonging to the specified digital twin and the http response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRelationships(String digitalTwinId, String relationshipName) {
-        return new PagedFlux<>(
-            () -> withContext(context -> listRelationshipsFirstPage(digitalTwinId, relationshipName, context)),
-            nextLink -> withContext(context -> listRelationshipsNextPage(nextLink, context)));
-    }
-
-    PagedFlux<String> listRelationships(String digitalTwinId, String relationshipName, Context context) {
-        return new PagedFlux<>(
-            () -> listRelationshipsFirstPage(digitalTwinId, relationshipName, context),
-            nextLink -> listRelationshipsNextPage(nextLink, context));
-    }
-
-    Mono<PagedResponse<String>> listRelationshipsFirstPage(String digitalTwinId, String relationshipName, Context context) {
-        return protocolLayer
-            .getDigitalTwins()
-            .listRelationshipsSinglePageAsync(digitalTwinId, relationshipName, context)
-            .map(
-                objectPagedResponse -> {
-                    List<String> stringList = objectPagedResponse.getValue().stream()
-                        .map(object -> {
-                            try {
-                                return mapper.writeValueAsString(object);
-                            } catch (JsonProcessingException e) {
-                                logger.error("JsonProcessingException occurred while retrieving relationships: ", e);
-                                throw new RuntimeException("JsonProcessingException occurred while retrieving relationships", e);
-                            }
-                        })
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
-                    return new PagedResponseBase<>(
-                        objectPagedResponse.getRequest(),
-                        objectPagedResponse.getStatusCode(),
-                        objectPagedResponse.getHeaders(),
-                        stringList,
-                        ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
-                        ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
-                }
-            );
-    }
-
-    Mono<PagedResponse<String>> listRelationshipsNextPage(String nextLink, Context context) {
-        return protocolLayer
-            .getDigitalTwins()
-            .listRelationshipsNextSinglePageAsync(nextLink, context)
-            .map(objectPagedResponse -> {
-                List<String> stringList = objectPagedResponse.getValue().stream()
-                    .map(object -> {
-                        try {
-                            return mapper.writeValueAsString(object);
-                        } catch (JsonProcessingException e) {
-                            logger.error("JsonProcessingException occurred while retrieving relationships: ", e);
-                            throw new RuntimeException("JsonProcessingException occurred while retrieving relationships", e);
-                        }
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-                return new PagedResponseBase<>(
-                    objectPagedResponse.getRequest(),
-                    objectPagedResponse.getStatusCode(),
-                    objectPagedResponse.getHeaders(),
-                    stringList,
-                    ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
-                    ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
-            });
-    }
-
-    /**
-     * Gets all the relationships on a digital twin by iterating through a collection.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
      * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link BasicRelationship}.
      * @param <T> The generic type to convert the relationship to.
      * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
@@ -685,7 +459,14 @@ public final class DigitalTwinsAsyncClient {
             .map(
                 objectPagedResponse -> {
                     List<T> list = objectPagedResponse.getValue().stream()
-                        .map(object -> mapper.convertValue(object, clazz))
+                        .map(object -> {
+                            try {
+                                return DeserializationHelpers.castObject(mapper, object, clazz);
+                            } catch (JsonProcessingException e) {
+                                logger.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
+                                throw new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e);
+                            }
+                        })
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                     return new PagedResponseBase<>(
@@ -693,7 +474,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         list,
-                        ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
+                        SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -705,7 +486,14 @@ public final class DigitalTwinsAsyncClient {
             .listRelationshipsNextSinglePageAsync(nextLink, context)
             .map(objectPagedResponse -> {
                 List<T> stringList = objectPagedResponse.getValue().stream()
-                    .map(object -> mapper.convertValue(object, clazz))
+                    .map(object -> {
+                        try {
+                            return DeserializationHelpers.castObject(mapper, object, clazz);
+                        } catch (JsonProcessingException e) {
+                            logger.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e);
+                        }
+                    })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
                 return new PagedResponseBase<>(
@@ -713,7 +501,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
+                    SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -750,11 +538,11 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A List of created models. Each {@link ModelData} instance in this list
+     * @return A List of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<ModelData>> createModels(List<String> models) {
+    public Mono<Iterable<DigitalTwinsModelData>> createModels(Iterable<String> models) {
         return createModelsWithResponse(models)
             .map(Response::getValue);
     }
@@ -762,15 +550,15 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A {@link Response} containing the list of created models. Each {@link ModelData} instance in this list
+     * @return A {@link Response} containing the list of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<List<ModelData>>> createModelsWithResponse(List<String> models) {
+    public Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> models) {
         return withContext(context -> createModelsWithResponse(models, context));
     }
 
-    Mono<Response<List<ModelData>>> createModelsWithResponse(List<String> models, Context context) {
+    Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> models, Context context) {
         List<Object> modelsPayload = new ArrayList<>();
         for (String model: models) {
             try {
@@ -784,7 +572,7 @@ public final class DigitalTwinsAsyncClient {
 
         return protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload, context)
             .map(listResponse -> {
-                List<ModelData> convertedList = listResponse.getValue().stream()
+                Iterable<DigitalTwinsModelData> convertedList = listResponse.getValue().stream()
                     .map(ModelDataConverter::map)
                     .collect(Collectors.toList());
 
@@ -795,10 +583,10 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Gets a model, including the model metadata and the model definition.
      * @param modelId The Id of the model.
-     * @return A {@link ModelData} instance that contains the model and its metadata.
+     * @return A {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ModelData> getModel(String modelId) {
+    public Mono<DigitalTwinsModelData> getModel(String modelId) {
         return getModelWithResponse(modelId)
             .map(Response::getValue);
     }
@@ -806,14 +594,14 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Gets a model, including the model metadata and the model definition.
      * @param modelId The Id of the model.
-     * @return A {@link Response} containing a {@link ModelData} instance that contains the model and its metadata.
+     * @return A {@link Response} containing a {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ModelData>> getModelWithResponse(String modelId) {
+    public Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId) {
         return withContext(context -> getModelWithResponse(modelId, context));
     }
 
-    Mono<Response<ModelData>> getModelWithResponse(String modelId, Context context){
+    Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId, Context context){
         return protocolLayer
             .getDigitalTwinModels()
             .getByIdWithResponseAsync(modelId, includeModelDefinitionOnGet, context)
@@ -829,38 +617,38 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * List all of the models in this digital twins instance.
-     * @return A {@link PagedFlux} of {@link ModelData} that enumerates all the models.
+     * @return A {@link PagedFlux} of {@link DigitalTwinsModelData} that enumerates all the models.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> listModels() {
+    public PagedFlux<DigitalTwinsModelData> listModels() {
         return listModels(new ListModelOptions());
     }
 
     /**
      * List the models in this digital twins instance based on some options.
      * @param listModelOptions The options to follow when listing the models.
-     * @return A {@link PagedFlux} containing the retrieved {@link ModelData} instances.
+     * @return A {@link PagedFlux} containing the retrieved {@link DigitalTwinsModelData} instances.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> listModels(ListModelOptions listModelOptions) {
+    public PagedFlux<DigitalTwinsModelData> listModels(ListModelOptions listModelOptions) {
         return new PagedFlux<>(
             () -> withContext(context -> listModelsSinglePageAsync(listModelOptions, context)),
             nextLink -> withContext(context -> listModelsNextSinglePageAsync(nextLink, context)));
     }
 
-    PagedFlux<ModelData> listModels(Context context){
+    PagedFlux<DigitalTwinsModelData> listModels(Context context){
         return new PagedFlux<>(
             () -> listModelsSinglePageAsync(new ListModelOptions(), context),
             nextLink -> listModelsNextSinglePageAsync(nextLink, context));
     }
 
-    PagedFlux<ModelData> listModels(ListModelOptions listModelOptions, Context context){
+    PagedFlux<DigitalTwinsModelData> listModels(ListModelOptions listModelOptions, Context context){
         return new PagedFlux<>(
             () -> listModelsSinglePageAsync(listModelOptions, context),
             nextLink -> listModelsNextSinglePageAsync(nextLink, context));
     }
 
-    Mono<PagedResponse<ModelData>> listModelsSinglePageAsync(ListModelOptions listModelOptions, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ListModelOptions listModelOptions, Context context){
         return protocolLayer.getDigitalTwinModels().listSinglePageAsync(
             listModelOptions.getDependenciesFor(),
             listModelOptions.getIncludeModelDefinition(),
@@ -868,7 +656,7 @@ public final class DigitalTwinsAsyncClient {
             context)
             .map(
                 objectPagedResponse -> {
-                    List<ModelData> convertedList = objectPagedResponse.getValue().stream()
+                    List<DigitalTwinsModelData> convertedList = objectPagedResponse.getValue().stream()
                         .map(ModelDataConverter::map)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
@@ -883,10 +671,10 @@ public final class DigitalTwinsAsyncClient {
             );
     }
 
-    Mono<PagedResponse<ModelData>> listModelsNextSinglePageAsync(String nextLink, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsNextSinglePageAsync(String nextLink, Context context){
         return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(nextLink, context)
             .map(objectPagedResponse -> {
-            List<ModelData> convertedList = objectPagedResponse.getValue().stream()
+            List<DigitalTwinsModelData> convertedList = objectPagedResponse.getValue().stream()
                 .map(ModelDataConverter::map)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
@@ -895,7 +683,7 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(),
                 objectPagedResponse.getHeaders(),
                 convertedList,
-                ContinuationTokenSerializer.serialize(objectPagedResponse.getContinuationToken()),
+                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
                 ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
         });
     }
@@ -962,43 +750,6 @@ public final class DigitalTwinsAsyncClient {
      * Get a component of a digital twin.
      * @param digitalTwinId The Id of the digital twin to get the component from.
      * @param componentPath The path of the component on the digital twin to retrieve.
-     * @return The application/json string representing the component of the digital twin.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getComponent(String digitalTwinId, String componentPath) {
-        return getComponentWithResponse(digitalTwinId, componentPath)
-            .map(DigitalTwinsResponse::getValue);
-    }
-
-    /**
-     * Get a component of a digital twin.
-     * @param digitalTwinId The Id of the digital twin to get the component from.
-     * @param componentPath The path of the component on the digital twin to retrieve.
-     * @return A {@link DigitalTwinsResponse} containing the application/json string representing the component of the digital twin.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<String>> getComponentWithResponse(String digitalTwinId, String componentPath) {
-        return withContext(context -> getComponentWithResponse(digitalTwinId, componentPath, context));
-    }
-
-    Mono<DigitalTwinsResponse<String>> getComponentWithResponse(String digitalTwinId, String componentPath, Context context) {
-        return protocolLayer.getDigitalTwins().getComponentWithResponseAsync(digitalTwinId, componentPath, context)
-            .flatMap(response -> {
-                try {
-                    String jsonResponse = mapper.writeValueAsString(response.getValue());
-                    DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
-                    return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
-                } catch (JsonProcessingException e) {
-                    logger.error("Failed to deserialize the returned component object into a string", e);
-                    return Mono.error(e);
-                }
-            });
-    }
-
-    /**
-     * Get a component of a digital twin.
-     * @param digitalTwinId The Id of the digital twin to get the component from.
-     * @param componentPath The path of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.
      * @param <T> The generic type to deserialize application/json the component into.
      * @return The deserialized application/json object representing the component of the digital twin.
@@ -1025,7 +776,13 @@ public final class DigitalTwinsAsyncClient {
     <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentPath, Class<T> clazz, Context context) {
         return protocolLayer.getDigitalTwins().getComponentWithResponseAsync(digitalTwinId, componentPath, context)
             .flatMap(response -> {
-                T genericResponse = mapper.convertValue(response.getValue(), clazz);
+                T genericResponse = null;
+                try {
+                    genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
+                } catch (JsonProcessingException e) {
+                    logger.error("JsonProcessingException occurred while deserializing the get component response: ", e);
+                    return Mono.error(e);
+                }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return Mono.just(new DigitalTwinsResponse<T>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
@@ -1076,24 +833,6 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Query digital twins.
      * @param query The query string, in SQL-like syntax.
-     * @return A {@link PagedFlux} of application/json strings.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> query(String query) {
-        return new PagedFlux<>(
-            () -> withContext(context -> queryFirstPage(query, context)),
-            nextLink -> withContext(context -> queryNextPage(nextLink, context)));
-    }
-
-    PagedFlux<String> query(String query, Context context) {
-        return new PagedFlux<>(
-            () -> queryFirstPage(query, context),
-            nextLink -> queryNextPage(nextLink, context));
-    }
-
-    /**
-     * Query digital twins.
-     * @param query The query string, in SQL-like syntax.
      * @param clazz The model class to deserialize each queried digital twin into. Since the queried twins may not all
      *              have the same model class, it is recommended to use a common denominator class such as {@link BasicDigitalTwin}.
      * @param <T> The generic type to deserialize each queried digital twin into.
@@ -1112,31 +851,6 @@ public final class DigitalTwinsAsyncClient {
             nextLink -> queryNextPage(nextLink, clazz, context));
     }
 
-    Mono<PagedResponse<String>> queryFirstPage(String query, Context context) {
-        QuerySpecification querySpecification = new QuerySpecification().setQuery(query);
-
-        return protocolLayer
-            .getQueries()
-            .queryTwinsWithResponseAsync(querySpecification, context)
-            .map(objectPagedResponse -> new PagedResponseBase<>(
-                objectPagedResponse.getRequest(),
-                objectPagedResponse.getStatusCode(),
-                objectPagedResponse.getHeaders(),
-                objectPagedResponse.getValue().getItems().stream()
-                    .map(object -> {
-                        try {
-                            return mapper.writeValueAsString(object);
-                        } catch (JsonProcessingException e) {
-                            logger.error("JsonProcessingException occurred while retrieving query result items: ", e);
-                            throw new RuntimeException("JsonProcessingException occurred while retrieving query result items", e);
-                        }
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList()),
-                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
-                objectPagedResponse.getDeserializedHeaders()));
-    }
-
     <T> Mono<PagedResponse<T>> queryFirstPage(String query, Class<T> clazz, Context context) {
         QuerySpecification querySpecification = new QuerySpecification().setQuery(query);
 
@@ -1148,35 +862,17 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(),
                 objectPagedResponse.getHeaders(),
                 objectPagedResponse.getValue().getItems().stream()
-                    .map(object -> mapper.convertValue(object, clazz))
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList()),
-                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
-                objectPagedResponse.getDeserializedHeaders()));
-    }
-
-    Mono<PagedResponse<String>> queryNextPage(String nextLink, Context context) {
-        QuerySpecification querySpecification = new QuerySpecification().setContinuationToken(nextLink);
-
-        return protocolLayer
-            .getQueries()
-            .queryTwinsWithResponseAsync(querySpecification, context)
-            .map(objectPagedResponse -> new PagedResponseBase<>(
-                objectPagedResponse.getRequest(),
-                objectPagedResponse.getStatusCode(),
-                objectPagedResponse.getHeaders(),
-                objectPagedResponse.getValue().getItems().stream()
                     .map(object -> {
                         try {
-                            return mapper.writeValueAsString(object);
+                            return DeserializationHelpers.castObject(mapper, object, clazz);
                         } catch (JsonProcessingException e) {
-                            logger.error("JsonProcessingException occurred while retrieving query result items: ", e);
-                            throw new RuntimeException("JsonProcessingException occurred while retrieving query result items", e);
+                            logger.error("JsonProcessingException occurred while deserializing the query response: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e);
                         }
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
+                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
@@ -1191,10 +887,17 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(),
                 objectPagedResponse.getHeaders(),
                 objectPagedResponse.getValue().getItems().stream()
-                    .map(object -> mapper.convertValue(object, clazz))
+                    .map(object -> {
+                        try {
+                            return DeserializationHelpers.castObject(mapper, object, clazz);
+                        } catch (JsonProcessingException e) {
+                            logger.error("JsonProcessingException occurred while deserializing the query response: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e);
+                        }
+                    })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()),
-                ContinuationTokenSerializer.serialize(objectPagedResponse.getValue().getContinuationToken()),
+                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
 
