@@ -284,29 +284,16 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after required policies.
+     * Adds a policy to the set of existing policies.
      *
      * @param policy The policy for service requests.
      * @return The updated ConfigurationClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
     public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        return addPolicy(policy, HttpPipelinePosition.PER_RETRY);
-    }
-
-    /**
-     * Adds a policy in the provided position to the set of existing policies.
-     *
-     * @param policy The policy for service requests.
-     * @param position The position where the policy should be placed, if null {@link HttpPipelinePosition#PER_RETRY} is
-     * used.
-     * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code policy} is null.
-     */
-    public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy, HttpPipelinePosition position) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
-        if (position == HttpPipelinePosition.PER_CALL) {
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
             perCallPolicies.add(policy);
         } else {
             perRetryPolicies.add(policy);
