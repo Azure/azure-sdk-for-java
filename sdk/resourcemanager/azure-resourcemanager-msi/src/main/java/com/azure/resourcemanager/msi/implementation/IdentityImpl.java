@@ -5,7 +5,7 @@ package com.azure.resourcemanager.msi.implementation;
 
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.MSIManager;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.msi.fluent.inner.IdentityInner;

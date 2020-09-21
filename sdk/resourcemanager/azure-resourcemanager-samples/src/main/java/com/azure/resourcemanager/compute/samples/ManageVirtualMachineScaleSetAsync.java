@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.StorageAccountTypes;
@@ -44,14 +44,14 @@ public final class ManageVirtualMachineScaleSetAsync {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final Azure azure) {
+    public static boolean runSample(final AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String rgName = azure.sdkContext().randomResourceName("rgCOVS", 15);
-        final String vnetName = azure.sdkContext().randomResourceName("vnet", 24);
-        final String loadBalancerName1 = azure.sdkContext().randomResourceName("intlb" + "-", 18);
+        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOVS", 15);
+        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 24);
+        final String loadBalancerName1 = azureResourceManager.sdkContext().randomResourceName("intlb" + "-", 18);
         final String publicIpName = "pip-" + loadBalancerName1;
         final String frontendName = loadBalancerName1 + "-FE1";
         final String backendPoolName1 = loadBalancerName1 + "-BAP1";
@@ -63,7 +63,7 @@ public final class ManageVirtualMachineScaleSetAsync {
         final String httpsLoadBalancingRule = "httpsRule";
         final String natPool50XXto22 = "natPool50XXto22";
         final String natPool60XXto23 = "natPool60XXto23";
-        final String vmssName =  azure.sdkContext().randomResourceName("vmss", 24);
+        final String vmssName =  azureResourceManager.sdkContext().randomResourceName("vmss", 24);
 
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
@@ -82,12 +82,12 @@ public final class ManageVirtualMachineScaleSetAsync {
 
             final List<Indexable> createdResources = new ArrayList<>();
 
-            azure.resourceGroups().define(rgName)
+            azureResourceManager.resourceGroups().define(rgName)
                 .withRegion(region)
                 .create();
 
             Flux.merge(
-                    azure.networks().define(vnetName)
+                    azureResourceManager.networks().define(vnetName)
                             .withRegion(region)
                             .withExistingResourceGroup(rgName)
                             .withAddressSpace("172.16.0.0/16")
@@ -96,7 +96,7 @@ public final class ManageVirtualMachineScaleSetAsync {
                                 .attach()
                             .createAsync()
                             .cast(Indexable.class),
-                    azure.publicIpAddresses().define(publicIpName)
+                    azureResourceManager.publicIpAddresses().define(publicIpName)
                             .withRegion(region)
                             .withExistingResourceGroup(rgName)
                             .withLeafDomainLabel(publicIpName)
@@ -132,7 +132,7 @@ public final class ManageVirtualMachineScaleSetAsync {
 
                                     return Flux.merge(
                                         Flux.just(indexable),
-                                        azure.loadBalancers().define(loadBalancerName1)
+                                        azureResourceManager.loadBalancers().define(loadBalancerName1)
                                             .withRegion(region)
                                             .withExistingResourceGroup(rgName)
                                             // Add two rules that uses above backend and probe
@@ -221,7 +221,7 @@ public final class ManageVirtualMachineScaleSetAsync {
 
             final Date t1 = new Date();
 
-            VirtualMachineScaleSet virtualMachineScaleSet = azure.virtualMachineScaleSets()
+            VirtualMachineScaleSet virtualMachineScaleSet = azureResourceManager.virtualMachineScaleSets()
                     .define(vmssName)
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)
@@ -321,7 +321,7 @@ public final class ManageVirtualMachineScaleSetAsync {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -347,16 +347,16 @@ public final class ManageVirtualMachineScaleSetAsync {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
