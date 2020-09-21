@@ -69,9 +69,9 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
  * 	Behaviors/Expectations:
  * 	    - Bounds:
  * 	        - max requests in-flight per channelPool: MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT (NOT A GUARANTEE)
- * 	        - AvailableChannels.size() + AcquiredChannels.size() <= MAX_CHANNELS_PER_ENDPOINT
+ * 	        - AvailableChannels.size() + AcquiredChannels.size() + (connections in connecting state, i.e., connecting.get()) <= MAX_CHANNELS_PER_ENDPOINT
  * 	        - PendingAcquisition queue default-size: Max(10_000, MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT)
- * 	        - ChannelPool executor event-loop task queue length: MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT + newInFlightAcquisitions (not yet in pendingAcquisitionQueue)
+ * 	        - ChannelPool executor included event-loop task: MAX_CHANNELS_PER_ENDPOINT * MAX_REQUESTS_ENDPOINT + newInFlightAcquisitions (not yet in pendingAcquisitionQueue)
  * 	            - newInFlightAcquisitions: is expected to very very short. Hard-bound to ADMINSSON_CONTROL (upstream in RntbdServiceEndpoint)
  * 	    - NewChannel vs ReUseChannel:
  * 	        - NewChannels are serially created (reasonable current state, possible future change, upstream please DON'T TAKE any dependency)
