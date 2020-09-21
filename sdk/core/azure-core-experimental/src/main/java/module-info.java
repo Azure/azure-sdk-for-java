@@ -4,6 +4,7 @@
 module com.azure.core.experimental {
     requires transitive com.azure.core;
 
+    exports com.azure.core.experimental.jsonpatch;
     exports com.azure.core.experimental.serializer;
     exports com.azure.core.experimental.spatial;
 

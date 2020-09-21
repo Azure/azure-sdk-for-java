@@ -981,18 +981,6 @@ public interface ApplicationGateway
              *
              * @param name the name of the certificate to remove
              * @return the next stage of the update
-             * @deprecated Use {@link #withoutSslCertificate} instead
-             */
-            @Deprecated
-            Update withoutCertificate(String name);
-
-            /**
-             * Removes the specified SSL certificate from the application gateway.
-             *
-             * <p>Note that removing a certificate referenced by other settings may break the application gateway.
-             *
-             * @param name the name of the certificate to remove
-             * @return the next stage of the update
              */
             Update withoutSslCertificate(String name);
         }

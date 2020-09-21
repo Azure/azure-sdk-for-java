@@ -53,7 +53,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 hvacModelId,
                 modelsList -> StepVerifier
                     .create(asyncClient.createModels(modelsList))
-                    .assertNext(createResponseList -> logger.info("Created {} models successfully", createResponseList.size()))
+                    .assertNext(createResponseList -> logger.info("Created models successfully"))
                     .verifyComplete());
 
             // Create floor twin
@@ -143,7 +143,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 .verifyComplete();
 
             // Create a relation which already exists - should return status code 409 (Conflict).
-            StepVerifier.create(asyncClient.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload))
+            StepVerifier.create(asyncClient.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_PRECON_FAILED));
 
             // Update relationships
@@ -236,7 +236,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             // GET a relationship which doesn't exist - should return status code 404 (Not Found).
             StepVerifier
-                .create(asyncClient.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID))
+                .create(asyncClient.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, String.class))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_NOT_FOUND));
 
         } finally {

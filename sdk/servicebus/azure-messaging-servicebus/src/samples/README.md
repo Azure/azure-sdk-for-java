@@ -55,26 +55,26 @@ See [Next steps][sdk_readme_next_steps].
 ## Contributing
 
 If you would like to become an active contributor to this project please refer to our [Contribution
-Guidelines](../../../../../CONTRIBUTING.md) for more information.
+Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md) for more information.
 
 <!-- LINKS -->
-[sdk_readme_key_concepts]: ../../README.md#key-concepts
-[sdk_readme_getting_started]: ../../README.md#getting-started
-[sdk_readme_troubleshooting]: ../../README.md#troubleshooting
-[sdk_readme_next_steps]: ../../README.md#next-steps
+[sdk_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/README.md#key-concepts
+[sdk_readme_getting_started]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/README.md#getting-started
+[sdk_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/README.md#troubleshooting
+[sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/README.md#next-steps
 
-[PeekMessageAsyncSample]: ./java/com/azure/messaging/servicebus/PeekMessageAsyncSample.java
-[ReceiveMessageAndSettleAsyncSample]: ./java/com/azure/messaging/servicebus/ReceiveMessageAndSettleAsyncSample.java
-[ReceiveMessageAsyncSample]: ./java/com/azure/messaging/servicebus/ReceiveMessageAsyncSample.java
-[ReceiveMessageAzureIdentityAsyncSample]: ./java/com/azure/messaging/servicebus/ReceiveMessageAzureIdentityAsyncSample.java
-[ReceiveMessageSyncSample]: ./java/com/azure/messaging/servicebus/ReceiveMessageSyncSample.java
-[ReceiveMultipleSessionsAsyncSample]: ./java/com/azure/messaging/servicebus/ReceiveMultipleSessionsAsyncSample.java
-[ReceiveNamedSessionAsyncSample]: ./java/com/azure/messaging/servicebus/ReceiveNamedSessionAsyncSample.java
-[ReceiveSingleSessionAsyncSample]: ./java/com/azure/messaging/servicebus/ReceiveSingleSessionAsyncSample.java
-[SendAndReceiveSessionMessageSample]: ./java/com/azure/messaging/servicebus/SendAndReceiveSessionMessageSample.java
-[SendMessageAsyncSample]: ./java/com/azure/messaging/servicebus/SendMessageAsyncSample.java
-[SendMessageBatchSyncSample]: ./java/com/azure/messaging/servicebus/SendMessageBatchSyncSample.java
-[SendMessageWithAzureIdentityAsyncSample]: ./java/com/azure/messaging/servicebus/SendMessageWithAzureIdentityAsyncSample.java
-[SendScheduledMessageAndCancelAsyncSample]: ./java/com/azure/messaging/servicebus/SendScheduledMessageAndCancelAsyncSample.java
+[PeekMessageAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/PeekMessageAsyncSample.java
+[ReceiveMessageAndSettleAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAndSettleAsyncSample.java
+[ReceiveMessageAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAsyncSample.java
+[ReceiveMessageAzureIdentityAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAzureIdentityAsyncSample.java
+[ReceiveMessageSyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageSyncSample.java
+[ReceiveMultipleSessionsAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMultipleSessionsAsyncSample.java
+[ReceiveNamedSessionAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveNamedSessionAsyncSample.java
+[ReceiveSingleSessionAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveSingleSessionAsyncSample.java
+[SendAndReceiveSessionMessageSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendAndReceiveSessionMessageSample.java
+[SendMessageAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendMessageAsyncSample.java
+[SendMessageBatchSyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendMessageBatchSyncSample.java
+[SendMessageWithAzureIdentityAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendMessageWithAzureIdentityAsyncSample.java
+[SendScheduledMessageAndCancelAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendScheduledMessageAndCancelAsyncSample.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-messaging-servicebus%2Fsrc%2Fsamples%2FREADME.png)
