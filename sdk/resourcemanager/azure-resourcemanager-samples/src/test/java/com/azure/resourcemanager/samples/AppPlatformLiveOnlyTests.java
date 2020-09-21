@@ -22,6 +22,6 @@ public class AppPlatformLiveOnlyTests extends SamplesTestBase {
             return;
         }
 
-        Assertions.assertTrue(ManageSpringCloud.runSample(azure, clientIdFromFile()));
+        Assertions.assertTrue(ManageSpringCloud.runSample(azureResourceManager, clientIdFromFile()));
     }
 }

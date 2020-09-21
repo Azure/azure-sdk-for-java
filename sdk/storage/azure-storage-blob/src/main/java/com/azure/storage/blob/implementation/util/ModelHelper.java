@@ -5,6 +5,7 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
@@ -83,6 +84,39 @@ public class ModelHelper {
     }
 
     /**
+     * Fills in default values for a ParallelTransferOptions where no value has been set. This will construct a new
+     * object for safety.
+     *
+     * @param other The options to fill in defaults.
+     * @return An object with defaults filled in for null values in the original.
+     */
+    public static com.azure.storage.common.ParallelTransferOptions populateAndApplyDefaults(
+        com.azure.storage.common.ParallelTransferOptions other) {
+        other = other == null ? new com.azure.storage.common.ParallelTransferOptions() : other;
+
+        Long blockSize = other.getBlockSizeLong();
+        if (blockSize == null) {
+            blockSize = (long) BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+        }
+
+        Integer maxConcurrency = other.getMaxConcurrency();
+        if (maxConcurrency == null) {
+            maxConcurrency = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
+        }
+
+        Long maxSingleUploadSize = other.getMaxSingleUploadSizeLong();
+        if (maxSingleUploadSize == null) {
+            maxSingleUploadSize = BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE;
+        }
+
+        return new com.azure.storage.common.ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setMaxConcurrency(maxConcurrency)
+            .setProgressReceiver(other.getProgressReceiver())
+            .setMaxSingleUploadSizeLong(maxSingleUploadSize);
+    }
+
+    /**
      * Transforms a blob type into a common type.
      * @param blobOptions {@link ParallelTransferOptions}
      * @return {@link com.azure.storage.common.ParallelTransferOptions}
@@ -101,6 +135,17 @@ public class ModelHelper {
             .setMaxConcurrency(maxConcurrency)
             .setProgressReceiver(wrappedReceiver)
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
+    }
+
+
+    /**
+     * Transforms a common type into a blob type.
+     * @param commonProgressReceiver {@link com.azure.storage.common.ProgressReceiver}
+     * @return {@link ProgressReceiver}
+     */
+    public static ProgressReceiver wrapCommonReceiver(
+        com.azure.storage.common.ProgressReceiver commonProgressReceiver) {
+        return commonProgressReceiver == null ? null : commonProgressReceiver::reportProgress;
     }
 
     /**

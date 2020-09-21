@@ -18,6 +18,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -64,6 +65,7 @@ public class ServiceBusAdministrationClientBuilder {
     private HttpPipelinePolicy retryPolicy;
     private TokenCredential tokenCredential;
     private ServiceBusServiceVersion serviceVersion;
+    private ClientOptions clientOptions;
 
     /**
      * Constructs a builder with the default parameters.
@@ -82,7 +84,8 @@ public class ServiceBusAdministrationClientBuilder {
      * @return A {@link ServiceBusAdministrationAsyncClient} with the options set in the builder.
      * @throws NullPointerException if {@code endpoint} has not been set. This is automatically set when {@link
      *     #connectionString(String) connectionString} is set. Or, explicitly through {@link #endpoint(String)}.
-     * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
+     * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set or
+     * applicationId if set in both {@code httpLogOptions} and {@code clientOptions} and not same.
      */
     public ServiceBusAdministrationAsyncClient buildAsyncClient() {
         if (endpoint == null) {
@@ -256,6 +259,23 @@ public class ServiceBusAdministrationClientBuilder {
     }
 
     /**
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure {@link UserAgentPolicy}
+     * for telemetry/monitoring purpose.
+     * <p>
+     * More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     *
+     * @param clientOptions to be set on the client.
+     *
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
+     * @see ClientOptions
+     */
+    public ServiceBusAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link
@@ -306,6 +326,7 @@ public class ServiceBusAdministrationClientBuilder {
      * Builds a new HTTP pipeline if none is set, or returns a user-provided one.
      *
      * @return A new HTTP pipeline or the user-defined one from {@link #pipeline(HttpPipeline)}.
+     * @throws IllegalStateException if applicationId is not same in httpLogOptions and clientOptions.
      */
     private HttpPipeline createPipeline() {
         if (pipeline != null) {
@@ -321,7 +342,26 @@ public class ServiceBusAdministrationClientBuilder {
         final String clientName = properties.getOrDefault("name", "UnknownName");
         final String clientVersion = properties.getOrDefault("version", "UnknownVersion");
 
-        httpPolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+        // Find applicationId to use
+        String logApplicationId = null;
+        if (httpLogOptions != null) {
+            logApplicationId = httpLogOptions.getApplicationId();
+        }
+
+        String clientApplicationId = null;
+        if (clientOptions != null && clientOptions.getApplicationId() != null) {
+            clientApplicationId = clientOptions.getApplicationId();
+        }
+
+        if (logApplicationId != null && clientApplicationId != null
+            && !logApplicationId.equalsIgnoreCase(clientApplicationId)) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "'httpLogOptions.getApplicationId() and clientOptions.getApplicationId()' cannot be different."));
+        }
+        // We prioritize application id set in ClientOptions.
+        final String applicationId = clientApplicationId != null ? clientApplicationId : logApplicationId;
+
+        httpPolicies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
             buildConfiguration));
         httpPolicies.add(new ServiceBusTokenCredentialHttpPolicy(tokenCredential));
         httpPolicies.add(new AddHeadersFromContextPolicy());
@@ -336,6 +376,7 @@ public class ServiceBusAdministrationClientBuilder {
 
         return new HttpPipelineBuilder()
             .policies(httpPolicies.toArray(new HttpPipelinePolicy[0]))
+
             .httpClient(httpClient)
             .build();
     }

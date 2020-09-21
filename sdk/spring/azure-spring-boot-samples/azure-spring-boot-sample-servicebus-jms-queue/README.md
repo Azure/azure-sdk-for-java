@@ -22,7 +22,7 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 ## Examples                                           
 ### Config the sample
 
-1. Update [application.properties](src/main/resources/application.properties)
+1. Update [application.properties](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue/src/main/resources/application.properties)
 
     ```properties
     # Fill service bus namespace connection string copied from portal
@@ -33,7 +33,7 @@ Running this sample will be charged by Azure. You can check the usage and bill a
     spring.jms.servicebus.idle-timeout=[idle-timeout]
     ```
 
-2. Specify your queue name. Update `QUEUE_NAME` in [QueueSendController](src/main/java/com/microsoft/azure/jms/queue/QueueSendController.java) and [QueueReceiveController](src/main/java/com/microsoft/azure/jms/queue/QueueReceiveController.java).
+2. Specify your queue name. Update `QUEUE_NAME` in [QueueSendController](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue/src/main/java/com/azure/jms/queue/QueueSendController.java) and [QueueReceiveController](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue/src/main/java/com/azure/jms/queue/QueueReceiveController.java).
                                                                                           
 ### How to run
 

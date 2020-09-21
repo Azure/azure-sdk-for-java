@@ -44,6 +44,7 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobRange;
@@ -953,25 +954,56 @@ public class BlobAsyncClientBase {
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
         try {
+            final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
+                ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
             return withContext(context ->
-                downloadToFileWithResponse(filePath, range, parallelTransferOptions, options,
-                    requestConditions, rangeGetContentMd5, openOptions, context));
+                downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
+                        .setParallelTransferOptions(finalParallelTransferOptions)
+                        .setDownloadRetryOptions(options).setRequestConditions(requestConditions)
+                        .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
-        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
-        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
-        Context context) {
-        BlobRange finalRange = range == null ? new BlobRange(0) : range;
-        final ParallelTransferOptions finalParallelTransferOptions =
-            ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
-        BlobRequestConditions finalConditions = requestConditions == null
-            ? new BlobRequestConditions() : requestConditions;
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param options {@link BlobDownloadToFileOptions}
+     * @return A reactive response containing the blob properties and metadata.
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    public Mono<Response<BlobProperties>> downloadToFileWithResponse(BlobDownloadToFileOptions options) {
+        try {
+            return withContext(context -> downloadToFileWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<BlobProperties>> downloadToFileWithResponse(BlobDownloadToFileOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+
+        BlobRange finalRange = options.getRange() == null ? new BlobRange(0) : options.getRange();
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
+            ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+        BlobRequestConditions finalConditions = options.getRequestConditions() == null
+            ? new BlobRequestConditions() : options.getRequestConditions();
 
         // Default behavior is not to overwrite
+        Set<OpenOption> openOptions = options.getOpenOptions();
         if (openOptions == null) {
             openOptions = new HashSet<>();
             openOptions.add(StandardOpenOption.CREATE_NEW);
@@ -979,11 +1011,11 @@ public class BlobAsyncClientBase {
             openOptions.add(StandardOpenOption.READ);
         }
 
-        AsynchronousFileChannel channel = downloadToFileResourceSupplier(filePath, openOptions);
+        AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
-                downloadRetryOptions, finalConditions, rangeGetContentMd5, context))
-            .doFinally(signalType -> this.downloadToFileCleanup(channel, filePath, signalType));
+                options.getDownloadRetryOptions(), finalConditions, options.isRangeGetContentMd5(), context))
+            .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
     private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath, Set<OpenOption> openOptions) {
@@ -995,8 +1027,9 @@ public class BlobAsyncClientBase {
     }
 
     private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange finalRange,
-        ParallelTransferOptions finalParallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
-        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Context context) {
+        com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
+        DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
+        Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         Lock progressLock = new ReentrantLock();
         AtomicLong totalProgress = new AtomicLong(0);
@@ -1033,7 +1066,7 @@ public class BlobAsyncClientBase {
     }
 
     private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousFileChannel file,
-        long chunkNum, ParallelTransferOptions finalParallelTransferOptions, Lock progressLock,
+        long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions, Lock progressLock,
         AtomicLong totalProgress) {
 
         // Extract the body.
@@ -1041,7 +1074,8 @@ public class BlobAsyncClientBase {
 
         // Report progress as necessary.
         data = ProgressReporter.addParallelProgressReporting(data,
-            finalParallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
+            ModelHelper.wrapCommonReceiver(finalParallelTransferOptions.getProgressReceiver()), progressLock,
+            totalProgress);
 
         // Write to the file.
         return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());

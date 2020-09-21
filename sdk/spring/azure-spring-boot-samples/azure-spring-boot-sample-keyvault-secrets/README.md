@@ -1,7 +1,7 @@
 # Sample for Azure Key Vault Secrets Spring Boot Starter client library for Java
 
 ## Key concepts
-This sample illustrates how to use [Azure Key Vault Secrets Spring Boot Starter](../../azure-spring-boot-starter-keyvault-secrets/README.md).
+This sample illustrates how to use [Azure Key Vault Secrets Spring Boot Starter](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-secrets/README.md).
 
 In this sample, a secret named `spring-datasource-url` is stored into an Azure Key Vault, and a sample Spring application will use its value as a configuration property value.
 
@@ -36,7 +36,7 @@ az keyvault set-policy --name <your_keyvault_name>   \
 ```
 > **IMPORTANT** 
 >
-> The property `azure.keyvault.secret.keys` specifies which exact secrets the application will load from Key Vault. If this property is not set, which means the application will have to **list** all the secrets in Key Vault, you have to grant both **LIST** and **GET** secret permission to the service principal. Otherwise, only **GET** secret permission is needed.  
+> The property `azure.keyvault.secret-keys` specifies which exact secrets the application will load from Key Vault. If this property is not set, which means the application will have to **list** all the secrets in Key Vault, you have to grant both **LIST** and **GET** secret permission to the service principal. Otherwise, only **GET** secret permission is needed.  
 
 Save the displayed Key Vault uri for later use.
 
@@ -64,7 +64,7 @@ azure.keyvault.client-key=put-your-azure-client-key-here
 azure.keyvault.tenant-id=put-your-azure-tenant-id-here
 
 # Uncomment following property if you want to specify the secrets to load from Key Vault
-# azure.keyvault.secret.keys=yourSecretPropertyName1,yourSecretPropertyName2
+# azure.keyvault.secret-keys=yourSecretPropertyName1,yourSecretPropertyName2
 ```
 
 

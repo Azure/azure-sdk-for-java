@@ -30,7 +30,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
-    private Azure azure;
+    private AzureResourceManager azureResourceManager;
 
     @Override
     protected HttpPipeline buildHttpPipeline(
@@ -55,9 +55,9 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        Azure.Authenticated azureAuthed =
-            Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
-        azure = azureAuthed.withDefaultSubscription();
+        AzureResourceManager.Authenticated azureAuthed =
+            AzureResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        azureResourceManager = azureAuthed.withDefaultSubscription();
     }
 
     @Override
@@ -71,12 +71,12 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
         String connectionName = generateRandomResourceName("vngwc", 8);
 
         TestNetworkWatcher tnw = new TestNetworkWatcher();
-        NetworkWatcher nw = tnw.createResource(azure.networkWatchers());
+        NetworkWatcher nw = tnw.createResource(azureResourceManager.networkWatchers());
         Region region = nw.region();
         String resourceGroup = nw.resourceGroupName();
 
         VirtualNetworkGateway vngw1 =
-            azure
+            azureResourceManager
                 .virtualNetworkGateways()
                 .define(gatewayName)
                 .withRegion(region)
@@ -87,7 +87,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
                 .create();
 
         VirtualNetworkGateway vngw2 =
-            azure
+            azureResourceManager
                 .virtualNetworkGateways()
                 .define(gatewayName + "2")
                 .withRegion(region)
@@ -107,7 +107,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
 
         // Create storage account to store troubleshooting information
         StorageAccount storageAccount =
-            azure
+            azureResourceManager
                 .storageAccounts()
                 .define("sa" + generateRandomResourceName("", 8))
                 .withRegion(region)
@@ -142,7 +142,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
                 .execute();
         Assertions.assertEquals("Healthy", troubleshooting.code());
 
-        azure.resourceGroups().deleteByName(resourceGroup);
+        azureResourceManager.resourceGroups().deleteByName(resourceGroup);
     }
 
     /**
@@ -152,8 +152,8 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testVirtualNetworkGateways() throws Exception {
-        new TestVirtualNetworkGateway().new Basic(azure.virtualNetworkGateways().manager())
-            .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+        new TestVirtualNetworkGateway().new Basic(azureResourceManager.virtualNetworkGateways().manager())
+            .runTest(azureResourceManager.virtualNetworkGateways(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -164,8 +164,8 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testVirtualNetworkGatewaySiteToSite() throws Exception {
-        new TestVirtualNetworkGateway().new SiteToSite(azure.virtualNetworkGateways().manager())
-            .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+        new TestVirtualNetworkGateway().new SiteToSite(azureResourceManager.virtualNetworkGateways().manager())
+            .runTest(azureResourceManager.virtualNetworkGateways(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -176,8 +176,8 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testVirtualNetworkGatewayVNetToVNet() throws Exception {
-        new TestVirtualNetworkGateway().new VNetToVNet(azure.virtualNetworkGateways().manager())
-            .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+        new TestVirtualNetworkGateway().new VNetToVNet(azureResourceManager.virtualNetworkGateways().manager())
+            .runTest(azureResourceManager.virtualNetworkGateways(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -187,7 +187,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testVirtualNetworkGatewayPointToSite() throws Exception {
-        new TestVirtualNetworkGateway().new PointToSite(azure.virtualNetworkGateways().manager())
-            .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+        new TestVirtualNetworkGateway().new PointToSite(azureResourceManager.virtualNetworkGateways().manager())
+            .runTest(azureResourceManager.virtualNetworkGateways(), azureResourceManager.resourceGroups());
     }
 }
