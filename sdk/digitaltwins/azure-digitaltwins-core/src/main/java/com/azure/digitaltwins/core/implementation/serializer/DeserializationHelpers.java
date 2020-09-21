@@ -17,7 +17,8 @@ public class DeserializationHelpers {
      * In case of a String, we need to write the value of the payload as a String
      * In case of any other type that the user decides to deserialize the payload, we will use mapper.convertValue to perform the conversion.
      *
-     * If the customJsonSerializer is null, then no custom serializer will be used for this deserialization. Otherwise, the customJsonSerializer will be used.
+     * If the customJsonSerializer is not null, then it will be used to deserialize the provided payload into the provided class. Otherwise
+     * this function will use the provided mapper which will never be null.
      */
     @SuppressWarnings("unchecked")
     public static <T> T deserializeObject(ObjectMapper mapper, Object payload, Class<T> clazz, JsonSerializer customJsonSerializer) throws JsonProcessingException {
