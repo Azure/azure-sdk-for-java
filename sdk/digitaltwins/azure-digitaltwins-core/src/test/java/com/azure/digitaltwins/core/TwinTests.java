@@ -9,7 +9,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import com.azure.core.http.HttpClient;
 import org.opentest4j.AssertionFailedError;
-import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -42,8 +41,8 @@ public class TwinTests extends TwinTestBase{
 
         try {
             // Create models to test the Twin lifecycle.
-            List<ModelData> createdList = client.createModels(modelsList);
-            logger.info("Created {} models successfully", createdList.size());
+            Iterable<DigitalTwinsModelData> createdList = client.createModels(modelsList);
+            logger.info("Created models successfully");
 
             BasicDigitalTwin createdTwin = client.createDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
 
@@ -51,7 +50,7 @@ public class TwinTests extends TwinTestBase{
             assertEquals(createdTwin.getId(), roomTwinId);
 
             // Get Twin.
-            DigitalTwinsResponse<String> getTwinResponse = client.getDigitalTwinWithResponse(roomTwinId, Context.NONE);
+            DigitalTwinsResponse<String> getTwinResponse = client.getDigitalTwinWithResponse(roomTwinId, String.class, Context.NONE);
             assertEquals(getTwinResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
 
             // Update Twin.
@@ -102,6 +101,6 @@ public class TwinTests extends TwinTestBase{
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         String twinId = testResourceNamer.randomUuid();
 
-        assertRestException(() -> client.getDigitalTwin(twinId), HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> client.getDigitalTwin(twinId, String.class), HttpURLConnection.HTTP_NOT_FOUND);
     }
 }

@@ -31,10 +31,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
 import com.azure.resourcemanager.eventhubs.fluent.inner.ArmDisasterRecoveryInner;
-import com.azure.resourcemanager.eventhubs.fluent.inner.ArmDisasterRecoveryListResultInner;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
-import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleListResultInner;
 import com.azure.resourcemanager.eventhubs.fluent.inner.CheckNameAvailabilityResultInner;
+import com.azure.resourcemanager.eventhubs.models.ArmDisasterRecoveryListResult;
+import com.azure.resourcemanager.eventhubs.models.AuthorizationRuleListResult;
 import com.azure.resourcemanager.eventhubs.models.CheckNameAvailabilityParameter;
 import reactor.core.publisher.Mono;
 
@@ -53,7 +53,7 @@ public final class DisasterRecoveryConfigsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DisasterRecoveryConfigsClient(EventHubManagementClient client) {
+    DisasterRecoveryConfigsClient(EventHubManagementClient client) {
         this.service =
             RestProxy
                 .create(DisasterRecoveryConfigsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -73,7 +73,7 @@ public final class DisasterRecoveryConfigsClient {
                 + "/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationRuleListResultInner>> listAuthorizationRules(
+        Mono<Response<AuthorizationRuleListResult>> listAuthorizationRules(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -136,7 +136,7 @@ public final class DisasterRecoveryConfigsClient {
                 + "/{namespaceName}/disasterRecoveryConfigs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ArmDisasterRecoveryListResultInner>> list(
+        Mono<Response<ArmDisasterRecoveryListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -224,14 +224,14 @@ public final class DisasterRecoveryConfigsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationRuleListResultInner>> listAuthorizationRulesNext(
+        Mono<Response<AuthorizationRuleListResult>> listAuthorizationRulesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ArmDisasterRecoveryListResultInner>> listNext(
+        Mono<Response<ArmDisasterRecoveryListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

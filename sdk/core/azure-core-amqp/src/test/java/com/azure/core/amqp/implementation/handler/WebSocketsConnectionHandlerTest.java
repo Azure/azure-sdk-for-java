@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.ClientConstants;
+import com.azure.core.util.ClientOptions;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -33,6 +34,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class WebSocketsConnectionHandlerTest {
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String CONNECTION_ID = "some-random-id";
     private static final String HOSTNAME = "hostname-random";
     private WebSocketsConnectionHandler handler;
@@ -46,7 +48,7 @@ public class WebSocketsConnectionHandlerTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        handler = new WebSocketsConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
+        handler = new WebSocketsConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, CLIENT_OPTIONS);
     }
 
     @AfterEach

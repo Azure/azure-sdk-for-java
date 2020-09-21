@@ -18,6 +18,7 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -72,6 +73,7 @@ import static reactor.core.publisher.Mono.just;
  * Unit tests for {@link ServiceBusSenderAsyncClient}.
  */
 class ServiceBusSenderAsyncClientTest {
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String NAMESPACE = "my-namespace";
     private static final String ENTITY_NAME = "my-servicebus-entity";
     private static final String LINK_NAME = "my-link-name";
@@ -134,7 +136,7 @@ class ServiceBusSenderAsyncClientTest {
 
         connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);

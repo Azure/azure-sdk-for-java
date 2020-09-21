@@ -163,7 +163,6 @@ class ClientSideRequestStatistics {
 
         AddressResolutionStatistics resolutionStatistics = new AddressResolutionStatistics();
         resolutionStatistics.startTimeUTC = Instant.now();
-        //  Very far in the future
         resolutionStatistics.endTimeUTC = null;
         resolutionStatistics.targetEndpoint = targetEndpoint == null ? "<NULL>" : targetEndpoint.toString();
 

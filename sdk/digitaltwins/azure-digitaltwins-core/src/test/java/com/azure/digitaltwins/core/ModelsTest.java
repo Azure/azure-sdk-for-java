@@ -3,7 +3,7 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -31,19 +31,19 @@ public class ModelsTest extends ModelsTestBase {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
         // Create some models to test the lifecycle of
-        final List<ModelData> createdModels = new ArrayList<>();
+        final List<DigitalTwinsModelData> createdModels = new ArrayList<>();
         createModelsRunner(client, (modelsList) -> {
-            List<ModelData> createdModelsResponseList = client.createModels(modelsList);
+            Iterable<DigitalTwinsModelData> createdModelsResponseList = client.createModels(modelsList);
             createdModelsResponseList.forEach((modelData) -> {
                 createdModels.add(modelData);
-                logger.info("Created {} models successfully", createdModelsResponseList.size());
+                logger.info("Created models successfully");
             });
         });
 
-        for (final ModelData expected : createdModels) {
+        for (final DigitalTwinsModelData expected : createdModels) {
             // Get the model
             getModelRunner(expected.getId(), (modelId) -> {
-                ModelData actual = client.getModel(modelId);
+                DigitalTwinsModelData actual = client.getModel(modelId);
                 assertModelDataAreEqual(expected, actual, false);
                 logger.info("Model {} matched expectations", modelId);
             });
@@ -56,7 +56,7 @@ public class ModelsTest extends ModelsTestBase {
 
             // Get the model again to see if it was decommissioned as expected
             getModelRunner(expected.getId(), (modelId) -> {
-                ModelData actual = client.getModel(modelId);
+                DigitalTwinsModelData actual = client.getModel(modelId);
                 assertTrue(actual.isDecommissioned());
                 logger.info("Model {} was decommissioned successfully", modelId);
             });
@@ -89,7 +89,7 @@ public class ModelsTest extends ModelsTestBase {
         final String wardModelPayload = TestAssetsHelper.getWardModelPayload(wardModelId);
         modelsToCreate.add(wardModelPayload);
 
-        List<ModelData> createdModels = client.createModels(modelsToCreate);
+        Iterable<DigitalTwinsModelData> createdModels = client.createModels(modelsToCreate);
         createdModels.forEach(Assertions::assertNotNull);
 
         assertRestException(

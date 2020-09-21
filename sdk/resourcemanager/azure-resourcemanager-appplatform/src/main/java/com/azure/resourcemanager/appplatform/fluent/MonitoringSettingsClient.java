@@ -48,7 +48,7 @@ public final class MonitoringSettingsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public MonitoringSettingsClient(AppPlatformManagementClient client) {
+    MonitoringSettingsClient(AppPlatformManagementClient client) {
         this.service =
             RestProxy.create(MonitoringSettingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

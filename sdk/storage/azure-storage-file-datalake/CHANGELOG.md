@@ -1,6 +1,8 @@
 # Release History
 
 ## 12.3.0-beta.1 (Unreleased)
+- Fixed a bug where users could not download more than 5000MB of data in one shot in the readToFile API.
+- Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
 - Added support to upload data to a file from an InputStream.
 - Added support to specify permissions and umask when uploading a file. 
 - Fixed a bug where an empty string would be sent with the x-ms-properties header when metadata was null or empty.

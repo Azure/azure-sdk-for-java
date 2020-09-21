@@ -54,7 +54,7 @@ public class SchemaRegistryClientBuilder {
     private final String clientName;
     private final String clientVersion;
 
-    private String schemaRegistryUrl;
+    private String endpoint;
     private String host;
     private HttpClient httpClient;
     private Integer maxSchemaMapSize;
@@ -88,25 +88,25 @@ public class SchemaRegistryClientBuilder {
      * Sets the service endpoint for the Azure Schema Registry instance.
      *
      * @return The updated {@link SchemaRegistryClientBuilder} object.
-     * @param schemaRegistryUrl The URL of the Azure Schema Registry instance
-     * @throws NullPointerException if {@code schemaRegistryUrl} is null
-     * @throws IllegalArgumentException if {@code schemaRegistryUrl} cannot be parsed into a valid URL
+     * @param endpoint The URL of the Azure Schema Registry instance
+     * @throws NullPointerException if {@code endpoint} is null
+     * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL
      */
-    public SchemaRegistryClientBuilder endpoint(String schemaRegistryUrl) {
-        Objects.requireNonNull(schemaRegistryUrl, "'schemaRegistryUrl' cannot be null.");
+    public SchemaRegistryClientBuilder endpoint(String endpoint) {
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
         try {
-            URL url = new URL(schemaRegistryUrl);
+            URL url = new URL(endpoint);
             this.host = url.getHost();
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsWarning(
-                new IllegalArgumentException("'schemaRegistryUrl' must be a valid URL.", ex));
+                new IllegalArgumentException("'endpoint' must be a valid URL.", ex));
         }
 
-        if (schemaRegistryUrl.endsWith("/")) {
-            this.schemaRegistryUrl = schemaRegistryUrl.substring(0, schemaRegistryUrl.length() - 1);
+        if (endpoint.endsWith("/")) {
+            this.endpoint = endpoint.substring(0, endpoint.length() - 1);
         } else {
-            this.schemaRegistryUrl = schemaRegistryUrl;
+            this.endpoint = endpoint;
         }
 
         return this;
@@ -157,7 +157,6 @@ public class SchemaRegistryClientBuilder {
         this.httpPipeline = httpPipeline;
         return this;
     }
-
 
     /**
      * Sets the {@link TokenCredential} to use when authenticating HTTP requests for this
@@ -214,20 +213,15 @@ public class SchemaRegistryClientBuilder {
      * Creates a {@link SchemaRegistryAsyncClient} based on options set in the builder.
      * Every time {@code buildClient()} is called a new instance of {@link SchemaRegistryAsyncClient} is created.
      *
-     * If {@link #pipeline(HttpPipeline) pipeline} is set, then all HTTP pipeline related settings are ignored
-     * endpoint} are when creating the {@link SchemaRegistryAsyncClient client}.
+     * If {@link #pipeline(HttpPipeline) pipeline} is set, then all HTTP pipeline related settings are ignored.
      *
      * @return A {@link SchemaRegistryAsyncClient} with the options set from the builder.
-     * @throws NullPointerException if parameters are incorrectly set.
-     * @throws IllegalArgumentException if credential is not set.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} and
+     * {@link #credential(TokenCredential) credential} are not set.
      */
     public SchemaRegistryAsyncClient buildAsyncClient() {
-        // Authentications
-        if (credential == null) {
-            // Throw exception that credential and tokenCredential cannot be null
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Missing credential information while building a client."));
-        }
+        Objects.requireNonNull(credential, "'credential' cannot be null");
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
         HttpPipeline pipeline = this.httpPipeline;
         // Create a default Pipeline if it is not given
@@ -275,6 +269,8 @@ public class SchemaRegistryClientBuilder {
      * See async builder method for options validation.
      *
      * @return {@link SchemaRegistryClient} with the options set from the builder.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} and
+     * {@link #credential(TokenCredential) credential} are not set.
      */
     public SchemaRegistryClient buildClient() {
         return new SchemaRegistryClient(this.buildAsyncClient());

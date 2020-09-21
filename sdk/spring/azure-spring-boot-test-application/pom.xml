@@ -34,9 +34,9 @@
     </dependency>
 
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
-      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
+      <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot-starter-keyvault-secrets;current} -->
     </dependency>
     <!-- util dependencies -->
     <dependency>

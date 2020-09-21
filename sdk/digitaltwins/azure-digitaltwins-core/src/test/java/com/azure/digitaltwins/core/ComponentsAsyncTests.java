@@ -44,7 +44,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
             // Create models and components to test the lifecycle.
             StepVerifier
                 .create(asyncClient.createModels(modelsList))
-                .assertNext(createResponseList -> logger.info("Created {} models successfully", createResponseList.size()))
+                .assertNext(createResponseList -> logger.info("Created models successfully"))
                 .verifyComplete();
 
             StepVerifier.create(asyncClient.createDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class))
@@ -54,7 +54,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
                 })
                 .verifyComplete();
 
-            StepVerifier.create(asyncClient.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName))
+            StepVerifier.create(asyncClient.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName, String.class))
                 .assertNext(createResponse -> {
                     assertEquals(createResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
                     logger.info("Got component successfully");

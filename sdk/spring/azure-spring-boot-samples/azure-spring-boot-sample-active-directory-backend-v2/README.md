@@ -1,7 +1,7 @@
 # OAuth 2.0 Sample for Azure AD Spring Boot Starter client library for Java
 
 ## Key concepts
-This sample illustrates how to use `azure-active-directory-spring-boot-starter` package to work with OAuth 2.0 and OpenID Connect protocols on Auzre. This sample will use Microsoft Graph API to retrieve user info. This is the key difference from [azure-spring-boot-sample-active-directory-backend](../azure-spring-boot-sample-active-directory-backend/README.md). It's reflected by these configurations in `appication.properties`:
+This sample illustrates how to use `azure-active-directory-spring-boot-starter` package to work with OAuth 2.0 and OpenID Connect protocols on Auzre. This sample will use Microsoft Graph API to retrieve user info. This is the key difference from [azure-spring-boot-sample-active-directory-backend](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend/README.md). It's reflected by these configurations in `appication.properties`:
 ```properties
 azure.activedirectory.environment=global-v2-graph
 azure.activedirectory.user-group.key=@odata.type
@@ -40,6 +40,13 @@ azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
 # It's suggested the logged in user should at least belong to one of the below groups
 # If not, the logged in user will not be able to access any authorization controller rest APIs
 azure.activedirectory.user-group.allowed-groups=group1, group2
+```
+The `azure-active-directory-spring-boot-starter` uses Azure AD Connect v2.0 endpoints by default. To use v1.0, please specify the following endpoints in properties.
+```
+spring.security.oauth2.client.provider.azure.authorization-uri=https://login.microsoftonline.com/common/oauth2/authorize
+spring.security.oauth2.client.provider.azure.token-uri=https://login.microsoftonline.com/common/oauth2/token
+spring.security.oauth2.client.provider.azure.user-info-uri=https://login.microsoftonline.com/common/openid/userinfo
+spring.security.oauth2.client.provider.azure.jwk-set-uri=https://login.microsoftonline.com/common/discovery/keys
 ```
 
 ### Run with Maven
