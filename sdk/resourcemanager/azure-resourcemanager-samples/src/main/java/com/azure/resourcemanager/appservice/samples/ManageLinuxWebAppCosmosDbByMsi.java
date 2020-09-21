@@ -4,11 +4,11 @@
 package com.azure.resourcemanager.appservice.samples;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
@@ -16,7 +16,6 @@ import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
-import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -173,7 +172,6 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
                     .exec(new BuildImageResultCallback()).awaitCompletion();
 
             dockerClient.pushImageCmd(privateRepoUrl)
-                    .withAuthConfig(dockerClient.authConfig())
                     .exec(new PushImageResultCallback()).awaitSuccess();
 
             //============================================================
