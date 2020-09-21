@@ -151,7 +151,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         return this;
     }
 
-    public ApplicationGatewayBackendHttpConfigurationImpl withProtocol(ApplicationGatewayProtocol protocol) {
+    private ApplicationGatewayBackendHttpConfigurationImpl withProtocol(ApplicationGatewayProtocol protocol) {
         this.inner().withProtocol(protocol);
         return this;
     }
