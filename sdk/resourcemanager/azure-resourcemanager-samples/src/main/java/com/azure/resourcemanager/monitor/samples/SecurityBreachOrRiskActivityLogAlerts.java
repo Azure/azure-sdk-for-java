@@ -12,7 +12,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.monitor.models.ActionGroup;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
 import com.azure.resourcemanager.monitor.models.EventData;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;

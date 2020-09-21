@@ -15,7 +15,7 @@ import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCachePremium;
 import com.azure.resourcemanager.redis.models.RedisKeyType;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.core.management.profile.AzureProfile;

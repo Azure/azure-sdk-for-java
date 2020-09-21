@@ -16,7 +16,7 @@ import com.azure.resourcemanager.containerregistry.models.WebhookCreateParameter
 import com.azure.resourcemanager.containerregistry.models.WebhookEventInfo;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
 import com.azure.resourcemanager.containerregistry.models.WebhookUpdateParameters;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.arm.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 

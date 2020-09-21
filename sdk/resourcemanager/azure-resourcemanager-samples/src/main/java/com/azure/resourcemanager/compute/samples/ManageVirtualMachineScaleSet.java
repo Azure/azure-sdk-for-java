@@ -22,7 +22,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 

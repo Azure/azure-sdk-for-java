@@ -15,7 +15,7 @@ import com.azure.resourcemanager.appservice.models.PythonVersion;
 import com.azure.resourcemanager.appservice.models.SupportedTlsVersions;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import java.util.Map;
 
 import com.azure.core.management.profile.AzureProfile;

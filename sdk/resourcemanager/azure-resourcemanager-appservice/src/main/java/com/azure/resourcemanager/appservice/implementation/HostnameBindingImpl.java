@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.HostnameBinding;
 import com.azure.resourcemanager.appservice.models.HostnameType;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import reactor.core.publisher.Mono;

@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.RouteNextHopType;
 import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.List;

@@ -17,7 +17,7 @@ import com.azure.resourcemanager.monitor.models.MetricStatisticType;
 import com.azure.resourcemanager.monitor.models.ScaleDirection;
 import com.azure.resourcemanager.monitor.models.ScaleType;
 import com.azure.resourcemanager.monitor.models.TimeAggregationType;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
