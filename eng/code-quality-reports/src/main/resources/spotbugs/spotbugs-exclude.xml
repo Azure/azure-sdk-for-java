@@ -2174,6 +2174,15 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- Exclude BC_UNCONFIRMED_CAST_OF_RETURN_VALUE as false positive -->
+  <Match>
+    <Or>
+      <Class name="com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup"/>
+      <Class name="com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup$ProxyTaskGroupWrapper"/>
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
