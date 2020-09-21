@@ -198,7 +198,7 @@ azure.activedirectory.environment=cn-v2-graph
 
 Please refer to [azure-spring-boot-sample-active-directory-backend-v2](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2/README.md) to see a sample configured to use the Microsoft Graph API.
 
-### Using Microsoft identity platform endpoints
+### Using Azure Active Directory endpoints
 This starter uses v2 version endpoints to do authorization and authentication by default. To use v1.0, please specify the following endpoints in properties.
 ```
 spring.security.oauth2.client.provider.azure.authorization-uri=https://login.microsoftonline.com/common/oauth2/authorize
