@@ -10,7 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
-
 import java.time.Duration;
 
 /** Initializes a new instance of the WebSiteManagementClient type. */

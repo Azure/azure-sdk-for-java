@@ -8,7 +8,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
-import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -16,7 +15,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsLis
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point for key vaults management API. */
@@ -28,8 +26,7 @@ public interface Vaults
         SupportsGettingByResourceGroup<Vault>,
         SupportsGettingById<Vault>,
         SupportsDeletingByResourceGroup,
-        HasManager<KeyVaultManager>,
-        HasInner<VaultsClient> {
+        HasManager<KeyVaultManager> {
 
     /**
      * Gets information about the deleted vaults in a subscription.

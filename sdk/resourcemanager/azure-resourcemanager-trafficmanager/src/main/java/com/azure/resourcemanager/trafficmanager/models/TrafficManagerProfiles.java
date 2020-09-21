@@ -13,9 +13,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
-import com.azure.resourcemanager.trafficmanager.fluent.ProfilesClient;
 import reactor.core.publisher.Mono;
 
 /** Entry point to traffic manager profile management API in Azure. */
@@ -29,8 +27,7 @@ public interface TrafficManagerProfiles
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<TrafficManagerProfile>,
         SupportsBatchDeletion,
-        HasManager<TrafficManager>,
-        HasInner<ProfilesClient> {
+        HasManager<TrafficManager> {
 
     /**
      * Checks that the DNS name is valid for traffic manager profile and is not in use.

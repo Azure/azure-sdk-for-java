@@ -20,9 +20,15 @@ public final class ListSkillsetsResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchIndexerSkillset> skillsets;
 
-    /** Creates an instance of ListSkillsetsResult class. */
+    /**
+     * Creates an instance of ListSkillsetsResult class.
+     *
+     * @param skillsets the skillsets value to set.
+     */
     @JsonCreator
-    public ListSkillsetsResult(@JsonProperty(value = "value") List<SearchIndexerSkillset> skillsets) {
+    public ListSkillsetsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchIndexerSkillset> skillsets) {
         this.skillsets = skillsets;
     }
 
@@ -33,16 +39,5 @@ public final class ListSkillsetsResult {
      */
     public List<SearchIndexerSkillset> getSkillsets() {
         return this.skillsets;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getSkillsets() != null) {
-            getSkillsets().forEach(e -> e.validate());
-        }
     }
 }

@@ -7,8 +7,8 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.IndexingParametersConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /** The IndexingParameters model. */
 @Fluent
@@ -41,7 +41,7 @@ public final class IndexingParameters {
      * the name of a specific property. Each value must be of a primitive type.
      */
     @JsonProperty(value = "configuration")
-    private Map<String, Object> configuration;
+    private IndexingParametersConfiguration configuration;
 
     /**
      * Get the batchSize property: The number of items that are read from the data source and indexed as a single batch
@@ -115,7 +115,7 @@ public final class IndexingParameters {
      *
      * @return the configuration value.
      */
-    public Map<String, Object> getConfiguration() {
+    public IndexingParametersConfiguration getConfiguration() {
         return this.configuration;
     }
 
@@ -126,15 +126,8 @@ public final class IndexingParameters {
      * @param configuration the configuration value to set.
      * @return the IndexingParameters object itself.
      */
-    public IndexingParameters setConfiguration(Map<String, Object> configuration) {
+    public IndexingParameters setConfiguration(IndexingParametersConfiguration configuration) {
         this.configuration = configuration;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

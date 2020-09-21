@@ -15,8 +15,51 @@ public class SamplesConstants {
 
     public static final String TEMPORARY_TWIN_PREFIX = "sampleTwin";
 
-    public static final String COMPONENT_ID = "COMPONENT_ID";
-    public static final String MODEL_ID = "MODEL_ID";
+    public static final String COMPONENT_ID = "COMPONENT_ID_TO_BE_REPLACED";
+    public static final String MODEL_ID = "MODEL_ID_TO_BE_REPLACED";
+    public static final String MODEL_DISPLAY_NAME = "MODEL_DISPLAY_NAME_TO_BE_REPLACED";
+    public static final String RELATIONSHIP_NAME = "RELATIONSHIP_NAME_TO_BE_REPLACED";
+    public static final String RELATIONSHIP_TARGET_MODEL_ID = "RELATIONSHIP_TARGET_MODEL_TO_BE_REPLACED";
+
+    public static final String TEMPORARY_MODEL_WITH_RELATIONSHIP_PAYLOAD =
+        "{" +
+            "\"@id\":\"" + MODEL_ID + "\"," +
+            "\"@type\": \"Interface\"," +
+            "\"@context\": \"dtmi:dtdl:context;2\"," +
+            "\"displayName\": \"" + MODEL_DISPLAY_NAME + "\"," +
+            "\"contents\": [" +
+                "{" +
+                    "\"@type\": \"Relationship\"," +
+                    "\"name\": \"" + RELATIONSHIP_NAME + "\"," +
+                    "\"target\": \"" + RELATIONSHIP_TARGET_MODEL_ID  + "\"," +
+                    "\"properties\": [" +
+                    "{" +
+                        "\"@type\": \"Property\"," +
+                        "\"name\": \"Prop1\"," +
+                        "\"schema\": \"string\"" +
+                    "}," +
+                    "{" +
+                        "\"@type\": \"Property\"," +
+                        "\"name\": \"Prop2\"," +
+                        "\"schema\": \"integer\"" +
+                    "}]" +
+                "}" +
+            "]" +
+        "}";
+
+    public static final String TEMPORARY_TWIN_PAYLOAD =
+        "{" +
+            "\"$metadata\" {" +
+                "\"$model\": \""+ MODEL_ID + "\"" +
+            "}," +
+            "\"Prop1\": \"Value\"," +
+            "\"Prop2\": 987," +
+            "\"Component1\":{" +
+                "\"$metadata\":{}" +
+                "\"ComponentProp1\": \"Value\"," +
+                "\"ComponentProp2\": 123" +
+            "}" +
+        "}";
 
     public static final String TEMPORARY_COMPONENT_MODEL_PAYLOAD =
         "{" +

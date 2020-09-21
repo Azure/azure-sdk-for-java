@@ -512,8 +512,7 @@ class ApplicationGatewayImpl
         if (defaultPublicFrontend != null && defaultPublicFrontend.publicIpAddressId() == null) {
             // If public frontend requested but no PIP specified, then create a default PIP
             pipObservable =
-                Utils
-                    .<PublicIpAddress>rootResource(ensureDefaultPipDefinition().createAsync().last())
+                ensureDefaultPipDefinition().createAsync()
                     .map(
                         publicIPAddress -> {
                             defaultPublicFrontend.withExistingPublicIpAddress(publicIPAddress);
@@ -540,8 +539,7 @@ class ApplicationGatewayImpl
         } else {
             // But if default IP config does not have a subnet specified, then create a default VNet
             networkObservable =
-                Utils
-                    .<Network>rootResource(ensureDefaultNetworkDefinition().createAsync().last())
+                ensureDefaultNetworkDefinition().createAsync()
                     .map(
                         network -> {
                             // ... and assign the created VNet to the default IP config
@@ -1165,11 +1163,6 @@ class ApplicationGatewayImpl
         }
 
         return this;
-    }
-
-    @Override
-    public ApplicationGatewayImpl withoutCertificate(String name) {
-        return this.withoutSslCertificate(name);
     }
 
     @Override

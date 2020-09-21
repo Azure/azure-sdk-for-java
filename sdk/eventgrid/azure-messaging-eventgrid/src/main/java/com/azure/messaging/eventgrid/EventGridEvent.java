@@ -45,9 +45,10 @@ public final class EventGridEvent {
      * Create a new instance of the EventGridEvent, with the given required fields.
      * @param subject     the subject of the event.
      * @param eventType   the type of the event, e.g. "Contoso.Items.ItemReceived".
+     * @param data        the data associated with this event.
      * @param dataVersion the version of the data sent along with the event.
      */
-    public EventGridEvent(String subject, String eventType, String dataVersion) {
+    public EventGridEvent(String subject, String eventType, Object data, String dataVersion) {
         if (CoreUtils.isNullOrEmpty(subject)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("subject cannot be null or empty"));
         } else if (CoreUtils.isNullOrEmpty(eventType)) {
@@ -61,6 +62,7 @@ public final class EventGridEvent {
             .setId(UUID.randomUUID().toString())
             .setSubject(subject)
             .setEventType(eventType)
+            .setData(data)
             .setDataVersion(dataVersion);
     }
 
@@ -76,13 +78,13 @@ public final class EventGridEvent {
             .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
                 TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class))
             )
-            .map(event1 -> {
-                if (event1.getData() == null) {
-                    return new EventGridEvent(event1);
+            .map(event -> {
+                if (event.getData() == null) {
+                    return new EventGridEvent(event);
                 }
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                deserializer.serialize(stream, event1.getData());
-                return new EventGridEvent(event1).setData(stream.toByteArray()); // use BinaryData instead?
+                deserializer.serialize(stream, event.getData());
+                return new EventGridEvent(event.setData(stream.toByteArray())); // use BinaryData instead?
             })
             .collectList()
             .block();
@@ -219,18 +221,6 @@ public final class EventGridEvent {
 
         return dataDeserializer.deserializeAsync(new ByteArrayInputStream((byte[]) this.event.getData()),
             TypeReference.createInstance(clazz));
-    }
-
-    /**
-     * Set the data associated with this event. It will be serialized into Json format using a default Json serializer
-     * when the event is sent from the publisher.
-     * @param data the data to set.
-     *
-     * @return the event itself.
-     */
-    public EventGridEvent setData(Object data) {
-        this.event.setData(data);
-        return this;
     }
 
     /**

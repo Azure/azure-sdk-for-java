@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources.fluentcore.dag;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -122,7 +121,6 @@ public class TaskGroup
      * @param taskId the task item id
      * @return the task result, null will be returned if task has not yet been invoked
      */
-    @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST_OF_RETURN_VALUE", justification = "Incorrect spot bugs")
     public Indexable taskResult(String taskId) {
         TaskGroupEntry<TaskItem> taskGroupEntry = super.getNode(taskId);
         if (taskGroupEntry != null) {
@@ -248,6 +246,7 @@ public class TaskGroup
 
     /**
      * Invokes tasks in the group.
+     * It is not guaranteed to return indexable in topological order.
      *
      * @param context group level shared context that need be passed to invokeAsync(cxt)
      *                method of each task item in the group when it is selected for invocation.
@@ -269,6 +268,21 @@ public class TaskGroup
                 }
             }
         });
+    }
+
+    /**
+     * Invokes tasks in the group.
+     *
+     * @return the root result of task group.
+     */
+    public Mono<Indexable> invokeAsync() {
+        return invokeAsync(this.newInvocationContext())
+            .then(Mono.defer(() -> {
+                if (proxyTaskGroupWrapper.isActive()) {
+                    return Mono.just(proxyTaskGroupWrapper.taskGroup().root().taskResult());
+                }
+                return Mono.just(root().taskResult());
+            }));
     }
 
     /**
@@ -363,7 +377,6 @@ public class TaskGroup
     /**
      * @return list with current task entries in this task group
      */
-    @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST_OF_RETURN_VALUE", justification = "Incorrect spot bugs")
     private List<TaskGroupEntry<TaskItem>> entriesSnapshot() {
         List<TaskGroupEntry<TaskItem>> entries = new ArrayList<>();
         super.prepareForEnumeration();
@@ -382,8 +395,9 @@ public class TaskGroup
      *                method of each entry in the group when it is selected for execution
      * @return a {@link Flux} that emits the result of tasks in the order they finishes.
      */
+    // Due to it takes approximate 3ms in flux for returning, it cannot be guaranteed to return in topological order.
+    // One simply fix for guaranteeing the last element could be https://github.com/Azure/azure-sdk-for-java/pull/15074
     @SuppressWarnings({"unchecked", "rawtypes"})
-    @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST_OF_RETURN_VALUE", justification = "Incorrect spot bugs")
     private Flux<Indexable> invokeReadyTasksAsync(final InvocationContext context) {
         TaskGroupEntry<TaskItem> readyTaskEntry = super.getNext();
         final List<Flux<Indexable>> observables = new ArrayList<>();
@@ -744,7 +758,6 @@ public class TaskGroup
         /**
          * Initialize the proxy TaskGroup if not initialized yet.
          */
-        @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST_OF_RETURN_VALUE", justification = "Incorrect spot bugs")
         private void initProxyTaskGroup() {
             if (this.proxyTaskGroup == null) {
                 // Creates proxy TaskGroup with an instance of ProxyTaskItem as root TaskItem which delegates actions on
