@@ -1,18 +1,12 @@
 # Release History
 
-## 1.0.0-preview.1 (2020-09-22)
+## 1.0.0-beta.1 (2020-09-22)
 
 ### New features
 
 - Official public preview of azure-digitalTwins-core SDK
 - [Azure Digital Twins Public Repo](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core)
 - [Azure Digital Twins Samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core/src/samples)
-
-## 1.0.0-beta.1 (Unreleased)
-
-### New features
-
-- Initial preview of azure-digitaltwins-core SDK
 
 ### Breaking changes
 
