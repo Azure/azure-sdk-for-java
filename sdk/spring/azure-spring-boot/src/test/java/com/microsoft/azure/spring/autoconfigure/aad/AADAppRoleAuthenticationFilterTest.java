@@ -108,7 +108,7 @@ public class AADAppRoleAuthenticationFilterTest {
     }
 
     @Test
-    public void testDoFilterShouldNotRethrowJWTException()
+    public void testBadJWTExceptionReturn401()
         throws ParseException, JOSEException, BadJOSEException, ServletException, IOException {
 
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + TOKEN);
