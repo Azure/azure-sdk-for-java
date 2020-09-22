@@ -109,17 +109,6 @@ public final class ResourceManagerUtils {
     }
 
     /**
-     * @param id resource id
-     * @return resource group id for the resource id provided
-     */
-    public static String resourceGroupId(String id) {
-        final ResourceId resourceId = ResourceId.fromString(id);
-        return String.format("/subscriptions/%s/resourceGroups/%s",
-                resourceId.subscriptionId(),
-                resourceId.resourceGroupName());
-    }
-
-    /**
      * Gets the only subscription as the default one in the tenant if applicable.
      *
      * @param subscriptions the list of subscriptions
