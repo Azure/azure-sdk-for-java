@@ -29,7 +29,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.microsoft.azure.spring.autoconfigure.aad.Constants.BEARER;
+import static com.microsoft.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
 
 /**
  * A stateless authentication filter which uses app roles feature of Azure Active Directory. Since it's a stateless
@@ -55,9 +55,8 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
         String aadIssuedBearerToken = Optional.of(httpServletRequest)
                                               .map(r -> r.getHeader(HttpHeaders.AUTHORIZATION))
                                               .map(String::trim)
-                                              .filter(s -> s.startsWith(BEARER))
-                                              .map(s -> s.replace(BEARER, ""))
-                                              .map(String::trim)
+                                              .filter(s -> s.startsWith(BEARER_PREFIX))
+                                              .map(s -> s.replace(BEARER_PREFIX, ""))
                                               .filter(principalManager::isTokenIssuedByAAD)
                                               .orElse(null);
         if (aadIssuedBearerToken == null || alreadyAuthenticated()) {

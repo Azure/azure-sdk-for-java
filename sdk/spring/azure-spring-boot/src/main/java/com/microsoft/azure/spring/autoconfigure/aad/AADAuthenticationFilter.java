@@ -30,7 +30,7 @@ import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.Optional;
 
-import static com.microsoft.azure.spring.autoconfigure.aad.Constants.BEARER;
+import static com.microsoft.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
 
 /**
  * A stateful authentication filter which uses Microsoft Graph groups to authorize. Both ID token and access token are
@@ -95,9 +95,8 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
         String aadIssuedBearerToken = Optional.of(httpServletRequest)
                                               .map(r -> r.getHeader(HttpHeaders.AUTHORIZATION))
                                               .map(String::trim)
-                                              .filter(s -> s.startsWith(BEARER))
-                                              .map(s -> s.replace(BEARER, ""))
-                                              .map(String::trim)
+                                              .filter(s -> s.startsWith(BEARER_PREFIX))
+                                              .map(s -> s.replace(BEARER_PREFIX, ""))
                                               .filter(userPrincipalManager::isTokenIssuedByAAD)
                                               .orElse(null);
         if (aadIssuedBearerToken == null || alreadyAuthenticated()) {
