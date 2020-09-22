@@ -28,7 +28,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluent.inner.PolicyDefinitionInner;
+import com.azure.resourcemanager.resources.fluent.models.PolicyDefinitionInner;
 import com.azure.resourcemanager.resources.models.PolicyDefinitionListResult;
 import reactor.core.publisher.Mono;
 
@@ -261,7 +261,7 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyDefinitionInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<PolicyDefinitionInner>> createOrUpdateWithResponseAsync(
         String policyDefinitionName, PolicyDefinitionInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -371,9 +371,9 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyDefinitionInner createOrUpdate(
+    public Response<PolicyDefinitionInner> createOrUpdateWithResponse(
         String policyDefinitionName, PolicyDefinitionInner parameters, Context context) {
-        return createOrUpdateAsync(policyDefinitionName, parameters, context).block();
+        return createOrUpdateWithResponseAsync(policyDefinitionName, parameters, context).block();
     }
 
     /**
@@ -427,7 +427,7 @@ public final class PolicyDefinitionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String policyDefinitionName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String policyDefinitionName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -504,10 +504,11 @@ public final class PolicyDefinitionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String policyDefinitionName, Context context) {
-        deleteAsync(policyDefinitionName, context).block();
+    public Response<Void> deleteWithResponse(String policyDefinitionName, Context context) {
+        return deleteWithResponseAsync(policyDefinitionName, context).block();
     }
 
     /**
@@ -561,7 +562,7 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyDefinitionInner>> getWithResponseAsync(String policyDefinitionName, Context context) {
+    private Mono<Response<PolicyDefinitionInner>> getWithResponseAsync(String policyDefinitionName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -658,8 +659,8 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyDefinitionInner get(String policyDefinitionName, Context context) {
-        return getAsync(policyDefinitionName, context).block();
+    public Response<PolicyDefinitionInner> getWithResponse(String policyDefinitionName, Context context) {
+        return getWithResponseAsync(policyDefinitionName, context).block();
     }
 
     /**
@@ -703,7 +704,7 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyDefinitionInner>> getBuiltInWithResponseAsync(
+    private Mono<Response<PolicyDefinitionInner>> getBuiltInWithResponseAsync(
         String policyDefinitionName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -790,8 +791,8 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyDefinitionInner getBuiltIn(String policyDefinitionName, Context context) {
-        return getBuiltInAsync(policyDefinitionName, context).block();
+    public Response<PolicyDefinitionInner> getBuiltInWithResponse(String policyDefinitionName, Context context) {
+        return getBuiltInWithResponseAsync(policyDefinitionName, context).block();
     }
 
     /**
@@ -854,7 +855,7 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(
+    private Mono<Response<PolicyDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(
         String policyDefinitionName, String managementGroupId, PolicyDefinitionInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -968,9 +969,10 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyDefinitionInner createOrUpdateAtManagementGroup(
+    public Response<PolicyDefinitionInner> createOrUpdateAtManagementGroupWithResponse(
         String policyDefinitionName, String managementGroupId, PolicyDefinitionInner parameters, Context context) {
-        return createOrUpdateAtManagementGroupAsync(policyDefinitionName, managementGroupId, parameters, context)
+        return createOrUpdateAtManagementGroupWithResponseAsync(
+                policyDefinitionName, managementGroupId, parameters, context)
             .block();
     }
 
@@ -1026,7 +1028,7 @@ public final class PolicyDefinitionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(
+    private Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(
         String policyDefinitionName, String managementGroupId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1109,10 +1111,12 @@ public final class PolicyDefinitionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAtManagementGroup(String policyDefinitionName, String managementGroupId, Context context) {
-        deleteAtManagementGroupAsync(policyDefinitionName, managementGroupId, context).block();
+    public Response<Void> deleteAtManagementGroupWithResponse(
+        String policyDefinitionName, String managementGroupId, Context context) {
+        return deleteAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId, context).block();
     }
 
     /**
@@ -1167,7 +1171,7 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyDefinitionInner>> getAtManagementGroupWithResponseAsync(
+    private Mono<Response<PolicyDefinitionInner>> getAtManagementGroupWithResponseAsync(
         String policyDefinitionName, String managementGroupId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1269,9 +1273,9 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyDefinitionInner getAtManagementGroup(
+    public Response<PolicyDefinitionInner> getAtManagementGroupWithResponse(
         String policyDefinitionName, String managementGroupId, Context context) {
-        return getAtManagementGroupAsync(policyDefinitionName, managementGroupId, context).block();
+        return getAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId, context).block();
     }
 
     /**
@@ -1282,7 +1286,7 @@ public final class PolicyDefinitionsClient {
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PolicyDefinitionInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1326,7 +1330,7 @@ public final class PolicyDefinitionsClient {
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PolicyDefinitionInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1414,7 +1418,7 @@ public final class PolicyDefinitionsClient {
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInSinglePageAsync() {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1446,7 +1450,7 @@ public final class PolicyDefinitionsClient {
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInSinglePageAsync(Context context) {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1531,7 +1535,7 @@ public final class PolicyDefinitionsClient {
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupSinglePageAsync(String managementGroupId) {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupSinglePageAsync(String managementGroupId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1571,7 +1575,7 @@ public final class PolicyDefinitionsClient {
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupSinglePageAsync(
+    private Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupSinglePageAsync(
         String managementGroupId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1669,7 +1673,7 @@ public final class PolicyDefinitionsClient {
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PolicyDefinitionInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1698,7 +1702,7 @@ public final class PolicyDefinitionsClient {
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PolicyDefinitionInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1726,7 +1730,7 @@ public final class PolicyDefinitionsClient {
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1755,7 +1759,8 @@ public final class PolicyDefinitionsClient {
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1783,7 +1788,7 @@ public final class PolicyDefinitionsClient {
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1812,7 +1817,7 @@ public final class PolicyDefinitionsClient {
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupNextSinglePageAsync(
+    private Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupNextSinglePageAsync(
         String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));

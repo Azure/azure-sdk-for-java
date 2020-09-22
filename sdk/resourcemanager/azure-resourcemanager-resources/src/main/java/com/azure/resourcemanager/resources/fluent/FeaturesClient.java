@@ -26,7 +26,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluent.inner.FeatureResultInner;
+import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 import com.azure.resourcemanager.resources.models.FeatureOperationsListResult;
 import reactor.core.publisher.Mono;
 
@@ -145,7 +145,7 @@ public final class FeaturesClient {
      * @return all the preview features that are available through AFEC for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FeatureResultInner>> listAllSinglePageAsync() {
+    private Mono<PagedResponse<FeatureResultInner>> listAllSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -189,7 +189,7 @@ public final class FeaturesClient {
      * @return all the preview features that are available through AFEC for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FeatureResultInner>> listAllSinglePageAsync(Context context) {
+    private Mono<PagedResponse<FeatureResultInner>> listAllSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -279,7 +279,7 @@ public final class FeaturesClient {
      * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FeatureResultInner>> listSinglePageAsync(String resourceProviderNamespace) {
+    private Mono<PagedResponse<FeatureResultInner>> listSinglePageAsync(String resourceProviderNamespace) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -331,7 +331,7 @@ public final class FeaturesClient {
      * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FeatureResultInner>> listSinglePageAsync(
+    private Mono<PagedResponse<FeatureResultInner>> listSinglePageAsync(
         String resourceProviderNamespace, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -491,7 +491,7 @@ public final class FeaturesClient {
      * @return the preview feature with the specified name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<FeatureResultInner>> getWithResponseAsync(
+    private Mono<Response<FeatureResultInner>> getWithResponseAsync(
         String resourceProviderNamespace, String featureName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -599,8 +599,9 @@ public final class FeaturesClient {
      * @return the preview feature with the specified name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FeatureResultInner get(String resourceProviderNamespace, String featureName, Context context) {
-        return getAsync(resourceProviderNamespace, featureName, context).block();
+    public Response<FeatureResultInner> getWithResponse(
+        String resourceProviderNamespace, String featureName, Context context) {
+        return getWithResponseAsync(resourceProviderNamespace, featureName, context).block();
     }
 
     /**
@@ -663,7 +664,7 @@ public final class FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<FeatureResultInner>> registerWithResponseAsync(
+    private Mono<Response<FeatureResultInner>> registerWithResponseAsync(
         String resourceProviderNamespace, String featureName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -772,8 +773,9 @@ public final class FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FeatureResultInner register(String resourceProviderNamespace, String featureName, Context context) {
-        return registerAsync(resourceProviderNamespace, featureName, context).block();
+    public Response<FeatureResultInner> registerWithResponse(
+        String resourceProviderNamespace, String featureName, Context context) {
+        return registerWithResponseAsync(resourceProviderNamespace, featureName, context).block();
     }
 
     /**
@@ -836,7 +838,7 @@ public final class FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<FeatureResultInner>> unregisterWithResponseAsync(
+    private Mono<Response<FeatureResultInner>> unregisterWithResponseAsync(
         String resourceProviderNamespace, String featureName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -945,8 +947,9 @@ public final class FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FeatureResultInner unregister(String resourceProviderNamespace, String featureName, Context context) {
-        return unregisterAsync(resourceProviderNamespace, featureName, context).block();
+    public Response<FeatureResultInner> unregisterWithResponse(
+        String resourceProviderNamespace, String featureName, Context context) {
+        return unregisterWithResponseAsync(resourceProviderNamespace, featureName, context).block();
     }
 
     /**
@@ -959,7 +962,7 @@ public final class FeaturesClient {
      * @return list of previewed features.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FeatureResultInner>> listAllNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<FeatureResultInner>> listAllNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -988,7 +991,7 @@ public final class FeaturesClient {
      * @return list of previewed features.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FeatureResultInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<FeatureResultInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1016,7 +1019,7 @@ public final class FeaturesClient {
      * @return list of previewed features.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FeatureResultInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<FeatureResultInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1045,7 +1048,7 @@ public final class FeaturesClient {
      * @return list of previewed features.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FeatureResultInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<FeatureResultInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

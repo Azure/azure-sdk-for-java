@@ -17,7 +17,7 @@ import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
+import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
 import reactor.core.publisher.Mono;
 

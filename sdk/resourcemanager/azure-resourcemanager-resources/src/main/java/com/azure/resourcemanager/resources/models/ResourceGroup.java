@@ -13,7 +13,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
+import com.azure.resourcemanager.resources.fluent.models.ResourceGroupInner;
 import reactor.core.publisher.Mono;
 
 /**

@@ -25,8 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluent.inner.LocationInner;
-import com.azure.resourcemanager.resources.fluent.inner.SubscriptionInner;
+import com.azure.resourcemanager.resources.fluent.models.LocationInner;
+import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
 import com.azure.resourcemanager.resources.models.LocationListResult;
 import com.azure.resourcemanager.resources.models.SubscriptionListResult;
 import reactor.core.publisher.Mono;
@@ -105,7 +105,7 @@ public final class SubscriptionsClient {
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(String subscriptionId) {
+    private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(String subscriptionId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -139,7 +139,7 @@ public final class SubscriptionsClient {
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(String subscriptionId, Context context) {
+    private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(String subscriptionId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -257,7 +257,7 @@ public final class SubscriptionsClient {
      * @return details about a specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionInner>> getWithResponseAsync(String subscriptionId, Context context) {
+    private Mono<Response<SubscriptionInner>> getWithResponseAsync(String subscriptionId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -341,8 +341,8 @@ public final class SubscriptionsClient {
      * @return details about a specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionInner get(String subscriptionId, Context context) {
-        return getAsync(subscriptionId, context).block();
+    public Response<SubscriptionInner> getWithResponse(String subscriptionId, Context context) {
+        return getWithResponseAsync(subscriptionId, context).block();
     }
 
     /**
@@ -353,7 +353,7 @@ public final class SubscriptionsClient {
      * @return all subscriptions for a tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SubscriptionInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<SubscriptionInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -384,7 +384,7 @@ public final class SubscriptionsClient {
      * @return all subscriptions for a tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SubscriptionInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<SubscriptionInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -468,7 +468,7 @@ public final class SubscriptionsClient {
      * @return subscription list operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SubscriptionInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<SubscriptionInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -497,7 +497,7 @@ public final class SubscriptionsClient {
      * @return subscription list operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SubscriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<SubscriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

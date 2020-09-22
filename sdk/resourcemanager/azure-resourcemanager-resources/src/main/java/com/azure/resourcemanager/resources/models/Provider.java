@@ -6,7 +6,7 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
+import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
 
 import java.util.List;
 

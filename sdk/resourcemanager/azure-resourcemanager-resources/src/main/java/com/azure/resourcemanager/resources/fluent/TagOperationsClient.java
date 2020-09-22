@@ -29,9 +29,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluent.inner.TagDetailsInner;
-import com.azure.resourcemanager.resources.fluent.inner.TagValueInner;
-import com.azure.resourcemanager.resources.fluent.inner.TagsResourceInner;
+import com.azure.resourcemanager.resources.fluent.models.TagDetailsInner;
+import com.azure.resourcemanager.resources.fluent.models.TagValueInner;
+import com.azure.resourcemanager.resources.fluent.models.TagsResourceInner;
 import com.azure.resourcemanager.resources.models.Tags;
 import com.azure.resourcemanager.resources.models.TagsListResult;
 import com.azure.resourcemanager.resources.models.TagsPatchResource;
@@ -229,7 +229,7 @@ public final class TagOperationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteValueWithResponseAsync(String tagName, String tagValue, Context context) {
+    private Mono<Response<Void>> deleteValueWithResponseAsync(String tagName, String tagValue, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -317,10 +317,11 @@ public final class TagOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteValue(String tagName, String tagValue, Context context) {
-        deleteValueAsync(tagName, tagValue, context).block();
+    public Response<Void> deleteValueWithResponse(String tagName, String tagValue, Context context) {
+        return deleteValueWithResponseAsync(tagName, tagValue, context).block();
     }
 
     /**
@@ -381,7 +382,7 @@ public final class TagOperationsClient {
      * @return tag information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TagValueInner>> createOrUpdateValueWithResponseAsync(
+    private Mono<Response<TagValueInner>> createOrUpdateValueWithResponseAsync(
         String tagName, String tagValue, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -490,8 +491,8 @@ public final class TagOperationsClient {
      * @return tag information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagValueInner createOrUpdateValue(String tagName, String tagValue, Context context) {
-        return createOrUpdateValueAsync(tagName, tagValue, context).block();
+    public Response<TagValueInner> createOrUpdateValueWithResponse(String tagName, String tagValue, Context context) {
+        return createOrUpdateValueWithResponseAsync(tagName, tagValue, context).block();
     }
 
     /**
@@ -548,7 +549,7 @@ public final class TagOperationsClient {
      * @return tag details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TagDetailsInner>> createOrUpdateWithResponseAsync(String tagName, Context context) {
+    private Mono<Response<TagDetailsInner>> createOrUpdateWithResponseAsync(String tagName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -652,8 +653,8 @@ public final class TagOperationsClient {
      * @return tag details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagDetailsInner createOrUpdate(String tagName, Context context) {
-        return createOrUpdateAsync(tagName, context).block();
+    public Response<TagDetailsInner> createOrUpdateWithResponse(String tagName, Context context) {
+        return createOrUpdateWithResponseAsync(tagName, context).block();
     }
 
     /**
@@ -710,7 +711,7 @@ public final class TagOperationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String tagName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String tagName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -794,10 +795,11 @@ public final class TagOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String tagName, Context context) {
-        deleteAsync(tagName, context).block();
+    public Response<Void> deleteWithResponse(String tagName, Context context) {
+        return deleteWithResponseAsync(tagName, context).block();
     }
 
     /**
@@ -810,7 +812,7 @@ public final class TagOperationsClient {
      * @return list of subscription tags.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TagDetailsInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<TagDetailsInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -856,7 +858,7 @@ public final class TagOperationsClient {
      * @return list of subscription tags.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TagDetailsInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<TagDetailsInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -995,7 +997,7 @@ public final class TagOperationsClient {
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(
+    private Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(
         String scope, Tags properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1096,8 +1098,9 @@ public final class TagOperationsClient {
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagsResourceInner createOrUpdateAtScope(String scope, Tags properties, Context context) {
-        return createOrUpdateAtScopeAsync(scope, properties, context).block();
+    public Response<TagsResourceInner> createOrUpdateAtScopeWithResponse(
+        String scope, Tags properties, Context context) {
+        return createOrUpdateAtScopeWithResponseAsync(scope, properties, context).block();
     }
 
     /**
@@ -1156,7 +1159,7 @@ public final class TagOperationsClient {
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TagsResourceInner>> updateAtScopeWithResponseAsync(
+    private Mono<Response<TagsResourceInner>> updateAtScopeWithResponseAsync(
         String scope, TagsPatchResource parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1267,8 +1270,9 @@ public final class TagOperationsClient {
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagsResourceInner updateAtScope(String scope, TagsPatchResource parameters, Context context) {
-        return updateAtScopeAsync(scope, parameters, context).block();
+    public Response<TagsResourceInner> updateAtScopeWithResponse(
+        String scope, TagsPatchResource parameters, Context context) {
+        return updateAtScopeWithResponseAsync(scope, parameters, context).block();
     }
 
     /**
@@ -1308,7 +1312,7 @@ public final class TagOperationsClient {
      * @return the entire set of tags on a resource or subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TagsResourceInner>> getAtScopeWithResponseAsync(String scope, Context context) {
+    private Mono<Response<TagsResourceInner>> getAtScopeWithResponseAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1392,8 +1396,8 @@ public final class TagOperationsClient {
      * @return the entire set of tags on a resource or subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagsResourceInner getAtScope(String scope, Context context) {
-        return getAtScopeAsync(scope, context).block();
+    public Response<TagsResourceInner> getAtScopeWithResponse(String scope, Context context) {
+        return getAtScopeWithResponseAsync(scope, context).block();
     }
 
     /**
@@ -1434,7 +1438,7 @@ public final class TagOperationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteAtScopeWithResponseAsync(String scope, Context context) {
+    private Mono<Response<Void>> deleteAtScopeWithResponseAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1498,10 +1502,11 @@ public final class TagOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAtScope(String scope, Context context) {
-        deleteAtScopeAsync(scope, context).block();
+    public Response<Void> deleteAtScopeWithResponse(String scope, Context context) {
+        return deleteAtScopeWithResponseAsync(scope, context).block();
     }
 
     /**
@@ -1514,7 +1519,7 @@ public final class TagOperationsClient {
      * @return list of subscription tags.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TagDetailsInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<TagDetailsInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1543,7 +1548,7 @@ public final class TagOperationsClient {
      * @return list of subscription tags.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TagDetailsInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<TagDetailsInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

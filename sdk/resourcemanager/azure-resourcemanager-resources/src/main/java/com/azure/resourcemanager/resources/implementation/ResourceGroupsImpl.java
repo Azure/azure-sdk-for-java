@@ -14,7 +14,7 @@ import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
+import com.azure.resourcemanager.resources.fluent.models.ResourceGroupInner;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
