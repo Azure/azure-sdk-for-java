@@ -134,7 +134,6 @@ public class GatewayAddressCache implements IAddressCache {
              DefaultSuboptimalPartitionForceRefreshIntervalInSeconds);
     }
 
-
     @Override
     public void removeAddresses(final PartitionKeyRangeIdentity partitionKeyRangeIdentity) {
         if (partitionKeyRangeIdentity.getPartitionKeyRangeId().equals(PartitionKeyRange.MASTER_PARTITION_KEY_RANGE_ID)) {

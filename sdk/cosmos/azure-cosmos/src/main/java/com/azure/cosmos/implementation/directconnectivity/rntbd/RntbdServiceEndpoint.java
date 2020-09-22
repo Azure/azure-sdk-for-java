@@ -123,7 +123,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         // which can cause endpoint to close unnecessary.
         this.lastRequestNanoTime = new AtomicLong(System.nanoTime());
         this.closed = new AtomicBoolean();
-
         this.requestTimer = timer;
 
         this.tag = Tag.of(TAG_NAME, RntbdMetrics.escape(this.remoteAddress.toString()));

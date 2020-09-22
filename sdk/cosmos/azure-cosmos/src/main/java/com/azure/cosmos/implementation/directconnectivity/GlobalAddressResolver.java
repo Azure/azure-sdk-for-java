@@ -47,15 +47,15 @@ public class GlobalAddressResolver implements AddressResolverExtension {
     private HttpClient httpClient;
 
     public GlobalAddressResolver(
-            HttpClient httpClient,
-            GlobalEndpointManager endpointManager,
-            Protocol protocol,
-            IAuthorizationTokenProvider tokenProvider,
-            RxCollectionCache collectionCache,
-            RxPartitionKeyRangeCache routingMapProvider,
-            UserAgentContainer userAgentContainer,
-            GatewayServiceConfigurationReader serviceConfigReader,
-            ConnectionPolicy connectionPolicy) {
+        HttpClient httpClient,
+        GlobalEndpointManager endpointManager,
+        Protocol protocol,
+        IAuthorizationTokenProvider tokenProvider,
+        RxCollectionCache collectionCache,
+        RxPartitionKeyRangeCache routingMapProvider,
+        UserAgentContainer userAgentContainer,
+        GatewayServiceConfigurationReader serviceConfigReader,
+        ConnectionPolicy connectionPolicy) {
 
         this.httpClient = httpClient;
         this.endpointManager = endpointManager;
@@ -92,12 +92,12 @@ public class GlobalAddressResolver implements AddressResolverExtension {
             }
 
             List<PartitionKeyRangeIdentity> ranges = collectionRoutingMap.v.getOrderedPartitionKeyRanges().stream().map(range ->
-                    new PartitionKeyRangeIdentity(collection.getResourceId(), range.getId())).collect(Collectors.toList());
+                new PartitionKeyRangeIdentity(collection.getResourceId(), range.getId())).collect(Collectors.toList());
             List<Mono<Void>> tasks = new ArrayList<>();
             for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
                 tasks.add(endpointCache.addressCache.openAsync(collection, ranges));
             }
-            @SuppressWarnings({ "rawtypes", "unchecked" })
+            @SuppressWarnings({"rawtypes", "unchecked"})
             Mono<Void>[] array = new Mono[this.addressCacheByEndpoint.values().size()];
             return Flux.mergeDelayError(Queues.SMALL_BUFFER_SIZE, tasks.toArray(array)).then();
         });
@@ -149,7 +149,7 @@ public class GlobalAddressResolver implements AddressResolverExtension {
     }
 
     private EndpointCache getOrAddEndpoint(URI endpoint) {
-        EndpointCache endpointCache = this.addressCacheByEndpoint.computeIfAbsent(endpoint , key -> {
+        EndpointCache endpointCache = this.addressCacheByEndpoint.computeIfAbsent(endpoint, key -> {
             GatewayAddressCache gatewayAddressCache = new GatewayAddressCache(endpoint, protocol, this.tokenProvider, this.userAgentContainer, this.httpClient);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
