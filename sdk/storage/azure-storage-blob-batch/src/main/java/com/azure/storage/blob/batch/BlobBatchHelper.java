@@ -168,8 +168,9 @@ class BlobBatchHelper {
          */
         BlobStorageException exception = new BlobStorageException(responseBody,
             batchOperationResponse.asHttpResponse(responseBody), responseBody);
+        logger.logExceptionAsError(exception);
         batchOperationResponse.setException(exception);
-        exceptions.add((BlobStorageException) logger.logExceptionAsError(exception));
+        exceptions.add(exception);
     }
 
     static HttpResponse createHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, String body) {
