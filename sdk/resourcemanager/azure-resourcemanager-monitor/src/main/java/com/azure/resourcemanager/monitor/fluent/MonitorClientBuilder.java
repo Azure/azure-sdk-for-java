@@ -11,7 +11,7 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
@@ -136,7 +136,7 @@ public final class MonitorClientBuilder {
                     .build();
         }
         if (serializerAdapter == null) {
-            this.serializerAdapter = new AzureJacksonAdapter();
+            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
         MonitorClient client =
             new MonitorClient(pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
