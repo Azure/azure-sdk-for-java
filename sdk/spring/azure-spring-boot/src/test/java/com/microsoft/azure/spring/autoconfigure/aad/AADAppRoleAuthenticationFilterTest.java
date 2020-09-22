@@ -16,6 +16,8 @@ import org.assertj.core.api.Assertions;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -112,8 +114,9 @@ public class AADAppRoleAuthenticationFilterTest {
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + TOKEN);
         when(userPrincipalManager.buildUserPrincipal(any())).thenThrow(new BadJWTException("bad token"));
         when(userPrincipalManager.isTokenIssuedByAAD(any())).thenReturn(true);
-
-        filter.doFilterInternal(request, response, mock(FilterChain.class));
+        MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
+        filter.doFilterInternal(request, mockHttpServletResponse, mock(FilterChain.class));
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), mockHttpServletResponse.getStatus());
     }
 
     @Test
