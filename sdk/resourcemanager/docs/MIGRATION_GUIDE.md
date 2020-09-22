@@ -3,7 +3,7 @@
 This document is intended for users that are familiar with an older version of the Java SDK for managment libraries (`com.microsoft.azure.management.**`) and wish to migrate their application 
 to the next version of Azure resource management libraries (`com.azure.resourcemanager.**`)
 
-For users new to the Java SDK for resource management libraries, please see the [README for 'com.azure.resourcemanager.*`](http://aka.ms/azure-sdk-java-mgmt)
+For users new to the Java SDK for resource management libraries, please see the [README for 'com.azure.resourcemanager.*`](https://aka.ms/azsdk/java/mgmt)
 
 ## Table of contents
 
@@ -14,6 +14,7 @@ For users new to the Java SDK for resource management libraries, please see the 
   * [Customized Policy](#customized-policy)
   * [Custom HTTP Client](#custom-http-client)
   * [Error Handling](#error-handling)
+  * [Pagination](#pagination)
   * [rxJava -> Reactor](#rxjava-to-reactor)
 * [Additional Samples](#additional-samples)
 
@@ -127,7 +128,7 @@ AzureResourceManager azure = AzureResourceManager.configure()
     .withHttpClient(client)
     .authenticate(credential, profile)
     .withDefaultSubscription();
-```    
+```
     
 ## Error Handling
 
@@ -160,6 +161,16 @@ try {
     System.err.printf("Response message: %s%n", e.getValue().getMessage());
 }
 ```
+
+There is one more difference on error handling for getting a resource instance via e.g. `getById` and `getByResourceGroup`.
+In old version, `null` will be returned if the resource does not exist on Azure.
+In new version, `ManagementException` will be thrown.
+
+## Pagination
+
+In old version, `PagedList<T>` is returned. It is not thread-safe, and with caching on requested pages and items.
+
+In new version, `PagedIterable<T>` is returned. It is thread-safe, but without caching. That is, in a second iteration, it will again request pages and items, even they are already requested in the first iteration.
 
 ## rxJava to Reactor
 
@@ -284,7 +295,7 @@ Flux.merge(
 ## Additional Samples 
 
 More samples can be found at :
-- [README for new version of SDK](http://aka.ms/azure-sdk-java-mgmt)
+- [README for new version of SDK](https://aka.ms/azsdk/java/mgmt)
 - [Code Samples for Resource Management Libraries](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SAMPLE.md)
 - [Authentication Documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md)
 
