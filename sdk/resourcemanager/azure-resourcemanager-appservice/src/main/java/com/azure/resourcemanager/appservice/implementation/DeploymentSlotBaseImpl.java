@@ -248,7 +248,8 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     Mono<SiteConfigResourceInner> getConfigInner() {
-        return manager().serviceClient().getWebApps().getConfigurationSlotAsync(resourceGroupName(), parent().name(), name());
+        return manager().serviceClient().getWebApps()
+            .getConfigurationSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
@@ -299,7 +300,8 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     Mono<SlotConfigNamesResourceInner> listSlotConfigurations() {
-        return manager().serviceClient().getWebApps().listSlotConfigurationNamesAsync(resourceGroupName(), parent().name());
+        return manager().serviceClient().getWebApps()
+            .listSlotConfigurationNamesAsync(resourceGroupName(), parent().name());
     }
 
     @Override
@@ -385,7 +387,8 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     Mono<SiteAuthSettingsInner> getAuthentication() {
-        return manager().serviceClient().getWebApps().getAuthSettingsSlotAsync(resourceGroupName(), parent().name(), name());
+        return manager().serviceClient().getWebApps()
+            .getAuthSettingsSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override

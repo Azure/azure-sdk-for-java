@@ -537,7 +537,8 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
                 redisCache ->
                     Mono
                         .delay(SdkContext.getDelayDuration(manager().serviceClient().getDefaultPollInterval()))
-                        .flatMap(o -> manager().serviceClient().getRedis().getByResourceGroupAsync(resourceGroupName(), name()))
+                        .flatMap(o -> 
+                            manager().serviceClient().getRedis().getByResourceGroupAsync(resourceGroupName(), name()))
                         .doOnNext(this::setInner)
                         .repeat()
                         .takeUntil(
@@ -583,10 +584,11 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
 
     @Override
     public void removeLinkedServer(String linkedServerName) {
-        RedisLinkedServerWithPropertiesInner linkedServer =
-            this.manager().serviceClient().getLinkedServers().get(this.resourceGroupName(), this.name(), linkedServerName);
+        RedisLinkedServerWithPropertiesInner linkedServer = this.manager().serviceClient().getLinkedServers()
+            .get(this.resourceGroupName(), this.name(), linkedServerName);
 
-        this.manager().serviceClient().getLinkedServers().delete(this.resourceGroupName(), this.name(), linkedServerName);
+        this.manager().serviceClient().getLinkedServers()
+            .delete(this.resourceGroupName(), this.name(), linkedServerName);
 
         RedisResourceInner innerLinkedResource = null;
         RedisResourceInner innerResource = null;
@@ -611,8 +613,8 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
 
     @Override
     public ReplicationRole getLinkedServerRole(String linkedServerName) {
-        RedisLinkedServerWithPropertiesInner linkedServer =
-            this.manager().serviceClient().getLinkedServers().get(this.resourceGroupName(), this.name(), linkedServerName);
+        RedisLinkedServerWithPropertiesInner linkedServer = this.manager().serviceClient().getLinkedServers()
+            .get(this.resourceGroupName(), this.name(), linkedServerName);
         if (linkedServer == null) {
             throw logger
                 .logExceptionAsError(

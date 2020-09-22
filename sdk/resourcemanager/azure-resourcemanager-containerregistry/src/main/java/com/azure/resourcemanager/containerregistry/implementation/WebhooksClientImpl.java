@@ -48,7 +48,8 @@ public class WebhooksClientImpl implements Registries.WebhooksClient {
 
     @Override
     public void delete(final String resourceGroupName, final String registryName, final String webhookName) {
-        this.containerRegistryManager.serviceClient().getWebhooks().delete(resourceGroupName, registryName, webhookName);
+        this.containerRegistryManager.serviceClient().getWebhooks()
+            .delete(resourceGroupName, registryName, webhookName);
     }
 
     @Override

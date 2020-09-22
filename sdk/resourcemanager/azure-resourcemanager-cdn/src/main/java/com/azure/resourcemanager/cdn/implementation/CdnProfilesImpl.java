@@ -55,7 +55,8 @@ public final class CdnProfilesImpl
 
     @Override
     public String generateSsoUri(String resourceGroupName, String profileName) {
-        SsoUriInner ssoUri = this.manager().serviceClient().getProfiles().generateSsoUri(resourceGroupName, profileName);
+        SsoUriInner ssoUri = this.manager().serviceClient().getProfiles()
+            .generateSsoUri(resourceGroupName, profileName);
         if (ssoUri != null) {
             return ssoUri.ssoUriValue();
         }
@@ -104,12 +105,14 @@ public final class CdnProfilesImpl
     @Override
     public void purgeEndpointContent(
         String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        this.manager().serviceClient().getEndpoints().purgeContent(resourceGroupName, profileName, endpointName, contentPaths);
+        this.manager().serviceClient().getEndpoints()
+            .purgeContent(resourceGroupName, profileName, endpointName, contentPaths);
     }
 
     @Override
     public void loadEndpointContent(
         String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        this.manager().serviceClient().getEndpoints().loadContent(resourceGroupName, profileName, endpointName, contentPaths);
+        this.manager().serviceClient().getEndpoints()
+            .loadContent(resourceGroupName, profileName, endpointName, contentPaths);
     }
 }

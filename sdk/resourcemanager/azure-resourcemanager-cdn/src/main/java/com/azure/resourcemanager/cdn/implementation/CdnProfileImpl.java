@@ -162,7 +162,8 @@ class CdnProfileImpl
 
     @Override
     protected Mono<ProfileInner> getInnerAsync() {
-        return this.manager().serviceClient().getProfiles().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getProfiles()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

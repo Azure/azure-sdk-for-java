@@ -165,7 +165,8 @@ class PrivateDnsZoneImpl
 
     @Override
     public SoaRecordSet getSoaRecordSet() {
-        RecordSetInner inner = manager().serviceClient().getRecordSets().get(resourceGroupName(), name(), RecordType.SOA, "@");
+        RecordSetInner inner = manager().serviceClient().getRecordSets()
+            .get(resourceGroupName(), name(), RecordType.SOA, "@");
         return inner == null ? null : new SoaRecordSetImpl(inner.name(), this, inner);
     }
 
@@ -425,7 +426,8 @@ class PrivateDnsZoneImpl
 
     private PagedFlux<PrivateDnsRecordSet> listRecordSetsInternAsync(String recordSetSuffix, Integer pageSize) {
         final PrivateDnsZoneImpl self = this;
-        return manager().serviceClient().getRecordSets().listAsync(resourceGroupName(), name(), pageSize, recordSetSuffix)
+        return manager().serviceClient().getRecordSets()
+            .listAsync(resourceGroupName(), name(), pageSize, recordSetSuffix)
             .mapPage(recordSetInner -> {
                 PrivateDnsRecordSet recordSet = new PrivateDnsRecordSetImpl(
                     recordSetInner.name(), recordSetInner.type(), self, recordSetInner);

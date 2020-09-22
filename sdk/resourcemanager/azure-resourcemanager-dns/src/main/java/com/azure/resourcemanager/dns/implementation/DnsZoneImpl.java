@@ -174,8 +174,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
 
     @Override
     public SoaRecordSet getSoaRecordSet() {
-        RecordSetInner inner =
-            this.manager().serviceClient().getRecordSets().get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
+        RecordSetInner inner = this.manager().serviceClient().getRecordSets()
+            .get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
         if (inner == null) {
             return null;
         }

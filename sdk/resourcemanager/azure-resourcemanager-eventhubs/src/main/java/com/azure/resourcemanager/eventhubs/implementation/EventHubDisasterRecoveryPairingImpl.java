@@ -156,9 +156,8 @@ class EventHubDisasterRecoveryPairingImpl
         // Fail over is run against secondary namespace (because primary might be down at time of failover)
         //
         ResourceId secondaryNs = ResourceId.fromString(this.inner().partnerNamespace());
-        return this.manager().serviceClient().getDisasterRecoveryConfigs().failOverAsync(secondaryNs.resourceGroupName(),
-            secondaryNs.name(),
-            this.name())
+        return this.manager().serviceClient().getDisasterRecoveryConfigs()
+            .failOverAsync(secondaryNs.resourceGroupName(), secondaryNs.name(), this.name())
             .then(refreshAsync())
             .then();
     }

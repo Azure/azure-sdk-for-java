@@ -128,7 +128,8 @@ public class ContainerGroupImpl
                         .updateAsync(self.resourceGroupName(), self.name(), resource));
         } else if (newFileShares == null || creatableStorageAccountKey == null) {
             return beforeCreation()
-                .then(manager().serviceClient().getContainerGroups().createOrUpdateAsync(resourceGroupName(), name(), inner()));
+                .then(manager().serviceClient().getContainerGroups()
+                    .createOrUpdateAsync(resourceGroupName(), name(), inner()));
         } else {
             final StorageAccount storageAccount = this.taskResult(this.creatableStorageAccountKey);
             return beforeCreation()

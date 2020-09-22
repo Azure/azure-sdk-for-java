@@ -55,7 +55,9 @@ class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Namespace
     @Override
     protected Mono<NamespaceAuthorizationRule> createChildResourceAsync() {
         final NamespaceAuthorizationRule self = this;
-        return this.manager().serviceClient().getNamespaces().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
+        return this.manager().serviceClient().getNamespaces()
+            .createOrUpdateAuthorizationRuleAsync(
+                this.resourceGroupName(),
                 this.namespaceName(),
                 this.name(),
                 prepareForCreate(this.inner()))

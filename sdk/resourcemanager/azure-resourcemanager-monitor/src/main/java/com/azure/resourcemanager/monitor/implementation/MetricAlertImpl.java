@@ -140,7 +140,8 @@ class MetricAlertImpl
 
     @Override
     protected Mono<MetricAlertResourceInner> getInnerAsync() {
-        return this.manager().serviceClient().getMetricAlerts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getMetricAlerts()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

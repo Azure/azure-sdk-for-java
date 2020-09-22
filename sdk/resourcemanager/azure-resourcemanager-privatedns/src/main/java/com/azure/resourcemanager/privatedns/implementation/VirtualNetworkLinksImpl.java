@@ -78,7 +78,8 @@ class VirtualNetworkLinksImpl
 
     @Override
     public Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String name, String etagValue) {
-        return parent().manager().serviceClient().getVirtualNetworkLinks().deleteAsync(resourceGroupName, name, etagValue);
+        return parent().manager().serviceClient().getVirtualNetworkLinks()
+            .deleteAsync(resourceGroupName, name, etagValue);
     }
 
     @Override

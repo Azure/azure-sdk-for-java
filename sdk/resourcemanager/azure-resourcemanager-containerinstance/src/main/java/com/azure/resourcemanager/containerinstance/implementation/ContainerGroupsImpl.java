@@ -52,8 +52,8 @@ public class ContainerGroupsImpl
 
     @Override
     public String getLogContent(String resourceGroupName, String containerGroupName, String containerName) {
-        LogsInner logsInner =
-            this.manager().serviceClient().getContainers().listLogs(resourceGroupName, containerGroupName, containerName);
+        LogsInner logsInner = this.manager().serviceClient().getContainers()
+            .listLogs(resourceGroupName, containerGroupName, containerName);
 
         return logsInner != null ? logsInner.content() : null;
     }

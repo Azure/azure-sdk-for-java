@@ -50,7 +50,8 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     protected Mono<RegistryInner> getInnerAsync() {
-        return this.manager().serviceClient().getRegistries().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getRegistries()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

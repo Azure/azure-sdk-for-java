@@ -231,7 +231,8 @@ class ActionGroupImpl
 
     @Override
     protected Mono<ActionGroupResourceInner> getInnerAsync() {
-        return this.manager().serviceClient().getActionGroups().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getActionGroups()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

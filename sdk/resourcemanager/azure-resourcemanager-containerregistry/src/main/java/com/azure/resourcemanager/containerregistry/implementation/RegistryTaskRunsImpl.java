@@ -25,7 +25,8 @@ public class RegistryTaskRunsImpl implements RegistryTaskRuns {
 
     @Override
     public PagedFlux<RegistryTaskRun> listByRegistryAsync(String rgName, String acrName) {
-        return this.registryManager.serviceClient().getRuns().listAsync(rgName, acrName).mapPage(inner -> wrapModel(inner));
+        return this.registryManager.serviceClient().getRuns().listAsync(rgName, acrName)
+            .mapPage(inner -> wrapModel(inner));
     }
 
     @Override

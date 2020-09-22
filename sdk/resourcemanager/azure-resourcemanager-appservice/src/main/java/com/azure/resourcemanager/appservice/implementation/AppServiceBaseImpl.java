@@ -98,7 +98,8 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<Void> deleteHostnameBinding(String hostname) {
-        return this.manager().serviceClient().getWebApps().deleteHostnameBindingAsync(resourceGroupName(), name(), hostname);
+        return this.manager().serviceClient().getWebApps()
+            .deleteHostnameBindingAsync(resourceGroupName(), name(), hostname);
     }
 
     @Override
@@ -108,7 +109,8 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<StringDictionaryInner> updateAppSettings(StringDictionaryInner inner) {
-        return this.manager().serviceClient().getWebApps().updateApplicationSettingsAsync(resourceGroupName(), name(), inner);
+        return this.manager().serviceClient().getWebApps()
+            .updateApplicationSettingsAsync(resourceGroupName(), name(), inner);
     }
 
     @Override
@@ -118,7 +120,8 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<ConnectionStringDictionaryInner> updateConnectionStrings(ConnectionStringDictionaryInner inner) {
-        return this.manager().serviceClient().getWebApps().updateConnectionStringsAsync(resourceGroupName(), name(), inner);
+        return this.manager().serviceClient().getWebApps()
+            .updateConnectionStringsAsync(resourceGroupName(), name(), inner);
     }
 
     @Override
@@ -134,7 +137,8 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<SiteSourceControlInner> createOrUpdateSourceControl(SiteSourceControlInner inner) {
-        return this.manager().serviceClient().getWebApps().createOrUpdateSourceControlAsync(resourceGroupName(), name(), inner);
+        return this.manager().serviceClient().getWebApps()
+            .createOrUpdateSourceControlAsync(resourceGroupName(), name(), inner);
     }
 
     @Override
@@ -217,7 +221,8 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<MSDeployStatusInner> createMSDeploy(MSDeploy msDeployInner) {
-        return manager().serviceClient().getWebApps().createMSDeployOperationAsync(resourceGroupName(), name(), msDeployInner);
+        return manager().serviceClient().getWebApps()
+            .createMSDeployOperationAsync(resourceGroupName(), name(), msDeployInner);
     }
 
     @Override

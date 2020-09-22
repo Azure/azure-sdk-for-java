@@ -36,12 +36,14 @@ public class SpringServiceCertificateImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return manager().serviceClient().getCertificates().deleteAsync(parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient().getCertificates()
+            .deleteAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override
     protected Mono<CertificateResourceInner> getInnerAsync() {
-        return manager().serviceClient().getCertificates().getAsync(parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient().getCertificates()
+            .getAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override

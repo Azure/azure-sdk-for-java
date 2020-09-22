@@ -254,7 +254,8 @@ class EventHubNamespaceImpl
 
     @Override
     protected Mono<EHNamespaceInner> getInnerAsync() {
-        return this.manager().serviceClient().getNamespaces().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getNamespaces()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private void setDefaultSkuIfNotSet() {
