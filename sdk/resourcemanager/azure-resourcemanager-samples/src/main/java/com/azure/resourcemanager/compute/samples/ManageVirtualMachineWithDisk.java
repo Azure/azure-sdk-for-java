@@ -17,7 +17,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.ArrayList;
@@ -184,10 +184,6 @@ public final class ManageVirtualMachineWithDisk {
             System.out.println("Started Linux VM");
             Utils.print(linuxVM);
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -199,7 +195,6 @@ public final class ManageVirtualMachineWithDisk {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

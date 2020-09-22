@@ -14,7 +14,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+  <version>12.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
   <name>Microsoft Azure SDK for Azure Table</name>
   <description>This package contains the Microsoft Azure Table storage client library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -40,7 +40,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.8.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -74,7 +74,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

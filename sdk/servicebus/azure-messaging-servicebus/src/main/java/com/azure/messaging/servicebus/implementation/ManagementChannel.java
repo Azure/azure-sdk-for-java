@@ -36,6 +36,7 @@ import reactor.core.publisher.SynchronousSink;
 import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -321,8 +322,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Flux<Long> schedule(final List<ServiceBusMessage> messages, Instant scheduledEnqueueTime, int maxLinkSize,
-        String associatedLinkName, ServiceBusTransactionContext transactionContext) {
+    public Flux<Long> schedule(final List<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
+        int maxLinkSize, String associatedLinkName, ServiceBusTransactionContext transactionContext) {
 
         return isAuthorized(OPERATION_SCHEDULE_MESSAGE).thenMany(createChannel.flatMap(channel -> {
 
@@ -401,8 +402,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxLinkSize,
+   /* @Override
+    public Mono<Long> schedule(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime, int maxLinkSize,
         String associatedLinkName, ServiceBusTransactionContext transactionContext) {
         message.setScheduledEnqueueTime(scheduledEnqueueTime);
 
@@ -476,6 +477,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             }
         }));
     }
+    */
 
     @Override
     public Mono<Void> setSessionState(String sessionId, byte[] state, String associatedLinkName) {

@@ -29,10 +29,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.ListQueueInner;
-import com.azure.resourcemanager.storage.fluent.inner.ListQueueResourceInner;
 import com.azure.resourcemanager.storage.fluent.inner.StorageQueueInner;
+import com.azure.resourcemanager.storage.models.ListQueueResource;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
@@ -51,7 +50,7 @@ public final class QueuesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public QueuesClient(StorageManagementClient client) {
+    QueuesClient(StorageManagementClient client) {
         this.service = RestProxy.create(QueuesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -131,7 +130,7 @@ public final class QueuesClient {
                 + "/storageAccounts/{accountName}/queueServices/default/queues")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListQueueResourceInner>> list(
+        Mono<Response<ListQueueResource>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -145,7 +144,7 @@ public final class QueuesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListQueueResourceInner>> listNext(
+        Mono<Response<ListQueueResource>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

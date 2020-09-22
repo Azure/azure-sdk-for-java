@@ -24,10 +24,9 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
-import com.azure.resourcemanager.appservice.fluent.inner.ResourceHealthMetadataCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.ResourceHealthMetadataInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.ResourceHealthMetadataCollection;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
@@ -46,7 +45,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ResourceHealthMetadatasClient(WebSiteManagementClient client) {
+    ResourceHealthMetadatasClient(WebSiteManagementClient client) {
         this.service =
             RestProxy
                 .create(ResourceHealthMetadatasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -64,7 +63,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceHealthMetadataCollectionInner>> list(
+        Mono<Response<ResourceHealthMetadataCollection>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -76,7 +75,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                 + "/resourceHealthMetadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceHealthMetadataCollectionInner>> listByResourceGroup(
+        Mono<Response<ResourceHealthMetadataCollection>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -89,7 +88,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                 + "/resourceHealthMetadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceHealthMetadataCollectionInner>> listBySite(
+        Mono<Response<ResourceHealthMetadataCollection>> listBySite(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -117,7 +116,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                 + "/slots/{slot}/resourceHealthMetadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceHealthMetadataCollectionInner>> listBySiteSlot(
+        Mono<Response<ResourceHealthMetadataCollection>> listBySiteSlot(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -145,28 +144,28 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceHealthMetadataCollectionInner>> listNext(
+        Mono<Response<ResourceHealthMetadataCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceHealthMetadataCollectionInner>> listByResourceGroupNext(
+        Mono<Response<ResourceHealthMetadataCollection>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceHealthMetadataCollectionInner>> listBySiteNext(
+        Mono<Response<ResourceHealthMetadataCollection>> listBySiteNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceHealthMetadataCollectionInner>> listBySiteSlotNext(
+        Mono<Response<ResourceHealthMetadataCollection>> listBySiteSlotNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

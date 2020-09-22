@@ -33,11 +33,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.AccessUriInner;
 import com.azure.resourcemanager.compute.fluent.inner.SnapshotInner;
-import com.azure.resourcemanager.compute.fluent.inner.SnapshotListInner;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
+import com.azure.resourcemanager.compute.models.SnapshotList;
 import com.azure.resourcemanager.compute.models.SnapshotUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class SnapshotsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public SnapshotsClient(ComputeManagementClient client) {
+    SnapshotsClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(SnapshotsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -137,7 +136,7 @@ public final class SnapshotsClient
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SnapshotListInner>> listByResourceGroup(
+        Mono<Response<SnapshotList>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -148,7 +147,7 @@ public final class SnapshotsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SnapshotListInner>> list(
+        Mono<Response<SnapshotList>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -187,14 +186,14 @@ public final class SnapshotsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SnapshotListInner>> listByResourceGroupNext(
+        Mono<Response<SnapshotList>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SnapshotListInner>> listNext(
+        Mono<Response<SnapshotList>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

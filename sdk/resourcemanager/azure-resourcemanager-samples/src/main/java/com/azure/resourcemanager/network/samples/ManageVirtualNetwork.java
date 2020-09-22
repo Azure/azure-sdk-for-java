@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.Date;
@@ -237,8 +237,6 @@ public final class ManageVirtualNetwork {
             System.out.println("Deleted the virtual network");
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -249,8 +247,6 @@ public final class ManageVirtualNetwork {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

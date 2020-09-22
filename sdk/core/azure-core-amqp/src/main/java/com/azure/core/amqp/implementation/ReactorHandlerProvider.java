@@ -11,6 +11,7 @@ import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.reactor.Reactor;
 
@@ -43,23 +44,26 @@ public class ReactorHandlerProvider {
      * @param proxyOptions The options to use for proxy.
      * @param product The name of the product this connection handler is created for.
      * @param clientVersion The version of the client library creating the connection handler.
+     * @param clientOptions provided by user.
      * @return A new {@link ConnectionHandler}.
      */
     public ConnectionHandler createConnectionHandler(String connectionId, String hostname,
-            AmqpTransportType transportType, ProxyOptions proxyOptions, String product, String clientVersion) {
+            AmqpTransportType transportType, ProxyOptions proxyOptions, String product, String clientVersion,
+            ClientOptions clientOptions) {
         switch (transportType) {
             case AMQP:
-                return new ConnectionHandler(connectionId, hostname, product, clientVersion);
+                return new ConnectionHandler(connectionId, hostname, product, clientVersion, clientOptions);
             case AMQP_WEB_SOCKETS:
                 if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()) {
                     return new WebSocketsProxyConnectionHandler(connectionId, hostname, proxyOptions, product,
-                        clientVersion);
+                        clientVersion, clientOptions);
                 } else if (WebSocketsProxyConnectionHandler.shouldUseProxy(hostname)) {
                     logger.info("System default proxy configured for hostname '{}'. Using proxy.", hostname);
                     return new WebSocketsProxyConnectionHandler(connectionId, hostname,
-                        ProxyOptions.SYSTEM_DEFAULTS, product, clientVersion);
+                        ProxyOptions.SYSTEM_DEFAULTS, product, clientVersion, clientOptions);
                 } else {
-                    return new WebSocketsConnectionHandler(connectionId, hostname, product, clientVersion);
+                    return new WebSocketsConnectionHandler(connectionId, hostname, product, clientVersion,
+                        clientOptions);
                 }
             default:
                 throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,

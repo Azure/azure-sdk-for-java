@@ -13,7 +13,7 @@ import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +34,7 @@ public final class DeployUsingARMTemplate {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException, IllegalAccessException {
         final String rgName = azure.sdkContext().randomResourceName("rgRSAT", 24);
         final String deploymentName = azure.sdkContext().randomResourceName("dpRSAT", 24);
         try {
@@ -70,11 +70,6 @@ public final class DeployUsingARMTemplate {
 
             System.out.println("Started a deployment for an Azure App Service: " + deploymentName);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 Deployment deployment = azure.deployments()
@@ -110,7 +105,6 @@ public final class DeployUsingARMTemplate {
             }
 
         }
-        return false;
     }
 
     /**

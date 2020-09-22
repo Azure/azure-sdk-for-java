@@ -68,13 +68,13 @@ jobs:
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
             python3 --version
-            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}} --group-id ${{artifact.groupId}}
+            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber) --artifact-id ${{artifact.name}} --group-id ${{artifact.groupId}}
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
           displayName: Append dev package version suffix for ${{artifact.name}}
 
       - script: |
           python3 --version
-          python3 eng/versioning/set_versions.py --set-dev-zero-version --build-type ${{parameters.SDKType}} --build-qualifier dev.$(Build.BuildNumber)
+          python3 eng/versioning/set_versions.py --set-dev-zero-version --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber)
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Set zero-dev-version for packages
 
@@ -89,13 +89,6 @@ jobs:
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - template: ../steps/cache-maven-repository.yml
-
-      - template: /eng/common/pipelines/templates/steps/replace-relative-links.yml
-        parameters:
-          TargetFolder: $(Build.SourcesDirectory)
-          RootFolder: $(Build.SourcesDirectory)
-          BuildSHA: $(Build.SourceVersion)
-          RepoId: 'Azure/azure-sdk-for-java'
 
       - template: ../steps/generate-project-list.yml
         parameters:
@@ -140,7 +133,7 @@ jobs:
     variables:
       - template: ../variables/globals.yml
       - name: OSVmImage
-        value: 'windows-2019'
+        value: 'ubuntu-18.04'
 
     pool:
       vmImage: $(OSVmImage)
@@ -164,6 +157,7 @@ jobs:
       - template: ../../../common/pipelines/templates/steps/verify-links.yml
         parameters:
           Directory: sdk/${{ parameters.ServiceDirectory }}
+          CheckLinkGuidance: $true
 
       - ${{ each artifact in parameters.Artifacts }}:
         - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
@@ -190,7 +184,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -207,7 +201,7 @@ jobs:
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
           mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme-windows -pl $(ProjectList)'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)

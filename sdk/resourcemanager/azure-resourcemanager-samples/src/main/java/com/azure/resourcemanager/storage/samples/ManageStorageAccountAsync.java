@@ -7,12 +7,11 @@ package com.azure.resourcemanager.storage.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
 import reactor.core.publisher.Flux;
 
@@ -50,14 +49,10 @@ public final class ManageStorageAccountAsync {
                             .withRegion(Region.US_EAST)
                             .withNewResourceGroup(rgName)
                             .createAsync())
-                    .map(indexable -> {
-                        if (indexable instanceof StorageAccount) {
-                            StorageAccount storageAccount = (StorageAccount) indexable;
-
-                            System.out.println("Created a Storage Account:");
-                            Utils.print(storageAccount);
-                        }
-                        return indexable;
+                    .map(storageAccount -> {
+                        System.out.println("Created a Storage Account:");
+                        Utils.print(storageAccount);
+                        return storageAccount;
                     }).blockLast();
 
             // ============================================================
@@ -94,9 +89,6 @@ public final class ManageStorageAccountAsync {
                     }).blockLast();
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -106,7 +98,6 @@ public final class ManageStorageAccountAsync {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

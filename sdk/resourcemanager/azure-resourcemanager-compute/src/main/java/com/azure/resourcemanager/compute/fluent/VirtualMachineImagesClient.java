@@ -21,7 +21,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageResourceInner;
 import java.util.List;
@@ -42,7 +41,7 @@ public final class VirtualMachineImagesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualMachineImagesClient(ComputeManagementClient client) {
+    VirtualMachineImagesClient(ComputeManagementClient client) {
         this.service =
             RestProxy
                 .create(VirtualMachineImagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -600,6 +599,28 @@ public final class VirtualMachineImagesClient {
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<VirtualMachineImageResourceInner> list(
+        String location, String publisherName, String offer, String skus) {
+        final String expand = null;
+        final Integer top = null;
+        final String orderby = null;
+        final Context context = null;
+        return listAsync(location, publisherName, offer, skus, expand, top, orderby).block();
+    }
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
+     *
+     * @param location The name of a supported Azure region.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
      * @param expand The expand expression to apply on the operation.
      * @param top The top parameter.
      * @param orderby The orderby parameter.
@@ -620,28 +641,6 @@ public final class VirtualMachineImagesClient {
         String orderby,
         Context context) {
         return listAsync(location, publisherName, offer, skus, expand, top, orderby, context).block();
-    }
-
-    /**
-     * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-     *
-     * @param location The name of a supported Azure region.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @param skus A valid image SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<VirtualMachineImageResourceInner> list(
-        String location, String publisherName, String offer, String skus) {
-        final String expand = null;
-        final Integer top = null;
-        final String orderby = null;
-        final Context context = null;
-        return listAsync(location, publisherName, offer, skus, expand, top, orderby).block();
     }
 
     /**

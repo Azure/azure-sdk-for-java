@@ -1,10 +1,18 @@
 package com.azure.storage.blob
 
+import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
+import com.azure.storage.blob.options.BlobParallelUploadOptions
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import reactor.core.publisher.Mono
 import spock.lang.Requires
+import spock.lang.Unroll
 
 class BlobOutputStreamTest extends APISpec {
     private static int FOUR_MB = 4 * Constants.MB
@@ -80,6 +88,38 @@ class BlobOutputStreamTest extends APISpec {
         then:
         blockBlobClient.getProperties().getBlobSize() == data.length
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
+    }
+
+    @Unroll
+    def "BlockBlob output stream error"() {
+        setup:
+        def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
+        def endpoint = "https://account.blob.core.windows.net/"
+        def data = getRandomByteArray(10 * Constants.MB)
+        def blockBlobClient = new SpecializedBlobClientBuilder()
+            .endpoint(endpoint)
+            .containerName("container")
+            .blobName("blob")
+            .credential(credentials)
+            .httpClient({ httpRequest -> return Mono.error(exception) })
+            .buildBlockBlobClient()
+
+        when:
+        def outputStream = blockBlobClient.getBlobOutputStream(true)
+        outputStream.write(data)
+        outputStream.close()
+
+        then:
+        def e = thrown(IOException)
+        if (exceptionClass != IOException) { /* IOExceptions are not wrapped. */
+            assert exceptionClass.isCase(e.getCause())
+        }
+
+        where:
+        exception                                  || exceptionClass
+        new BlobStorageException(null, null, null) || BlobStorageException
+        new IllegalArgumentException()             || IllegalArgumentException
+        new IOException()                          || IOException
     }
 
     @Requires({ liveMode() })

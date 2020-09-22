@@ -25,11 +25,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
-import com.azure.resourcemanager.appservice.fluent.inner.RecommendationCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.RecommendationInner;
 import com.azure.resourcemanager.appservice.fluent.inner.RecommendationRuleInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.RecommendationCollection;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Recommendations. */
@@ -47,7 +46,7 @@ public final class RecommendationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public RecommendationsClient(WebSiteManagementClient client) {
+    RecommendationsClient(WebSiteManagementClient client) {
         this.service =
             RestProxy.create(RecommendationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -64,7 +63,7 @@ public final class RecommendationsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollectionInner>> list(
+        Mono<Response<RecommendationCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("featured") Boolean featured,
             @QueryParam(value = "$filter", encoded = true) String filter,
@@ -99,7 +98,7 @@ public final class RecommendationsClient {
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendationHistory")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollectionInner>> listHistoryForHostingEnvironment(
+        Mono<Response<RecommendationCollection>> listHistoryForHostingEnvironment(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
@@ -115,7 +114,7 @@ public final class RecommendationsClient {
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollectionInner>> listRecommendedRulesForHostingEnvironment(
+        Mono<Response<RecommendationCollection>> listRecommendedRulesForHostingEnvironment(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
@@ -194,7 +193,7 @@ public final class RecommendationsClient {
                 + "/{siteName}/recommendationHistory")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollectionInner>> listHistoryForWebApp(
+        Mono<Response<RecommendationCollection>> listHistoryForWebApp(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("siteName") String siteName,
@@ -210,7 +209,7 @@ public final class RecommendationsClient {
                 + "/{siteName}/recommendations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollectionInner>> listRecommendedRulesForWebApp(
+        Mono<Response<RecommendationCollection>> listRecommendedRulesForWebApp(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("siteName") String siteName,
@@ -284,35 +283,35 @@ public final class RecommendationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollectionInner>> listNext(
+        Mono<Response<RecommendationCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollectionInner>> listHistoryForHostingEnvironmentNext(
+        Mono<Response<RecommendationCollection>> listHistoryForHostingEnvironmentNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollectionInner>> listRecommendedRulesForHostingEnvironmentNext(
+        Mono<Response<RecommendationCollection>> listRecommendedRulesForHostingEnvironmentNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollectionInner>> listHistoryForWebAppNext(
+        Mono<Response<RecommendationCollection>> listHistoryForWebAppNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollectionInner>> listRecommendedRulesForWebAppNext(
+        Mono<Response<RecommendationCollection>> listRecommendedRulesForWebAppNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -1908,6 +1907,28 @@ public final class RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the hosting environment.
      * @param name Name of the recommendation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a recommendation rule that the recommendation engine can perform.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RecommendationRuleInner getRuleDetailsByHostingEnvironment(
+        String resourceGroupName, String hostingEnvironmentName, String name) {
+        final Boolean updateSeen = null;
+        final String recommendationId = null;
+        final Context context = null;
+        return getRuleDetailsByHostingEnvironmentAsync(
+                resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId)
+            .block();
+    }
+
+    /**
+     * Description for Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
      *     object.
      * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
@@ -1928,28 +1949,6 @@ public final class RecommendationsClient {
         Context context) {
         return getRuleDetailsByHostingEnvironmentAsync(
                 resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId, context)
-            .block();
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param name Name of the recommendation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecommendationRuleInner getRuleDetailsByHostingEnvironment(
-        String resourceGroupName, String hostingEnvironmentName, String name) {
-        final Boolean updateSeen = null;
-        final String recommendationId = null;
-        final Context context = null;
-        return getRuleDetailsByHostingEnvironmentAsync(
-                resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId)
             .block();
     }
 
@@ -3185,6 +3184,25 @@ public final class RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a recommendation rule that the recommendation engine can perform.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RecommendationRuleInner getRuleDetailsByWebApp(String resourceGroupName, String siteName, String name) {
+        final Boolean updateSeen = null;
+        final String recommendationId = null;
+        final Context context = null;
+        return getRuleDetailsByWebAppAsync(resourceGroupName, siteName, name, updateSeen, recommendationId).block();
+    }
+
+    /**
+     * Description for Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
      *     object.
      * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
@@ -3205,25 +3223,6 @@ public final class RecommendationsClient {
         Context context) {
         return getRuleDetailsByWebAppAsync(resourceGroupName, siteName, name, updateSeen, recommendationId, context)
             .block();
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param name Name of the recommendation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecommendationRuleInner getRuleDetailsByWebApp(String resourceGroupName, String siteName, String name) {
-        final Boolean updateSeen = null;
-        final String recommendationId = null;
-        final Context context = null;
-        return getRuleDetailsByWebAppAsync(resourceGroupName, siteName, name, updateSeen, recommendationId).block();
     }
 
     /**

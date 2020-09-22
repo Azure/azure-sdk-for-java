@@ -32,14 +32,13 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.RunCommandResultInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMInstanceViewInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMListResultInner;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.VirtualMachineReimageParameters;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -59,7 +58,7 @@ public final class VirtualMachineScaleSetVMsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualMachineScaleSetVMsClient(ComputeManagementClient client) {
+    VirtualMachineScaleSetVMsClient(ComputeManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -188,7 +187,7 @@ public final class VirtualMachineScaleSetVMsClient {
                 + "/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetVMListResultInner>> list(
+        Mono<Response<VirtualMachineScaleSetVMListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualMachineScaleSetName") String virtualMachineScaleSetName,
@@ -310,7 +309,7 @@ public final class VirtualMachineScaleSetVMsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetVMListResultInner>> listNext(
+        Mono<Response<VirtualMachineScaleSetVMListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -1885,6 +1884,24 @@ public final class VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual machine from a VM scale set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineScaleSetVMInner get(String resourceGroupName, String vmScaleSetName, String instanceId) {
+        final InstanceViewTypes expand = null;
+        final Context context = null;
+        return getAsync(resourceGroupName, vmScaleSetName, instanceId, expand).block();
+    }
+
+    /**
+     * Gets a virtual machine from a VM scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
      * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1896,24 +1913,6 @@ public final class VirtualMachineScaleSetVMsClient {
     public VirtualMachineScaleSetVMInner get(
         String resourceGroupName, String vmScaleSetName, String instanceId, InstanceViewTypes expand, Context context) {
         return getAsync(resourceGroupName, vmScaleSetName, instanceId, expand, context).block();
-    }
-
-    /**
-     * Gets a virtual machine from a VM scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetVMInner get(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        final InstanceViewTypes expand = null;
-        final Context context = null;
-        return getAsync(resourceGroupName, vmScaleSetName, instanceId, expand).block();
     }
 
     /**

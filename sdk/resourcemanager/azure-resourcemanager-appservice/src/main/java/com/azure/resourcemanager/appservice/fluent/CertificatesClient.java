@@ -28,9 +28,8 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
-import com.azure.resourcemanager.appservice.fluent.inner.CertificateCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CertificateInner;
+import com.azure.resourcemanager.appservice.models.CertificateCollection;
 import com.azure.resourcemanager.appservice.models.CertificatePatchResource;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -54,7 +53,7 @@ public final class CertificatesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public CertificatesClient(WebSiteManagementClient client) {
+    CertificatesClient(WebSiteManagementClient client) {
         this.service =
             RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -71,7 +70,7 @@ public final class CertificatesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateCollectionInner>> list(
+        Mono<Response<CertificateCollection>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -81,7 +80,7 @@ public final class CertificatesClient
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateCollectionInner>> listByResourceGroup(
+        Mono<Response<CertificateCollection>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -150,14 +149,14 @@ public final class CertificatesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateCollectionInner>> listNext(
+        Mono<Response<CertificateCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateCollectionInner>> listByResourceGroupNext(
+        Mono<Response<CertificateCollection>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

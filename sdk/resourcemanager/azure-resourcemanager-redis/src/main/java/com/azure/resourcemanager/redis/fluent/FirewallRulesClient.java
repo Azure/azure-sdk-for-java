@@ -28,10 +28,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.redis.RedisManagementClient;
 import com.azure.resourcemanager.redis.fluent.inner.RedisFirewallRuleInner;
-import com.azure.resourcemanager.redis.fluent.inner.RedisFirewallRuleListResultInner;
 import com.azure.resourcemanager.redis.models.RedisFirewallRuleCreateParameters;
+import com.azure.resourcemanager.redis.models.RedisFirewallRuleListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FirewallRules. */
@@ -49,7 +48,7 @@ public final class FirewallRulesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public FirewallRulesClient(RedisManagementClient client) {
+    FirewallRulesClient(RedisManagementClient client) {
         this.service =
             RestProxy.create(FirewallRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -68,7 +67,7 @@ public final class FirewallRulesClient {
                 + "/{cacheName}/firewallRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisFirewallRuleListResultInner>> listByRedisResource(
+        Mono<Response<RedisFirewallRuleListResult>> listByRedisResource(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -126,7 +125,7 @@ public final class FirewallRulesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisFirewallRuleListResultInner>> listByRedisResourceNext(
+        Mono<Response<RedisFirewallRuleListResult>> listByRedisResourceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

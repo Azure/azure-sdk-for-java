@@ -1,0 +1,104 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "8e3e4413-c89a-46b1-b60e-d17901c9704c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 09 Sep 2020 00:14:19 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename9070101d')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "36f41b4f-8002-00d7-363e-869b69000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "8e3e4413-c89a-46b1-b60e-d17901c9704c",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename9070101d')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/tablename9070101d",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "843c8057-01d6-4075-9422-f386eaf03f67",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 09 Sep 2020 00:14:19 GMT",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/datetime'2020-09-09T00%3A14%3A19.6859829Z'",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/tablename9070101d(PartitionKey='partitionkey22322c',RowKey='rowkey880333c02')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "36f41b6d-8002-00d7-513e-869b69000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "843c8057-01d6-4075-9422-f386eaf03f67",
+      "Location" : "https://brsiegelsample.table.core.windows.net/tablename9070101d(PartitionKey='partitionkey22322c',RowKey='rowkey880333c02')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/tablename9070101d",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "3be3f752-7922-4807-b69a-480f67bfb6cf",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 09 Sep 2020 00:14:19 GMT",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/datetime'2020-09-09T00%3A14%3A19.7140026Z'",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/tablename9070101d(PartitionKey='partitionkey22322c',RowKey='rowkey189544ac4')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "36f41b72-8002-00d7-563e-869b69000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "3be3f752-7922-4807-b69a-480f67bfb6cf",
+      "Location" : "https://brsiegelsample.table.core.windows.net/tablename9070101d(PartitionKey='partitionkey22322c',RowKey='rowkey189544ac4')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.table.core.windows.net/tablename9070101d()?$format=application/json%3Bodata%3Dfullmetadata&$filter=RowKey%20eq%20%27rowkey880333c02%27",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "c1647c58-fdc6-4edd-9c8d-cea3b9960acc"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "36f41b7d-8002-00d7-5f3e-869b69000000",
+      "Body" : "{\"odata.metadata\":\"https://brsiegelsample.table.core.windows.net/$metadata#tablename9070101d\",\"value\":[{\"odata.type\":\"brsiegelsample.tablename9070101d\",\"odata.id\":\"https://brsiegelsample.table.core.windows.net/tablename9070101d(PartitionKey='partitionkey22322c',RowKey='rowkey880333c02')\",\"odata.etag\":\"W/\\\"datetime'2020-09-09T00%3A14%3A19.6859829Z'\\\"\",\"odata.editLink\":\"tablename9070101d(PartitionKey='partitionkey22322c',RowKey='rowkey880333c02')\",\"PartitionKey\":\"partitionkey22322c\",\"RowKey\":\"rowkey880333c02\",\"Timestamp@odata.type\":\"Edm.DateTime\",\"Timestamp\":\"2020-09-09T00:14:19.6859829Z\"}]}",
+      "Date" : "Wed, 09 Sep 2020 00:14:19 GMT",
+      "x-ms-client-request-id" : "c1647c58-fdc6-4edd-9c8d-cea3b9960acc",
+      "Content-Type" : "application/json;odata=fullmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename9070101d", "partitionkey22322c", "rowkey880333c02", "rowkey189544ac4" ]
+}

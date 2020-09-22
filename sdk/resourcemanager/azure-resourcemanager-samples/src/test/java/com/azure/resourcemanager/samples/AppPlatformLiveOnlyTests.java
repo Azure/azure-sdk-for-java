@@ -3,18 +3,25 @@
 package com.azure.resourcemanager.samples;
 
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.appplatform.samples.ManageSpringCloud;
-import com.azure.resourcemanager.resources.core.TestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+
 public class AppPlatformLiveOnlyTests extends SamplesTestBase {
-    public AppPlatformLiveOnlyTests() {
-        super(TestBase.RunCondition.LIVE_ONLY);
-    }
 
     @Test
-    public void testSpringCloud() {
+    @DoNotRecord
+    public void testSpringCloud() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+        if (skipInPlayback()) {
+            return;
+        }
+
         Assertions.assertTrue(ManageSpringCloud.runSample(azure, clientIdFromFile()));
     }
 }

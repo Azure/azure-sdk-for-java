@@ -29,9 +29,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
-import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertListInner;
 import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertResourceInner;
+import com.azure.resourcemanager.monitor.models.ActivityLogAlertList;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertPatchBody;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -56,7 +55,7 @@ public final class ActivityLogAlertsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ActivityLogAlertsClient(MonitorClient client) {
+    ActivityLogAlertsClient(MonitorClient client) {
         this.service =
             RestProxy.create(ActivityLogAlertsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -131,7 +130,7 @@ public final class ActivityLogAlertsClient
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/activityLogAlerts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ActivityLogAlertListInner>> list(
+        Mono<Response<ActivityLogAlertList>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -143,7 +142,7 @@ public final class ActivityLogAlertsClient
                 + "/activityLogAlerts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ActivityLogAlertListInner>> listByResourceGroup(
+        Mono<Response<ActivityLogAlertList>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,

@@ -28,10 +28,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.storage.fluent.inner.PrivateEndpointConnectionListResultInner;
 import com.azure.resourcemanager.storage.models.PrivateEndpoint;
+import com.azure.resourcemanager.storage.models.PrivateEndpointConnectionListResult;
 import com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState;
 import reactor.core.publisher.Mono;
 
@@ -50,7 +49,7 @@ public final class PrivateEndpointConnectionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PrivateEndpointConnectionsClient(StorageManagementClient client) {
+    PrivateEndpointConnectionsClient(StorageManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -71,7 +70,7 @@ public final class PrivateEndpointConnectionsClient {
                 + "/storageAccounts/{accountName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionListResultInner>> list(
+        Mono<Response<PrivateEndpointConnectionListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,

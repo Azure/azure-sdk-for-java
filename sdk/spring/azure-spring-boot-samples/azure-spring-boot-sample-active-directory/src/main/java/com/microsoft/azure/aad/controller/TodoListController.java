@@ -4,6 +4,7 @@
 package com.microsoft.azure.aad.controller;
 
 import com.microsoft.azure.aad.model.TodoItem;
+import com.microsoft.azure.spring.autoconfigure.aad.Constants;
 import com.microsoft.azure.spring.autoconfigure.aad.UserGroup;
 import com.microsoft.azure.spring.autoconfigure.aad.UserPrincipal;
 import org.springframework.http.HttpStatus;
@@ -91,15 +92,19 @@ public class TodoListController {
     public ResponseEntity<String> deleteTodoItem(@PathVariable("id") int id,
                                                  PreAuthenticatedAuthenticationToken authToken) {
         final UserPrincipal current = (UserPrincipal) authToken.getPrincipal();
-
-        if (current.isMemberOf(
-                new UserGroup("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "group1"))) {
-            final List<TodoItem> find = todoList.stream().filter(i -> i.getID() == id).collect(Collectors.toList());
-            if (!find.isEmpty()) {
-                todoList.remove(todoList.indexOf(find.get(0)));
-                return new ResponseEntity<>("OK", HttpStatus.OK);
-            }
-            return new ResponseEntity<>("Entity not found", HttpStatus.OK);
+        UserGroup userGroup = new UserGroup(
+            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            Constants.OBJECT_TYPE_GROUP,
+            "group1");
+        if (current.isMemberOf(userGroup)) {
+            return todoList.stream()
+                           .filter(i -> i.getID() == id)
+                           .findFirst()
+                           .map(item -> {
+                               todoList.remove(item);
+                               return new ResponseEntity<>("OK", HttpStatus.OK);
+                           })
+                           .orElseGet(() -> new ResponseEntity<>("Entity not found", HttpStatus.OK));
         } else {
             return new ResponseEntity<>("Access is denied", HttpStatus.OK);
         }

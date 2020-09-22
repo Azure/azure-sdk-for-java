@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.IncidentInner;
-import com.azure.resourcemanager.monitor.fluent.inner.IncidentListResultInner;
+import com.azure.resourcemanager.monitor.models.IncidentListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AlertRuleIncidents. */
@@ -45,7 +44,7 @@ public final class AlertRuleIncidentsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AlertRuleIncidentsClient(MonitorClient client) {
+    AlertRuleIncidentsClient(MonitorClient client) {
         this.service =
             RestProxy.create(AlertRuleIncidentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -79,7 +78,7 @@ public final class AlertRuleIncidentsClient {
                 + "/{ruleName}/incidents")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IncidentListResultInner>> listByAlertRule(
+        Mono<Response<IncidentListResult>> listByAlertRule(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,

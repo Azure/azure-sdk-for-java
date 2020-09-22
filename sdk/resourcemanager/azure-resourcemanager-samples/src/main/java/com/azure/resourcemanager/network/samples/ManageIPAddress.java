@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.Date;
@@ -148,8 +148,6 @@ public final class ManageIPAddress {
             azure.publicIpAddresses().deleteById(publicIPAddress.id());
             System.out.println("Deleted the public IP address");
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -161,7 +159,6 @@ public final class ManageIPAddress {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

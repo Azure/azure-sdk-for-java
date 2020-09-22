@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AzureFirewallFqdnTagInner;
-import com.azure.resourcemanager.network.fluent.inner.AzureFirewallFqdnTagListResultInner;
+import com.azure.resourcemanager.network.models.AzureFirewallFqdnTagListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AzureFirewallFqdnTags. */
@@ -45,7 +44,7 @@ public final class AzureFirewallFqdnTagsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AzureFirewallFqdnTagsClient(NetworkManagementClient client) {
+    AzureFirewallFqdnTagsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(AzureFirewallFqdnTagsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -63,7 +62,7 @@ public final class AzureFirewallFqdnTagsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/azureFirewallFqdnTags")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureFirewallFqdnTagListResultInner>> list(
+        Mono<Response<AzureFirewallFqdnTagListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -73,7 +72,7 @@ public final class AzureFirewallFqdnTagsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureFirewallFqdnTagListResultInner>> listAllNext(
+        Mono<Response<AzureFirewallFqdnTagListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

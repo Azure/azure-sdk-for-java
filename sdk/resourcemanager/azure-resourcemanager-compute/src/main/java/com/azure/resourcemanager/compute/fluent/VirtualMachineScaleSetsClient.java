@@ -33,18 +33,17 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.RecoveryWalkResponseInner;
 import com.azure.resourcemanager.compute.fluent.inner.UpgradeOperationHistoricalStatusInfoInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInstanceViewInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetListOSUpgradeHistoryInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetListResultInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetListSkusResultInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetListWithLinkResultInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetSkuInner;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceStateInput;
 import com.azure.resourcemanager.compute.models.VMScaleSetConvertToSinglePlacementGroupInput;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListOSUpgradeHistory;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListResult;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListSkusResult;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListWithLinkResult;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetReimageParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdate;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceIDs;
@@ -75,7 +74,7 @@ public final class VirtualMachineScaleSetsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualMachineScaleSetsClient(ComputeManagementClient client) {
+    VirtualMachineScaleSetsClient(ComputeManagementClient client) {
         this.service =
             RestProxy
                 .create(VirtualMachineScaleSetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -197,7 +196,7 @@ public final class VirtualMachineScaleSetsClient
                 + "/virtualMachineScaleSets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetListResultInner>> listByResourceGroup(
+        Mono<Response<VirtualMachineScaleSetListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -208,7 +207,7 @@ public final class VirtualMachineScaleSetsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachineScaleSets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetListWithLinkResultInner>> list(
+        Mono<Response<VirtualMachineScaleSetListWithLinkResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -220,7 +219,7 @@ public final class VirtualMachineScaleSetsClient
                 + "/virtualMachineScaleSets/{vmScaleSetName}/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetListSkusResultInner>> listSkus(
+        Mono<Response<VirtualMachineScaleSetListSkusResult>> listSkus(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vmScaleSetName") String vmScaleSetName,
@@ -234,7 +233,7 @@ public final class VirtualMachineScaleSetsClient
                 + "/virtualMachineScaleSets/{vmScaleSetName}/osUpgradeHistory")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetListOSUpgradeHistoryInner>> getOSUpgradeHistory(
+        Mono<Response<VirtualMachineScaleSetListOSUpgradeHistory>> getOSUpgradeHistory(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vmScaleSetName") String vmScaleSetName,
@@ -412,28 +411,28 @@ public final class VirtualMachineScaleSetsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetListResultInner>> listNext(
+        Mono<Response<VirtualMachineScaleSetListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetListWithLinkResultInner>> listAllNext(
+        Mono<Response<VirtualMachineScaleSetListWithLinkResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetListSkusResultInner>> listSkusNext(
+        Mono<Response<VirtualMachineScaleSetListSkusResult>> listSkusNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetListOSUpgradeHistoryInner>> getOSUpgradeHistoryNext(
+        Mono<Response<VirtualMachineScaleSetListOSUpgradeHistory>> getOSUpgradeHistoryNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRoutePortInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRoutePortListResultInner;
+import com.azure.resourcemanager.network.models.ExpressRoutePortListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class ExpressRoutePortsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ExpressRoutePortsClient(NetworkManagementClient client) {
+    ExpressRoutePortsClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(ExpressRoutePortsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -139,7 +138,7 @@ public final class ExpressRoutePortsClient
                 + "/ExpressRoutePorts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRoutePortListResultInner>> listByResourceGroup(
+        Mono<Response<ExpressRoutePortListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -150,7 +149,7 @@ public final class ExpressRoutePortsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePorts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRoutePortListResultInner>> list(
+        Mono<Response<ExpressRoutePortListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -160,14 +159,14 @@ public final class ExpressRoutePortsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRoutePortListResultInner>> listByResourceGroupNext(
+        Mono<Response<ExpressRoutePortListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRoutePortListResultInner>> listNext(
+        Mono<Response<ExpressRoutePortListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

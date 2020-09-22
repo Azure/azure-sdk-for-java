@@ -20,7 +20,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.AuthorizationManagementClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GlobalAdministrators. */
@@ -38,7 +37,7 @@ public final class GlobalAdministratorsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public GlobalAdministratorsClient(AuthorizationManagementClient client) {
+    GlobalAdministratorsClient(AuthorizationManagementClient client) {
         this.service =
             RestProxy
                 .create(GlobalAdministratorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());

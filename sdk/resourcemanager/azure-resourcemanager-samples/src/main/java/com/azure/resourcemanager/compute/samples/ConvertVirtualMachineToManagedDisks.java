@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 /**
@@ -85,9 +85,6 @@ public final class ConvertVirtualMachineToManagedDisks {
             Utils.print(linuxVM);
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -99,8 +96,6 @@ public final class ConvertVirtualMachineToManagedDisks {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -61,5 +62,16 @@ public final class IncomingRelationshipCollection {
     public IncomingRelationshipCollection setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getValue() != null) {
+            getValue().forEach(e -> e.validate());
+        }
     }
 }

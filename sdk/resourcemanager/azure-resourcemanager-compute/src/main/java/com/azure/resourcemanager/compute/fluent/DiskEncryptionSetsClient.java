@@ -31,10 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.DiskEncryptionSetInner;
-import com.azure.resourcemanager.compute.fluent.inner.DiskEncryptionSetListInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSetList;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -61,7 +60,7 @@ public final class DiskEncryptionSetsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DiskEncryptionSetsClient(ComputeManagementClient client) {
+    DiskEncryptionSetsClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(DiskEncryptionSetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -138,7 +137,7 @@ public final class DiskEncryptionSetsClient
                 + "/diskEncryptionSets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<DiskEncryptionSetListInner>> listByResourceGroup(
+        Mono<Response<DiskEncryptionSetList>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -149,7 +148,7 @@ public final class DiskEncryptionSetsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskEncryptionSets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<DiskEncryptionSetListInner>> list(
+        Mono<Response<DiskEncryptionSetList>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -159,14 +158,14 @@ public final class DiskEncryptionSetsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<DiskEncryptionSetListInner>> listByResourceGroupNext(
+        Mono<Response<DiskEncryptionSetList>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<DiskEncryptionSetListInner>> listNext(
+        Mono<Response<DiskEncryptionSetList>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

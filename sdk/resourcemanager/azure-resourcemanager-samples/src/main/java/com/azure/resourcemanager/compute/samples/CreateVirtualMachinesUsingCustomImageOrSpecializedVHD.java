@@ -13,7 +13,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.SSHShell;
 import com.azure.resourcemanager.samples.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -162,11 +162,6 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
             Utils.print(linuxVM3);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -180,7 +175,6 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
             }
 
         }
-        return false;
     }
     /**
      * Main entry point.

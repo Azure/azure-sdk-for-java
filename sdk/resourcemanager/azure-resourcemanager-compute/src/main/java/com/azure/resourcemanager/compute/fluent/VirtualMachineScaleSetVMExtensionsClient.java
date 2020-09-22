@@ -27,7 +27,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionsListResultInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
@@ -51,7 +50,7 @@ public final class VirtualMachineScaleSetVMExtensionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualMachineScaleSetVMExtensionsClient(ComputeManagementClient client) {
+    VirtualMachineScaleSetVMExtensionsClient(ComputeManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -1388,6 +1387,26 @@ public final class VirtualMachineScaleSetVMExtensionsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param vmExtensionName The name of the virtual machine extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine Extension.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineExtensionInner get(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
+        final String expand = null;
+        final Context context = null;
+        return getAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, expand).block();
+    }
+
+    /**
+     * The operation to get the VMSS VM extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param vmExtensionName The name of the virtual machine extension.
      * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1404,26 +1423,6 @@ public final class VirtualMachineScaleSetVMExtensionsClient {
         String expand,
         Context context) {
         return getAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, expand, context).block();
-    }
-
-    /**
-     * The operation to get the VMSS VM extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineExtensionInner get(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
-        final String expand = null;
-        final Context context = null;
-        return getAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, expand).block();
     }
 
     /**
@@ -1636,25 +1635,6 @@ public final class VirtualMachineScaleSetVMExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Extension operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineExtensionsListResultInner list(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String expand, Context context) {
-        return listAsync(resourceGroupName, vmScaleSetName, instanceId, expand, context).block();
-    }
-
-    /**
-     * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1666,5 +1646,24 @@ public final class VirtualMachineScaleSetVMExtensionsClient {
         final String expand = null;
         final Context context = null;
         return listAsync(resourceGroupName, vmScaleSetName, instanceId, expand).block();
+    }
+
+    /**
+     * The operation to get all extensions of an instance in Virtual Machine Scaleset.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param expand The expand expression to apply on the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Extension operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineExtensionsListResultInner list(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String expand, Context context) {
+        return listAsync(resourceGroupName, vmScaleSetName, instanceId, expand, context).block();
     }
 }

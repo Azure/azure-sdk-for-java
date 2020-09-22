@@ -1,0 +1,19 @@
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>sb://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/foo?api-version=2017-04&amp;enrich=false</id>
+  <title type="text">foo</title>
+  <published>2020-08-28T04:32:20Z</published>
+  <updated>2020-08-28T04:34:20Z</updated>
+  <link rel="self" href="sb://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/foo?api-version=2017-04&amp;enrich=false"/>
+  <content type="application/xml">
+    <RuleDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+      <Filter i:type="SqlFilter">
+        <SqlExpression>type = "TestType"</SqlExpression>
+        <CompatibilityLevel>20</CompatibilityLevel>
+        <Parameters/>
+      </Filter>
+      <Action i:type="EmptyRuleAction"/>
+      <CreatedAt>2020-08-28T04:32:20.9387321Z</CreatedAt>
+      <Name>foo</Name>
+    </RuleDescription>
+  </content>
+</entry>

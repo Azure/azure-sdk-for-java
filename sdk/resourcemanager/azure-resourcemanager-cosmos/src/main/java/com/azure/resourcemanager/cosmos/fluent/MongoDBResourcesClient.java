@@ -31,14 +31,13 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.MongoDBCollectionGetResultsInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.MongoDBCollectionListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.MongoDBDatabaseGetResultsInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.MongoDBDatabaseListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.ThroughputSettingsGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.MongoDBCollectionListResult;
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseListResult;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -59,7 +58,7 @@ public final class MongoDBResourcesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public MongoDBResourcesClient(CosmosDBManagementClient client) {
+    MongoDBResourcesClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy.create(MongoDBResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -78,7 +77,7 @@ public final class MongoDBResourcesClient {
                 + "/databaseAccounts/{accountName}/mongodbDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MongoDBDatabaseListResultInner>> listMongoDBDatabases(
+        Mono<Response<MongoDBDatabaseListResult>> listMongoDBDatabases(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -169,7 +168,7 @@ public final class MongoDBResourcesClient {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MongoDBCollectionListResultInner>> listMongoDBCollections(
+        Mono<Response<MongoDBCollectionListResult>> listMongoDBCollections(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,

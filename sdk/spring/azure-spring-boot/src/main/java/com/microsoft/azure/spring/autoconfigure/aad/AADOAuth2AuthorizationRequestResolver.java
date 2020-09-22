@@ -3,27 +3,28 @@
 
 package com.microsoft.azure.spring.autoconfigure.aad;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.springframework.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * To add conditional policy claims to authorization URL.
  */
 public class AADOAuth2AuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
-    private OAuth2AuthorizationRequestResolver defaultResolver;
+    private final OAuth2AuthorizationRequestResolver defaultResolver;
 
     public AADOAuth2AuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
-        this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository,
-                OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI);
+        this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(
+            clientRegistrationRepository,
+            OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI
+        );
     }
 
     @Override
@@ -36,39 +37,33 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
         return addClaims(request, defaultResolver.resolve(request, clientRegistrationId));
     }
 
-    //add claims to authorization-url
-    private OAuth2AuthorizationRequest addClaims(HttpServletRequest request,
-                                                 OAuth2AuthorizationRequest req) {
-        if (req == null || request == null) {
-            return req;
+    // Add claims to authorization-url
+    private OAuth2AuthorizationRequest addClaims(HttpServletRequest httpServletRequest,
+                                                 OAuth2AuthorizationRequest oAuth2AuthorizationRequest) {
+        if (oAuth2AuthorizationRequest == null || httpServletRequest == null) {
+            return oAuth2AuthorizationRequest;
         }
-
-        final String conditionalAccessPolicyClaims = getConditionalAccessPolicyClaims(request);
-        if (StringUtils.isEmpty(conditionalAccessPolicyClaims)) {
-            return req;
+        final String conditionalAccessPolicyClaims =
+            Optional.of(httpServletRequest)
+                    .map(HttpServletRequest::getSession)
+                    .map(httpSession -> {
+                        String claims = (String) httpSession.getAttribute(Constants.CAP_CLAIMS);
+                        if (claims != null) {
+                            httpSession.removeAttribute(Constants.CAP_CLAIMS);
+                        }
+                        return claims;
+                    })
+                    .orElse(null);
+        if (conditionalAccessPolicyClaims == null) {
+            return oAuth2AuthorizationRequest;
         }
-
-        final Map<String, Object> extraParams = new HashMap<>();
-        if (req.getAdditionalParameters() != null) {
-            extraParams.putAll(req.getAdditionalParameters());
-        }
-        extraParams.put(AADConstantsHelper.CLAIMS, conditionalAccessPolicyClaims);
-        return OAuth2AuthorizationRequest
-                .from(req)
-                .additionalParameters(extraParams)
-                .build();
-    }
-
-    private String getConditionalAccessPolicyClaims(HttpServletRequest request) {
-        //claims just for one use
-        final String claims = request.getSession()
-                .getAttribute(AADConstantsHelper.CAP_CLAIMS) == null ? "" : (String) request
-                .getSession()
-                .getAttribute(AADConstantsHelper.CAP_CLAIMS);
-        //remove claims in session
-        if (!StringUtils.isEmpty(claims)) {
-            request.getSession().removeAttribute(AADConstantsHelper.CAP_CLAIMS);
-        }
-        return claims;
+        final Map<String, Object> additionalParameters = new HashMap<>();
+        additionalParameters.put(Constants.CLAIMS, conditionalAccessPolicyClaims);
+        Optional.of(oAuth2AuthorizationRequest)
+                .map(OAuth2AuthorizationRequest::getAdditionalParameters)
+                .ifPresent(additionalParameters::putAll);
+        return OAuth2AuthorizationRequest.from(oAuth2AuthorizationRequest)
+                                         .additionalParameters(additionalParameters)
+                                         .build();
     }
 }

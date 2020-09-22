@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +89,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
     @Test
     public void canEnableBootDiagnosticsWithCreatableStorageOnManagedVMSSCreation() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
-        final String storageName = sdkContext.randomResourceName("st", 14);
+        final String storageName = generateRandomResourceName("st", 14);
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
@@ -143,7 +143,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
     @Test
     public void canEnableBootDiagnosticsWithExplicitStorageOnManagedVMSSCreation() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
-        final String storageName = sdkContext.randomResourceName("st", 14);
+        final String storageName = generateRandomResourceName("st", 14);
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
@@ -325,7 +325,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
 
     @Test
     public void bootDiagnosticsShouldUseVMSSUnManagedDisksExplicitStorage() throws Exception {
-        final String storageName = sdkContext.randomResourceName("st", 14);
+        final String storageName = generateRandomResourceName("st", 14);
         final String vmssName = generateRandomResourceName("vmss", 10);
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
@@ -395,7 +395,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
 
     @Test
     public void canEnableBootDiagnosticsWithCreatableStorageOnUnManagedVMSSCreation() throws Exception {
-        final String storageName = sdkContext.randomResourceName("st", 14);
+        final String storageName = generateRandomResourceName("st", 14);
         final String vmssName = generateRandomResourceName("vmss", 10);
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();

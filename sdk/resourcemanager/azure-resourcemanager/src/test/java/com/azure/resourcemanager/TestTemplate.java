@@ -4,18 +4,18 @@ package com.azure.resourcemanager;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.resources.models.ResourceGroups;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import java.io.IOException;
+import com.azure.resourcemanager.resources.models.ResourceGroups;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
+
+import java.io.IOException;
 
 /**
  * Base class for CRUD test cases for top level Azure resource models.
@@ -27,7 +27,7 @@ public abstract class TestTemplate<
     ResourceT extends GroupableResource<? extends ManagerBase, ?>,
     CollectionT extends
         SupportsListing<ResourceT> & SupportsGettingByResourceGroup<ResourceT> & SupportsDeletingById
-            & SupportsGettingById<ResourceT> & HasInner<?> & HasManager<? extends ManagerBase>> {
+            & SupportsGettingById<ResourceT> & HasManager<? extends ManagerBase>> {
 
     private ResourceT resource;
     private CollectionT collection;

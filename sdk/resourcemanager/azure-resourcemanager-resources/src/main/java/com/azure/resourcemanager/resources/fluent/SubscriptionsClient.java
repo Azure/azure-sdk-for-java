@@ -25,11 +25,10 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.SubscriptionClient;
 import com.azure.resourcemanager.resources.fluent.inner.LocationInner;
-import com.azure.resourcemanager.resources.fluent.inner.LocationListResultInner;
 import com.azure.resourcemanager.resources.fluent.inner.SubscriptionInner;
-import com.azure.resourcemanager.resources.fluent.inner.SubscriptionListResultInner;
+import com.azure.resourcemanager.resources.models.LocationListResult;
+import com.azure.resourcemanager.resources.models.SubscriptionListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Subscriptions. */
@@ -47,7 +46,7 @@ public final class SubscriptionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public SubscriptionsClient(SubscriptionClient client) {
+    SubscriptionsClient(SubscriptionClient client) {
         this.service =
             RestProxy.create(SubscriptionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -64,7 +63,7 @@ public final class SubscriptionsClient {
         @Get("/subscriptions/{subscriptionId}/locations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LocationListResultInner>> listLocations(
+        Mono<Response<LocationListResult>> listLocations(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -84,14 +83,14 @@ public final class SubscriptionsClient {
         @Get("/subscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionListResultInner>> list(
+        Mono<Response<SubscriptionListResult>> list(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionListResultInner>> listNext(
+        Mono<Response<SubscriptionListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

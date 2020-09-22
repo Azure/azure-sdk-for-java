@@ -22,6 +22,7 @@ public class SpringServicesImpl
         SpringService, SpringServiceImpl, ServiceResourceInner, ServicesClient, AppPlatformManager>
     implements SpringServices {
     private static final String SPRING_TYPE = "Microsoft.AppPlatform/Spring";
+
     public SpringServicesImpl(AppPlatformManager manager) {
         super(manager.inner().getServices(), manager);
     }

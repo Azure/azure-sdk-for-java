@@ -229,10 +229,9 @@ public final class GenericResourcesImpl
         String apiVersion = getApiVersionFromId(id).block();
 
         return AcceptedImpl.newAccepted(logger,
+            manager().inner(),
             () -> this.inner().deleteByIdWithResponseAsync(id, apiVersion).block(),
             Function.identity(),
-            manager().inner().getSerializerAdapter(),
-            manager().inner().getHttpPipeline(),
             Void.class,
             null);
     }

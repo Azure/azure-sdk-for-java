@@ -32,10 +32,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
-import com.azure.resourcemanager.network.fluent.inner.SubnetListResultInner;
 import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
+import com.azure.resourcemanager.network.models.SubnetListResult;
 import com.azure.resourcemanager.network.models.UnprepareNetworkPoliciesRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -56,7 +55,7 @@ public final class SubnetsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public SubnetsClient(NetworkManagementClient client) {
+    SubnetsClient(NetworkManagementClient client) {
         this.service = RestProxy.create(SubnetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -153,7 +152,7 @@ public final class SubnetsClient {
                 + "/virtualNetworks/{virtualNetworkName}/subnets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubnetListResultInner>> list(
+        Mono<Response<SubnetListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualNetworkName") String virtualNetworkName,
@@ -165,7 +164,7 @@ public final class SubnetsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubnetListResultInner>> listNext(
+        Mono<Response<SubnetListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -631,6 +630,24 @@ public final class SubnetsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified subnet by virtual network and resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName) {
+        final String expand = null;
+        final Context context = null;
+        return getAsync(resourceGroupName, virtualNetworkName, subnetName, expand).block();
+    }
+
+    /**
+     * Gets the specified subnet by virtual network and resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,24 +659,6 @@ public final class SubnetsClient {
     public SubnetInner get(
         String resourceGroupName, String virtualNetworkName, String subnetName, String expand, Context context) {
         return getAsync(resourceGroupName, virtualNetworkName, subnetName, expand, context).block();
-    }
-
-    /**
-     * Gets the specified subnet by virtual network and resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified subnet by virtual network and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName) {
-        final String expand = null;
-        final Context context = null;
-        return getAsync(resourceGroupName, virtualNetworkName, subnetName, expand).block();
     }
 
     /**

@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.inner.LoadBalancerProbeListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ProbeInner;
+import com.azure.resourcemanager.network.models.LoadBalancerProbeListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LoadBalancerProbes. */
@@ -45,7 +44,7 @@ public final class LoadBalancerProbesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public LoadBalancerProbesClient(NetworkManagementClient client) {
+    LoadBalancerProbesClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(LoadBalancerProbesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -64,7 +63,7 @@ public final class LoadBalancerProbesClient {
                 + "/loadBalancers/{loadBalancerName}/probes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadBalancerProbeListResultInner>> list(
+        Mono<Response<LoadBalancerProbeListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("loadBalancerName") String loadBalancerName,
@@ -91,7 +90,7 @@ public final class LoadBalancerProbesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadBalancerProbeListResultInner>> listNext(
+        Mono<Response<LoadBalancerProbeListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

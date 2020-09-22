@@ -27,8 +27,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -292,7 +293,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
      * @param message Message to be sent to the Service Bus Queue.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param scheduledEnqueueTime OffsetDateTime at which the message should appear in the Service Bus queue or topic.
      * @param transactionContext to be set on message before sending to Service Bus.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
@@ -300,7 +301,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code message}, {@code scheduledEnqueueTime}, {@code transactionContext} or
      * {@code transactionContext.transactionID} is {@code null}.
      */
-    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime,
+    public Mono<Long> scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
@@ -317,13 +318,13 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
      * @param message Message to be sent to the Service Bus Queue.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param scheduledEnqueueTime OffsetDateTime at which the message should appear in the Service Bus queue or topic.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      *
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      */
-    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
+    public Mono<Long> scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime) {
         return scheduleMessageInternal(message, scheduledEnqueueTime, null);
     }
 
@@ -338,7 +339,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code messages} or {@code scheduledEnqueueTime} is {@code null}.
      */
-    public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, Instant scheduledEnqueueTime) {
+    public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime) {
         return scheduleMessagesInternal(messages, scheduledEnqueueTime, null);
     }
 
@@ -354,7 +355,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      */
-    public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, Instant scheduledEnqueueTime,
+    public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
         return scheduleMessagesInternal(messages, scheduledEnqueueTime, transactionContext);
     }
@@ -486,7 +487,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         });
     }
 
-    private Flux<Long> scheduleMessagesInternal(Iterable<ServiceBusMessage> messages, Instant scheduledEnqueueTime,
+
+    private Flux<Long> scheduleMessagesInternal(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transaction) {
         if (Objects.isNull(messages)) {
             return fluxError(logger, new NullPointerException("'messages' cannot be null."));
@@ -502,7 +504,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         });
     }
 
-    private Flux<Long> scheduleMessagesInternal(ServiceBusMessageBatch message, Instant scheduledEnqueueTime,
+    private Flux<Long> scheduleMessagesInternal(ServiceBusMessageBatch message, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(message)) {
             return fluxError(logger, new NullPointerException("'message' cannot be null."));
@@ -525,7 +527,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             }));
     }
 
-    private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, Instant scheduledEnqueueTime,
+    private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
@@ -543,8 +545,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
                 return connectionProcessor
                     .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                    .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize,
-                        link.getLinkName(), transactionContext));
+                    .flatMap(managementNode -> managementNode.schedule(Arrays.asList(message), scheduledEnqueueTime, maxSize,
+                        link.getLinkName(), transactionContext)
+                    .next());
             }));
     }
 

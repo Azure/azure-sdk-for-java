@@ -29,22 +29,21 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteBuildArmResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteBuildCollectionInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteCustomDomainOverviewArmResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteCustomDomainOverviewCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteFunctionOverviewArmResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteFunctionOverviewCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteUserArmResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteUserCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteUserInvitationResponseResourceInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.StaticSiteBuildCollection;
+import com.azure.resourcemanager.appservice.models.StaticSiteCollection;
+import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainOverviewCollection;
+import com.azure.resourcemanager.appservice.models.StaticSiteFunctionOverviewCollection;
 import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmResource;
+import com.azure.resourcemanager.appservice.models.StaticSiteUserCollection;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserInvitationRequestResource;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -66,7 +65,7 @@ public final class StaticSitesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public StaticSitesClient(WebSiteManagementClient client) {
+    StaticSitesClient(WebSiteManagementClient client) {
         this.service =
             RestProxy.create(StaticSitesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -83,7 +82,7 @@ public final class StaticSitesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteCollectionInner>> list(
+        Mono<Response<StaticSiteCollection>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -93,7 +92,7 @@ public final class StaticSitesClient
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteCollectionInner>> listByResourceGroup(
+        Mono<Response<StaticSiteCollection>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -164,7 +163,7 @@ public final class StaticSitesClient
                 + "/{name}/authproviders/{authprovider}/listUsers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteUserCollectionInner>> listStaticSiteUsers(
+        Mono<Response<StaticSiteUserCollection>> listStaticSiteUsers(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -212,7 +211,7 @@ public final class StaticSitesClient
                 + "/{name}/builds")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteBuildCollectionInner>> getStaticSiteBuilds(
+        Mono<Response<StaticSiteBuildCollection>> getStaticSiteBuilds(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -272,7 +271,7 @@ public final class StaticSitesClient
                 + "/{name}/builds/{prId}/functions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteFunctionOverviewCollectionInner>> listStaticSiteBuildFunctions(
+        Mono<Response<StaticSiteFunctionOverviewCollection>> listStaticSiteBuildFunctions(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -333,7 +332,7 @@ public final class StaticSitesClient
                 + "/{name}/customDomains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteCustomDomainOverviewCollectionInner>> listStaticSiteCustomDomains(
+        Mono<Response<StaticSiteCustomDomainOverviewCollection>> listStaticSiteCustomDomains(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -406,7 +405,7 @@ public final class StaticSitesClient
                 + "/{name}/functions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteFunctionOverviewCollectionInner>> listStaticSiteFunctions(
+        Mono<Response<StaticSiteFunctionOverviewCollection>> listStaticSiteFunctions(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -461,49 +460,49 @@ public final class StaticSitesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteCollectionInner>> listNext(
+        Mono<Response<StaticSiteCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteCollectionInner>> getStaticSitesByResourceGroupNext(
+        Mono<Response<StaticSiteCollection>> getStaticSitesByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteUserCollectionInner>> listStaticSiteUsersNext(
+        Mono<Response<StaticSiteUserCollection>> listStaticSiteUsersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteBuildCollectionInner>> getStaticSiteBuildsNext(
+        Mono<Response<StaticSiteBuildCollection>> getStaticSiteBuildsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteFunctionOverviewCollectionInner>> listStaticSiteBuildFunctionsNext(
+        Mono<Response<StaticSiteFunctionOverviewCollection>> listStaticSiteBuildFunctionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteCustomDomainOverviewCollectionInner>> listStaticSiteCustomDomainsNext(
+        Mono<Response<StaticSiteCustomDomainOverviewCollection>> listStaticSiteCustomDomainsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteFunctionOverviewCollectionInner>> listStaticSiteFunctionsNext(
+        Mono<Response<StaticSiteFunctionOverviewCollection>> listStaticSiteFunctionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

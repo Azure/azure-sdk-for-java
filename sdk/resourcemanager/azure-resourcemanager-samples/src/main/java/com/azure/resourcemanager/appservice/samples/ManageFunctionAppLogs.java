@@ -11,7 +11,7 @@ import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.LogLevel;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import org.apache.commons.lang.time.StopWatch;
@@ -37,7 +37,7 @@ public final class ManageFunctionAppLogs {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         // New resources
         final String suffix         = ".azurewebsites.net";
         final String appName       = azure.sdkContext().randomResourceName("webapp1-", 20);
@@ -140,9 +140,6 @@ public final class ManageFunctionAppLogs {
             });
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -154,7 +151,6 @@ public final class ManageFunctionAppLogs {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

@@ -35,10 +35,9 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceCollectionInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.LogFileUrlResponseInner;
+import com.azure.resourcemanager.appplatform.models.DeploymentResourceCollection;
 import java.nio.ByteBuffer;
 import java.util.List;
 import reactor.core.publisher.Flux;
@@ -59,7 +58,7 @@ public final class DeploymentsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DeploymentsClient(AppPlatformManagementClient client) {
+    DeploymentsClient(AppPlatformManagementClient client) {
         this.service =
             RestProxy.create(DeploymentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -144,7 +143,7 @@ public final class DeploymentsClient {
                 + "/{serviceName}/apps/{appName}/deployments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentResourceCollectionInner>> list(
+        Mono<Response<DeploymentResourceCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -160,7 +159,7 @@ public final class DeploymentsClient {
                 + "/{serviceName}/deployments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentResourceCollectionInner>> listForCluster(
+        Mono<Response<DeploymentResourceCollection>> listForCluster(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -237,14 +236,14 @@ public final class DeploymentsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentResourceCollectionInner>> listNext(
+        Mono<Response<DeploymentResourceCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentResourceCollectionInner>> listForClusterNext(
+        Mono<Response<DeploymentResourceCollection>> listForClusterNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

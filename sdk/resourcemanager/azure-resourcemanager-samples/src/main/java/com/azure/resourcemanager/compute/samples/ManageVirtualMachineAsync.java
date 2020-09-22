@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.compute.models.Disk;
@@ -13,11 +14,9 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -72,7 +71,7 @@ public final class ManageVirtualMachineAsync {
 
             // Create a data disk to attach to VM
             //
-            Flux<Indexable> dataDiskFlux = azure.disks().define(azure.sdkContext().randomResourceName("dsk-", 15))
+            Mono<Disk> dataDiskMono = azure.disks().define(azure.sdkContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withData()
@@ -81,71 +80,61 @@ public final class ManageVirtualMachineAsync {
 
             final Map<String, VirtualMachine> createdVms = new TreeMap<>();
 
-            dataDiskFlux.flatMap(
-                createdResource -> {
-                    if (createdResource instanceof Disk) {
-                        System.out.println("Creating a Windows VM");
+            Mono<NetworkInterface> nicMono = azure.networkInterfaces().define(azure.sdkContext().randomResourceName("nic", 20))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .createAsync();
 
-                        return azure.virtualMachines().define(windowsVMName)
-                            .withRegion(region)
-                            .withNewResourceGroup(rgName)
-                            .withNewPrimaryNetwork("10.0.0.0/28")
-                            .withPrimaryPrivateIPAddressDynamic()
-                            .withoutPrimaryPublicIPAddress()
-                            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                            .withAdminUsername(userName)
-                            .withAdminPassword(password)
-                            .withNewDataDisk(10)
-                            .withNewDataDisk(dataDiskCreatable)
-                            .withExistingDataDisk((Disk) createdResource)
-                            .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                            .createAsync();
+            Mono.zip(dataDiskMono, nicMono)
+                .flatMapMany(
+                    tuple -> Flux.merge(
+                        Mono.defer(() -> {
+                            System.out.println("Creating a Windows VM");
+                            return azure.virtualMachines().define(windowsVMName)
+                                .withRegion(region)
+                                .withExistingResourceGroup(rgName)
+                                .withExistingPrimaryNetworkInterface(tuple.getT2())
+                                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                                .withAdminUsername(userName)
+                                .withAdminPassword(password)
+                                .withNewDataDisk(10)
+                                .withNewDataDisk(dataDiskCreatable)
+                                .withExistingDataDisk(tuple.getT1())
+                                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                                .createAsync();
+                        }),
+                        Mono.defer(() -> {
+                            System.out.println("Creating a Linux VM in the same network");
+                            return azure.virtualMachines().define(linuxVMName)
+                                .withRegion(region)
+                                .withExistingResourceGroup(rgName)
+                                .withExistingPrimaryNetworkInterface(tuple.getT2())
+                                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                                .withRootUsername(userName)
+                                .withRootPassword(password)
+                                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                                .createAsync();
+                        })
+                    )
+            ).doOnNext(
+                virtualMachine -> {
+                    Date t2 = new Date();
+                    if (isWindowsVM(virtualMachine)) {
+                        createdVms.put(windowsVmKey, virtualMachine);
+                        System.out.println("Created Windows VM: "
+                            + virtualMachine.id());
+                    } else {
+                        createdVms.put(linuxVmKey, virtualMachine);
+                        System.out.println("Created a Linux VM (in the same virtual network): "
+                            + virtualMachine.id());
                     }
-                    return Flux.just(createdResource);
-                }).flatMap(createdResource -> {
-                    if (createdResource instanceof Network) {
-                        // Once Network object is created we can start creation of Linux VM in the same network
-                        Network network = (Network) createdResource;
-                        System.out.println("Created Network: " + network.id());
-
-                        System.out.println("Creating a Linux VM in the same network");
-
-                        return azure.virtualMachines().define(linuxVMName)
-                            .withRegion(region)
-                            .withExistingResourceGroup(rgName)
-                            .withExistingPrimaryNetwork(network)
-                            .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
-                            .withPrimaryPrivateIPAddressDynamic()
-                            .withoutPrimaryPublicIPAddress()
-                            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                            .withRootUsername(userName)
-                            .withRootPassword(password)
-                            .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                            .createAsync();
-                    }
-                    return Flux.just(createdResource);
+                    System.out.println("Virtual machine creation took "
+                        + ((t2.getTime() - t1.getTime()) / 1000)
+                        + " seconds");
                 }
-            ).map(
-                createdResource -> {
-                    if (createdResource instanceof VirtualMachine) {
-                        Date t2 = new Date();
-                        VirtualMachine virtualMachine = (VirtualMachine) createdResource;
-                        if (isWindowsVM(virtualMachine)) {
-                            createdVms.put(windowsVmKey, virtualMachine);
-                            System.out.println("Created Windows VM: "
-                                + virtualMachine.id());
-                        } else {
-                            createdVms.put(linuxVmKey, virtualMachine);
-                            System.out.println("Created a Linux VM (in the same virtual network): "
-                                + virtualMachine.id());
-                        }
-                        System.out.println("Virtual machine creation took "
-                            + ((t2.getTime() - t1.getTime()) / 1000)
-                            + " seconds");
-                    }
-                    return createdResource;
-                }
-            ).last().block();
+            ).blockLast();
 
             final VirtualMachine windowsVM = createdVms.get(windowsVmKey);
             final VirtualMachine linuxVM = createdVms.get(linuxVmKey);
@@ -187,11 +176,6 @@ public final class ManageVirtualMachineAsync {
                     .singleOrEmpty().block();
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -204,7 +188,6 @@ public final class ManageVirtualMachineAsync {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     private static boolean isWindowsVM(VirtualMachine vm) {

@@ -11,9 +11,10 @@ import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
+import com.azure.resourcemanager.appservice.models.WebAppBasic;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
@@ -116,13 +117,13 @@ public final class ManageWebAppBasic {
 
             System.out.println("Printing list of web apps in resource group " + rg1Name + "...");
 
-            for (WebApp webApp : azure.webApps().listByResourceGroup(rg1Name)) {
+            for (WebAppBasic webApp : azure.webApps().listByResourceGroup(rg1Name)) {
                 Utils.print(webApp);
             }
 
             System.out.println("Printing list of web apps in resource group " + rg2Name + "...");
 
-            for (WebApp webApp : azure.webApps().listByResourceGroup(rg2Name)) {
+            for (WebAppBasic webApp : azure.webApps().listByResourceGroup(rg2Name)) {
                 Utils.print(webApp);
             }
 
@@ -134,13 +135,10 @@ public final class ManageWebAppBasic {
             System.out.println("Deleted web app " + app1Name + "...");
 
             System.out.println("Printing list of web apps in resource group " + rg1Name + " again...");
-            for (WebApp webApp : azure.webApps().listByResourceGroup(rg1Name)) {
+            for (WebAppBasic webApp : azure.webApps().listByResourceGroup(rg1Name)) {
                 Utils.print(webApp);
             }
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rg1Name);
@@ -155,7 +153,6 @@ public final class ManageWebAppBasic {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.NetworkProfileInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkProfileListResultInner;
+import com.azure.resourcemanager.network.models.NetworkProfileListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class NetworkProfilesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public NetworkProfilesClient(NetworkManagementClient client) {
+    NetworkProfilesClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(NetworkProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -138,7 +137,7 @@ public final class NetworkProfilesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkProfiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkProfileListResultInner>> list(
+        Mono<Response<NetworkProfileListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -150,7 +149,7 @@ public final class NetworkProfilesClient
                 + "/networkProfiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkProfileListResultInner>> listByResourceGroup(
+        Mono<Response<NetworkProfileListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -161,14 +160,14 @@ public final class NetworkProfilesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkProfileListResultInner>> listAllNext(
+        Mono<Response<NetworkProfileListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkProfileListResultInner>> listNext(
+        Mono<Response<NetworkProfileListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -596,6 +595,23 @@ public final class NetworkProfilesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the public IP prefix.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network profile in a specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkProfileInner getByResourceGroup(String resourceGroupName, String networkProfileName) {
+        final String expand = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, networkProfileName, expand).block();
+    }
+
+    /**
+     * Gets the specified network profile in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkProfileName The name of the public IP prefix.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -607,23 +623,6 @@ public final class NetworkProfilesClient
     public NetworkProfileInner getByResourceGroup(
         String resourceGroupName, String networkProfileName, String expand, Context context) {
         return getByResourceGroupAsync(resourceGroupName, networkProfileName, expand, context).block();
-    }
-
-    /**
-     * Gets the specified network profile in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network profile in a specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkProfileInner getByResourceGroup(String resourceGroupName, String networkProfileName) {
-        final String expand = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, networkProfileName, expand).block();
     }
 
     /**

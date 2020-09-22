@@ -8,7 +8,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
@@ -32,7 +32,7 @@ public class DeployVirtualMachineUsingARMTemplate {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException, IllegalAccessException {
         final String rgName = azure.sdkContext().randomResourceName("rgRSAT", 24);
         final String deploymentName = azure.sdkContext().randomResourceName("dpRSAT", 24);
         try {
@@ -77,11 +77,6 @@ public class DeployVirtualMachineUsingARMTemplate {
                 System.out.println("Current deployment status : " + deployment.provisioningState());
             }
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -94,7 +89,6 @@ public class DeployVirtualMachineUsingARMTemplate {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
