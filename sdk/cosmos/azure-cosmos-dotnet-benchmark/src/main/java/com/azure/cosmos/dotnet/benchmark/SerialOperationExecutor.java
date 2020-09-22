@@ -16,9 +16,7 @@ public class SerialOperationExecutor implements IExecutor {
     private final String executorId;
 
     private int successOperationCount;
-
     private int failedOperationCount;
-
     private double totalRuCharges;
 
     public SerialOperationExecutor(
@@ -52,7 +50,7 @@ public class SerialOperationExecutor implements IExecutor {
         int iterationCount,
         boolean isWarmup,
         boolean traceFailures,
-        Function<Void, Void> completionCallback) {
+        Runnable completionCallback) {
 
         LOGGER.info(String.format("Executor %s started", this.executorId));
 
@@ -60,7 +58,7 @@ public class SerialOperationExecutor implements IExecutor {
 
         OperationResult operationResult = null;
 
-        return this.operation.prepare().flatMap((dummy) -> {
+        Mono<Void> task = this.operation.prepare().flatMap((dummy) -> {
             return Flux
                 .range(0, iterationCount)
                 .flatMapSequential(
@@ -93,12 +91,14 @@ public class SerialOperationExecutor implements IExecutor {
                         LOGGER.info(String.format("Executor %s completed", this.executorId));
 
                         if (completionCallback != null) {
-                            completionCallback.apply(null);
+                            completionCallback.run();
                         }
 
                         return Mono.empty();
                     })
                 .then();
         });
+
+        return task;
     }
 }

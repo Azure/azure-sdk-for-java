@@ -4,7 +4,7 @@ import com.azure.cosmos.implementation.guava25.base.Function;
 import reactor.core.publisher.Mono;
 
 interface IExecutionStrategy {
-    public Mono<RunSummary> execute(
+    public RunSummary execute(
         int serialExecutorConcurrency,
         int serialExecutorIterationCount,
         boolean traceFailures,

@@ -14,5 +14,5 @@ public interface IExecutor {
         int iterationCount,
         boolean isWarmup,
         boolean traceFailures,
-        Function<Void, Void> completionCallback);
+        Runnable completionCallback);
 }
