@@ -29,8 +29,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.springframework.util.StringUtils.hasText;
-
 /**
  * A stateless authentication filter which uses app roles feature of Azure Active Directory. Since it's a stateless
  * implementation so the principal will not be stored in session. By using roles claim in the token it will not call
@@ -50,42 +48,46 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
+    protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (!alreadyAuthenticated() && hasText(authHeader) && authHeader.startsWith(TOKEN_TYPE)) {
-            String token = authHeader.replace(TOKEN_TYPE, "");
-            if (!principalManager.isTokenIssuedByAAD(token)) {
-                LOGGER.info("Token {} is not issued by AAD", token);
-            }
+        String aadIssuedBearerToken = Optional.of(httpServletRequest)
+                                              .map(r -> (String) r.getAttribute(HttpHeaders.AUTHORIZATION))
+                                              .map(String::trim)
+                                              .filter(s -> s.startsWith(TOKEN_TYPE))
+                                              .map(s -> s.replace(TOKEN_TYPE, ""))
+                                              .filter(principalManager::isTokenIssuedByAAD)
+                                              .orElse(null);
+        if (aadIssuedBearerToken == null || alreadyAuthenticated()) {
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+            return;
+        }
+        try {
+            final UserPrincipal principal = principalManager.buildUserPrincipal(aadIssuedBearerToken);
+            final JSONArray roles = Optional.of(principal)
+                                            .map(UserPrincipal::getClaims)
+                                            .map(claims -> (JSONArray) claims.get("roles"))
+                                            .filter(r -> !r.isEmpty())
+                                            .orElse(DEFAULT_ROLE_CLAIM);
+            final Authentication authentication = new PreAuthenticatedAuthenticationToken(
+                principal,
+                null,
+                rolesToGrantedAuthorities(roles)
+            );
+            LOGGER.info("Request token verification success. {}", authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             try {
-                final UserPrincipal principal = principalManager.buildUserPrincipal(token);
-                final JSONArray roles = Optional.of(principal)
-                                                .map(UserPrincipal::getClaims)
-                                                .map(claims -> (JSONArray) claims.get("roles"))
-                                                .filter(r -> !r.isEmpty())
-                                                .orElse(DEFAULT_ROLE_CLAIM);
-                final Authentication authentication = new PreAuthenticatedAuthenticationToken(
-                    principal,
-                    null,
-                    rolesToGrantedAuthorities(roles)
-                );
-                LOGGER.info("Request token verification success. {}", authentication);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                try {
-                    filterChain.doFilter(request, httpServletResponse);
-                } finally {
-                    //Clear context after execution
-                    SecurityContextHolder.clearContext();
-                }
-            } catch (BadJWTException ex) {
-                // Invalid JWT. Either expired or not yet valid.
-                httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
-            } catch (ParseException | BadJOSEException | JOSEException ex) {
-                LOGGER.error("Failed to initialize UserPrincipal.", ex);
-                throw new ServletException(ex);
+                filterChain.doFilter(httpServletRequest, httpServletResponse);
+            } finally {
+                //Clear context after execution
+                SecurityContextHolder.clearContext();
             }
+        } catch (BadJWTException ex) {
+            // Invalid JWT. Either expired or not yet valid.
+            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
+        } catch (ParseException | BadJOSEException | JOSEException ex) {
+            LOGGER.error("Failed to initialize UserPrincipal.", ex);
+            throw new ServletException(ex);
         }
     }
 
