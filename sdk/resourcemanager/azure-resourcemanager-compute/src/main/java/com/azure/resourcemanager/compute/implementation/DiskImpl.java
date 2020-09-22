@@ -12,11 +12,13 @@ import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
 import com.azure.resourcemanager.compute.models.DiskSku;
 import com.azure.resourcemanager.compute.models.DiskSkuTypes;
+import com.azure.resourcemanager.compute.models.DiskStorageAccountTypes;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.fluent.inner.DiskInner;
+import com.azure.resourcemanager.compute.models.SnapshotSkuType;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -179,7 +181,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
         if (sourceSnapshot.osType() != null) {
             this.withOSType(sourceSnapshot.osType());
         }
-        this.withSku(sourceSnapshot.sku());
+        this.withSku(this.fromSnapshotSkuType(sourceSnapshot.skuType()));
         return this;
     }
 
@@ -235,7 +237,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
         if (sourceSnapshot.osType() != null) {
             this.withOSType(sourceSnapshot.osType());
         }
-        this.withSku(sourceSnapshot.sku());
+        this.withSku(this.fromSnapshotSkuType(sourceSnapshot.skuType()));
         return this;
     }
 
@@ -383,5 +385,12 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
                 dependencyTasksAsync.blockLast();
             },
             this::setInner);
+    }
+
+    private DiskSkuTypes fromSnapshotSkuType(SnapshotSkuType skuType) {
+        if (skuType == null) {
+            return null;
+        }
+        return DiskSkuTypes.fromStorageAccountType(DiskStorageAccountTypes.fromString(skuType.toString()));
     }
 }
