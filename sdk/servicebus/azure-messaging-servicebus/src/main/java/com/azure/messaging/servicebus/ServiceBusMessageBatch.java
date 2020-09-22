@@ -144,7 +144,8 @@ public final class ServiceBusMessageBatch {
             Context eventSpanContext = tracerProvider.startSpan(serviceBusMessage.getContext(), ProcessKind.MESSAGE);
             Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
             if (eventDiagnosticIdOptional.isPresent()) {
-                serviceBusMessage.getProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
+                serviceBusMessage.getApplicationProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get()
+                    .toString());
                 tracerProvider.endSpan(eventSpanContext, Signal.complete());
                 serviceBusMessage.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
             }

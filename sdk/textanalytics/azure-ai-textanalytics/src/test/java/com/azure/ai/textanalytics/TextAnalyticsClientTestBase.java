@@ -39,6 +39,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -50,7 +51,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.TestUtils.AZURE_TEXT_ANALYTICS_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
@@ -615,7 +615,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(FAKE_API_KEY));
         } else {
-            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_API_KEY)));
+            builder.credential((new DefaultAzureCredentialBuilder().build()));
         }
         return builder;
     }

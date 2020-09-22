@@ -224,8 +224,12 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
                 .setTags(tags).setTier(tier).setRequestConditions(requestConditions))
                 // This allows the operation to continue while maintaining the error that occurred.
-                .onErrorResume(BlobStorageException.class, e -> {
-                    this.lastError = new IOException(e);
+                .onErrorResume(e -> {
+                    if (e instanceof IOException) {
+                        this.lastError = (IOException) e;
+                    } else {
+                        this.lastError = new IOException(e);
+                    }
                     return Mono.empty();
                 })
                 .doOnTerminate(() -> {

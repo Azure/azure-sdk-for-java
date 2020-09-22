@@ -594,6 +594,23 @@ class BlobBaseAPITest extends APISpec {
         false   | true     || _
     }
 
+    def "Query error"() {
+        setup:
+        bc = cc.getBlobClient(generateBlobName())
+
+        when:
+        bc.openQueryInputStream("SELECT * from BlobStorage") /* Don't need to call read. */
+
+        then:
+        thrown(BlobStorageException)
+
+        when:
+        bc.query(new ByteArrayOutputStream(), "SELECT * from BlobStorage")
+
+        then:
+        thrown(BlobStorageException)
+    }
+
     @Unroll
     def "Query AC"() {
         setup:

@@ -15,9 +15,9 @@ import java.util.function.Function;
  * The class to contain the common factory methods required for SDK framework.
  */
 public class SdkContext {
-    private Function<String, IdentifierProvider> identifierFunction = name -> new ResourceNamer(name);
+    private Function<String, IdentifierProvider> identifierFunction = ResourceNamer::new;
     private static DelayProvider delayProvider = new ResourceDelayProvider();
-    private static Scheduler reactorScheduler = Schedulers.boundedElastic();
+    private static Scheduler reactorScheduler = Schedulers.parallel();
 
     /**
      * Default constructor for SdkContext.

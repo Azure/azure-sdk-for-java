@@ -73,7 +73,6 @@ class PacketCapturesImpl extends CreatableResourcesImpl<PacketCapture, PacketCap
         return this.inner().deleteAsync(parent.resourceGroupName(), parent.name(), name);
     }
 
-    @Override
     public PacketCapturesClient inner() {
         return innerCollection;
     }

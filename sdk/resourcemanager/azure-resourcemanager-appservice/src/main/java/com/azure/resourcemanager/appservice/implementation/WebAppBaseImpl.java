@@ -7,37 +7,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
-import com.azure.resourcemanager.appservice.models.AppServiceDomain;
-import com.azure.resourcemanager.appservice.models.AppSetting;
-import com.azure.resourcemanager.appservice.models.AzureResourceType;
-import com.azure.resourcemanager.appservice.models.CloningInfo;
-import com.azure.resourcemanager.appservice.models.ConnStringValueTypePair;
-import com.azure.resourcemanager.appservice.models.ConnectionString;
-import com.azure.resourcemanager.appservice.models.ConnectionStringType;
-import com.azure.resourcemanager.appservice.models.CustomHostnameDnsRecordType;
-import com.azure.resourcemanager.appservice.models.FtpsState;
-import com.azure.resourcemanager.appservice.models.HostnameBinding;
-import com.azure.resourcemanager.appservice.models.HostnameSslState;
-import com.azure.resourcemanager.appservice.models.HostnameType;
-import com.azure.resourcemanager.appservice.models.JavaVersion;
-import com.azure.resourcemanager.appservice.models.MSDeploy;
-import com.azure.resourcemanager.appservice.models.ManagedPipelineMode;
-import com.azure.resourcemanager.appservice.models.NetFrameworkVersion;
-import com.azure.resourcemanager.appservice.models.OperatingSystem;
-import com.azure.resourcemanager.appservice.models.PhpVersion;
-import com.azure.resourcemanager.appservice.models.PlatformArchitecture;
-import com.azure.resourcemanager.appservice.models.PythonVersion;
-import com.azure.resourcemanager.appservice.models.RemoteVisualStudioVersion;
-import com.azure.resourcemanager.appservice.models.ScmType;
-import com.azure.resourcemanager.appservice.models.SiteAvailabilityState;
-import com.azure.resourcemanager.appservice.models.SslState;
-import com.azure.resourcemanager.appservice.models.SupportedTlsVersions;
-import com.azure.resourcemanager.appservice.models.UsageState;
-import com.azure.resourcemanager.appservice.models.VirtualApplication;
-import com.azure.resourcemanager.appservice.models.WebAppAuthentication;
-import com.azure.resourcemanager.appservice.models.WebAppBase;
-import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.appservice.fluent.inner.ConnectionStringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.inner.HostnameBindingInner;
 import com.azure.resourcemanager.appservice.fluent.inner.MSDeployStatusInner;
@@ -50,8 +19,44 @@ import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SlotConfigNamesResourceInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
+import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.appservice.models.AppSetting;
+import com.azure.resourcemanager.appservice.models.AzureResourceType;
+import com.azure.resourcemanager.appservice.models.CloningInfo;
+import com.azure.resourcemanager.appservice.models.ConnStringValueTypePair;
+import com.azure.resourcemanager.appservice.models.ConnectionString;
+import com.azure.resourcemanager.appservice.models.ConnectionStringType;
+import com.azure.resourcemanager.appservice.models.CustomHostnameDnsRecordType;
+import com.azure.resourcemanager.appservice.models.FtpsState;
+import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
+import com.azure.resourcemanager.appservice.models.HostnameBinding;
+import com.azure.resourcemanager.appservice.models.HostnameSslState;
+import com.azure.resourcemanager.appservice.models.HostnameType;
+import com.azure.resourcemanager.appservice.models.JavaVersion;
+import com.azure.resourcemanager.appservice.models.MSDeploy;
+import com.azure.resourcemanager.appservice.models.ManagedPipelineMode;
+import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.appservice.models.NetFrameworkVersion;
+import com.azure.resourcemanager.appservice.models.OperatingSystem;
+import com.azure.resourcemanager.appservice.models.PhpVersion;
+import com.azure.resourcemanager.appservice.models.PlatformArchitecture;
+import com.azure.resourcemanager.appservice.models.PythonVersion;
+import com.azure.resourcemanager.appservice.models.RedundancyMode;
+import com.azure.resourcemanager.appservice.models.RemoteVisualStudioVersion;
+import com.azure.resourcemanager.appservice.models.ScmType;
+import com.azure.resourcemanager.appservice.models.SiteAvailabilityState;
+import com.azure.resourcemanager.appservice.models.SlotSwapStatus;
+import com.azure.resourcemanager.appservice.models.SslState;
+import com.azure.resourcemanager.appservice.models.SupportedTlsVersions;
+import com.azure.resourcemanager.appservice.models.UsageState;
+import com.azure.resourcemanager.appservice.models.VirtualApplication;
+import com.azure.resourcemanager.appservice.models.WebAppAuthentication;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.models.WebContainer;
+import com.azure.resourcemanager.appservice.models.WebSiteBase;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
@@ -60,6 +65,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
@@ -68,7 +78,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -78,10 +87,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * The implementation for WebAppBase.
@@ -110,11 +115,8 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     SiteConfigResourceInner siteConfig;
     KuduClient kuduClient;
+    WebSiteBase webSiteBase;
 
-    private Set<String> hostNamesSet;
-    private Set<String> enabledHostNamesSet;
-    private Set<String> trafficManagerHostNamesSet;
-    private Set<String> outboundIPAddressesSet;
     private Map<String, HostnameSslState> hostNameSslStateMap;
     private TreeMap<String, HostnameBindingImpl<FluentT, FluentImplT>> hostNameBindingsToCreate;
     private List<String> hostNameBindingsToDelete;
@@ -214,67 +216,44 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         this.diagnosticLogsToUpdate = false;
         this.sslBindingsToCreate = new TreeMap<>();
         this.msiHandler = null;
-        if (inner().hostNames() != null) {
-            this.hostNamesSet = new HashSet<>(inner().hostNames());
-        }
-        if (inner().enabledHostNames() != null) {
-            this.enabledHostNamesSet = new HashSet<>(inner().enabledHostNames());
-        }
-        if (inner().trafficManagerHostNames() != null) {
-            this.trafficManagerHostNamesSet = new HashSet<>(inner().trafficManagerHostNames());
-        }
-        if (inner().outboundIpAddresses() != null) {
-            this.outboundIPAddressesSet = new HashSet<>(Arrays.asList(inner().outboundIpAddresses().split(",[ ]*")));
-        }
-        this.hostNameSslStateMap = new HashMap<>();
-        if (inner().hostnameSslStates() != null) {
-            for (HostnameSslState hostNameSslState : inner().hostnameSslStates()) {
-                // Server returns null sometimes, invalid on update, so we set default
-                if (hostNameSslState.sslState() == null) {
-                    hostNameSslState.withSslState(SslState.DISABLED);
-                }
-                hostNameSslStateMap.put(hostNameSslState.name(), hostNameSslState);
-            }
-        }
+        this.webSiteBase = new WebSiteBaseImpl(inner());
+        this.hostNameSslStateMap = new HashMap<>(this.webSiteBase.hostnameSslStates());
         this.webAppMsiHandler.clear();
     }
 
     @Override
     public String state() {
-        return inner().state();
+        return webSiteBase.state();
     }
 
     @Override
     public Set<String> hostnames() {
-        return Collections.unmodifiableSet(hostNamesSet);
+        return webSiteBase.hostnames();
     }
 
     @Override
     public String repositorySiteName() {
-        return inner().repositorySiteName();
+        return webSiteBase.repositorySiteName();
     }
 
     @Override
     public UsageState usageState() {
-        return inner().usageState();
+        return webSiteBase.usageState();
     }
 
     @Override
     public boolean enabled() {
-        return inner().enabled();
+        return webSiteBase.enabled();
     }
 
     @Override
     public Set<String> enabledHostNames() {
-        if (enabledHostNamesSet == null) {
-            return null;
-        }
-        return Collections.unmodifiableSet(enabledHostNamesSet);
+        return webSiteBase.enabledHostNames();
     }
 
     @Override
     public SiteAvailabilityState availabilityState() {
-        return inner().availabilityState();
+        return webSiteBase.availabilityState();
     }
 
     @Override
@@ -284,62 +263,62 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     public String appServicePlanId() {
-        return inner().serverFarmId();
+        return webSiteBase.appServicePlanId();
     }
 
     @Override
     public OffsetDateTime lastModifiedTime() {
-        return inner().lastModifiedTimeUtc();
+        return webSiteBase.lastModifiedTime();
     }
 
     @Override
     public Set<String> trafficManagerHostNames() {
-        return Collections.unmodifiableSet(trafficManagerHostNamesSet);
+        return webSiteBase.trafficManagerHostNames();
     }
 
     @Override
     public boolean scmSiteAlsoStopped() {
-        return inner().scmSiteAlsoStopped();
+        return webSiteBase.scmSiteAlsoStopped();
     }
 
     @Override
     public String targetSwapSlot() {
-        return inner().targetSwapSlot();
+        return webSiteBase.targetSwapSlot();
     }
 
     @Override
     public boolean clientAffinityEnabled() {
-        return inner().clientAffinityEnabled();
+        return webSiteBase.clientAffinityEnabled();
     }
 
     @Override
     public boolean clientCertEnabled() {
-        return inner().clientCertEnabled();
+        return webSiteBase.clientCertEnabled();
     }
 
     @Override
-    public boolean hostNamesDisabled() {
-        return Utils.toPrimitiveBoolean(inner().hostNamesDisabled());
+    public boolean hostnamesDisabled() {
+        return webSiteBase.hostnamesDisabled();
     }
 
     @Override
     public Set<String> outboundIPAddresses() {
-        return Collections.unmodifiableSet(outboundIPAddressesSet);
+        return webSiteBase.outboundIPAddresses();
     }
 
     @Override
     public int containerSize() {
-        return Utils.toPrimitiveInt(inner().containerSize());
+        return webSiteBase.containerSize();
     }
 
     @Override
     public CloningInfo cloningInfo() {
-        return inner().cloningInfo();
+        return webSiteBase.cloningInfo();
     }
 
     @Override
     public boolean isDefaultContainer() {
-        return inner().isDefaultContainer();
+        return webSiteBase.isDefaultContainer();
     }
 
     @Override
@@ -488,7 +467,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     public boolean httpsOnly() {
-        return Utils.toPrimitiveBoolean(inner().httpsOnly());
+        return webSiteBase.httpsOnly();
     }
 
     @Override
@@ -915,7 +894,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     Mono<FluentT> submitHostNameBindings() {
         final List<Mono<HostnameBinding>> bindingObservables = new ArrayList<>();
         for (HostnameBindingImpl<FluentT, FluentImplT> binding : hostNameBindingsToCreate.values()) {
-            bindingObservables.add(Utils.<HostnameBinding>rootResource(binding.createAsync().last()));
+            bindingObservables.add(binding.createAsync());
         }
         for (String binding : hostNameBindingsToDelete) {
             bindingObservables.add(deleteHostnameBinding(binding).then(Mono.empty()));
@@ -1658,6 +1637,57 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> updateDiagnosticLogsConfiguration() {
         return defineDiagnosticLogsConfiguration();
+    }
+
+
+    @Override
+    public ManagedServiceIdentity identity() {
+        return webSiteBase.identity();
+    }
+
+    @Override
+    public boolean hyperV() {
+        return webSiteBase.hyperV();
+    }
+
+    @Override
+    public HostingEnvironmentProfile hostingEnvironmentProfile() {
+        return webSiteBase.hostingEnvironmentProfile();
+    }
+
+    @Override
+    public Set<String> clientCertExclusionPaths() {
+        return webSiteBase.clientCertExclusionPaths();
+    }
+
+    @Override
+    public Set<String> possibleOutboundIpAddresses() {
+        return webSiteBase.possibleOutboundIpAddresses();
+    }
+
+    @Override
+    public int dailyMemoryTimeQuota() {
+        return webSiteBase.dailyMemoryTimeQuota();
+    }
+
+    @Override
+    public OffsetDateTime suspendedTill() {
+        return webSiteBase.suspendedTill();
+    }
+
+    @Override
+    public int maxNumberOfWorkers() {
+        return webSiteBase.maxNumberOfWorkers();
+    }
+
+    @Override
+    public SlotSwapStatus slotSwapStatus() {
+        return webSiteBase.slotSwapStatus();
+    }
+
+    @Override
+    public RedundancyMode redundancyMode() {
+        return webSiteBase.redundancyMode();
     }
 
     private static class PipedInputStreamWithCallback extends PipedInputStream {

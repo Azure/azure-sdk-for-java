@@ -4,6 +4,9 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
@@ -11,12 +14,12 @@ import com.azure.resourcemanager.authorization.models.PasswordCredential;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.authorization.models.ServicePrincipalCreateParameters;
-import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, ServicePrincipalInner, ServicePrincipalImpl>
@@ -199,7 +200,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                                 .createAsync())
                     .doOnNext(
                         indexable ->
-                            cachedRoleAssignments.put(((RoleAssignment) indexable).id(), (RoleAssignment) indexable))
+                            cachedRoleAssignments.put(indexable.id(), indexable))
                     .last()
                     .map(
                         indexable -> {
