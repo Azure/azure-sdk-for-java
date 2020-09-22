@@ -109,94 +109,6 @@ public final class ResourceManagerUtils {
     }
 
     /**
-     * Download a file asynchronously.
-     *
-     * @param url the URL pointing to the file
-     * @param httpPipeline the http pipeline
-     * @return an Observable pointing to the content of the file
-     */
-    public static Mono<byte[]> downloadFileAsync(String url, HttpPipeline httpPipeline) {
-        FileService service = RestProxy.create(FileService.class, httpPipeline);
-        try {
-            return service.download(getHost(url), getPathAndQuery(url))
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()));
-        } catch (MalformedURLException ex) {
-            return Mono.error(() -> ex);
-        }
-    }
-
-    /**
-     * Get host from url.
-     *
-     * @param urlString the url string
-     * @return the host
-     * @throws MalformedURLException when url is invalid format
-     */
-    private static String getHost(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-        String protocol = url.getProtocol();
-        String host = url.getAuthority();
-        return protocol + "://" + host;
-    }
-
-    /**
-     * Get path from url.
-     *
-     * @param urlString the url string
-     * @return the path
-     * @throws MalformedURLException when the url is invalid format
-     */
-    private static String getPathAndQuery(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-        String path = url.getPath();
-        String query = url.getQuery();
-        if (query != null && !query.isEmpty()) {
-            path = path + "?" + query;
-        }
-        return path;
-    }
-
-    /**
-     * Adds a value to the list if does not already exists.
-     *
-     * @param list the list
-     * @param value value to add if not exists in the list
-     */
-    public static void addToListIfNotExists(List<String> list, String value) {
-        boolean found = false;
-        for (String item : list) {
-            if (item.equalsIgnoreCase(value)) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            list.add(value);
-        }
-    }
-
-    /**
-     * Removes a value from the list.
-     *
-     * @param list the list
-     * @param value value to remove
-     */
-    public static void removeFromList(List<String> list, String value) {
-        int foundIndex = -1;
-        int i = 0;
-        for (String id : list) {
-            if (id.equalsIgnoreCase(value)) {
-                foundIndex = i;
-                break;
-            }
-            i++;
-        }
-        if (foundIndex != -1) {
-            list.remove(foundIndex);
-        }
-    }
-
-    /**
      * @param id resource id
      * @return resource group id for the resource id provided
      */
@@ -205,17 +117,6 @@ public final class ResourceManagerUtils {
         return String.format("/subscriptions/%s/resourceGroups/%s",
                 resourceId.subscriptionId(),
                 resourceId.resourceGroupName());
-    }
-
-    /**
-     * A Retrofit service used to download a file.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "FileService")
-    private interface FileService {
-        @Get("{path}")
-        Mono<SimpleResponse<Flux<ByteBuffer>>> download(
-            @HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
     }
 
     /**

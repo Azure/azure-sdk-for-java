@@ -46,20 +46,6 @@ public class ResourceUtilsTests {
     }
 
     @Test
-    public void canDownloadFile() throws Exception {
-        HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .policies(
-                new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)),
-                new RetryPolicy("Retry-After", ChronoUnit.SECONDS)
-            )
-            .build();
-        byte[] content = ResourceManagerUtils.downloadFileAsync("https://www.google.com/humans.txt", httpPipeline).block();
-        String contentString = new String(content);
-        Assertions.assertNotNull(contentString);
-        Assertions.assertTrue(contentString.startsWith("Google is built by a large team of engineers,"));
-    }
-
-    @Test
     public void canGetDefaultScopeFromUrl() throws Exception {
         Assertions.assertEquals("https://graph.windows.net/.default", ResourceManagerUtils.getDefaultScopeFromUrl("https://graph.windows.net/random", AzureEnvironment.AZURE));
         Assertions.assertEquals("https://vault.azure.net/.default", ResourceManagerUtils.getDefaultScopeFromUrl("https://random.vault.azure.net/random", AzureEnvironment.AZURE));
