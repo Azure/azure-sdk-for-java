@@ -3,14 +3,11 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.StorageInputStream;
-import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -32,7 +29,7 @@ public final class BlobInputStream extends StorageInputStream {
     /**
      * Holds the {@link BlobProperties} object that represents the blob's properties.
      */
-    private BlobProperties properties;
+    private final BlobProperties properties;
 
     /**
      * Initializes a new instance of the BlobInputStream class. Note that if {@code blobRangeOffset} is not {@code 0} or
