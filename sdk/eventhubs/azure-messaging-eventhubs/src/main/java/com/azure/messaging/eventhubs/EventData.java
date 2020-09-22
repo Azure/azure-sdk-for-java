@@ -247,7 +247,7 @@ public class EventData {
      * @return The producer group id assigned to the event at the time it was successfully published.
      * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
      */
-    public Long getPublishedGroupId() {
+    Long getPublishedGroupId() {
         return publishedGroupId;
     }
 
@@ -263,7 +263,7 @@ public class EventData {
      * @return The producer owner level assigned to the event at the time it was successfully published.
      * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
      */
-    public Short getPublishedOwnerLevel() {
+    Short getPublishedOwnerLevel() {
         return publishedOwnerLevel;
     }
 
