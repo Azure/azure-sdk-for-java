@@ -244,6 +244,30 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * @return wrapped inner feature client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     */
+    public FeatureClient featureServiceClient() {
+        return featureClient;
+    }
+
+    /**
+     * @return wrapped inner subscription client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     */
+    public SubscriptionClient subscriptionServiceClient() {
+        return subscriptionClient;
+    }
+
+    /**
+     * @return wrapped inner policy client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     */
+    public PolicyClient policyServiceClient() {
+        return policyClient;
+    }
+
+    /**
      * @return the resource group management API entry point
      */
     public ResourceGroups resourceGroups() {
