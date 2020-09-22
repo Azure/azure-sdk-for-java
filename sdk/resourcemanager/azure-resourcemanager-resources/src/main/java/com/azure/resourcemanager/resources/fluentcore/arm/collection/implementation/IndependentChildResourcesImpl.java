@@ -3,7 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
+import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -24,7 +25,7 @@ public abstract class IndependentChildResourcesImpl<
         ImplT extends T,
         InnerT,
         InnerCollectionT,
-        ManagerT extends ManagerBase,
+        ManagerT extends Manager<? extends AzureServiceClient>,
         ParentT extends Resource & HasResourceGroup>
         extends IndependentChildrenImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT, ParentT> {
 

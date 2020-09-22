@@ -3,7 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.arm.models.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
+import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +21,7 @@ public abstract class GroupableParentResourceImpl<
         FluentModelT extends Resource,
         InnerModelT extends com.azure.core.management.Resource,
         FluentModelImplT extends GroupableParentResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
-        ManagerT extends ManagerBase>
+        ManagerT extends Manager<? extends AzureServiceClient>>
         extends
         GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT> {
 
