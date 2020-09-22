@@ -30,6 +30,8 @@ import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.Optional;
 
+import static com.microsoft.azure.spring.autoconfigure.aad.Constants.BEARER;
+
 /**
  * A stateful authentication filter which uses Microsoft Graph groups to authorize. Both ID token and access token are
  * supported. In the case of access token, only access token issued for the exact same application this filter used for
@@ -41,7 +43,6 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final String CURRENT_USER_PRINCIPAL = "CURRENT_USER_PRINCIPAL";
     private static final String CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN = "CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN";
     private static final String CURRENT_USER_PRINCIPAL_JWT_TOKEN = "CURRENT_USER_PRINCIPAL_JWT_TOKEN";
-    private static final String TOKEN_TYPE = "Bearer ";
 
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final ServiceEndpointsProperties serviceEndpointsProperties;
@@ -94,8 +95,9 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
         String aadIssuedBearerToken = Optional.of(httpServletRequest)
                                               .map(r -> r.getHeader(HttpHeaders.AUTHORIZATION))
                                               .map(String::trim)
-                                              .filter(s -> s.startsWith(TOKEN_TYPE))
-                                              .map(s -> s.replace(TOKEN_TYPE, ""))
+                                              .filter(s -> s.startsWith(BEARER))
+                                              .map(s -> s.replace(BEARER, ""))
+                                              .map(String::trim)
                                               .filter(userPrincipalManager::isTokenIssuedByAAD)
                                               .orElse(null);
         if (aadIssuedBearerToken == null || alreadyAuthenticated()) {

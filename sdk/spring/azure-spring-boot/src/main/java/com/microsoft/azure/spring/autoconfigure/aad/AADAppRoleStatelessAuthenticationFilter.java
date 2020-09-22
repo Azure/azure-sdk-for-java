@@ -29,6 +29,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.microsoft.azure.spring.autoconfigure.aad.Constants.BEARER;
+
 /**
  * A stateless authentication filter which uses app roles feature of Azure Active Directory. Since it's a stateless
  * implementation so the principal will not be stored in session. By using roles claim in the token it will not call
@@ -37,7 +39,6 @@ import java.util.stream.Collectors;
 public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAppRoleStatelessAuthenticationFilter.class);
-    private static final String TOKEN_TYPE = "Bearer ";
     private static final JSONArray DEFAULT_ROLE_CLAIM = new JSONArray().appendElement("USER");
     private static final String ROLE_PREFIX = "ROLE_";
 
@@ -54,8 +55,9 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
         String aadIssuedBearerToken = Optional.of(httpServletRequest)
                                               .map(r -> r.getHeader(HttpHeaders.AUTHORIZATION))
                                               .map(String::trim)
-                                              .filter(s -> s.startsWith(TOKEN_TYPE))
-                                              .map(s -> s.replace(TOKEN_TYPE, ""))
+                                              .filter(s -> s.startsWith(BEARER))
+                                              .map(s -> s.replace(BEARER, ""))
+                                              .map(String::trim)
                                               .filter(principalManager::isTokenIssuedByAAD)
                                               .orElse(null);
         if (aadIssuedBearerToken == null || alreadyAuthenticated()) {
