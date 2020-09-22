@@ -151,7 +151,7 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
         return this
             .computeManager
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .getByResourceGroupAsync(rgName, vmName);
             // Exception if vm not found

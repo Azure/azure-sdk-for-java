@@ -43,7 +43,7 @@ public class VirtualMachineScaleSetsImpl
         StorageManager storageManager,
         NetworkManager networkManager,
         AuthorizationManager authorizationManager) {
-        super(computeManager.inner().getVirtualMachineScaleSets(), computeManager);
+        super(computeManager.serviceClient().getVirtualMachineScaleSets(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.authorizationManager = authorizationManager;
@@ -162,7 +162,7 @@ public class VirtualMachineScaleSetsImpl
         String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSetVMs()
             .runCommandAsync(groupName, scaleSetName, vmId, inputCommand)
             .map(RunCommandResultImpl::new);

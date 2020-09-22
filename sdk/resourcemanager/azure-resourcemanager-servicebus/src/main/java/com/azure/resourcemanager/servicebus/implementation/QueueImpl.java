@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.servicebus.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
@@ -348,7 +348,7 @@ class QueueImpl
 
     @Override
     protected Mono<QueueResourceInner> getInnerAsync() {
-        return this.manager().inner().getQueues()
+        return this.manager().serviceClient().getQueues()
                 .getAsync(this.resourceGroupName(),
                         this.parentName,
                         this.name());
@@ -357,7 +357,7 @@ class QueueImpl
     @Override
     protected Mono<Queue> createChildResourceAsync() {
 
-        Mono<QueueResourceInner> createTask = this.manager().inner().getQueues()
+        Mono<QueueResourceInner> createTask = this.manager().serviceClient().getQueues()
             .createOrUpdateAsync(this.resourceGroupName(),
                 this.parentName,
                 this.name(),

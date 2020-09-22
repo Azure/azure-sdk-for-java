@@ -16,7 +16,7 @@ public class NetworkWatchersImpl
     implements NetworkWatchers {
 
     public NetworkWatchersImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getNetworkWatchers(), networkManager);
+        super(networkManager.serviceClient().getNetworkWatchers(), networkManager);
     }
 
     @Override

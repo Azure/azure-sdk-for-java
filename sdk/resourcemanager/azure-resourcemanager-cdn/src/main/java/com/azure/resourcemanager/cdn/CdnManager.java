@@ -19,7 +19,7 @@ import com.azure.resourcemanager.cdn.models.CdnProfiles;
 /**
  * Entry point to Azure CDN management.
  */
-public final class CdnManager extends Manager<CdnManager, CdnManagementClient> {
+public final class CdnManager extends Manager<CdnManagementClient> {
     // Collections
     private CdnProfiles profiles;
 

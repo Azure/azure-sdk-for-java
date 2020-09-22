@@ -6,7 +6,7 @@ import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 public class TestCosmosDB extends TestTemplate<CosmosDBAccount, CosmosDBAccounts> {

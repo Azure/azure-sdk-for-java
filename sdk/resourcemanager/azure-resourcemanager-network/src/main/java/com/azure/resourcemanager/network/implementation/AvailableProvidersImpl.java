@@ -63,7 +63,7 @@ class AvailableProvidersImpl extends ExecutableImpl<AvailableProviders>
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkWatchers()
             .listAvailableProvidersAsync(parent().resourceGroupName(), parent().name(), parameters)
             .map(

@@ -18,7 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure KeyVault resource management. */
-public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultManagementClient> {
+public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
     // Service managers
     private final AuthorizationManager authorizationManager;
     // Collections

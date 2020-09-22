@@ -20,7 +20,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -133,7 +133,8 @@ class FunctionAppImpl
                 .build();
             functionServiceHost = baseUrl;
             functionService =
-                RestProxy.create(FunctionService.class, httpPipeline, new AzureJacksonAdapter());
+                RestProxy.create(FunctionService.class, httpPipeline,
+                    SerializerFactory.createDefaultManagementSerializerAdapter());
         }
     }
 
@@ -429,7 +430,7 @@ class FunctionAppImpl
                             "2019-08-01"))
             .map(ListKeysResult::getMasterKey)
             .subscriberContext(
-                context -> context.putAll(FluxUtil.toReactorContext(this.manager().inner().getContext())));
+                context -> context.putAll(FluxUtil.toReactorContext(this.manager().serviceClient().getContext())));
     }
 
     @Override
@@ -505,7 +506,7 @@ class FunctionAppImpl
     @Override
     public Mono<Void> syncTriggersAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .syncFunctionTriggersAsync(resourceGroupName(), name())
             .onErrorResume(

@@ -27,7 +27,7 @@ public class ActiveDirectoryUsersImpl
 
     @Override
     public PagedIterable<ActiveDirectoryUser> list() {
-        return wrapList(this.manager().inner().getUsers().list());
+        return wrapList(this.manager().serviceClient().getUsers().list());
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ActiveDirectoryUsersImpl
     @Override
     public Mono<ActiveDirectoryUser> getByIdAsync(String id) {
         return manager()
-            .inner()
+            .serviceClient()
             .getUsers()
             .getAsync(id)
             .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
@@ -60,7 +60,7 @@ public class ActiveDirectoryUsersImpl
     @Override
     public Mono<ActiveDirectoryUser> getByNameAsync(final String name) {
         return manager()
-            .inner()
+            .serviceClient()
             .getUsers()
             .getAsync(name)
             .onErrorResume(
@@ -68,7 +68,7 @@ public class ActiveDirectoryUsersImpl
                 e -> {
                     if (name.contains("@")) {
                         return manager()
-                            .inner()
+                            .serviceClient()
                             .getUsers()
                             .listAsync(
                                 String
@@ -77,7 +77,7 @@ public class ActiveDirectoryUsersImpl
                             .singleOrEmpty();
                     } else {
                         return manager()
-                            .inner()
+                            .serviceClient()
                             .getUsers()
                             .listAsync(String.format("displayName eq '%s'", name), null)
                             .singleOrEmpty();
@@ -103,7 +103,7 @@ public class ActiveDirectoryUsersImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return manager().inner().getUsers().deleteAsync(id);
+        return manager().serviceClient().getUsers().deleteAsync(id);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class ActiveDirectoryUsersImpl
     }
 
     public UsersClient inner() {
-        return manager().inner().getUsers();
+        return manager().serviceClient().getUsers();
     }
 
     @Override

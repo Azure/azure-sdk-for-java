@@ -17,7 +17,7 @@ class ActivityLogAlertsImpl
     implements ActivityLogAlerts {
 
     ActivityLogAlertsImpl(final MonitorManager monitorManager) {
-        super(monitorManager.inner().getActivityLogAlerts(), monitorManager);
+        super(monitorManager.serviceClient().getActivityLogAlerts(), monitorManager);
     }
 
     @Override

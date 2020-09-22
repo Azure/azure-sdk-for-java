@@ -66,7 +66,7 @@ class VirtualMachineScaleSetVMsImpl
             instanceIdList.add(instanceId);
         }
         VirtualMachineScaleSetsClient scaleSetInnerManager =
-            this.scaleSet.manager().inner().getVirtualMachineScaleSets();
+            this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets();
         return scaleSetInnerManager
             .deleteInstancesAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceIdList);
     }
@@ -104,7 +104,7 @@ class VirtualMachineScaleSetVMsImpl
             instanceIdList.add(instanceId);
         }
         VirtualMachineScaleSetsClient scaleSetInnerManager =
-            this.scaleSet.manager().inner().getVirtualMachineScaleSets();
+            this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets();
         return scaleSetInnerManager
             .updateInstancesAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceIdList);
     }

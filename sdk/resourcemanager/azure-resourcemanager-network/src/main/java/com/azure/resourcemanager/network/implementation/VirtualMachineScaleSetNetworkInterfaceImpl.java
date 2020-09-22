@@ -179,7 +179,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
     protected Mono<NetworkInterfaceInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkInterfaces()
             .getVirtualMachineScaleSetNetworkInterfaceAsync(
                 this.resourceGroupName,

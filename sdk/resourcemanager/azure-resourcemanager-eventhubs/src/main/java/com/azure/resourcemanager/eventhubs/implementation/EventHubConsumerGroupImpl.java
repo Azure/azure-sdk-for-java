@@ -91,7 +91,7 @@ class EventHubConsumerGroupImpl
 
     @Override
     public Mono<EventHubConsumerGroup> createResourceAsync() {
-        return this.manager.inner().getConsumerGroups()
+        return this.manager.serviceClient().getConsumerGroups()
                 .createOrUpdateAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),
@@ -102,7 +102,7 @@ class EventHubConsumerGroupImpl
 
     @Override
     protected Mono<ConsumerGroupInner> getInnerAsync() {
-        return this.manager.inner().getConsumerGroups()
+        return this.manager.serviceClient().getConsumerGroups()
                 .getAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),

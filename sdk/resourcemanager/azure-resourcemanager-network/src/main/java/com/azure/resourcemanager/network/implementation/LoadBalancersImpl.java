@@ -16,7 +16,7 @@ public class LoadBalancersImpl
     implements LoadBalancers {
 
     public LoadBalancersImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getLoadBalancers(), networkManager);
+        super(networkManager.serviceClient().getLoadBalancers(), networkManager);
     }
 
     @Override

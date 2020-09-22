@@ -101,6 +101,6 @@ public class SpringAppDeploymentsImpl
     }
 
     public DeploymentsClient inner() {
-        return manager().inner().getDeployments();
+        return manager().serviceClient().getDeployments();
     }
 }

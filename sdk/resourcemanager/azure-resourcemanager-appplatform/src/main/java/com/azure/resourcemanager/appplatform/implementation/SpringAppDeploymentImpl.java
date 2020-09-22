@@ -93,7 +93,7 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<Void> startAsync() {
-        return manager().inner().getDeployments().startAsync(
+        return manager().serviceClient().getDeployments().startAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
         );
     }
@@ -105,7 +105,7 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<Void> stopAsync() {
-        return manager().inner().getDeployments().stopAsync(
+        return manager().serviceClient().getDeployments().stopAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
         );
     }
@@ -117,7 +117,7 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<Void> restartAsync() {
-        return manager().inner().getDeployments().restartAsync(
+        return manager().serviceClient().getDeployments().restartAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
         );
     }
@@ -129,7 +129,7 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<String> getLogFileUrlAsync() {
-        return manager().inner().getDeployments().getLogFileUrlAsync(
+        return manager().serviceClient().getDeployments().getLogFileUrlAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
         )
             .map(LogFileUrlResponseInner::url);
@@ -340,7 +340,7 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<SpringAppDeployment> createResourceAsync() {
-        return manager().inner().getDeployments().createOrUpdateAsync(
+        return manager().serviceClient().getDeployments().createOrUpdateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(),
             parent().name(), name(), inner()
         )
@@ -352,7 +352,7 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<SpringAppDeployment> updateResourceAsync() {
-        return manager().inner().getDeployments().updateAsync(
+        return manager().serviceClient().getDeployments().updateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(),
             parent().name(), name(), inner()
         )
@@ -364,14 +364,14 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return manager().inner().getDeployments().deleteAsync(
+        return manager().serviceClient().getDeployments().deleteAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
         );
     }
 
     @Override
     protected Mono<DeploymentResourceInner> getInnerAsync() {
-        return manager().inner().getDeployments().getAsync(
+        return manager().serviceClient().getDeployments().getAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
         );
     }

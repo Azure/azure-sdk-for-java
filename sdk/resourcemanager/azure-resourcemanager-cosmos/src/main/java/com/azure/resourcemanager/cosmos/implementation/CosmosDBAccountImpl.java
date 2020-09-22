@@ -26,7 +26,7 @@ import com.azure.resourcemanager.cosmos.models.PrivateLinkResource;
 import com.azure.resourcemanager.cosmos.models.RegionForOnlineOffline;
 import com.azure.resourcemanager.cosmos.models.SqlDatabase;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.publisher.Mono;
@@ -56,7 +56,7 @@ class CosmosDBAccountImpl
         super(fixDBName(name), innerObject, manager);
         this.failoverPolicies = new ArrayList<>();
         this.privateEndpointConnections =
-            new PrivateEndpointConnectionsImpl(this.manager().inner().getPrivateEndpointConnections(), this);
+            new PrivateEndpointConnectionsImpl(this.manager().serviceClient().getPrivateEndpointConnections(), this);
     }
 
     @Override
@@ -112,7 +112,7 @@ class CosmosDBAccountImpl
     public Mono<DatabaseAccountListKeysResult> listKeysAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .listKeysAsync(this.resourceGroupName(), this.name())
             .map(
@@ -128,7 +128,7 @@ class CosmosDBAccountImpl
     public Mono<DatabaseAccountListReadOnlyKeysResult> listReadOnlyKeysAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .listReadOnlyKeysAsync(this.resourceGroupName(), this.name())
             .map(
@@ -144,7 +144,7 @@ class CosmosDBAccountImpl
     public Mono<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .listConnectionStringsAsync(this.resourceGroupName(), this.name())
             .map(
@@ -160,7 +160,7 @@ class CosmosDBAccountImpl
     public PagedFlux<SqlDatabase> listSqlDatabasesAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getSqlResources()
             .listSqlDatabasesAsync(this.resourceGroupName(), this.name())
             .mapPage(SqlDatabaseImpl::new);
@@ -175,7 +175,7 @@ class CosmosDBAccountImpl
     public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getPrivateLinkResources()
             .listByDatabaseAccountAsync(this.resourceGroupName(), this.name())
             .mapPage(PrivateLinkResourceImpl::new);
@@ -190,7 +190,7 @@ class CosmosDBAccountImpl
     public Mono<PrivateLinkResource> getPrivateLinkResourceAsync(String groupName) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getPrivateLinkResources()
             .getAsync(this.resourceGroupName(), this.name(), groupName)
             .map(PrivateLinkResourceImpl::new);
@@ -259,7 +259,7 @@ class CosmosDBAccountImpl
 
     @Override
     public void offlineRegion(Region region) {
-        this.manager().inner().getDatabaseAccounts().offlineRegion(this.resourceGroupName(), this.name(),
+        this.manager().serviceClient().getDatabaseAccounts().offlineRegion(this.resourceGroupName(), this.name(),
             new RegionForOnlineOffline().withRegion(region.label()));
     }
 
@@ -267,7 +267,7 @@ class CosmosDBAccountImpl
     public Mono<Void> offlineRegionAsync(Region region) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .offlineRegionAsync(this.resourceGroupName(), this.name(),
                 new RegionForOnlineOffline().withRegion(region.label()));
@@ -275,7 +275,7 @@ class CosmosDBAccountImpl
 
     @Override
     public void onlineRegion(Region region) {
-        this.manager().inner().getDatabaseAccounts().onlineRegion(this.resourceGroupName(), this.name(),
+        this.manager().serviceClient().getDatabaseAccounts().onlineRegion(this.resourceGroupName(), this.name(),
             new RegionForOnlineOffline().withRegion(region.label()));
     }
 
@@ -283,7 +283,7 @@ class CosmosDBAccountImpl
     public Mono<Void> onlineRegionAsync(Region region) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .onlineRegionAsync(this.resourceGroupName(), this.name(),
                 new RegionForOnlineOffline().withRegion(region.label()));
@@ -291,7 +291,7 @@ class CosmosDBAccountImpl
 
     @Override
     public void regenerateKey(KeyKind keyKind) {
-        this.manager().inner().getDatabaseAccounts().regenerateKey(this.resourceGroupName(), this.name(),
+        this.manager().serviceClient().getDatabaseAccounts().regenerateKey(this.resourceGroupName(), this.name(),
             new DatabaseAccountRegenerateKeyParameters().withKeyKind(keyKind));
     }
 
@@ -299,7 +299,7 @@ class CosmosDBAccountImpl
     public Mono<Void> regenerateKeyAsync(KeyKind keyKind) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .regenerateKeyAsync(this.resourceGroupName(), this.name(),
                 new DatabaseAccountRegenerateKeyParameters().withKeyKind(keyKind));
@@ -368,7 +368,7 @@ class CosmosDBAccountImpl
 
     @Override
     protected Mono<DatabaseAccountGetResultsInner> getInnerAsync() {
-        return this.manager().inner().getDatabaseAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getDatabaseAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -561,7 +561,7 @@ class CosmosDBAccountImpl
             request =
                 this
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getDatabaseAccounts()
                     .createOrUpdateAsync(resourceGroupName(), name(), createUpdateParametersInner);
             locationParameters = new CreateUpdateLocationParameters(createUpdateParametersInner);
@@ -570,7 +570,7 @@ class CosmosDBAccountImpl
             request =
                 this
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getDatabaseAccounts()
                     .updateAsync(resourceGroupName(), name(), updateParametersInner);
             locationParameters = new UpdateLocationParameters(updateParametersInner);
@@ -620,7 +620,7 @@ class CosmosDBAccountImpl
                                         index -> {
                                             data.set(0, data.get(0) + 30);
                                             return Mono.delay(SdkContext.getDelayDuration(
-                                                manager().inner().getDefaultPollInterval()));
+                                                manager().serviceClient().getDefaultPollInterval()));
                                         }));
                 });
     }

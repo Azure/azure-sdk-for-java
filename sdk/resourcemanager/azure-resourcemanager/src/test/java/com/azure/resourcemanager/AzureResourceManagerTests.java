@@ -47,7 +47,7 @@ import com.azure.resourcemanager.network.models.VerificationIPFlow;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
@@ -67,6 +67,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -725,7 +726,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     public void testRegions() {
         // Show built-in regions
         System.out.println("Built-in regions list:");
-        int regionsCount = Region.values().length;
+        int regionsCount = Region.values().size();
 
         for (Region region : Region.values()) {
             System.out.println("Name: " + region.name() + ", Label: " + region.label());
@@ -741,7 +742,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         Assertions.assertTrue(region2.name().equalsIgnoreCase("madeUpRegion"));
         Region region3 = Region.fromName("madeupregion");
         Assertions.assertEquals(region3, region2);
-        Assertions.assertEquals(Region.values().length, regionsCount + 1);
+        Assertions.assertEquals(Region.values().size(), regionsCount + 1);
     }
 
     /**
@@ -1338,7 +1339,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
 
         for (Location location : locationGroupByGeography) {
             if (location.regionType() == RegionType.PHYSICAL) {
-                Region region = Region.findByLabelOrName(location.name());
+                Region region = findByLabelOrName(location.name());
                 if (region == null) {
                     sb
                         .append("\n").append("/**")
@@ -1359,6 +1360,17 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         }
 
         Assertions.assertTrue(sb.length() == 0, sb.toString());
+    }
+
+    private static Region findByLabelOrName(String labelOrName) {
+        if (labelOrName == null) {
+            return null;
+        }
+        String nameLowerCase = labelOrName.toLowerCase(Locale.ROOT).replace(" ", "");
+        return Region.values().stream()
+            .filter(r -> nameLowerCase.equals(r.name().toLowerCase(Locale.ROOT)))
+            .findFirst()
+            .orElse(null);
     }
 
     private static String getLocationVariableName(Location location) {

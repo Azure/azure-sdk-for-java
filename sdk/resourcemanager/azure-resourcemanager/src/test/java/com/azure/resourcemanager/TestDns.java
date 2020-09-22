@@ -20,7 +20,7 @@ import com.azure.resourcemanager.dns.models.SrvRecord;
 import com.azure.resourcemanager.dns.models.SrvRecordSet;
 import com.azure.resourcemanager.dns.models.TxtRecord;
 import com.azure.resourcemanager.dns.models.TxtRecordSet;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.HashMap;

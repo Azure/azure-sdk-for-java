@@ -93,7 +93,7 @@ public class SpringAppDomainsImpl
     }
 
     public CustomDomainsClient inner() {
-        return manager().inner().getCustomDomains();
+        return manager().serviceClient().getCustomDomains();
     }
 
     @Override
@@ -103,7 +103,7 @@ public class SpringAppDomainsImpl
 
     @Override
     public Mono<CustomDomainValidateResult> validateAsync(String domain) {
-        return manager().inner().getApps().validateDomainAsync(
+        return manager().serviceClient().getApps().validateDomainAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), domain);
     }
 

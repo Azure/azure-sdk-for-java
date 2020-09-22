@@ -23,7 +23,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure container registry management. */
 public final class ContainerRegistryManager
-    extends Manager<ContainerRegistryManager, ContainerRegistryManagementClient> {
+    extends Manager<ContainerRegistryManagementClient> {
     // The service managers
     private RegistriesImpl registries;
     private final StorageManager storageManager;

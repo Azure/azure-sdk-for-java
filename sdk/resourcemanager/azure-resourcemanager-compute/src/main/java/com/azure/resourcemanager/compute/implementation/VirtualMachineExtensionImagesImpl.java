@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersion;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImages;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublishers;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Flux;
 

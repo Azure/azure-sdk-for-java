@@ -21,7 +21,7 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
     private final StorageManager manager;
 
     public BlobContainersImpl(StorageManager manager) {
-        super(manager.inner().getBlobContainers());
+        super(manager.serviceClient().getBlobContainers());
         this.manager = manager;
     }
 

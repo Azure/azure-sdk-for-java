@@ -129,7 +129,7 @@ public class ConnectivityCheckImpl extends ExecutableImpl<ConnectivityCheck>
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkWatchers()
             .checkConnectivityAsync(parent.resourceGroupName(), parent.name(), parameters)
             .map(

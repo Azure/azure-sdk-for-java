@@ -19,7 +19,7 @@ public class ExpressRouteCircuitsImpl
     implements ExpressRouteCircuits {
 
     public ExpressRouteCircuitsImpl(NetworkManager manager) {
-        super(manager.inner().getExpressRouteCircuits(), manager);
+        super(manager.serviceClient().getExpressRouteCircuits(), manager);
     }
 
     @Override

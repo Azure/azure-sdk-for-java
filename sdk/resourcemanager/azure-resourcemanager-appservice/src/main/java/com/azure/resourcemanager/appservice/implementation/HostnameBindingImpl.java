@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.HostnameBinding;
 import com.azure.resourcemanager.appservice.models.HostnameType;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import reactor.core.publisher.Mono;
@@ -140,7 +140,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .getHostnameBindingSlotAsync(
                         parent().resourceGroupName(),
@@ -152,7 +152,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .getHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name());
         }
@@ -185,7 +185,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .createOrUpdateHostnameBindingSlotAsync(
                         parent().resourceGroupName(),
@@ -199,7 +199,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .createOrUpdateHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name, inner())
                     .map(mapper);

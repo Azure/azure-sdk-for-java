@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.sql.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlRestorableDroppedDatabase;
@@ -79,7 +79,7 @@ public class SqlRestorableDroppedDatabaseImpl
     protected Mono<RestorableDroppedDatabaseInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getRestorableDroppedDatabases()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.inner().id());
     }

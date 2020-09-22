@@ -250,7 +250,7 @@ class NetworkPeeringImpl
         final String networkName = ResourceUtils.nameFromResourceId(this.networkId());
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkPeerings()
             .createOrUpdateAsync(this.parent.resourceGroupName(), networkName, this.name(), this.inner())
             // After successful creation, update the inner
@@ -443,7 +443,7 @@ class NetworkPeeringImpl
         this.remoteNetwork = null;
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkPeerings()
             .getAsync(
                 this.resourceGroupName(), ResourceUtils.nameFromResourceId(this.networkId()), this.inner().name());

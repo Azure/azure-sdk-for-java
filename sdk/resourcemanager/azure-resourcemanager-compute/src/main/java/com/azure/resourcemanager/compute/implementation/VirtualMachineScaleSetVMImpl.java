@@ -38,7 +38,7 @@ import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMIn
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMInstanceViewInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
@@ -649,7 +649,7 @@ class VirtualMachineScaleSetVMImpl
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSetVMs()
             .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), this.inner())
             .map(

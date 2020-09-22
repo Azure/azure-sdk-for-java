@@ -68,7 +68,7 @@ class ServiceObjectiveImpl extends RefreshableWrapperImpl<ServiceObjectiveInner,
         return this
             .sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getServiceObjectives()
             .getAsync(this.resourceGroupName(), this.sqlServerName(), this.name());
     }

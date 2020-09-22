@@ -51,7 +51,7 @@ class PublicIpAddressImpl
     protected Mono<PublicIpAddressInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getPublicIpAddresses()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
     }
@@ -181,8 +181,8 @@ class PublicIpAddressImpl
     @Override
     public Accepted<PublicIpAddress> beginCreate() {
         return AcceptedImpl.newAccepted(logger,
-            this.manager().inner(),
-            () -> this.manager().inner().getPublicIpAddresses()
+            this.manager().serviceClient(),
+            () -> this.manager().serviceClient().getPublicIpAddresses()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
             inner -> new PublicIpAddressImpl(inner.name(), inner, this.manager()),
             PublicIpAddressInner.class,
@@ -203,7 +203,7 @@ class PublicIpAddressImpl
 
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getPublicIpAddresses()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
@@ -303,7 +303,7 @@ class PublicIpAddressImpl
     public Mono<PublicIpAddress> applyTagsAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getPublicIpAddresses()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .flatMap(
