@@ -19,7 +19,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
 import com.azure.resourcemanager.compute.models.ResourceRange;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryImageInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
 

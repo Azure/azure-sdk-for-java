@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appplatform.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.appplatform.models.ResourceSku;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServices;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;

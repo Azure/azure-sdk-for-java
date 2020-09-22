@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.resources.fluentcore.arm.models;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 
 import java.util.Map;

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.SslState;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import reactor.core.publisher.Mono;
 

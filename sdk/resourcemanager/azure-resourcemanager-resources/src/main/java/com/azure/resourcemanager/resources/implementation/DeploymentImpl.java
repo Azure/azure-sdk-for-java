@@ -29,7 +29,7 @@ import com.azure.resourcemanager.resources.models.ResourceReference;
 import com.azure.resourcemanager.resources.models.TemplateLink;
 import com.azure.resourcemanager.resources.models.WhatIfOperationResult;
 import com.azure.resourcemanager.resources.models.WhatIfResultFormat;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;

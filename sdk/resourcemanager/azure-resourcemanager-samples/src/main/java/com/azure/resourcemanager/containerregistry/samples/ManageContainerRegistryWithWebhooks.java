@@ -14,7 +14,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.Webhook;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.containerregistry.models.WebhookEventInfo;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.DockerUtils;
 import com.azure.resourcemanager.samples.Utils;

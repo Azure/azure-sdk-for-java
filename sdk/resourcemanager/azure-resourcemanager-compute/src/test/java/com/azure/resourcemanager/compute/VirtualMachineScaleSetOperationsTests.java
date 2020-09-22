@@ -49,7 +49,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;

@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.core.management.profile.AzureProfile;

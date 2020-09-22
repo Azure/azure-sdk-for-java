@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.ConnectivityCheck;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeering;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;

@@ -23,7 +23,7 @@ import com.azure.resourcemanager.network.models.PcProtocol;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;

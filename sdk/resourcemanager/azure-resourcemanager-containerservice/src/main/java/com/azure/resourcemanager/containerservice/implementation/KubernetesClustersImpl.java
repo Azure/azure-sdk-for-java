@@ -13,7 +13,7 @@ import com.azure.resourcemanager.containerservice.models.CredentialResult;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
 import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProfile;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 

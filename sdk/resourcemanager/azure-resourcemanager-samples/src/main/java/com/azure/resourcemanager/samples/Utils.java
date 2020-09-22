@@ -166,7 +166,7 @@ import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCachePremium;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;

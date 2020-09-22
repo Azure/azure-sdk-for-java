@@ -19,7 +19,7 @@ import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;

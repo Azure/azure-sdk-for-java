@@ -8,7 +8,7 @@ import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.privatedns.models.ProvisioningState;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLink;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinkState;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import reactor.core.publisher.Mono;

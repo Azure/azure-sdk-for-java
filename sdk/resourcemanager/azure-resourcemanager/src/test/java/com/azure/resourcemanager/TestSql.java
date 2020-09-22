@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServers;

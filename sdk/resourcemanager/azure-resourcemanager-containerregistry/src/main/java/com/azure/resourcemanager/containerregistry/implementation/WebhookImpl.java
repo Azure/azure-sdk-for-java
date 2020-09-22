@@ -16,7 +16,7 @@ import com.azure.resourcemanager.containerregistry.models.WebhookCreateParameter
 import com.azure.resourcemanager.containerregistry.models.WebhookEventInfo;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
 import com.azure.resourcemanager.containerregistry.models.WebhookUpdateParameters;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -114,7 +115,18 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
 
     @Override
     public Region region() {
-        return Region.findByLabelOrName(this.regionName());
+        return findByLabelOrName(this.regionName());
+    }
+
+    private static Region findByLabelOrName(String labelOrName) {
+        if (labelOrName == null) {
+            return null;
+        }
+        String nameLowerCase = labelOrName.toLowerCase(Locale.ROOT).replace(" ", "");
+        return Region.values().stream()
+            .filter(r -> nameLowerCase.equals(r.name().toLowerCase(Locale.ROOT)))
+            .findFirst()
+            .orElse(null);
     }
 
     @Override

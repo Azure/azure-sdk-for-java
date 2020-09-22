@@ -112,7 +112,7 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
 
     @Override
     public NicIpConfigurationImpl withNewNetwork(String addressSpaceCidr) {
-        return withNewNetwork(this.parent().namer.randomName("vnet", 20), addressSpaceCidr);
+        return withNewNetwork(this.parent().namer.getRandomName("vnet", 20), addressSpaceCidr);
     }
 
     @Override
@@ -146,14 +146,14 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
 
     @Override
     public NicIpConfigurationImpl withNewPublicIpAddress() {
-        String name = this.parent().namer.randomName("pip", 15);
+        String name = this.parent().namer.getRandomName("pip", 15);
         return withNewPublicIpAddress(prepareCreatablePublicIP(name, name));
     }
 
     @Override
     public NicIpConfigurationImpl withNewPublicIpAddress(String leafDnsLabel) {
         return withNewPublicIpAddress(
-            prepareCreatablePublicIP(this.parent().namer.randomName("pip", 15), leafDnsLabel));
+            prepareCreatablePublicIP(this.parent().namer.getRandomName("pip", 15), leafDnsLabel));
     }
 
     @Override

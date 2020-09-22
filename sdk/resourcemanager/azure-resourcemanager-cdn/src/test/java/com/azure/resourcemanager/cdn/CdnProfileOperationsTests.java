@@ -9,7 +9,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityResult;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;

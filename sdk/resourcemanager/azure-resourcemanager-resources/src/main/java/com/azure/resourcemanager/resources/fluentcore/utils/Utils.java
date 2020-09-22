@@ -265,7 +265,7 @@ public final class Utils {
      */
     public static String getDefaultScopeFromUrl(String url, AzureEnvironment environment) {
         String resource = environment.getManagementEndpoint();
-        for (Map.Entry<String, String> endpoint : environment.endpoints().entrySet()) {
+        for (Map.Entry<String, String> endpoint : environment.getEndpoints().entrySet()) {
             if (url.contains(endpoint.getValue())) {
                 if (endpoint.getKey().equals(AzureEnvironment.Endpoint.KEYVAULT.identifier())) {
                     resource = String.format("https://%s/", endpoint.getValue().replaceAll("^\\.*", ""));

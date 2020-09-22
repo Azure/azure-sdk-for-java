@@ -51,7 +51,7 @@ public class SdkContext {
      * @return the random name
      */
     public String randomResourceName(String prefix, int maxLen) {
-        return identifierFunction.apply("").randomName(prefix, maxLen);
+        return identifierFunction.apply("").getRandomName(prefix, maxLen);
     }
 
     /**
@@ -66,7 +66,7 @@ public class SdkContext {
         String[] names = new String[count];
         IdentifierProvider resourceNamer = identifierFunction.apply("");
         for (int i = 0; i < count; i++) {
-            names[i] = resourceNamer.randomName(prefix, maxLen);
+            names[i] = resourceNamer.getRandomName(prefix, maxLen);
         }
         return names;
     }
@@ -77,7 +77,7 @@ public class SdkContext {
      * @return the random UUID.
      */
     public String randomUuid() {
-        return identifierFunction.apply("").randomUuid();
+        return identifierFunction.apply("").getRandomUuid();
     }
 
     /**
