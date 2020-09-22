@@ -52,7 +52,7 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
         String aadIssuedBearerToken = Optional.of(httpServletRequest)
-                                              .map(r -> (String) r.getAttribute(HttpHeaders.AUTHORIZATION))
+                                              .map(r -> r.getHeader(HttpHeaders.AUTHORIZATION))
                                               .map(String::trim)
                                               .filter(s -> s.startsWith(TOKEN_TYPE))
                                               .map(s -> s.replace(TOKEN_TYPE, ""))
