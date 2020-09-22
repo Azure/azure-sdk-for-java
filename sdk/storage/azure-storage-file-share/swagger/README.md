@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2020-02-10/file.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2e37d26e832d37606ec395214d0be2c26149d051/specification/storage/data-plane/Microsoft.FileStorage/preview/2020-02-10/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -26,7 +26,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,DeleteSnapshotsOptionType
+custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,ClearRange,RangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,DeleteSnapshotsOptionType
 ```
 
 ### Query Parameters
@@ -849,6 +849,15 @@ directive:
 ```
 
 ### FileRangeWriteFromUrl Constant
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.LeaseIdOptional
+  transform: >
+    delete $["x-ms-parameter-grouping"];
+```
+
+### Range Rename
 ``` yaml
 directive:
 - from: swagger-document

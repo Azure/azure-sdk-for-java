@@ -806,7 +806,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
 
         expect:
-        primaryFileClient.listRangesDiff(snapInfo.getSnapshot(), null, null).each {
+        primaryFileClient.listRangesDiff(snapInfo.getSnapshot()).each {
             assert it.getStart() == 1024 /* These are the changes since the previous snapshot. */
             assert it.getEnd() == 1030
         }
@@ -827,7 +827,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
 
         expect:
-        primaryFileClient.listRangesDiff(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRange(new ShareFileRange(1025, 1026)), null, null).each {
+        primaryFileClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRange(new ShareFileRange(1025, 1026)), null, null).each {
             assert it.getStart() == 1025 /* These are the changes since the previous snapshot. */
             assert it.getEnd() == 1026
         }
@@ -849,7 +849,7 @@ class FileAPITests extends APISpec {
         def leaseId = createLeaseClient(primaryFileClient).acquireLease()
 
         expect:
-        primaryFileClient.listRangesDiff(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)), null, null).each {
+        primaryFileClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)), null, null).each {
             assert it.getStart() == 1024 /* These are the changes since the previous snapshot. */
             assert it.getEnd() == 1030
         }
@@ -870,7 +870,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
 
         when:
-        primaryFileClient.listRangesDiff(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRequestConditions(new ShareRequestConditions().setLeaseId(getRandomUUID())), null, null).each {
+        primaryFileClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRequestConditions(new ShareRequestConditions().setLeaseId(getRandomUUID())), null, null).each {
             assert it.getStart() == 1024 /* These are the changes since the previous snapshot. */
             assert it.getEnd() == 1030
         }
@@ -890,7 +890,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadFromFile(uploadFile)
 
         when:
-        primaryFileClient.listRangesDiff(new ShareFileListRangesDiffOptions("2020-08-07T16:58:02.0000000Z"), null, null).each {
+        primaryFileClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions("2020-08-07T16:58:02.0000000Z"), null, null).each {
             assert it.getStart() == 0
             assert it.getEnd() == 511
         }
