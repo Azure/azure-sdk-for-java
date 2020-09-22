@@ -177,7 +177,7 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
     public Mono<MetricCollection> executeAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getMetrics()
             .listAsync(
                 this.inner.resourceId(),

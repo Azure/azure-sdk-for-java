@@ -192,14 +192,14 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetVMs virtualMachines() {
         return new VirtualMachineScaleSetVMsImpl(
-            this, this.manager().inner().getVirtualMachineScaleSetVMs(), this.myManager);
+            this, this.manager().serviceClient().getVirtualMachineScaleSetVMs(), this.myManager);
     }
 
     @Override
     public PagedIterable<VirtualMachineScaleSetSku> listAvailableSkus() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSets()
             .listSkus(this.resourceGroupName(), this.name())
             .mapPage(VirtualMachineScaleSetSkuImpl::new);
@@ -214,7 +214,7 @@ public class VirtualMachineScaleSetImpl
     public Mono<Void> deallocateAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSets()
             .deallocateAsync(this.resourceGroupName(), this.name(), null)
             .map(aVoid -> this.refreshAsync())
@@ -230,7 +230,7 @@ public class VirtualMachineScaleSetImpl
     public Mono<Void> powerOffAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSets()
             .powerOffAsync(this.resourceGroupName(), this.name(), null, null);
     }
@@ -244,7 +244,7 @@ public class VirtualMachineScaleSetImpl
     public Mono<Void> restartAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSets()
             .restartAsync(this.resourceGroupName(), this.name(), null);
     }
@@ -256,7 +256,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Mono<Void> startAsync() {
-        return this.manager().inner().getVirtualMachineScaleSets()
+        return this.manager().serviceClient().getVirtualMachineScaleSets()
             .startAsync(this.resourceGroupName(), this.name(), null);
     }
 
@@ -269,7 +269,7 @@ public class VirtualMachineScaleSetImpl
     public Mono<Void> reimageAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSets()
             .reimageAsync(this.resourceGroupName(), this.name(), null);
     }
@@ -572,8 +572,8 @@ public class VirtualMachineScaleSetImpl
             return null;
         } else {
             ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
-            ProximityPlacementGroupInner plgInner =
-                manager().inner().getProximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
+            ProximityPlacementGroupInner plgInner = manager().serviceClient().getProximityPlacementGroups()
+                .getByResourceGroup(id.resourceGroupName(), id.name());
             if (plgInner == null) {
                 return null;
             } else {
@@ -1505,7 +1505,7 @@ public class VirtualMachineScaleSetImpl
                     this.createNewProximityPlacementGroup();
                     return this
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getVirtualMachineScaleSets()
                         .createOrUpdateAsync(resourceGroupName(), name(), inner());
                 });
@@ -1553,7 +1553,7 @@ public class VirtualMachineScaleSetImpl
                 updateParameter ->
                     this
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getVirtualMachineScaleSets()
                         .updateAsync(resourceGroupName(), name(), updateParameter)
                         .map(
@@ -1583,7 +1583,7 @@ public class VirtualMachineScaleSetImpl
     protected Mono<VirtualMachineScaleSetInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSets()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -2651,7 +2651,7 @@ public class VirtualMachineScaleSetImpl
                 plgInner =
                     this
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getProximityPlacementGroups()
                         .createOrUpdate(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner);
 

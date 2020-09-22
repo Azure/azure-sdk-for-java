@@ -111,7 +111,7 @@ public final class ServiceBusManager extends Manager<ServiceBusManagementClient>
      */
     public ServiceBusNamespaces namespaces() {
         if (namespaces == null) {
-            namespaces = new ServiceBusNamespacesImpl(this.inner().getNamespaces(), this);
+            namespaces = new ServiceBusNamespacesImpl(this.serviceClient().getNamespaces(), this);
         }
         return namespaces;
     }

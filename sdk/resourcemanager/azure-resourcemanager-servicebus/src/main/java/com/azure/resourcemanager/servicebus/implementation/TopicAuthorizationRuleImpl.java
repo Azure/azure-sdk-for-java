@@ -55,7 +55,7 @@ class TopicAuthorizationRuleImpl
 
     @Override
     protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerAsync() {
-        return this.manager().inner().getTopics()
+        return this.manager().serviceClient().getTopics()
                 .getAuthorizationRuleAsync(this.resourceGroupName(),
                         this.namespaceName(),
                         this.topicName(),
@@ -65,7 +65,7 @@ class TopicAuthorizationRuleImpl
     @Override
     protected Mono<TopicAuthorizationRule> createChildResourceAsync() {
         final TopicAuthorizationRule self = this;
-        return this.manager().inner().getTopics().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
+        return this.manager().serviceClient().getTopics().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
                 this.namespaceName(),
                 this.topicName(),
                 this.name(),
@@ -78,7 +78,7 @@ class TopicAuthorizationRuleImpl
 
     @Override
     protected Mono<ResourceListKeysInner> getKeysInnerAsync() {
-        return this.manager().inner().getTopics()
+        return this.manager().serviceClient().getTopics()
                 .listKeysAsync(this.resourceGroupName(),
                         this.namespaceName(),
                         this.topicName(),
@@ -87,7 +87,7 @@ class TopicAuthorizationRuleImpl
 
     @Override
     protected Mono<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
-        return this.manager().inner().getTopics().regenerateKeysAsync(this.resourceGroupName(),
+        return this.manager().serviceClient().getTopics().regenerateKeysAsync(this.resourceGroupName(),
                 this.namespaceName(),
                 this.topicName(),
                 this.name(),

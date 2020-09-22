@@ -197,7 +197,7 @@ public class VirtualNetworkGatewayConnectionImpl
     @Override
     protected Mono<VirtualNetworkGatewayConnectionInner> getInnerAsync() {
         return myManager
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGatewayConnections()
             .getByResourceGroupAsync(resourceGroupName(), name());
     }
@@ -206,7 +206,7 @@ public class VirtualNetworkGatewayConnectionImpl
     public Mono<VirtualNetworkGatewayConnection> createResourceAsync() {
         beforeCreating();
         return myManager
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGatewayConnections()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
@@ -230,7 +230,7 @@ public class VirtualNetworkGatewayConnectionImpl
     public Mono<VirtualNetworkGatewayConnection> applyTagsAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGatewayConnections()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .flatMap(inner -> refreshAsync());

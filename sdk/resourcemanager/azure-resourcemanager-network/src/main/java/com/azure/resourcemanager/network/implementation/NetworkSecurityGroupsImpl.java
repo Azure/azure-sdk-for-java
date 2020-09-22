@@ -22,7 +22,7 @@ public class NetworkSecurityGroupsImpl
     implements NetworkSecurityGroups {
 
     public NetworkSecurityGroupsImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getNetworkSecurityGroups(), networkManager);
+        super(networkManager.serviceClient().getNetworkSecurityGroups(), networkManager);
     }
 
     @Override

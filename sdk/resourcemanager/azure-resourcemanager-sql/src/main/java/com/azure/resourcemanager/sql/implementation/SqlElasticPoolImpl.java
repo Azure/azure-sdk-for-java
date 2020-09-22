@@ -202,7 +202,7 @@ public class SqlElasticPoolImpl
         PagedIterable<ElasticPoolActivityInner> elasticPoolActivityInners =
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getElasticPoolActivities()
                 .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
         for (ElasticPoolActivityInner inner : elasticPoolActivityInners) {
@@ -215,7 +215,7 @@ public class SqlElasticPoolImpl
     public PagedFlux<ElasticPoolActivity> listActivitiesAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getElasticPoolActivities()
             .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(ElasticPoolActivityImpl::new);
@@ -227,7 +227,7 @@ public class SqlElasticPoolImpl
         PagedIterable<ElasticPoolDatabaseActivityInner> elasticPoolDatabaseActivityInners =
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getElasticPoolDatabaseActivities()
                 .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
         for (ElasticPoolDatabaseActivityInner inner : elasticPoolDatabaseActivityInners) {
@@ -240,11 +240,10 @@ public class SqlElasticPoolImpl
     public PagedFlux<ElasticPoolDatabaseActivity> listDatabaseActivitiesAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getElasticPoolDatabaseActivities()
             .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(
-                ElasticPoolDatabaseActivityImpl::new);
+            .mapPage(ElasticPoolDatabaseActivityImpl::new);
     }
 
     @Override
@@ -253,7 +252,7 @@ public class SqlElasticPoolImpl
         PagedIterable<MetricInner> inners =
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getElasticPools()
                 .listMetrics(this.resourceGroupName, this.sqlServerName, this.name(), filter);
         for (MetricInner inner : inners) {
@@ -267,7 +266,7 @@ public class SqlElasticPoolImpl
     public PagedFlux<SqlDatabaseMetric> listDatabaseMetricsAsync(String filter) {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getElasticPools()
             .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter)
             .mapPage(SqlDatabaseMetricImpl::new);
@@ -279,7 +278,7 @@ public class SqlElasticPoolImpl
         PagedIterable<MetricDefinitionInner> inners =
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getElasticPools()
                 .listMetricDefinitions(this.resourceGroupName, this.sqlServerName, this.name());
         for (MetricDefinitionInner inner : inners) {
@@ -293,7 +292,7 @@ public class SqlElasticPoolImpl
     public PagedFlux<SqlDatabaseMetricDefinition> listDatabaseMetricDefinitionsAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getElasticPools()
             .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(SqlDatabaseMetricDefinitionImpl::new);
@@ -305,7 +304,7 @@ public class SqlElasticPoolImpl
         PagedIterable<DatabaseInner> databaseInners =
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getDatabases()
                 .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
         for (DatabaseInner inner : databaseInners) {
@@ -327,7 +326,7 @@ public class SqlElasticPoolImpl
         final SqlElasticPoolImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getDatabases()
             .listByElasticPoolAsync(self.resourceGroupName, self.sqlServerName, this.name())
             .mapPage(
@@ -344,7 +343,11 @@ public class SqlElasticPoolImpl
     @Override
     public SqlDatabase getDatabase(String databaseName) {
         DatabaseInner databaseInner =
-            this.sqlServerManager.inner().getDatabases().get(this.resourceGroupName, this.sqlServerName, databaseName);
+            this
+                .sqlServerManager
+                .serviceClient()
+                .getDatabases()
+                .get(this.resourceGroupName, this.sqlServerName, databaseName);
 
         return databaseInner != null
             ? new SqlDatabaseImpl(
@@ -391,7 +394,11 @@ public class SqlElasticPoolImpl
 
     @Override
     public void delete() {
-        this.sqlServerManager.inner().getElasticPools().delete(this.resourceGroupName, this.sqlServerName, this.name());
+        this
+            .sqlServerManager
+            .serviceClient()
+            .getElasticPools()
+            .delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -403,7 +410,7 @@ public class SqlElasticPoolImpl
     protected Mono<ElasticPoolInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getElasticPools()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -414,7 +421,7 @@ public class SqlElasticPoolImpl
         this.inner().withLocation(this.sqlServerLocation);
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getElasticPools()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
@@ -429,7 +436,7 @@ public class SqlElasticPoolImpl
         final SqlElasticPoolImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getElasticPools()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
@@ -460,7 +467,7 @@ public class SqlElasticPoolImpl
     public Mono<Void> deleteResourceAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getElasticPools()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }

@@ -198,7 +198,7 @@ class VirtualMachineImpl
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         this.virtualMachineExtensions =
-            new VirtualMachineExtensionsImpl(computeManager.inner().getVirtualMachineExtensions(), this);
+            new VirtualMachineExtensionsImpl(computeManager.serviceClient().getVirtualMachineExtensions(), this);
 
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         initializeDataDisks();
@@ -226,7 +226,7 @@ class VirtualMachineImpl
 
     @Override
     protected Mono<VirtualMachineInner> getInnerAsync() {
-        return this.manager().inner().getVirtualMachines()
+        return this.manager().serviceClient().getVirtualMachines()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -239,7 +239,7 @@ class VirtualMachineImpl
     public Mono<Void> deallocateAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .deallocateAsync(this.resourceGroupName(), this.name())
             // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
@@ -254,7 +254,8 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> generalizeAsync() {
-        return this.manager().inner().getVirtualMachines().generalizeAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVirtualMachines()
+            .generalizeAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -264,7 +265,8 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> powerOffAsync() {
-        return this.manager().inner().getVirtualMachines().powerOffAsync(this.resourceGroupName(), this.name(), null);
+        return this.manager().serviceClient().getVirtualMachines()
+            .powerOffAsync(this.resourceGroupName(), this.name(), null);
     }
 
     @Override
@@ -274,7 +276,7 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> restartAsync() {
-        return this.manager().inner().getVirtualMachines().restartAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVirtualMachines().restartAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -284,7 +286,7 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> startAsync() {
-        return this.manager().inner().getVirtualMachines().startAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVirtualMachines().startAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -294,7 +296,7 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> redeployAsync() {
-        return this.manager().inner().getVirtualMachines().redeployAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVirtualMachines().redeployAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -304,12 +306,14 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> simulateEvictionAsync() {
-        return this.manager().inner().getVirtualMachines().simulateEvictionAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVirtualMachines()
+            .simulateEvictionAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void convertToManaged() {
-        this.manager().inner().getVirtualMachines().convertToManagedDisks(this.resourceGroupName(), this.name());
+        this.manager().serviceClient().getVirtualMachines()
+            .convertToManagedDisks(this.resourceGroupName(), this.name());
         this.refresh();
     }
 
@@ -317,7 +321,7 @@ class VirtualMachineImpl
     public Mono<Void> convertToManagedAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .convertToManagedDisksAsync(this.resourceGroupName(), this.name())
             .flatMap(aVoid -> refreshAsync())
@@ -333,7 +337,7 @@ class VirtualMachineImpl
     public PagedIterable<VirtualMachineSize> availableSizes() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .listAvailableSizes(this.resourceGroupName(), this.name())
             .mapPage(VirtualMachineSizeImpl::new);
@@ -352,7 +356,7 @@ class VirtualMachineImpl
         parameters.withVhdPrefix(vhdPrefix);
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .captureAsync(this.resourceGroupName(), this.name(), parameters)
             .map(
@@ -374,7 +378,7 @@ class VirtualMachineImpl
     public Mono<VirtualMachineInstanceView> refreshInstanceViewAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name(), InstanceViewTypes.INSTANCE_VIEW)
             .map(
@@ -1560,8 +1564,8 @@ class VirtualMachineImpl
             return null;
         } else {
             ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
-            ProximityPlacementGroupInner plgInner =
-                manager().inner().getProximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
+            ProximityPlacementGroupInner plgInner = manager().serviceClient().getProximityPlacementGroups()
+                .getByResourceGroup(id.resourceGroupName(), id.name());
             if (plgInner == null) {
                 return null;
             } else {
@@ -1729,7 +1733,7 @@ class VirtualMachineImpl
     public Mono<VirtualMachine> createResourceAsync() {
         // -- set creation-time only properties
         return prepareCreateResourceAsync()
-            .flatMap(virtualMachine -> this.manager().inner().getVirtualMachines()
+            .flatMap(virtualMachine -> this.manager().serviceClient().getVirtualMachines()
                 .createOrUpdateAsync(resourceGroupName(), vmName, inner())
                 .map(virtualMachineInner -> {
                     reset(virtualMachineInner);
@@ -1762,8 +1766,8 @@ class VirtualMachineImpl
 
     public Accepted<VirtualMachine> beginCreate() {
         return AcceptedImpl.<VirtualMachine, VirtualMachineInner>newAccepted(logger,
-            this.manager().inner(),
-            () -> this.manager().inner().getVirtualMachines()
+            this.manager().serviceClient(),
+            () -> this.manager().serviceClient().getVirtualMachines()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, inner()).block(),
             inner -> new VirtualMachineImpl(inner.name(), inner, this.manager(),
                 this.storageManager, this.networkManager, this.authorizationManager),
@@ -1811,7 +1815,7 @@ class VirtualMachineImpl
         final VirtualMachineImpl self = this;
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .updateAsync(resourceGroupName(), vmName, updateParameter)
             .map(
@@ -2028,7 +2032,7 @@ class VirtualMachineImpl
                 plgInner.withLocation(this.inner().location());
                 return this
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getProximityPlacementGroups()
                     .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
                     .map(

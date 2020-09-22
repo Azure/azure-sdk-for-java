@@ -25,7 +25,7 @@ class DdosProtectionPlanImpl
     protected Mono<DdosProtectionPlanInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDdosProtectionPlans()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -34,7 +34,7 @@ class DdosProtectionPlanImpl
     public Mono<DdosProtectionPlan> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDdosProtectionPlans()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this));

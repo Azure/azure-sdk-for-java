@@ -38,7 +38,7 @@ class RedisPatchScheduleImpl
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getPatchSchedules()
             .createOrUpdateAsync(
                 this.parent().resourceGroupName(),
@@ -62,7 +62,7 @@ class RedisPatchScheduleImpl
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getPatchSchedules()
             .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), DefaultName.DEFAULT);
     }
@@ -72,7 +72,7 @@ class RedisPatchScheduleImpl
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getPatchSchedules()
             .getAsync(this.parent().resourceGroupName(), this.parent().name(), DefaultName.DEFAULT);
     }

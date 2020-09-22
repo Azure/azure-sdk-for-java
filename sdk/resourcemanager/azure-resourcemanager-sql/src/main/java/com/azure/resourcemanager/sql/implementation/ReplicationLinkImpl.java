@@ -38,7 +38,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
     protected Mono<ReplicationLinkInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getReplicationLinks()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
@@ -112,7 +112,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
     public void delete() {
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getReplicationLinks()
             .delete(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
@@ -121,7 +121,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
     public void failover() {
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getReplicationLinks()
             .failover(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
@@ -130,7 +130,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
     public Mono<Void> failoverAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getReplicationLinks()
             .failoverAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
@@ -139,7 +139,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
     public void forceFailoverAllowDataLoss() {
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getReplicationLinks()
             .failoverAllowDataLoss(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
@@ -148,7 +148,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
     public Mono<Void> forceFailoverAllowDataLossAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getReplicationLinks()
             .failoverAllowDataLossAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }

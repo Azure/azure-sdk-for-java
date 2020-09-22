@@ -178,7 +178,7 @@ public class SqlSyncMemberImpl
         final SqlSyncMemberImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncMembers()
             .createOrUpdateAsync(
                 this.resourceGroupName,
@@ -203,7 +203,7 @@ public class SqlSyncMemberImpl
     public Mono<Void> deleteResourceAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncMembers()
             .deleteAsync(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
@@ -213,7 +213,7 @@ public class SqlSyncMemberImpl
     protected Mono<SyncMemberInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncMembers()
             .getAsync(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
@@ -223,7 +223,7 @@ public class SqlSyncMemberImpl
     public void delete() {
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncMembers()
             .delete(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
@@ -244,7 +244,7 @@ public class SqlSyncMemberImpl
     public PagedIterable<SqlSyncFullSchemaProperty> listMemberSchemas() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncMembers()
             .listMemberSchemas(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name())
@@ -255,7 +255,7 @@ public class SqlSyncMemberImpl
     public PagedFlux<SqlSyncFullSchemaProperty> listMemberSchemasAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncMembers()
             .listMemberSchemasAsync(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name())
@@ -266,7 +266,7 @@ public class SqlSyncMemberImpl
     public void refreshMemberSchema() {
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncMembers()
             .refreshMemberSchema(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
@@ -276,7 +276,7 @@ public class SqlSyncMemberImpl
     public Mono<Void> refreshMemberSchemaAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncMembers()
             .refreshMemberSchemaAsync(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());

@@ -15,7 +15,7 @@ public class BlobServicesImpl extends WrapperImpl<BlobServicesClient> implements
     private final StorageManager manager;
 
     public BlobServicesImpl(StorageManager manager) {
-        super(manager.inner().getBlobServices());
+        super(manager.serviceClient().getBlobServices());
         this.manager = manager;
     }
 

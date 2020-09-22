@@ -34,6 +34,6 @@ public class UsagesImpl implements Usages {
     }
 
     public UsagesClient inner() {
-        return this.manager().inner().getUsages();
+        return this.manager().serviceClient().getUsages();
     }
 }

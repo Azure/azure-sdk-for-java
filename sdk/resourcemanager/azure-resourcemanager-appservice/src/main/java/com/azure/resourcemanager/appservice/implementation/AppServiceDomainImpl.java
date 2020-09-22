@@ -67,10 +67,10 @@ class AppServiceDomainImpl
 
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
-        final DomainsClient client = this.manager().inner().getDomains();
+        final DomainsClient client = this.manager().serviceClient().getDomains();
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getTopLevelDomains()
             .listAgreementsAsync(topLevel, new TopLevelDomainAgreementOption())
             // Step 1: Consent to agreements
@@ -97,7 +97,7 @@ class AppServiceDomainImpl
 
     @Override
     protected Mono<DomainInner> getInnerAsync() {
-        return this.manager().inner().getDomains().getByResourceGroupAsync(resourceGroupName(), name());
+        return this.manager().serviceClient().getDomains().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -194,7 +194,7 @@ class AppServiceDomainImpl
             new DomainOwnershipIdentifierInner().withOwnershipId(domainVerificationToken);
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDomains()
             .createOrUpdateOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
             .then(Mono.empty());

@@ -222,7 +222,7 @@ class DiagnosticSettingImpl
         this.inner().withMetrics(new ArrayList<>(metricSet.values()));
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDiagnosticSettings()
             .createOrUpdateAsync(this.resourceId, this.name(), this.inner())
             .map(innerToFluentMap(this));
@@ -230,7 +230,7 @@ class DiagnosticSettingImpl
 
     @Override
     protected Mono<DiagnosticSettingsResourceInner> getInnerAsync() {
-        return this.manager().inner().getDiagnosticSettings().getAsync(this.resourceId, this.name());
+        return this.manager().serviceClient().getDiagnosticSettings().getAsync(this.resourceId, this.name());
     }
 
     @Override

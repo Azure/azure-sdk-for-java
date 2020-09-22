@@ -35,10 +35,10 @@ class CdnEndpointsImpl extends
      */
     Map<String, CdnEndpoint> endpointsAsMap() {
         Map<String, CdnEndpoint> result = new HashMap<>();
-        for (EndpointInner endpointInner : this.getParent().manager().inner().getEndpoints()
+        for (EndpointInner endpointInner : this.getParent().manager().serviceClient().getEndpoints()
             .listByProfile(this.getParent().resourceGroupName(), this.getParent().name())) {
             CdnEndpointImpl endpoint = new CdnEndpointImpl(endpointInner.name(), this.getParent(), endpointInner);
-            for (CustomDomainInner customDomainInner : this.getParent().manager().inner().getCustomDomains()
+            for (CustomDomainInner customDomainInner : this.getParent().manager().serviceClient().getCustomDomains()
                 .listByEndpoint(this.getParent().resourceGroupName(), this.getParent().name(), endpoint.name())) {
                 endpoint.withCustomDomain(customDomainInner.hostname());
             }
@@ -98,7 +98,7 @@ class CdnEndpointsImpl extends
     }
 
     public CdnEndpointImpl updateEndpoint(String name) {
-        EndpointInner endpointInner = this.getParent().manager().inner().getEndpoints()
+        EndpointInner endpointInner = this.getParent().manager().serviceClient().getEndpoints()
             .get(this.getParent().resourceGroupName(), this.getParent().name(), name);
         CdnEndpointImpl endpoint = this.prepareInlineUpdate(
             new CdnEndpointImpl(name, this.getParent(), endpointInner));

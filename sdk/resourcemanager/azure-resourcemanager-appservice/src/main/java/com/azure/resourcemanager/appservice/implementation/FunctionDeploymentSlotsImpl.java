@@ -26,7 +26,7 @@ class FunctionDeploymentSlotsImpl
     private final FunctionAppImpl parent;
 
     FunctionDeploymentSlotsImpl(final FunctionAppImpl parent) {
-        super(parent.manager().inner().getWebApps(), parent.manager());
+        super(parent.manager().serviceClient().getWebApps(), parent.manager());
 
         this.parent = parent;
     }

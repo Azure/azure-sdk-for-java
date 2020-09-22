@@ -16,7 +16,7 @@ public class ManagementPoliciesImpl extends WrapperImpl<ManagementPoliciesClient
     private final StorageManager manager;
 
     public ManagementPoliciesImpl(StorageManager manager) {
-        super(manager.inner().getManagementPolicies());
+        super(manager.serviceClient().getManagementPolicies());
         this.manager = manager;
     }
 

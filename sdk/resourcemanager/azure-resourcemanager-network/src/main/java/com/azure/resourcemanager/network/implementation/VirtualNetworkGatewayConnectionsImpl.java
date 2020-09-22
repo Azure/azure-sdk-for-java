@@ -32,7 +32,7 @@ class VirtualNetworkGatewayConnectionsImpl
     private final VirtualNetworkGatewayImpl parent;
 
     VirtualNetworkGatewayConnectionsImpl(final VirtualNetworkGatewayImpl parent) {
-        super(parent.manager().inner().getVirtualNetworkGatewayConnections(), parent.manager());
+        super(parent.manager().serviceClient().getVirtualNetworkGatewayConnections(), parent.manager());
         this.parent = parent;
     }
 
@@ -76,7 +76,7 @@ class VirtualNetworkGatewayConnectionsImpl
         VirtualNetworkGatewayConnectionInner inner =
             this
                 .manager()
-                .inner()
+                .serviceClient()
                 .getVirtualNetworkGatewayConnections()
                 .getByResourceGroup(this.parent().resourceGroupName(), name);
         return new VirtualNetworkGatewayConnectionImpl(name, parent, inner);

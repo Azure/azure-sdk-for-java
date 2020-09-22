@@ -130,7 +130,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
         Assertions.assertEquals(resourceName, ResourceUtils.nameFromResourceId(resource.id()));
 
         PagedIterable<GenericResourceExpandedInner> resources =
-            genericResources.manager().inner().getResources()
+            genericResources.manager().serviceClient().getResources()
                 .listByResourceGroup(rgName, null, "provisioningState", null);
         Optional<GenericResourceExpandedInner> resourceOpt
             = resources.stream().filter(r -> resourceName.equals(r.name())).findFirst();

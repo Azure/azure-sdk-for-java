@@ -90,6 +90,6 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
     }
 
     public RoleAssignmentsClient inner() {
-        return manager().roleInner().getRoleAssignments();
+        return manager().roleServiceClient().getRoleAssignments();
     }
 }

@@ -87,7 +87,7 @@ class ActivityLogAlertImpl
         this.inner().withCondition(condition);
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getActivityLogAlerts()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
@@ -97,7 +97,7 @@ class ActivityLogAlertImpl
     protected Mono<ActivityLogAlertResourceInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getActivityLogAlerts()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }

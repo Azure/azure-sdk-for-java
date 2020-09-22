@@ -112,7 +112,7 @@ public final class MSIManager extends Manager<ManagedServiceIdentityClient> {
      */
     public Identities identities() {
         if (identities == null) {
-            this.identities = new IdentitesImpl(this.inner().getUserAssignedIdentities(), this);
+            this.identities = new IdentitesImpl(this.serviceClient().getUserAssignedIdentities(), this);
         }
         return this.identities;
     }
