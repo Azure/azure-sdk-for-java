@@ -95,7 +95,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
 
     @Override
     protected Mono<ServicePrincipalInner> getInnerAsync() {
-        return manager.inner().getServicePrincipals().getAsync(id());
+        return manager.serviceClient().getServicePrincipals().getAsync(id());
     }
 
     @Override
@@ -106,7 +106,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                 ActiveDirectoryApplication application = this.taskResult(applicationCreatable.key());
                 createParameters.withAppId(application.applicationId());
             }
-            sp = manager.inner().getServicePrincipals().createAsync(createParameters).map(innerToFluentMap(this));
+            sp = manager.serviceClient().getServicePrincipals().createAsync(createParameters).map(innerToFluentMap(this));
         }
         return sp
             .flatMap(
@@ -144,7 +144,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                 mono
                     .concatWith(
                         manager()
-                            .inner()
+                            .serviceClient()
                             .getServicePrincipals()
                             .updateKeyCredentialsAsync(sp.id(), updateKeyCredentials)
                             .then(Mono.just(ServicePrincipalImpl.this)))
@@ -166,7 +166,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                 mono
                     .concatWith(
                         manager()
-                            .inner()
+                            .serviceClient()
                             .getServicePrincipals()
                             .updatePasswordCredentialsAsync(sp.id(), updatePasswordCredentials)
                             .then(Mono.just(ServicePrincipalImpl.this)))
@@ -249,7 +249,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                 })
             .concatWith(
                 manager()
-                    .inner()
+                    .serviceClient()
                     .getServicePrincipals()
                     .listKeyCredentialsAsync(id())
                     .map(
@@ -260,7 +260,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                         }))
             .concatWith(
                 manager()
-                    .inner()
+                    .serviceClient()
                     .getServicePrincipals()
                     .listPasswordCredentialsAsync(id())
                     .map(
