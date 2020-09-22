@@ -54,7 +54,6 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        boolean cleanupRequired = false;
         if (!alreadyAuthenticated() && hasText(authHeader) && authHeader.startsWith(TOKEN_TYPE)) {
             String token = authHeader.replace(TOKEN_TYPE, "");
             if (!principalManager.isTokenIssuedByAAD(token)) {
@@ -74,22 +73,18 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
                 );
                 LOGGER.info("Request token verification success. {}", authentication);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                cleanupRequired = true;
+                try {
+                    filterChain.doFilter(request, httpServletResponse);
+                } finally {
+                    //Clear context after execution
+                    SecurityContextHolder.clearContext();
+                }
             } catch (BadJWTException ex) {
                 // Invalid JWT. Either expired or not yet valid.
                 httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
-                return;
             } catch (ParseException | BadJOSEException | JOSEException ex) {
                 LOGGER.error("Failed to initialize UserPrincipal.", ex);
                 throw new ServletException(ex);
-            }
-        }
-        try {
-            filterChain.doFilter(request, httpServletResponse);
-        } finally {
-            if (cleanupRequired) {
-                //Clear context after execution
-                SecurityContextHolder.clearContext();
             }
         }
     }
