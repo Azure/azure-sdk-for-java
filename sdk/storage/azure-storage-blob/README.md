@@ -149,6 +149,7 @@ The following sections provide several code snippets covering some of the most c
 - [Download a blob to a stream](#download-a-blob-to-a-stream)
 - [Download a blob to local path](#download-a-blob-to-local-path)
 - [Enumerate blobs](#enumerate-blobs)
+- [Copy a blob](#copy-a-blob)
 - [Authenticate with Azure Identity](#authenticate-with-azure-identity)
 
 ### Create a `BlobServiceClient`
@@ -310,6 +311,24 @@ Enumerating all blobs using a `BlobContainerClient`.
 for (BlobItem blobItem : blobContainerClient.listBlobs()) {
     System.out.println("This is the blob name: " + blobItem.getName());
 }
+```
+
+### Copy a blob
+
+Copying a blob. Please refer to the javadocs on each of these methods for more information around requirements on the 
+copy source and its authentication.
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L131-L132 -->
+```java
+SyncPoller<BlobCopyInfo, Void> poller = blobClient.beginCopy("<url-to-blob>", Duration.ofSeconds(1));
+poller.waitForCompletion();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L136-L136 -->
+```java
+blobClient.copyFromUrl("url-to-blob");
 ```
 
 ### Authenticate with Azure Identity
