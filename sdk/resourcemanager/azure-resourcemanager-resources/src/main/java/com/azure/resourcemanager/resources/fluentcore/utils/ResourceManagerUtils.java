@@ -132,7 +132,7 @@ public final class ResourceManagerUtils {
      * @return the host
      * @throws MalformedURLException when url is invalid format
      */
-    public static String getHost(String urlString) throws MalformedURLException {
+    private static String getHost(String urlString) throws MalformedURLException {
         URL url = new URL(urlString);
         String protocol = url.getProtocol();
         String host = url.getAuthority();
@@ -146,7 +146,7 @@ public final class ResourceManagerUtils {
      * @return the path
      * @throws MalformedURLException when the url is invalid format
      */
-    public static String getPathAndQuery(String urlString) throws MalformedURLException {
+    private static String getPathAndQuery(String urlString) throws MalformedURLException {
         URL url = new URL(urlString);
         String path = url.getPath();
         String query = url.getQuery();
