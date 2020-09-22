@@ -34,9 +34,9 @@ import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateCompo
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateRelationshipResponse;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateResponse;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationshipCollection;
 import com.azure.digitaltwins.core.implementation.models.RelationshipCollection;
-import com.azure.digitaltwins.core.models.IncomingRelationship;
 import java.util.List;
 import reactor.core.publisher.Mono;
 

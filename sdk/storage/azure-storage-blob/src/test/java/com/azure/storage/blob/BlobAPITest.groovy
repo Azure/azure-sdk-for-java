@@ -31,6 +31,7 @@ import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.options.BlobBeginCopyOptions
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions
+import com.azure.storage.blob.options.BlobDownloadToFileOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
@@ -45,6 +46,7 @@ import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
+import spock.lang.Ignore
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -904,6 +906,32 @@ class BlobAPITest extends APISpec {
         100                  | _
         8 * 1026 * 1024 + 10 | _
     }
+
+    @Unroll
+    @Ignore("Very large data sizes.") /* Enable once we have ability to run large resource heavy tests in CI. */
+    def "Download to file blockSize"() {
+        def file = getRandomFile(sizeOfData)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        bc.downloadToFileWithResponse(new BlobDownloadToFileOptions(outFile.toPath().toString())
+            .setParallelTransferOptions(new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(downloadBlockSize))
+            .setDownloadRetryOptions(new DownloadRetryOptions().setMaxRetryRequests(3)), null, null)
+
+        then:
+        notThrown(BlobStorageException)
+
+        where:
+        sizeOfData           | downloadBlockSize   || _
+        5000 * Constants.MB  | 5000 * Constants.MB || _ /* This was the default before. */
+        6000 * Constants.MB  | 6000 * Constants.MB || _ /* Trying to see if we can set it to a number greater than previous default. */
+        6000 * Constants.MB  | 5100 * Constants.MB || _ /* Testing chunking with a large size */
+    }
+
 
     def "Get properties default"() {
         when:
