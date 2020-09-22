@@ -4,7 +4,7 @@
 
 
 ## 1.2.8 (2020-09-14)
-### New features
+### New Features
  - Enable Storage starter to support overwriting blob data
  - Enable Actuator for storage blob
  - Enable scheduled enqueue message in Service Bus binders
