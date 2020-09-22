@@ -15,7 +15,7 @@ public class BlobInputStreamOptions {
 
     private BlobRange range;
     private BlobRequestConditions requestConditions;
-    private Integer chunkSize;
+    private Integer blockSize;
 
     /**
      * @return {@link BlobRange}
@@ -54,18 +54,18 @@ public class BlobInputStreamOptions {
      * fewer network calls, but each individual call will send more data and will therefore take longer.
      * The default value is 4 MB.
      */
-    public Integer getChunkSize() {
-        return chunkSize;
+    public Integer getBlockSize() {
+        return blockSize;
     }
 
     /**
-     * @param chunkSize The size of each data chunk returned from the service. If block size is large, input stream
+     * @param blockSize The size of each data chunk returned from the service. If block size is large, input stream
      * will make fewer network calls, but each individual call will send more data and will therefore take longer.
      * The default value is 4 MB.
      * @return The updated options.
      */
-    public BlobInputStreamOptions setChunkSize(Integer chunkSize) {
-        this.chunkSize = chunkSize;
+    public BlobInputStreamOptions setBlockSize(Integer blockSize) {
+        this.blockSize = blockSize;
         return this;
     }
 }

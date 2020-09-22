@@ -1,6 +1,8 @@
 # Release History
 
 ## 12.9.0-beta.1 (Unreleased)
+- Added support to specify block size when using BlobInputStream.
+
 - Fixed a bug where users could not download more than 5000MB of data in one shot in the downloadToFile API.
 - Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
 - Fixed a bug where Default Azure Credential would not work with Azurite.

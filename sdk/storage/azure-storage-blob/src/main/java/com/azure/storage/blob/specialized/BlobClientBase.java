@@ -248,7 +248,7 @@ public class BlobClientBase {
     public final BlobInputStream openInputStream(BlobInputStreamOptions options) {
         options = options == null ? new BlobInputStreamOptions() : options;
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
-        int chunkSize = options.getChunkSize() == null ? 4 * Constants.MB : options.getChunkSize();
+        int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
 
         return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
             options.getRequestConditions(), getProperties());

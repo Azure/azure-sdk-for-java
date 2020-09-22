@@ -74,7 +74,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
     @Requires({ liveMode() })
     @Unroll
-    def "Upload download chunk size"() {
+    def "Upload download block size"() {
         when:
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
@@ -84,7 +84,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         outStream.close()
 
         then:
-        def inputStream = bc.openInputStream(new BlobInputStreamOptions().setChunkSize(chunkSize))
+        def inputStream = bc.openInputStream(new BlobInputStreamOptions().setBlockSize(blockSize))
         int b
         def outputStream = new ByteArrayOutputStream()
         try {
@@ -111,7 +111,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes2 == randomBytes
 
         where:
-        chunkSize        || numChunks | sizes
+        blockSize        || numChunks | sizes
         null             || 2         | [4 * Constants.MB, 2 * Constants.MB] // Default
         5 * Constants.MB || 2         | [5 * Constants.MB, 1 * Constants.MB] // Greater than default
         3 * Constants.MB || 2         | [3 * Constants.MB, 3 * Constants.MB] // Smaller than default
