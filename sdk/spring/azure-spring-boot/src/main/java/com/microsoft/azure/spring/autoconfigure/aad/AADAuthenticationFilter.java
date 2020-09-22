@@ -41,7 +41,6 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final String CURRENT_USER_PRINCIPAL = "CURRENT_USER_PRINCIPAL";
     private static final String CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN = "CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN";
     private static final String CURRENT_USER_PRINCIPAL_JWT_TOKEN = "CURRENT_USER_PRINCIPAL_JWT_TOKEN";
-    private static final String TOKEN_HEADER = "Authorization";
     private static final String TOKEN_TYPE = "Bearer ";
 
     private final AADAuthenticationProperties aadAuthenticationProperties;
