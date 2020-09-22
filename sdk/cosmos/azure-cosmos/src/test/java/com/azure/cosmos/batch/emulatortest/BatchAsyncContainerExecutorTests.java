@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.batch.emulatortest;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.batch.implementation.BatchAsyncContainerExecutor;
@@ -13,9 +14,12 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -27,37 +31,63 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
 public class BatchAsyncContainerExecutorTests extends BatchTestBase {
 
-    @Factory(dataProvider = "simpleClientBuilders")
+    private CosmosAsyncClient batchClient;
+    private CosmosAsyncContainer batchContainer;
+
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public BatchAsyncContainerExecutorTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    public void before_BatchAsyncContainerExecutorTests() {
+        assertThat(this.batchClient).isNull();
+        this.batchClient = getClientBuilder().buildAsyncClient();
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.batchClient);
+        batchContainer = batchClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+    }
+
+    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    public void afterClass() {
+        assertThat(this.batchClient).isNotNull();
+        this.batchClient.close();
+    }
+
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void addAsync() {
-        CosmosAsyncContainer container = this.gatewayJsonContainer;
+        CosmosAsyncContainer container = batchContainer;
         BatchAsyncContainerExecutor executor = new BatchAsyncContainerExecutor(container, 20, MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES);
 
+        List<String> idList = new ArrayList<>();
         List<Mono<TransactionalBatchOperationResult<?>>> responseMonos = new ArrayList<>();
-        for (int i = 500; i < 600; i++) {
-            responseMonos.add(executor.addAsync(createItem(String.valueOf(i)), null));
+        for (int i = 0; i < 100; i++) {
+            String id = UUID.randomUUID().toString();
+            idList.add(id);
+            responseMonos.add(executor.addAsync(createItem(id), null));
         }
 
-        for (int i = 500; i < 600; i++) {
-            TransactionalBatchOperationResult<?> response = responseMonos.get(i - 500).block();
+        for (int i = 0; i < 100; i++) {
+            TransactionalBatchOperationResult<?> response = responseMonos.get(i).block();
             assertEquals(HttpResponseStatus.CREATED.code(), response.getResponseStatus());
 
             TestDoc document = Utils.parse(response.getResourceObject().toString(), TestDoc.class);
-            assertEquals(String.valueOf(i), document.getId());
+            assertEquals(idList.get(i), document.getId());
 
-            CosmosItemResponse<TestDoc> storedDoc = container.readItem(String.valueOf(i), new PartitionKey(String.valueOf(i)), TestDoc.class).block();
+            CosmosItemResponse<TestDoc> storedDoc = container.readItem(idList.get(i), new PartitionKey(idList.get(i)), TestDoc.class).block();
             assertNotNull(storedDoc.getItem());
+
+            String diagnostic = response.getCosmosDiagnostics().toString();
+            assertFalse(Strings.isNullOrEmpty(diagnostic));
+            assertTrue(diagnostic.contains("bulkSemaphoreStatistics"));
         }
 
         executor.close();
@@ -65,7 +95,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void validateRequestOptions_Simple() {
-        CosmosAsyncContainer container = this.gatewayJsonContainer;
+        CosmosAsyncContainer container = batchContainer;
         BatchAsyncContainerExecutor executor = new BatchAsyncContainerExecutor(container, 20, MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES);
 
         String id = UUID.randomUUID().toString();
@@ -84,7 +114,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void validateInvalidRequestOptions_sessionToken() {
-        CosmosAsyncContainer container = this.gatewayJsonContainer;
+        CosmosAsyncContainer container = batchContainer;
         BatchAsyncContainerExecutor executor = new BatchAsyncContainerExecutor(container, 20, MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES);
 
         String id = UUID.randomUUID().toString();
@@ -108,7 +138,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void validateInvalidRequestOptions_PartitionKey() {
-        CosmosAsyncContainer container = this.gatewayJsonContainer;
+        CosmosAsyncContainer container = batchContainer;
         BatchAsyncContainerExecutor executor = new BatchAsyncContainerExecutor(container, 20, MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES);
 
         String id = UUID.randomUUID().toString();
@@ -135,7 +165,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void validateInvalidRequestOptions_partitionKeyAndEPK() {
-        CosmosAsyncContainer container = this.gatewayJsonContainer;
+        CosmosAsyncContainer container = batchContainer;
         BatchAsyncContainerExecutor executor = new BatchAsyncContainerExecutor(container, 20, MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES);
 
         String id = UUID.randomUUID().toString();

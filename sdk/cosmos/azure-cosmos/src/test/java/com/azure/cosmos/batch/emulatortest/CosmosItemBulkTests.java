@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.batch.emulatortest;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.batch.implementation.BatchRequestResponseConstant;
@@ -11,6 +12,8 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -18,25 +21,47 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 public class CosmosItemBulkTests extends BatchTestBase {
 
-    @Factory(dataProvider = "simpleClientBuilders")
+    private CosmosAsyncClient bulkClient;
+    private CosmosAsyncContainer bulkContainer;
+
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public CosmosItemBulkTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
+    }
+
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    public void before_CosmosItemBulkTests() {
+        assertThat(this.bulkClient).isNull();
+        this.bulkClient = getClientBuilder().bulkExecutionEnabled(true).buildAsyncClient();
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.bulkClient);
+        bulkContainer = bulkClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+    }
+
+    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    public void afterClass() {
+        assertThat(this.bulkClient).isNotNull();
+        this.bulkClient.close();
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createItem_withBulk() {
         CosmosAsyncContainer container = this.bulkContainer;
 
+        List<String> idList = new ArrayList<>();
         List<Mono<CosmosItemResponse<TestDoc>>> responseMonos = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            responseMonos.add(executeCreateAsync(container, this.populateTestDoc(String.valueOf(i), String.valueOf(i))));
+            String id = UUID.randomUUID().toString();
+            idList.add(id);
+            responseMonos.add(executeCreateAsync(container, this.populateTestDoc(id, String.valueOf(i))));
         }
 
         for (int i = 0; i < 100; i++) {
@@ -47,7 +72,9 @@ public class CosmosItemBulkTests extends BatchTestBase {
             assertFalse(Strings.isNullOrEmpty(diagnostic));
             assertTrue(diagnostic.contains("bulkSemaphoreStatistics"));
             TestDoc document = response.getItem();
-            assertEquals(String.valueOf(i), document.getId());
+
+            String id = idList.get(i);
+            assertEquals(id, document.getId());
         }
     }
 
@@ -57,8 +84,7 @@ public class CosmosItemBulkTests extends BatchTestBase {
         int appxDocSize = 3 * BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
 
         List<Mono<CosmosItemResponse<TestDoc>>> responseMonos = new ArrayList<>();
-        for (int i = 0; i < 10; i++)
-        {
+        for (int i = 0; i < 10; i++) {
             TestDoc item = this.populateTestDoc("TBD", appxDocSize);
             responseMonos.add(executeCreateAsync(container, item));
         }
@@ -77,13 +103,16 @@ public class CosmosItemBulkTests extends BatchTestBase {
     public void upsertItem_withbulk() {
         List<Mono<CosmosItemResponse<TestDoc>>> responseMonos = new ArrayList<>();
         CosmosAsyncContainer container = this.bulkContainer;
+        List<String> idList = new ArrayList<>();
 
-        for (int i = 100; i < 200; i++) {
-            responseMonos.add(executeUpsertAsync(container, this.populateTestDoc(String.valueOf(i), String.valueOf(i))));
+        for (int i = 0; i < 100; i++) {
+            String id = UUID.randomUUID().toString();
+            idList.add(id);
+            responseMonos.add(executeUpsertAsync(container, this.populateTestDoc(id, String.valueOf(i))));
         }
 
-        for (int i = 100; i < 200; i++) {
-            CosmosItemResponse<TestDoc> response = responseMonos.get(i - 100).block();
+        for (int i = 0; i < 100; i++) {
+            CosmosItemResponse<TestDoc> response = responseMonos.get(i).block();
             assertEquals(HttpResponseStatus.CREATED.code(), response.getStatusCode());
             assertTrue(response.getRequestCharge() > 0);
             String diagnostic = response.getDiagnostics().toString();
@@ -91,8 +120,8 @@ public class CosmosItemBulkTests extends BatchTestBase {
             assertTrue(diagnostic.contains("bulkSemaphoreStatistics"));
 
             TestDoc document = response.getItem();
-            assertEquals(String.valueOf(i), document.getId());
-        }
+            String id = idList.get(i);
+            assertEquals(id, document.getId());        }
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -102,8 +131,10 @@ public class CosmosItemBulkTests extends BatchTestBase {
         CosmosAsyncContainer container = this.bulkContainer;
 
         // Create the items
-        for (int i = 200; i < 300; i++) {
-            TestDoc createdDocument = this.populateTestDoc(String.valueOf(i), String.valueOf(i));
+        for (int i = 0; i < 100; i++) {
+            String id = UUID.randomUUID().toString();
+            TestDoc createdDocument = this.populateTestDoc(id, String.valueOf(i));
+
             createdDocuments.add(createdDocument);
             insertMonos.add(executeCreateAsync(container, createdDocument));
         }
@@ -116,8 +147,8 @@ public class CosmosItemBulkTests extends BatchTestBase {
             deletedMonos.add(executeDeleteAsync(container, createdDocument));
         }
 
-        for (int i = 200; i < 300; i++) {
-            CosmosItemResponse<Object> response = deletedMonos.get(i - 200).block();
+        for (int i = 0; i < 100; i++) {
+            CosmosItemResponse<Object> response = deletedMonos.get(i).block();
             assertEquals(HttpResponseStatus.NO_CONTENT.code(), response.getStatusCode());
             assertTrue(response.getRequestCharge() > 0);
             String diagnostic = response.getDiagnostics().toString();
@@ -130,15 +161,19 @@ public class CosmosItemBulkTests extends BatchTestBase {
         List<Mono<CosmosItemResponse<TestDoc>>> insertMonos = new ArrayList<>();
         List<TestDoc> createdDocuments = new ArrayList<TestDoc>();
         CosmosAsyncContainer container = this.bulkContainer;
+        List<String> idList = new ArrayList<>();
 
         // Create the items
-        for (int i = 300; i < 400; i++) {
-            TestDoc createdDocument = this.populateTestDoc(String.valueOf(i), String.valueOf(i));
+        for (int i = 0; i < 100; i++) {
+            String id = UUID.randomUUID().toString();
+            idList.add(id);
+            TestDoc createdDocument = this.populateTestDoc(id, String.valueOf(i));
+
             createdDocuments.add(createdDocument);
             insertMonos.add(executeCreateAsync(container, createdDocument));
         }
 
-        List<CosmosItemResponse<TestDoc>> list = Flux.merge(insertMonos).collectList().block();
+        Flux.merge(insertMonos).collectList().block();
 
         List<Mono<CosmosItemResponse<TestDoc>>> readMonos = new ArrayList<>();
         // Read the items
@@ -146,8 +181,8 @@ public class CosmosItemBulkTests extends BatchTestBase {
             readMonos.add(executeReadAsync(container, createdDocument));
         }
 
-        for (int i = 300; i < 400; i++) {
-            CosmosItemResponse<TestDoc> response = readMonos.get(i - 300).block();
+        for (int i = 0; i < 100; i++) {
+            CosmosItemResponse<TestDoc> response = readMonos.get(i).block();
             assertEquals(HttpResponseStatus.OK.code(), response.getStatusCode());
             assertTrue(response.getRequestCharge() > 0);
             String diagnostic = response.getDiagnostics().toString();
@@ -155,7 +190,9 @@ public class CosmosItemBulkTests extends BatchTestBase {
             assertTrue(diagnostic.contains("bulkSemaphoreStatistics"));
 
             TestDoc document = response.getItem();
-            assertEquals(String.valueOf(i), document.getId());
+
+            String id = idList.get(i);
+            assertEquals(id, document.getId());
         }
     }
 
@@ -164,15 +201,19 @@ public class CosmosItemBulkTests extends BatchTestBase {
         List<Mono<CosmosItemResponse<TestDoc>>> insertMonos = new ArrayList<>();
         List<TestDoc> createdDocuments = new ArrayList<TestDoc>();
         CosmosAsyncContainer container = this.bulkContainer;
+        List<String> idList = new ArrayList<>();
 
         // Create the items
-        for (int i = 400; i < 500; i++) {
-            TestDoc createdDocument = this.populateTestDoc(String.valueOf(i), String.valueOf(i));
+        for (int i = 0; i < 100; i++) {
+            String id = UUID.randomUUID().toString();
+            idList.add(id);
+            TestDoc createdDocument = this.populateTestDoc(id, String.valueOf(i));
+
             createdDocuments.add(createdDocument);
             insertMonos.add(executeCreateAsync(container, createdDocument));
         }
 
-        List<CosmosItemResponse<TestDoc>> list = Flux.merge(insertMonos).collectList().block();
+        Flux.merge(insertMonos).collectList().block();
 
         List<Mono<CosmosItemResponse<TestDoc>>> replaceMonos = new ArrayList<>();
         // Replace the items
@@ -181,8 +222,8 @@ public class CosmosItemBulkTests extends BatchTestBase {
             replaceMonos.add(executeReplaceAsync(container, createdDocument));
         }
 
-        for (int i = 400; i < 500; i++) {
-            CosmosItemResponse<TestDoc> response = replaceMonos.get(i - 400).block();
+        for (int i = 0; i < 100; i++) {
+            CosmosItemResponse<TestDoc> response = replaceMonos.get(i).block();
             assertEquals(HttpResponseStatus.OK.code(), response.getStatusCode());
             assertTrue(response.getRequestCharge() > 0);
             String diagnostic = response.getDiagnostics().toString();
@@ -190,7 +231,9 @@ public class CosmosItemBulkTests extends BatchTestBase {
             assertTrue(diagnostic.contains("bulkSemaphoreStatistics"));
 
             TestDoc document = response.getItem();
-            assertEquals(String.valueOf(i), document.getId());
+
+            String id = idList.get(i);
+            assertEquals(id, document.getId());
         }
     }
 

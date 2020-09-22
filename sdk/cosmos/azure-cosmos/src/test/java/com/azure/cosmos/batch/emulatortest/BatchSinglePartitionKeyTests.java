@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.batch.emulatortest;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.batch.TransactionalBatch;
@@ -13,42 +14,64 @@ import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosItemResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
 
-import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
 import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
-    @Factory(dataProvider = "simpleClientBuilders")
+    private CosmosAsyncClient batchClient;
+    private CosmosAsyncContainer batchContainer;
+    private CosmosAsyncContainer sharedThroughputContainer;
+
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public BatchSinglePartitionKeyTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void batchCrud() throws Exception {
-         this.runCrudAsync(super.jsonContainer);
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    public void before_BatchSinglePartitionKeyTests() {
+        assertThat(this.batchClient).isNull();
+        this.batchClient = getClientBuilder().buildAsyncClient();
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.batchClient);
+        batchContainer = batchClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        sharedThroughputContainer = super.createSharedThroughputContainer(this.batchClient);
+    }
+
+    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    public void afterClass() {
+        assertThat(this.batchClient).isNotNull();
+
+        if (sharedThroughputContainer != null) {
+            // Delete the database created in this test
+            sharedThroughputContainer.getDatabase().delete().block();
+        }
+
+        this.batchClient.close();
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void batchGatewayCrud() throws Exception {
-        this.runCrudAsync(super.gatewayJsonContainer);
+    public void batchCrud() throws Exception {
+         this.runCrudAsync(batchContainer);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchSharedThroughputCrud() throws Exception {
-        this.runCrudAsync(super.sharedThroughputContainer);
+        this.runCrudAsync(sharedThroughputContainer);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchOrdered() {
-        CosmosAsyncContainer container = super.jsonContainer;
+        CosmosAsyncContainer container = batchContainer;
         this.createJsonTestDocsAsync(container);
 
         TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
@@ -72,7 +95,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchItemETagAsync() {
-        CosmosAsyncContainer container = super.jsonContainer;
+        CosmosAsyncContainer container = batchContainer;
         this.createJsonTestDocsAsync(container);
 
         {
@@ -128,7 +151,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchItemSessionTokenAsync() {
-        CosmosAsyncContainer container = this.jsonContainer;
+        CosmosAsyncContainer container = batchContainer;
         this.createJsonTestDocsAsync(container);
 
         TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
@@ -161,7 +184,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithTooManyOperationsAsync() {
-        CosmosAsyncContainer container = this.jsonContainer;
+        CosmosAsyncContainer container = batchContainer;
         int operationCount = MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST + 1;
 
         // Increase the doc size by a bit so all docs won't fit in one server request.
@@ -177,7 +200,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchReadsOnlyAsync() throws Exception {
-        CosmosAsyncContainer container = this.jsonContainer;
+        CosmosAsyncContainer container = batchContainer;
         this.createJsonTestDocsAsync(container);
 
         TransactionalBatchResponse batchResponse = container.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
@@ -241,12 +264,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithCreateConflictAsync() {
-        this.runBatchWithCreateConflictAsync(this.jsonContainer);
-    }
-
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void batchWithCreateConflictGatewayAsync() {
-        this.runBatchWithCreateConflictAsync(this.gatewayJsonContainer);
+        this.runBatchWithCreateConflictAsync(batchContainer);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -256,7 +274,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithInvalidCreateAsync() {
-        CosmosAsyncContainer container = this.jsonContainer;
+        CosmosAsyncContainer container = batchContainer;
 
         // partition key mismatch between doc and and value passed in to the operation
         this.runWithErrorAsync(
@@ -267,7 +285,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithReadOfNonExistentEntityAsync() {
-        CosmosAsyncContainer container = this.jsonContainer;
+        CosmosAsyncContainer container = batchContainer;
         this.runWithErrorAsync(
             container,
             batch -> batch.readItem(UUID.randomUUID().toString()),
@@ -276,7 +294,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithReplaceOfStaleEntityAsync() {
-        CosmosAsyncContainer container = this.jsonContainer;
+        CosmosAsyncContainer container = batchContainer;
         this.createJsonTestDocsAsync(container);
 
         TestDoc staleTestDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
@@ -296,7 +314,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithDeleteOfNonExistentEntityAsync() {
-        CosmosAsyncContainer container = this.jsonContainer;
+        CosmosAsyncContainer container = batchContainer;
 
         this.runWithErrorAsync(
             container,
