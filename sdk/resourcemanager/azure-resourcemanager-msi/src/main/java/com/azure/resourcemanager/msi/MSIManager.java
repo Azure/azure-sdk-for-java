@@ -20,7 +20,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 /**
  * Entry point to Azure Managed Service Identity (MSI) resource management.
  */
-public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentityClient> {
+public final class MSIManager extends Manager<ManagedServiceIdentityClient> {
     private final AuthorizationManager authorizationManager;
 
     private Identities identities;
