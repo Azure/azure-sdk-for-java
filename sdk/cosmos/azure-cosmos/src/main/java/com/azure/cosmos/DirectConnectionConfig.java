@@ -8,10 +8,11 @@ import io.netty.channel.ChannelOption;
 import java.time.Duration;
 
 /**
- * Represents the connection config with {@link ConnectionMode#DIRECT} associated with Cosmos Client in the Azure Cosmos DB database service.
- * For performance tips on how to optimize Direct connection configuration,
- * refer to performance tips guide:
- * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async">Performance tips guide</a>
+ * Represents the connection config with {@link ConnectionMode#DIRECT} associated with Cosmos Client in the Azure Cosmos
+ * DB database service. For performance tips on how to optimize Direct connection configuration, refer to performance
+ * tips guide:
+ * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async">Performance
+ * tips guide</a>
  */
 public final class DirectConnectionConfig {
     //  Constants
@@ -22,6 +23,7 @@ public final class DirectConnectionConfig {
     private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 30;
 
     private Duration connectTimeout;
+    private boolean enableConnectionEndpointRediscovery;
     private Duration idleConnectionTimeout;
     private Duration idleEndpointTimeout;
     private Duration requestTimeout;
@@ -33,6 +35,7 @@ public final class DirectConnectionConfig {
      */
     public DirectConnectionConfig() {
         this.connectTimeout = DEFAULT_CONNECT_TIMEOUT;
+        this.enableConnectionEndpointRediscovery = false;
         this.idleConnectionTimeout = Duration.ZERO;
         this.idleEndpointTimeout = DEFAULT_IDLE_ENDPOINT_TIMEOUT;
         this.maxConnectionsPerEndpoint = DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT;
@@ -76,6 +79,42 @@ public final class DirectConnectionConfig {
      */
     public DirectConnectionConfig setConnectTimeout(Duration connectTimeout) {
         this.connectTimeout = connectTimeout;
+        return this;
+    }
+
+    /**
+     * Gets a value indicating whether Direct TCP connection endpoint rediscovery is enabled.
+     * <p>
+     * The connection endpoint rediscovery feature is designed to reduce and spread-out latency spikes that are likely
+     * to occur:
+     * <ul>
+     * <li>During rolling upgrades of a Cosmos instance or
+     * <li>When a backend node is being decommissioned or restarted (e.g., to restart or remove an unhealthy replica.)
+     * </ul>
+     *
+     * @return {@code true} if Direct TCP connection endpoint rediscovery is enabled; {@code false} otherwise.
+     */
+    public boolean isConnectionEndpointRediscoveryEnabled() {
+        return this.enableConnectionEndpointRediscovery;
+    }
+
+    /**
+     * Sets a value indicating whether Direct TCP connection endpoint rediscovery should be enabled.
+     * <p>
+     * The connection endpoint rediscovery feature is designed to reduce and spread-out latency spikes that are likely
+     * to occur:
+     * <ul>
+     * <li>During rolling upgrades of a Cosmos instance or
+     * <li>When a backend node is being decommissioned or restarted (e.g., to restart or remove an unhealthy replica.)
+     * </ul>
+     *
+     * @param connectionEndpointRediscoveryEnabled {@code true} if connection endpoint rediscovery is enabled; {@code
+     *                                             false} otherwise.
+     *
+     * @return the {@linkplain DirectConnectionConfig}.
+     */
+    public DirectConnectionConfig setConnectionEndpointRediscoveryEnabled(boolean connectionEndpointRediscoveryEnabled) {
+        this.enableConnectionEndpointRediscovery = connectionEndpointRediscoveryEnabled;
         return this;
     }
 

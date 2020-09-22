@@ -288,20 +288,28 @@ public class HttpConstants {
     }
 
     public static class SubStatusCodes {
+
         // Unknown SubStatus Code
         public static final int UNKNOWN = 0;
 
-        // 400: Bad Request substatus
+        // 400: Bad Request sub-status
         public static final int PARTITION_KEY_MISMATCH = 1001;
         public static final int CROSS_PARTITION_QUERY_NOT_SERVABLE = 1004;
 
-        // 410: StatusCodeType_Gone: substatus
+        // 410: StatusCodeType_Gone: sub-status
         public static final int NAME_CACHE_IS_STALE = 1000;
         public static final int PARTITION_KEY_RANGE_GONE = 1002;
         public static final int COMPLETING_SPLIT = 1007;
         public static final int COMPLETING_PARTITION_MIGRATION = 1008;
+        // Sub-status code indicating that a GoneException was instantiated by the client; not as a result of a response
+        // message provide by a Cosmos instance.
+        public static final int CLIENT_GENERATED = 10_000;
+        // Sub-status code zero in a response from a service endpoint indicates that a replica is being discontinued or
+        // reconfigured. When endpoint rediscovery is enabled the RntbdTransportClient converts sub-status code zero to
+        // this sub-status code value.
+        public static final int DISCONTINUING_SERVICE = CLIENT_GENERATED + 2;
 
-        // 403: Forbidden substatus
+        // 403: Forbidden sub-status
         public static final int FORBIDDEN_WRITEFORBIDDEN = 3;
         public static final int DATABASE_ACCOUNT_NOTFOUND = 1008;
 

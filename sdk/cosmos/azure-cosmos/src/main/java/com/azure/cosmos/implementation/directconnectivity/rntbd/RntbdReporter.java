@@ -63,7 +63,7 @@ public final class RntbdReporter {
         final Exception exception = new AzureException(null, throwable);
         final StackTraceElement[] stackTrace = exception.getStackTrace();
 
-        logger.error("Report this {} issue to ensure it is addressed:\n[{}]\n[{}]\n[{}{}]",
+        logger.error("Report this {} issue to ensure it is addressed:\n[{}]\n[{}]\n[{}: {}]",
             codeSource,
             subject,
             stackTrace[2],

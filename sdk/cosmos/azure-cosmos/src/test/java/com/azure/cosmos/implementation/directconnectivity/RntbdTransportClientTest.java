@@ -69,6 +69,7 @@ import reactor.core.publisher.Mono;
 import java.net.ConnectException;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -79,6 +80,7 @@ import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
+import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -616,7 +618,7 @@ public final class RntbdTransportClientTest {
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
-        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext)) {
+        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
                 new AzureKeyCredential(RntbdTestConfiguration.AccountKey)
@@ -734,7 +736,7 @@ public final class RntbdTransportClientTest {
             throw new AssertionError(String.format("%s: %s", error.getClass(), error.getMessage()));
         }
 
-        return new RntbdTransportClient(new FakeEndpoint.Provider(options, sslContext, expected));
+        return new RntbdTransportClient(new FakeEndpoint.Provider(options, sslContext, expected), null);
     }
 
     private void validateFailure(final Mono<? extends StoreResponse> responseMono, final FailureValidator validator) {
@@ -815,12 +817,30 @@ public final class RntbdTransportClientTest {
         final RntbdRequestTimer requestTimer;
         final FakeChannel fakeChannel;
         final URI physicalAddress;
+        final URI remoteURI;
         final Tag tag;
 
         private FakeEndpoint(
-            final Config config, final RntbdRequestTimer timer, final URI physicalAddress,
+            final Config config,
+            final RntbdRequestTimer timer,
+            final URI physicalAddress,
             final RntbdResponse... expected
         ) {
+
+            try {
+                this.remoteURI = new URI(
+                    physicalAddress.getScheme(),
+                    null,
+                    physicalAddress.getHost(),
+                    physicalAddress.getPort(),
+                    null,
+                    null,
+                    null);
+            } catch (URISyntaxException error) {
+                throw new IllegalArgumentException(
+                    lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
+                    error);
+            }
 
             final ArrayBlockingQueue<RntbdResponse> responses = new ArrayBlockingQueue<>(
                 expected.length, true, Arrays.asList(expected)
@@ -900,6 +920,11 @@ public final class RntbdTransportClientTest {
         @Override
         public SocketAddress remoteAddress() {
             return this.fakeChannel.remoteAddress();
+        }
+
+        @Override
+        public URI remoteURI() {
+            return this.remoteURI;
         }
 
         @Override

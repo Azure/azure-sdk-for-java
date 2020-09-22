@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
+import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -30,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
@@ -44,7 +46,6 @@ import java.util.stream.Stream;
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient.Options;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
@@ -70,6 +71,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final RntbdMetrics metrics;
     private final Provider provider;
     private final SocketAddress remoteAddress;
+    private final URI remoteURI;
     private final RntbdRequestTimer requestTimer;
     private final Tag tag;
     private final int maxConcurrentRequests;
@@ -85,6 +87,21 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final RntbdRequestTimer timer,
         final URI physicalAddress) {
 
+        try {
+            this.remoteURI = new URI(
+                physicalAddress.getScheme(),
+                null,
+                physicalAddress.getHost(),
+                physicalAddress.getPort(),
+                null,
+                null,
+                null);
+        } catch (URISyntaxException error) {
+            throw new IllegalArgumentException(
+                lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
+                error);
+        }
+
         final Bootstrap bootstrap = new Bootstrap()
             .channel(NioSocketChannel.class)
             .group(group)
@@ -93,7 +110,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectTimeoutInMillis())
             .option(ChannelOption.RCVBUF_ALLOCATOR, receiveBufferAllocator)
             .option(ChannelOption.SO_KEEPALIVE, true)
-            .remoteAddress(physicalAddress.getHost(), physicalAddress.getPort());
+            .remoteAddress(this.remoteURI.getHost(), this.remoteURI.getPort());
 
         this.createdTime = Instant.now();
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);
@@ -106,6 +123,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         // which can cause endpoint to close unnecessary.
         this.lastRequestNanoTime = new AtomicLong(System.nanoTime());
         this.closed = new AtomicBoolean();
+
         this.requestTimer = timer;
 
         this.tag = Tag.of(TAG_NAME, RntbdMetrics.escape(this.remoteAddress.toString()));
@@ -185,6 +203,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     @Override
+    public URI remoteURI() {
+        return this.remoteURI;
+    }
+
+    @Override
     public int requestQueueLength() {
         return this.channelPool.requestQueueLength();
     }
@@ -229,8 +252,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                     concurrentRequestSnapshot,
                     metrics,
                     remoteAddress);
-            }
-            finally {
+            } finally {
                 concurrentRequests.decrementAndGet();
             }
         }
@@ -255,7 +277,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     // endregion
 
     // region Privates
-    
+
     private void ensureSuccessWhenReleasedToPool(Channel channel, Future<Void> released) {
         if (released.isSuccess()) {
             logger.debug("\n  [{}]\n  {}\n  release succeeded", this, channel);
@@ -279,7 +301,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     private void throwIfClosed() {
-        checkState(!this.closed.get(), "%s is closed", this);
+        if (this.closed.get()) {
+            throw new TransportException(lenientFormat("%s is closed", this), new IllegalArgumentException());
+        }
     }
 
     private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
@@ -299,7 +323,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     private RntbdRequestRecord writeWhenConnected(
-        final RntbdRequestRecord requestRecord, final Future<? super Channel> connected) {
+        final RntbdRequestRecord requestRecord,
+        final Future<? super Channel> connected) {
 
         if (connected.isSuccess()) {
             final Channel channel = (Channel) connected.getNow();
@@ -350,14 +375,25 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         @Override
-        public void serialize(RntbdServiceEndpoint value, JsonGenerator generator, SerializerProvider provider)
-            throws IOException {
+        public void serialize(
+            final RntbdServiceEndpoint value,
+            final JsonGenerator generator,
+            final SerializerProvider provider) throws IOException {
+
+            final RntbdTransportClient transportClient = value.provider.transportClient;
+
             generator.writeStartObject();
             generator.writeNumberField("id", value.id);
-            generator.writeBooleanField("isClosed", value.isClosed());
+            generator.writeBooleanField("closed", value.isClosed());
             generator.writeNumberField("concurrentRequests", value.concurrentRequests());
             generator.writeStringField("remoteAddress", value.remoteAddress.toString());
             generator.writeObjectField("channelPool", value.channelPool);
+            generator.writeObjectFieldStart("transportClient");
+            generator.writeNumberField("id", transportClient.id());
+            generator.writeBooleanField("closed", transportClient.isClosed());
+            generator.writeNumberField("endpointCount", transportClient.endpointCount());
+            generator.writeNumberField("endpointEvictionCount", transportClient.endpointEvictionCount());
+            generator.writeEndObject();
             generator.writeEndObject();
         }
     }
@@ -491,7 +527,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         RntbdEndpointMonitoringProvider(Provider provider) {
             this.provider = provider;
         }
-        
+
         synchronized void init() {
             logger.info("Starting RntbdClientChannelPoolMonitoringProvider ...");
             this.future = RntbdEndpointMonitoringProvider.monitoringRntbdChannelPool.scheduleAtFixedRate(() -> {
@@ -520,9 +556,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private void logEndpoint(RntbdEndpoint endpoint) {
             if (this.logger.isWarnEnabled() &&
                 (endpoint.executorTaskQueueMetrics() > MAX_TASK_LIMIT ||
-                endpoint.requestQueueLength() > MAX_TASK_LIMIT ||
-                endpoint.gettingEstablishedConnectionsMetrics() > 0 ||
-                endpoint.channelsMetrics() > endpoint.maxChannels())) {
+                    endpoint.requestQueueLength() > MAX_TASK_LIMIT ||
+                    endpoint.gettingEstablishedConnectionsMetrics() > 0 ||
+                    endpoint.channelsMetrics() > endpoint.maxChannels())) {
                 logger.warn("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
             } else if (this.logger.isDebugEnabled()) {
                 logger.debug("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
