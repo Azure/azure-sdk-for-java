@@ -118,8 +118,8 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
             if (principal == null || graphApiToken == null || !aadIssuedBearerToken.equals(currentToken)) {
                 principal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
                 String tenantId = principal.getClaim().toString();
-                graphApiToken =
-                    azureADGraphClient.acquireTokenForGraphApi(aadIssuedBearerToken, tenantId).accessToken();
+                graphApiToken = azureADGraphClient.acquireTokenForGraphApi(aadIssuedBearerToken, tenantId)
+                                                  .accessToken();
                 principal.setUserGroups(azureADGraphClient.getGroups(graphApiToken));
                 httpSession.setAttribute(CURRENT_USER_PRINCIPAL, principal);
                 httpSession.setAttribute(CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN, graphApiToken);
