@@ -237,7 +237,11 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
 
     @Override
     public void delete() {
-        this.sqlServerManager.serviceClient().getServerKeys().delete(this.resourceGroupName, this.sqlServerName, this.name());
+        this
+            .sqlServerManager
+            .serviceClient()
+            .getServerKeys()
+            .delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override

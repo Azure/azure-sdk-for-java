@@ -38,10 +38,10 @@ public class SqlElasticPoolOperationsImpl
 
     @Override
     public SqlElasticPool getBySqlServer(String resourceGroupName, String sqlServerName, String name) {
-        ElasticPoolInner inner = this.manager.serviceClient().getElasticPools().get(resourceGroupName, sqlServerName, name);
+        ElasticPoolInner inner =
+            this.manager.serviceClient().getElasticPools().get(resourceGroupName, sqlServerName, name);
         return (inner != null)
-            ? new SqlElasticPoolImpl(
-                resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager)
+            ? new SqlElasticPoolImpl(resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager)
             : null;
     }
 
@@ -66,9 +66,7 @@ public class SqlElasticPoolOperationsImpl
         }
         ElasticPoolInner inner =
             this.manager.serviceClient().getElasticPools().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
-        return (inner != null)
-            ? new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager)
-            : null;
+        return (inner != null) ? new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager) : null;
     }
 
     @Override
@@ -210,7 +208,10 @@ public class SqlElasticPoolOperationsImpl
         List<SqlElasticPool> elasticPoolSet = new ArrayList<>();
         if (sqlServer != null) {
             for (ElasticPoolInner inner
-                : this.manager.serviceClient().getElasticPools()
+                : this
+                    .manager
+                    .serviceClient()
+                    .getElasticPools()
                     .listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
                 elasticPoolSet.add(new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
             }

@@ -60,8 +60,12 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
     @Override
     public SqlServerDnsAlias getBySqlServer(SqlServer sqlServer, String name) {
         Objects.requireNonNull(sqlServer);
-        ServerDnsAliasInner serverDnsAliasInner = sqlServer.manager().serviceClient().getServerDnsAliases()
-            .get(sqlServer.resourceGroupName(), sqlServer.name(), name);
+        ServerDnsAliasInner serverDnsAliasInner =
+            sqlServer
+                .manager()
+                .serviceClient()
+                .getServerDnsAliases()
+                .get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return serverDnsAliasInner != null
             ? new SqlServerDnsAliasImpl(name, (SqlServerImpl) sqlServer, serverDnsAliasInner, sqlServer.manager())
             : null;
@@ -88,7 +92,11 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
 
     @Override
     public Mono<Void> deleteBySqlServerAsync(String resourceGroupName, String sqlServerName, String name) {
-        return this.sqlServerManager.serviceClient().getServerDnsAliases().deleteAsync(resourceGroupName, sqlServerName, name);
+        return this
+            .sqlServerManager
+            .serviceClient()
+            .getServerDnsAliases()
+            .deleteAsync(resourceGroupName, sqlServerName, name);
     }
 
     @Override
@@ -135,9 +143,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
                 .listByServer(sqlServer.resourceGroupName(), sqlServer.name());
         for (ServerDnsAliasInner inner : serverDnsAliasInners) {
             serverDnsAliases
-                .add(
-                    new SqlServerDnsAliasImpl(
-                        inner.name(), (SqlServerImpl) sqlServer, inner, this.sqlServerManager));
+                .add(new SqlServerDnsAliasImpl(inner.name(), (SqlServerImpl) sqlServer, inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(serverDnsAliases);
     }

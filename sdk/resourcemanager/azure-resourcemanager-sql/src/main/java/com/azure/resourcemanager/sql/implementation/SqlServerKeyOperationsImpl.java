@@ -57,7 +57,11 @@ public class SqlServerKeyOperationsImpl extends SqlChildrenOperationsImpl<SqlSer
     public SqlServerKey getBySqlServer(final SqlServer sqlServer, final String name) {
         Objects.requireNonNull(sqlServer);
         ServerKeyInner serverKeyInner =
-            sqlServer.manager().serviceClient().getServerKeys().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
+            sqlServer
+                .manager()
+                .serviceClient()
+                .getServerKeys()
+                .get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return serverKeyInner != null
             ? new SqlServerKeyImpl(name, (SqlServerImpl) sqlServer, serverKeyInner, sqlServer.manager())
             : null;
@@ -83,7 +87,11 @@ public class SqlServerKeyOperationsImpl extends SqlChildrenOperationsImpl<SqlSer
 
     @Override
     public Mono<Void> deleteBySqlServerAsync(String resourceGroupName, String sqlServerName, String name) {
-        return this.sqlServerManager.serviceClient().getServerKeys().deleteAsync(resourceGroupName, sqlServerName, name);
+        return this
+            .sqlServerManager
+            .serviceClient()
+            .getServerKeys()
+            .deleteAsync(resourceGroupName, sqlServerName, name);
     }
 
     @Override
@@ -94,8 +102,7 @@ public class SqlServerKeyOperationsImpl extends SqlChildrenOperationsImpl<SqlSer
         for (ServerKeyInner inner : serverKeyInners) {
             serverKeys
                 .add(
-                    new SqlServerKeyImpl(
-                        resourceGroupName, sqlServerName, inner.name(), inner, this.sqlServerManager));
+                    new SqlServerKeyImpl(resourceGroupName, sqlServerName, inner.name(), inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(serverKeys);
     }
@@ -123,10 +130,13 @@ public class SqlServerKeyOperationsImpl extends SqlChildrenOperationsImpl<SqlSer
         Objects.requireNonNull(sqlServer);
         List<SqlServerKey> serverKeys = new ArrayList<>();
         PagedIterable<ServerKeyInner> serverKeyInners =
-            sqlServer.manager().serviceClient().getServerKeys().listByServer(sqlServer.resourceGroupName(), sqlServer.name());
+            sqlServer
+                .manager()
+                .serviceClient()
+                .getServerKeys()
+                .listByServer(sqlServer.resourceGroupName(), sqlServer.name());
         for (ServerKeyInner inner : serverKeyInners) {
-            serverKeys
-                .add(new SqlServerKeyImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
+            serverKeys.add(new SqlServerKeyImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
         }
         return Collections.unmodifiableList(serverKeys);
     }

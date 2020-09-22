@@ -170,7 +170,10 @@ public class SqlFailoverGroupImpl
 
     @Override
     public void delete() {
-        this.sqlServerManager.serviceClient().getFailoverGroups()
+        this
+            .sqlServerManager
+            .serviceClient()
+            .getFailoverGroups()
             .delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 

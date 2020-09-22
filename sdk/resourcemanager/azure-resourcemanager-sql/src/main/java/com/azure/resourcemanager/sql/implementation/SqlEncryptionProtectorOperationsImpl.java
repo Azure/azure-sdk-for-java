@@ -40,8 +40,11 @@ public class SqlEncryptionProtectorOperationsImpl
     @Override
     public SqlEncryptionProtector getBySqlServer(String resourceGroupName, String sqlServerName) {
         EncryptionProtectorInner encryptionProtectorInner =
-            this.sqlServerManager.serviceClient().getEncryptionProtectors().get(resourceGroupName, sqlServerName,
-                EncryptionProtectorName.CURRENT);
+            this
+                .sqlServerManager
+                .serviceClient()
+                .getEncryptionProtectors()
+                .get(resourceGroupName, sqlServerName, EncryptionProtectorName.CURRENT);
         return encryptionProtectorInner != null
             ? new SqlEncryptionProtectorImpl(
                 resourceGroupName, sqlServerName, encryptionProtectorInner, this.sqlServerManager)
@@ -67,8 +70,11 @@ public class SqlEncryptionProtectorOperationsImpl
     public SqlEncryptionProtector getBySqlServer(SqlServer sqlServer) {
         Objects.requireNonNull(sqlServer);
         EncryptionProtectorInner encryptionProtectorInner =
-            sqlServer.manager().serviceClient().getEncryptionProtectors().get(sqlServer.resourceGroupName(), sqlServer.name(),
-                EncryptionProtectorName.CURRENT);
+            sqlServer
+                .manager()
+                .serviceClient()
+                .getEncryptionProtectors()
+                .get(sqlServer.resourceGroupName(), sqlServer.name(), EncryptionProtectorName.CURRENT);
         return encryptionProtectorInner != null
             ? new SqlEncryptionProtectorImpl((SqlServerImpl) sqlServer, encryptionProtectorInner, sqlServer.manager())
             : null;
@@ -142,11 +148,14 @@ public class SqlEncryptionProtectorOperationsImpl
     public List<SqlEncryptionProtector> listBySqlServer(String resourceGroupName, String sqlServerName) {
         List<SqlEncryptionProtector> encryptionProtectors = new ArrayList<>();
         PagedIterable<EncryptionProtectorInner> encryptionProtectorInners =
-            this.sqlServerManager.serviceClient().getEncryptionProtectors().listByServer(resourceGroupName, sqlServerName);
+            this
+                .sqlServerManager
+                .serviceClient()
+                .getEncryptionProtectors()
+                .listByServer(resourceGroupName, sqlServerName);
         for (EncryptionProtectorInner inner : encryptionProtectorInners) {
             encryptionProtectors
-                .add(
-                    new SqlEncryptionProtectorImpl(resourceGroupName, sqlServerName, inner, this.sqlServerManager));
+                .add(new SqlEncryptionProtectorImpl(resourceGroupName, sqlServerName, inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(encryptionProtectors);
     }

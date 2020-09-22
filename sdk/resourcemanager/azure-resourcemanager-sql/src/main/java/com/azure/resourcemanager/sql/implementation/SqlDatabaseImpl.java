@@ -308,8 +308,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             replicationLinkMap
                 .put(
                     inner.name(),
-                    new ReplicationLinkImpl(
-                        this.resourceGroupName, this.sqlServerName, inner, this.sqlServerManager));
+                    new ReplicationLinkImpl(this.resourceGroupName, this.sqlServerName, inner, this.sqlServerManager));
         }
         return Collections.unmodifiableMap(replicationLinkMap);
     }
@@ -549,10 +548,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .put(
                     serviceTierAdvisorInner.name(),
                     new ServiceTierAdvisorImpl(
-                        this.resourceGroupName,
-                        this.sqlServerName,
-                        serviceTierAdvisorInner,
-                        this.sqlServerManager));
+                        this.resourceGroupName, this.sqlServerName, serviceTierAdvisorInner, this.sqlServerManager));
         }
         return Collections.unmodifiableMap(serviceTierAdvisorMap);
     }
@@ -651,17 +647,20 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .serviceClient()
                 .getDatabases()
                 .importMethodAsync(this.resourceGroupName, this.sqlServerName, this.importRequestInner)
-                .then(Mono.defer(() -> {
-                    if (self.elasticPoolId() != null) {
-                        self.importRequestInner = null;
-                        return self
-                            .withExistingElasticPoolId(self.elasticPoolId())
-                            .withPatchUpdate()
-                            .updateResourceAsync();
-                    } else {
-                        return self.refreshAsync();
-                    }
-                }));
+                .then(
+                    Mono
+                        .defer(
+                            () -> {
+                                if (self.elasticPoolId() != null) {
+                                    self.importRequestInner = null;
+                                    return self
+                                        .withExistingElasticPoolId(self.elasticPoolId())
+                                        .withPatchUpdate()
+                                        .updateResourceAsync();
+                                } else {
+                                    return self.refreshAsync();
+                                }
+                            }));
         } else {
             return this
                 .sqlServerManager
@@ -733,7 +732,11 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public void delete() {
-        this.sqlServerManager.serviceClient().getDatabases().delete(this.resourceGroupName, this.sqlServerName, this.name());
+        this
+            .sqlServerManager
+            .serviceClient()
+            .getDatabases()
+            .delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -873,24 +876,23 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         this.initializeImportRequestInner();
         this
             .addDependency(
-                context -> storageAccount
-                    .getKeysAsync()
-                    .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
-                    .flatMap(
-                        storageAccountKey -> {
-                            self
-                                .importRequestInner
-                                .withStorageUri(
-                                    String
-                                        .format(
-                                            "%s%s/%s",
-                                            storageAccount.endPoints().primary().blob(),
-                                            containerName,
-                                            fileName));
-                            self.importRequestInner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
-                            self.importRequestInner.withStorageKey(storageAccountKey.value());
-                            return context.voidMono();
-                        }));
+                context ->
+                    storageAccount
+                        .getKeysAsync()
+                        .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
+                        .flatMap(
+                            storageAccountKey -> {
+                                self
+                                    .importRequestInner
+                                    .withStorageUri(
+                                        String
+                                            .format(
+                                                "%s%s/%s",
+                                                storageAccount.endPoints().primary().blob(), containerName, fileName));
+                                self.importRequestInner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
+                                self.importRequestInner.withStorageKey(storageAccountKey.value());
+                                return context.voidMono();
+                            }));
         return this;
     }
 

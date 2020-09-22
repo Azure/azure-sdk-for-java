@@ -165,8 +165,8 @@ public class SqlEncryptionProtectorImpl
             .sqlServerManager
             .serviceClient()
             .getEncryptionProtectors()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT,
-                this.inner())
+            .createOrUpdateAsync(
+                this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT, this.inner())
             .map(
                 encryptionProtectorInner -> {
                     self.setInner(encryptionProtectorInner);

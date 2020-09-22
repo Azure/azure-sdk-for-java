@@ -27,7 +27,11 @@ class SqlWarehouseImpl extends SqlDatabaseImpl implements SqlWarehouse {
 
     @Override
     public void pauseDataWarehouse() {
-        this.sqlServerManager.serviceClient().getDatabases().pause(this.resourceGroupName, this.sqlServerName, this.name());
+        this
+            .sqlServerManager
+            .serviceClient()
+            .getDatabases()
+            .pause(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -42,7 +46,11 @@ class SqlWarehouseImpl extends SqlDatabaseImpl implements SqlWarehouse {
 
     @Override
     public void resumeDataWarehouse() {
-        this.sqlServerManager.serviceClient().getDatabases().resume(this.resourceGroupName, this.sqlServerName, this.name());
+        this
+            .sqlServerManager
+            .serviceClient()
+            .getDatabases()
+            .resume(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override

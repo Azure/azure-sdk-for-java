@@ -243,8 +243,7 @@ public class SqlElasticPoolImpl
             .serviceClient()
             .getElasticPoolDatabaseActivities()
             .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(
-                ElasticPoolDatabaseActivityImpl::new);
+            .mapPage(ElasticPoolDatabaseActivityImpl::new);
     }
 
     @Override
@@ -344,7 +343,11 @@ public class SqlElasticPoolImpl
     @Override
     public SqlDatabase getDatabase(String databaseName) {
         DatabaseInner databaseInner =
-            this.sqlServerManager.serviceClient().getDatabases().get(this.resourceGroupName, this.sqlServerName, databaseName);
+            this
+                .sqlServerManager
+                .serviceClient()
+                .getDatabases()
+                .get(this.resourceGroupName, this.sqlServerName, databaseName);
 
         return databaseInner != null
             ? new SqlDatabaseImpl(
@@ -391,7 +394,11 @@ public class SqlElasticPoolImpl
 
     @Override
     public void delete() {
-        this.sqlServerManager.serviceClient().getElasticPools().delete(this.resourceGroupName, this.sqlServerName, this.name());
+        this
+            .sqlServerManager
+            .serviceClient()
+            .getElasticPools()
+            .delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override

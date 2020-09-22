@@ -180,11 +180,7 @@ public class SqlServersImpl
 
     @Override
     public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
-        return this
-            .inner()
-            .checkNameAvailabilityAsync(name)
-            .map(
-                CheckNameAvailabilityResultImpl::new);
+        return this.inner().checkNameAvailabilityAsync(name).map(CheckNameAvailabilityResultImpl::new);
     }
 
     @Override

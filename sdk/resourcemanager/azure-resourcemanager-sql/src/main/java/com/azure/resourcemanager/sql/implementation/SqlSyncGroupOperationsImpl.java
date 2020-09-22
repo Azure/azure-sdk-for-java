@@ -42,7 +42,11 @@ public class SqlSyncGroupOperationsImpl
     public SqlSyncGroup getBySqlServer(
         String resourceGroupName, String sqlServerName, String databaseName, String name) {
         SyncGroupInner syncGroupInner =
-            this.sqlServerManager.serviceClient().getSyncGroups().get(resourceGroupName, sqlServerName, databaseName, name);
+            this
+                .sqlServerManager
+                .serviceClient()
+                .getSyncGroups()
+                .get(resourceGroupName, sqlServerName, databaseName, name);
         return syncGroupInner != null
             ? new SqlSyncGroupImpl(
                 resourceGroupName, sqlServerName, databaseName, name, syncGroupInner, this.sqlServerManager)
@@ -229,9 +233,7 @@ public class SqlSyncGroupOperationsImpl
                         this.sqlDatabase.name());
             for (SyncGroupInner groupInner : syncGroupInners) {
                 sqlSyncGroups
-                    .add(
-                        new SqlSyncGroupImpl(
-                            groupInner.name(), this.sqlDatabase, groupInner, this.sqlServerManager));
+                    .add(new SqlSyncGroupImpl(groupInner.name(), this.sqlDatabase, groupInner, this.sqlServerManager));
             }
         }
         return Collections.unmodifiableList(sqlSyncGroups);
