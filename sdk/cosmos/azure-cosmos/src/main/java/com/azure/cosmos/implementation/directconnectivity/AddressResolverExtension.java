@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdAddressCacheToken;
-import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.List;

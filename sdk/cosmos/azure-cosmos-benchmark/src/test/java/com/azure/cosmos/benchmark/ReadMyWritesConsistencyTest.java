@@ -196,6 +196,7 @@ public class ReadMyWritesConsistencyTest {
                 },
                 () -> {
                     logger.info("Collection Scale up request sent to the service");
+
                 }
             );
     }

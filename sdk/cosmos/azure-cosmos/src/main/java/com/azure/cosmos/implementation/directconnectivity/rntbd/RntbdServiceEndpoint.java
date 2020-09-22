@@ -123,7 +123,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         // which can cause endpoint to close unnecessary.
         this.lastRequestNanoTime = new AtomicLong(System.nanoTime());
         this.closed = new AtomicBoolean();
-
         this.requestTimer = timer;
 
         this.tag = Tag.of(TAG_NAME, RntbdMetrics.escape(this.remoteAddress.toString()));
@@ -252,7 +251,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                     concurrentRequestSnapshot,
                     metrics,
                     remoteAddress);
-            } finally {
+            }
+            finally {
                 concurrentRequests.decrementAndGet();
             }
         }
@@ -323,8 +323,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     private RntbdRequestRecord writeWhenConnected(
-        final RntbdRequestRecord requestRecord,
-        final Future<? super Channel> connected) {
+        final RntbdRequestRecord requestRecord, final Future<? super Channel> connected) {
 
         if (connected.isSuccess()) {
             final Channel channel = (Channel) connected.getNow();
@@ -556,9 +555,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private void logEndpoint(RntbdEndpoint endpoint) {
             if (this.logger.isWarnEnabled() &&
                 (endpoint.executorTaskQueueMetrics() > MAX_TASK_LIMIT ||
-                    endpoint.requestQueueLength() > MAX_TASK_LIMIT ||
-                    endpoint.gettingEstablishedConnectionsMetrics() > 0 ||
-                    endpoint.channelsMetrics() > endpoint.maxChannels())) {
+                endpoint.requestQueueLength() > MAX_TASK_LIMIT ||
+                endpoint.gettingEstablishedConnectionsMetrics() > 0 ||
+                endpoint.channelsMetrics() > endpoint.maxChannels())) {
                 logger.warn("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
             } else if (this.logger.isDebugEnabled()) {
                 logger.debug("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
