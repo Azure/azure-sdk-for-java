@@ -133,7 +133,7 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
      * @return wrapped inner authorization client providing direct access to auto-generated API implementation, based on
      *     Azure REST API
      */
-    public AuthorizationManagementClient roleInner() {
+    public AuthorizationManagementClient roleServiceClient() {
         return authorizationManagementClient;
     }
 

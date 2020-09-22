@@ -86,6 +86,6 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
     }
 
     public RoleDefinitionsClient inner() {
-        return manager().roleInner().getRoleDefinitions();
+        return manager().roleServiceClient().getRoleDefinitions();
     }
 }
