@@ -78,17 +78,17 @@ public final class SubscriptionClient extends AzureServiceClient {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
+//    /** The OperationsClient object to access its operations. */
+//    private final OperationsClient operations;
+//
+//    /**
+//     * Gets the OperationsClient object to access its operations.
+//     *
+//     * @return the OperationsClient object.
+//     */
+//    public OperationsClient getOperations() {
+//        return this.operations;
+//    }
 
     /** The SubscriptionsClient object to access its operations. */
     private final SubscriptionsClient subscriptions;
@@ -147,7 +147,7 @@ public final class SubscriptionClient extends AzureServiceClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.apiVersion = "2020-01-01";
-        this.operations = new OperationsClient(this);
+//        this.operations = new OperationsClient(this);
         this.subscriptions = new SubscriptionsClient(this);
         this.tenants = new TenantsClient(this);
         this.resourceNames = new ResourceNamesClient(this);
