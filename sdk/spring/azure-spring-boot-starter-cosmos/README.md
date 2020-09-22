@@ -52,6 +52,11 @@ azure.cosmos.key=your-cosmos-key
 azure.cosmos.database=your-cosmos-database-name
 ```
 
+Property `azure.cosmos.consistency-level` is also supported.
+
+Property `azure.cosmos.credential` is also supported. AzureKeyCredential feature provides capability to 
+rotate keys on the fly. You can switch keys using switchToSecondaryKey(). For more information on this, see the [Sample Application][sample_cosmos_switch_to_secondary_key] code.
+
 #### (Optional) Add Spring Boot Actuator
 If you choose to add Spring Boot Actuator for Cosmos DB, add `management.health.azure-cosmos.enabled=true` to application.properties.
 ```properties
@@ -243,3 +248,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
+[sample_cosmos_switch_to_secondary_key]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos/SampleApplication.java

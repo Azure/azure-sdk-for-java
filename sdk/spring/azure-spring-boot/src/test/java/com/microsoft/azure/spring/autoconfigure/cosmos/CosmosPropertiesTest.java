@@ -31,7 +31,24 @@ public class CosmosPropertiesTest {
             assertThat(properties.getUri()).isEqualTo(PropertySettingUtil.URI);
             assertThat(properties.getKey()).isEqualTo(PropertySettingUtil.KEY);
             assertThat(properties.getConsistencyLevel()).isEqualTo(PropertySettingUtil.CONSISTENCY_LEVEL);
+            assertThat(properties.isAllowTelemetry()).isEqualTo(PropertySettingUtil.ALLOW_TELEMETRY_TRUE);
             assertThat(properties.isPopulateQueryMetrics()).isEqualTo(PropertySettingUtil.POPULATE_QUERY_METRICS);
+            assertThat(properties.getCredential().getKey()).isEqualTo(PropertySettingUtil.CREDENTIAL);
+        }
+
+        PropertySettingUtil.unsetProperties();
+    }
+
+    @Test
+    public void canSetAllowTelemetryFalse() {
+        PropertySettingUtil.setAllowTelemetryFalse();
+
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            context.register(Config.class);
+            context.refresh();
+            final CosmosProperties properties = context.getBean(CosmosProperties.class);
+
+            assertThat(properties.isAllowTelemetry()).isEqualTo(PropertySettingUtil.ALLOW_TELEMETRY_FALSE);
         }
 
         PropertySettingUtil.unsetProperties();

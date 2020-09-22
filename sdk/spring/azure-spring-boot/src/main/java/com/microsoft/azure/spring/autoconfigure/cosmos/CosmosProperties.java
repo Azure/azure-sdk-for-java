@@ -3,8 +3,8 @@
 
 package com.microsoft.azure.spring.autoconfigure.cosmos;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +50,16 @@ public class CosmosProperties {
     private boolean populateQueryMetrics;
 
     /**
+     * Whether allow Microsoft to collect telemetry data.
+     */
+    private boolean allowTelemetry = true;
+
+    /**
+     * The credential is used to authorize request.
+     */
+    private AzureKeyCredential credential;
+
+    /**
      * Response Diagnostics processor
      * Default implementation is to log the response diagnostics string
      */
@@ -59,8 +69,6 @@ public class CosmosProperties {
                 LOGGER.info("Response Diagnostics {}", responseDiagnostics);
             }
         };
-
-    private ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
 
     public String getUri() {
         return uri;
@@ -94,12 +102,12 @@ public class CosmosProperties {
         this.consistencyLevel = consistencyLevel;
     }
 
-    public ConnectionPolicy getConnectionPolicy() {
-        return connectionPolicy;
+    public boolean isAllowTelemetry() {
+        return allowTelemetry;
     }
 
-    public void setConnectionPolicy(ConnectionPolicy connectionPolicy) {
-        this.connectionPolicy = connectionPolicy;
+    public void setAllowTelemetry(boolean allowTelemetry) {
+        this.allowTelemetry = allowTelemetry;
     }
 
     public boolean isPopulateQueryMetrics() {
@@ -116,5 +124,13 @@ public class CosmosProperties {
 
     public void setResponseDiagnosticsProcessor(ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
+    }
+
+    public AzureKeyCredential getCredential() {
+        return credential;
+    }
+
+    public void setCredential(AzureKeyCredential credential) {
+        this.credential = credential;
     }
 }

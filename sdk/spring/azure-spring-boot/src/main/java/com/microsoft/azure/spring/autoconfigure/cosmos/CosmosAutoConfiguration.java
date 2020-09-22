@@ -38,7 +38,7 @@ public class CosmosAutoConfiguration extends AbstractCosmosConfiguration {
         return new CosmosClientBuilder()
             .consistencyLevel(properties.getConsistencyLevel())
             .key(properties.getKey())
-            .endpoint(properties.getUri())
+            .endpoint(properties.getUri()).credential(properties.getCredential())
             .contentResponseOnWriteEnabled(true);
     }
 
