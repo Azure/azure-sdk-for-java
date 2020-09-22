@@ -24,10 +24,10 @@ import java.io.IOException;
  * @param <CollectionT> Type representing the collection of the top level resources
  */
 public abstract class TestTemplate<
-    ResourceT extends GroupableResource<? extends Manager<?, ?>, ?>,
+    ResourceT extends GroupableResource<? extends Manager<?>, ?>,
     CollectionT extends
         SupportsListing<ResourceT> & SupportsGettingByResourceGroup<ResourceT> & SupportsDeletingById
-            & SupportsGettingById<ResourceT> & HasManager<? extends Manager<?, ?>>> {
+            & SupportsGettingById<ResourceT> & HasManager<? extends Manager<?>>> {
 
     private ResourceT resource;
     private CollectionT collection;
