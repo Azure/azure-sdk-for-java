@@ -82,7 +82,7 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.environment().getActiveDirectoryEndpoint())
     .build();
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .authenticate(credential, profile)
     .withDefaultSubscription();
 ```
@@ -251,7 +251,7 @@ azure.virtualMachines().listByResourceGroupAsync(rgName)
 You can customize various aspects of the client.
 
 ```java
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .configure()
     .withHttpClient(customizedHttpClient)
     .withPolicy(additionalPolicy)
@@ -299,7 +299,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 Sample code to enable logging in Azure Management Libraries.
 ```java
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .configure()
     .withLogLevel(HttpLogDetailLevel.BASIC)
     .authenticate(credential, profile)

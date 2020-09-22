@@ -34,8 +34,7 @@ public interface ComputeSku extends HasInner<ResourceSkuInner> {
      * The managed disk or snapshot sku type if the sku describes sku for disk or snapshot resource type.
      *
      * <p>The sku type can be used for {@link Disk.DefinitionStages.WithSku#withSku(DiskSkuTypes)}, {@link
-     * Disk.UpdateStages.WithSku#withSku(DiskSkuTypes)}, {@link Snapshot.DefinitionStages.WithSku#withSku(DiskSkuTypes)}
-     * and {@link Snapshot.UpdateStages.WithSku#withSku(DiskSkuTypes)}.
+     * Disk.UpdateStages.WithSku#withSku(DiskSkuTypes)}.
      *
      * @return the managed disk or snapshot sku type
      */

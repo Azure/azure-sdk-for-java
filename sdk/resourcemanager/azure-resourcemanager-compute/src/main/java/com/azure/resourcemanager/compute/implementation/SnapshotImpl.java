@@ -11,7 +11,6 @@ import com.azure.resourcemanager.compute.models.CreationSource;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
 import com.azure.resourcemanager.compute.models.DiskSkuTypes;
-import com.azure.resourcemanager.compute.models.DiskStorageAccountTypes;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.Snapshot;
@@ -34,16 +33,6 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     SnapshotImpl(String name, SnapshotInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
-    }
-
-    @Override
-    public DiskSkuTypes sku() {
-        if (this.inner().sku() == null || this.inner().sku().name() == null) {
-            return null;
-        } else {
-            return DiskSkuTypes
-                .fromStorageAccountType(DiskStorageAccountTypes.fromString(this.inner().sku().name().toString()));
-        }
     }
 
     @Override
@@ -164,7 +153,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         if (sourceSnapshot.osType() != null) {
             this.withOSType(sourceSnapshot.osType());
         }
-        this.withSku(sourceSnapshot.sku());
+        this.withSku(sourceSnapshot.skuType());
         return this;
     }
 
@@ -226,7 +215,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         if (sourceSnapshot.osType() != null) {
             this.withOSType(sourceSnapshot.osType());
         }
-        this.withSku(sourceSnapshot.sku());
+        this.withSku(sourceSnapshot.skuType());
         return this;
     }
 
@@ -297,8 +286,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         return this;
     }
 
-    @Override
-    public SnapshotImpl withSku(DiskSkuTypes sku) {
+    private SnapshotImpl withSku(DiskSkuTypes sku) {
         SnapshotSku snapshotSku = new SnapshotSku();
         snapshotSku.withName(SnapshotStorageAccountTypes.fromString(sku.accountType().toString()));
         this.inner().withSku(snapshotSku);

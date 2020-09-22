@@ -3,7 +3,7 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -31,15 +31,15 @@ public class ModelsAsyncTest extends ModelsTestBase {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
         // Create some models to test the lifecycle of
-        List<ModelData> createdModels = new ArrayList<>();
+        List<DigitalTwinsModelData> createdModels = new ArrayList<>();
         createModelsRunner(asyncClient, (modelsList) -> StepVerifier.create(asyncClient.createModels(modelsList))
             .assertNext(createdModelsResponseList -> {
-                createdModels.addAll(createdModelsResponseList);
-                logger.info("Created {} models successfully", createdModelsResponseList.size());
+                createdModelsResponseList.forEach(item -> createdModels.add(item));
+                logger.info("Created {} models successfully");
             })
             .verifyComplete());
 
-        for (final ModelData expected : createdModels) {
+        for (final DigitalTwinsModelData expected : createdModels) {
             // Get the model
             getModelRunner(expected.getId(), (modelId) -> {
                 StepVerifier.create(asyncClient.getModelWithResponse(modelId))

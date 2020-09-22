@@ -6,7 +6,7 @@ package com.azure.resourcemanager.appservice.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 //import com.azure.management.containerregistry.AccessKeyType;
 //import com.azure.management.containerregistry.Registry;
 //import com.azure.management.containerregistry.RegistryCredentials;
@@ -26,10 +26,10 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         System.out.println("removed later");
         return true;
 //        // New resources
@@ -196,17 +196,18 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
-            runSample(azure);
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
+            runSample(azureResourceManager);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -95,6 +95,7 @@
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
+                --add-opens com.azure.core.experimental/com.azure.core.experimental.jsonpatch=ALL-UNNAMED
                 --add-opens com.azure.core.experimental/com.azure.core.experimental.spatial=ALL-UNNAMED
               </argLine>
             </configuration>

@@ -208,7 +208,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
         Assertions.assertNotNull(snapshot.id());
         Assertions.assertTrue(snapshot.name().equalsIgnoreCase(snapshotName));
-        Assertions.assertEquals(snapshot.sku(), DiskSkuTypes.STANDARD_LRS);
+        Assertions.assertEquals(snapshot.skuType().toString(), DiskSkuTypes.STANDARD_LRS.toString());
         Assertions.assertEquals(snapshot.creationMethod(), DiskCreateOption.COPY);
         Assertions.assertEquals(snapshot.sizeInGB(), 200);
         Assertions.assertNull(snapshot.osType());

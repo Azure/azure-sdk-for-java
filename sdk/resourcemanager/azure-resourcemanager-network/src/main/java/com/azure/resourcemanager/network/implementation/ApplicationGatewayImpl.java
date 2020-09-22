@@ -1166,11 +1166,6 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withoutCertificate(String name) {
-        return this.withoutSslCertificate(name);
-    }
-
-    @Override
     public ApplicationGatewayImpl withoutSslCertificate(String name) {
         this.sslCerts.remove(name);
         return this;

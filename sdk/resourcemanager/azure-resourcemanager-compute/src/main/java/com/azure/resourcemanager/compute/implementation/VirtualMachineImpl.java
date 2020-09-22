@@ -63,7 +63,7 @@ import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineUpdateInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
@@ -878,12 +878,6 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withOSDiskEncryptionSettings(DiskEncryptionSettings settings) {
         this.inner().storageProfile().osDisk().withEncryptionSettings(settings);
-        return this;
-    }
-
-    @Override
-    public VirtualMachineImpl withOSDiskSizeInGB(Integer size) {
-        this.inner().storageProfile().osDisk().withDiskSizeGB(size);
         return this;
     }
 

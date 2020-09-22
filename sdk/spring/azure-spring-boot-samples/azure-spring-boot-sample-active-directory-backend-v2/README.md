@@ -71,19 +71,19 @@ mvn spring-boot:run
 If you want to adjust the configuration properties according to certain requirements, try below application.properties and change accordingly.
 
 ```properties
-spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx
-spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-client-secret-xxxxxx
-spring.security.oauth2.client.registration.azure.client-name=Azure
-spring.security.oauth2.client.registration.azure.provider=azure-oauth-provider
-spring.security.oauth2.client.registration.azure.scope=openid, https://graph.microsoft.com/user.read
-spring.security.oauth2.client.registration.azure.redirect-uri-template={baseUrl}/login/oauth2/code/{registrationId}
-spring.security.oauth2.client.registration.azure.client-authentication-method=basic
-spring.security.oauth2.client.registration.azure.authorization-grant-type=authorization_code
+spring.security.oauth2.client.registration.azure-oauth-client.client-id=xxxxxx-your-client-id-xxxxxx
+spring.security.oauth2.client.registration.azure-oauth-client.client-secret=xxxxxx-your-client-secret-xxxxxx
+spring.security.oauth2.client.registration.azure-oauth-client.client-name=Azure
+spring.security.oauth2.client.registration.azure-oauth-client.provider=azure-oauth-provider
+spring.security.oauth2.client.registration.azure-oauth-client.scope=openid, https://graph.microsoft.com/user.read, profile
+spring.security.oauth2.client.registration.azure-oauth-client.redirect-uri={baseUrl}/login/oauth2/code/{registrationId}
+spring.security.oauth2.client.registration.azure-oauth-client.client-authentication-method=basic
+spring.security.oauth2.client.registration.azure-oauth-client.authorization-grant-type=authorization_code
 
-spring.security.oauth2.client.provider.azure-oauth-provider.authorization-uri=https://login.microsoftonline.com/common/oauth2/authorize
-spring.security.oauth2.client.provider.azure-oauth-provider.token-uri=https://login.microsoftonline.com/common/oauth2/token
-spring.security.oauth2.client.provider.azure-oauth-provider.user-info-uri=https://login.microsoftonline.com/common/openid/userinfo
-spring.security.oauth2.client.provider.azure-oauth-provider.jwk-set-uri=https://login.microsoftonline.com/common/discovery/keys
+spring.security.oauth2.client.provider.azure-oauth-provider.authorization-uri=https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+spring.security.oauth2.client.provider.azure-oauth-provider.token-uri=https://login.microsoftonline.com/common/oauth2/v2.0/token
+spring.security.oauth2.client.provider.azure-oauth-provider.user-info-uri=https://graph.microsoft.com/oidc/userinfo
+spring.security.oauth2.client.provider.azure-oauth-provider.jwk-set-uri=https://login.microsoftonline.com/common/discovery/v2.0/keys
 spring.security.oauth2.client.provider.azure-oauth-provider.user-name-attribute=name
 
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
@@ -97,10 +97,9 @@ In this auto-configuration, by [default](https://github.com/Azure/azure-sdk-for-
 
 Configure endpoints with specific tenant-id by replacing `common` in your application.properties file:
 ```properties
-spring.security.oauth2.client.provider.azure-oauth-provider.authorization-uri=https://login.microsoftonline.com/{your-tenant-id}/oauth2/authorize
-spring.security.oauth2.client.provider.azure-oauth-provider.token-uri=https://login.microsoftonline.com/{your-tenant-id}/oauth2/token
-spring.security.oauth2.client.provider.azure-oauth-provider.user-info-uri=https://login.microsoftonline.com/{your-tenant-id}/openid/userinfo
-spring.security.oauth2.client.provider.azure-oauth-provider.jwk-set-uri=https://login.microsoftonline.com/{your-tenant-id}/discovery/keys
+spring.security.oauth2.client.provider.azure-oauth-provider.authorization-uri=https://login.microsoftonline.com/{your-tenant-id}/oauth2/v2.0/authorize
+spring.security.oauth2.client.provider.azure-oauth-provider.token-uri=https://login.microsoftonline.com/{your-tenant-id}/oauth2/v2.0/token
+spring.security.oauth2.client.provider.azure-oauth-provider.jwk-set-uri=https://login.microsoftonline.com/{your-tenant-id}/discovery/v2.0/keys
 ```
 ---
 ### Meet with `AADSTS240002: Input id_token cannot be used as 'urn:ietf:params:oauth:grant-type:jwt-bearer' grant` error.
