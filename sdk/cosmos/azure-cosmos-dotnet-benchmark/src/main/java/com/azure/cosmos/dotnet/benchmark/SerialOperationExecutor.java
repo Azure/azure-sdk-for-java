@@ -1,7 +1,5 @@
 package com.azure.cosmos.dotnet.benchmark;
 
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.guava25.base.Function;
 import org.fusesource.jansi.Ansi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,51 +52,48 @@ public class SerialOperationExecutor implements IExecutor {
 
         LOGGER.info(String.format("Executor %s started", this.executorId));
 
-        int currentIterationCount = 0;
+        return this.operation.prepare().flatMap((dummy) -> Flux
+            .range(0, iterationCount)
+            .flatMapSequential(
+                (i) -> {
+                    TelemetrySpan telemetry = TelemetrySpan.startNew(isWarmup);
+                    return this.operation.executeOnce()
+                                         .onErrorResume((ex) -> {
+                           telemetry.close();
 
-        OperationResult operationResult = null;
+                           if (traceFailures) {
+                               Utility.traceInformation(ex.toString(), Ansi.Color.RED);
+                           }
 
-        Mono<Void> task = this.operation.prepare().flatMap((dummy) -> {
-            return Flux
-                .range(0, iterationCount)
-                .flatMapSequential(
-                    (i) -> {
-                        return this.operation.executeOnce()
-                            .onErrorResume((ex) -> {
-                               if (traceFailures) {
-                                   Utility.traceInformation(ex.toString(), Ansi.Color.RED);
-                               }
+                           this.failedOperationCount++;
 
-                               this.failedOperationCount++;
+                           // TODO fabianm extract RU charge from CosmosException and add to totalRuCharges
+                           // if (ex instanceof CosmosException) {
+                           //}
 
-                               if (ex instanceof CosmosException) {
-                                   // TODO extract RU charge from CosmosException and add to totalRuCharges
-                               }
+                           return Mono.empty();
+                        })
+                                         .map((r) -> {
+                            telemetry.close();
 
-                               return Mono.empty();
-                            })
-                            .map((r) -> {
-                                this.successOperationCount++;
-                                this.totalRuCharges += r.getRuCharges();
+                            this.successOperationCount++;
+                            this.totalRuCharges += r.getRuCharges();
 
-                                return Mono.empty();
-                            });
-                    },
-                    1,
-                    0)
-                .last()
-                .map((nothing) -> {
-                        LOGGER.info(String.format("Executor %s completed", this.executorId));
+                            return Mono.empty();
+                        });
+                },
+                1,
+                0)
+            .last()
+            .map((nothing) -> {
+                    LOGGER.info(String.format("Executor %s completed", this.executorId));
 
-                        if (completionCallback != null) {
-                            completionCallback.run();
-                        }
+                    if (completionCallback != null) {
+                        completionCallback.run();
+                    }
 
-                        return Mono.empty();
-                    })
-                .then();
-        });
-
-        return task;
+                    return Mono.empty();
+                })
+            .then());
     }
 }

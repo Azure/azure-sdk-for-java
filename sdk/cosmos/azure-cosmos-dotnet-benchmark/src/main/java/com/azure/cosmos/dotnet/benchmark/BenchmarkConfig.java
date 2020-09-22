@@ -22,6 +22,7 @@ import java.util.Arrays;
 
 public class BenchmarkConfig {
 
+    public final static String USER_AGENT_SUFFIX = "cosmosdbdotnetbenchmark";
     public final static String DEFAULT_PARTITION_KEY_PATH = "/pk";
 
     @Parameter(names = "-w", description = "Type of Workload:\n"
@@ -117,6 +118,10 @@ public class BenchmarkConfig {
         return this.key;
     }
 
+    public void resetKey() {
+        this.key = null;
+    }
+
     public String getDatabase() {
         return this.database;
     }
@@ -205,14 +210,14 @@ public class BenchmarkConfig {
         return disableCoreSdkLogging;
     }
 
-    public int getTaskCount() {
+    public int getTaskCount(int containerThroughput) {
         if (this.degreeOfParallelism > 0) {
             return this.degreeOfParallelism;
         }
 
         // set TaskCount = 10 for each 10k RUs, minimum 1, maximum { #processor * 50 }
         return Math.min(
-            Math.max(this.throughput / 1000, 1),
+            Math.max(containerThroughput / 1000, 1),
             Runtime.getRuntime().availableProcessors() * 50);
     }
 

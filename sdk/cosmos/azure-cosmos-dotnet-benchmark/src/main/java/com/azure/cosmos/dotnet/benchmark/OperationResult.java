@@ -2,7 +2,7 @@ package com.azure.cosmos.dotnet.benchmark;
 
 import com.azure.cosmos.implementation.guava25.base.Function;
 
-class OperationResult {
+public class OperationResult {
     private String databaseName;
 
     private String containerName;

@@ -1,0 +1,68 @@
+package com.azure.cosmos.dotnet.benchmark.operations;
+
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.dotnet.benchmark.IBenchmarkOperation;
+import com.azure.cosmos.dotnet.benchmark.JsonHelper;
+import com.azure.cosmos.dotnet.benchmark.OperationResult;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import reactor.core.publisher.Mono;
+
+import java.util.UUID;
+
+public class InsertBenchmarkOperation implements IBenchmarkOperation {
+    private final String databaseName;
+    private final String containerName;
+    private final String partitionKeyPath;
+    private final CosmosAsyncContainer container;
+    private final ObjectNode sampleJsonNode;
+    private PartitionKey partitionKey;
+
+    public InsertBenchmarkOperation(
+        CosmosAsyncClient cosmosClient,
+        String databaseName,
+        String containerName,
+        String partitionKeyPath,
+        String sampleJson) {
+
+        this.databaseName = databaseName;
+        this.containerName = containerName;
+        this.partitionKeyPath = partitionKeyPath.replace("/", "");
+        this.sampleJsonNode = (ObjectNode)JsonHelper.fromJsonString(sampleJson);
+        this.container = cosmosClient.getDatabase(databaseName).getContainer(containerName);
+    }
+
+    @Override
+    public Mono<Void> prepare() {
+        String newPartitionKey = UUID.randomUUID().toString();
+        String newId = UUID.randomUUID().toString();
+        this.sampleJsonNode.put("id", newId);
+        this.sampleJsonNode.put(this.partitionKeyPath, newPartitionKey);
+        this.partitionKey = new PartitionKey(newPartitionKey);
+
+        return Mono.empty();
+    }
+
+    @Override
+    public Mono<OperationResult> executeOnce() {
+        Mono<CosmosItemResponse<ObjectNode>> createTask = this.container.createItem(
+            this.sampleJsonNode,
+            this.partitionKey,
+            null);
+
+        return createTask
+            .map((r) -> {
+                double ruCharges = r.getRequestCharge();
+
+                OperationResult operationResult = new OperationResult();
+                operationResult.setDatabaseName(this.databaseName);
+                operationResult.setContainerName(this.containerName);
+                operationResult.setRuCharges(ruCharges);
+                operationResult.setLazyDiagnostics((dummy) -> r.getDiagnostics().toString());
+
+                return operationResult;
+            });
+    }
+}
