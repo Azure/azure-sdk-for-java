@@ -4,5 +4,5 @@
 
 
 ## 1.2.8 (2020-09-14)
-_Improved_
+### New features
  - Enable scheduled enqueue message in Service Bus binders

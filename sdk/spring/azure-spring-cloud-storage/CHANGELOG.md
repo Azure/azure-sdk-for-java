@@ -4,6 +4,6 @@
 
 
 ## 1.2.8 (2020-09-14)
-_Improved_
+### New features
  - Enable Storage starter to support overwriting blob data
  - Enable Actuator for storage blob
