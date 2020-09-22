@@ -11,7 +11,8 @@ import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.fluent.inner.CertificateInner;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -119,7 +120,7 @@ class AppServiceCertificateImpl
         Mono<Void> pfxBytes = Mono.empty();
         if (pfxFileUrl != null) {
             pfxBytes =
-                Utils
+                ResourceManagerUtils
                     .downloadFileAsync(pfxFileUrl, this.manager().httpPipeline())
                     .map(
                         bytes -> {

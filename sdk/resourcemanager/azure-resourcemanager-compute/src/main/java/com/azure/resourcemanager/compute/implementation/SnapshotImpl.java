@@ -20,7 +20,7 @@ import com.azure.resourcemanager.compute.models.SnapshotStorageAccountTypes;
 import com.azure.resourcemanager.compute.fluent.inner.SnapshotInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.security.InvalidParameterException;
@@ -56,7 +56,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public int sizeInGB() {
-        return Utils.toPrimitiveInt(this.inner().diskSizeGB());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().diskSizeGB());
     }
 
     @Override

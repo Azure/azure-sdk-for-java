@@ -18,7 +18,7 @@ import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -87,12 +87,12 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public int validityInYears() {
-        return Utils.toPrimitiveInt(inner().validityInYears());
+        return ResourceManagerUtils.toPrimitiveInt(inner().validityInYears());
     }
 
     @Override
     public int keySize() {
-        return Utils.toPrimitiveInt(inner().keySize());
+        return ResourceManagerUtils.toPrimitiveInt(inner().keySize());
     }
 
     @Override
@@ -102,7 +102,7 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public boolean autoRenew() {
-        return Utils.toPrimitiveBoolean(inner().autoRenew());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().autoRenew());
     }
 
     @Override

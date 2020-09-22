@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /**
  * Defines values for EventHubNamespaceSkuType.
@@ -61,7 +61,7 @@ public class EventHubNamespaceSkuType implements HasInner<Sku> {
      * @return sku capacity
      */
     public int capacity() {
-        return Utils.toPrimitiveInt(this.sku.capacity());
+        return ResourceManagerUtils.toPrimitiveInt(this.sku.capacity());
     }
 
     @Override

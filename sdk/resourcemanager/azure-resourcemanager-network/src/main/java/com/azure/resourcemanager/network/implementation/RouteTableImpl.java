@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.Route;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -144,7 +144,7 @@ class RouteTableImpl
 
     @Override
     public boolean isBgpRoutePropagationDisabled() {
-        return Utils.toPrimitiveBoolean(inner().disableBgpRoutePropagation());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().disableBgpRoutePropagation());
     }
 
     @Override

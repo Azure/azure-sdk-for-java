@@ -43,8 +43,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
@@ -192,7 +192,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
 
     protected Response<String> curl(String urlString) throws IOException {
         try {
-            return stringResponse(httpClient.getString(Utils.getHost(urlString), Utils.getPathAndQuery(urlString))).block();
+            return stringResponse(httpClient.getString(ResourceManagerUtils.getHost(urlString), ResourceManagerUtils.getPathAndQuery(urlString))).block();
         } catch (MalformedURLException e) {
             Assertions.fail();
             return null;
@@ -201,7 +201,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
 
     protected String post(String urlString, String body) {
         try {
-            return stringResponse(httpClient.postString(Utils.getHost(urlString), Utils.getPathAndQuery(urlString), body))
+            return stringResponse(httpClient.postString(ResourceManagerUtils.getHost(urlString), ResourceManagerUtils.getPathAndQuery(urlString), body))
                 .block()
                 .getValue();
         } catch (Exception e) {

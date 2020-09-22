@@ -13,7 +13,8 @@ import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigur
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +50,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     public boolean isIPForwardingEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableIpForwarding());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enableIpForwarding());
     }
 
     @Override
@@ -195,6 +196,6 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     public boolean isAcceleratedNetworkingEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableAcceleratedNetworking());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enableAcceleratedNetworking());
     }
 }

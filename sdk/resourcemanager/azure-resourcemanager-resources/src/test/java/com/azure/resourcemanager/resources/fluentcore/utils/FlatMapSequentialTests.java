@@ -32,14 +32,14 @@ public class FlatMapSequentialTests {
         //     .verifyComplete();
 
         StepVerifier.create(
-            Utils.flatMapSequential(mono.flux(),
+            ResourceManagerUtils.flatMapSequential(mono.flux(),
                 onNext, onError, onComplete)
         )
             .expectNext("1", "2", "3")
             .verifyComplete();
 
         StepVerifier.create(
-            Utils.flatMapSequential(mono.flux().concatWith(Flux.error(new RuntimeException("Test"))),
+            ResourceManagerUtils.flatMapSequential(mono.flux().concatWith(Flux.error(new RuntimeException("Test"))),
                 onNext, onError, onComplete)
         )
             .expectNext("1", "Test")
@@ -57,7 +57,7 @@ public class FlatMapSequentialTests {
         }
 
         StepVerifier.create(
-            Utils.flatMapSequential(
+            ResourceManagerUtils.flatMapSequential(
                 Flux.range(0, flux.size()),
                 flux::get,
                 null, null
@@ -67,7 +67,7 @@ public class FlatMapSequentialTests {
             .verifyErrorMessage("Test");
 
         StepVerifier.create(
-            Utils.flatMapSequentialDelayError(
+            ResourceManagerUtils.flatMapSequentialDelayError(
                 Flux.range(0, flux.size()),
                 flux::get,
                 null, null, 32, 32

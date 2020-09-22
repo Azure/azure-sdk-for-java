@@ -22,7 +22,7 @@ import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /**
  * Azure Compute sample for assigning service identity to virtual machine scale set using newly created service principal
@@ -89,7 +89,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                     .definePasswordCredential("sppass")
                     .withPasswordValue("StrongPass!12")
                     .attach()
-                    .withNewRole(BuiltInRole.CONTRIBUTOR, Utils.resourceGroupId(virtualMachineScaleSet1.id()))
+                    .withNewRole(BuiltInRole.CONTRIBUTOR, ResourceManagerUtils.resourceGroupId(virtualMachineScaleSet1.id()))
                     .create();
 
             Identity identity1 = azureResourceManager.identities().define(identityName1)

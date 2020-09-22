@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -72,7 +72,7 @@ public class ConnectionMonitorImpl
 
     @Override
     public boolean autoStart() {
-        return Utils.toPrimitiveBoolean(inner().autoStart());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().autoStart());
     }
 
     @Override
@@ -92,7 +92,7 @@ public class ConnectionMonitorImpl
 
     @Override
     public int monitoringIntervalInSeconds() {
-        return Utils.toPrimitiveInt(inner().monitoringIntervalInSeconds());
+        return ResourceManagerUtils.toPrimitiveInt(inner().monitoringIntervalInSeconds());
     }
 
     @Override

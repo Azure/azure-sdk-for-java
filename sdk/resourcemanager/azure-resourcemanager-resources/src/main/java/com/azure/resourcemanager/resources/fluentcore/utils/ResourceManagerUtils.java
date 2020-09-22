@@ -35,8 +35,8 @@ import java.util.function.Supplier;
 /**
  * Defines a few utilities.
  */
-public final class Utils {
-    private Utils() {
+public final class ResourceManagerUtils {
+    private ResourceManagerUtils() {
     }
 
     /**
@@ -231,7 +231,7 @@ public final class Utils {
             subscriptionList.add(subscription);
         });
         if (subscriptionList.size() == 0) {
-            throw new ClientLogger(Utils.class).logExceptionAsError(
+            throw new ClientLogger(ResourceManagerUtils.class).logExceptionAsError(
                 new IllegalStateException("Please create a subscription before you start resource management. "
                 + "To learn more, see: https://azure.microsoft.com/en-us/free/."));
         } else if (subscriptionList.size() > 1) {
@@ -241,7 +241,7 @@ public final class Utils {
             subscriptionList.forEach(subscription -> {
                 stringBuilder.append("\n" + subscription.displayName() + " : " + subscription.subscriptionId());
             });
-            throw new ClientLogger(Utils.class).logExceptionAsError(
+            throw new ClientLogger(ResourceManagerUtils.class).logExceptionAsError(
                 new IllegalStateException(stringBuilder.toString()));
         }
         return subscriptionList.get(0).subscriptionId();

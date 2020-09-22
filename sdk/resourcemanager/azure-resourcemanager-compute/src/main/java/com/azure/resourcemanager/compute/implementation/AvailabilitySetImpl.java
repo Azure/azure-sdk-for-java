@@ -16,7 +16,8 @@ import com.azure.resourcemanager.compute.fluent.inner.AvailabilitySetInner;
 import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -43,12 +44,12 @@ class AvailabilitySetImpl
 
     @Override
     public int updateDomainCount() {
-        return Utils.toPrimitiveInt(this.inner().platformUpdateDomainCount());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().platformUpdateDomainCount());
     }
 
     @Override
     public int faultDomainCount() {
-        return Utils.toPrimitiveInt(this.inner().platformFaultDomainCount());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().platformFaultDomainCount());
     }
 
     @Override

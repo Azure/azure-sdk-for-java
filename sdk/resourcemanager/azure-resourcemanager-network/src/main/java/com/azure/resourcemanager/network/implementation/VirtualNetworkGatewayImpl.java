@@ -23,11 +23,11 @@ import com.azure.resourcemanager.network.models.VpnType;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionListEntityInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayInner;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -251,12 +251,12 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public boolean isBgpEnabled() {
-        return Utils.toPrimitiveBoolean(inner().enableBgp());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().enableBgp());
     }
 
     @Override
     public boolean activeActive() {
-        return Utils.toPrimitiveBoolean(inner().active());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().active());
     }
 
     @Override

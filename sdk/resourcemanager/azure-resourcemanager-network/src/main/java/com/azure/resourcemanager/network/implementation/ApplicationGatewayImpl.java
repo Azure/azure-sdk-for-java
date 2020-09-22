@@ -51,7 +51,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1385,7 +1385,7 @@ class ApplicationGatewayImpl
 
     @Override
     public boolean isHttp2Enabled() {
-        return Utils.toPrimitiveBoolean(inner().enableHttp2());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().enableHttp2());
     }
 
     @Override

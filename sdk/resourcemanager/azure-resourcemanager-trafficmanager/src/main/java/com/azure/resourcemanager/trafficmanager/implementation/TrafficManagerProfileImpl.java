@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import com.azure.resourcemanager.trafficmanager.fluent.ProfilesClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.ProfileInner;
@@ -43,7 +43,7 @@ class TrafficManagerProfileImpl
 
     @Override
     public long timeToLive() {
-        return Utils.toPrimitiveLong(this.inner().dnsConfig().ttl());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().dnsConfig().ttl());
     }
 
     @Override
@@ -63,7 +63,7 @@ class TrafficManagerProfileImpl
 
     @Override
     public long monitoringPort() {
-        return Utils.toPrimitiveLong(this.inner().monitorConfig().port());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().monitorConfig().port());
     }
 
     @Override

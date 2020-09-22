@@ -63,8 +63,8 @@ import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.dag.IndexableTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -381,7 +381,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(siteConfig.remoteDebuggingEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(siteConfig.remoteDebuggingEnabled());
     }
 
     @Override
@@ -397,7 +397,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(siteConfig.webSocketsEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(siteConfig.webSocketsEnabled());
     }
 
     @Override
@@ -405,7 +405,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(siteConfig.alwaysOn());
+        return ResourceManagerUtils.toPrimitiveBoolean(siteConfig.alwaysOn());
     }
 
     @Override
@@ -491,7 +491,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(siteConfig.http20Enabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(siteConfig.http20Enabled());
     }
 
     @Override
@@ -499,7 +499,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(siteConfig.localMySqlEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(siteConfig.localMySqlEnabled());
     }
 
     @Override

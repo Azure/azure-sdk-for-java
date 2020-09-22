@@ -15,7 +15,7 @@ import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
 import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -47,7 +47,7 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public boolean securityEnabled() {
-        return Utils.toPrimitiveBoolean(inner().securityEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().securityEnabled());
     }
 
     @Override

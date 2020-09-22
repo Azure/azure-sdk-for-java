@@ -14,7 +14,7 @@ import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebAppDiagnosticLogs;
 import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /**
  * Implementation for WebAppDiagnosticLogs and its create and update interfaces.
@@ -76,7 +76,7 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
         if (inner().applicationLogs() == null || inner().applicationLogs().azureBlobStorage() == null) {
             return 0;
         } else {
-            return Utils.toPrimitiveInt(inner().applicationLogs().azureBlobStorage().retentionInDays());
+            return ResourceManagerUtils.toPrimitiveInt(inner().applicationLogs().azureBlobStorage().retentionInDays());
         }
     }
 
@@ -85,7 +85,7 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
         if (inner().httpLogs() == null || inner().httpLogs().fileSystem() == null) {
             return 0;
         } else {
-            return Utils.toPrimitiveInt(inner().httpLogs().fileSystem().retentionInMb());
+            return ResourceManagerUtils.toPrimitiveInt(inner().httpLogs().fileSystem().retentionInMb());
         }
     }
 
@@ -94,7 +94,7 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
         if (inner().httpLogs() == null || inner().httpLogs().fileSystem() == null) {
             return 0;
         } else {
-            return Utils.toPrimitiveInt(inner().httpLogs().fileSystem().retentionInDays());
+            return ResourceManagerUtils.toPrimitiveInt(inner().httpLogs().fileSystem().retentionInDays());
         }
     }
 
@@ -103,7 +103,7 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
         if (inner().httpLogs() == null || inner().httpLogs().azureBlobStorage() == null) {
             return 0;
         } else {
-            return Utils.toPrimitiveInt(inner().httpLogs().azureBlobStorage().retentionInDays());
+            return ResourceManagerUtils.toPrimitiveInt(inner().httpLogs().azureBlobStorage().retentionInDays());
         }
     }
 
@@ -119,13 +119,13 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
     @Override
     public boolean failedRequestsTracing() {
         return inner().failedRequestsTracing() != null
-            && Utils.toPrimitiveBoolean(inner().failedRequestsTracing().enabled());
+            && ResourceManagerUtils.toPrimitiveBoolean(inner().failedRequestsTracing().enabled());
     }
 
     @Override
     public boolean detailedErrorMessages() {
         return inner().detailedErrorMessages() != null
-            && Utils.toPrimitiveBoolean(inner().detailedErrorMessages().enabled());
+            && ResourceManagerUtils.toPrimitiveBoolean(inner().detailedErrorMessages().enabled());
     }
 
     @Override

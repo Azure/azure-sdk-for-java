@@ -14,6 +14,7 @@ import com.azure.resourcemanager.resources.fluent.ResourceManagementClientBuilde
 import com.azure.resourcemanager.resources.fluent.SubscriptionClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionClientBuilder;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.implementation.DeploymentsImpl;
 import com.azure.resourcemanager.resources.implementation.FeaturesImpl;
 import com.azure.resourcemanager.resources.implementation.GenericResourcesImpl;
@@ -37,7 +38,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 
 import java.util.Objects;
 
@@ -206,7 +206,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
         @Override
         public ResourceManager withDefaultSubscription() {
             if (profile.getSubscriptionId() == null) {
-                String subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
+                String subscriptionId = ResourceManagerUtils.defaultSubscription(this.subscriptions().list());
                 profile = new AzureProfile(profile.getTenantId(), subscriptionId, profile.getEnvironment());
             }
             return new ResourceManager(httpPipeline, profile, sdkContext);
