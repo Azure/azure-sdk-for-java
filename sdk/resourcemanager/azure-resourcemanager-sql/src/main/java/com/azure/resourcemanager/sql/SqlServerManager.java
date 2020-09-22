@@ -18,7 +18,7 @@ import com.azure.resourcemanager.sql.models.SqlServers;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure SQLServer resource management. */
-public class SqlServerManager extends Manager<SqlServerManager, SqlManagementClient> {
+public class SqlServerManager extends Manager<SqlManagementClient> {
     private SqlServers sqlServers;
     private final String tenantId;
 

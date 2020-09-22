@@ -32,7 +32,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 /**
  * Entry point to Azure EventHub resource management.
  */
-public final class EventHubsManager extends Manager<EventHubsManager, EventHubManagementClient> {
+public final class EventHubsManager extends Manager<EventHubManagementClient> {
     private EventHubNamespaces namespaces;
     private EventHubs eventHubs;
     private EventHubConsumerGroups consumerGroups;
