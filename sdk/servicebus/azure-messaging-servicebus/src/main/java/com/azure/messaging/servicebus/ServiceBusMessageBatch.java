@@ -152,8 +152,8 @@ public final class ServiceBusMessageBatch {
             // Starting the span makes the sampling decision (nothing is logged at this time)
             Context messageContext = serviceBusMessage.getContext()
                 .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
-                .addData(ENTITY_PATH_KEY, "entityPath")
-                .addData(HOST_NAME_KEY, "hostname");
+                .addData(ENTITY_PATH_KEY, entityPath)
+                .addData(HOST_NAME_KEY, hostname);
             Context eventSpanContext = tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, messageContext,
                 ProcessKind.MESSAGE);
             Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
