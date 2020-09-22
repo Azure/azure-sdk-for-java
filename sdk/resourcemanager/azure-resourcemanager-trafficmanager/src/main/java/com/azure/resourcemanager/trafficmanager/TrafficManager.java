@@ -17,7 +17,7 @@ import com.azure.resourcemanager.trafficmanager.implementation.TrafficManagerPro
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
 
 /** Entry point to Azure traffic manager management. */
-public final class TrafficManager extends Manager<TrafficManager, TrafficManagerManagementClient> {
+public final class TrafficManager extends Manager<TrafficManagerManagementClient> {
     // Collections
     private TrafficManagerProfiles profiles;
 

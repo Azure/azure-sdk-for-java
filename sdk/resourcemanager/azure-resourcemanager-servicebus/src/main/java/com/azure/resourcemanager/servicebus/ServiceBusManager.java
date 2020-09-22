@@ -19,7 +19,7 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
 /**
  * Entry point to Azure ServiceBus management.
  */
-public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceBusManagementClient> {
+public final class ServiceBusManager extends Manager<ServiceBusManagementClient> {
     // Collections
     private ServiceBusNamespaces namespaces;
     /**

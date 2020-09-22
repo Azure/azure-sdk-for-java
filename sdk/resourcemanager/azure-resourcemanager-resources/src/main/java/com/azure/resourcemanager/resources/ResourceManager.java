@@ -13,6 +13,7 @@ import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.ResourceManagementClientBuilder;
 import com.azure.resourcemanager.resources.fluent.SubscriptionClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionClientBuilder;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.implementation.DeploymentsImpl;
 import com.azure.resourcemanager.resources.implementation.FeaturesImpl;
 import com.azure.resourcemanager.resources.implementation.GenericResourcesImpl;
@@ -33,8 +34,6 @@ import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.models.Tenants;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
@@ -45,9 +44,8 @@ import java.util.Objects;
 /**
  * Entry point to Azure resource management.
  */
-public final class ResourceManager extends ManagerBase implements HasInner<ResourceManagementClient> {
+public final class ResourceManager extends Manager<ResourceManagementClient> {
     // The sdk clients
-    private final ResourceManagementClient resourceManagementClient;
     private final FeatureClient featureClient;
     private final SubscriptionClient subscriptionClient;
     private final PolicyClient policyClient;
@@ -216,13 +214,16 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
     }
 
     private ResourceManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        super(null, profile, sdkContext);
-        super.withResourceManager(this);
-        this.resourceManagementClient = new ResourceManagementClientBuilder()
+        super(
+            null,
+            profile,
+            new ResourceManagementClientBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient();
+                .buildClient(),
+            sdkContext);
+        super.withResourceManager(this);
 
         this.featureClient = new FeatureClientBuilder()
                 .pipeline(httpPipeline)
@@ -287,7 +288,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      */
     public Providers providers() {
         if (providers == null) {
-            providers = new ProvidersImpl(resourceManagementClient.getProviders());
+            providers = new ProvidersImpl(inner().getProviders());
         }
         return providers;
     }
@@ -330,10 +331,5 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
             tenants = new TenantsImpl(subscriptionClient.getTenants());
         }
         return tenants;
-    }
-
-    @Override
-    public ResourceManagementClient inner() {
-        return this.resourceManagementClient;
     }
 }
