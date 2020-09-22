@@ -4,7 +4,7 @@ package com.azure.resourcemanager.test.utils;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -39,7 +39,7 @@ public final class AuthFile {
     @JsonIgnore
     private final AzureEnvironment environment;
     @JsonIgnore
-    private static final SerializerAdapter ADAPTER = new AzureJacksonAdapter();
+    private static final SerializerAdapter ADAPTER = SerializerFactory.createDefaultManagementSerializerAdapter();
 
     private AuthFile() {
         environment = new AzureEnvironment(new HashMap<>());
