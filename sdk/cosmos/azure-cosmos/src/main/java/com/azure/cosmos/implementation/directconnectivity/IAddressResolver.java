@@ -8,6 +8,6 @@ import reactor.core.publisher.Mono;
 
 public interface IAddressResolver {
     Mono<AddressInformation[]> resolveAsync(
-        RxDocumentServiceRequest request,
-        boolean forceRefreshPartitionAddresses);
+            RxDocumentServiceRequest request,
+            boolean forceRefreshPartitionAddresses);
 }
