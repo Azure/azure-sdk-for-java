@@ -7,18 +7,18 @@ package com.azure.core.management.provider;
  */
 public interface IdentifierProvider {
     /**
-     * Get a random name.
+     * Gets a random name.
      *
      * @param prefix the prefix to be used if possible
      * @param maxLen the max length for the random generated name
      * @return the random name
      */
-    String randomName(String prefix, int maxLen);
+    String getRandomName(String prefix, int maxLen);
 
     /**
-     * Create a random UUID.
+     * Gets a random UUID.
      *
      * @return the UUID string.
      */
-    String randomUuid();
+    String getRandomUuid();
 }

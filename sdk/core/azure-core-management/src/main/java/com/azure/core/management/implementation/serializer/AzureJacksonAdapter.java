@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.management.serializer;
+package com.azure.core.management.implementation.serializer;
 
-import com.azure.core.management.implementation.serializer.ManagementErrorDeserializer;
 import com.azure.core.util.serializer.JacksonAdapter;
 
 /**
