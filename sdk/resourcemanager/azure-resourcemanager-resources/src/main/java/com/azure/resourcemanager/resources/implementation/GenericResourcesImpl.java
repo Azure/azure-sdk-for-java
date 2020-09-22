@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
@@ -55,9 +56,7 @@ public final class GenericResourcesImpl
 
     @Override
     public PagedIterable<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
-        return wrapList(this.manager().inner().getResources().listByResourceGroup(resourceGroupName,
-                Utils.createOdataFilterForTags(tagName, tagValue), null, null)
-                .mapPage(res -> (GenericResourceInner) res));
+        return new PagedIterable<>(this.listByTagAsync(resourceGroupName, tagName, tagValue));
     }
 
     @Override

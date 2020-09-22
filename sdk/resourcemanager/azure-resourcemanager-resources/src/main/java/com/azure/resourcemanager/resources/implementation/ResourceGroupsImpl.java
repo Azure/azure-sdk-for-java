@@ -41,8 +41,7 @@ public final class ResourceGroupsImpl
 
     @Override
     public PagedIterable<ResourceGroup> listByTag(String tagName, String tagValue) {
-        return wrapList(manager().inner().getResourceGroups()
-            .list(Utils.createOdataFilterForTags(tagName, tagValue), null));
+        return new PagedIterable<>(this.listByTagAsync(tagName, tagValue));
     }
 
     @Override
