@@ -22,7 +22,7 @@ public class WinRMConfiguration {
     private List<WinRMListener> listeners;
 
     /**
-     * Get the listeners value.
+     * Get the list of Windows Remote Management listeners.
      *
      * @return the listeners value
      */
@@ -31,7 +31,7 @@ public class WinRMConfiguration {
     }
 
     /**
-     * Set the listeners value.
+     * Set the list of Windows Remote Management listeners.
      *
      * @param listeners the listeners value to set
      * @return the WinRMConfiguration object itself.
