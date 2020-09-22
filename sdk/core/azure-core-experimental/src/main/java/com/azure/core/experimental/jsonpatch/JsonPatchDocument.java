@@ -5,6 +5,7 @@ package com.azure.core.experimental.jsonpatch;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -13,10 +14,9 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Represents a JSON Patch document.
@@ -24,11 +24,6 @@ import java.util.Objects;
 public class JsonPatchDocument {
     private static final ObjectMapper MAPPER = ((JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter())
         .serializer();
-
-    private static final String OP = "op";
-    private static final String FROM = "from";
-    private static final String PATH = "path";
-    private static final String VALUE = "value";
 
     private static final String ADD = "add";
     private static final String REMOVE = "remove";
@@ -39,13 +34,26 @@ public class JsonPatchDocument {
 
     private final ClientLogger logger = new ClientLogger(JsonPatchDocument.class);
 
-    private final List<Map<String, Object>> operations;
+    private final List<JsonPatchOperation> operations;
+    private final JsonSerializer serializer;
 
     /**
      * Creates a new JSON Patch document.
      */
     public JsonPatchDocument() {
+        this(null);
+    }
+
+    /**
+     * Creates a new JSON Patch document.
+     * <p>
+     * If {@code serializer} isn't specified {@link JacksonAdapter} will be used.
+     *
+     * @param serializer The {@link JsonSerializer} that will be used to serialize patch operation values.
+     */
+    public JsonPatchDocument(JsonSerializer serializer) {
         this.operations = new ArrayList<>();
+        this.serializer = serializer;
     }
 
     /**
@@ -72,13 +80,12 @@ public class JsonPatchDocument {
      * @param path The path to apply the addition.
      * @param value The value to add to the path.
      * @return The updated JsonPatchDocument object.
-     * @throws NullPointerException If {@code path} or {@code value} is null.
+     * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendAdd(String path, Object value) {
         Objects.requireNonNull(path, "'path' cannot be null.");
-        Objects.requireNonNull(value, "'value' cannot be null.");
 
-        return appendOperation(ADD, null, path, value);
+        return appendOperation(ADD, null, path, serializeValue(value));
     }
 
     /**
@@ -93,13 +100,12 @@ public class JsonPatchDocument {
      * @param path The path to replace.
      * @param value The value to use as the replacement.
      * @return The updated JsonPatchDocument object.
-     * @throws NullPointerException If {@code path} or {@code value} is null.
+     * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendReplace(String path, Object value) {
         Objects.requireNonNull(path, "'path' cannot be null.");
-        Objects.requireNonNull(value, "'value' cannot be null.");
 
-        return appendOperation(REPLACE, null, path, value);
+        return appendOperation(REPLACE, null, path, serializeValue(value));
     }
 
     /**
@@ -177,30 +183,37 @@ public class JsonPatchDocument {
      * @param path The path to test.
      * @param value The value to test against.
      * @return The updated JsonPatchDocument object.
-     * @throws NullPointerException If {@code path} or {@code value} is null.
+     * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendTest(String path, Object value) {
         Objects.requireNonNull(path, "'path' cannot be null.");
-        Objects.requireNonNull(value, "'value' cannot be null.");
 
-        return appendOperation(TEST, null, path, value);
+        return appendOperation(TEST, null, path, serializeValue(value));
     }
 
-    private JsonPatchDocument appendOperation(String op, String from, String path, Object value) {
-        Map<String, Object> operation = new LinkedHashMap<>();
-        operation.put(OP, op);
-
-        if (from != null) {
-            operation.put(FROM, from);
+    private Optional<String> serializeValue(Object value) {
+        if (value == null) {
+            return Optional.empty();
         }
 
-        operation.put(PATH, path);
-
-        if (value != null) {
-            operation.put(VALUE, value);
+        String rawValue;
+        try {
+            if (serializer == null) {
+                rawValue = MAPPER.writeValueAsString(value);
+            } else {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                serializer.serialize(outputStream, value);
+                rawValue = outputStream.toString("UTF-8");
+            }
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
 
-        operations.add(operation);
+        return Optional.of(rawValue);
+    }
+
+    private JsonPatchDocument appendOperation(String op, String from, String path, Optional<String> optionalValue) {
+        operations.add(new JsonPatchOperation(op, from, path, optionalValue));
         return this;
     }
 
@@ -217,8 +230,8 @@ public class JsonPatchDocument {
             JsonGenerator generator = MAPPER.createGenerator(outputStream);
             generator.writeStartArray();
 
-            for (Map<String, Object> operation : operations) {
-                writeOperation(generator, operation);
+            for (JsonPatchOperation operation : operations) {
+                generator.writeObject(operation);
             }
 
             generator.writeEndArray();
@@ -229,26 +242,5 @@ public class JsonPatchDocument {
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
-    }
-
-    private static void writeOperation(JsonGenerator generator, Map<String, Object> operation) throws IOException {
-        generator.writeStartObject();
-
-        generator.writeStringField(OP, String.valueOf(operation.get(OP)));
-
-        Object from = operation.get(FROM);
-        if (from != null) {
-            generator.writeStringField(FROM, String.valueOf(from));
-        }
-
-        generator.writeStringField(PATH, String.valueOf(operation.get(PATH)));
-
-        Object value = operation.get(VALUE);
-        if (value != null) {
-            generator.writeFieldName(VALUE);
-            generator.writeTree(MAPPER.valueToTree(value));
-        }
-
-        generator.writeEndObject();
     }
 }

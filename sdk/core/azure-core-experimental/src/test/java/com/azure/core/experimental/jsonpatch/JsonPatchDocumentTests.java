@@ -4,12 +4,12 @@
 package com.azure.core.experimental.jsonpatch;
 
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.stream.Stream;
 
@@ -21,7 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class JsonPatchDocumentTests {
     private static final ObjectMapper MAPPER = ((JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter())
-        .serializer();
+        .serializer()
+        .registerModule(JsonPatchOperationSerializer.getModule());
 
     @ParameterizedTest
     @MethodSource("formattingSupplier")
@@ -31,9 +32,8 @@ public class JsonPatchDocumentTests {
 
     @ParameterizedTest
     @MethodSource("formattingSupplier")
-    public void jsonify(JsonPatchDocument document, String expected) throws JsonProcessingException {
-        assertEquals(expected, MAPPER.writeValueAsString(document.getJsonPatchOperations())
-            .replace(" ", ""));
+    public void jsonify(JsonPatchDocument document, String expected) throws IOException {
+        assertEquals(expected, MAPPER.writeValueAsString(document.getJsonPatchOperations()).replace(" ", ""));
     }
 
     private static Stream<Arguments> formattingSupplier() {
@@ -154,10 +154,8 @@ public class JsonPatchDocumentTests {
         JsonPatchDocument document = new JsonPatchDocument();
         return Stream.of(
             Arguments.of((Runnable) () -> document.appendAdd(null, "\"bar\"")),
-            Arguments.of((Runnable) () -> document.appendAdd("/foo", null)),
 
             Arguments.of((Runnable) () -> document.appendReplace(null, "\"bar\"")),
-            Arguments.of((Runnable) () -> document.appendReplace("/foo", null)),
 
             Arguments.of((Runnable) () -> document.appendCopy(null, "\"bar\"")),
             Arguments.of((Runnable) () -> document.appendCopy("/foo", null)),
@@ -167,8 +165,7 @@ public class JsonPatchDocumentTests {
 
             Arguments.of((Runnable) () -> document.appendRemove(null)),
 
-            Arguments.of((Runnable) () -> document.appendTest(null, "\"bar\"")),
-            Arguments.of((Runnable) () -> document.appendTest("/foo", null))
+            Arguments.of((Runnable) () -> document.appendTest(null, "\"bar\""))
         );
     }
 }
