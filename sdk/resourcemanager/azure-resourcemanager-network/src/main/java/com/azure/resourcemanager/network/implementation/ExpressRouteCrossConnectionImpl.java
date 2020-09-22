@@ -33,7 +33,7 @@ public class ExpressRouteCrossConnectionImpl
     protected Mono<ExpressRouteCrossConnectionInner> createInner() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getExpressRouteCrossConnections()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
@@ -55,7 +55,7 @@ public class ExpressRouteCrossConnectionImpl
     protected Mono<ExpressRouteCrossConnectionInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getExpressRouteCrossConnections()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -77,7 +77,7 @@ public class ExpressRouteCrossConnectionImpl
     protected Mono<ExpressRouteCrossConnectionInner> applyTagsToInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getExpressRouteCrossConnections()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }

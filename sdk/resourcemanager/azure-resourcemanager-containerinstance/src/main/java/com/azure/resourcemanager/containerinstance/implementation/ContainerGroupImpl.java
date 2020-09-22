@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.management.Resource;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
@@ -40,6 +40,9 @@ import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,8 +52,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** Implementation for ContainerGroup and its create interfaces. */
 public class ContainerGroupImpl
@@ -82,7 +83,7 @@ public class ContainerGroupImpl
         if (creatableVirtualNetwork != null) {
             mono =
                 mono
-                    .then(creatableVirtualNetwork.createAsync().last())
+                    .then(creatableVirtualNetwork.createAsync())
                     .flatMap(
                         network -> {
                             creatableVirtualNetwork = null;
@@ -95,7 +96,7 @@ public class ContainerGroupImpl
                     .then(
                         manager()
                             .networkManager()
-                            .inner()
+                            .serviceClient()
                             .getNetworkProfiles()
                             .createOrUpdateAsync(
                                 resourceGroupName(), creatableNetworkProfileName, creatableNetworkProfileInner)
@@ -122,12 +123,13 @@ public class ContainerGroupImpl
             return beforeCreation()
                 .then(
                     manager()
-                        .inner()
+                        .serviceClient()
                         .getContainerGroups()
                         .updateAsync(self.resourceGroupName(), self.name(), resource));
         } else if (newFileShares == null || creatableStorageAccountKey == null) {
             return beforeCreation()
-                .then(manager().inner().getContainerGroups().createOrUpdateAsync(resourceGroupName(), name(), inner()));
+                .then(manager().serviceClient().getContainerGroups()
+                    .createOrUpdateAsync(resourceGroupName(), name(), inner()));
         } else {
             final StorageAccount storageAccount = this.taskResult(this.creatableStorageAccountKey);
             return beforeCreation()
@@ -143,7 +145,7 @@ public class ContainerGroupImpl
                 .then(
                     this
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getContainerGroups()
                         .createOrUpdateAsync(resourceGroupName(), name(), inner()));
         }
@@ -268,7 +270,7 @@ public class ContainerGroupImpl
     protected Mono<ContainerGroupInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getContainerGroups()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -726,22 +728,22 @@ public class ContainerGroupImpl
 
     @Override
     public void restart() {
-        this.manager().inner().getContainerGroups().restart(this.resourceGroupName(), this.name());
+        this.manager().serviceClient().getContainerGroups().restart(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Mono<Void> restartAsync() {
-        return this.manager().inner().getContainerGroups().restartAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getContainerGroups().restartAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void stop() {
-        this.manager().inner().getContainerGroups().stop(this.resourceGroupName(), this.name());
+        this.manager().serviceClient().getContainerGroups().stop(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Mono<Void> stopAsync() {
-        return this.manager().inner().getContainerGroups().stopAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getContainerGroups().stopAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -782,7 +784,7 @@ public class ContainerGroupImpl
     public Mono<ContainerExecResponse> executeCommandAsync(String containerName, String command, int row, int column) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getContainers()
             .executeCommandAsync(
                 this.resourceGroupName(),

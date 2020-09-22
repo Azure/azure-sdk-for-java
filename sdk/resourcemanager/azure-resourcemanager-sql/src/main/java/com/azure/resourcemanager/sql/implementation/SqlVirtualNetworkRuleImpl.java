@@ -84,7 +84,7 @@ public class SqlVirtualNetworkRuleImpl
         final SqlVirtualNetworkRuleImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getVirtualNetworkRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
@@ -103,7 +103,7 @@ public class SqlVirtualNetworkRuleImpl
     public Mono<Void> deleteResourceAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getVirtualNetworkRules()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -112,7 +112,7 @@ public class SqlVirtualNetworkRuleImpl
     protected Mono<VirtualNetworkRuleInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getVirtualNetworkRules()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }

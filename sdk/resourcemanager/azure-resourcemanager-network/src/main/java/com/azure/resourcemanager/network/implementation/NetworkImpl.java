@@ -2,28 +2,29 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.SubResource;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.inner.IpAddressAvailabilityResultInner;
+import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkInner;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DdosProtectionPlan;
 import com.azure.resourcemanager.network.models.DhcpOptions;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeerings;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.network.fluent.inner.IpAddressAvailabilityResultInner;
-import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
-import reactor.core.publisher.Mono;
 
 /** Implementation for Network and its create and update interfaces. */
 class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNetworkInner, NetworkImpl, NetworkManager>
@@ -71,14 +72,15 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
     protected Mono<VirtualNetworkInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworks()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     protected Mono<VirtualNetworkInner> applyTagsToInnerAsync() {
-        return this.manager().inner().getVirtualNetworks().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this.manager().serviceClient().getVirtualNetworks()
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
@@ -104,8 +106,8 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
             result =
                 this
                     .manager()
-                    .networks()
-                    .inner()
+                    .serviceClient()
+                    .getVirtualNetworks()
                     .checkIpAddressAvailability(this.resourceGroupName(), this.name(), ipAddress);
         } catch (ManagementException e) {
             if (!e.getValue().getCode().equalsIgnoreCase("PrivateIPAddressNotInAnySubnet")) {
@@ -249,7 +251,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
         }
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworks()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(

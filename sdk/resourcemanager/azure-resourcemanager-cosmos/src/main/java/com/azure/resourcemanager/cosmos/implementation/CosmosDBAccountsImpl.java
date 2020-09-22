@@ -31,7 +31,7 @@ public class CosmosDBAccountsImpl
     implements CosmosDBAccounts {
 
     public CosmosDBAccountsImpl(final CosmosManager manager) {
-        super(manager.inner().getDatabaseAccounts(), manager);
+        super(manager.serviceClient().getDatabaseAccounts(), manager);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class CosmosDBAccountsImpl
 
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .failoverPriorityChangeAsync(groupName, accountName,
                 new FailoverPolicies().withFailoverPolicies(policyInners));
@@ -129,7 +129,7 @@ public class CosmosDBAccountsImpl
     public Mono<DatabaseAccountListKeysResult> listKeysAsync(String groupName, String accountName) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .listKeysAsync(groupName, accountName)
             .map(
@@ -141,7 +141,7 @@ public class CosmosDBAccountsImpl
     public Mono<DatabaseAccountListReadOnlyKeysResult> listReadOnlyKeysAsync(String groupName, String accountName) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .listReadOnlyKeysAsync(groupName, accountName)
             .map(
@@ -159,7 +159,7 @@ public class CosmosDBAccountsImpl
         String groupName, String accountName) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .listConnectionStringsAsync(groupName, accountName)
             .map(
@@ -175,7 +175,7 @@ public class CosmosDBAccountsImpl
 
     @Override
     public Mono<Void> regenerateKeyAsync(String groupName, String accountName, KeyKind keyKind) {
-        return this.manager().inner().getDatabaseAccounts().regenerateKeyAsync(groupName, accountName,
+        return this.manager().serviceClient().getDatabaseAccounts().regenerateKeyAsync(groupName, accountName,
             new DatabaseAccountRegenerateKeyParameters().withKeyKind(keyKind));
     }
 }

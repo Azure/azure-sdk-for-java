@@ -32,7 +32,7 @@ class ExpressRouteCrossConnectionPeeringsImpl
      * @param parent the Express Route Circuit associated with ExpressRouteCrossConnectionPeering
      */
     ExpressRouteCrossConnectionPeeringsImpl(ExpressRouteCrossConnectionImpl parent) {
-        super(parent.manager().inner().getExpressRouteCrossConnectionPeerings(), parent.manager());
+        super(parent.manager().serviceClient().getExpressRouteCrossConnectionPeerings(), parent.manager());
         this.parent = parent;
     }
 

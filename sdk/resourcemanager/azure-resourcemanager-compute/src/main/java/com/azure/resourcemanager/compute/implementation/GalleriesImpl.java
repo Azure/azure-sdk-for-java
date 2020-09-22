@@ -23,7 +23,7 @@ public class GalleriesImpl
     extends GroupableResourcesImpl<Gallery, GalleryImpl, GalleryInner, GalleriesClient, ComputeManager>
     implements Galleries {
     public GalleriesImpl(ComputeManager manager) {
-        super(manager.inner().getGalleries(), manager);
+        super(manager.serviceClient().getGalleries(), manager);
     }
 
     @Override

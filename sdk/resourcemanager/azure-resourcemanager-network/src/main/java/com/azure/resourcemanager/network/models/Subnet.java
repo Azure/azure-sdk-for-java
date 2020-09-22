@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
@@ -17,16 +17,6 @@ import java.util.Set;
 /** A client-side representation of a subnet of a virtual network. */
 @Fluent()
 public interface Subnet extends HasInner<SubnetInner>, ChildResource<Network> {
-
-    /**
-     * @return network interface IP configurations that are associated with this subnet
-     *     <p>Note that this call may result in multiple calls to Azure to fetch all the referenced interfaces each time
-     *     it is invoked.
-     *     <p>
-     * @deprecated Use {@link Subnet#listNetworkInterfaceIPConfigurations()} instead.
-     */
-    @Deprecated
-    Set<NicIpConfiguration> getNetworkInterfaceIPConfigurations();
 
     /**
      * @return network interface IP configurations that are associated with this subnet

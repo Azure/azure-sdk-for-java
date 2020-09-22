@@ -27,7 +27,7 @@ import com.azure.resourcemanager.storage.models.StorageSkus;
 import com.azure.resourcemanager.storage.models.Usages;
 
 /** Entry point to Azure storage resource management. */
-public final class StorageManager extends Manager<StorageManager, StorageManagementClient> {
+public final class StorageManager extends Manager<StorageManagementClient> {
     // Collections
     private StorageAccounts storageAccounts;
     private Usages storageUsages;

@@ -15,7 +15,7 @@ public class PublicIpPrefixesImpl
     implements PublicIpPrefixes {
 
     public PublicIpPrefixesImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getPublicIpPrefixes(), networkManager);
+        super(networkManager.serviceClient().getPublicIpPrefixes(), networkManager);
     }
 
     @Override

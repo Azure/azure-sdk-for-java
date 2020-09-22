@@ -111,7 +111,7 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
      */
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
         return computeManager
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .getByResourceGroupAsync(ResourceUtils.groupFromResourceId(vmId), ResourceUtils.nameFromResourceId(vmId));
             // Exception if vm not found
@@ -128,7 +128,7 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
             for (VirtualMachineExtensionInner extension : vm.resources()) {
                 if (EncryptionExtensionIdentifier.isEncryptionPublisherName(extension.publisher())
                     && EncryptionExtensionIdentifier
-                        .isEncryptionTypeName(extension.virtualMachineExtensionType(), osType())) {
+                        .isEncryptionTypeName(extension.typePropertiesType(), osType())) {
                     return extension;
                 }
             }

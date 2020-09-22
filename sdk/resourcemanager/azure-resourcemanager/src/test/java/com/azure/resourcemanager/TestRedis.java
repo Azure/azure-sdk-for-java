@@ -5,12 +5,10 @@ package com.azure.resourcemanager;
 
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCaches;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.core.management.Region;
 import com.google.common.util.concurrent.SettableFuture;
 import org.junit.jupiter.api.Assertions;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class TestRedis extends TestTemplate<RedisCache, RedisCaches> {
     @Override
@@ -19,7 +17,7 @@ public class TestRedis extends TestTemplate<RedisCache, RedisCaches> {
         final RedisCache[] redisCaches = new RedisCache[1];
         final SettableFuture<RedisCache> future = SettableFuture.create();
 
-        Flux<Indexable> resourceStream =
+        Mono<RedisCache> resourceStream =
             resources
                 .define(redisName)
                 .withRegion(Region.US_EAST)
@@ -28,7 +26,7 @@ public class TestRedis extends TestTemplate<RedisCache, RedisCaches> {
                 .withTag("mytag", "testtag")
                 .createAsync();
 
-        Utils.<RedisCache>rootResource(resourceStream.last()).subscribe(future::set);
+        resourceStream.subscribe(future::set);
 
         redisCaches[0] = future.get();
 

@@ -25,7 +25,7 @@ public final class EventHubAuthorizationRulesImpl
     implements EventHubAuthorizationRules {
 
     public EventHubAuthorizationRulesImpl(EventHubsManager manager) {
-        super(manager, manager.inner().getEventHubs());
+        super(manager, manager.serviceClient().getEventHubs());
     }
 
     @Override

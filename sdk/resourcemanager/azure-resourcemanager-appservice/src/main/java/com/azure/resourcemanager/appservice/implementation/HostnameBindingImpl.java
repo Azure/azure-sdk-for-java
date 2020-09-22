@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.inner.HostnameBindingInner;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.AzureResourceType;
 import com.azure.resourcemanager.appservice.models.CustomHostnameDnsRecordType;
@@ -11,17 +12,15 @@ import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.HostnameBinding;
 import com.azure.resourcemanager.appservice.models.HostnameType;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
-import com.azure.resourcemanager.appservice.fluent.inner.HostnameBindingInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
+import reactor.core.publisher.Mono;
+
 import java.util.Map;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * Implementation for {@link HostnameBinding} and its create and update interfaces.
@@ -141,7 +140,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .getHostnameBindingSlotAsync(
                         parent().resourceGroupName(),
@@ -153,7 +152,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .getHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name());
         }
@@ -168,12 +167,11 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
 
     @Override
     public HostnameBinding create() {
-        createAsync().blockLast();
-        return this;
+        return createAsync().block();
     }
 
     @Override
-    public Flux<Indexable> createAsync() {
+    public Mono<HostnameBinding> createAsync() {
         final HostnameBinding self = this;
         Function<HostnameBindingInner, HostnameBinding> mapper =
             hostnameBindingInner -> {
@@ -181,13 +179,13 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                 return self;
             };
 
-        Mono<Indexable> hostnameBindingObservable;
+        Mono<HostnameBinding> hostnameBindingObservable;
         if (parent instanceof DeploymentSlot) {
             hostnameBindingObservable =
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .createOrUpdateHostnameBindingSlotAsync(
                         parent().resourceGroupName(),
@@ -201,13 +199,13 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .createOrUpdateHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name, inner())
                     .map(mapper);
         }
 
-        return hostnameBindingObservable.flux();
+        return hostnameBindingObservable;
     }
 
     private String normalizeHostNameBindingName(String hostname, String domainName) {

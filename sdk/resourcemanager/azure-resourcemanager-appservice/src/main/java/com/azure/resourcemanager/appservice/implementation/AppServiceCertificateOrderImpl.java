@@ -16,9 +16,8 @@ import com.azure.resourcemanager.appservice.models.CertificateProductType;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 
@@ -43,7 +42,7 @@ class AppServiceCertificateOrderImpl
     protected Mono<AppServiceCertificateOrderInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getAppServiceCertificateOrders()
             .getByResourceGroupAsync(resourceGroupName(), name());
     }
@@ -57,7 +56,7 @@ class AppServiceCertificateOrderImpl
     public Mono<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getAppServiceCertificateOrders()
             .listCertificatesAsync(resourceGroupName(), name())
             .switchIfEmpty(Mono.empty())
@@ -159,7 +158,7 @@ class AppServiceCertificateOrderImpl
         certInner.withKeyVaultSecretName(certificateName);
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getAppServiceCertificateOrders()
             .createOrUpdateCertificateAsync(resourceGroupName(), name(), certificateName, certInner)
             .map(
@@ -195,7 +194,7 @@ class AppServiceCertificateOrderImpl
     public Mono<AppServiceCertificateOrder> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getAppServiceCertificateOrders()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this))
@@ -246,7 +245,7 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public AppServiceCertificateOrderImpl withNewKeyVault(String vaultName, Region region) {
-        Mono<Indexable> resourceStream =
+        this.bindingVault =
             myManager
                 .keyVaultManager()
                 .vaults()
@@ -261,9 +260,7 @@ class AppServiceCertificateOrderImpl
                 .forServicePrincipal("abfa0a7c-a6b6-4736-8310-5855508787cd")
                 .allowSecretPermissions(SecretPermissions.GET)
                 .attach()
-                .createAsync()
-                .last();
-        this.bindingVault = Utils.rootResource(resourceStream);
+                .createAsync();
         return this;
     }
 }

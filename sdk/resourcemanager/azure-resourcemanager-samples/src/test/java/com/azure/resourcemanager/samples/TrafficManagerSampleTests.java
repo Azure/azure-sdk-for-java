@@ -14,10 +14,7 @@ import java.io.IOException;
 public class TrafficManagerSampleTests extends SamplesTestBase {
     @Test
     public void testManageSimpleTrafficManager() {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
-        Assertions.assertTrue(ManageSimpleTrafficManager.runSample(azure));
+        Assertions.assertTrue(ManageSimpleTrafficManager.runSample(azureResourceManager));
     }
 
     @Test
@@ -27,6 +24,6 @@ public class TrafficManagerSampleTests extends SamplesTestBase {
             // sample creates certificate
             return;
         }
-        Assertions.assertTrue(ManageTrafficManager.runSample(azure));
+        Assertions.assertTrue(ManageTrafficManager.runSample(azureResourceManager));
     }
 }

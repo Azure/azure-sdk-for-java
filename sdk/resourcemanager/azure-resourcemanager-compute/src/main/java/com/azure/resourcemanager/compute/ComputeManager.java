@@ -45,7 +45,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure compute resource management. */
-public final class ComputeManager extends Manager<ComputeManager, ComputeManagementClient> {
+public final class ComputeManager extends Manager<ComputeManagementClient> {
     // The service managers
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
@@ -65,6 +65,21 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     private Galleries galleries;
     private GalleryImages galleryImages;
     private GalleryImageVersions galleryImageVersions;
+
+    /** @return the storage manager */
+    public StorageManager storageManager() {
+        return storageManager;
+    }
+
+    /** @return the network manager */
+    public NetworkManager networkManager() {
+        return networkManager;
+    }
+
+    /** @return the authorization manager */
+    public AuthorizationManager authorizationManager() {
+        return authorizationManager;
+    }
 
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.

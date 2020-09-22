@@ -52,7 +52,7 @@ class TroubleshootingImpl extends ExecutableImpl<Troubleshooting>
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkWatchers()
             .getTroubleshootingAsync(parent.resourceGroupName(), parent.name(), parameters)
             .map(

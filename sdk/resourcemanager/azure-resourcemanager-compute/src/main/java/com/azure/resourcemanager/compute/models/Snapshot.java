@@ -18,13 +18,6 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface Snapshot
     extends GroupableResource<ComputeManager, SnapshotInner>, Refreshable<Snapshot>, Updatable<Snapshot.Update> {
-    /**
-     * @return the snapshot SKU type.
-     * @deprecated use {@link Snapshot#skuType()} instead.
-     */
-    @Deprecated
-    DiskSkuTypes sku();
-
     /** @return the snapshot SKU type. */
     SnapshotSkuType skuType();
 
@@ -353,16 +346,6 @@ public interface Snapshot
             /**
              * Specifies the SKU type.
              *
-             * @deprecated use {@link WithSku#withSku(SnapshotSkuType)} instead.
-             * @param sku SKU type
-             * @return the next stage of the definition
-             */
-            @Deprecated
-            WithCreate withSku(DiskSkuTypes sku);
-
-            /**
-             * Specifies the SKU type.
-             *
              * @param sku SKU type
              * @return the next stage of the definition
              */
@@ -386,16 +369,6 @@ public interface Snapshot
     interface UpdateStages {
         /** The stage of the managed snapshot update allowing to choose account type. */
         interface WithSku {
-            /**
-             * Specifies the SKU type.
-             *
-             * @deprecated use {@link WithSku#withSku(SnapshotSkuType)} instead.
-             * @param sku SKU type
-             * @return the next stage of the update
-             */
-            @Deprecated
-            Update withSku(DiskSkuTypes sku);
-
             /**
              * Specifies the SKU type.
              *

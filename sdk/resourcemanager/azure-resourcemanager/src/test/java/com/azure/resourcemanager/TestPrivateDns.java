@@ -19,7 +19,7 @@ import com.azure.resourcemanager.privatedns.models.SrvRecord;
 import com.azure.resourcemanager.privatedns.models.SrvRecordSet;
 import com.azure.resourcemanager.privatedns.models.TxtRecord;
 import com.azure.resourcemanager.privatedns.models.TxtRecordSet;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.HashMap;

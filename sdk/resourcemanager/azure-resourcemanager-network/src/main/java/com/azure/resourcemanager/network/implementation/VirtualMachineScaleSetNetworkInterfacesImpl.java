@@ -28,9 +28,8 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
         this.networkManager = networkManager;
     }
 
-    @Override
     public NetworkInterfacesClient inner() {
-        return this.manager().inner().getNetworkInterfaces();
+        return this.manager().serviceClient().getNetworkInterfaces();
     }
 
     @Override

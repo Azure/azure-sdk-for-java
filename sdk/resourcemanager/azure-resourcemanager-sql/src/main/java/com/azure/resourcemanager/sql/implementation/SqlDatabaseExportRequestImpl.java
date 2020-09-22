@@ -14,7 +14,6 @@ import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseExportRequest;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
 import com.azure.resourcemanager.sql.models.StorageKeyType;
-import com.azure.resourcemanager.storage.models.BlobContainer;
 import com.azure.resourcemanager.storage.models.BlobContainers;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -50,7 +49,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     public Mono<SqlDatabaseImportExportResponse> executeWorkAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getDatabases()
             .exportAsync(
                 this.sqlDatabase.resourceGroupName,
@@ -89,20 +88,22 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                     self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
                     self.inner.withStorageKey(storageAccountKey.value());
                     BlobContainers blobContainers = this.sqlServerManager.storageManager().blobContainers();
-                    return blobContainers.getAsync(parent().resourceGroupName(), storageAccount.name(), containerName)
-                        .onErrorResume(error -> {
-                            if (error instanceof ManagementException) {
-                                if (((ManagementException) error).getResponse().getStatusCode() == 404) {
-                                    return blobContainers.defineContainer(containerName)
-                                        .withExistingBlobService(parent().resourceGroupName(), storageAccount.name())
-                                        .withPublicAccess(PublicAccess.NONE)
-                                        .createAsync()
-                                        .last()
-                                        .map(container -> (BlobContainer) container);
+                    return blobContainers
+                        .getAsync(parent().resourceGroupName(), storageAccount.name(), containerName)
+                        .onErrorResume(
+                            error -> {
+                                if (error instanceof ManagementException) {
+                                    if (((ManagementException) error).getResponse().getStatusCode() == 404) {
+                                        return blobContainers
+                                            .defineContainer(containerName)
+                                            .withExistingBlobService(
+                                                parent().resourceGroupName(), storageAccount.name())
+                                            .withPublicAccess(PublicAccess.NONE)
+                                            .createAsync();
+                                    }
                                 }
-                            }
-                            return Mono.error(error);
-                        });
+                                return Mono.error(error);
+                            });
                 });
     }
 
@@ -132,11 +133,9 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                 context ->
                     storageAccountCreatable
                         .createAsync()
-                        .last()
                         .flatMap(
                             storageAccount ->
-                                getOrCreateStorageAccountContainer(
-                                    (StorageAccount) storageAccount, containerName, fileName, context)));
+                                getOrCreateStorageAccountContainer(storageAccount, containerName, fileName, context)));
         return this;
     }
 

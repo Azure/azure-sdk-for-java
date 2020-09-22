@@ -179,7 +179,7 @@ class VirtualNetworkGatewayImpl
     public Mono<Void> resetAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGateways()
             .resetAsync(resourceGroupName(), name())
             .map(
@@ -198,7 +198,7 @@ class VirtualNetworkGatewayImpl
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listConnectionsAsync() {
         PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> connectionInners =
-            this.manager().inner().getVirtualNetworkGateways()
+            this.manager().serviceClient().getVirtualNetworkGateways()
             .listConnectionsAsync(this.resourceGroupName(), this.name());
         return PagedConverter
             .flatMapPage(connectionInners, connectionInner -> connections().getByIdAsync(connectionInner.id()));
@@ -208,7 +208,7 @@ class VirtualNetworkGatewayImpl
     public String generateVpnProfile() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGateways()
             .generateVpnProfile(resourceGroupName(), name(), new VpnClientParameters());
     }
@@ -217,7 +217,7 @@ class VirtualNetworkGatewayImpl
     public Mono<String> generateVpnProfileAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGateways()
             .generateVpnProfileAsync(resourceGroupName(), name(), new VpnClientParameters());
     }
@@ -226,7 +226,7 @@ class VirtualNetworkGatewayImpl
     protected Mono<VirtualNetworkGatewayInner> applyTagsToInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGateways()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
@@ -269,7 +269,6 @@ class VirtualNetworkGatewayImpl
         return this.inner().sku();
     }
 
-    @Override
     public VpnClientConfiguration vpnClientConfiguration() {
         return inner().vpnClientConfiguration();
     }
@@ -309,7 +308,7 @@ class VirtualNetworkGatewayImpl
     protected Mono<VirtualNetworkGatewayInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGateways()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -400,8 +399,7 @@ class VirtualNetworkGatewayImpl
         if (defaultIPConfig.publicIpAddressId() == null) {
             // If public ip not specified, then create a default PIP
             pipObservable =
-                Utils
-                    .<PublicIpAddress>rootResource(ensureDefaultPipDefinition().createAsync().last())
+                ensureDefaultPipDefinition().createAsync()
                     .map(
                         publicIPAddress -> {
                             defaultIPConfig.withExistingPublicIpAddress(publicIPAddress);
@@ -420,8 +418,7 @@ class VirtualNetworkGatewayImpl
         } else if (creatableNetwork != null) {
             // But if default IP config does not have a subnet specified, then create a VNet
             networkObservable =
-                Utils
-                    .<Network>rootResource(creatableNetwork.createAsync().last())
+                creatableNetwork.createAsync()
                     .map(
                         network -> {
                             // ... and assign the created VNet to the default IP config
@@ -440,7 +437,7 @@ class VirtualNetworkGatewayImpl
                     VirtualNetworkGatewayImpl
                         .this
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getVirtualNetworkGateways()
                         .createOrUpdateAsync(resourceGroupName(), name(), inner()));
     }

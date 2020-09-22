@@ -9,12 +9,12 @@ import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
 import com.azure.resourcemanager.network.models.NetworkSecurityRule;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.core.management.Region;
 import com.google.common.util.concurrent.SettableFuture;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /** Test for network security group CRUD. */
 public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityGroups> {
@@ -37,7 +37,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .withNewResourceGroup(resourceGroupName)
                 .create();
         // Create
-        Flux<Indexable> resourceStream =
+        Mono<NetworkSecurityGroup> resourceStream =
             nsgs
                 .define(newName)
                 .withRegion(region)
@@ -63,10 +63,9 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .createAsync();
 
         resourceStream
-            .last()
             .doOnSuccess((_ignore) -> System.out.print("completed"))
             .doOnError(throwable -> nsgFuture.setException(throwable))
-            .subscribe(nsg -> nsgFuture.set((NetworkSecurityGroup) nsg));
+            .subscribe(nsg -> nsgFuture.set(nsg));
 
         NetworkSecurityGroup nsg = nsgFuture.get();
 

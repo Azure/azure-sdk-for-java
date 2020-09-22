@@ -92,9 +92,9 @@ public class SearchBatchClientTests extends SearchTestBase {
     public void clientThrowsIfBatchSizeIsLessThanOne() {
         assertThrows(IllegalArgumentException.class, () -> new SearchBatchClientBuilder().batchSize(0));
         assertThrows(IllegalArgumentException.class, () -> getSearchClientBuilder("index").buildAsyncClient()
-            .getSearchIndexDocumentBatchingAsyncClient(null, null, 0, null));
+            .getSearchBatchAsyncClient(null, null, 0, null));
         assertThrows(IllegalArgumentException.class, () -> getSearchClientBuilder("index").buildClient()
-            .getSearchIndexDocumentBatchingClient(null, null, 0, null));
+            .getSearchBatchClient(null, null, 0, null));
     }
 
     /**
@@ -106,7 +106,7 @@ public class SearchBatchClientTests extends SearchTestBase {
 
         SearchClient client = clientBuilder.buildClient();
         SearchBatchClient batchingClient = client
-            .getSearchIndexDocumentBatchingClient(false, null, null, null);
+            .getSearchBatchClient(false, null, null, null);
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
         batchingClient.flush();
@@ -126,7 +126,7 @@ public class SearchBatchClientTests extends SearchTestBase {
 
         SearchClient client = clientBuilder.buildClient();
         SearchBatchClient batchingClient = client
-            .getSearchIndexDocumentBatchingClient(true, Duration.ofMinutes(5), 10, null);
+            .getSearchBatchClient(true, Duration.ofMinutes(5), 10, null);
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -144,7 +144,7 @@ public class SearchBatchClientTests extends SearchTestBase {
 
         SearchClient client = clientBuilder.buildClient();
         SearchBatchClient batchingClient = client
-            .getSearchIndexDocumentBatchingClient(true, Duration.ofSeconds(3), 1000, null);
+            .getSearchBatchClient(true, Duration.ofSeconds(3), 1000, null);
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -162,7 +162,7 @@ public class SearchBatchClientTests extends SearchTestBase {
 
         SearchClient client = clientBuilder.buildClient();
         SearchBatchClient batchingClient = client
-            .getSearchIndexDocumentBatchingClient(true, Duration.ofMinutes(5), 1000, null);
+            .getSearchBatchClient(true, Duration.ofMinutes(5), 1000, null);
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
         batchingClient.close();
@@ -182,7 +182,7 @@ public class SearchBatchClientTests extends SearchTestBase {
 
         SearchClient client = clientBuilder.buildClient();
         SearchBatchClient batchingClient = client
-            .getSearchIndexDocumentBatchingClient(true, Duration.ofMinutes(5), 1000, null);
+            .getSearchBatchClient(true, Duration.ofMinutes(5), 1000, null);
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -197,7 +197,7 @@ public class SearchBatchClientTests extends SearchTestBase {
 
         SearchClient client = clientBuilder.buildClient();
         SearchBatchAsyncClient spyClient = spy(clientBuilder.buildAsyncClient()
-            .getSearchIndexDocumentBatchingAsyncClient(true, Duration.ofSeconds(5), 10, null));
+            .getSearchBatchAsyncClient(true, Duration.ofSeconds(5), 10, null));
         SearchBatchClient batchingClient = new SearchBatchClient(spyClient);
 
         List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
@@ -224,7 +224,7 @@ public class SearchBatchClientTests extends SearchTestBase {
     @Test
     public void emptyBatchIsNeverSent() {
         SearchBatchAsyncClient spyClient = spy(getSearchClientBuilder("index").buildAsyncClient()
-            .getSearchIndexDocumentBatchingAsyncClient());
+            .getSearchBatchAsyncClient());
         SearchBatchClient batchingClient = new SearchBatchClient(spyClient);
 
         batchingClient.flush();
@@ -241,7 +241,7 @@ public class SearchBatchClientTests extends SearchTestBase {
         SearchBatchClient batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.<HttpResponse>empty().delayElement(Duration.ofSeconds(5)))
             .buildClient()
-            .getSearchIndexDocumentBatchingClient();
+            .getSearchBatchClient();
 
         batchingClient.addUploadActions(Collections.singletonList(1));
 
@@ -259,7 +259,7 @@ public class SearchBatchClientTests extends SearchTestBase {
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(201, 400, 201, 404, 200, 200, 404, 400, 400, 201))))
             .buildClient()
-            .getSearchIndexDocumentBatchingClient(false, null, null, hook);
+            .getSearchBatchClient(false, null, null, hook);
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -296,7 +296,7 @@ public class SearchBatchClientTests extends SearchTestBase {
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(201, 409, 201, 422, 200, 200, 503, 409, 422, 201))))
             .buildClient()
-            .getSearchIndexDocumentBatchingClient(false, null, null, hook);
+            .getSearchBatchClient(false, null, null, hook);
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -335,7 +335,7 @@ public class SearchBatchClientTests extends SearchTestBase {
                 ? Mono.just(new MockHttpResponse(request, 413))
                 : createMockBatchSplittingResponse(request, 5))
             .buildClient()
-            .getSearchIndexDocumentBatchingClient(false, null, null, hook);
+            .getSearchBatchClient(false, null, null, hook);
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -372,7 +372,7 @@ public class SearchBatchClientTests extends SearchTestBase {
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(409))))
             .buildClient()
-            .getSearchIndexDocumentBatchingClient(false, null, null, hook);
+            .getSearchBatchClient(false, null, null, hook);
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1));
 
@@ -417,7 +417,7 @@ public class SearchBatchClientTests extends SearchTestBase {
         SearchBatchClient batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 413)))
             .buildClient()
-            .getSearchIndexDocumentBatchingClient(false, null, null, hook);
+            .getSearchBatchClient(false, null, null, hook);
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2));
 
@@ -457,7 +457,7 @@ public class SearchBatchClientTests extends SearchTestBase {
                 ? Mono.just(new MockHttpResponse(request, 413))
                 : createMockBatchSplittingResponse(request, 1))
             .buildClient()
-            .getSearchIndexDocumentBatchingClient(false, null, null, hook);
+            .getSearchBatchClient(false, null, null, hook);
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2));
 

@@ -89,8 +89,7 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
         return this.manager;
     }
 
-    @Override
     public RoleAssignmentsClient inner() {
-        return manager().roleInner().getRoleAssignments();
+        return manager().roleServiceClient().getRoleAssignments();
     }
 }

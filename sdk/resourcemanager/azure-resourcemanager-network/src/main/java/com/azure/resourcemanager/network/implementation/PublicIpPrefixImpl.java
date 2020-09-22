@@ -33,21 +33,21 @@ class PublicIpPrefixImpl
 
     @Override
     public Mono<PublicIpPrefix> createResourceAsync() {
-        PublicIpPrefixesClient client = this.manager().inner().getPublicIpPrefixes();
+        PublicIpPrefixesClient client = this.manager().serviceClient().getPublicIpPrefixes();
         return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<PublicIpPrefix> updateResourceAsync() {
-        PublicIpPrefixesClient client = this.manager().inner().getPublicIpPrefixes();
+        PublicIpPrefixesClient client = this.manager().serviceClient().getPublicIpPrefixes();
         return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<PublicIpPrefixInner> getInnerAsync() {
-        PublicIpPrefixesClient client = this.manager().inner().getPublicIpPrefixes();
+        PublicIpPrefixesClient client = this.manager().serviceClient().getPublicIpPrefixes();
         return client.getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -63,7 +63,8 @@ class PublicIpPrefixImpl
 
     @Override
     public Mono<PublicIpPrefix> applyTagsAsync() {
-        return this.manager().inner().getPublicIpPrefixes().updateTagsAsync(resourceGroupName(), name(), inner().tags())
+        return this.manager().serviceClient().getPublicIpPrefixes()
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .map(inner -> {
                 setInner(inner);
                 return PublicIpPrefixImpl.this;

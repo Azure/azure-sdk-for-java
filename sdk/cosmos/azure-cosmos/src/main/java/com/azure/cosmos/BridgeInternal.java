@@ -183,6 +183,11 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setSubStatusCode(CosmosException documentClientException, int subStatusCode) {
+        documentClientException.setSubStatusCode(subStatusCode);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> Map<String, String> getRequestHeaders(
         CosmosException cosmosException) {
         return cosmosException.requestHeaders;
@@ -411,8 +416,9 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void recordAddressResolutionEnd(CosmosDiagnostics cosmosDiagnostics,
-                                                  String identifier) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier);
+                                                  String identifier,
+                                                  String errorMessage) {
+        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier, errorMessage);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

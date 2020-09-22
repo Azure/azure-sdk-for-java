@@ -62,7 +62,7 @@ import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetExte
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.LoadBalancer;
@@ -192,14 +192,14 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetVMs virtualMachines() {
         return new VirtualMachineScaleSetVMsImpl(
-            this, this.manager().inner().getVirtualMachineScaleSetVMs(), this.myManager);
+            this, this.manager().serviceClient().getVirtualMachineScaleSetVMs(), this.myManager);
     }
 
     @Override
     public PagedIterable<VirtualMachineScaleSetSku> listAvailableSkus() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSets()
             .listSkus(this.resourceGroupName(), this.name())
             .mapPage(VirtualMachineScaleSetSkuImpl::new);
@@ -214,7 +214,7 @@ public class VirtualMachineScaleSetImpl
     public Mono<Void> deallocateAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSets()
             .deallocateAsync(this.resourceGroupName(), this.name(), null)
             .map(aVoid -> this.refreshAsync())
@@ -230,7 +230,7 @@ public class VirtualMachineScaleSetImpl
     public Mono<Void> powerOffAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSets()
             .powerOffAsync(this.resourceGroupName(), this.name(), null, null);
     }
@@ -244,7 +244,7 @@ public class VirtualMachineScaleSetImpl
     public Mono<Void> restartAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSets()
             .restartAsync(this.resourceGroupName(), this.name(), null);
     }
@@ -256,7 +256,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Mono<Void> startAsync() {
-        return this.manager().inner().getVirtualMachineScaleSets()
+        return this.manager().serviceClient().getVirtualMachineScaleSets()
             .startAsync(this.resourceGroupName(), this.name(), null);
     }
 
@@ -269,7 +269,7 @@ public class VirtualMachineScaleSetImpl
     public Mono<Void> reimageAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSets()
             .reimageAsync(this.resourceGroupName(), this.name(), null);
     }
@@ -572,8 +572,8 @@ public class VirtualMachineScaleSetImpl
             return null;
         } else {
             ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
-            ProximityPlacementGroupInner plgInner =
-                manager().inner().getProximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
+            ProximityPlacementGroupInner plgInner = manager().serviceClient().getProximityPlacementGroups()
+                .getByResourceGroup(id.resourceGroupName(), id.name());
             if (plgInner == null) {
                 return null;
             } else {
@@ -1505,7 +1505,7 @@ public class VirtualMachineScaleSetImpl
                     this.createNewProximityPlacementGroup();
                     return this
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getVirtualMachineScaleSets()
                         .createOrUpdateAsync(resourceGroupName(), name(), inner());
                 });
@@ -1553,7 +1553,7 @@ public class VirtualMachineScaleSetImpl
                 updateParameter ->
                     this
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getVirtualMachineScaleSets()
                         .updateAsync(resourceGroupName(), name(), updateParameter)
                         .map(
@@ -1583,7 +1583,7 @@ public class VirtualMachineScaleSetImpl
     protected Mono<VirtualMachineScaleSetInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSets()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -1619,11 +1619,11 @@ public class VirtualMachineScaleSetImpl
             if (this.computerNamePrefix() == null) {
                 // VM name cannot contain only numeric values and cannot exceed 15 chars
                 if (this.name().matches("[0-9]+")) {
-                    withComputerNamePrefix(this.namer.randomName("vmss-vm", 12));
+                    withComputerNamePrefix(this.namer.getRandomName("vmss-vm", 12));
                 } else if (this.name().length() <= 12) {
                     withComputerNamePrefix(this.name() + "-vm");
                 } else {
-                    withComputerNamePrefix(this.namer.randomName("vmss-vm", 12));
+                    withComputerNamePrefix(this.namer.getRandomName("vmss-vm", 12));
                 }
             }
         } else {
@@ -1695,7 +1695,7 @@ public class VirtualMachineScaleSetImpl
         if (this.isInCreateMode()
             && this.creatableStorageAccountKeys.isEmpty()
             && this.existingStorageAccountsToAssociate.isEmpty()) {
-            String accountName = this.namer.randomName("stg", 24).replace("-", "");
+            String accountName = this.namer.getRandomName("stg", 24).replace("-", "");
             Creatable<StorageAccount> storageAccountCreatable;
             if (this.creatableGroup != null) {
                 storageAccountCreatable =
@@ -2651,7 +2651,7 @@ public class VirtualMachineScaleSetImpl
                 plgInner =
                     this
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getProximityPlacementGroups()
                         .createOrUpdate(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner);
 
@@ -2907,7 +2907,7 @@ public class VirtualMachineScaleSetImpl
                 return;
             }
 
-            String accountName = this.vmssImpl.namer.randomName("stg", 24).replace("-", "");
+            String accountName = this.vmssImpl.namer.getRandomName("stg", 24).replace("-", "");
             Creatable<StorageAccount> storageAccountCreatable;
             if (this.vmssImpl.creatableGroup != null) {
                 storageAccountCreatable =

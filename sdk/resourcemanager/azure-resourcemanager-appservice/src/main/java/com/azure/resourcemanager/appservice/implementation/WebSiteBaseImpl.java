@@ -15,7 +15,7 @@ import com.azure.resourcemanager.appservice.models.SlotSwapStatus;
 import com.azure.resourcemanager.appservice.models.SslState;
 import com.azure.resourcemanager.appservice.models.UsageState;
 import com.azure.resourcemanager.appservice.models.WebSiteBase;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 
 import java.time.OffsetDateTime;
@@ -256,7 +256,7 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     protected void setInner(SiteInner innerObject) {
         this.innerObject = innerObject;
-        
+
         this.hostNamesSet.clear();
         if (inner().hostNames() != null) {
             this.hostNamesSet.addAll(inner().hostNames());

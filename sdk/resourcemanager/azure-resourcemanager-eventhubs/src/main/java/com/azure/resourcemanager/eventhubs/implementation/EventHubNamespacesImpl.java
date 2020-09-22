@@ -25,7 +25,7 @@ public final class EventHubNamespacesImpl
     implements EventHubNamespaces {
 
     public EventHubNamespacesImpl(EventHubsManager manager) {
-        super(manager.inner().getNamespaces(), manager);
+        super(manager.serviceClient().getNamespaces(), manager);
     }
 
     @Override

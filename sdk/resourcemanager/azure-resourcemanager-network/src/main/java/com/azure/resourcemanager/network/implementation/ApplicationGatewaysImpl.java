@@ -10,6 +10,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,7 +26,7 @@ public class ApplicationGatewaysImpl
     implements ApplicationGateways {
 
     public ApplicationGatewaysImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getApplicationGateways(), networkManager);
+        super(networkManager.serviceClient().getApplicationGateways(), networkManager);
     }
 
     @Override
@@ -93,6 +94,7 @@ public class ApplicationGatewaysImpl
                     final String name = ResourceUtils.nameFromResourceId(id);
                     return this.inner().startAsync(resourceGroupName, name).then(Mono.just(id));
                 }, 32, 32)
+                .onErrorMap(AggregatedManagementException::convertToManagementException)
                 .subscribeOn(SdkContext.getReactorScheduler());
         }
     }
@@ -108,6 +110,7 @@ public class ApplicationGatewaysImpl
                     final String name = ResourceUtils.nameFromResourceId(id);
                     return this.inner().stopAsync(resourceGroupName, name).then(Mono.just(id));
                 }, 32, 32)
+                .onErrorMap(AggregatedManagementException::convertToManagementException)
                 .subscribeOn(SdkContext.getReactorScheduler());
         }
     }

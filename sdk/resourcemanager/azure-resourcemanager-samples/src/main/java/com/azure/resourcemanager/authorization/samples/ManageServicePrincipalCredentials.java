@@ -10,8 +10,8 @@ import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.google.common.io.ByteStreams;
-import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
@@ -39,7 +39,7 @@ public final class ManageServicePrincipalCredentials {
      * @param profile the profile the sample is running in
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure.Authenticated authenticated, AzureProfile profile) throws IOException {
+    public static boolean runSample(AzureResourceManager.Authenticated authenticated, AzureProfile profile) throws IOException {
         final String spName         = authenticated.sdkContext().randomResourceName("sp", 20);
         final String appName        = authenticated.sdkContext().randomResourceName("app", 20);
         final String appUrl         = "https://" + appName;
@@ -105,7 +105,7 @@ public final class ManageServicePrincipalCredentials {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
-                Azure.authenticate(testCredential, profile).withDefaultSubscription();
+                AzureResourceManager.authenticate(testCredential, profile).withDefaultSubscription();
 
                 System.out.println("Verified " + passwordName1 + " is valid.");
             } catch (Exception e) {
@@ -121,7 +121,7 @@ public final class ManageServicePrincipalCredentials {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
-                Azure.authenticate(testCredential, profile).withDefaultSubscription();
+                AzureResourceManager.authenticate(testCredential, profile).withDefaultSubscription();
 
                 System.out.println("Verified " + passwordName2 + " is valid.");
             } catch (Exception e) {
@@ -137,7 +137,7 @@ public final class ManageServicePrincipalCredentials {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
-                Azure.authenticate(testCredential, profile).withDefaultSubscription();
+                AzureResourceManager.authenticate(testCredential, profile).withDefaultSubscription();
 
                 System.out.println("Verified " + certName1 + " is valid.");
             } catch (Exception e) {
@@ -168,7 +168,7 @@ public final class ManageServicePrincipalCredentials {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
-                Azure.authenticate(testCredential, profile).withDefaultSubscription();
+                AzureResourceManager.authenticate(testCredential, profile).withDefaultSubscription();
 
                 System.out.println("Failed to verify " + passwordName1 + " is revoked.");
             } catch (Exception e) {
@@ -196,7 +196,7 @@ public final class ManageServicePrincipalCredentials {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
-                Azure.authenticate(testCredential, profile).withDefaultSubscription()
+                AzureResourceManager.authenticate(testCredential, profile).withDefaultSubscription()
                         .resourceGroups().list();
 
                 System.out.println("Failed to verify " + passwordName2 + " has no access to subscription.");
@@ -226,9 +226,10 @@ public final class ManageServicePrincipalCredentials {
         try {
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure.Authenticated authenticated = Azure
+            AzureResourceManager.Authenticated authenticated = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile);

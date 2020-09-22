@@ -14,7 +14,7 @@ import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.Iterator;
 import java.util.Set;
@@ -240,7 +240,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .assertTrue(
                 virtualMachineScaleSet
                     .managedServiceIdentityType()
-                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
+                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         //
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
@@ -253,7 +253,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .assertTrue(
                 virtualMachineScaleSet
                     .managedServiceIdentityType()
-                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
+                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         //
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
@@ -269,7 +269,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .assertTrue(
                 virtualMachineScaleSet
                     .managedServiceIdentityType()
-                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
+                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
         // Remove identities one by one (second one)

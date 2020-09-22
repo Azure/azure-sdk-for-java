@@ -93,7 +93,6 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         return vaultHttpPipeline;
     }
 
-    @Override
     public SecretAsyncClient secretClient() {
         return secretClient;
     }
@@ -343,7 +342,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
 
     @Override
     public Mono<Vault> createResourceAsync() {
-        final VaultsClient client = this.manager().inner().getVaults();
+        final VaultsClient client = this.manager().serviceClient().getVaults();
         return populateAccessPolicies()
             .then(
                 Mono
@@ -369,7 +368,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
 
     @Override
     protected Mono<VaultInner> getInnerAsync() {
-        return this.manager().inner().getVaults().getByResourceGroupAsync(resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVaults().getByResourceGroupAsync(resourceGroupName(), this.name());
     }
 
     @Override

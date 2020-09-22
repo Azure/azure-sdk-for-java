@@ -14,7 +14,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Container Service Management</name>
-  <description>This package contains Microsoft Azure Container Service SDK. For documentation on how to use this package, please see https://aka.ms/azure-sdk-java-mgmt</description>
+  <description>This package contains Microsoft Azure Container Service SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -72,12 +72,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-test</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-test;current} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

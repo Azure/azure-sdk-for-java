@@ -20,17 +20,17 @@ public class AvailabilitySetsImpl
     implements AvailabilitySets {
 
     public AvailabilitySetsImpl(final ComputeManager computeManager) {
-        super(computeManager.inner().getAvailabilitySets(), computeManager);
+        super(computeManager.serviceClient().getAvailabilitySets(), computeManager);
     }
 
     @Override
     public PagedIterable<AvailabilitySet> list() {
-        return manager().inner().getAvailabilitySets().list().mapPage(this::wrapModel);
+        return manager().serviceClient().getAvailabilitySets().list().mapPage(this::wrapModel);
     }
 
     @Override
     public PagedFlux<AvailabilitySet> listAsync() {
-        return this.manager().inner().getAvailabilitySets().listAsync().mapPage(this::wrapModel);
+        return this.manager().serviceClient().getAvailabilitySets().listAsync().mapPage(this::wrapModel);
     }
 
     @Override

@@ -27,7 +27,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure Monitor. */
-public final class MonitorManager extends Manager<MonitorManager, MonitorClient> {
+public final class MonitorManager extends Manager<MonitorClient> {
     // Collections
     private ActivityLogs activityLogs;
     private MetricDefinitions metricDefinitions;

@@ -261,6 +261,8 @@ public final class BlobClientBuilder {
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
      *
+     * <p>If the blob name contains special characters, pass in the url encoded version of the blob name. </p>
+     *
      * <p>If the endpoint is to a blob in the root container, this method will fail as it will interpret the blob name
      * as the container name. With only one path element, it is impossible to distinguish between a container name and
      * a blob in the root container, so it is assumed to be the container name as this is much more common. When working
@@ -309,7 +311,8 @@ public final class BlobClientBuilder {
     /**
      * Sets the name of the blob.
      *
-     * @param blobName Name of the blob.
+     * @param blobName Name of the blob. If the blob name contains special characters, pass in the url encoded version
+     * of the blob name.
      * @return the updated BlobClientBuilder object
      * @throws NullPointerException If {@code blobName} is {@code null}
      */

@@ -115,7 +115,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
     private Mono<VirtualMachineExtensionInner> retrieveExtensionWithInstanceViewAsync(
         VirtualMachineExtensionInner extension) {
         return computeManager
-            .inner()
+            .serviceClient()
             .getVirtualMachineExtensions()
             .getAsync(rgName, vmName, extension.name(), "instanceView");
     }
@@ -129,7 +129,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
      */
     private Mono<VirtualMachineExtensionInner> retrieveEncryptExtensionWithInstanceViewFromVMAsync() {
         return computeManager
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .getByResourceGroupAsync(rgName, vmName)
             // Exception if vm not found
@@ -140,7 +140,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
                             if (EncryptionExtensionIdentifier.isEncryptionPublisherName(extension.publisher())
                                 && EncryptionExtensionIdentifier
                                     .isEncryptionTypeName(
-                                        extension.virtualMachineExtensionType(), OperatingSystemTypes.LINUX)) {
+                                        extension.typePropertiesType(), OperatingSystemTypes.LINUX)) {
                                 return retrieveExtensionWithInstanceViewAsync(extension);
                             }
                         }

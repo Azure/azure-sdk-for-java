@@ -33,7 +33,7 @@ class ExpressRouteCrossConnectionPeeringImpl
         ExpressRouteCrossConnectionPeeringInner innerObject,
         ExpressRoutePeeringType type) {
         super(type.toString(), innerObject);
-        this.client = parent.manager().inner().getExpressRouteCrossConnectionPeerings();
+        this.client = parent.manager().serviceClient().getExpressRouteCrossConnectionPeerings();
         this.parent = parent;
         inner().withPeeringType(type);
     }

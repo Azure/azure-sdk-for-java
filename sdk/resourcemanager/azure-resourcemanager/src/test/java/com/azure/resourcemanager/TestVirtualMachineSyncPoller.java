@@ -17,7 +17,7 @@ import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
@@ -131,7 +131,7 @@ public class TestVirtualMachineSyncPoller extends TestTemplate<VirtualMachine, V
                 .withRootUsername("testuser")
                 .withRootPassword(ResourceManagerTestBase.password())
                 .withExistingDataDisk(disk)
-                .withSize(VirtualMachineSizeTypes.STANDARD_A9)
+                .withSize(VirtualMachineSizeTypes.STANDARD_A2)
                 .beginCreate();
         logger.info("{} {}", OffsetDateTime.now(), "polling virtual machine till complete");
         PollResponse<?> virtualMachineResponse = virtualMachineAccepted.getSyncPoller().waitForCompletion();

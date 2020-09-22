@@ -631,7 +631,7 @@ public class EventHubClientBuilder {
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler);
+            proxyOptions, scheduler, null);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

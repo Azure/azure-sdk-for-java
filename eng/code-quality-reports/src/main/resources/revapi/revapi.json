@@ -95,6 +95,12 @@
       {
         "regex": true,
         "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(class|interface|enum) com\\.azure\\.communication\\.common\\..*",
+        "justification": "azure-communication-common classes are allowed to be exposed."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(interface|class|enum) com\\.azure\\.core.*",
         "justification": "azure-core classes are allowed to be exposed by dependencies using them."
       },
@@ -127,6 +133,12 @@
         "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(class|interface|enum) com\\.azure\\.perf\\.test\\.core\\..*",
         "justification": "perf-test classes are allowed to be exposed."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(interface|class|enum) com\\.azure\\.cosmos.*",
+        "justification": "azure-cosmos classes are allowed to be exposed by dependencies using them."
       },
       {
         "code": "java.method.finalMethodAddedToNonFinalClass",
@@ -179,6 +191,22 @@
         "code": "java\\.annotation\\.attributeAdded",
         "new": "^parameter\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(AnalyzedTokenInfo|CorsOptions|FieldMapping|IndexerExecutionResult|SearchIndexerStatus|SearchServiceCounters|TextWeights|AutocompleteResult)::<init>\\(.+\\)$",
         "justification": "Annotations attributes better indicate which parameters are required when handling service requests and responses."
+      },
+
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class com.azure.data.schemaregistry.SchemaRegistryAsyncClient",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class com.azure.data.schemaregistry.models.SchemaProperties",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class com.azure.data.schemaregistry.models.SerializationType",
+        "justification": "This is a preview release"
       }
     ]
   }

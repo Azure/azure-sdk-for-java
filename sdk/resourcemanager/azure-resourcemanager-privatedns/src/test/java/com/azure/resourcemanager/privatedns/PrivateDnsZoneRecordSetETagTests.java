@@ -16,7 +16,7 @@ import com.azure.resourcemanager.privatedns.models.AaaaRecordSet;
 import com.azure.resourcemanager.privatedns.models.CnameRecordSet;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
@@ -117,9 +117,6 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Test
     public void canCreateRecordSetsWithDefaultETag() {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
@@ -192,7 +189,7 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestBase {
                         .withETagCheck()
                         .attach()
                     .create();
-        } catch (Exception exception) {
+        } catch (ManagementException exception) {
             compositeException = exception;
         }
         Assertions.assertNotNull(compositeException);

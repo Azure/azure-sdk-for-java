@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.servicebus.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
@@ -320,7 +320,7 @@ class TopicImpl
 
     @Override
     protected Mono<TopicResourceInner> getInnerAsync() {
-        return this.manager().inner().getTopics()
+        return this.manager().serviceClient().getTopics()
                 .getAsync(this.resourceGroupName(),
                         this.parentName,
                         this.name());
@@ -328,7 +328,7 @@ class TopicImpl
 
     @Override
     protected Mono<Topic> createChildResourceAsync() {
-        Mono<TopicResourceInner> createTask = this.manager().inner().getTopics()
+        Mono<TopicResourceInner> createTask = this.manager().serviceClient().getTopics()
             .createOrUpdateAsync(this.resourceGroupName(),
                     this.parentName,
                     this.name(),

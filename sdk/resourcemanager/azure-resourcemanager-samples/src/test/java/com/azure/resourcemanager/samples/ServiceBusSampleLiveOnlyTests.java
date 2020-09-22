@@ -19,7 +19,7 @@ public class ServiceBusSampleLiveOnlyTests extends SamplesTestBase {
         if (skipInPlayback()) {
             return;
         }
-        Assertions.assertTrue(ServiceBusQueueBasic.runSample(azure));
+        Assertions.assertTrue(ServiceBusQueueBasic.runSample(azureResourceManager));
     }
 
     @Test
@@ -28,7 +28,7 @@ public class ServiceBusSampleLiveOnlyTests extends SamplesTestBase {
         if (skipInPlayback()) {
             return;
         }
-        Assertions.assertTrue(ServiceBusPublishSubscribeBasic.runSample(azure));
+        Assertions.assertTrue(ServiceBusPublishSubscribeBasic.runSample(azureResourceManager));
     }
 
     @Test
@@ -37,7 +37,7 @@ public class ServiceBusSampleLiveOnlyTests extends SamplesTestBase {
         if (skipInPlayback()) {
             return;
         }
-        Assertions.assertTrue(ServiceBusWithClaimBasedAuthorization.runSample(azure));
+        Assertions.assertTrue(ServiceBusWithClaimBasedAuthorization.runSample(azureResourceManager));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class ServiceBusSampleLiveOnlyTests extends SamplesTestBase {
         if (skipInPlayback()) {
             return;
         }
-        Assertions.assertTrue(ServiceBusQueueAdvanceFeatures.runSample(azure));
+        Assertions.assertTrue(ServiceBusQueueAdvanceFeatures.runSample(azureResourceManager));
     }
 
     @Test
@@ -55,6 +55,6 @@ public class ServiceBusSampleLiveOnlyTests extends SamplesTestBase {
         if (skipInPlayback()) {
             return;
         }
-        Assertions.assertTrue(ServiceBusPublishSubscribeAdvanceFeatures.runSample(azure));
+        Assertions.assertTrue(ServiceBusPublishSubscribeAdvanceFeatures.runSample(azureResourceManager));
     }
 }

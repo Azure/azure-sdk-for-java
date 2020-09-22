@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.fluent.inner.IpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
 import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;
@@ -203,11 +203,6 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     }
 
     @Override
-    public Set<NicIpConfiguration> getNetworkInterfaceIPConfigurations() {
-        return Collections.unmodifiableSet(new TreeSet<NicIpConfiguration>(listNetworkInterfaceIPConfigurations()));
-    }
-
-    @Override
     public Collection<NicIpConfiguration> listNetworkInterfaceIPConfigurations() {
         Collection<NicIpConfiguration> ipConfigs = new ArrayList<>();
         Map<String, NetworkInterface> nics = new TreeMap<>();
@@ -261,8 +256,8 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             this
                 .parent()
                 .manager()
-                .networks()
-                .inner()
+                .serviceClient()
+                .getVirtualNetworks()
                 .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
         if (result == null) {
             return ipAddresses;

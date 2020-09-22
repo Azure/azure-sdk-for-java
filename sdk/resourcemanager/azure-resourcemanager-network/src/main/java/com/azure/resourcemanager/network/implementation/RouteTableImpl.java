@@ -30,7 +30,8 @@ class RouteTableImpl
 
     @Override
     protected Mono<RouteTableInner> applyTagsToInnerAsync() {
-        return this.manager().inner().getRouteTables().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this.manager().serviceClient().getRouteTables()
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
@@ -65,7 +66,7 @@ class RouteTableImpl
     protected Mono<RouteTableInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getRouteTables()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -131,7 +132,7 @@ class RouteTableImpl
     protected Mono<RouteTableInner> createInner() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getRouteTables()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }

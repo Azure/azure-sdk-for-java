@@ -113,7 +113,7 @@ class ApplicationGatewayImpl
     protected Mono<ApplicationGatewayInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getApplicationGateways()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -122,7 +122,7 @@ class ApplicationGatewayImpl
     protected Mono<ApplicationGatewayInner> applyTagsToInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getApplicationGateways()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
@@ -512,8 +512,7 @@ class ApplicationGatewayImpl
         if (defaultPublicFrontend != null && defaultPublicFrontend.publicIpAddressId() == null) {
             // If public frontend requested but no PIP specified, then create a default PIP
             pipObservable =
-                Utils
-                    .<PublicIpAddress>rootResource(ensureDefaultPipDefinition().createAsync().last())
+                ensureDefaultPipDefinition().createAsync()
                     .map(
                         publicIPAddress -> {
                             defaultPublicFrontend.withExistingPublicIpAddress(publicIPAddress);
@@ -540,8 +539,7 @@ class ApplicationGatewayImpl
         } else {
             // But if default IP config does not have a subnet specified, then create a default VNet
             networkObservable =
-                Utils
-                    .<Network>rootResource(ensureDefaultNetworkDefinition().createAsync().last())
+                ensureDefaultNetworkDefinition().createAsync()
                     .map(
                         network -> {
                             // ... and assign the created VNet to the default IP config
@@ -565,7 +563,7 @@ class ApplicationGatewayImpl
                         });
         }
 
-        final ApplicationGatewaysClient innerCollection = this.manager().inner().getApplicationGateways();
+        final ApplicationGatewaysClient innerCollection = this.manager().serviceClient().getApplicationGateways();
         return Flux
             .merge(networkObservable, pipObservable)
             .last(Resource.DUMMY)
@@ -1168,11 +1166,6 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withoutCertificate(String name) {
-        return this.withoutSslCertificate(name);
-    }
-
-    @Override
     public ApplicationGatewayImpl withoutSslCertificate(String name) {
         this.sslCerts.remove(name);
         return this;
@@ -1639,7 +1632,7 @@ class ApplicationGatewayImpl
     @Override
     public Mono<Void> startAsync() {
         Mono<Void> startObservable =
-            this.manager().inner().getApplicationGateways().startAsync(this.resourceGroupName(), this.name());
+            this.manager().serviceClient().getApplicationGateways().startAsync(this.resourceGroupName(), this.name());
         Mono<ApplicationGateway> refreshObservable = refreshAsync();
 
         // Refresh after start to ensure the app gateway operational state is updated
@@ -1649,7 +1642,7 @@ class ApplicationGatewayImpl
     @Override
     public Mono<Void> stopAsync() {
         Mono<Void> stopObservable =
-            this.manager().inner().getApplicationGateways().stopAsync(this.resourceGroupName(), this.name());
+            this.manager().serviceClient().getApplicationGateways().stopAsync(this.resourceGroupName(), this.name());
         Mono<ApplicationGateway> refreshObservable = refreshAsync();
 
         // Refresh after stop to ensure the app gateway operational state is updated
@@ -1681,7 +1674,7 @@ class ApplicationGatewayImpl
     public Mono<Map<String, ApplicationGatewayBackendHealth>> checkBackendHealthAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getApplicationGateways()
             // TODO(not known): Last minutes
             .backendHealthAsync(this.resourceGroupName(), this.name(), null)
