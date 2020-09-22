@@ -1004,30 +1004,6 @@ public final class DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Boolean> checkExistenceAtScopeAsync(String scope, String deploymentName, Context context) {
-        return checkExistenceAtScopeWithResponseAsync(scope, deploymentName, context)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks whether the deployment exists.
-     *
-     * @param scope The resource scope.
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1397,30 +1373,6 @@ public final class DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentExtendedInner> getAtScopeAsync(String scope, String deploymentName, Context context) {
-        return getAtScopeWithResponseAsync(scope, deploymentName, context)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a deployment.
-     *
-     * @param scope The resource scope.
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1530,25 +1482,6 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAtScopeAsync(String scope, String deploymentName) {
         return cancelAtScopeWithResponseAsync(scope, deploymentName).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
-     *
-     * @param scope The resource scope.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelAtScopeAsync(String scope, String deploymentName, Context context) {
-        return cancelAtScopeWithResponseAsync(scope, deploymentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1919,31 +1852,6 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExportResultInner> exportTemplateAtScopeAsync(String scope, String deploymentName) {
         return exportTemplateAtScopeWithResponseAsync(scope, deploymentName)
-            .flatMap(
-                (Response<DeploymentExportResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Exports the template used for specified deployment.
-     *
-     * @param scope The resource scope.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentExportResultInner> exportTemplateAtScopeAsync(
-        String scope, String deploymentName, Context context) {
-        return exportTemplateAtScopeWithResponseAsync(scope, deploymentName, context)
             .flatMap(
                 (Response<DeploymentExportResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -2489,29 +2397,6 @@ public final class DeploymentsClient
      * Checks whether the deployment exists.
      *
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Boolean> checkExistenceAtTenantScopeAsync(String deploymentName, Context context) {
-        return checkExistenceAtTenantScopeWithResponseAsync(deploymentName, context)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks whether the deployment exists.
-     *
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2852,29 +2737,6 @@ public final class DeploymentsClient
      * Gets a deployment.
      *
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentExtendedInner> getAtTenantScopeAsync(String deploymentName, Context context) {
-        return getAtTenantScopeWithResponseAsync(deploymentName, context)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a deployment.
-     *
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2973,24 +2835,6 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAtTenantScopeAsync(String deploymentName) {
         return cancelAtTenantScopeWithResponseAsync(deploymentName).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelAtTenantScopeAsync(String deploymentName, Context context) {
-        return cancelAtTenantScopeWithResponseAsync(deploymentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -3573,29 +3417,6 @@ public final class DeploymentsClient
      * Exports the template used for specified deployment.
      *
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentExportResultInner> exportTemplateAtTenantScopeAsync(String deploymentName, Context context) {
-        return exportTemplateAtTenantScopeWithResponseAsync(deploymentName, context)
-            .flatMap(
-                (Response<DeploymentExportResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Exports the template used for specified deployment.
-     *
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4143,31 +3964,6 @@ public final class DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Boolean> checkExistenceAtManagementGroupScopeAsync(
-        String groupId, String deploymentName, Context context) {
-        return checkExistenceAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, context)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks whether the deployment exists.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4544,31 +4340,6 @@ public final class DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentExtendedInner> getAtManagementGroupScopeAsync(
-        String groupId, String deploymentName, Context context) {
-        return getAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, context)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a deployment.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4680,25 +4451,6 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAtManagementGroupScopeAsync(String groupId, String deploymentName) {
         return cancelAtManagementGroupScopeWithResponseAsync(groupId, deploymentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelAtManagementGroupScopeAsync(String groupId, String deploymentName, Context context) {
-        return cancelAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -5339,31 +5091,6 @@ public final class DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentExportResultInner> exportTemplateAtManagementGroupScopeAsync(
-        String groupId, String deploymentName, Context context) {
-        return exportTemplateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, context)
-            .flatMap(
-                (Response<DeploymentExportResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Exports the template used for specified deployment.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5943,29 +5670,6 @@ public final class DeploymentsClient
      * Checks whether the deployment exists.
      *
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Boolean> checkExistenceAtSubscriptionScopeAsync(String deploymentName, Context context) {
-        return checkExistenceAtSubscriptionScopeWithResponseAsync(deploymentName, context)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks whether the deployment exists.
-     *
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6347,29 +6051,6 @@ public final class DeploymentsClient
      * Gets a deployment.
      *
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentExtendedInner> getAtSubscriptionScopeAsync(String deploymentName, Context context) {
-        return getAtSubscriptionScopeWithResponseAsync(deploymentName, context)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a deployment.
-     *
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6490,24 +6171,6 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAtSubscriptionScopeAsync(String deploymentName) {
         return cancelAtSubscriptionScopeWithResponseAsync(deploymentName).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelAtSubscriptionScopeAsync(String deploymentName, Context context) {
-        return cancelAtSubscriptionScopeWithResponseAsync(deploymentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -7134,30 +6797,6 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExportResultInner> exportTemplateAtSubscriptionScopeAsync(String deploymentName) {
         return exportTemplateAtSubscriptionScopeWithResponseAsync(deploymentName)
-            .flatMap(
-                (Response<DeploymentExportResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Exports the template used for specified deployment.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentExportResultInner> exportTemplateAtSubscriptionScopeAsync(
-        String deploymentName, Context context) {
-        return exportTemplateAtSubscriptionScopeWithResponseAsync(deploymentName, context)
             .flatMap(
                 (Response<DeploymentExportResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -7808,31 +7447,6 @@ public final class DeploymentsClient
      * @param resourceGroupName The name of the resource group with the deployment to check. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName, Context context) {
-        return checkExistenceWithResponseAsync(resourceGroupName, deploymentName, context)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks whether the deployment exists.
-     *
-     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -8261,31 +7875,6 @@ public final class DeploymentsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentExtendedInner> getByResourceGroupAsync(
-        String resourceGroupName, String deploymentName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, deploymentName, context)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -8421,25 +8010,6 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String resourceGroupName, String deploymentName) {
         return cancelWithResponseAsync(resourceGroupName, deploymentName).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resource group partially deployed.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelAsync(String resourceGroupName, String deploymentName, Context context) {
-        return cancelWithResponseAsync(resourceGroupName, deploymentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -9157,31 +8727,6 @@ public final class DeploymentsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentExportResultInner> exportTemplateAsync(
-        String resourceGroupName, String deploymentName, Context context) {
-        return exportTemplateWithResponseAsync(resourceGroupName, deploymentName, context)
-            .flatMap(
-                (Response<DeploymentExportResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Exports the template used for specified deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -9506,29 +9051,6 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TemplateHashResultInner> calculateTemplateHashAsync(Object template) {
         return calculateTemplateHashWithResponseAsync(template)
-            .flatMap(
-                (Response<TemplateHashResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Calculate the hash of the given template.
-     *
-     * @param template Any object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to calculate template hash.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TemplateHashResultInner> calculateTemplateHashAsync(Object template, Context context) {
-        return calculateTemplateHashWithResponseAsync(template, context)
             .flatMap(
                 (Response<TemplateHashResultInner> res) -> {
                     if (res.getValue() != null) {

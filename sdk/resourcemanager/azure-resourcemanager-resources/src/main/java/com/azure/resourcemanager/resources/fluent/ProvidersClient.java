@@ -250,29 +250,6 @@ public final class ProvidersClient {
      * Unregisters a subscription from a resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider to unregister.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource provider information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProviderInner> unregisterAsync(String resourceProviderNamespace, Context context) {
-        return unregisterWithResponseAsync(resourceProviderNamespace, context)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Unregisters a subscription from a resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -392,29 +369,6 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> registerAsync(String resourceProviderNamespace) {
         return registerWithResponseAsync(resourceProviderNamespace)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Registers a subscription with a resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider to register.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource provider information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProviderInner> registerAsync(String resourceProviderNamespace, Context context) {
-        return registerWithResponseAsync(resourceProviderNamespace, context)
             .flatMap(
                 (Response<ProviderInner> res) -> {
                     if (res.getValue() != null) {
@@ -948,31 +902,6 @@ public final class ProvidersClient {
      * Gets the specified resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProviderInner> getAsync(String resourceProviderNamespace, String expand, Context context) {
-        return getWithResponseAsync(resourceProviderNamespace, expand, context)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1128,32 +1057,6 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> getAtTenantScopeAsync(String resourceProviderNamespace, String expand) {
         return getAtTenantScopeWithResponseAsync(resourceProviderNamespace, expand)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified resource provider at the tenant level.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider at the tenant level.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProviderInner> getAtTenantScopeAsync(
-        String resourceProviderNamespace, String expand, Context context) {
-        return getAtTenantScopeWithResponseAsync(resourceProviderNamespace, expand, context)
             .flatMap(
                 (Response<ProviderInner> res) -> {
                     if (res.getValue() != null) {

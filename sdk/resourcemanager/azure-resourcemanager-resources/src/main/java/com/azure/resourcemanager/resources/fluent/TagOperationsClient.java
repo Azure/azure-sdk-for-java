@@ -281,23 +281,6 @@ public final class TagOperationsClient {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteValueAsync(String tagName, String tagValue, Context context) {
-        return deleteValueWithResponseAsync(tagName, tagValue, context).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
-     * The value being deleted must not be in use as a tag value for the given tag name for any resource.
-     *
-     * @param tagName The name of the tag.
-     * @param tagValue The value of the tag to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -427,31 +410,6 @@ public final class TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue) {
         return createOrUpdateValueWithResponseAsync(tagName, tagValue)
-            .flatMap(
-                (Response<TagValueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
-     *
-     * @param tagName The name of the tag.
-     * @param tagValue The value of the tag to create.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue, Context context) {
-        return createOrUpdateValueWithResponseAsync(tagName, tagValue, context)
             .flatMap(
                 (Response<TagValueInner> res) -> {
                     if (res.getValue() != null) {
@@ -605,31 +563,6 @@ public final class TagOperationsClient {
      * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
      *
      * @param tagName The name of the tag to create.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TagDetailsInner> createOrUpdateAsync(String tagName, Context context) {
-        return createOrUpdateWithResponseAsync(tagName, context)
-            .flatMap(
-                (Response<TagDetailsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
-     * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
-     * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
-     *
-     * @param tagName The name of the tag to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -751,23 +684,6 @@ public final class TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String tagName) {
         return deleteWithResponseAsync(tagName).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
-     *
-     * @param tagName The name of the tag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String tagName, Context context) {
-        return deleteWithResponseAsync(tagName, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1050,31 +966,6 @@ public final class TagOperationsClient {
      *
      * @param scope The resource scope.
      * @param properties A dictionary of name and value pairs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TagsResourceInner> createOrUpdateAtScopeAsync(String scope, Tags properties, Context context) {
-        return createOrUpdateAtScopeWithResponseAsync(scope, properties, context)
-            .flatMap(
-                (Response<TagsResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
-     *
-     * @param scope The resource scope.
-     * @param properties A dictionary of name and value pairs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1216,34 +1107,6 @@ public final class TagOperationsClient {
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TagsResourceInner> updateAtScopeAsync(String scope, TagsPatchResource parameters, Context context) {
-        return updateAtScopeWithResponseAsync(scope, parameters, context)
-            .flatMap(
-                (Response<TagsResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
-     *
-     * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags patch API request only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1352,29 +1215,6 @@ public final class TagOperationsClient {
      * Gets the entire set of tags on a resource or subscription.
      *
      * @param scope The resource scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entire set of tags on a resource or subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TagsResourceInner> getAtScopeAsync(String scope, Context context) {
-        return getAtScopeWithResponseAsync(scope, context)
-            .flatMap(
-                (Response<TagsResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the entire set of tags on a resource or subscription.
-     *
-     * @param scope The resource scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1464,21 +1304,6 @@ public final class TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtScopeAsync(String scope) {
         return deleteAtScopeWithResponseAsync(scope).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the entire set of tags on a resource or subscription.
-     *
-     * @param scope The resource scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAtScopeAsync(String scope, Context context) {
-        return deleteAtScopeWithResponseAsync(scope, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**

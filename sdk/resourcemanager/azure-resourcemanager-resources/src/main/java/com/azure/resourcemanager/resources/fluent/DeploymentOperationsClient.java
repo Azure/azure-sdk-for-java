@@ -333,32 +333,6 @@ public final class DeploymentOperationsClient {
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentOperationInner> getAtScopeAsync(
-        String scope, String deploymentName, String operationId, Context context) {
-        return getAtScopeWithResponseAsync(scope, deploymentName, operationId, context)
-            .flatMap(
-                (Response<DeploymentOperationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a deployments operation.
-     *
-     * @param scope The resource scope.
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -683,31 +657,6 @@ public final class DeploymentOperationsClient {
      *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentOperationInner> getAtTenantScopeAsync(
-        String deploymentName, String operationId, Context context) {
-        return getAtTenantScopeWithResponseAsync(deploymentName, operationId, context)
-            .flatMap(
-                (Response<DeploymentOperationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a deployments operation.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1008,32 +957,6 @@ public final class DeploymentOperationsClient {
     public Mono<DeploymentOperationInner> getAtManagementGroupScopeAsync(
         String groupId, String deploymentName, String operationId) {
         return getAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, operationId)
-            .flatMap(
-                (Response<DeploymentOperationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a deployments operation.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentOperationInner> getAtManagementGroupScopeAsync(
-        String groupId, String deploymentName, String operationId, Context context) {
-        return getAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, operationId, context)
             .flatMap(
                 (Response<DeploymentOperationInner> res) -> {
                     if (res.getValue() != null) {
@@ -1396,31 +1319,6 @@ public final class DeploymentOperationsClient {
      *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentOperationInner> getAtSubscriptionScopeAsync(
-        String deploymentName, String operationId, Context context) {
-        return getAtSubscriptionScopeWithResponseAsync(deploymentName, operationId, context)
-            .flatMap(
-                (Response<DeploymentOperationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a deployments operation.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1765,32 +1663,6 @@ public final class DeploymentOperationsClient {
     public Mono<DeploymentOperationInner> getAsync(
         String resourceGroupName, String deploymentName, String operationId) {
         return getWithResponseAsync(resourceGroupName, deploymentName, operationId)
-            .flatMap(
-                (Response<DeploymentOperationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a deployments operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentOperationInner> getAsync(
-        String resourceGroupName, String deploymentName, String operationId, Context context) {
-        return getWithResponseAsync(resourceGroupName, deploymentName, operationId, context)
             .flatMap(
                 (Response<DeploymentOperationInner> res) -> {
                     if (res.getValue() != null) {

@@ -553,30 +553,6 @@ public final class FeaturesClient {
      *
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview feature with the specified name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName, Context context) {
-        return getWithResponseAsync(resourceProviderNamespace, featureName, context)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the preview feature with the specified name.
-     *
-     * @param resourceProviderNamespace The resource provider namespace for the feature.
-     * @param featureName The name of the feature to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -726,31 +702,6 @@ public final class FeaturesClient {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FeatureResultInner> registerAsync(
-        String resourceProviderNamespace, String featureName, Context context) {
-        return registerWithResponseAsync(resourceProviderNamespace, featureName, context)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Registers the preview feature for the subscription.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param featureName The name of the feature to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -885,31 +836,6 @@ public final class FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> unregisterAsync(String resourceProviderNamespace, String featureName) {
         return unregisterWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Unregisters the preview feature for the subscription.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param featureName The name of the feature to unregister.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FeatureResultInner> unregisterAsync(
-        String resourceProviderNamespace, String featureName, Context context) {
-        return unregisterWithResponseAsync(resourceProviderNamespace, featureName, context)
             .flatMap(
                 (Response<FeatureResultInner> res) -> {
                     if (res.getValue() != null) {

@@ -297,29 +297,6 @@ public final class SubscriptionsClient {
      * Gets details about a specified subscription.
      *
      * @param subscriptionId The ID of the target subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubscriptionInner> getAsync(String subscriptionId, Context context) {
-        return getWithResponseAsync(subscriptionId, context)
-            .flatMap(
-                (Response<SubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets details about a specified subscription.
-     *
-     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

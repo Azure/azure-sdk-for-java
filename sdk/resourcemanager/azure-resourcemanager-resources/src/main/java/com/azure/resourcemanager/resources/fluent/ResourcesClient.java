@@ -1590,49 +1590,6 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to check whether it exists.
      * @param apiVersion The API version to use for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Boolean> checkExistenceAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String apiVersion,
-        Context context) {
-        return checkExistenceWithResponseAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                apiVersion,
-                context)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks whether a resource exists.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case
-     *     insensitive.
-     * @param resourceProviderNamespace The resource provider of the resource to check.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type.
-     * @param resourceName The name of the resource to check whether it exists.
-     * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3269,49 +3226,6 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @param resourceType The resource type of the resource.
      * @param resourceName The name of the resource to get.
      * @param apiVersion The API version to use for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GenericResourceInner> getAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String apiVersion,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                apiVersion,
-                context)
-            .flatMap(
-                (Response<GenericResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case
-     *     insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource.
-     * @param resourceName The name of the resource to get.
-     * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3450,32 +3364,6 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion) {
         return checkExistenceByIdWithResponseAsync(resourceId, apiVersion)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks by ID whether a resource exists.
-     *
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
-     * @param apiVersion The API version to use for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion, Context context) {
-        return checkExistenceByIdWithResponseAsync(resourceId, apiVersion, context)
             .flatMap(
                 (Response<Boolean> res) -> {
                     if (res.getValue() != null) {
@@ -4317,32 +4205,6 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion) {
         return getByIdWithResponseAsync(resourceId, apiVersion)
-            .flatMap(
-                (Response<GenericResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a resource by ID.
-     *
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
-     * @param apiVersion The API version to use for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource by ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion, Context context) {
-        return getByIdWithResponseAsync(resourceId, apiVersion, context)
             .flatMap(
                 (Response<GenericResourceInner> res) -> {
                     if (res.getValue() != null) {
