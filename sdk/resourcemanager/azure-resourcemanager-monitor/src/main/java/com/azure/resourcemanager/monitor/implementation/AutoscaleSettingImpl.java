@@ -217,7 +217,7 @@ class AutoscaleSettingImpl
     public Mono<AutoscaleSetting> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getAutoscaleSettings()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
@@ -227,7 +227,7 @@ class AutoscaleSettingImpl
     protected Mono<AutoscaleSettingResourceInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getAutoscaleSettings()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }

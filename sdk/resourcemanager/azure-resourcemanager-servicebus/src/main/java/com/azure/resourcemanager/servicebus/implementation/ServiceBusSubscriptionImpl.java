@@ -253,7 +253,7 @@ class ServiceBusSubscriptionImpl extends
 
     @Override
     protected Mono<SubscriptionResourceInner> getInnerAsync() {
-        return this.manager().inner().getSubscriptions()
+        return this.manager().serviceClient().getSubscriptions()
                 .getAsync(this.resourceGroupName(),
                         this.namespaceName,
                         this.parentName,
@@ -263,7 +263,7 @@ class ServiceBusSubscriptionImpl extends
     @Override
     protected Mono<ServiceBusSubscription> createChildResourceAsync() {
         final ServiceBusSubscription self = this;
-        return this.manager().inner().getSubscriptions()
+        return this.manager().serviceClient().getSubscriptions()
             .createOrUpdateAsync(this.resourceGroupName(),
                     this.namespaceName,
                     this.parentName,

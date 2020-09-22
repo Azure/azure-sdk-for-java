@@ -163,10 +163,10 @@ public class SqlEncryptionProtectorImpl
         final SqlEncryptionProtectorImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getEncryptionProtectors()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT,
-                this.inner())
+            .createOrUpdateAsync(
+                this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT, this.inner())
             .map(
                 encryptionProtectorInner -> {
                     self.setInner(encryptionProtectorInner);
@@ -193,7 +193,7 @@ public class SqlEncryptionProtectorImpl
     protected Mono<EncryptionProtectorInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getEncryptionProtectors()
             .getAsync(this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT);
     }

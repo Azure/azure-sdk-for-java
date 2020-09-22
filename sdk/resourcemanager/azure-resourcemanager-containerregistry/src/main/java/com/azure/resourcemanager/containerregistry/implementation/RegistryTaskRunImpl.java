@@ -110,7 +110,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
 
     RegistryTaskRunImpl(ContainerRegistryManager registryManager, RunInner runInner) {
         this.registryManager = registryManager;
-        this.registriesInner = registryManager.inner().getRegistries();
+        this.registriesInner = registryManager.serviceClient().getRegistries();
         this.platform = new PlatformProperties();
         this.inner = runInner;
     }
@@ -358,7 +358,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
     public Mono<RegistryTaskRun> refreshAsync() {
         final RegistryTaskRunImpl self = this;
         return registryManager
-            .inner()
+            .serviceClient()
             .getRuns()
             .getAsync(this.resourceGroupName, this.registryName, this.inner.runId())
             .map(

@@ -27,7 +27,7 @@ class AaaaRecordSetsImpl extends DnsRecordSetsBaseImpl<AaaaRecordSet, AaaaRecord
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getRecordSets()
             .getAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), name, this.recordType)
             .map(this::wrapModel);
@@ -44,7 +44,7 @@ class AaaaRecordSetsImpl extends DnsRecordSetsBaseImpl<AaaaRecordSet, AaaaRecord
             this
                 .parent()
                 .manager()
-                .inner()
+                .serviceClient()
                 .getRecordSets()
                 .listByTypeAsync(
                     this.dnsZone.resourceGroupName(),

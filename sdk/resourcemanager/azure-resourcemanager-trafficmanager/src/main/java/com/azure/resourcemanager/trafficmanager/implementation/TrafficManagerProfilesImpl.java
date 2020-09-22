@@ -27,9 +27,9 @@ public class TrafficManagerProfilesImpl
     private GeographicHierarchies geographicHierarchies;
 
     public TrafficManagerProfilesImpl(final TrafficManager trafficManager) {
-        super(trafficManager.inner().getProfiles(), trafficManager);
+        super(trafficManager.serviceClient().getProfiles(), trafficManager);
         this.geographicHierarchies =
-            new GeographicHierarchiesImpl(trafficManager, trafficManager.inner().getGeographicHierarchies());
+            new GeographicHierarchiesImpl(trafficManager, trafficManager.serviceClient().getGeographicHierarchies());
     }
 
     @Override

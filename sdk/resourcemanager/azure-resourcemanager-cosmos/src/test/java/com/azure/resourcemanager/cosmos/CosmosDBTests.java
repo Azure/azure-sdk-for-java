@@ -157,7 +157,7 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withSubnet(network.subnets().get(subnetName).inner());
 
         privateEndpoint.withLocation(region.toString());
-        privateEndpoint = networkManager.inner().getPrivateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
+        privateEndpoint = networkManager.serviceClient().getPrivateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
 
         cosmosDBAccount
             .update()

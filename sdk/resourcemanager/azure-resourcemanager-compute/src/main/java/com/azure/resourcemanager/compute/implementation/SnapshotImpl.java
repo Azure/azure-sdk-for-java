@@ -79,7 +79,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         GrantAccessData grantAccessDataInner = new GrantAccessData();
         grantAccessDataInner.withAccess(AccessLevel.READ).withDurationInSeconds(accessDurationInSeconds);
         return manager()
-            .inner()
+            .serviceClient()
             .getSnapshots()
             .grantAccessAsync(resourceGroupName(), name(), grantAccessDataInner)
             .map(accessUriInner -> accessUriInner.accessSas());
@@ -92,7 +92,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public Mono<Void> revokeAccessAsync() {
-        return this.manager().inner().getSnapshots().revokeAccessAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getSnapshots().revokeAccessAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -303,7 +303,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     public Mono<Snapshot> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getSnapshots()
             .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
             .map(innerToFluentMap(this));
@@ -311,7 +311,8 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     protected Mono<SnapshotInner> getInnerAsync() {
-        return this.manager().inner().getSnapshots().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getSnapshots()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private String constructStorageAccountId(String vhdUrl) {

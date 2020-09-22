@@ -21,7 +21,7 @@ public class NetworksImpl
     implements Networks {
 
     public NetworksImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getVirtualNetworks(), networkManager);
+        super(networkManager.serviceClient().getVirtualNetworks(), networkManager);
     }
 
     @Override

@@ -28,7 +28,7 @@ class AppServicePlanImpl
     public Mono<AppServicePlan> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getAppServicePlans()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this));
@@ -36,7 +36,7 @@ class AppServicePlanImpl
 
     @Override
     protected Mono<AppServicePlanInner> getInnerAsync() {
-        return this.manager().inner().getAppServicePlans().getByResourceGroupAsync(resourceGroupName(), name());
+        return this.manager().serviceClient().getAppServicePlans().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override

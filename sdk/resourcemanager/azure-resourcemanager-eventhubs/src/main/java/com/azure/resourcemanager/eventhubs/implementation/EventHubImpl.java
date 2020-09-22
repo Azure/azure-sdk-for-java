@@ -335,7 +335,7 @@ class EventHubImpl
 
     @Override
     public Mono<EventHub> createResourceAsync() {
-        return this.manager.inner().getEventHubs()
+        return this.manager.serviceClient().getEventHubs()
                 .createOrUpdateAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), this.inner())
                 .map(innerToFluentMap(this));
     }
@@ -348,7 +348,7 @@ class EventHubImpl
 
     @Override
     protected Mono<EventhubInner> getInnerAsync() {
-        return this.manager.inner().getEventHubs().getAsync(this.ancestor().resourceGroupName(),
+        return this.manager.serviceClient().getEventHubs().getAsync(this.ancestor().resourceGroupName(),
                 this.ancestor().ancestor1Name(),
                 this.name());
     }

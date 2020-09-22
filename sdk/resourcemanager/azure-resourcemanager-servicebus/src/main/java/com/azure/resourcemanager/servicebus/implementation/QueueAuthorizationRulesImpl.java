@@ -39,7 +39,7 @@ class QueueAuthorizationRulesImpl
                                 String queueName,
                                 Region region,
                                 ServiceBusManager manager) {
-        super(manager.inner().getQueues(), manager);
+        super(manager.serviceClient().getQueues(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.queueName = queueName;

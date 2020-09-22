@@ -113,7 +113,7 @@ public class SqlServerDnsAliasImpl
     public void delete() {
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -152,7 +152,7 @@ public class SqlServerDnsAliasImpl
         final SqlServerDnsAliasImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.name())
             .map(
@@ -171,7 +171,7 @@ public class SqlServerDnsAliasImpl
     public Mono<Void> deleteResourceAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -180,7 +180,7 @@ public class SqlServerDnsAliasImpl
     protected Mono<ServerDnsAliasInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }

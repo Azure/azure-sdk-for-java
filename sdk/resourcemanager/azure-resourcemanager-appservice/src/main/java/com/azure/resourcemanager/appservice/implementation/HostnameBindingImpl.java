@@ -140,7 +140,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .getHostnameBindingSlotAsync(
                         parent().resourceGroupName(),
@@ -152,7 +152,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .getHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name());
         }
@@ -185,7 +185,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .createOrUpdateHostnameBindingSlotAsync(
                         parent().resourceGroupName(),
@@ -199,7 +199,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .createOrUpdateHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name, inner())
                     .map(mapper);

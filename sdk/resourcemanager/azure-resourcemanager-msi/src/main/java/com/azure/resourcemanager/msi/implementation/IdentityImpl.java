@@ -108,7 +108,7 @@ public final class IdentityImpl
 
     @Override
     public Mono<Identity> createResourceAsync() {
-        return this.manager().inner().getUserAssignedIdentities()
+        return this.manager().serviceClient().getUserAssignedIdentities()
                 .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
                 .map(innerToFluentMap(this));
     }
@@ -116,7 +116,7 @@ public final class IdentityImpl
     @Override
     protected Mono<IdentityInner> getInnerAsync() {
         return this.myManager
-                .inner()
+                .serviceClient()
                 .getUserAssignedIdentities()
                 .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }

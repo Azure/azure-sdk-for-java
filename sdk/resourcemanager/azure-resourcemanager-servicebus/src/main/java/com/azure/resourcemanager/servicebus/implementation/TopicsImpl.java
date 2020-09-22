@@ -34,7 +34,7 @@ class TopicsImpl
     private final ClientLogger logger = new ClientLogger(TopicsImpl.class);
 
     TopicsImpl(String resourceGroupName, String namespaceName, Region region, ServiceBusManager manager) {
-        super(manager.inner().getTopics(), manager);
+        super(manager.serviceClient().getTopics(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.region = region;

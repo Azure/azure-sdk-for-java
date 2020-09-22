@@ -36,7 +36,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
     protected Mono<RecommendedElasticPoolInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getRecommendedElasticPools()
             .getAsync(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
@@ -108,7 +108,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
             this
                 .sqlServer
                 .manager()
-                .inner()
+                .serviceClient()
                 .getDatabases()
                 .listByElasticPool(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name());
         for (DatabaseInner inner : databaseInners) {
@@ -123,7 +123,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
         return this
             .sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabases()
             .listByElasticPoolAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name())
             .mapPage(
@@ -137,7 +137,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
             this
                 .sqlServer
                 .manager()
-                .inner()
+                .serviceClient()
                 .getDatabases()
                 .get(this.sqlServer.resourceGroupName(), this.sqlServer.name(), databaseName);
 
@@ -150,7 +150,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
         return this
             .sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabases()
             .getAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), databaseName)
             .map(
@@ -165,7 +165,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
             this
                 .sqlServer
                 .manager()
-                .inner()
+                .serviceClient()
                 .getRecommendedElasticPools()
                 .listMetrics(this.resourceGroupName(), this.sqlServerName(), this.name());
         for (RecommendedElasticPoolMetricInner inner : recommendedElasticPoolMetricInners) {

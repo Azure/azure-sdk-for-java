@@ -37,7 +37,7 @@ class NamespaceAuthorizationRulesImpl
                                     String namespaceName,
                                     Region region,
                                     ServiceBusManager manager) {
-        super(manager.inner().getNamespaces(), manager);
+        super(manager.serviceClient().getNamespaces(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.region = region;

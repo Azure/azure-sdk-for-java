@@ -62,7 +62,7 @@ class RedisFirewallRulesImpl
         return this
             .getParent()
             .manager()
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .listByRedisResourceAsync(this.getParent().resourceGroupName(), this.getParent().name())
             .map(

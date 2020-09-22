@@ -16,7 +16,7 @@ public class RouteFiltersImpl
     implements RouteFilters {
 
     public RouteFiltersImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getRouteFilters(), networkManager);
+        super(networkManager.serviceClient().getRouteFilters(), networkManager);
     }
 
     @Override

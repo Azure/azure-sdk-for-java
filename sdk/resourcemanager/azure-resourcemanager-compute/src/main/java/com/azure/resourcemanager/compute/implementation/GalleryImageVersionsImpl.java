@@ -18,7 +18,7 @@ public class GalleryImageVersionsImpl extends WrapperImpl<GalleryImageVersionsCl
     private final ComputeManager manager;
 
     public GalleryImageVersionsImpl(ComputeManager manager) {
-        super(manager.inner().getGalleryImageVersions());
+        super(manager.serviceClient().getGalleryImageVersions());
         this.manager = manager;
     }
 

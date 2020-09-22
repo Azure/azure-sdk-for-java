@@ -110,7 +110,7 @@ public class VerificationIPFlowImpl extends ExecutableImpl<VerificationIPFlow>
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkWatchers()
             .verifyIpFlowAsync(parent.resourceGroupName(), parent.name(), parameters)
             .map(

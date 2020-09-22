@@ -54,7 +54,7 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
 
     @Override
     protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerAsync() {
-        return this.manager().inner().getQueues()
+        return this.manager().serviceClient().getQueues()
                 .getAuthorizationRuleAsync(this.resourceGroupName(),
                         this.namespaceName(),
                         this.queueName(),
@@ -64,7 +64,7 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
     @Override
     protected Mono<QueueAuthorizationRule> createChildResourceAsync() {
         final QueueAuthorizationRule self = this;
-        return this.manager().inner().getQueues().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
+        return this.manager().serviceClient().getQueues().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
                 this.namespaceName(),
                 this.queueName(),
                 this.name(),
@@ -77,7 +77,7 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
 
     @Override
     protected Mono<ResourceListKeysInner> getKeysInnerAsync() {
-        return this.manager().inner().getQueues()
+        return this.manager().serviceClient().getQueues()
                 .listKeysAsync(this.resourceGroupName(),
                         this.namespaceName(),
                         this.queueName(),
@@ -86,7 +86,7 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
 
     @Override
     protected Mono<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
-        return this.manager().inner().getQueues()
+        return this.manager().serviceClient().getQueues()
                 .regenerateKeysAsync(this.resourceGroupName(),
                         this.namespaceName(),
                         this.queueName(),

@@ -128,7 +128,7 @@ class EventHubDisasterRecoveryPairingImpl
 
     @Override
     public Mono<EventHubDisasterRecoveryPairing> createResourceAsync() {
-        return this.manager().inner().getDisasterRecoveryConfigs()
+        return this.manager().serviceClient().getDisasterRecoveryConfigs()
             .createOrUpdateAsync(this.ancestor().resourceGroupName(),
                 this.ancestor().ancestor1Name(),
                 this.name(),
@@ -138,7 +138,7 @@ class EventHubDisasterRecoveryPairingImpl
 
     @Override
     public Mono<Void> breakPairingAsync() {
-        return this.manager().inner().getDisasterRecoveryConfigs()
+        return this.manager().serviceClient().getDisasterRecoveryConfigs()
             .breakPairingAsync(this.ancestor().resourceGroupName(),
                     this.ancestor().ancestor1Name(),
                     this.name())
@@ -156,9 +156,8 @@ class EventHubDisasterRecoveryPairingImpl
         // Fail over is run against secondary namespace (because primary might be down at time of failover)
         //
         ResourceId secondaryNs = ResourceId.fromString(this.inner().partnerNamespace());
-        return this.manager().inner().getDisasterRecoveryConfigs().failOverAsync(secondaryNs.resourceGroupName(),
-            secondaryNs.name(),
-            this.name())
+        return this.manager().serviceClient().getDisasterRecoveryConfigs()
+            .failOverAsync(secondaryNs.resourceGroupName(), secondaryNs.name(), this.name())
             .then(refreshAsync())
             .then();
     }
@@ -186,7 +185,7 @@ class EventHubDisasterRecoveryPairingImpl
 
     @Override
     protected Mono<ArmDisasterRecoveryInner> getInnerAsync() {
-        return this.manager().inner().getDisasterRecoveryConfigs().getAsync(this.ancestor().resourceGroupName(),
+        return this.manager().serviceClient().getDisasterRecoveryConfigs().getAsync(this.ancestor().resourceGroupName(),
                 this.ancestor().ancestor1Name(),
                 this.name());
     }

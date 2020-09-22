@@ -19,7 +19,7 @@ public class SnapshotsImpl
     implements Snapshots {
 
     public SnapshotsImpl(ComputeManager computeManager) {
-        super(computeManager.inner().getSnapshots(), computeManager);
+        super(computeManager.serviceClient().getSnapshots(), computeManager);
     }
 
     @Override

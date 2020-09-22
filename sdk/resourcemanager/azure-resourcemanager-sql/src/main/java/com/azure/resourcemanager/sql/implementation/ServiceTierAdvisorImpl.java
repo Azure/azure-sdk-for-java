@@ -171,7 +171,7 @@ class ServiceTierAdvisorImpl extends RefreshableWrapperImpl<ServiceTierAdvisorIn
 
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServiceTierAdvisors()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }

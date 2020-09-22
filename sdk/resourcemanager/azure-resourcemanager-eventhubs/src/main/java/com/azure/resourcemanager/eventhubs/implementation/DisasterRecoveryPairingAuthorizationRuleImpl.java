@@ -42,7 +42,7 @@ class DisasterRecoveryPairingAuthorizationRuleImpl
 
     @Override
     public Mono<DisasterRecoveryPairingAuthorizationKey> getKeysAsync() {
-        return this.manager.inner().getDisasterRecoveryConfigs()
+        return this.manager.serviceClient().getDisasterRecoveryConfigs()
             .listKeysAsync(this.ancestor().resourceGroupName(),
                 this.ancestor.ancestor2Name(),
                 this.ancestor().ancestor1Name(),

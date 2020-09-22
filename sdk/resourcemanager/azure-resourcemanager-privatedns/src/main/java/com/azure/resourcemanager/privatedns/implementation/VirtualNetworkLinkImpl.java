@@ -133,7 +133,7 @@ class VirtualNetworkLinkImpl
 
     @Override
     public Mono<VirtualNetworkLink> updateResourceAsync() {
-        return parent().manager().inner().getVirtualNetworkLinks()
+        return parent().manager().serviceClient().getVirtualNetworkLinks()
             .getAsync(parent().resourceGroupName(), parent().name(), name())
             .map(virtualNetworkLinkInner -> prepareForUpdate(virtualNetworkLinkInner))
             .flatMap(virtualNetworkLinkInner -> createOrUpdateAsync(virtualNetworkLinkInner));
@@ -141,13 +141,13 @@ class VirtualNetworkLinkImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return parent().manager().inner().getVirtualNetworkLinks()
+        return parent().manager().serviceClient().getVirtualNetworkLinks()
             .deleteAsync(parent().resourceGroupName(), parent().name(), name(), etagState.ifMatchValueOnDelete());
     }
 
     @Override
     protected Mono<VirtualNetworkLinkInner> getInnerAsync() {
-        return parent().manager().inner().getVirtualNetworkLinks()
+        return parent().manager().serviceClient().getVirtualNetworkLinks()
             .getAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
@@ -163,7 +163,7 @@ class VirtualNetworkLinkImpl
 
     private Mono<VirtualNetworkLink> createOrUpdateAsync(VirtualNetworkLinkInner resource) {
         final VirtualNetworkLinkImpl self = this;
-        return parent().manager().inner().getVirtualNetworkLinks()
+        return parent().manager().serviceClient().getVirtualNetworkLinks()
             .createOrUpdateAsync(
                 parent().resourceGroupName(),
                 parent().name(),

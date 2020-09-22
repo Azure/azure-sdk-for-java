@@ -25,7 +25,7 @@ public final class EventHubConsumerGroupsImpl
     private final EventHubsManager manager;
 
     public EventHubConsumerGroupsImpl(EventHubsManager manager) {
-        super(manager.inner().getConsumerGroups());
+        super(manager.serviceClient().getConsumerGroups());
         this.manager = manager;
     }
 

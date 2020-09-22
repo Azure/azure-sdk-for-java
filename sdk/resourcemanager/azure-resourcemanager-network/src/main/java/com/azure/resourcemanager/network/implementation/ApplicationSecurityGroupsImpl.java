@@ -20,7 +20,7 @@ public class ApplicationSecurityGroupsImpl
     implements ApplicationSecurityGroups {
 
     public ApplicationSecurityGroupsImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getApplicationSecurityGroups(), networkManager);
+        super(networkManager.serviceClient().getApplicationSecurityGroups(), networkManager);
     }
 
     @Override

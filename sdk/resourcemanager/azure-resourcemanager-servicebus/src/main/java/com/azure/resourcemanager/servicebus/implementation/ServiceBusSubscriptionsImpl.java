@@ -39,7 +39,7 @@ class ServiceBusSubscriptionsImpl
                                 String topicName,
                                 Region region,
                                 ServiceBusManager manager) {
-        super(manager.inner().getSubscriptions(), manager);
+        super(manager.serviceClient().getSubscriptions(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.topicName = topicName;

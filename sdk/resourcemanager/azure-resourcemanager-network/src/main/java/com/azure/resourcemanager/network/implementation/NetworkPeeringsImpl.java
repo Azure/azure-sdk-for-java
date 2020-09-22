@@ -29,7 +29,7 @@ class NetworkPeeringsImpl
 
     // Constructor to use from the context of a parent
     NetworkPeeringsImpl(final NetworkImpl parent) {
-        super(parent.manager().inner().getVirtualNetworkPeerings(), parent.manager());
+        super(parent.manager().serviceClient().getVirtualNetworkPeerings(), parent.manager());
         this.network = parent;
     }
 
@@ -93,7 +93,7 @@ class NetworkPeeringsImpl
                         String networkName = ResourceUtils.nameFromResourceId(peering.networkId());
                         return peering
                             .manager()
-                            .inner()
+                            .serviceClient()
                             .getVirtualNetworkPeerings()
                             .deleteAsync(peering.resourceGroupName(), networkName, peering.name());
                     }

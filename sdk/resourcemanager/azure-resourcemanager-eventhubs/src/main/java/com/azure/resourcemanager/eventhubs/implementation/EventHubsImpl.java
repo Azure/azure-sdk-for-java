@@ -27,7 +27,7 @@ public final class EventHubsImpl extends WrapperImpl<EventHubsClient> implements
     private final StorageManager storageManager;
 
     public EventHubsImpl(EventHubsManager manager, StorageManager storageManager) {
-        super(manager.inner().getEventHubs());
+        super(manager.serviceClient().getEventHubs());
         this.manager = manager;
         this.storageManager = storageManager;
     }
