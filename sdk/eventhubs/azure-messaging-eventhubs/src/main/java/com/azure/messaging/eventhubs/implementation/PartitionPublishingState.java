@@ -117,7 +117,7 @@ public final class PartitionPublishingState {
      * The starting sequence number is only recognized and relevant when certain features of the producer are enabled.
      * For example, it is used by idempotent publishing.
      *
-     * @see EventHubClientBuilder#idempotentPartitionPublishing()
+     * @see EventHubClientBuilder#enableIdempotentPartitionPublishing() ()
      *
      * @return The starting sequence number to associate with the partition; if {@code null},
      * the Event Hubs service will control the value.
@@ -152,7 +152,7 @@ public final class PartitionPublishingState {
     }
 
 
-    public void increaseSequenceNumber(int delta) {
+    public void incrementSequenceNumber(int delta) {
         this.setSequenceNumber(PartitionPublishingUtils.incrementSequenceNumber(this.sequenceNumber, delta));
     }
 

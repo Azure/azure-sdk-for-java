@@ -3,8 +3,17 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.*;
-import com.azure.core.amqp.implementation.*;
+import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpSendLink;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
+import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -14,8 +23,15 @@ import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.*;
-import org.mockito.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -24,11 +40,20 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 class EventHubProducerAsyncClientIdempotentTest {
     private static final String HOSTNAME = "something.servicebus.windows.net";
@@ -73,8 +98,8 @@ class EventHubProducerAsyncClientIdempotentTest {
     private ConnectionOptions connectionOptions;
     private final Scheduler testScheduler = Schedulers.newElastic("test");
 
-    PartitionPublishingProperties p0InitialState;
-    Map<String, PartitionPublishingProperties> initialStates = new HashMap<>();
+    private PartitionPublishingProperties partition0InitialState;
+    private Map<String, PartitionPublishingProperties> initialStates = new HashMap<>();
 
     @BeforeAll
     static void beforeAll() {
@@ -102,9 +127,9 @@ class EventHubProducerAsyncClientIdempotentTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 EVENT_HUB_NAME, connectionOptions.getRetry()));
 
-        p0InitialState = new PartitionPublishingProperties(PRODUCER_GROUP_ID, PRODUCER_OWNER_LEVEL, PRODUCER_SEQ_NUMBER);
+        partition0InitialState = new PartitionPublishingProperties(PRODUCER_GROUP_ID, PRODUCER_OWNER_LEVEL, PRODUCER_SEQ_NUMBER);
         initialStates = new HashMap<>();
-        initialStates.put(PARTITION_0, p0InitialState);
+        initialStates.put(PARTITION_0, partition0InitialState);
 
         Map<String, PartitionPublishingState> internalStates = new HashMap<>();
         initialStates.forEach((k, v) -> internalStates.put(k, new PartitionPublishingState(v)));
@@ -115,13 +140,13 @@ class EventHubProducerAsyncClientIdempotentTest {
         Map<Symbol, Object> remoteProperties = new HashMap<>();
         remoteProperties.put(
             Symbol.getSymbol(AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue()),
-            p0InitialState.getOwnerLevel());
+            partition0InitialState.getOwnerLevel());
         remoteProperties.put(
             Symbol.getSymbol(AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()),
-            p0InitialState.getSequenceNumber());
+            partition0InitialState.getSequenceNumber());
         remoteProperties.put(
             Symbol.getSymbol(AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue()),
-            p0InitialState.getProducerGroupId());
+            partition0InitialState.getProducerGroupId());
 
         when(connection.createSendLink(eq(ENTITY_PATH_0), eq(ENTITY_PATH_0),
             eq(retryOptions), eq(true), any(PartitionPublishingState.class))).thenReturn(Mono.just(sendLink));
@@ -151,9 +176,9 @@ class EventHubProducerAsyncClientIdempotentTest {
     void getPartitionPublishingProperties() {
         StepVerifier.create(producer.getPartitionPublishingProperties(PARTITION_0))
             .assertNext(properties -> {
-                assertEquals(properties.getOwnerLevel(), p0InitialState.getOwnerLevel());
-                assertEquals(properties.getProducerGroupId(), p0InitialState.getProducerGroupId());
-                assertEquals(properties.getSequenceNumber(), p0InitialState.getSequenceNumber());
+                assertEquals(properties.getOwnerLevel(), partition0InitialState.getOwnerLevel());
+                assertEquals(properties.getProducerGroupId(), partition0InitialState.getProducerGroupId());
+                assertEquals(properties.getSequenceNumber(), partition0InitialState.getSequenceNumber());
             })
             .verifyComplete();
     }
@@ -221,6 +246,43 @@ class EventHubProducerAsyncClientIdempotentTest {
     }
 
     @Test
+    void sendEventDataListFail() {
+        Map<Symbol, Object> remoteProperties1 = new HashMap<>();
+        remoteProperties1.put(
+            Symbol.getSymbol(AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue()),
+            partition0InitialState.getOwnerLevel());
+        remoteProperties1.put(
+            Symbol.getSymbol(AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()),
+            partition0InitialState.getSequenceNumber());
+        remoteProperties1.put(
+            Symbol.getSymbol(AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue()),
+            partition0InitialState.getProducerGroupId());
+
+        when(connection.createSendLink(eq(ENTITY_PATH_1), eq(ENTITY_PATH_1),
+            eq(retryOptions), eq(true), any(PartitionPublishingState.class))).thenReturn(Mono.just(sendLink2));
+        when(sendLink2.getRemoteProperties()).thenReturn(
+            Mono.just(remoteProperties1));
+        when(sendLink2.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink2.send(any(Message.class))).thenReturn(Mono.error(new RuntimeException("simulated error")));
+        when(sendLink2.send(anyList())).thenReturn(Mono.error(new RuntimeException("simulated error")));
+
+        EventData eventData = new EventData("This is a test event");
+        List<EventData> eventDataList = new ArrayList<>();
+        eventDataList.add(eventData);
+        StepVerifier.create(producer.send(eventDataList)).expectError(RuntimeException.class).verify();
+        StepVerifier.create(producer.getPartitionPublishingProperties("1"))
+            .assertNext(publishingProperties -> {
+                assertEquals(publishingProperties.getProducerGroupId(), 1);
+                assertEquals(publishingProperties.getOwnerLevel(), (short) 10);
+                assertEquals(publishingProperties.getSequenceNumber(), 100);
+            })
+            .verifyComplete();
+        assertNull(eventData.getPublishedGroupId());
+        assertNull(eventData.getPublishedOwnerLevel());
+        assertNull(eventData.getPublishedSequenceNumber());
+    }
+
+    @Test
     void sendEventDataListWithoutPartition() {
         EventData eventData = new EventData("This is a test event");
         List<EventData> eventDataList = new ArrayList<>();
@@ -270,13 +332,13 @@ class EventHubProducerAsyncClientIdempotentTest {
         Map<Symbol, Object> remoteProperties1 = new HashMap<>();
         remoteProperties1.put(
             Symbol.getSymbol(AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue()),
-            p0InitialState.getOwnerLevel());
+            partition0InitialState.getOwnerLevel());
         remoteProperties1.put(
             Symbol.getSymbol(AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()),
-            p0InitialState.getSequenceNumber());
+            partition0InitialState.getSequenceNumber());
         remoteProperties1.put(
             Symbol.getSymbol(AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue()),
-            p0InitialState.getProducerGroupId());
+            partition0InitialState.getProducerGroupId());
 
         when(connection.createSendLink(eq(ENTITY_PATH_1), eq(ENTITY_PATH_1),
             eq(retryOptions), eq(true), any(PartitionPublishingState.class))).thenReturn(Mono.just(sendLink2));

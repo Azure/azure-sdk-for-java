@@ -3,7 +3,12 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpMessageConstant;
+import org.apache.qpid.proton.amqp.Symbol;
+
 import java.time.Duration;
+
+import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
 
 public final class ClientConstants {
     public static final String AZURE_ACTIVE_DIRECTORY_SCOPE = "https://eventhubs.azure.net/.default";
@@ -22,4 +27,17 @@ public final class ClientConstants {
      * URI format for an Event Hubs FQDN.
      */
     public static final String ENDPOINT_FORMAT = "sb://%s.%s";
+
+
+    // Symbols used on links
+    public static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
+    public static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME = Symbol.valueOf(
+        VENDOR + ":enable-receiver-runtime-metric");
+    public static final Symbol ENABLE_IDEMPOTENT_PRODUCER = Symbol.valueOf(VENDOR + ":idempotent-producer");
+
+    public static final Symbol PRODUCER_EPOCH = Symbol.valueOf(
+        AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue());
+    public static final Symbol PRODUCER_ID = Symbol.valueOf(AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue());
+    public static final Symbol PRODUCER_SEQUENCE_NUMBER = Symbol.valueOf(
+        AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
 }

@@ -19,11 +19,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.PartitionPublishingState;
 import com.azure.messaging.eventhubs.implementation.PartitionPublishingUtils;
-import com.azure.messaging.eventhubs.implementation.SymbolConstants;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
@@ -541,7 +541,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 for (EventData eventData : batch.getEvents()) {
                     eventData.commitProducerDataFromSysProperties();
                 }
-                publishingState.increaseSequenceNumber(batch.getCount());
+                publishingState.incrementSequenceNumber(batch.getCount());
             })).doFinally(// Release the partition state semaphore
                     signalType -> {
                         publishingState.getSemaphore().release();
@@ -619,9 +619,9 @@ public class EventHubProducerAsyncClient implements Closeable {
         if (isIdempotentPartitionPublishing) {
             return amqpSendLink.getRemoteProperties().map(properties -> {
                 setPartitionPublishingState(
-                    partitionId, (Long) properties.get(SymbolConstants.PRODUCER_ID),
-                    (Short) properties.get(SymbolConstants.PRODUCER_EPOCH),
-                    (Integer) properties.get(SymbolConstants.PRODUCER_SEQUENCE_NUMBER)
+                    partitionId, (Long) properties.get(ClientConstants.PRODUCER_ID),
+                    (Short) properties.get(ClientConstants.PRODUCER_EPOCH),
+                    (Integer) properties.get(ClientConstants.PRODUCER_SEQUENCE_NUMBER)
                 );
                 return amqpSendLink;
             });

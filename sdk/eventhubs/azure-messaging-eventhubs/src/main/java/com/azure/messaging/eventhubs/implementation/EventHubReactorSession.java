@@ -79,12 +79,12 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         Symbol[] desiredCapabilities = null;
         Map<Symbol, Object> properties = null;
         if (idempotentPartitionPublishing) {
-            desiredCapabilities = new Symbol[]{SymbolConstants.ENABLE_IDEMPOTENT_PRODUCER};
+            desiredCapabilities = new Symbol[]{ClientConstants.ENABLE_IDEMPOTENT_PRODUCER};
 
             properties = new HashMap<>();
-            properties.put(SymbolConstants.PRODUCER_EPOCH, publishingState.getOwnerLevel());
-            properties.put(SymbolConstants.PRODUCER_ID, publishingState.getProducerGroupId());
-            properties.put(SymbolConstants.PRODUCER_SEQUENCE_NUMBER, publishingState.getSequenceNumber());
+            properties.put(ClientConstants.PRODUCER_EPOCH, publishingState.getOwnerLevel());
+            properties.put(ClientConstants.PRODUCER_ID, publishingState.getProducerGroupId());
+            properties.put(ClientConstants.PRODUCER_SEQUENCE_NUMBER, publishingState.getSequenceNumber());
         }
         return createProducer(linkName, entityPath, timeout, retry, properties, desiredCapabilities)
             .cast(AmqpSendLink.class);
@@ -110,11 +110,11 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
 
         final Map<Symbol, Object> properties = new HashMap<>();
         if (options.getOwnerLevel() != null) {
-            properties.put(SymbolConstants.EPOCH, options.getOwnerLevel());
+            properties.put(ClientConstants.EPOCH, options.getOwnerLevel());
         }
 
         final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventProperties()
-            ? new Symbol[]{SymbolConstants.ENABLE_RECEIVER_RUNTIME_METRIC_NAME}
+            ? new Symbol[]{ClientConstants.ENABLE_RECEIVER_RUNTIME_METRIC_NAME}
             : null;
 
         // Use explicit settlement via dispositions (not pre-settled)
