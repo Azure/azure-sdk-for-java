@@ -86,9 +86,9 @@ In this section, you clone a containerized Spring Boot application and test it l
 1. Replace below properties in `application.properties` with information from your database.
 
    ```properties
-   azure.cosmos.uri=your-cosmosdb-uri
-   azure.cosmos.key=your-cosmosdb-key
-   azure.cosmos.database=your-cosmosdb-databasename
+   azure.cosmos.uri=your-cosmos-uri
+   azure.cosmos.key=your-cosmos-key
+   azure.cosmos.database=your-cosmos-database-name
 
    ```
 
