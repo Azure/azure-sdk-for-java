@@ -15,8 +15,8 @@ import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
 import rx.Completable;
-import com.microsoft.azure.management.resources.v2016_09_01.ResourcegroupSubscriptionGenericResource;
-import com.microsoft.azure.management.resources.v2016_09_01.SubscriptionGenericResource;
+import com.microsoft.azure.management.resources.v2016_09_01.GenericResource;
+import com.microsoft.azure.management.resources.v2016_09_01.SubscriptionGenericResourceExpanded;
 import com.microsoft.azure.management.resources.v2016_09_01.ResourcesMoveInfo;
 
 class ResourcesImpl extends WrapperImpl<ResourcesInner> implements Resources {
@@ -31,15 +31,15 @@ class ResourcesImpl extends WrapperImpl<ResourcesInner> implements Resources {
         return this.manager;
     }
 
-    private SubscriptionGenericResourceImpl wrapModel(GenericResourceInner inner) {
-        return  new SubscriptionGenericResourceImpl(inner, manager());
+    private SubscriptionGenericResourceExpandedImpl wrapModel(GenericResourceExpandedInner inner) {
+        return  new SubscriptionGenericResourceExpandedImpl(inner, manager());
     }
 
     @Override
-    public Completable checkExistenceByIdAsync(String resourceId, String apiVersion) {
+    public Observable<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion) {
         ResourcesInner client = this.inner();
-        return client.checkExistenceByIdAsync(resourceId, apiVersion).toCompletable();
-    }
+        return client.checkExistenceByIdAsync(resourceId, apiVersion)
+    ;}
 
     @Override
     public Completable deleteByIdAsync(String resourceId, String apiVersion) {
@@ -48,54 +48,54 @@ class ResourcesImpl extends WrapperImpl<ResourcesInner> implements Resources {
     }
 
     @Override
-    public Observable<ResourcegroupSubscriptionGenericResource> createOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
+    public Observable<GenericResource> createOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
         ResourcesInner client = this.inner();
         return client.createOrUpdateByIdAsync(resourceId, apiVersion, parameters)
-        .map(new Func1<GenericResourceInner, ResourcegroupSubscriptionGenericResource>() {
+        .map(new Func1<GenericResourceInner, GenericResource>() {
             @Override
-            public ResourcegroupSubscriptionGenericResource call(GenericResourceInner inner) {
-                return new ResourcegroupSubscriptionGenericResourceImpl(inner, manager());
+            public GenericResource call(GenericResourceInner inner) {
+                return new GenericResourceImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<ResourcegroupSubscriptionGenericResource> updateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
+    public Observable<GenericResource> updateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
         ResourcesInner client = this.inner();
         return client.updateByIdAsync(resourceId, apiVersion, parameters)
-        .map(new Func1<GenericResourceInner, ResourcegroupSubscriptionGenericResource>() {
+        .map(new Func1<GenericResourceInner, GenericResource>() {
             @Override
-            public ResourcegroupSubscriptionGenericResource call(GenericResourceInner inner) {
-                return new ResourcegroupSubscriptionGenericResourceImpl(inner, manager());
+            public GenericResource call(GenericResourceInner inner) {
+                return new GenericResourceImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<ResourcegroupSubscriptionGenericResource> getByIdAsync(String resourceId, String apiVersion) {
+    public Observable<GenericResource> getByIdAsync(String resourceId, String apiVersion) {
         ResourcesInner client = this.inner();
         return client.getByIdAsync(resourceId, apiVersion)
-        .map(new Func1<GenericResourceInner, ResourcegroupSubscriptionGenericResource>() {
+        .map(new Func1<GenericResourceInner, GenericResource>() {
             @Override
-            public ResourcegroupSubscriptionGenericResource call(GenericResourceInner inner) {
-                return new ResourcegroupSubscriptionGenericResourceImpl(inner, manager());
+            public GenericResource call(GenericResourceInner inner) {
+                return new GenericResourceImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<SubscriptionGenericResource> listAsync() {
+    public Observable<SubscriptionGenericResourceExpanded> listAsync() {
         ResourcesInner client = this.inner();
         return client.listAsync()
-        .flatMapIterable(new Func1<Page<GenericResourceInner>, Iterable<GenericResourceInner>>() {
+        .flatMapIterable(new Func1<Page<GenericResourceExpandedInner>, Iterable<GenericResourceExpandedInner>>() {
             @Override
-            public Iterable<GenericResourceInner> call(Page<GenericResourceInner> page) {
+            public Iterable<GenericResourceExpandedInner> call(Page<GenericResourceExpandedInner> page) {
                 return page.items();
             }
         })
-        .map(new Func1<GenericResourceInner, SubscriptionGenericResource>() {
+        .map(new Func1<GenericResourceExpandedInner, SubscriptionGenericResourceExpanded>() {
             @Override
-            public SubscriptionGenericResource call(GenericResourceInner inner) {
+            public SubscriptionGenericResourceExpanded call(GenericResourceExpandedInner inner) {
                 return wrapModel(inner);
             }
         });
@@ -108,10 +108,10 @@ class ResourcesImpl extends WrapperImpl<ResourcesInner> implements Resources {
     }
 
     @Override
-    public Completable checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
+    public Observable<Boolean> checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         ResourcesInner client = this.inner();
-        return client.checkExistenceAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toCompletable();
-    }
+        return client.checkExistenceAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion)
+    ;}
 
     @Override
     public Completable deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -120,37 +120,37 @@ class ResourcesImpl extends WrapperImpl<ResourcesInner> implements Resources {
     }
 
     @Override
-    public Observable<ResourcegroupSubscriptionGenericResource> createOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
+    public Observable<GenericResource> createOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
         ResourcesInner client = this.inner();
         return client.createOrUpdateAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters)
-        .map(new Func1<GenericResourceInner, ResourcegroupSubscriptionGenericResource>() {
+        .map(new Func1<GenericResourceInner, GenericResource>() {
             @Override
-            public ResourcegroupSubscriptionGenericResource call(GenericResourceInner inner) {
-                return new ResourcegroupSubscriptionGenericResourceImpl(inner, manager());
+            public GenericResource call(GenericResourceInner inner) {
+                return new GenericResourceImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<ResourcegroupSubscriptionGenericResource> updateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
+    public Observable<GenericResource> updateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
         ResourcesInner client = this.inner();
         return client.updateAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters)
-        .map(new Func1<GenericResourceInner, ResourcegroupSubscriptionGenericResource>() {
+        .map(new Func1<GenericResourceInner, GenericResource>() {
             @Override
-            public ResourcegroupSubscriptionGenericResource call(GenericResourceInner inner) {
-                return new ResourcegroupSubscriptionGenericResourceImpl(inner, manager());
+            public GenericResource call(GenericResourceInner inner) {
+                return new GenericResourceImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<ResourcegroupSubscriptionGenericResource> getAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
+    public Observable<GenericResource> getAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         ResourcesInner client = this.inner();
         return client.getAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion)
-        .map(new Func1<GenericResourceInner, ResourcegroupSubscriptionGenericResource>() {
+        .map(new Func1<GenericResourceInner, GenericResource>() {
             @Override
-            public ResourcegroupSubscriptionGenericResource call(GenericResourceInner inner) {
-                return new ResourcegroupSubscriptionGenericResourceImpl(inner, manager());
+            public GenericResource call(GenericResourceInner inner) {
+                return new GenericResourceImpl(inner, manager());
             }
         });
     }
