@@ -519,6 +519,37 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources for a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<GenericResourceExpandedInner> listByResourceGroup(
+        String resourceGroupName, String filter, String expand, Integer top) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, expand, top));
+    }
+
+    /**
+     * Get all the resources for a resource group.
+     *
+     * @param resourceGroupName The resource group with the resources to get.
+     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
+     *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
+     *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
+     *     example, to filter by a resource type, use: $filter=resourceType eq
+     *     'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the
+     *     filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example,
+     *     to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
+     *     name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or
+     *     operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name
+     *     and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value,
+     *     the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties
+     *     together when filtering. The combinations you can use are: substringof and/or resourceType, plan and
+     *     plan/publisher and plan/name, identity and identity/principalId.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
+     *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
+     * @param top The number of results to return. If null is passed, returns all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1303,6 +1334,35 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resource groups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<GenericResourceExpandedInner> list(String filter, String expand, Integer top) {
+        return new PagedIterable<>(listAsync(filter, expand, top));
+    }
+
+    /**
+     * Get all the resources in a subscription.
+     *
+     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
+     *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
+     *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
+     *     example, to filter by a resource type, use: $filter=resourceType eq
+     *     'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the
+     *     filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example,
+     *     to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
+     *     name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or
+     *     operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name
+     *     and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value,
+     *     the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties
+     *     together when filtering. The combinations you can use are: substringof and/or resourceType, plan and
+     *     plan/publisher and plan/name, identity and identity/principalId.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
+     *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
+     * @param top The number of results to return. If null is passed, returns all resource groups.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1537,7 +1597,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkExistenceAsync(
+    private Mono<Boolean> checkExistenceAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -3216,7 +3276,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> getAsync(
+    private Mono<GenericResourceInner> getAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -3414,7 +3474,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion, Context context) {
+    private Mono<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion, Context context) {
         return checkExistenceByIdWithResponseAsync(resourceId, apiVersion, context)
             .flatMap(
                 (Response<Boolean> res) -> {
@@ -4281,7 +4341,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return a resource by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion, Context context) {
+    private Mono<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion, Context context) {
         return getByIdWithResponseAsync(resourceId, apiVersion, context)
             .flatMap(
                 (Response<GenericResourceInner> res) -> {

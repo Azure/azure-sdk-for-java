@@ -560,7 +560,7 @@ public final class FeaturesClient {
      * @return the preview feature with the specified name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName, Context context) {
+    private Mono<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName, Context context) {
         return getWithResponseAsync(resourceProviderNamespace, featureName, context)
             .flatMap(
                 (Response<FeatureResultInner> res) -> {
@@ -733,7 +733,7 @@ public final class FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FeatureResultInner> registerAsync(
+    private Mono<FeatureResultInner> registerAsync(
         String resourceProviderNamespace, String featureName, Context context) {
         return registerWithResponseAsync(resourceProviderNamespace, featureName, context)
             .flatMap(
@@ -907,7 +907,7 @@ public final class FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FeatureResultInner> unregisterAsync(
+    private Mono<FeatureResultInner> unregisterAsync(
         String resourceProviderNamespace, String featureName, Context context) {
         return unregisterWithResponseAsync(resourceProviderNamespace, featureName, context)
             .flatMap(

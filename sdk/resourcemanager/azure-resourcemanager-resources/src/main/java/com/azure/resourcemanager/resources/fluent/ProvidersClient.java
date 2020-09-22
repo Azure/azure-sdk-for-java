@@ -257,7 +257,7 @@ public final class ProvidersClient {
      * @return resource provider information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProviderInner> unregisterAsync(String resourceProviderNamespace, Context context) {
+    private Mono<ProviderInner> unregisterAsync(String resourceProviderNamespace, Context context) {
         return unregisterWithResponseAsync(resourceProviderNamespace, context)
             .flatMap(
                 (Response<ProviderInner> res) -> {
@@ -413,7 +413,7 @@ public final class ProvidersClient {
      * @return resource provider information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProviderInner> registerAsync(String resourceProviderNamespace, Context context) {
+    private Mono<ProviderInner> registerAsync(String resourceProviderNamespace, Context context) {
         return registerWithResponseAsync(resourceProviderNamespace, context)
             .flatMap(
                 (Response<ProviderInner> res) -> {
@@ -608,6 +608,23 @@ public final class ProvidersClient {
      * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query
      *     string to retrieve resource provider metadata. To include property aliases in response, use
      *     $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all resource providers for a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ProviderInner> list(Integer top, String expand) {
+        return new PagedIterable<>(listAsync(top, expand));
+    }
+
+    /**
+     * Gets all resource providers for a subscription.
+     *
+     * @param top The number of results to return. If null is passed returns all deployments.
+     * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query
+     *     string to retrieve resource provider metadata. To include property aliases in response, use
+     *     $expand=resourceTypes/aliases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -771,6 +788,23 @@ public final class ProvidersClient {
      * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query
      *     string to retrieve resource provider metadata. To include property aliases in response, use
      *     $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all resource providers for the tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ProviderInner> listAtTenantScope(Integer top, String expand) {
+        return new PagedIterable<>(listAtTenantScopeAsync(top, expand));
+    }
+
+    /**
+     * Gets all resource providers for the tenant.
+     *
+     * @param top The number of results to return. If null is passed returns all providers.
+     * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query
+     *     string to retrieve resource provider metadata. To include property aliases in response, use
+     *     $expand=resourceTypes/aliases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -923,7 +957,7 @@ public final class ProvidersClient {
      * @return the specified resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProviderInner> getAsync(String resourceProviderNamespace, String expand, Context context) {
+    private Mono<ProviderInner> getAsync(String resourceProviderNamespace, String expand, Context context) {
         return getWithResponseAsync(resourceProviderNamespace, expand, context)
             .flatMap(
                 (Response<ProviderInner> res) -> {
@@ -957,6 +991,22 @@ public final class ProvidersClient {
                         return Mono.empty();
                     }
                 });
+    }
+
+    /**
+     * Gets the specified resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param expand The $expand query parameter. For example, to include property aliases in response, use
+     *     $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified resource provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProviderInner get(String resourceProviderNamespace, String expand) {
+        return getAsync(resourceProviderNamespace, expand).block();
     }
 
     /**
@@ -1101,7 +1151,8 @@ public final class ProvidersClient {
      * @return the specified resource provider at the tenant level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProviderInner> getAtTenantScopeAsync(String resourceProviderNamespace, String expand, Context context) {
+    private Mono<ProviderInner> getAtTenantScopeAsync(
+        String resourceProviderNamespace, String expand, Context context) {
         return getAtTenantScopeWithResponseAsync(resourceProviderNamespace, expand, context)
             .flatMap(
                 (Response<ProviderInner> res) -> {
@@ -1135,6 +1186,22 @@ public final class ProvidersClient {
                         return Mono.empty();
                     }
                 });
+    }
+
+    /**
+     * Gets the specified resource provider at the tenant level.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param expand The $expand query parameter. For example, to include property aliases in response, use
+     *     $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified resource provider at the tenant level.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProviderInner getAtTenantScope(String resourceProviderNamespace, String expand) {
+        return getAtTenantScopeAsync(resourceProviderNamespace, expand).block();
     }
 
     /**

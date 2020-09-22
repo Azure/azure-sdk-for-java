@@ -288,7 +288,7 @@ public final class TagOperationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteValueAsync(String tagName, String tagValue, Context context) {
+    private Mono<Void> deleteValueAsync(String tagName, String tagValue, Context context) {
         return deleteValueWithResponseAsync(tagName, tagValue, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -450,7 +450,7 @@ public final class TagOperationsClient {
      * @return tag information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue, Context context) {
+    private Mono<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue, Context context) {
         return createOrUpdateValueWithResponseAsync(tagName, tagValue, context)
             .flatMap(
                 (Response<TagValueInner> res) -> {
@@ -612,7 +612,7 @@ public final class TagOperationsClient {
      * @return tag details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TagDetailsInner> createOrUpdateAsync(String tagName, Context context) {
+    private Mono<TagDetailsInner> createOrUpdateAsync(String tagName, Context context) {
         return createOrUpdateWithResponseAsync(tagName, context)
             .flatMap(
                 (Response<TagDetailsInner> res) -> {
@@ -766,7 +766,7 @@ public final class TagOperationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String tagName, Context context) {
+    private Mono<Void> deleteAsync(String tagName, Context context) {
         return deleteWithResponseAsync(tagName, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1057,7 +1057,7 @@ public final class TagOperationsClient {
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TagsResourceInner> createOrUpdateAtScopeAsync(String scope, Tags properties, Context context) {
+    private Mono<TagsResourceInner> createOrUpdateAtScopeAsync(String scope, Tags properties, Context context) {
         return createOrUpdateAtScopeWithResponseAsync(scope, properties, context)
             .flatMap(
                 (Response<TagsResourceInner> res) -> {
@@ -1223,7 +1223,7 @@ public final class TagOperationsClient {
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TagsResourceInner> updateAtScopeAsync(String scope, TagsPatchResource parameters, Context context) {
+    private Mono<TagsResourceInner> updateAtScopeAsync(String scope, TagsPatchResource parameters, Context context) {
         return updateAtScopeWithResponseAsync(scope, parameters, context)
             .flatMap(
                 (Response<TagsResourceInner> res) -> {
@@ -1359,7 +1359,7 @@ public final class TagOperationsClient {
      * @return the entire set of tags on a resource or subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TagsResourceInner> getAtScopeAsync(String scope, Context context) {
+    private Mono<TagsResourceInner> getAtScopeAsync(String scope, Context context) {
         return getAtScopeWithResponseAsync(scope, context)
             .flatMap(
                 (Response<TagsResourceInner> res) -> {
@@ -1477,7 +1477,7 @@ public final class TagOperationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAtScopeAsync(String scope, Context context) {
+    private Mono<Void> deleteAtScopeAsync(String scope, Context context) {
         return deleteAtScopeWithResponseAsync(scope, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 

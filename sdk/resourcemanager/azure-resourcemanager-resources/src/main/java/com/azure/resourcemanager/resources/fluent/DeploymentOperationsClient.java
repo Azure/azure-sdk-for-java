@@ -340,7 +340,7 @@ public final class DeploymentOperationsClient {
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentOperationInner> getAtScopeAsync(
+    private Mono<DeploymentOperationInner> getAtScopeAsync(
         String scope, String deploymentName, String operationId, Context context) {
         return getAtScopeWithResponseAsync(scope, deploymentName, operationId, context)
             .flatMap(
@@ -540,6 +540,22 @@ public final class DeploymentOperationsClient {
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeploymentOperationInner> listAtScope(String scope, String deploymentName, Integer top) {
+        return new PagedIterable<>(listAtScopeAsync(scope, deploymentName, top));
+    }
+
+    /**
+     * Gets all deployments operations for a deployment.
+     *
+     * @param scope The resource scope.
+     * @param deploymentName The name of the deployment.
+     * @param top The number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -674,7 +690,7 @@ public final class DeploymentOperationsClient {
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentOperationInner> getAtTenantScopeAsync(
+    private Mono<DeploymentOperationInner> getAtTenantScopeAsync(
         String deploymentName, String operationId, Context context) {
         return getAtTenantScopeWithResponseAsync(deploymentName, operationId, context)
             .flatMap(
@@ -855,6 +871,21 @@ public final class DeploymentOperationsClient {
      *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName, Integer top) {
+        return new PagedIterable<>(listAtTenantScopeAsync(deploymentName, top));
+    }
+
+    /**
+     * Gets all deployments operations for a deployment.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param top The number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1000,7 +1031,7 @@ public final class DeploymentOperationsClient {
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentOperationInner> getAtManagementGroupScopeAsync(
+    private Mono<DeploymentOperationInner> getAtManagementGroupScopeAsync(
         String groupId, String deploymentName, String operationId, Context context) {
         return getAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, operationId, context)
             .flatMap(
@@ -1203,6 +1234,23 @@ public final class DeploymentOperationsClient {
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(
+        String groupId, String deploymentName, Integer top) {
+        return new PagedIterable<>(listAtManagementGroupScopeAsync(groupId, deploymentName, top));
+    }
+
+    /**
+     * Gets all deployments operations for a deployment.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param top The number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1355,7 +1403,7 @@ public final class DeploymentOperationsClient {
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentOperationInner> getAtSubscriptionScopeAsync(
+    private Mono<DeploymentOperationInner> getAtSubscriptionScopeAsync(
         String deploymentName, String operationId, Context context) {
         return getAtSubscriptionScopeWithResponseAsync(deploymentName, operationId, context)
             .flatMap(
@@ -1559,6 +1607,21 @@ public final class DeploymentOperationsClient {
      *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(String deploymentName, Integer top) {
+        return new PagedIterable<>(listAtSubscriptionScopeAsync(deploymentName, top));
+    }
+
+    /**
+     * Gets all deployments operations for a deployment.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param top The number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1725,7 +1788,7 @@ public final class DeploymentOperationsClient {
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentOperationInner> getAsync(
+    private Mono<DeploymentOperationInner> getAsync(
         String resourceGroupName, String deploymentName, String operationId, Context context) {
         return getWithResponseAsync(resourceGroupName, deploymentName, operationId, context)
             .flatMap(
@@ -1941,6 +2004,23 @@ public final class DeploymentOperationsClient {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, deploymentName, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets all deployments operations for a deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param top The number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeploymentOperationInner> listByResourceGroup(
+        String resourceGroupName, String deploymentName, Integer top) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, deploymentName, top));
     }
 
     /**

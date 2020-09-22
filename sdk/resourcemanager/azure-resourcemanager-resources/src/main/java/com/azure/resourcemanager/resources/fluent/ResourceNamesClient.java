@@ -162,7 +162,7 @@ public final class ResourceNamesClient {
      *     reserved word.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckResourceNameResultInner> checkResourceNameAsync(
+    private Mono<CheckResourceNameResultInner> checkResourceNameAsync(
         ResourceName resourceNameDefinition, Context context) {
         return checkResourceNameWithResponseAsync(resourceNameDefinition, context)
             .flatMap(
@@ -197,6 +197,22 @@ public final class ResourceNamesClient {
                         return Mono.empty();
                     }
                 });
+    }
+
+    /**
+     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
+     * a reserved word.
+     *
+     * @param resourceNameDefinition Name and Type of the Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
+     *     reserved word.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckResourceNameResultInner checkResourceName(ResourceName resourceNameDefinition) {
+        return checkResourceNameAsync(resourceNameDefinition).block();
     }
 
     /**

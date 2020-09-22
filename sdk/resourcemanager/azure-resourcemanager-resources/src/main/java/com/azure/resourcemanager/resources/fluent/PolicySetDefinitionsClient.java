@@ -334,7 +334,7 @@ public final class PolicySetDefinitionsClient {
      * @return the policy set definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicySetDefinitionInner> createOrUpdateAsync(
+    private Mono<PolicySetDefinitionInner> createOrUpdateAsync(
         String policySetDefinitionName, PolicySetDefinitionInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(policySetDefinitionName, parameters, context)
             .flatMap(
@@ -485,7 +485,7 @@ public final class PolicySetDefinitionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String policySetDefinitionName, Context context) {
+    private Mono<Void> deleteAsync(String policySetDefinitionName, Context context) {
         return deleteWithResponseAsync(policySetDefinitionName, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -631,7 +631,7 @@ public final class PolicySetDefinitionsClient {
      * @return the policy set definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicySetDefinitionInner> getAsync(String policySetDefinitionName, Context context) {
+    private Mono<PolicySetDefinitionInner> getAsync(String policySetDefinitionName, Context context) {
         return getWithResponseAsync(policySetDefinitionName, context)
             .flatMap(
                 (Response<PolicySetDefinitionInner> res) -> {
@@ -765,7 +765,7 @@ public final class PolicySetDefinitionsClient {
      * @return the policy set definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicySetDefinitionInner> getBuiltInAsync(String policySetDefinitionName, Context context) {
+    private Mono<PolicySetDefinitionInner> getBuiltInAsync(String policySetDefinitionName, Context context) {
         return getBuiltInWithResponseAsync(policySetDefinitionName, context)
             .flatMap(
                 (Response<PolicySetDefinitionInner> res) -> {
@@ -1188,7 +1188,7 @@ public final class PolicySetDefinitionsClient {
      * @return the policy set definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicySetDefinitionInner> createOrUpdateAtManagementGroupAsync(
+    private Mono<PolicySetDefinitionInner> createOrUpdateAtManagementGroupAsync(
         String policySetDefinitionName,
         String managementGroupId,
         PolicySetDefinitionInner parameters,
@@ -1353,7 +1353,7 @@ public final class PolicySetDefinitionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAtManagementGroupAsync(
+    private Mono<Void> deleteAtManagementGroupAsync(
         String policySetDefinitionName, String managementGroupId, Context context) {
         return deleteAtManagementGroupWithResponseAsync(policySetDefinitionName, managementGroupId, context)
             .flatMap((Response<Void> res) -> Mono.empty());
@@ -1506,7 +1506,7 @@ public final class PolicySetDefinitionsClient {
      * @return the policy set definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicySetDefinitionInner> getAtManagementGroupAsync(
+    private Mono<PolicySetDefinitionInner> getAtManagementGroupAsync(
         String policySetDefinitionName, String managementGroupId, Context context) {
         return getAtManagementGroupWithResponseAsync(policySetDefinitionName, managementGroupId, context)
             .flatMap(

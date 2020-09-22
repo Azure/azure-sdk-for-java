@@ -304,7 +304,7 @@ public final class SubscriptionsClient {
      * @return details about a specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionInner> getAsync(String subscriptionId, Context context) {
+    private Mono<SubscriptionInner> getAsync(String subscriptionId, Context context) {
         return getWithResponseAsync(subscriptionId, context)
             .flatMap(
                 (Response<SubscriptionInner> res) -> {

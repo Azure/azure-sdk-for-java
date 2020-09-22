@@ -1011,7 +1011,7 @@ public final class DeploymentsClient
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkExistenceAtScopeAsync(String scope, String deploymentName, Context context) {
+    private Mono<Boolean> checkExistenceAtScopeAsync(String scope, String deploymentName, Context context) {
         return checkExistenceAtScopeWithResponseAsync(scope, deploymentName, context)
             .flatMap(
                 (Response<Boolean> res) -> {
@@ -1404,7 +1404,7 @@ public final class DeploymentsClient
      * @return a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> getAtScopeAsync(String scope, String deploymentName, Context context) {
+    private Mono<DeploymentExtendedInner> getAtScopeAsync(String scope, String deploymentName, Context context) {
         return getAtScopeWithResponseAsync(scope, deploymentName, context)
             .flatMap(
                 (Response<DeploymentExtendedInner> res) -> {
@@ -1546,7 +1546,7 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelAtScopeAsync(String scope, String deploymentName, Context context) {
+    private Mono<Void> cancelAtScopeAsync(String scope, String deploymentName, Context context) {
         return cancelAtScopeWithResponseAsync(scope, deploymentName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -1941,7 +1941,7 @@ public final class DeploymentsClient
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExportResultInner> exportTemplateAtScopeAsync(
+    private Mono<DeploymentExportResultInner> exportTemplateAtScopeAsync(
         String scope, String deploymentName, Context context) {
         return exportTemplateAtScopeWithResponseAsync(scope, deploymentName, context)
             .flatMap(
@@ -2122,6 +2122,23 @@ public final class DeploymentsClient
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, filter, top, context),
             nextLink -> listAtScopeNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get all the deployments at the given scope.
+     *
+     * @param scope The resource scope.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
+     * @param top The number of results to get. If null is passed, returns all deployments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the deployments at the given scope.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeploymentExtendedInner> listAtScope(String scope, String filter, Integer top) {
+        return new PagedIterable<>(listAtScopeAsync(scope, filter, top));
     }
 
     /**
@@ -2479,7 +2496,7 @@ public final class DeploymentsClient
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkExistenceAtTenantScopeAsync(String deploymentName, Context context) {
+    private Mono<Boolean> checkExistenceAtTenantScopeAsync(String deploymentName, Context context) {
         return checkExistenceAtTenantScopeWithResponseAsync(deploymentName, context)
             .flatMap(
                 (Response<Boolean> res) -> {
@@ -2842,7 +2859,7 @@ public final class DeploymentsClient
      * @return a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> getAtTenantScopeAsync(String deploymentName, Context context) {
+    private Mono<DeploymentExtendedInner> getAtTenantScopeAsync(String deploymentName, Context context) {
         return getAtTenantScopeWithResponseAsync(deploymentName, context)
             .flatMap(
                 (Response<DeploymentExtendedInner> res) -> {
@@ -2971,7 +2988,7 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelAtTenantScopeAsync(String deploymentName, Context context) {
+    private Mono<Void> cancelAtTenantScopeAsync(String deploymentName, Context context) {
         return cancelAtTenantScopeWithResponseAsync(deploymentName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -3563,7 +3580,7 @@ public final class DeploymentsClient
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExportResultInner> exportTemplateAtTenantScopeAsync(String deploymentName, Context context) {
+    private Mono<DeploymentExportResultInner> exportTemplateAtTenantScopeAsync(String deploymentName, Context context) {
         return exportTemplateAtTenantScopeWithResponseAsync(deploymentName, context)
             .flatMap(
                 (Response<DeploymentExportResultInner> res) -> {
@@ -3729,6 +3746,22 @@ public final class DeploymentsClient
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(filter, top, context),
             nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get all the deployments at the tenant scope.
+     *
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
+     * @param top The number of results to get. If null is passed, returns all deployments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the deployments at the tenant scope.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeploymentExtendedInner> listAtTenantScope(String filter, Integer top) {
+        return new PagedIterable<>(listAtTenantScopeAsync(filter, top));
     }
 
     /**
@@ -4117,7 +4150,7 @@ public final class DeploymentsClient
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkExistenceAtManagementGroupScopeAsync(
+    private Mono<Boolean> checkExistenceAtManagementGroupScopeAsync(
         String groupId, String deploymentName, Context context) {
         return checkExistenceAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, context)
             .flatMap(
@@ -4518,7 +4551,7 @@ public final class DeploymentsClient
      * @return a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> getAtManagementGroupScopeAsync(
+    private Mono<DeploymentExtendedInner> getAtManagementGroupScopeAsync(
         String groupId, String deploymentName, Context context) {
         return getAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, context)
             .flatMap(
@@ -4664,7 +4697,7 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelAtManagementGroupScopeAsync(String groupId, String deploymentName, Context context) {
+    private Mono<Void> cancelAtManagementGroupScopeAsync(String groupId, String deploymentName, Context context) {
         return cancelAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -5313,7 +5346,7 @@ public final class DeploymentsClient
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExportResultInner> exportTemplateAtManagementGroupScopeAsync(
+    private Mono<DeploymentExportResultInner> exportTemplateAtManagementGroupScopeAsync(
         String groupId, String deploymentName, Context context) {
         return exportTemplateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, context)
             .flatMap(
@@ -5498,6 +5531,24 @@ public final class DeploymentsClient
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, filter, top, context),
             nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get all the deployments for a management group.
+     *
+     * @param groupId The management group ID.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
+     * @param top The number of results to get. If null is passed, returns all deployments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the deployments for a management group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeploymentExtendedInner> listAtManagementGroupScope(
+        String groupId, String filter, Integer top) {
+        return new PagedIterable<>(listAtManagementGroupScopeAsync(groupId, filter, top));
     }
 
     /**
@@ -5899,7 +5950,7 @@ public final class DeploymentsClient
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkExistenceAtSubscriptionScopeAsync(String deploymentName, Context context) {
+    private Mono<Boolean> checkExistenceAtSubscriptionScopeAsync(String deploymentName, Context context) {
         return checkExistenceAtSubscriptionScopeWithResponseAsync(deploymentName, context)
             .flatMap(
                 (Response<Boolean> res) -> {
@@ -6303,7 +6354,7 @@ public final class DeploymentsClient
      * @return a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> getAtSubscriptionScopeAsync(String deploymentName, Context context) {
+    private Mono<DeploymentExtendedInner> getAtSubscriptionScopeAsync(String deploymentName, Context context) {
         return getAtSubscriptionScopeWithResponseAsync(deploymentName, context)
             .flatMap(
                 (Response<DeploymentExtendedInner> res) -> {
@@ -6454,7 +6505,7 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelAtSubscriptionScopeAsync(String deploymentName, Context context) {
+    private Mono<Void> cancelAtSubscriptionScopeAsync(String deploymentName, Context context) {
         return cancelAtSubscriptionScopeWithResponseAsync(deploymentName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -7104,7 +7155,7 @@ public final class DeploymentsClient
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExportResultInner> exportTemplateAtSubscriptionScopeAsync(
+    private Mono<DeploymentExportResultInner> exportTemplateAtSubscriptionScopeAsync(
         String deploymentName, Context context) {
         return exportTemplateAtSubscriptionScopeWithResponseAsync(deploymentName, context)
             .flatMap(
@@ -7292,6 +7343,22 @@ public final class DeploymentsClient
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, top, context),
             nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get all the deployments for a subscription.
+     *
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
+     * @param top The number of results to get. If null is passed, returns all deployments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the deployments for a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeploymentExtendedInner> list(String filter, Integer top) {
+        return new PagedIterable<>(listAsync(filter, top));
     }
 
     /**
@@ -7748,7 +7815,7 @@ public final class DeploymentsClient
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName, Context context) {
+    private Mono<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName, Context context) {
         return checkExistenceWithResponseAsync(resourceGroupName, deploymentName, context)
             .flatMap(
                 (Response<Boolean> res) -> {
@@ -8201,7 +8268,7 @@ public final class DeploymentsClient
      * @return a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> getByResourceGroupAsync(
+    private Mono<DeploymentExtendedInner> getByResourceGroupAsync(
         String resourceGroupName, String deploymentName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, deploymentName, context)
             .flatMap(
@@ -8370,7 +8437,7 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelAsync(String resourceGroupName, String deploymentName, Context context) {
+    private Mono<Void> cancelAsync(String resourceGroupName, String deploymentName, Context context) {
         return cancelWithResponseAsync(resourceGroupName, deploymentName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -9097,7 +9164,7 @@ public final class DeploymentsClient
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExportResultInner> exportTemplateAsync(
+    private Mono<DeploymentExportResultInner> exportTemplateAsync(
         String resourceGroupName, String deploymentName, Context context) {
         return exportTemplateWithResponseAsync(resourceGroupName, deploymentName, context)
             .flatMap(
@@ -9323,6 +9390,25 @@ public final class DeploymentsClient
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the deployments for a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeploymentExtendedInner> listByResourceGroup(
+        String resourceGroupName, String filter, Integer top) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top));
+    }
+
+    /**
+     * Get all the deployments for a resource group.
+     *
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case
+     *     insensitive.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
+     * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -9441,7 +9527,7 @@ public final class DeploymentsClient
      * @return result of the request to calculate template hash.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TemplateHashResultInner> calculateTemplateHashAsync(Object template, Context context) {
+    private Mono<TemplateHashResultInner> calculateTemplateHashAsync(Object template, Context context) {
         return calculateTemplateHashWithResponseAsync(template, context)
             .flatMap(
                 (Response<TemplateHashResultInner> res) -> {

@@ -271,7 +271,7 @@ public final class ResourceGroupsClient {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkExistenceAsync(String resourceGroupName, Context context) {
+    private Mono<Boolean> checkExistenceAsync(String resourceGroupName, Context context) {
         return checkExistenceWithResponseAsync(resourceGroupName, context)
             .flatMap(
                 (Response<Boolean> res) -> {
@@ -454,7 +454,7 @@ public final class ResourceGroupsClient {
      * @return resource group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceGroupInner> createOrUpdateAsync(
+    private Mono<ResourceGroupInner> createOrUpdateAsync(
         String resourceGroupName, ResourceGroupInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, parameters, context)
             .flatMap(
@@ -823,7 +823,7 @@ public final class ResourceGroupsClient {
      * @return a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceGroupInner> getAsync(String resourceGroupName, Context context) {
+    private Mono<ResourceGroupInner> getAsync(String resourceGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, context)
             .flatMap(
                 (Response<ResourceGroupInner> res) -> {
@@ -997,7 +997,7 @@ public final class ResourceGroupsClient {
      * @return resource group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceGroupInner> updateAsync(
+    private Mono<ResourceGroupInner> updateAsync(
         String resourceGroupName, ResourceGroupPatchable parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, parameters, context)
             .flatMap(
@@ -1431,6 +1431,22 @@ public final class ResourceGroupsClient {
     public PagedFlux<ResourceGroupInner> listAsync(String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, top, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets all the resource groups for a subscription.
+     *
+     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;You can filter by tag names and values.
+     *     For example, to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'.
+     * @param top The number of results to return. If null is passed, returns all resource groups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resource groups for a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceGroupInner> list(String filter, Integer top) {
+        return new PagedIterable<>(listAsync(filter, top));
     }
 
     /**
