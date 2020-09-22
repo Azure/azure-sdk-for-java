@@ -223,7 +223,7 @@ class ActionGroupImpl
         this.inner().withLocation("global");
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getActionGroups()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
@@ -231,7 +231,7 @@ class ActionGroupImpl
 
     @Override
     protected Mono<ActionGroupResourceInner> getInnerAsync() {
-        return this.manager().inner().getActionGroups().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getActionGroups().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

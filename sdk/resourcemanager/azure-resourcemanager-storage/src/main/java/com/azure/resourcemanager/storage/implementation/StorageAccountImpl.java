@@ -197,7 +197,7 @@ class StorageAccountImpl
     public Mono<List<StorageAccountKey>> getKeysAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getStorageAccounts()
             .listKeysAsync(this.resourceGroupName(), this.name())
             .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
@@ -212,7 +212,7 @@ class StorageAccountImpl
     public Mono<List<StorageAccountKey>> regenerateKeyAsync(String keyName) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getStorageAccounts()
             .regenerateKeyAsync(this.resourceGroupName(), this.name(), keyName)
             .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
@@ -232,7 +232,7 @@ class StorageAccountImpl
 
     @Override
     protected Mono<StorageAccountInner> getInnerAsync() {
-        return this.manager().inner().getStorageAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getStorageAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -477,10 +477,10 @@ class StorageAccountImpl
         this.networkRulesHelper.setDefaultActionIfRequired();
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().tags());
-        final StorageAccountsClient client = this.manager().inner().getStorageAccounts();
+        final StorageAccountsClient client = this.manager().serviceClient().getStorageAccounts();
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getStorageAccounts()
             .createAsync(this.resourceGroupName(), this.name(), createParameters)
             .flatMap(
@@ -497,7 +497,7 @@ class StorageAccountImpl
         updateParameters.withTags(this.inner().tags());
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getStorageAccounts()
             .updateAsync(resourceGroupName(), this.name(), updateParameters)
             .map(innerToFluentMap(this))

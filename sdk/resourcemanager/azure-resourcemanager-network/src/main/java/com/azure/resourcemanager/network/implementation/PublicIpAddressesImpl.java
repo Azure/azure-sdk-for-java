@@ -25,7 +25,7 @@ public class PublicIpAddressesImpl
     private final ClientLogger logger = new ClientLogger(this.getClass());
 
     public PublicIpAddressesImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getPublicIpAddresses(), networkManager);
+        super(networkManager.serviceClient().getPublicIpAddresses(), networkManager);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class PublicIpAddressesImpl
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
         return AcceptedImpl.newAccepted(logger,
-            manager().inner(),
+            manager().serviceClient(),
             () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
             Function.identity(),
             Void.class,

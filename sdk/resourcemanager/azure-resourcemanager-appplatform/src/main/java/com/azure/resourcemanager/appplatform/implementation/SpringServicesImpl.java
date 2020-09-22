@@ -24,7 +24,7 @@ public class SpringServicesImpl
     private static final String SPRING_TYPE = "Microsoft.AppPlatform/Spring";
 
     public SpringServicesImpl(AppPlatformManager manager) {
-        super(manager.inner().getServices(), manager);
+        super(manager.serviceClient().getServices(), manager);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class SpringServicesImpl
 
     @Override
     public PagedFlux<ResourceSku> listSkusAsync() {
-        return manager().inner().getSkus().listAsync();
+        return manager().serviceClient().getSkus().listAsync();
     }
 
     @Override

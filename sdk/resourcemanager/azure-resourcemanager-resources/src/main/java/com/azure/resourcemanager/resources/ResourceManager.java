@@ -288,7 +288,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      */
     public Providers providers() {
         if (providers == null) {
-            providers = new ProvidersImpl(inner().getProviders());
+            providers = new ProvidersImpl(serviceClient().getProviders());
         }
         return providers;
     }

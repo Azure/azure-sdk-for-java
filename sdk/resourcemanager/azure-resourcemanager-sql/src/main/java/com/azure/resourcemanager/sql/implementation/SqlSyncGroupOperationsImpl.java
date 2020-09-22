@@ -42,7 +42,7 @@ public class SqlSyncGroupOperationsImpl
     public SqlSyncGroup getBySqlServer(
         String resourceGroupName, String sqlServerName, String databaseName, String name) {
         SyncGroupInner syncGroupInner =
-            this.sqlServerManager.inner().getSyncGroups().get(resourceGroupName, sqlServerName, databaseName, name);
+            this.sqlServerManager.serviceClient().getSyncGroups().get(resourceGroupName, sqlServerName, databaseName, name);
         return syncGroupInner != null
             ? new SqlSyncGroupImpl(
                 resourceGroupName, sqlServerName, databaseName, name, syncGroupInner, this.sqlServerManager)
@@ -54,7 +54,7 @@ public class SqlSyncGroupOperationsImpl
         final String resourceGroupName, final String sqlServerName, final String databaseName, final String name) {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .getAsync(resourceGroupName, sqlServerName, databaseName, name)
             .map(
@@ -67,7 +67,7 @@ public class SqlSyncGroupOperationsImpl
     public PagedIterable<String> listSyncDatabaseIds(String locationName) {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .listSyncDatabaseIds(locationName)
             .mapPage(SyncDatabaseIdPropertiesInner::id);
@@ -77,7 +77,7 @@ public class SqlSyncGroupOperationsImpl
     public PagedFlux<String> listSyncDatabaseIdsAsync(String locationName) {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .listSyncDatabaseIdsAsync(locationName)
             .mapPage(SyncDatabaseIdPropertiesInner::id);
@@ -159,7 +159,7 @@ public class SqlSyncGroupOperationsImpl
         }
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .delete(
                 this.sqlDatabase.resourceGroupName(), this.sqlDatabase.sqlServerName(), this.sqlDatabase.name(), name);
@@ -172,7 +172,7 @@ public class SqlSyncGroupOperationsImpl
         }
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .deleteAsync(
                 this.sqlDatabase.resourceGroupName(), this.sqlDatabase.sqlServerName(), this.sqlDatabase.name(), name);
@@ -185,7 +185,7 @@ public class SqlSyncGroupOperationsImpl
             ResourceId resourceId = ResourceId.fromString(id);
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getSyncGroups()
                 .delete(
                     resourceId.resourceGroupName(),
@@ -202,7 +202,7 @@ public class SqlSyncGroupOperationsImpl
             ResourceId resourceId = ResourceId.fromString(id);
             return this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getSyncGroups()
                 .deleteAsync(
                     resourceId.resourceGroupName(),
@@ -221,7 +221,7 @@ public class SqlSyncGroupOperationsImpl
             PagedIterable<SyncGroupInner> syncGroupInners =
                 this
                     .sqlServerManager
-                    .inner()
+                    .serviceClient()
                     .getSyncGroups()
                     .listByDatabase(
                         this.sqlDatabase.resourceGroupName(),
@@ -242,7 +242,7 @@ public class SqlSyncGroupOperationsImpl
         final SqlSyncGroupOperationsImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .listByDatabaseAsync(
                 this.sqlDatabase.resourceGroupName(), this.sqlDatabase.sqlServerName(), this.sqlDatabase.name())

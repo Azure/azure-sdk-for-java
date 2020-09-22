@@ -39,7 +39,7 @@ class TopicAuthorizationRulesImpl
                                 String topicName,
                                 Region region,
                                 ServiceBusManager manager) {
-        super(manager.inner().getTopics(), manager);
+        super(manager.serviceClient().getTopics(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.topicName = topicName;

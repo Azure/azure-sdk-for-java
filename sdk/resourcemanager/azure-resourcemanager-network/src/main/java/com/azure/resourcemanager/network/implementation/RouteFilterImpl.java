@@ -36,7 +36,7 @@ class RouteFilterImpl
 
     @Override
     protected Mono<RouteFilterInner> createInner() {
-        return this.manager().inner().getRouteFilters().createOrUpdateAsync(resourceGroupName(), name(), inner());
+        return this.manager().serviceClient().getRouteFilters().createOrUpdateAsync(resourceGroupName(), name(), inner());
     }
 
     @Override
@@ -53,7 +53,7 @@ class RouteFilterImpl
             this.peerings = this.inner().peerings().stream().collect(Collectors.toMap(
                 ExpressRouteCircuitPeeringInner::name,
                 peering -> new ExpressRouteCircuitPeeringImpl<>(this, peering,
-                    manager().inner().getExpressRouteCircuitPeerings(), peering.peeringType())
+                    manager().serviceClient().getExpressRouteCircuitPeerings(), peering.peeringType())
             ));
         } else {
             this.peerings = new HashMap<>();
@@ -69,7 +69,7 @@ class RouteFilterImpl
     protected Mono<RouteFilterInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getRouteFilters()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }

@@ -77,7 +77,7 @@ class AvailabilitySetImpl
         } else {
             ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
             ProximityPlacementGroupInner plgInner =
-                manager().inner().getProximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
+                manager().serviceClient().getProximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
             if (plgInner == null) {
                 return null;
             } else {
@@ -94,7 +94,7 @@ class AvailabilitySetImpl
     @Override
     public PagedIterable<VirtualMachineSize> listVirtualMachineSizes() {
         return manager()
-            .inner()
+            .serviceClient()
             .getAvailabilitySets()
             .listAvailableSizes(resourceGroupName(), name())
             .mapPage(virtualMachineSizeInner -> new VirtualMachineSizeImpl(virtualMachineSizeInner));
@@ -114,7 +114,7 @@ class AvailabilitySetImpl
 
     @Override
     protected Mono<AvailabilitySetInner> getInnerAsync() {
-        return this.manager().inner().getAvailabilitySets()
+        return this.manager().serviceClient().getAvailabilitySets()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -180,7 +180,7 @@ class AvailabilitySetImpl
             .flatMap(
                 availabilitySet ->
                     manager()
-                        .inner()
+                        .serviceClient()
                         .getAvailabilitySets()
                         .createOrUpdateAsync(resourceGroupName(), name(), inner())
                         .map(
@@ -199,7 +199,7 @@ class AvailabilitySetImpl
                 plgInner.withLocation(this.inner().location());
                 return this
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getProximityPlacementGroups()
                     .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
                     .map(

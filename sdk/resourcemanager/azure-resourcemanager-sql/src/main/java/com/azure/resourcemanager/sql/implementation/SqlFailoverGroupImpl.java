@@ -170,7 +170,7 @@ public class SqlFailoverGroupImpl
 
     @Override
     public void delete() {
-        this.sqlServerManager.inner().getFailoverGroups()
+        this.sqlServerManager.serviceClient().getFailoverGroups()
             .delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -208,7 +208,7 @@ public class SqlFailoverGroupImpl
         final SqlFailoverGroupImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFailoverGroups()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.name(), self.inner())
             .map(
@@ -227,7 +227,7 @@ public class SqlFailoverGroupImpl
     public Mono<Void> deleteResourceAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFailoverGroups()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -236,7 +236,7 @@ public class SqlFailoverGroupImpl
     protected Mono<FailoverGroupInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFailoverGroups()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }

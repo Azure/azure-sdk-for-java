@@ -34,7 +34,7 @@ class QueuesImpl
     private final ClientLogger logger = new ClientLogger(QueuesImpl.class);
 
     QueuesImpl(String resourceGroupName, String namespaceName, Region region, ServiceBusManager manager) {
-        super(manager.inner().getQueues(), manager);
+        super(manager.serviceClient().getQueues(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.region = region;

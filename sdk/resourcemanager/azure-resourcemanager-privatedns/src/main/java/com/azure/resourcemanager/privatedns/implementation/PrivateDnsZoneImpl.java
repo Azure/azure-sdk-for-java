@@ -165,7 +165,7 @@ class PrivateDnsZoneImpl
 
     @Override
     public SoaRecordSet getSoaRecordSet() {
-        RecordSetInner inner = manager().inner().getRecordSets().get(resourceGroupName(), name(), RecordType.SOA, "@");
+        RecordSetInner inner = manager().serviceClient().getRecordSets().get(resourceGroupName(), name(), RecordType.SOA, "@");
         return inner == null ? null : new SoaRecordSetImpl(inner.name(), this, inner);
     }
 
@@ -382,7 +382,7 @@ class PrivateDnsZoneImpl
 
     @Override
     public Mono<PrivateDnsZone> createResourceAsync() {
-        return manager().inner().getPrivateZones()
+        return manager().serviceClient().getPrivateZones()
             .createOrUpdateAsync(
                 resourceGroupName(),
                 name(),
@@ -416,7 +416,7 @@ class PrivateDnsZoneImpl
 
     @Override
     protected Mono<PrivateZoneInner> getInnerAsync() {
-        return manager().inner().getPrivateZones().getByResourceGroupAsync(resourceGroupName(), name());
+        return manager().serviceClient().getPrivateZones().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     private PagedIterable<PrivateDnsRecordSet> listRecordSetsIntern(String recordSetSuffix, Integer pageSize) {
@@ -425,7 +425,7 @@ class PrivateDnsZoneImpl
 
     private PagedFlux<PrivateDnsRecordSet> listRecordSetsInternAsync(String recordSetSuffix, Integer pageSize) {
         final PrivateDnsZoneImpl self = this;
-        return manager().inner().getRecordSets().listAsync(resourceGroupName(), name(), pageSize, recordSetSuffix)
+        return manager().serviceClient().getRecordSets().listAsync(resourceGroupName(), name(), pageSize, recordSetSuffix)
             .mapPage(recordSetInner -> {
                 PrivateDnsRecordSet recordSet = new PrivateDnsRecordSetImpl(
                     recordSetInner.name(), recordSetInner.type(), self, recordSetInner);

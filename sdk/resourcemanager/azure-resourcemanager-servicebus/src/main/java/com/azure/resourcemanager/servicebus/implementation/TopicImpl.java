@@ -320,7 +320,7 @@ class TopicImpl
 
     @Override
     protected Mono<TopicResourceInner> getInnerAsync() {
-        return this.manager().inner().getTopics()
+        return this.manager().serviceClient().getTopics()
                 .getAsync(this.resourceGroupName(),
                         this.parentName,
                         this.name());
@@ -328,7 +328,7 @@ class TopicImpl
 
     @Override
     protected Mono<Topic> createChildResourceAsync() {
-        Mono<TopicResourceInner> createTask = this.manager().inner().getTopics()
+        Mono<TopicResourceInner> createTask = this.manager().serviceClient().getTopics()
             .createOrUpdateAsync(this.resourceGroupName(),
                     this.parentName,
                     this.name(),

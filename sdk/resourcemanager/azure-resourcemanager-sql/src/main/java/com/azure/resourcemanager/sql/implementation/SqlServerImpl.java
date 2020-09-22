@@ -84,14 +84,14 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     protected Mono<ServerInner> getInnerAsync() {
-        return this.manager().inner().getServers().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getServers().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Mono<SqlServer> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getServers()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(
@@ -196,7 +196,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public List<ServerMetric> listUsageMetrics() {
         List<ServerMetric> serverMetrics = new ArrayList<>();
         PagedIterable<ServerUsageInner> serverUsageInners =
-            this.manager().inner().getServerUsages().listByServer(this.resourceGroupName(), this.name());
+            this.manager().serviceClient().getServerUsages().listByServer(this.resourceGroupName(), this.name());
         for (ServerUsageInner serverUsageInner : serverUsageInners) {
             serverMetrics.add(new ServerMetricImpl(serverUsageInner));
         }
@@ -207,7 +207,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public List<ServiceObjective> listServiceObjectives() {
         List<ServiceObjective> serviceObjectives = new ArrayList<>();
         PagedIterable<ServiceObjectiveInner> serviceObjectiveInners =
-            this.manager().inner().getServiceObjectives().listByServer(this.resourceGroupName(), this.name());
+            this.manager().serviceClient().getServiceObjectives().listByServer(this.resourceGroupName(), this.name());
         for (ServiceObjectiveInner inner : serviceObjectiveInners) {
             serviceObjectives.add(new ServiceObjectiveImpl(inner, this));
         }
@@ -216,7 +216,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public ServiceObjective getServiceObjective(String serviceObjectiveName) {
-        ServiceObjectiveInner inner = this.manager().inner().getServiceObjectives()
+        ServiceObjectiveInner inner = this.manager().serviceClient().getServiceObjectives()
             .get(this.resourceGroupName(), this.name(), serviceObjectiveName);
         return (inner != null) ? new ServiceObjectiveImpl(inner, this) : null;
     }
@@ -225,7 +225,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public Map<String, RecommendedElasticPool> listRecommendedElasticPools() {
         Map<String, RecommendedElasticPool> recommendedElasticPoolMap = new HashMap<>();
         PagedIterable<RecommendedElasticPoolInner> recommendedElasticPoolInners =
-            this.manager().inner().getRecommendedElasticPools().listByServer(this.resourceGroupName(), this.name());
+            this.manager().serviceClient().getRecommendedElasticPools().listByServer(this.resourceGroupName(), this.name());
         for (RecommendedElasticPoolInner inner : recommendedElasticPoolInners) {
             recommendedElasticPoolMap.put(inner.name(), new RecommendedElasticPoolImpl(inner, this));
         }
@@ -237,7 +237,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public List<SqlRestorableDroppedDatabase> listRestorableDroppedDatabases() {
         List<SqlRestorableDroppedDatabase> sqlRestorableDroppedDatabases = new ArrayList<>();
         PagedIterable<RestorableDroppedDatabaseInner> restorableDroppedDatabasesInners =
-            this.manager().inner().getRestorableDroppedDatabases().listByServer(this.resourceGroupName(), this.name());
+            this.manager().serviceClient().getRestorableDroppedDatabases().listByServer(this.resourceGroupName(), this.name());
         for (RestorableDroppedDatabaseInner restorableDroppedDatabaseInner : restorableDroppedDatabasesInners) {
             sqlRestorableDroppedDatabases
                 .add(
@@ -252,7 +252,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         final SqlServerImpl self = this;
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getRestorableDroppedDatabases()
             .listByServerAsync(this.resourceGroupName(), this.name())
             .mapPage(
@@ -325,7 +325,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         return new SqlActiveDirectoryAdministratorImpl(
             this
                 .manager()
-                .inner()
+                .serviceClient()
                 .getServerAzureADAdministrators()
                 .createOrUpdate(this.resourceGroupName(), this.name(), AdministratorName.ACTIVE_DIRECTORY,
                     serverAzureADAdministratorInner));
@@ -334,7 +334,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     @Override
     public SqlActiveDirectoryAdministratorImpl getActiveDirectoryAdministrator() {
         ServerAzureADAdministratorInner serverAzureADAdministratorInner =
-            this.manager().inner().getServerAzureADAdministrators().get(this.resourceGroupName(), this.name(),
+            this.manager().serviceClient().getServerAzureADAdministrators().get(this.resourceGroupName(), this.name(),
                 AdministratorName.ACTIVE_DIRECTORY);
 
         return serverAzureADAdministratorInner != null
@@ -344,14 +344,14 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public void removeActiveDirectoryAdministrator() {
-        this.manager().inner().getServerAzureADAdministrators().delete(this.resourceGroupName(), this.name(),
+        this.manager().serviceClient().getServerAzureADAdministrators().delete(this.resourceGroupName(), this.name(),
             AdministratorName.ACTIVE_DIRECTORY);
     }
 
     @Override
     public SqlServerAutomaticTuning getServerAutomaticTuning() {
         ServerAutomaticTuningInner serverAutomaticTuningInner =
-            this.manager().inner().getServerAutomaticTunings().get(this.resourceGroupName(), this.name());
+            this.manager().serviceClient().getServerAutomaticTunings().get(this.resourceGroupName(), this.name());
         return serverAutomaticTuningInner != null
             ? new SqlServerAutomaticTuningImpl(this, serverAutomaticTuningInner)
             : null;
@@ -405,7 +405,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
                 return self
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getServerAzureADAdministrators()
                     .createOrUpdateAsync(self.resourceGroupName(), self.name(), AdministratorName.ACTIVE_DIRECTORY,
                         serverAzureADAdministratorInner)

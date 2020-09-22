@@ -175,7 +175,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     @Override
     public SoaRecordSet getSoaRecordSet() {
         RecordSetInner inner =
-            this.manager().inner().getRecordSets().get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
+            this.manager().serviceClient().getRecordSets().get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
         if (inner == null) {
             return null;
         }
@@ -404,7 +404,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                 self ->
                     self
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getZones()
                         .createOrUpdateAsync(
                             self.resourceGroupName(),
@@ -446,7 +446,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
 
     @Override
     protected Mono<ZoneInner> getInnerAsync() {
-        return this.manager().inner().getZones().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getZones().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private void initRecordSets() {
@@ -469,7 +469,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                 .flatMapPage(
                     this
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getRecordSets()
                         .listByDnsZoneAsync(this.resourceGroupName(), this.name(), pageSize, recordSetSuffix),
                     inner -> {

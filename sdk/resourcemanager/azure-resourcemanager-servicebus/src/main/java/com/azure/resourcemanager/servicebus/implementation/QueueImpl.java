@@ -348,7 +348,7 @@ class QueueImpl
 
     @Override
     protected Mono<QueueResourceInner> getInnerAsync() {
-        return this.manager().inner().getQueues()
+        return this.manager().serviceClient().getQueues()
                 .getAsync(this.resourceGroupName(),
                         this.parentName,
                         this.name());
@@ -357,7 +357,7 @@ class QueueImpl
     @Override
     protected Mono<Queue> createChildResourceAsync() {
 
-        Mono<QueueResourceInner> createTask = this.manager().inner().getQueues()
+        Mono<QueueResourceInner> createTask = this.manager().serviceClient().getQueues()
             .createOrUpdateAsync(this.resourceGroupName(),
                 this.parentName,
                 this.name(),

@@ -85,7 +85,7 @@ public class SqlFirewallRuleImpl
     protected Mono<FirewallRuleInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -152,7 +152,7 @@ public class SqlFirewallRuleImpl
         final SqlFirewallRuleImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
@@ -167,7 +167,7 @@ public class SqlFirewallRuleImpl
         final SqlFirewallRuleImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
@@ -181,7 +181,7 @@ public class SqlFirewallRuleImpl
     public Mono<Void> deleteResourceAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }

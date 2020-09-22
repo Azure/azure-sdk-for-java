@@ -63,7 +63,7 @@ class GalleryImageVersionImpl
     @Override
     public Mono<GalleryImageVersion> createResourceAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getGalleryImageVersions()
             .createOrUpdateAsync(
                 this.resourceGroupName,
@@ -77,7 +77,7 @@ class GalleryImageVersionImpl
     @Override
     public Mono<GalleryImageVersion> updateResourceAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getGalleryImageVersions()
             .createOrUpdateAsync(
                 this.resourceGroupName,
@@ -91,7 +91,7 @@ class GalleryImageVersionImpl
     @Override
     protected Mono<GalleryImageVersionInner> getInnerAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getGalleryImageVersions()
             .getAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.galleryImageVersionName);
     }

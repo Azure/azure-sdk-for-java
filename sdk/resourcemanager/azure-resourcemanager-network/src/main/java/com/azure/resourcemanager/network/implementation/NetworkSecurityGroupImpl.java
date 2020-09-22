@@ -83,7 +83,7 @@ class NetworkSecurityGroupImpl
     protected Mono<NetworkSecurityGroupInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkSecurityGroups()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -92,7 +92,7 @@ class NetworkSecurityGroupImpl
     protected Mono<NetworkSecurityGroupInner> applyTagsToInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkSecurityGroups()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
@@ -148,7 +148,7 @@ class NetworkSecurityGroupImpl
     protected Mono<NetworkSecurityGroupInner> createInner() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkSecurityGroups()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }

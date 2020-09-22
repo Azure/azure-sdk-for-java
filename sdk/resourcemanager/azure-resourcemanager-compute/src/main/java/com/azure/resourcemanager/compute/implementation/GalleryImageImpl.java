@@ -99,7 +99,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     @Override
     public Mono<GalleryImage> createResourceAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getGalleryImages()
             .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.inner())
             .map(innerToFluentMap(this));
@@ -108,7 +108,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     @Override
     public Mono<GalleryImage> updateResourceAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getGalleryImages()
             .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.inner())
             .map(innerToFluentMap(this));
@@ -117,7 +117,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     @Override
     protected Mono<GalleryImageInner> getInnerAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getGalleryImages()
             .getAsync(this.resourceGroupName, this.galleryName, this.galleryImageName);
     }

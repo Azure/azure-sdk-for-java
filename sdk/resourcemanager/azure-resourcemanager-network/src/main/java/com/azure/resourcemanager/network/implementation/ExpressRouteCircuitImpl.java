@@ -91,7 +91,7 @@ class ExpressRouteCircuitImpl
     protected Mono<ExpressRouteCircuitInner> createInner() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getExpressRouteCircuits()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
@@ -105,7 +105,7 @@ class ExpressRouteCircuitImpl
                     .put(
                         peering.name(),
                         new ExpressRouteCircuitPeeringImpl<>(this, peering,
-                            manager().inner().getExpressRouteCircuitPeerings(), peering.peeringType()));
+                            manager().serviceClient().getExpressRouteCircuitPeerings(), peering.peeringType()));
             }
         }
     }
@@ -114,7 +114,7 @@ class ExpressRouteCircuitImpl
     protected Mono<ExpressRouteCircuitInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getExpressRouteCircuits()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -135,7 +135,7 @@ class ExpressRouteCircuitImpl
     protected Mono<ExpressRouteCircuitInner> applyTagsToInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getExpressRouteCircuits()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }

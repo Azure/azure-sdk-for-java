@@ -20,7 +20,7 @@ public class AppServiceCertificatesImpl
     implements AppServiceCertificates {
 
     public AppServiceCertificatesImpl(AppServiceManager manager) {
-        super(manager.inner().getCertificates(), manager);
+        super(manager.serviceClient().getCertificates(), manager);
     }
 
     @Override

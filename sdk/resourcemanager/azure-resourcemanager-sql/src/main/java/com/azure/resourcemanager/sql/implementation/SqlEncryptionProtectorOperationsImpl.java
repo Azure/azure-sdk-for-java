@@ -40,7 +40,7 @@ public class SqlEncryptionProtectorOperationsImpl
     @Override
     public SqlEncryptionProtector getBySqlServer(String resourceGroupName, String sqlServerName) {
         EncryptionProtectorInner encryptionProtectorInner =
-            this.sqlServerManager.inner().getEncryptionProtectors().get(resourceGroupName, sqlServerName,
+            this.sqlServerManager.serviceClient().getEncryptionProtectors().get(resourceGroupName, sqlServerName,
                 EncryptionProtectorName.CURRENT);
         return encryptionProtectorInner != null
             ? new SqlEncryptionProtectorImpl(
@@ -54,7 +54,7 @@ public class SqlEncryptionProtectorOperationsImpl
         final SqlEncryptionProtectorOperationsImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getEncryptionProtectors()
             .getAsync(resourceGroupName, sqlServerName, EncryptionProtectorName.CURRENT)
             .map(
@@ -67,7 +67,7 @@ public class SqlEncryptionProtectorOperationsImpl
     public SqlEncryptionProtector getBySqlServer(SqlServer sqlServer) {
         Objects.requireNonNull(sqlServer);
         EncryptionProtectorInner encryptionProtectorInner =
-            sqlServer.manager().inner().getEncryptionProtectors().get(sqlServer.resourceGroupName(), sqlServer.name(),
+            sqlServer.manager().serviceClient().getEncryptionProtectors().get(sqlServer.resourceGroupName(), sqlServer.name(),
                 EncryptionProtectorName.CURRENT);
         return encryptionProtectorInner != null
             ? new SqlEncryptionProtectorImpl((SqlServerImpl) sqlServer, encryptionProtectorInner, sqlServer.manager())
@@ -79,7 +79,7 @@ public class SqlEncryptionProtectorOperationsImpl
         Objects.requireNonNull(sqlServer);
         return sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getEncryptionProtectors()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name(), EncryptionProtectorName.CURRENT)
             .map(
@@ -142,7 +142,7 @@ public class SqlEncryptionProtectorOperationsImpl
     public List<SqlEncryptionProtector> listBySqlServer(String resourceGroupName, String sqlServerName) {
         List<SqlEncryptionProtector> encryptionProtectors = new ArrayList<>();
         PagedIterable<EncryptionProtectorInner> encryptionProtectorInners =
-            this.sqlServerManager.inner().getEncryptionProtectors().listByServer(resourceGroupName, sqlServerName);
+            this.sqlServerManager.serviceClient().getEncryptionProtectors().listByServer(resourceGroupName, sqlServerName);
         for (EncryptionProtectorInner inner : encryptionProtectorInners) {
             encryptionProtectors
                 .add(
@@ -157,7 +157,7 @@ public class SqlEncryptionProtectorOperationsImpl
         final SqlEncryptionProtectorOperationsImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getEncryptionProtectors()
             .listByServerAsync(resourceGroupName, sqlServerName)
             .mapPage(
@@ -173,7 +173,7 @@ public class SqlEncryptionProtectorOperationsImpl
         PagedIterable<EncryptionProtectorInner> encryptionProtectorInners =
             sqlServer
                 .manager()
-                .inner()
+                .serviceClient()
                 .getEncryptionProtectors()
                 .listByServer(sqlServer.resourceGroupName(), sqlServer.name());
         for (EncryptionProtectorInner inner : encryptionProtectorInners) {
@@ -188,7 +188,7 @@ public class SqlEncryptionProtectorOperationsImpl
         Objects.requireNonNull(sqlServer);
         return sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getEncryptionProtectors()
             .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
             .mapPage(

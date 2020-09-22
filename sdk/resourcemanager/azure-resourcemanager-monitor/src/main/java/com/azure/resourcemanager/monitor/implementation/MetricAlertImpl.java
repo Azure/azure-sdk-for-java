@@ -132,7 +132,7 @@ class MetricAlertImpl
         }
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getMetricAlerts()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
@@ -140,7 +140,7 @@ class MetricAlertImpl
 
     @Override
     protected Mono<MetricAlertResourceInner> getInnerAsync() {
-        return this.manager().inner().getMetricAlerts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getMetricAlerts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

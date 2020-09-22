@@ -51,7 +51,7 @@ public class SqlServersImpl
     private SqlServerSecurityAlertPolicyOperationsImpl serverSecurityAlertPolicies;
 
     public SqlServersImpl(SqlServerManager manager) {
-        super(manager.inner().getServers(), manager);
+        super(manager.serviceClient().getServers(), manager);
     }
 
     @Override
@@ -190,7 +190,7 @@ public class SqlServersImpl
     @Override
     public RegionCapabilities getCapabilitiesByRegion(Region region) {
         LocationCapabilitiesInner capabilitiesInner =
-            this.manager().inner().getCapabilities().listByLocation(region.name());
+            this.manager().serviceClient().getCapabilities().listByLocation(region.name());
         return capabilitiesInner != null ? new RegionCapabilitiesImpl(capabilitiesInner) : null;
     }
 
@@ -198,7 +198,7 @@ public class SqlServersImpl
     public Mono<RegionCapabilities> getCapabilitiesByRegionAsync(Region region) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getCapabilities()
             .listByLocationAsync(region.name())
             .map(RegionCapabilitiesImpl::new);
@@ -209,7 +209,7 @@ public class SqlServersImpl
         Objects.requireNonNull(region);
         List<SqlSubscriptionUsageMetric> subscriptionUsages = new ArrayList<>();
         PagedIterable<SubscriptionUsageInner> subscriptionUsageInners =
-            this.manager().inner().getSubscriptionUsages().listByLocation(region.name());
+            this.manager().serviceClient().getSubscriptionUsages().listByLocation(region.name());
         for (SubscriptionUsageInner inner : subscriptionUsageInners) {
             subscriptionUsages.add(new SqlSubscriptionUsageMetricImpl(region.name(), inner, this.manager()));
         }
@@ -222,7 +222,7 @@ public class SqlServersImpl
         final SqlServers self = this;
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getSubscriptionUsages()
             .listByLocationAsync(region.name())
             .mapPage(

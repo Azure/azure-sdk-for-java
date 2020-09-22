@@ -219,7 +219,7 @@ class EventHubNamespaceImpl
 
     @Override
     public Mono<EventHubNamespace> createResourceAsync() {
-        return this.manager().inner().getNamespaces()
+        return this.manager().serviceClient().getNamespaces()
                 .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
                 .map(innerToFluentMap(this));
     }
@@ -254,7 +254,7 @@ class EventHubNamespaceImpl
 
     @Override
     protected Mono<EHNamespaceInner> getInnerAsync() {
-        return this.manager().inner().getNamespaces().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getNamespaces().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private void setDefaultSkuIfNotSet() {

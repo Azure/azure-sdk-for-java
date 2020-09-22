@@ -119,7 +119,7 @@ class WebAppSourceControlImpl<FluentT extends WebAppBase, FluentImplT extends We
             return Mono.empty();
         }
         SourceControlInner sourceControlInner = new SourceControlInner().withToken(githubAccessToken);
-        return this.parent().manager().inner().getResourceProviders()
+        return this.parent().manager().serviceClient().getResourceProviders()
             .updateSourceControlAsync("Github", sourceControlInner);
     }
 }

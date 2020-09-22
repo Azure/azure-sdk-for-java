@@ -649,7 +649,7 @@ class VirtualMachineScaleSetVMImpl
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSetVMs()
             .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), this.inner())
             .map(

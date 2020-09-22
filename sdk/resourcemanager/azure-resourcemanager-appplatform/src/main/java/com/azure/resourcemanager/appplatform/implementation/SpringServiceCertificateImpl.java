@@ -21,7 +21,7 @@ public class SpringServiceCertificateImpl
 
     @Override
     public Mono<SpringServiceCertificate> createResourceAsync() {
-        return manager().inner().getCertificates().createOrUpdateAsync(
+        return manager().serviceClient().getCertificates().createOrUpdateAsync(
             parent().resourceGroupName(), parent().name(), name(), inner().properties())
             .map(inner -> {
                 setInner(inner);
@@ -36,12 +36,12 @@ public class SpringServiceCertificateImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return manager().inner().getCertificates().deleteAsync(parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient().getCertificates().deleteAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override
     protected Mono<CertificateResourceInner> getInnerAsync() {
-        return manager().inner().getCertificates().getAsync(parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient().getCertificates().getAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override

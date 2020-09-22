@@ -49,7 +49,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     public Mono<SqlDatabaseImportExportResponse> executeWorkAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getDatabases()
             .exportAsync(
                 this.sqlDatabase.resourceGroupName,

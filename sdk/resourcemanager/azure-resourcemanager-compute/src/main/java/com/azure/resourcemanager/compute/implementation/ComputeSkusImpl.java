@@ -61,7 +61,7 @@ public final class ComputeSkusImpl extends ReadableWrappersImpl<ComputeSku, Comp
     }
 
     public ResourceSkusClient inner() {
-        return this.manager.inner().getResourceSkus();
+        return this.manager.serviceClient().getResourceSkus();
     }
 
     @Override

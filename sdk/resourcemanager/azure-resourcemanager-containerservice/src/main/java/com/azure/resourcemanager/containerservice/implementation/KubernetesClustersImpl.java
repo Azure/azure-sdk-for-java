@@ -29,7 +29,7 @@ public class KubernetesClustersImpl
     implements KubernetesClusters {
 
     public KubernetesClustersImpl(final ContainerServiceManager containerServiceManager) {
-        super(containerServiceManager.inner().getManagedClusters(), containerServiceManager);
+        super(containerServiceManager.serviceClient().getManagedClusters(), containerServiceManager);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class KubernetesClustersImpl
     public Set<String> listKubernetesVersions(Region region) {
         TreeSet<String> kubernetesVersions = new TreeSet<>();
         OrchestratorVersionProfileListResultInner inner =
-            this.manager().inner().getContainerServices().listOrchestrators(region.name());
+            this.manager().serviceClient().getContainerServices().listOrchestrators(region.name());
 
         if (inner != null && inner.orchestrators() != null && inner.orchestrators().size() > 0) {
             for (OrchestratorVersionProfile orchestrator : inner.orchestrators()) {
@@ -106,7 +106,7 @@ public class KubernetesClustersImpl
     public Mono<Set<String>> listKubernetesVersionsAsync(Region region) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getContainerServices()
             .listOrchestratorsAsync(region.name())
             .map(
@@ -133,7 +133,7 @@ public class KubernetesClustersImpl
             String resourceGroupName, String kubernetesClusterName) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getManagedClusters()
             .listClusterAdminCredentialsAsync(resourceGroupName, kubernetesClusterName)
             .map(CredentialResultsInner::kubeconfigs);
@@ -149,7 +149,7 @@ public class KubernetesClustersImpl
             String resourceGroupName, String kubernetesClusterName) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getManagedClusters()
             .listClusterUserCredentialsAsync(resourceGroupName, kubernetesClusterName)
             .map(CredentialResultsInner::kubeconfigs);

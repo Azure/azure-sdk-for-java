@@ -79,7 +79,7 @@ public class SqlRestorableDroppedDatabaseImpl
     protected Mono<RestorableDroppedDatabaseInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getRestorableDroppedDatabases()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.inner().id());
     }

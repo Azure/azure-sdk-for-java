@@ -111,7 +111,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
     protected Mono<DatabaseSecurityAlertPolicyInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getDatabaseThreatDetectionPolicies()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.parent().name(),
                 SecurityAlertPolicyName.DEFAULT);
@@ -122,7 +122,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
         final SqlDatabaseThreatDetectionPolicyImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getDatabaseThreatDetectionPolicies()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.parent().name(),
                 SecurityAlertPolicyName.DEFAULT, this.inner())

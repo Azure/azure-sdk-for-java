@@ -82,14 +82,14 @@ class LoadBalancerImpl
     protected Mono<LoadBalancerInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getLoadBalancers()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     protected Mono<LoadBalancerInner> applyTagsToInnerAsync() {
-        return this.manager().inner().getLoadBalancers().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this.manager().serviceClient().getLoadBalancers().updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     // Helpers
@@ -325,7 +325,7 @@ class LoadBalancerImpl
     protected Mono<LoadBalancerInner> createInner() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getLoadBalancers()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }

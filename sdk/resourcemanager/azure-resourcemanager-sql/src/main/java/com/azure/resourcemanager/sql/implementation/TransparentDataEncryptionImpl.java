@@ -76,7 +76,7 @@ class TransparentDataEncryptionImpl
         TransparentDataEncryptionInner transparentDataEncryptionInner =
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getTransparentDataEncryptions()
                 .createOrUpdate(
                     this.resourceGroupName, this.sqlServerName, this.databaseName(),
@@ -92,7 +92,7 @@ class TransparentDataEncryptionImpl
         final TransparentDataEncryptionImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getTransparentDataEncryptions()
             .createOrUpdateAsync(
                 self.resourceGroupName, self.sqlServerName, self.databaseName(),
@@ -110,7 +110,7 @@ class TransparentDataEncryptionImpl
         PagedIterable<TransparentDataEncryptionActivityInner> transparentDataEncryptionActivityInners =
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getTransparentDataEncryptionActivities()
                 .listByConfiguration(this.resourceGroupName, this.sqlServerName, this.databaseName(),
                     TransparentDataEncryptionName.CURRENT);
@@ -126,7 +126,7 @@ class TransparentDataEncryptionImpl
     public PagedFlux<TransparentDataEncryptionActivity> listActivitiesAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getTransparentDataEncryptionActivities()
             .listByConfigurationAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(),
                 TransparentDataEncryptionName.CURRENT)
@@ -138,7 +138,7 @@ class TransparentDataEncryptionImpl
     protected Mono<TransparentDataEncryptionInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getTransparentDataEncryptions()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(),
                 TransparentDataEncryptionName.CURRENT);

@@ -105,7 +105,7 @@ public class WebAppsTests extends AppServiceTest {
                 WebAppRuntimeStack.NETCORE.runtime(),
                 webApp1
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .listMetadata(webApp1.resourceGroupName(), webApp1.name())
                     .properties()
@@ -125,7 +125,7 @@ public class WebAppsTests extends AppServiceTest {
                 WebAppRuntimeStack.NET.runtime(),
                 webApp3
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .listMetadata(webApp3.resourceGroupName(), webApp3.name())
                     .properties()
