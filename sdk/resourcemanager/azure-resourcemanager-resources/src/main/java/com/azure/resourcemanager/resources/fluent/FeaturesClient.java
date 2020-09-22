@@ -26,9 +26,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.FeatureClient;
-import com.azure.resourcemanager.resources.fluent.inner.FeatureOperationsListResultInner;
 import com.azure.resourcemanager.resources.fluent.inner.FeatureResultInner;
+import com.azure.resourcemanager.resources.models.FeatureOperationsListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Features. */
@@ -46,7 +45,7 @@ public final class FeaturesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public FeaturesClient(FeatureClient client) {
+    FeaturesClient(FeatureClient client) {
         this.service = RestProxy.create(FeaturesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -62,7 +61,7 @@ public final class FeaturesClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Features/features")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FeatureOperationsListResultInner>> listAll(
+        Mono<Response<FeatureOperationsListResult>> listAll(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -74,7 +73,7 @@ public final class FeaturesClient {
                 + "/features")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FeatureOperationsListResultInner>> list(
+        Mono<Response<FeatureOperationsListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @QueryParam("api-version") String apiVersion,
@@ -127,14 +126,14 @@ public final class FeaturesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FeatureOperationsListResultInner>> listAllNext(
+        Mono<Response<FeatureOperationsListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FeatureOperationsListResultInner>> listNext(
+        Mono<Response<FeatureOperationsListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

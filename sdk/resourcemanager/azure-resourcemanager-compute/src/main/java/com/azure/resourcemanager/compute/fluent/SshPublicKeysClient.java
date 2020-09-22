@@ -30,11 +30,10 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.SshPublicKeyGenerateKeyPairResultInner;
 import com.azure.resourcemanager.compute.fluent.inner.SshPublicKeyResourceInner;
-import com.azure.resourcemanager.compute.fluent.inner.SshPublicKeysGroupListResultInner;
 import com.azure.resourcemanager.compute.models.SshPublicKeyUpdateResource;
+import com.azure.resourcemanager.compute.models.SshPublicKeysGroupListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -58,7 +57,7 @@ public final class SshPublicKeysClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public SshPublicKeysClient(ComputeManagementClient client) {
+    SshPublicKeysClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(SshPublicKeysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -75,7 +74,7 @@ public final class SshPublicKeysClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/sshPublicKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SshPublicKeysGroupListResultInner>> list(
+        Mono<Response<SshPublicKeysGroupListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -87,7 +86,7 @@ public final class SshPublicKeysClient
                 + "/sshPublicKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SshPublicKeysGroupListResultInner>> listByResourceGroup(
+        Mono<Response<SshPublicKeysGroupListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -170,14 +169,14 @@ public final class SshPublicKeysClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SshPublicKeysGroupListResultInner>> listBySubscriptionNext(
+        Mono<Response<SshPublicKeysGroupListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SshPublicKeysGroupListResultInner>> listByResourceGroupNext(
+        Mono<Response<SshPublicKeysGroupListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

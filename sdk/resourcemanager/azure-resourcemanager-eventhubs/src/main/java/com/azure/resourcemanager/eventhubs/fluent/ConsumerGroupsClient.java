@@ -28,9 +28,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.eventhubs.EventHubManagementClient;
 import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupInner;
-import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupListResultInner;
+import com.azure.resourcemanager.eventhubs.models.ConsumerGroupListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ConsumerGroups. */
@@ -48,7 +47,7 @@ public final class ConsumerGroupsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ConsumerGroupsClient(EventHubManagementClient client) {
+    ConsumerGroupsClient(EventHubManagementClient client) {
         this.service =
             RestProxy.create(ConsumerGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -116,7 +115,7 @@ public final class ConsumerGroupsClient {
                 + "/{namespaceName}/eventhubs/{eventHubName}/consumergroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConsumerGroupListResultInner>> listByEventHub(
+        Mono<Response<ConsumerGroupListResult>> listByEventHub(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -131,7 +130,7 @@ public final class ConsumerGroupsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConsumerGroupListResultInner>> listByEventHubNext(
+        Mono<Response<ConsumerGroupListResult>> listByEventHubNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -29,10 +29,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.msi.ManagedServiceIdentityClient;
 import com.azure.resourcemanager.msi.fluent.inner.IdentityInner;
-import com.azure.resourcemanager.msi.fluent.inner.UserAssignedIdentitiesListResultInner;
 import com.azure.resourcemanager.msi.models.IdentityUpdate;
+import com.azure.resourcemanager.msi.models.UserAssignedIdentitiesListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -54,7 +53,7 @@ public final class UserAssignedIdentitiesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public UserAssignedIdentitiesClient(ManagedServiceIdentityClient client) {
+    UserAssignedIdentitiesClient(ManagedServiceIdentityClient client) {
         this.service =
             RestProxy
                 .create(UserAssignedIdentitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -72,7 +71,7 @@ public final class UserAssignedIdentitiesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedIdentity/userAssignedIdentities")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UserAssignedIdentitiesListResultInner>> list(
+        Mono<Response<UserAssignedIdentitiesListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -84,7 +83,7 @@ public final class UserAssignedIdentitiesClient
                 + "/userAssignedIdentities")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UserAssignedIdentitiesListResultInner>> listByResourceGroup(
+        Mono<Response<UserAssignedIdentitiesListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -153,14 +152,14 @@ public final class UserAssignedIdentitiesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UserAssignedIdentitiesListResultInner>> listBySubscriptionNext(
+        Mono<Response<UserAssignedIdentitiesListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UserAssignedIdentitiesListResultInner>> listByResourceGroupNext(
+        Mono<Response<UserAssignedIdentitiesListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

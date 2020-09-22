@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.DomainInner;
-import com.azure.resourcemanager.authorization.fluent.inner.DomainListResultInner;
+import com.azure.resourcemanager.authorization.models.DomainListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Domains. */
@@ -45,7 +44,7 @@ public final class DomainsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DomainsClient(GraphRbacManagementClient client) {
+    DomainsClient(GraphRbacManagementClient client) {
         this.service = RestProxy.create(DomainsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -61,7 +60,7 @@ public final class DomainsClient {
         @Get("/{tenantID}/domains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainListResultInner>> list(
+        Mono<Response<DomainListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,

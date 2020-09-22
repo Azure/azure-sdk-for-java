@@ -20,20 +20,40 @@ VERSION_UPDATE_ITEMS = 'version_update_items'
 config = {
     'cosmos': {
         'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml': {
-            ARTIFACT_ID_PAIRS: (
-                ArtifactIdPair('azure-spring-data-2-3-cosmos', 'azure-spring-data-2-2-cosmos'),
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
             )
         }
     },
     'spring': {
-        'sdk/spring/azure-spring-boot-test-cosmosdb/pom.xml': {
-            ARTIFACT_ID_PAIRS: (
-                ArtifactIdPair('azure-cosmosdb-spring-boot-2-3-starter', 'azure-cosmosdb-spring-boot-2-2-starter'),
-            ),
+        'sdk/spring/azure-spring-boot-test-core/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-web', '2.2.9.RELEASE'),
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-actuator', '2.2.9.RELEASE'),
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-test', '2.2.9.RELEASE')
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+            )
+        },
+        'sdk/spring/azure-spring-boot-test-aad/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+            )
+        },
+        'sdk/spring/azure-spring-boot-test-application/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+            )
+        },
+        'sdk/spring/azure-spring-boot-test-cosmosdb/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+            )
+        },
+        'sdk/spring/azure-spring-boot-test-keyvault/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+            )
+        },
+        'sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
             )
         }
     }

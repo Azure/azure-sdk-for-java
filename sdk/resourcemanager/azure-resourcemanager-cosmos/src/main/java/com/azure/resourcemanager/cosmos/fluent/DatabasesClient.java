@@ -25,13 +25,12 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.MetricDefinitionInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.MetricDefinitionsListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.MetricInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.MetricListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.UsageInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.UsagesResultInner;
+import com.azure.resourcemanager.cosmos.models.MetricDefinitionsListResult;
+import com.azure.resourcemanager.cosmos.models.MetricListResult;
+import com.azure.resourcemanager.cosmos.models.UsagesResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Databases. */
@@ -49,7 +48,7 @@ public final class DatabasesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DatabasesClient(CosmosDBManagementClient client) {
+    DatabasesClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy.create(DatabasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -68,7 +67,7 @@ public final class DatabasesClient {
                 + "/databaseAccounts/{accountName}/databases/{databaseRid}/metrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetricListResultInner>> listMetrics(
+        Mono<Response<MetricListResult>> listMetrics(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -84,7 +83,7 @@ public final class DatabasesClient {
                 + "/databaseAccounts/{accountName}/databases/{databaseRid}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UsagesResultInner>> listUsages(
+        Mono<Response<UsagesResult>> listUsages(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -100,7 +99,7 @@ public final class DatabasesClient {
                 + "/databaseAccounts/{accountName}/databases/{databaseRid}/metricDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetricDefinitionsListResultInner>> listMetricDefinitions(
+        Mono<Response<MetricDefinitionsListResult>> listMetricDefinitions(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,

@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.management.Resource;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
@@ -40,6 +40,9 @@ import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,8 +52,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** Implementation for ContainerGroup and its create interfaces. */
 public class ContainerGroupImpl
@@ -82,7 +83,7 @@ public class ContainerGroupImpl
         if (creatableVirtualNetwork != null) {
             mono =
                 mono
-                    .then(creatableVirtualNetwork.createAsync().last())
+                    .then(creatableVirtualNetwork.createAsync())
                     .flatMap(
                         network -> {
                             creatableVirtualNetwork = null;

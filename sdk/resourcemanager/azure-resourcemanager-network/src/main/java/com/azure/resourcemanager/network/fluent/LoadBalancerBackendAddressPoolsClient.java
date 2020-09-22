@@ -31,9 +31,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
-import com.azure.resourcemanager.network.fluent.inner.LoadBalancerBackendAddressPoolListResultInner;
+import com.azure.resourcemanager.network.models.LoadBalancerBackendAddressPoolListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public final class LoadBalancerBackendAddressPoolsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public LoadBalancerBackendAddressPoolsClient(NetworkManagementClient client) {
+    LoadBalancerBackendAddressPoolsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -76,7 +75,7 @@ public final class LoadBalancerBackendAddressPoolsClient {
                 + "/loadBalancers/{loadBalancerName}/backendAddressPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadBalancerBackendAddressPoolListResultInner>> list(
+        Mono<Response<LoadBalancerBackendAddressPoolListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("loadBalancerName") String loadBalancerName,
@@ -134,7 +133,7 @@ public final class LoadBalancerBackendAddressPoolsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadBalancerBackendAddressPoolListResultInner>> listNext(
+        Mono<Response<LoadBalancerBackendAddressPoolListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

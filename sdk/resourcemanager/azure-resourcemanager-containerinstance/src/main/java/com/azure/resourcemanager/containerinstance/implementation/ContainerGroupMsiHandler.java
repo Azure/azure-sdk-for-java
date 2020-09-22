@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentityUserAssignedIdentities;
@@ -110,7 +110,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
             || containerGroupInner.identity().type().equals(identityType)) {
             containerGroupInner.identity().withType(identityType);
         } else {
-            containerGroupInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
+            containerGroupInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
         }
     }
 }

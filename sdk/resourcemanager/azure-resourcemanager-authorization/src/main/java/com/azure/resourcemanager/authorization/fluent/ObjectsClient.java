@@ -26,9 +26,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectInner;
-import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectListResultInner;
+import com.azure.resourcemanager.authorization.models.DirectoryObjectListResult;
 import com.azure.resourcemanager.authorization.models.GetObjectsParameters;
 import reactor.core.publisher.Mono;
 
@@ -47,7 +46,7 @@ public final class ObjectsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ObjectsClient(GraphRbacManagementClient client) {
+    ObjectsClient(GraphRbacManagementClient client) {
         this.service = RestProxy.create(ObjectsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -63,7 +62,7 @@ public final class ObjectsClient {
         @Post("/{tenantID}/getObjectsByObjectIds")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DirectoryObjectListResultInner>> getObjectsByObjectIds(
+        Mono<Response<DirectoryObjectListResult>> getObjectsByObjectIds(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
@@ -74,7 +73,7 @@ public final class ObjectsClient {
         @Post("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DirectoryObjectListResultInner>> getObjectsByObjectIdsNext(
+        Mono<Response<DirectoryObjectListResult>> getObjectsByObjectIdsNext(
             @HostParam("$host") String endpoint,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,

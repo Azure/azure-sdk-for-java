@@ -32,35 +32,34 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.AddressResponseInner;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceEnvironmentCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServiceEnvironmentResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanInner;
-import com.azure.resourcemanager.appservice.fluent.inner.CsmUsageQuotaCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmUsageQuotaInner;
 import com.azure.resourcemanager.appservice.fluent.inner.HostingEnvironmentDiagnosticsInner;
-import com.azure.resourcemanager.appservice.fluent.inner.InboundEnvironmentEndpointCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.InboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.appservice.fluent.inner.OperationInner;
-import com.azure.resourcemanager.appservice.fluent.inner.OutboundEnvironmentEndpointCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.OutboundEnvironmentEndpointInner;
-import com.azure.resourcemanager.appservice.fluent.inner.ResourceMetricDefinitionCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.ResourceMetricDefinitionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SkuInfoCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SkuInfoInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StampCapacityCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StampCapacityInner;
-import com.azure.resourcemanager.appservice.fluent.inner.UsageCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.UsageInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WebAppCollectionInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WorkerPoolCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.WorkerPoolResourceInner;
+import com.azure.resourcemanager.appservice.models.AppServiceEnvironmentCollection;
 import com.azure.resourcemanager.appservice.models.AppServiceEnvironmentPatchResource;
+import com.azure.resourcemanager.appservice.models.AppServicePlanCollection;
+import com.azure.resourcemanager.appservice.models.CsmUsageQuotaCollection;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.InboundEnvironmentEndpointCollection;
+import com.azure.resourcemanager.appservice.models.OutboundEnvironmentEndpointCollection;
+import com.azure.resourcemanager.appservice.models.ResourceMetricDefinitionCollection;
+import com.azure.resourcemanager.appservice.models.SkuInfoCollection;
+import com.azure.resourcemanager.appservice.models.StampCapacityCollection;
+import com.azure.resourcemanager.appservice.models.UsageCollection;
 import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
+import com.azure.resourcemanager.appservice.models.WebAppCollection;
+import com.azure.resourcemanager.appservice.models.WorkerPoolCollection;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -87,7 +86,7 @@ public final class AppServiceEnvironmentsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AppServiceEnvironmentsClient(WebSiteManagementClient client) {
+    AppServiceEnvironmentsClient(WebSiteManagementClient client) {
         this.service =
             RestProxy
                 .create(AppServiceEnvironmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -105,7 +104,7 @@ public final class AppServiceEnvironmentsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceEnvironmentCollectionInner>> list(
+        Mono<Response<AppServiceEnvironmentCollection>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -117,7 +116,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceEnvironmentCollectionInner>> listByResourceGroup(
+        Mono<Response<AppServiceEnvironmentCollection>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -189,7 +188,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/capacities/compute")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StampCapacityCollectionInner>> listCapacities(
+        Mono<Response<StampCapacityCollection>> listCapacities(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -261,7 +260,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/inboundNetworkDependenciesEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<InboundEnvironmentEndpointCollectionInner>> getInboundNetworkDependenciesEndpoints(
+        Mono<Response<InboundEnvironmentEndpointCollection>> getInboundNetworkDependenciesEndpoints(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -275,7 +274,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/multiRolePools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WorkerPoolCollectionInner>> listMultiRolePools(
+        Mono<Response<WorkerPoolCollection>> listMultiRolePools(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -333,7 +332,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/multiRolePools/default/instances/{instance}/metricdefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollectionInner>> listMultiRolePoolInstanceMetricDefinitions(
+        Mono<Response<ResourceMetricDefinitionCollection>> listMultiRolePoolInstanceMetricDefinitions(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -348,7 +347,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/multiRolePools/default/metricdefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollectionInner>> listMultiRoleMetricDefinitions(
+        Mono<Response<ResourceMetricDefinitionCollection>> listMultiRoleMetricDefinitions(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -362,7 +361,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/multiRolePools/default/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<SkuInfoCollectionInner>> listMultiRolePoolSkus(
+        Mono<Response<SkuInfoCollection>> listMultiRolePoolSkus(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -376,7 +375,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/multiRolePools/default/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<UsageCollectionInner>> listMultiRoleUsages(
+        Mono<Response<UsageCollection>> listMultiRoleUsages(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -404,7 +403,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/outboundNetworkDependenciesEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<OutboundEnvironmentEndpointCollectionInner>> getOutboundNetworkDependenciesEndpoints(
+        Mono<Response<OutboundEnvironmentEndpointCollection>> getOutboundNetworkDependenciesEndpoints(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -446,7 +445,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/serverfarms")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServicePlanCollectionInner>> listAppServicePlans(
+        Mono<Response<AppServicePlanCollection>> listAppServicePlans(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -460,7 +459,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/sites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WebAppCollectionInner>> listWebApps(
+        Mono<Response<WebAppCollection>> listWebApps(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -489,7 +488,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CsmUsageQuotaCollectionInner>> listUsages(
+        Mono<Response<CsmUsageQuotaCollection>> listUsages(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -504,7 +503,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/workerPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WorkerPoolCollectionInner>> listWorkerPools(
+        Mono<Response<WorkerPoolCollection>> listWorkerPools(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -565,7 +564,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/workerPools/{workerPoolName}/instances/{instance}/metricdefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollectionInner>> listWorkerPoolInstanceMetricDefinitions(
+        Mono<Response<ResourceMetricDefinitionCollection>> listWorkerPoolInstanceMetricDefinitions(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -581,7 +580,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/workerPools/{workerPoolName}/metricdefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollectionInner>> listWebWorkerMetricDefinitions(
+        Mono<Response<ResourceMetricDefinitionCollection>> listWebWorkerMetricDefinitions(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -596,7 +595,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/workerPools/{workerPoolName}/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<SkuInfoCollectionInner>> listWorkerPoolSkus(
+        Mono<Response<SkuInfoCollection>> listWorkerPoolSkus(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -611,7 +610,7 @@ public final class AppServiceEnvironmentsClient
                 + "/hostingEnvironments/{name}/workerPools/{workerPoolName}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<UsageCollectionInner>> listWebWorkerUsages(
+        Mono<Response<UsageCollection>> listWebWorkerUsages(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -624,147 +623,147 @@ public final class AppServiceEnvironmentsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceEnvironmentCollectionInner>> listNext(
+        Mono<Response<AppServiceEnvironmentCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServiceEnvironmentCollectionInner>> listByResourceGroupNext(
+        Mono<Response<AppServiceEnvironmentCollection>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StampCapacityCollectionInner>> listCapacitiesNext(
+        Mono<Response<StampCapacityCollection>> listCapacitiesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WebAppCollectionInner>> changeVnetNext(
+        Mono<Response<WebAppCollection>> changeVnetNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<InboundEnvironmentEndpointCollectionInner>> getInboundNetworkDependenciesEndpointsNext(
+        Mono<Response<InboundEnvironmentEndpointCollection>> getInboundNetworkDependenciesEndpointsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WorkerPoolCollectionInner>> listMultiRolePoolsNext(
+        Mono<Response<WorkerPoolCollection>> listMultiRolePoolsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollectionInner>> listMultiRolePoolInstanceMetricDefinitionsNext(
+        Mono<Response<ResourceMetricDefinitionCollection>> listMultiRolePoolInstanceMetricDefinitionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollectionInner>> listMultiRoleMetricDefinitionsNext(
+        Mono<Response<ResourceMetricDefinitionCollection>> listMultiRoleMetricDefinitionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<SkuInfoCollectionInner>> listMultiRolePoolSkusNext(
+        Mono<Response<SkuInfoCollection>> listMultiRolePoolSkusNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<UsageCollectionInner>> listMultiRoleUsagesNext(
+        Mono<Response<UsageCollection>> listMultiRoleUsagesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<OutboundEnvironmentEndpointCollectionInner>> getOutboundNetworkDependenciesEndpointsNext(
+        Mono<Response<OutboundEnvironmentEndpointCollection>> getOutboundNetworkDependenciesEndpointsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WebAppCollectionInner>> resumeNext(
+        Mono<Response<WebAppCollection>> resumeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServicePlanCollectionInner>> listAppServicePlansNext(
+        Mono<Response<AppServicePlanCollection>> listAppServicePlansNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WebAppCollectionInner>> listWebAppsNext(
+        Mono<Response<WebAppCollection>> listWebAppsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WebAppCollectionInner>> suspendNext(
+        Mono<Response<WebAppCollection>> suspendNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CsmUsageQuotaCollectionInner>> listUsagesNext(
+        Mono<Response<CsmUsageQuotaCollection>> listUsagesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<WorkerPoolCollectionInner>> listWorkerPoolsNext(
+        Mono<Response<WorkerPoolCollection>> listWorkerPoolsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollectionInner>> listWorkerPoolInstanceMetricDefinitionsNext(
+        Mono<Response<ResourceMetricDefinitionCollection>> listWorkerPoolInstanceMetricDefinitionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ResourceMetricDefinitionCollectionInner>> listWebWorkerMetricDefinitionsNext(
+        Mono<Response<ResourceMetricDefinitionCollection>> listWebWorkerMetricDefinitionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<SkuInfoCollectionInner>> listWorkerPoolSkusNext(
+        Mono<Response<SkuInfoCollection>> listWorkerPoolSkusNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<UsageCollectionInner>> listWebWorkerUsagesNext(
+        Mono<Response<UsageCollection>> listWebWorkerUsagesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -2410,11 +2409,11 @@ public final class AppServiceEnvironmentsClient
                             mono,
                             this
                                 .client
-                                .<WebAppCollectionInner, WebAppCollectionInner>getLroResult(
+                                .<WebAppCollection, WebAppCollection>getLroResult(
                                     mono,
                                     this.client.getHttpPipeline(),
-                                    WebAppCollectionInner.class,
-                                    WebAppCollectionInner.class,
+                                    WebAppCollection.class,
+                                    WebAppCollection.class,
                                     Context.NONE)
                                 .last()
                                 .flatMap(this.client::getLroFinalResultOrError));
@@ -2487,12 +2486,8 @@ public final class AppServiceEnvironmentsClient
                 mono,
                 this
                     .client
-                    .<WebAppCollectionInner, WebAppCollectionInner>getLroResult(
-                        mono,
-                        this.client.getHttpPipeline(),
-                        WebAppCollectionInner.class,
-                        WebAppCollectionInner.class,
-                        context)
+                    .<WebAppCollection, WebAppCollection>getLroResult(
+                        mono, this.client.getHttpPipeline(), WebAppCollection.class, WebAppCollection.class, context)
                     .last()
                     .flatMap(this.client::getLroFinalResultOrError))
             .map(
@@ -5188,11 +5183,11 @@ public final class AppServiceEnvironmentsClient
                             mono,
                             this
                                 .client
-                                .<WebAppCollectionInner, WebAppCollectionInner>getLroResult(
+                                .<WebAppCollection, WebAppCollection>getLroResult(
                                     mono,
                                     this.client.getHttpPipeline(),
-                                    WebAppCollectionInner.class,
-                                    WebAppCollectionInner.class,
+                                    WebAppCollection.class,
+                                    WebAppCollection.class,
                                     Context.NONE)
                                 .last()
                                 .flatMap(this.client::getLroFinalResultOrError));
@@ -5258,12 +5253,8 @@ public final class AppServiceEnvironmentsClient
                 mono,
                 this
                     .client
-                    .<WebAppCollectionInner, WebAppCollectionInner>getLroResult(
-                        mono,
-                        this.client.getHttpPipeline(),
-                        WebAppCollectionInner.class,
-                        WebAppCollectionInner.class,
-                        context)
+                    .<WebAppCollection, WebAppCollection>getLroResult(
+                        mono, this.client.getHttpPipeline(), WebAppCollection.class, WebAppCollection.class, context)
                     .last()
                     .flatMap(this.client::getLroFinalResultOrError))
             .map(
@@ -5787,11 +5778,11 @@ public final class AppServiceEnvironmentsClient
                             mono,
                             this
                                 .client
-                                .<WebAppCollectionInner, WebAppCollectionInner>getLroResult(
+                                .<WebAppCollection, WebAppCollection>getLroResult(
                                     mono,
                                     this.client.getHttpPipeline(),
-                                    WebAppCollectionInner.class,
-                                    WebAppCollectionInner.class,
+                                    WebAppCollection.class,
+                                    WebAppCollection.class,
                                     Context.NONE)
                                 .last()
                                 .flatMap(this.client::getLroFinalResultOrError));
@@ -5857,12 +5848,8 @@ public final class AppServiceEnvironmentsClient
                 mono,
                 this
                     .client
-                    .<WebAppCollectionInner, WebAppCollectionInner>getLroResult(
-                        mono,
-                        this.client.getHttpPipeline(),
-                        WebAppCollectionInner.class,
-                        WebAppCollectionInner.class,
-                        context)
+                    .<WebAppCollection, WebAppCollection>getLroResult(
+                        mono, this.client.getHttpPipeline(), WebAppCollection.class, WebAppCollection.class, context)
                     .last()
                     .flatMap(this.client::getLroFinalResultOrError))
             .map(

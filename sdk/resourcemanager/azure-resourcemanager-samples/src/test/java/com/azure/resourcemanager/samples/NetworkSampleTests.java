@@ -18,86 +18,90 @@ import com.azure.resourcemanager.network.samples.ManageVirtualNetworkAsync;
 import com.azure.resourcemanager.network.samples.ManageVpnGatewayPoint2SiteConnection;
 import com.azure.resourcemanager.network.samples.ManageVpnGatewaySite2SiteConnection;
 import com.azure.resourcemanager.network.samples.VerifyNetworkPeeringWithNetworkWatcher;
+import com.jcraft.jsch.JSchException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public class NetworkSampleTests extends SamplesTestBase {
 
     @Test
     public void testManageNetworkPeeringInSameSubscription() {
-        Assertions.assertTrue(ManageNetworkPeeringInSameSubscription.runSample(azure));
+        Assertions.assertTrue(ManageNetworkPeeringInSameSubscription.runSample(azureResourceManager));
     }
 
     @Test
     @Disabled("Get error `Cannot create more than 1 network watchers for this subscription in this region.` with test subscription")
     public void testVerifyNetworkPeeringWithNetworkWatcher() {
-        Assertions.assertTrue(VerifyNetworkPeeringWithNetworkWatcher.runSample(azure));
+        Assertions.assertTrue(VerifyNetworkPeeringWithNetworkWatcher.runSample(azureResourceManager));
     }
 
     @Test
-    public void testManageApplicationGateway() {
-        Assertions.assertTrue(ManageApplicationGateway.runSample(azure));
+    public void testManageApplicationGateway() throws IOException {
+        Assertions.assertTrue(ManageApplicationGateway.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageInternalLoadBalancer() {
-        Assertions.assertTrue(ManageInternalLoadBalancer.runSample(azure));
+        Assertions.assertTrue(ManageInternalLoadBalancer.runSample(azureResourceManager));
     }
 
     @Test
     public void testCreateSimpleInternetFacingLoadBalancer() {
-        Assertions.assertTrue(CreateSimpleInternetFacingLoadBalancer.runSample(azure));
+        Assertions.assertTrue(CreateSimpleInternetFacingLoadBalancer.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageInternetFacingLoadBalancer() {
-        Assertions.assertTrue(ManageInternetFacingLoadBalancer.runSample(azure));
+        Assertions.assertTrue(ManageInternetFacingLoadBalancer.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageIPAddress() {
-        Assertions.assertTrue(ManageIPAddress.runSample(azure));
+        Assertions.assertTrue(ManageIPAddress.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageNetworkInterface() {
-        Assertions.assertTrue(ManageNetworkInterface.runSample(azure));
+        Assertions.assertTrue(ManageNetworkInterface.runSample(azureResourceManager));
     }
 
     @Test
-    public void testManageNetworkSecurityGroup() {
-        Assertions.assertTrue(ManageNetworkSecurityGroup.runSample(azure));
+    public void testManageNetworkSecurityGroup() throws UnsupportedEncodingException, JSchException {
+        Assertions.assertTrue(ManageNetworkSecurityGroup.runSample(azureResourceManager));
     }
 
     @Test
-    public void testManageSimpleApplicationGateway() {
-        Assertions.assertTrue(ManageSimpleApplicationGateway.runSample(azure));
+    public void testManageSimpleApplicationGateway() throws IOException {
+        Assertions.assertTrue(ManageSimpleApplicationGateway.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVirtualMachinesInParallelWithNetwork() {
-        Assertions.assertTrue(ManageVirtualMachinesInParallelWithNetwork.runSample(azure));
+        Assertions.assertTrue(ManageVirtualMachinesInParallelWithNetwork.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVirtualNetwork() {
-        Assertions.assertTrue(ManageVirtualNetwork.runSample(azure));
+        Assertions.assertTrue(ManageVirtualNetwork.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVirtualNetworkAsync() {
-        Assertions.assertTrue(ManageVirtualNetworkAsync.runSample(azure));
+        Assertions.assertTrue(ManageVirtualNetworkAsync.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageVpnGatewaySite2SiteConnection() {
-        Assertions.assertTrue(ManageVpnGatewaySite2SiteConnection.runSample(azure));
+        Assertions.assertTrue(ManageVpnGatewaySite2SiteConnection.runSample(azureResourceManager));
     }
 
     @Test
     @Disabled("Need root certificate file and client certificate thumbprint to run the sample")
-    public void testManageVpnGatewayPoint2SiteConnection() {
-        Assertions.assertTrue(ManageVpnGatewayPoint2SiteConnection.runSample(azure));
+    public void testManageVpnGatewayPoint2SiteConnection() throws IOException {
+        Assertions.assertTrue(ManageVpnGatewayPoint2SiteConnection.runSample(azureResourceManager));
     }
 }

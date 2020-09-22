@@ -32,10 +32,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceCollectionInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceInner;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
+import com.azure.resourcemanager.appplatform.models.CustomDomainResourceCollection;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -55,7 +54,7 @@ public final class CustomDomainsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public CustomDomainsClient(AppPlatformManagementClient client) {
+    CustomDomainsClient(AppPlatformManagementClient client) {
         this.service =
             RestProxy.create(CustomDomainsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -140,7 +139,7 @@ public final class CustomDomainsClient {
                 + "/{serviceName}/apps/{appName}/domains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomDomainResourceCollectionInner>> list(
+        Mono<Response<CustomDomainResourceCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -153,7 +152,7 @@ public final class CustomDomainsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomDomainResourceCollectionInner>> listNext(
+        Mono<Response<CustomDomainResourceCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

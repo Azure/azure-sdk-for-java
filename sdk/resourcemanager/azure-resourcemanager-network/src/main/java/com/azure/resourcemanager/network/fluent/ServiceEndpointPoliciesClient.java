@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ServiceEndpointPolicyInner;
-import com.azure.resourcemanager.network.fluent.inner.ServiceEndpointPolicyListResultInner;
+import com.azure.resourcemanager.network.models.ServiceEndpointPolicyListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class ServiceEndpointPoliciesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ServiceEndpointPoliciesClient(NetworkManagementClient client) {
+    ServiceEndpointPoliciesClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(ServiceEndpointPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -139,7 +138,7 @@ public final class ServiceEndpointPoliciesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/ServiceEndpointPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceEndpointPolicyListResultInner>> list(
+        Mono<Response<ServiceEndpointPolicyListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -151,7 +150,7 @@ public final class ServiceEndpointPoliciesClient
                 + "/serviceEndpointPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceEndpointPolicyListResultInner>> listByResourceGroup(
+        Mono<Response<ServiceEndpointPolicyListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -162,14 +161,14 @@ public final class ServiceEndpointPoliciesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceEndpointPolicyListResultInner>> listNext(
+        Mono<Response<ServiceEndpointPolicyListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceEndpointPolicyListResultInner>> listByResourceGroupNext(
+        Mono<Response<ServiceEndpointPolicyListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -609,6 +608,23 @@ public final class ServiceEndpointPoliciesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified service Endpoint Policies in a specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceEndpointPolicyInner getByResourceGroup(String resourceGroupName, String serviceEndpointPolicyName) {
+        final String expand = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, serviceEndpointPolicyName, expand).block();
+    }
+
+    /**
+     * Gets the specified service Endpoint Policies in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -620,23 +636,6 @@ public final class ServiceEndpointPoliciesClient
     public ServiceEndpointPolicyInner getByResourceGroup(
         String resourceGroupName, String serviceEndpointPolicyName, String expand, Context context) {
         return getByResourceGroupAsync(resourceGroupName, serviceEndpointPolicyName, expand, context).block();
-    }
-
-    /**
-     * Gets the specified service Endpoint Policies in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service Endpoint Policies in a specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceEndpointPolicyInner getByResourceGroup(String resourceGroupName, String serviceEndpointPolicyName) {
-        final String expand = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, serviceEndpointPolicyName, expand).block();
     }
 
     /**

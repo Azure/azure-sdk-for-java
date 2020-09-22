@@ -29,13 +29,12 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.eventhubs.EventHubManagementClient;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
-import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleListResultInner;
-import com.azure.resourcemanager.eventhubs.fluent.inner.EventHubListResultInner;
 import com.azure.resourcemanager.eventhubs.fluent.inner.EventhubInner;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
+import com.azure.resourcemanager.eventhubs.models.AuthorizationRuleListResult;
+import com.azure.resourcemanager.eventhubs.models.EventHubListResult;
 import com.azure.resourcemanager.eventhubs.models.RegenerateAccessKeyParameters;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -55,7 +54,7 @@ public final class EventHubsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public EventHubsClient(EventHubManagementClient client) {
+    EventHubsClient(EventHubManagementClient client) {
         this.service =
             RestProxy.create(EventHubsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -74,7 +73,7 @@ public final class EventHubsClient {
                 + "/{namespaceName}/eventhubs/{eventHubName}/authorizationRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationRuleListResultInner>> listAuthorizationRules(
+        Mono<Response<AuthorizationRuleListResult>> listAuthorizationRules(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -171,7 +170,7 @@ public final class EventHubsClient {
                 + "/{namespaceName}/eventhubs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventHubListResultInner>> listByNamespace(
+        Mono<Response<EventHubListResult>> listByNamespace(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -231,14 +230,14 @@ public final class EventHubsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationRuleListResultInner>> listAuthorizationRulesNext(
+        Mono<Response<AuthorizationRuleListResult>> listAuthorizationRulesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventHubListResultInner>> listByNamespaceNext(
+        Mono<Response<EventHubListResult>> listByNamespaceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

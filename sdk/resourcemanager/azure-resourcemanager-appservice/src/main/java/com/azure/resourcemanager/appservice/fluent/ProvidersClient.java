@@ -24,11 +24,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
-import com.azure.resourcemanager.appservice.fluent.inner.ApplicationStackCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.ApplicationStackResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationDescriptionInner;
+import com.azure.resourcemanager.appservice.models.ApplicationStackCollection;
+import com.azure.resourcemanager.appservice.models.CsmOperationCollection;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.ProviderOsTypeSelected;
 import reactor.core.publisher.Mono;
@@ -48,7 +47,7 @@ public final class ProvidersClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ProvidersClient(WebSiteManagementClient client) {
+    ProvidersClient(WebSiteManagementClient client) {
         this.service =
             RestProxy.create(ProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -65,7 +64,7 @@ public final class ProvidersClient {
         @Get("/providers/Microsoft.Web/availableStacks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ApplicationStackCollectionInner>> getAvailableStacks(
+        Mono<Response<ApplicationStackCollection>> getAvailableStacks(
             @HostParam("$host") String endpoint,
             @QueryParam("osTypeSelected") ProviderOsTypeSelected osTypeSelected,
             @QueryParam("api-version") String apiVersion,
@@ -75,14 +74,14 @@ public final class ProvidersClient {
         @Get("/providers/Microsoft.Web/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CsmOperationCollectionInner>> listOperations(
+        Mono<Response<CsmOperationCollection>> listOperations(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/availableStacks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ApplicationStackCollectionInner>> list(
+        Mono<Response<ApplicationStackCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("osTypeSelected") ProviderOsTypeSelected osTypeSelected,
             @PathParam("subscriptionId") String subscriptionId,
@@ -93,21 +92,21 @@ public final class ProvidersClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ApplicationStackCollectionInner>> getAvailableStacksNext(
+        Mono<Response<ApplicationStackCollection>> getAvailableStacksNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CsmOperationCollectionInner>> listOperationsNext(
+        Mono<Response<CsmOperationCollection>> listOperationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ApplicationStackCollectionInner>> getAvailableStacksOnPremNext(
+        Mono<Response<ApplicationStackCollection>> getAvailableStacksOnPremNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

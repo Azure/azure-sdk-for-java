@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteServiceProviderInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteServiceProviderListResultInner;
+import com.azure.resourcemanager.network.models.ExpressRouteServiceProviderListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExpressRouteServiceProviders. */
@@ -45,7 +44,7 @@ public final class ExpressRouteServiceProvidersClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ExpressRouteServiceProvidersClient(NetworkManagementClient client) {
+    ExpressRouteServiceProvidersClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -64,7 +63,7 @@ public final class ExpressRouteServiceProvidersClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteServiceProviders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteServiceProviderListResultInner>> list(
+        Mono<Response<ExpressRouteServiceProviderListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -74,7 +73,7 @@ public final class ExpressRouteServiceProvidersClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteServiceProviderListResultInner>> listNext(
+        Mono<Response<ExpressRouteServiceProviderListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

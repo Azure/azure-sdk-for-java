@@ -186,6 +186,10 @@ public class CosmosException extends AzureException {
         return code;
     }
 
+    void setSubStatusCode(int subStatusCode) {
+        this.responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, Integer.toString(subStatusCode));
+    }
+
     /**
      * Gets the error code associated with the exception.
      *

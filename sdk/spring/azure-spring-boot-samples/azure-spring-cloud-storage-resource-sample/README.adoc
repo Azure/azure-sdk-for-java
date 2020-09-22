@@ -4,7 +4,7 @@
 == Getting started
 
 This code sample demonstrates how to read and write files with the Spring Resource abstraction for Azure Storage using the
-link:../../azure-spring-cloud-starter-storage[Spring Cloud Azure Storage Starter].Running this sample will be charged by Azure.
+link:../../azure-spring-starter-storage[Spring Azure Storage Starter].Running this sample will be charged by Azure.
 You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
 
 Running this sample will be charged by Azure.

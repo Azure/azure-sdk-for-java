@@ -33,18 +33,17 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.eventhubs.EventHubManagementClient;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
-import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleListResultInner;
 import com.azure.resourcemanager.eventhubs.fluent.inner.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.eventhubs.fluent.inner.EHNamespaceInner;
-import com.azure.resourcemanager.eventhubs.fluent.inner.EHNamespaceListResultInner;
 import com.azure.resourcemanager.eventhubs.fluent.inner.MessagingPlanInner;
 import com.azure.resourcemanager.eventhubs.fluent.inner.NetworkRuleSetInner;
-import com.azure.resourcemanager.eventhubs.fluent.inner.NetworkRuleSetListResultInner;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
+import com.azure.resourcemanager.eventhubs.models.AuthorizationRuleListResult;
 import com.azure.resourcemanager.eventhubs.models.CheckNameAvailabilityParameter;
+import com.azure.resourcemanager.eventhubs.models.EHNamespaceListResult;
+import com.azure.resourcemanager.eventhubs.models.NetworkRuleSetListResult;
 import com.azure.resourcemanager.eventhubs.models.RegenerateAccessKeyParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -70,7 +69,7 @@ public final class NamespacesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public NamespacesClient(EventHubManagementClient client) {
+    NamespacesClient(EventHubManagementClient client) {
         this.service =
             RestProxy.create(NamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -89,7 +88,7 @@ public final class NamespacesClient
                 + "/{namespaceName}/authorizationRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationRuleListResultInner>> listAuthorizationRules(
+        Mono<Response<AuthorizationRuleListResult>> listAuthorizationRules(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -189,7 +188,7 @@ public final class NamespacesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EHNamespaceListResultInner>> list(
+        Mono<Response<EHNamespaceListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -201,7 +200,7 @@ public final class NamespacesClient
                 + "/namespaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EHNamespaceListResultInner>> listByResourceGroup(
+        Mono<Response<EHNamespaceListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -315,7 +314,7 @@ public final class NamespacesClient
                 + "/{namespaceName}/networkRuleSets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkRuleSetListResultInner>> listNetworkRuleSets(
+        Mono<Response<NetworkRuleSetListResult>> listNetworkRuleSets(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -327,28 +326,28 @@ public final class NamespacesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationRuleListResultInner>> listAuthorizationRulesNext(
+        Mono<Response<AuthorizationRuleListResult>> listAuthorizationRulesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EHNamespaceListResultInner>> listNext(
+        Mono<Response<EHNamespaceListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EHNamespaceListResultInner>> listByResourceGroupNext(
+        Mono<Response<EHNamespaceListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkRuleSetListResultInner>> listNetworkRuleSetsNext(
+        Mono<Response<NetworkRuleSetListResult>> listNetworkRuleSetsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

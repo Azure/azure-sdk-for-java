@@ -33,13 +33,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitStatsInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitsArpTableListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitsRoutesTableListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitsRoutesTableSummaryListResultInner;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -67,7 +66,7 @@ public final class ExpressRouteCircuitsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ExpressRouteCircuitsClient(NetworkManagementClient client) {
+    ExpressRouteCircuitsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(ExpressRouteCircuitsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -222,7 +221,7 @@ public final class ExpressRouteCircuitsClient
                 + "/expressRouteCircuits")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCircuitListResultInner>> listByResourceGroup(
+        Mono<Response<ExpressRouteCircuitListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -233,7 +232,7 @@ public final class ExpressRouteCircuitsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteCircuits")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCircuitListResultInner>> list(
+        Mono<Response<ExpressRouteCircuitListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -243,14 +242,14 @@ public final class ExpressRouteCircuitsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCircuitListResultInner>> listNext(
+        Mono<Response<ExpressRouteCircuitListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCircuitListResultInner>> listAllNext(
+        Mono<Response<ExpressRouteCircuitListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -28,6 +28,12 @@ public final class TrainRequest {
     @JsonProperty(value = "useLabelFile")
     private Boolean useLabelFile;
 
+    /*
+     * Optional user defined model name (max length: 1024).
+     */
+    @JsonProperty(value = "modelName")
+    private String modelName;
+
     /**
      * Get the source property: Source path containing the training documents.
      *
@@ -85,6 +91,26 @@ public final class TrainRequest {
      */
     public TrainRequest setUseLabelFile(Boolean useLabelFile) {
         this.useLabelFile = useLabelFile;
+        return this;
+    }
+
+    /**
+     * Get the modelName property: Optional user defined model name (max length: 1024).
+     *
+     * @return the modelName value.
+     */
+    public String getModelName() {
+        return this.modelName;
+    }
+
+    /**
+     * Set the modelName property: Optional user defined model name (max length: 1024).
+     *
+     * @param modelName the modelName value to set.
+     * @return the TrainRequest object itself.
+     */
+    public TrainRequest setModelName(String modelName) {
+        this.modelName = modelName;
         return this;
     }
 }

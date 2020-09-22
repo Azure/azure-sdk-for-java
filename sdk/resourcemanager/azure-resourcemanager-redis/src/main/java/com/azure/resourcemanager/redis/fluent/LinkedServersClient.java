@@ -31,10 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.redis.RedisManagementClient;
 import com.azure.resourcemanager.redis.fluent.inner.RedisLinkedServerWithPropertiesInner;
-import com.azure.resourcemanager.redis.fluent.inner.RedisLinkedServerWithPropertiesListInner;
 import com.azure.resourcemanager.redis.models.RedisLinkedServerCreateParameters;
+import com.azure.resourcemanager.redis.models.RedisLinkedServerWithPropertiesList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,7 +53,7 @@ public final class LinkedServersClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public LinkedServersClient(RedisManagementClient client) {
+    LinkedServersClient(RedisManagementClient client) {
         this.service =
             RestProxy.create(LinkedServersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -119,7 +118,7 @@ public final class LinkedServersClient {
                 + "/linkedServers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisLinkedServerWithPropertiesListInner>> list(
+        Mono<Response<RedisLinkedServerWithPropertiesList>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -131,7 +130,7 @@ public final class LinkedServersClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisLinkedServerWithPropertiesListInner>> listNext(
+        Mono<Response<RedisLinkedServerWithPropertiesList>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

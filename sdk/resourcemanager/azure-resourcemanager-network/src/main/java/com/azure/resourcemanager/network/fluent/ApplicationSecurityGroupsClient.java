@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationSecurityGroupInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationSecurityGroupListResultInner;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroupListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class ApplicationSecurityGroupsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ApplicationSecurityGroupsClient(NetworkManagementClient client) {
+    ApplicationSecurityGroupsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -139,7 +138,7 @@ public final class ApplicationSecurityGroupsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationSecurityGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationSecurityGroupListResultInner>> list(
+        Mono<Response<ApplicationSecurityGroupListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -151,7 +150,7 @@ public final class ApplicationSecurityGroupsClient
                 + "/applicationSecurityGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationSecurityGroupListResultInner>> listByResourceGroup(
+        Mono<Response<ApplicationSecurityGroupListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -162,14 +161,14 @@ public final class ApplicationSecurityGroupsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationSecurityGroupListResultInner>> listAllNext(
+        Mono<Response<ApplicationSecurityGroupListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationSecurityGroupListResultInner>> listNext(
+        Mono<Response<ApplicationSecurityGroupListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

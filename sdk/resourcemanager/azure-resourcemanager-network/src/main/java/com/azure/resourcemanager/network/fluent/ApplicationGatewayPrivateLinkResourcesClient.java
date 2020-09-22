@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayPrivateLinkResourceInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayPrivateLinkResourceListResultInner;
+import com.azure.resourcemanager.network.models.ApplicationGatewayPrivateLinkResourceListResult;
 import reactor.core.publisher.Mono;
 
 /**
@@ -47,7 +46,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ApplicationGatewayPrivateLinkResourcesClient(NetworkManagementClient client) {
+    ApplicationGatewayPrivateLinkResourcesClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -70,7 +69,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClient {
                 + "/applicationGateways/{applicationGatewayName}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationGatewayPrivateLinkResourceListResultInner>> list(
+        Mono<Response<ApplicationGatewayPrivateLinkResourceListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("applicationGatewayName") String applicationGatewayName,
@@ -82,7 +81,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationGatewayPrivateLinkResourceListResultInner>> listNext(
+        Mono<Response<ApplicationGatewayPrivateLinkResourceListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

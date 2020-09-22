@@ -3,6 +3,10 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.http.ProxyOptions;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
@@ -10,6 +14,10 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
+import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
+import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -23,12 +31,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
+import java.net.InetSocketAddress;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,8 +82,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.gatewayClient).isNotNull();
-        this.gatewayClient.close();
+        if (this.gatewayClient != null) {
+            this.gatewayClient.close();
+        }
         if (this.directClient != null) {
             this.directClient.close();
         }
@@ -177,7 +189,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("systemInformation");
         assertThat(diagnostics).contains("usedMemory");
         assertThat(diagnostics).contains("availableMemory");
-        assertThat(diagnostics).contains("processCpuLoad");
         assertThat(diagnostics).contains("systemCpuLoad");
         assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
         assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
@@ -478,6 +489,93 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
     }
 
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void addressResolutionStatistics() {
+        CosmosClient client1 = null;
+        CosmosClient client2 = null;
+        String databaseId = DatabaseForTest.generateId();
+        String containerId = UUID.randomUUID().toString();
+        CosmosDatabase cosmosDatabase = null;
+        CosmosContainer cosmosContainer = null;
+        try {
+            client1 = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            client1.createDatabase(databaseId);
+            cosmosDatabase = client1.getDatabase(databaseId);
+            cosmosDatabase.createContainer(containerId, "/mypk");
+
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            cosmosContainer = cosmosDatabase.getContainer(containerId);
+            CosmosItemResponse<InternalObjectNode> writeResourceResponse = cosmosContainer.createItem(internalObjectNode);
+            //Success address resolution client side statistics
+            assertThat(writeResourceResponse.getDiagnostics().toString()).contains("addressResolutionStatistics");
+            assertThat(writeResourceResponse.getDiagnostics().toString()).contains("\"inflightRequest\":false");
+            assertThat(writeResourceResponse.getDiagnostics().toString()).doesNotContain("endTime=\"null\"");
+            assertThat(writeResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":null");
+            assertThat(writeResourceResponse.getDiagnostics().toString()).doesNotContain("\"errorMessage\":\"io.netty" +
+                ".channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information");
+
+            client2 = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            cosmosDatabase = client2.getDatabase(databaseId);
+            cosmosContainer = cosmosDatabase.getContainer(containerId);
+            AsyncDocumentClient asyncDocumentClient = client2.asyncClient().getContextClient();
+            GlobalAddressResolver addressResolver = (GlobalAddressResolver) FieldUtils.readField(asyncDocumentClient,
+                "addressResolver", true);
+
+            @SuppressWarnings("rawtypes")
+            Map addressCacheByEndpoint = (Map) FieldUtils.readField(addressResolver,
+                "addressCacheByEndpoint",
+                true);
+            Object endpointCache = addressCacheByEndpoint.values().toArray()[0];
+            GatewayAddressCache addressCache = (GatewayAddressCache) FieldUtils.readField(endpointCache, "addressCache", true);
+
+            HttpClient httpClient = httpClient(true);
+            FieldUtils.writeField(addressCache, "httpClient", httpClient, true);
+            new Thread(() -> {
+                try {
+                    Thread.sleep(5000);
+                    HttpClient httpClient1 = httpClient(false);
+                    FieldUtils.writeField(addressCache, "httpClient", httpClient1, true);
+                } catch (Exception e) {
+                    fail(e.getMessage());
+                }
+            }).start();
+            PartitionKey partitionKey = new PartitionKey(internalObjectNode.get("mypk"));
+            CosmosItemResponse<InternalObjectNode> readResourceResponse =
+                cosmosContainer.readItem(internalObjectNode.getId(), partitionKey, new CosmosItemRequestOptions(),
+                    InternalObjectNode.class);
+
+            //Partial success address resolution client side statistics
+            assertThat(readResourceResponse.getDiagnostics().toString()).contains("addressResolutionStatistics");
+            assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"inflightRequest\":false");
+            assertThat(readResourceResponse.getDiagnostics().toString()).doesNotContain("endTime=\"null\"");
+            assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":null");
+            assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":\"io.netty" +
+                ".channel.AbstractChannel$AnnotatedConnectException: Connection refused");
+        } catch (Exception ex) {
+            logger.error("Error in test addressResolutionStatistics", ex);
+            fail("This test should not throw exception " + ex);
+        } finally {
+            safeDeleteSyncDatabase(cosmosDatabase);
+            if (client1 != null) {
+                client1.close();
+            }
+
+            if (client2 != null) {
+                client2.close();
+            }
+        }
+    }
+
     private InternalObjectNode getInternalObjectNode() {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
@@ -532,6 +630,18 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         } catch(JsonProcessingException ex) {
             fail("Diagnostic string is not in json format");
         }
+    }
+
+    private HttpClient httpClient(boolean fakeProxy) {
+        HttpClientConfig httpClientConfig;
+        if(fakeProxy) {
+            httpClientConfig = new HttpClientConfig(new Configs())
+                .withProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)));
+        } else {
+            httpClientConfig = new HttpClientConfig(new Configs());
+        }
+
+        return HttpClient.createFixed(httpClientConfig);
     }
 
     public static class TestItem {

@@ -33,10 +33,11 @@ java:
     namespace: com.azure.digitaltwins.core
     add-credentials: true
     sync-methods: none
+    client-side-validations: true
     generate-client-as-impl: true
     implementation-subpackage: implementation
     models-subpackage: implementation.models
     context-client-method-parameter: true
     custom-types-subpackage: models
-    custom-types: IncomingRelationship
+    required-fields-as-ctor-args: true
 ```

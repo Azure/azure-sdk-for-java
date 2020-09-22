@@ -25,10 +25,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.RunCommandDocumentBaseInner;
 import com.azure.resourcemanager.compute.fluent.inner.RunCommandDocumentInner;
-import com.azure.resourcemanager.compute.fluent.inner.RunCommandListResultInner;
+import com.azure.resourcemanager.compute.models.RunCommandListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualMachineRunCommands. */
@@ -46,7 +45,7 @@ public final class VirtualMachineRunCommandsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualMachineRunCommandsClient(ComputeManagementClient client) {
+    VirtualMachineRunCommandsClient(ComputeManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -65,7 +64,7 @@ public final class VirtualMachineRunCommandsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunCommandListResultInner>> list(
+        Mono<Response<RunCommandListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
@@ -88,7 +87,7 @@ public final class VirtualMachineRunCommandsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunCommandListResultInner>> listNext(
+        Mono<Response<RunCommandListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

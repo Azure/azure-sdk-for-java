@@ -36,19 +36,18 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.azure.resourcemanager.servicebus.ServiceBusManagementClient;
 import com.azure.resourcemanager.servicebus.fluent.inner.CheckNameAvailabilityResultInner;
-import com.azure.resourcemanager.servicebus.fluent.inner.NamespaceListResultInner;
 import com.azure.resourcemanager.servicebus.fluent.inner.NamespaceResourceInner;
 import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleListResultInner;
 import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailability;
 import com.azure.resourcemanager.servicebus.models.NamespaceCreateOrUpdateParameters;
+import com.azure.resourcemanager.servicebus.models.NamespaceListResult;
 import com.azure.resourcemanager.servicebus.models.NamespaceUpdateParameters;
 import com.azure.resourcemanager.servicebus.models.Policykey;
 import com.azure.resourcemanager.servicebus.models.RegenerateKeysParameters;
 import com.azure.resourcemanager.servicebus.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
+import com.azure.resourcemanager.servicebus.models.SharedAccessAuthorizationRuleListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -71,7 +70,7 @@ public final class NamespacesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public NamespacesClient(ServiceBusManagementClient client) {
+    NamespacesClient(ServiceBusManagementClient client) {
         this.service =
             RestProxy.create(NamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -99,7 +98,7 @@ public final class NamespacesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespaceListResultInner>> list(
+        Mono<Response<NamespaceListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -111,7 +110,7 @@ public final class NamespacesClient
                 + "/namespaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespaceListResultInner>> listByResourceGroup(
+        Mono<Response<NamespaceListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -182,7 +181,7 @@ public final class NamespacesClient
                 + "/namespaces/{namespaceName}/AuthorizationRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleListResultInner>> listAuthorizationRules(
+        Mono<Response<SharedAccessAuthorizationRuleListResult>> listAuthorizationRules(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -271,21 +270,21 @@ public final class NamespacesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespaceListResultInner>> listBySubscriptionNext(
+        Mono<Response<NamespaceListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespaceListResultInner>> listByResourceGroupNext(
+        Mono<Response<NamespaceListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleListResultInner>> listAuthorizationRulesNext(
+        Mono<Response<SharedAccessAuthorizationRuleListResult>> listAuthorizationRulesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.trafficmanager.TrafficManagerManagementClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.DeleteOperationResultInner;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.UserMetricsModelInner;
 import reactor.core.publisher.Mono;
@@ -43,7 +42,7 @@ public final class TrafficManagerUserMetricsKeysClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public TrafficManagerUserMetricsKeysClient(TrafficManagerManagementClient client) {
+    TrafficManagerUserMetricsKeysClient(TrafficManagerManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -216,8 +215,8 @@ public final class TrafficManagerUserMetricsKeysClient {
      * @return the subscription-level key used for Real User Metrics collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UserMetricsModelInner> getWithResponse(Context context) {
-        return getWithResponseAsync(context).block();
+    public UserMetricsModelInner get(Context context) {
+        return getAsync(context).block();
     }
 
     /**
@@ -346,8 +345,8 @@ public final class TrafficManagerUserMetricsKeysClient {
      * @return class representing Traffic Manager User Metrics.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UserMetricsModelInner> createOrUpdateWithResponse(Context context) {
-        return createOrUpdateWithResponseAsync(context).block();
+    public UserMetricsModelInner createOrUpdate(Context context) {
+        return createOrUpdateAsync(context).block();
     }
 
     /**
@@ -475,7 +474,7 @@ public final class TrafficManagerUserMetricsKeysClient {
      * @return the result of the request or operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeleteOperationResultInner> deleteWithResponse(Context context) {
-        return deleteWithResponseAsync(context).block();
+    public DeleteOperationResultInner delete(Context context) {
+        return deleteAsync(context).block();
     }
 }

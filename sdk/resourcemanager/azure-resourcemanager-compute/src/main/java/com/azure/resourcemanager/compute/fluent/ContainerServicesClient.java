@@ -31,9 +31,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.ContainerServiceInner;
-import com.azure.resourcemanager.compute.fluent.inner.ContainerServiceListResultInner;
+import com.azure.resourcemanager.compute.models.ContainerServiceListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -59,7 +58,7 @@ public final class ContainerServicesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ContainerServicesClient(ComputeManagementClient client) {
+    ContainerServicesClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(ContainerServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -76,7 +75,7 @@ public final class ContainerServicesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/containerServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerServiceListResultInner>> list(
+        Mono<Response<ContainerServiceListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -131,7 +130,7 @@ public final class ContainerServicesClient
                 + "/containerServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerServiceListResultInner>> listByResourceGroup(
+        Mono<Response<ContainerServiceListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -142,14 +141,14 @@ public final class ContainerServicesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerServiceListResultInner>> listNext(
+        Mono<Response<ContainerServiceListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerServiceListResultInner>> listByResourceGroupNext(
+        Mono<Response<ContainerServiceListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

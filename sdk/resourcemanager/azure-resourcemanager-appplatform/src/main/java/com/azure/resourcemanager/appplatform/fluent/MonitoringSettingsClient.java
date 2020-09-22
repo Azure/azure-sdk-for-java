@@ -27,7 +27,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.fluent.inner.MonitoringSettingResourceInner;
 import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
 import java.nio.ByteBuffer;
@@ -49,7 +48,7 @@ public final class MonitoringSettingsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public MonitoringSettingsClient(AppPlatformManagementClient client) {
+    MonitoringSettingsClient(AppPlatformManagementClient client) {
         this.service =
             RestProxy.create(MonitoringSettingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

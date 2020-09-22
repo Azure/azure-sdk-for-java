@@ -31,10 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.CertificateResourceCollectionInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.CertificateResourceInner;
 import com.azure.resourcemanager.appplatform.models.CertificateProperties;
+import com.azure.resourcemanager.appplatform.models.CertificateResourceCollection;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,7 +53,7 @@ public final class CertificatesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public CertificatesClient(AppPlatformManagementClient client) {
+    CertificatesClient(AppPlatformManagementClient client) {
         this.service =
             RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -119,7 +118,7 @@ public final class CertificatesClient {
                 + "/{serviceName}/certificates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CertificateResourceCollectionInner>> list(
+        Mono<Response<CertificateResourceCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -131,7 +130,7 @@ public final class CertificatesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CertificateResourceCollectionInner>> listNext(
+        Mono<Response<CertificateResourceCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

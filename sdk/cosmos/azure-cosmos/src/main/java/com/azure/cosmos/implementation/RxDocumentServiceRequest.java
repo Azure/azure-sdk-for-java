@@ -70,7 +70,8 @@ public class RxDocumentServiceRequest implements Cloneable {
                 || this.operationType == OperationType.Head
                 || this.operationType == OperationType.HeadFeed
                 || this.operationType == OperationType.Query
-                || this.operationType == OperationType.SqlQuery;
+                || this.operationType == OperationType.SqlQuery
+                || this.operationType == OperationType.QueryPlan;
     }
 
     public boolean isReadOnlyScript() {

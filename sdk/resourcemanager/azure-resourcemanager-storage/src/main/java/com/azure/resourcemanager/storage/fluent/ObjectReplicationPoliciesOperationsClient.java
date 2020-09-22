@@ -28,9 +28,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
-import com.azure.resourcemanager.storage.fluent.inner.ObjectReplicationPoliciesInner;
 import com.azure.resourcemanager.storage.fluent.inner.ObjectReplicationPolicyInner;
+import com.azure.resourcemanager.storage.models.ObjectReplicationPolicies;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ObjectReplicationPoliciesOperations. */
@@ -48,7 +47,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ObjectReplicationPoliciesOperationsClient(StorageManagementClient client) {
+    ObjectReplicationPoliciesOperationsClient(StorageManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -71,7 +70,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
                 + "/storageAccounts/{accountName}/objectReplicationPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ObjectReplicationPoliciesInner>> list(
+        Mono<Response<ObjectReplicationPolicies>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,

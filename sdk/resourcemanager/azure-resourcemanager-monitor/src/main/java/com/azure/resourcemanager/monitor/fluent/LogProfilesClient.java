@@ -29,9 +29,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
-import com.azure.resourcemanager.monitor.fluent.inner.LogProfileCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.LogProfileResourceInner;
+import com.azure.resourcemanager.monitor.models.LogProfileCollection;
 import com.azure.resourcemanager.monitor.models.LogProfileResourcePatch;
 import reactor.core.publisher.Mono;
 
@@ -50,7 +49,7 @@ public final class LogProfilesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public LogProfilesClient(MonitorClient client) {
+    LogProfilesClient(MonitorClient client) {
         this.service =
             RestProxy.create(LogProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -113,7 +112,7 @@ public final class LogProfilesClient {
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogProfileCollectionInner>> list(
+        Mono<Response<LogProfileCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,

@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.BindingResourceCollectionInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.BindingResourceInner;
+import com.azure.resourcemanager.appplatform.models.BindingResourceCollection;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -55,7 +54,7 @@ public final class BindingsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public BindingsClient(AppPlatformManagementClient client) {
+    BindingsClient(AppPlatformManagementClient client) {
         this.service = RestProxy.create(BindingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -139,7 +138,7 @@ public final class BindingsClient {
                 + "/{serviceName}/apps/{appName}/bindings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BindingResourceCollectionInner>> list(
+        Mono<Response<BindingResourceCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -152,7 +151,7 @@ public final class BindingsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BindingResourceCollectionInner>> listNext(
+        Mono<Response<BindingResourceCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.BaselineResponseInner;
 import com.azure.resourcemanager.monitor.fluent.inner.CalculateBaselineResponseInner;
 import com.azure.resourcemanager.monitor.models.ResultType;
@@ -46,7 +45,7 @@ public final class MetricBaselinesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public MetricBaselinesClient(MonitorClient client) {
+    MetricBaselinesClient(MonitorClient client) {
         this.service =
             RestProxy.create(MetricBaselinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -356,6 +355,30 @@ public final class MetricBaselinesClient {
      *     For example:
      *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
      * @param metricName The name of the metric to retrieve the baseline for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a baseline query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BaselineResponseInner get(String resourceUri, String metricName) {
+        final String timespan = null;
+        final Duration interval = null;
+        final String aggregation = null;
+        final String sensitivities = null;
+        final ResultType resultType = null;
+        final Context context = null;
+        return getAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType).block();
+    }
+
+    /**
+     * **Gets the baseline values for a specific metric**.
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
+     * @param metricName The name of the metric to retrieve the baseline for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
@@ -380,30 +403,6 @@ public final class MetricBaselinesClient {
         Context context) {
         return getAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType, context)
             .block();
-    }
-
-    /**
-     * **Gets the baseline values for a specific metric**.
-     *
-     * @param resourceUri The identifier of the resource. It has the following structure:
-     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
-     *     For example:
-     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
-     * @param metricName The name of the metric to retrieve the baseline for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a baseline query.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BaselineResponseInner get(String resourceUri, String metricName) {
-        final String timespan = null;
-        final Duration interval = null;
-        final String aggregation = null;
-        final String sensitivities = null;
-        final ResultType resultType = null;
-        final Context context = null;
-        return getAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType).block();
     }
 
     /**

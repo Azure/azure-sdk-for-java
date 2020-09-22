@@ -30,11 +30,10 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.FileShareInner;
 import com.azure.resourcemanager.storage.fluent.inner.FileShareItemInner;
-import com.azure.resourcemanager.storage.fluent.inner.FileShareItemsInner;
 import com.azure.resourcemanager.storage.models.DeletedShare;
+import com.azure.resourcemanager.storage.models.FileShareItems;
 import com.azure.resourcemanager.storage.models.GetShareExpand;
 import com.azure.resourcemanager.storage.models.ListSharesExpand;
 import reactor.core.publisher.Mono;
@@ -54,7 +53,7 @@ public final class FileSharesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public FileSharesClient(StorageManagementClient client) {
+    FileSharesClient(StorageManagementClient client) {
         this.service =
             RestProxy.create(FileSharesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -73,7 +72,7 @@ public final class FileSharesClient {
                 + "/storageAccounts/{accountName}/fileServices/default/shares")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FileShareItemsInner>> list(
+        Mono<Response<FileShareItems>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -167,7 +166,7 @@ public final class FileSharesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FileShareItemsInner>> listNext(
+        Mono<Response<FileShareItems>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -1146,17 +1145,16 @@ public final class FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param expand Optional, used to expand the properties within share's properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a specified share.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileShareInner get(
-        String resourceGroupName, String accountName, String shareName, GetShareExpand expand, Context context) {
-        return getAsync(resourceGroupName, accountName, shareName, expand, context).block();
+    public FileShareInner get(String resourceGroupName, String accountName, String shareName) {
+        final GetShareExpand expand = null;
+        final Context context = null;
+        return getAsync(resourceGroupName, accountName, shareName, expand).block();
     }
 
     /**
@@ -1169,16 +1167,17 @@ public final class FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
+     * @param expand Optional, used to expand the properties within share's properties.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a specified share.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileShareInner get(String resourceGroupName, String accountName, String shareName) {
-        final GetShareExpand expand = null;
-        final Context context = null;
-        return getAsync(resourceGroupName, accountName, shareName, expand).block();
+    public FileShareInner get(
+        String resourceGroupName, String accountName, String shareName, GetShareExpand expand, Context context) {
+        return getAsync(resourceGroupName, accountName, shareName, expand, context).block();
     }
 
     /**

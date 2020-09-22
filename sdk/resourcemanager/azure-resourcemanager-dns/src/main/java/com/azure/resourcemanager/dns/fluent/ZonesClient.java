@@ -33,9 +33,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.dns.DnsManagementClient;
 import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
-import com.azure.resourcemanager.dns.fluent.inner.ZoneListResultInner;
+import com.azure.resourcemanager.dns.models.ZoneListResult;
 import com.azure.resourcemanager.dns.models.ZoneUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -61,7 +60,7 @@ public final class ZonesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ZonesClient(DnsManagementClient client) {
+    ZonesClient(DnsManagementClient client) {
         this.service = RestProxy.create(ZonesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -139,7 +138,7 @@ public final class ZonesClient
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ZoneListResultInner>> listByResourceGroup(
+        Mono<Response<ZoneListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("$top") Integer top,
@@ -151,7 +150,7 @@ public final class ZonesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ZoneListResultInner>> list(
+        Mono<Response<ZoneListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
@@ -162,14 +161,14 @@ public final class ZonesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ZoneListResultInner>> listByResourceGroupNext(
+        Mono<Response<ZoneListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ZoneListResultInner>> listNext(
+        Mono<Response<ZoneListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -412,6 +411,25 @@ public final class ZonesClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Describes a DNS zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS zone.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ZoneInner createOrUpdate(String resourceGroupName, String zoneName, ZoneInner parameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        final Context context = null;
+        return createOrUpdateAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch).block();
+    }
+
+    /**
+     * Creates or updates a DNS zone. Does not modify DNS records within the zone.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param parameters Describes a DNS zone.
      * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
      *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone.
@@ -431,25 +449,6 @@ public final class ZonesClient
         String ifNoneMatch,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch, context).block();
-    }
-
-    /**
-     * Creates or updates a DNS zone. Does not modify DNS records within the zone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zoneName The name of the DNS zone (without a terminating dot).
-     * @param parameters Describes a DNS zone.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS zone.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ZoneInner createOrUpdate(String resourceGroupName, String zoneName, ZoneInner parameters) {
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        final Context context = null;
-        return createOrUpdateAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch).block();
     }
 
     /**

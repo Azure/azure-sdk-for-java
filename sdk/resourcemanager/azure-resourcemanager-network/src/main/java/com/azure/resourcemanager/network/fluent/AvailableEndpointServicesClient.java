@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.EndpointServiceResultInner;
-import com.azure.resourcemanager.network.fluent.inner.EndpointServicesListResultInner;
+import com.azure.resourcemanager.network.models.EndpointServicesListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailableEndpointServices. */
@@ -45,7 +44,7 @@ public final class AvailableEndpointServicesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AvailableEndpointServicesClient(NetworkManagementClient client) {
+    AvailableEndpointServicesClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -66,7 +65,7 @@ public final class AvailableEndpointServicesClient {
                 + "/virtualNetworkAvailableEndpointServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointServicesListResultInner>> list(
+        Mono<Response<EndpointServicesListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
@@ -77,7 +76,7 @@ public final class AvailableEndpointServicesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointServicesListResultInner>> listNext(
+        Mono<Response<EndpointServicesListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

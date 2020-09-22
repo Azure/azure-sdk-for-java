@@ -27,29 +27,28 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
-import com.azure.resourcemanager.appservice.fluent.inner.BillingMeterCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.BillingMeterInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DeploymentLocationsInner;
-import com.azure.resourcemanager.appservice.fluent.inner.GeoRegionCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.GeoRegionInner;
-import com.azure.resourcemanager.appservice.fluent.inner.IdentifierCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.IdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.inner.NameIdentifierInner;
-import com.azure.resourcemanager.appservice.fluent.inner.PremierAddOnOfferCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.PremierAddOnOfferInner;
 import com.azure.resourcemanager.appservice.fluent.inner.ResourceNameAvailabilityInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SkuInfosInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SourceControlCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SourceControlInner;
 import com.azure.resourcemanager.appservice.fluent.inner.UserInner;
 import com.azure.resourcemanager.appservice.fluent.inner.ValidateResponseInner;
 import com.azure.resourcemanager.appservice.fluent.inner.VnetValidationFailureDetailsInner;
+import com.azure.resourcemanager.appservice.models.BillingMeterCollection;
 import com.azure.resourcemanager.appservice.models.CheckNameResourceTypes;
 import com.azure.resourcemanager.appservice.models.CsmMoveResourceEnvelope;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.GeoRegionCollection;
+import com.azure.resourcemanager.appservice.models.IdentifierCollection;
+import com.azure.resourcemanager.appservice.models.PremierAddOnOfferCollection;
 import com.azure.resourcemanager.appservice.models.ResourceNameAvailabilityRequest;
 import com.azure.resourcemanager.appservice.models.SkuName;
+import com.azure.resourcemanager.appservice.models.SourceControlCollection;
 import com.azure.resourcemanager.appservice.models.ValidateRequest;
 import com.azure.resourcemanager.appservice.models.VnetParameters;
 import reactor.core.publisher.Mono;
@@ -69,7 +68,7 @@ public final class ResourceProvidersClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ResourceProvidersClient(WebSiteManagementClient client) {
+    ResourceProvidersClient(WebSiteManagementClient client) {
         this.service =
             RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -103,7 +102,7 @@ public final class ResourceProvidersClient {
         @Get("/providers/Microsoft.Web/sourcecontrols")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<SourceControlCollectionInner>> listSourceControls(
+        Mono<Response<SourceControlCollection>> listSourceControls(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -131,7 +130,7 @@ public final class ResourceProvidersClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/billingMeters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<BillingMeterCollectionInner>> list(
+        Mono<Response<BillingMeterCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("billingLocation") String billingLocation,
             @QueryParam("osType") String osType,
@@ -164,7 +163,7 @@ public final class ResourceProvidersClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<GeoRegionCollectionInner>> listGeoRegions(
+        Mono<Response<GeoRegionCollection>> listGeoRegions(
             @HostParam("$host") String endpoint,
             @QueryParam("sku") SkuName sku,
             @QueryParam("linuxWorkersEnabled") Boolean linuxWorkersEnabled,
@@ -178,7 +177,7 @@ public final class ResourceProvidersClient {
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/listSitesAssignedToHostName")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<IdentifierCollectionInner>> listSiteIdentifiersAssignedToHostname(
+        Mono<Response<IdentifierCollection>> listSiteIdentifiersAssignedToHostname(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -189,7 +188,7 @@ public final class ResourceProvidersClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<PremierAddOnOfferCollectionInner>> listPremierAddOnOffers(
+        Mono<Response<PremierAddOnOfferCollection>> listPremierAddOnOffers(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -256,35 +255,35 @@ public final class ResourceProvidersClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<SourceControlCollectionInner>> listSourceControlsNext(
+        Mono<Response<SourceControlCollection>> listSourceControlsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<BillingMeterCollectionInner>> listBillingMetersNext(
+        Mono<Response<BillingMeterCollection>> listBillingMetersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<GeoRegionCollectionInner>> listGeoRegionsNext(
+        Mono<Response<GeoRegionCollection>> listGeoRegionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<IdentifierCollectionInner>> listSiteIdentifiersAssignedToHostnameNext(
+        Mono<Response<IdentifierCollection>> listSiteIdentifiersAssignedToHostnameNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<PremierAddOnOfferCollectionInner>> listPremierAddOnOffersNext(
+        Mono<Response<PremierAddOnOfferCollection>> listPremierAddOnOffersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

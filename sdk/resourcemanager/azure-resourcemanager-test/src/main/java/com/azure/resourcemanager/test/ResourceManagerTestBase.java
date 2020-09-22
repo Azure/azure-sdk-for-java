@@ -201,7 +201,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
             policies.add(new CookiePolicy());
-            if (!interceptorManager.isLiveMode()) {
+            if (!interceptorManager.isLiveMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
             }
             httpPipeline = buildHttpPipeline(

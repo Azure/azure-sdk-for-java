@@ -26,13 +26,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
-import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
-import com.azure.resourcemanager.appservice.fluent.inner.TopLevelDomainCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.TopLevelDomainInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.TldLegalAgreementCollection;
 import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
+import com.azure.resourcemanager.appservice.models.TopLevelDomainCollection;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TopLevelDomains. */
@@ -50,7 +49,7 @@ public final class TopLevelDomainsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public TopLevelDomainsClient(WebSiteManagementClient client) {
+    TopLevelDomainsClient(WebSiteManagementClient client) {
         this.service =
             RestProxy.create(TopLevelDomainsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -67,7 +66,7 @@ public final class TopLevelDomainsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<TopLevelDomainCollectionInner>> list(
+        Mono<Response<TopLevelDomainCollection>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -90,7 +89,7 @@ public final class TopLevelDomainsClient {
                 + "/listAgreements")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<TldLegalAgreementCollectionInner>> listAgreements(
+        Mono<Response<TldLegalAgreementCollection>> listAgreements(
             @HostParam("$host") String endpoint,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -102,14 +101,14 @@ public final class TopLevelDomainsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<TopLevelDomainCollectionInner>> listNext(
+        Mono<Response<TopLevelDomainCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<TldLegalAgreementCollectionInner>> listAgreementsNext(
+        Mono<Response<TldLegalAgreementCollection>> listAgreementsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -78,7 +78,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
             return this;
         } else if (siteInner.identity().type().equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED)) {
             siteInner.identity().withType(ManagedServiceIdentityType.NONE);
-        } else if (siteInner.identity().type().equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
+        } else if (siteInner.identity().type().equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
             siteInner.identity().withType(ManagedServiceIdentityType.USER_ASSIGNED);
         }
         return this;
@@ -227,7 +227,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
                         siteUpdate.withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE));
                     } else if (currentIdentity
                         .type()
-                        .equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
+                        .equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
                         siteUpdate.withIdentity(currentIdentity);
                         siteUpdate.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED);
                     } else if (currentIdentity.type().equals(ManagedServiceIdentityType.USER_ASSIGNED)) {
@@ -272,7 +272,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
             || siteInner.identity().type().equals(identityType)) {
             siteInner.identity().withType(identityType);
         } else {
-            siteInner.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
+            siteInner.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
         }
     }
 }

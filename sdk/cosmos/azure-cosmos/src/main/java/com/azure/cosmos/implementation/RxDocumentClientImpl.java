@@ -11,6 +11,8 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.cpu.CpuListener;
+import com.azure.cosmos.implementation.cpu.CpuMonitor;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
@@ -77,7 +79,7 @@ import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
  * While this class is public, it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider {
+public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuListener {
 
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutionContext, but not used";
@@ -216,50 +218,51 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
 
         try {
-        this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
-        this.configs = configs;
-        this.masterKeyOrResourceToken = masterKeyOrResourceToken;
-        this.serviceEndpoint = serviceEndpoint;
-        this.credential = credential;
-        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+            this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
+            this.configs = configs;
+            this.masterKeyOrResourceToken = masterKeyOrResourceToken;
+            this.serviceEndpoint = serviceEndpoint;
+            this.credential = credential;
+            this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
 
-        if (this.credential != null) {
-            hasAuthKeyResourceToken = false;
-            this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
-        } else if (masterKeyOrResourceToken != null && ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
-            this.authorizationTokenProvider = null;
-            hasAuthKeyResourceToken = true;
-            } else if (masterKeyOrResourceToken != null && !ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
-            this.credential = new AzureKeyCredential(this.masterKeyOrResourceToken);
-            hasAuthKeyResourceToken = false;
-            this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
-        } else {
-            hasAuthKeyResourceToken = false;
-            this.authorizationTokenProvider = null;
-        }
+            if (this.credential != null) {
+                hasAuthKeyResourceToken = false;
+                this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
+            } else if (masterKeyOrResourceToken != null && ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
+                this.authorizationTokenProvider = null;
+                hasAuthKeyResourceToken = true;
+                } else if (masterKeyOrResourceToken != null && !ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
+                this.credential = new AzureKeyCredential(this.masterKeyOrResourceToken);
+                hasAuthKeyResourceToken = false;
+                this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
+            } else {
+                hasAuthKeyResourceToken = false;
+                this.authorizationTokenProvider = null;
+            }
 
-        if (connectionPolicy != null) {
-            this.connectionPolicy = connectionPolicy;
-        } else {
-            this.connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        }
+            if (connectionPolicy != null) {
+                this.connectionPolicy = connectionPolicy;
+            } else {
+                this.connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+            }
 
-        boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
+            boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
 
-        this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
-        this.consistencyLevel = consistencyLevel;
+            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
+            this.consistencyLevel = consistencyLevel;
 
-        this.userAgentContainer = new UserAgentContainer();
+            this.userAgentContainer = new UserAgentContainer();
 
-        String userAgentSuffix = this.connectionPolicy.getUserAgentSuffix();
-        if (userAgentSuffix != null && userAgentSuffix.length() > 0) {
-            userAgentContainer.setSuffix(userAgentSuffix);
-        }
+            String userAgentSuffix = this.connectionPolicy.getUserAgentSuffix();
+            if (userAgentSuffix != null && userAgentSuffix.length() > 0) {
+                userAgentContainer.setSuffix(userAgentSuffix);
+            }
 
-        this.reactorHttpClient = httpClient();
-        this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
-        this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
-        this.resetSessionTokenRetryPolicy = retryPolicy;
+            this.reactorHttpClient = httpClient();
+            this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
+            this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
+            this.resetSessionTokenRetryPolicy = retryPolicy;
+            CpuMonitor.register(this);
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -3335,6 +3338,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         LifeCycleUtils.closeQuietly(this.storeClientFactory);
         logger.info("Shutting down reactorHttpClient ...");
         LifeCycleUtils.closeQuietly(this.reactorHttpClient);
+        logger.info("Shutting down CpuMonitor ...");
+        CpuMonitor.unregister(this);
         logger.info("Shutting down completed.");
     }
 

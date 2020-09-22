@@ -274,6 +274,7 @@ cosmos_io.dropwizard.metrics:metrics-core;4.1.0
 cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
 cosmos_org.mockito:mockito-core;1.10.19
+cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
 
 # sdk\core\azure-core-serializer-avro-jackson\pom.xml
 # This dependency is needed since Jackson Avro uses an older dependency on Apache Avro which is another library.
@@ -315,15 +316,3 @@ storage_com.microsoft.azure:azure-storage;8.4.0
 
 # sdk\spring\azure-spring-boot\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
-
-# sdk\spring\azure-spring-boot-2-2-starter-cosmosdb\pom.xml
-springboot22_com.microsoft.azure:spring-data-cosmosdb;2.2.2.M2
-springboot22_org.springframework.boot:spring-boot-starter;2.2.9.RELEASE
-springboot22_org.springframework.boot:spring-boot;2.2.9.RELEASE
-springboot22_org.springframework.boot:spring-boot-starter-validation;2.2.9.RELEASE
-springboot22_org.springframework.boot:spring-boot-starter-test;2.2.9.RELEASE
-springboot22_org.springframework.boot:spring-boot-starter-actuator;2.2.9.RELEASE
-springboot22_org.springframework.boot:spring-boot-starter-web;2.2.9.RELEASE
-
-# sdk\cosmos
-springdata22_org.springframework.data:spring-data-commons;2.2.9.RELEASE

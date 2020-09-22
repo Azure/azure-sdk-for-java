@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineSizeInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineSizeListResultInner;
+import com.azure.resourcemanager.compute.models.VirtualMachineSizeListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualMachineSizes. */
@@ -45,7 +44,7 @@ public final class VirtualMachineSizesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualMachineSizesClient(ComputeManagementClient client) {
+    VirtualMachineSizesClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(VirtualMachineSizesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -62,7 +61,7 @@ public final class VirtualMachineSizesClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/vmSizes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineSizeListResultInner>> list(
+        Mono<Response<VirtualMachineSizeListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,

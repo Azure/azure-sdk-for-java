@@ -34,9 +34,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.containerinstance.ContainerInstanceManagementClient;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
-import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupListResultInner;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -62,7 +61,7 @@ public final class ContainerGroupsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ContainerGroupsClient(ContainerInstanceManagementClient client) {
+    ContainerGroupsClient(ContainerInstanceManagementClient client) {
         this.service =
             RestProxy.create(ContainerGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -79,7 +78,7 @@ public final class ContainerGroupsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupListResultInner>> list(
+        Mono<Response<ContainerGroupListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -91,7 +90,7 @@ public final class ContainerGroupsClient
                 + "/containerGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupListResultInner>> listByResourceGroup(
+        Mono<Response<ContainerGroupListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -202,14 +201,14 @@ public final class ContainerGroupsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupListResultInner>> listNext(
+        Mono<Response<ContainerGroupListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupListResultInner>> listByResourceGroupNext(
+        Mono<Response<ContainerGroupListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

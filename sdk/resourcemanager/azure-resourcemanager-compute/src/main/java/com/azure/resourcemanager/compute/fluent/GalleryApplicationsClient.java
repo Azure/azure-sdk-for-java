@@ -31,10 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryApplicationInner;
-import com.azure.resourcemanager.compute.fluent.inner.GalleryApplicationListInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
+import com.azure.resourcemanager.compute.models.GalleryApplicationList;
 import com.azure.resourcemanager.compute.models.GalleryApplicationUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -55,7 +54,7 @@ public final class GalleryApplicationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public GalleryApplicationsClient(ComputeManagementClient client) {
+    GalleryApplicationsClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(GalleryApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -136,7 +135,7 @@ public final class GalleryApplicationsClient {
                 + "/{galleryName}/applications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<GalleryApplicationListInner>> listByGallery(
+        Mono<Response<GalleryApplicationList>> listByGallery(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -148,7 +147,7 @@ public final class GalleryApplicationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<GalleryApplicationListInner>> listByGalleryNext(
+        Mono<Response<GalleryApplicationList>> listByGalleryNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

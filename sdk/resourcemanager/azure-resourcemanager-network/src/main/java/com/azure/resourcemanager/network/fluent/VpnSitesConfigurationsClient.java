@@ -25,7 +25,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.models.GetVpnSitesConfigurationRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -46,7 +45,7 @@ public final class VpnSitesConfigurationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VpnSitesConfigurationsClient(NetworkManagementClient client) {
+    VpnSitesConfigurationsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(VpnSitesConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());

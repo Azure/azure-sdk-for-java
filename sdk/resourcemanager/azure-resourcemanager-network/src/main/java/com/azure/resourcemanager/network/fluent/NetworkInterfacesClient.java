@@ -33,13 +33,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.EffectiveNetworkSecurityGroupListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.EffectiveRouteListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceListResultInner;
+import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationListResult;
+import com.azure.resourcemanager.network.models.NetworkInterfaceListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -67,7 +66,7 @@ public final class NetworkInterfacesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public NetworkInterfacesClient(NetworkManagementClient client) {
+    NetworkInterfacesClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(NetworkInterfacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -143,7 +142,7 @@ public final class NetworkInterfacesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkInterfaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResultInner>> list(
+        Mono<Response<NetworkInterfaceListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -155,7 +154,7 @@ public final class NetworkInterfacesClient
                 + "/networkInterfaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResultInner>> listByResourceGroup(
+        Mono<Response<NetworkInterfaceListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -197,7 +196,7 @@ public final class NetworkInterfacesClient
                 + "/networkInterfaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResultInner>> listVirtualMachineScaleSetVMNetworkInterfaces(
+        Mono<Response<NetworkInterfaceListResult>> listVirtualMachineScaleSetVMNetworkInterfaces(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualMachineScaleSetName") String virtualMachineScaleSetName,
@@ -212,7 +211,7 @@ public final class NetworkInterfacesClient
                 + "/virtualMachineScaleSets/{virtualMachineScaleSetName}/networkInterfaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResultInner>> listVirtualMachineScaleSetNetworkInterfaces(
+        Mono<Response<NetworkInterfaceListResult>> listVirtualMachineScaleSetNetworkInterfaces(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualMachineScaleSetName") String virtualMachineScaleSetName,
@@ -245,7 +244,7 @@ public final class NetworkInterfacesClient
                 + "/networkInterfaces/{networkInterfaceName}/ipConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceIpConfigurationListResultInner>> listVirtualMachineScaleSetIpConfigurations(
+        Mono<Response<NetworkInterfaceIpConfigurationListResult>> listVirtualMachineScaleSetIpConfigurations(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualMachineScaleSetName") String virtualMachineScaleSetName,
@@ -279,35 +278,35 @@ public final class NetworkInterfacesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResultInner>> listAllNext(
+        Mono<Response<NetworkInterfaceListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResultInner>> listNext(
+        Mono<Response<NetworkInterfaceListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResultInner>> listVirtualMachineScaleSetVMNetworkInterfacesNext(
+        Mono<Response<NetworkInterfaceListResult>> listVirtualMachineScaleSetVMNetworkInterfacesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResultInner>> listVirtualMachineScaleSetNetworkInterfacesNext(
+        Mono<Response<NetworkInterfaceListResult>> listVirtualMachineScaleSetNetworkInterfacesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceIpConfigurationListResultInner>> listVirtualMachineScaleSetIpConfigurationsNext(
+        Mono<Response<NetworkInterfaceIpConfigurationListResult>> listVirtualMachineScaleSetIpConfigurationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -737,6 +736,23 @@ public final class NetworkInterfacesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified network interface.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkInterfaceInner getByResourceGroup(String resourceGroupName, String networkInterfaceName) {
+        final String expand = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, networkInterfaceName, expand).block();
+    }
+
+    /**
+     * Gets information about the specified network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -748,23 +764,6 @@ public final class NetworkInterfacesClient
     public NetworkInterfaceInner getByResourceGroup(
         String resourceGroupName, String networkInterfaceName, String expand, Context context) {
         return getByResourceGroupAsync(resourceGroupName, networkInterfaceName, expand, context).block();
-    }
-
-    /**
-     * Gets information about the specified network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceInner getByResourceGroup(String resourceGroupName, String networkInterfaceName) {
-        final String expand = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, networkInterfaceName, expand).block();
     }
 
     /**
@@ -2683,6 +2682,31 @@ public final class NetworkInterfacesClient
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
      * @param networkInterfaceName The name of the network interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a virtual machine scale set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(
+        String resourceGroupName,
+        String virtualMachineScaleSetName,
+        String virtualmachineIndex,
+        String networkInterfaceName) {
+        final String expand = null;
+        final Context context = null;
+        return getVirtualMachineScaleSetNetworkInterfaceAsync(
+                resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand)
+            .block();
+    }
+
+    /**
+     * Get the specified network interface in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2705,31 +2729,6 @@ public final class NetworkInterfacesClient
                 networkInterfaceName,
                 expand,
                 context)
-            .block();
-    }
-
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @param virtualmachineIndex The virtual machine index.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName) {
-        final String expand = null;
-        final Context context = null;
-        return getVirtualMachineScaleSetNetworkInterfaceAsync(
-                resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand)
             .block();
     }
 
@@ -3369,6 +3368,38 @@ public final class NetworkInterfacesClient
      * @param virtualmachineIndex The virtual machine index.
      * @param networkInterfaceName The name of the network interface.
      * @param ipConfigurationName The name of the ip configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface ip configuration in a virtual machine scale set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkInterfaceIpConfigurationInner getVirtualMachineScaleSetIpConfiguration(
+        String resourceGroupName,
+        String virtualMachineScaleSetName,
+        String virtualmachineIndex,
+        String networkInterfaceName,
+        String ipConfigurationName) {
+        final String expand = null;
+        final Context context = null;
+        return getVirtualMachineScaleSetIpConfigurationAsync(
+                resourceGroupName,
+                virtualMachineScaleSetName,
+                virtualmachineIndex,
+                networkInterfaceName,
+                ipConfigurationName,
+                expand)
+            .block();
+    }
+
+    /**
+     * Get the specified network interface ip configuration in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the ip configuration.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3393,38 +3424,6 @@ public final class NetworkInterfacesClient
                 ipConfigurationName,
                 expand,
                 context)
-            .block();
-    }
-
-    /**
-     * Get the specified network interface ip configuration in a virtual machine scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @param virtualmachineIndex The virtual machine index.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the ip configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration in a virtual machine scale set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceIpConfigurationInner getVirtualMachineScaleSetIpConfiguration(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName,
-        String ipConfigurationName) {
-        final String expand = null;
-        final Context context = null;
-        return getVirtualMachineScaleSetIpConfigurationAsync(
-                resourceGroupName,
-                virtualMachineScaleSetName,
-                virtualmachineIndex,
-                networkInterfaceName,
-                ipConfigurationName,
-                expand)
             .block();
     }
 

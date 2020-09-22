@@ -9,6 +9,7 @@ import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.ClientOptions;
 
 import java.time.Duration;
 
@@ -19,7 +20,7 @@ class MockReactorHandlerProvider extends ReactorHandlerProvider {
     private final ReceiveLinkHandler receiveLinkHandler;
 
     MockReactorHandlerProvider(ReactorProvider provider, ConnectionHandler connectionHandler, SessionHandler sessionHandler,
-                               SendLinkHandler sendLinkHandler, ReceiveLinkHandler receiveLinkHandler) {
+        SendLinkHandler sendLinkHandler, ReceiveLinkHandler receiveLinkHandler) {
         super(provider);
         this.connectionHandler = connectionHandler;
         this.sessionHandler = sessionHandler;
@@ -34,7 +35,7 @@ class MockReactorHandlerProvider extends ReactorHandlerProvider {
 
     @Override
     public ConnectionHandler createConnectionHandler(String connectionId, String hostname,
-        AmqpTransportType transportType, ProxyOptions configuration, String product, String clientVersion) {
+        AmqpTransportType transportType, ProxyOptions configuration, String product, String clientVersion, ClientOptions clientOptions) {
 
         return connectionHandler;
     }

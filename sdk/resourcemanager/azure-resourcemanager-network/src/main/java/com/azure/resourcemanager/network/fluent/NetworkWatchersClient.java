@@ -33,14 +33,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AvailableProvidersListInner;
 import com.azure.resourcemanager.network.fluent.inner.AzureReachabilityReportInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectivityInformationInner;
 import com.azure.resourcemanager.network.fluent.inner.FlowLogInformationInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkConfigurationDiagnosticResponseInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkWatcherInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkWatcherListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.NextHopResultInner;
 import com.azure.resourcemanager.network.fluent.inner.SecurityGroupViewResultInner;
 import com.azure.resourcemanager.network.fluent.inner.TopologyInner;
@@ -51,6 +49,7 @@ import com.azure.resourcemanager.network.models.AzureReachabilityReportParameter
 import com.azure.resourcemanager.network.models.ConnectivityParameters;
 import com.azure.resourcemanager.network.models.FlowLogStatusParameters;
 import com.azure.resourcemanager.network.models.NetworkConfigurationDiagnosticParameters;
+import com.azure.resourcemanager.network.models.NetworkWatcherListResult;
 import com.azure.resourcemanager.network.models.NextHopParameters;
 import com.azure.resourcemanager.network.models.QueryTroubleshootingParameters;
 import com.azure.resourcemanager.network.models.SecurityGroupViewParameters;
@@ -84,7 +83,7 @@ public final class NetworkWatchersClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public NetworkWatchersClient(NetworkManagementClient client) {
+    NetworkWatchersClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(NetworkWatchersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -161,7 +160,7 @@ public final class NetworkWatchersClient
                 + "/networkWatchers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkWatcherListResultInner>> listByResourceGroup(
+        Mono<Response<NetworkWatcherListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -172,7 +171,7 @@ public final class NetworkWatchersClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkWatchers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkWatcherListResultInner>> list(
+        Mono<Response<NetworkWatcherListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,

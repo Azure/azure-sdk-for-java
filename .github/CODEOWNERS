@@ -16,7 +16,7 @@
 ####
 # Service teams
 ####
-# PRLabel: %AzConfig
+# PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
 /sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 
@@ -31,13 +31,14 @@
 
 # PRLabel: %Cosmos
 /sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft
-/sdk/cosmos/azure-spring-data-cosmos-core/          @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai @mbhaskar
+/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai @mbhaskar
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai @mbhaskar
-/sdk/cosmos/azure-spring-data-2-2-cosmos/           @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai @mbhaskar
-/sdk/cosmos/azure-spring-data-2-3-cosmos/           @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai @mbhaskar
 
 # PRLabel: %DigitalTwins
 /sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum
+
+# PRLabel: %Event Grid
+/sdk/eventgrid/                                     @srnagar @yijunxiems
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang @yijunxiems
@@ -62,6 +63,9 @@
 
 # PRLabel: %Storage
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @kasobol-msft
+
+# PRLabel: %EngSys
+/sdk/template/                                      @Azure/azure-sdk-eng
 
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                 @samvaity @mssfang

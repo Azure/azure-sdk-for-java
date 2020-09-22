@@ -31,10 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryImageInner;
-import com.azure.resourcemanager.compute.fluent.inner.GalleryImageListInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
+import com.azure.resourcemanager.compute.models.GalleryImageList;
 import com.azure.resourcemanager.compute.models.GalleryImageUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -55,7 +54,7 @@ public final class GalleryImagesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public GalleryImagesClient(ComputeManagementClient client) {
+    GalleryImagesClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(GalleryImagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -136,7 +135,7 @@ public final class GalleryImagesClient {
                 + "/{galleryName}/images")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<GalleryImageListInner>> listByGallery(
+        Mono<Response<GalleryImageList>> listByGallery(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -148,7 +147,7 @@ public final class GalleryImagesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<GalleryImageListInner>> listByGalleryNext(
+        Mono<Response<GalleryImageList>> listByGalleryNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

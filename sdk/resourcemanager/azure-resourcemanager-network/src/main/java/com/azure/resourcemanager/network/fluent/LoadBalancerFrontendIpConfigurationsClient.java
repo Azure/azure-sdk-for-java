@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.FrontendIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.LoadBalancerFrontendIpConfigurationListResultInner;
+import com.azure.resourcemanager.network.models.LoadBalancerFrontendIpConfigurationListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LoadBalancerFrontendIpConfigurations. */
@@ -45,7 +44,7 @@ public final class LoadBalancerFrontendIpConfigurationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public LoadBalancerFrontendIpConfigurationsClient(NetworkManagementClient client) {
+    LoadBalancerFrontendIpConfigurationsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -68,7 +67,7 @@ public final class LoadBalancerFrontendIpConfigurationsClient {
                 + "/loadBalancers/{loadBalancerName}/frontendIPConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadBalancerFrontendIpConfigurationListResultInner>> list(
+        Mono<Response<LoadBalancerFrontendIpConfigurationListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("loadBalancerName") String loadBalancerName,
@@ -95,7 +94,7 @@ public final class LoadBalancerFrontendIpConfigurationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadBalancerFrontendIpConfigurationListResultInner>> listNext(
+        Mono<Response<LoadBalancerFrontendIpConfigurationListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

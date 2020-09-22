@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
-import com.azure.resourcemanager.monitor.fluent.inner.EventDataCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.EventDataInner;
+import com.azure.resourcemanager.monitor.models.EventDataCollection;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ActivityLogs. */
@@ -45,7 +44,7 @@ public final class ActivityLogsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ActivityLogsClient(MonitorClient client) {
+    ActivityLogsClient(MonitorClient client) {
         this.service =
             RestProxy.create(ActivityLogsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -62,7 +61,7 @@ public final class ActivityLogsClient {
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/eventtypes/management/values")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventDataCollectionInner>> list(
+        Mono<Response<EventDataCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
@@ -74,7 +73,7 @@ public final class ActivityLogsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventDataCollectionInner>> listNext(
+        Mono<Response<EventDataCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

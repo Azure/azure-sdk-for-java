@@ -31,10 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RunGetLogResultInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RunListResultInner;
+import com.azure.resourcemanager.containerregistry.models.RunListResult;
 import com.azure.resourcemanager.containerregistry.models.RunUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -55,7 +54,7 @@ public final class RunsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public RunsClient(ContainerRegistryManagementClient client) {
+    RunsClient(ContainerRegistryManagementClient client) {
         this.service = RestProxy.create(RunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -73,7 +72,7 @@ public final class RunsClient {
                 + "/registries/{registryName}/runs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunListResultInner>> list(
+        Mono<Response<RunListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -148,7 +147,7 @@ public final class RunsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunListResultInner>> listNext(
+        Mono<Response<RunListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

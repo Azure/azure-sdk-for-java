@@ -13,14 +13,12 @@ import com.azure.resourcemanager.storage.models.AccountStatuses;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.DirectoryServiceOptions;
-import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.Identity;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.PublicEndpoints;
 import com.azure.resourcemanager.storage.models.Sku;
-import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountCreateParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryptionKeySource;
@@ -103,12 +101,6 @@ class StorageAccountImpl
             publicEndpoints = new PublicEndpoints(this.inner().primaryEndpoints(), this.inner().secondaryEndpoints());
         }
         return publicEndpoints;
-    }
-
-    @Override
-    @Deprecated
-    public Encryption encryption() {
-        return inner().encryption();
     }
 
     @Override
@@ -244,12 +236,6 @@ class StorageAccountImpl
     }
 
     @Override
-    @Deprecated
-    public StorageAccountImpl withSku(SkuName skuName) {
-        return withSku(StorageAccountSkuType.fromSkuName(skuName));
-    }
-
-    @Override
     public StorageAccountImpl withSku(StorageAccountSkuType sku) {
         if (isInCreateMode()) {
             createParameters.withSku(new Sku().withName(sku.name()));
@@ -290,12 +276,6 @@ class StorageAccountImpl
     }
 
     @Override
-    @Deprecated
-    public StorageAccountImpl withEncryption() {
-        return withBlobEncryption();
-    }
-
-    @Override
     public StorageAccountImpl withBlobEncryption() {
         this.encryptionHelper.withBlobEncryption();
         return this;
@@ -311,12 +291,6 @@ class StorageAccountImpl
     public StorageAccountImpl withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion) {
         this.encryptionHelper.withEncryptionKeyFromKeyVault(keyVaultUri, keyName, keyVersion);
         return this;
-    }
-
-    @Override
-    @Deprecated
-    public StorageAccountImpl withoutEncryption() {
-        return withoutBlobEncryption();
     }
 
     @Override

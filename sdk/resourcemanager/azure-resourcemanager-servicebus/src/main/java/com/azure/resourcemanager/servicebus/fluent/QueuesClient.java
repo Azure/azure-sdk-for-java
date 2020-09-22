@@ -29,16 +29,15 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicebus.ServiceBusManagementClient;
-import com.azure.resourcemanager.servicebus.fluent.inner.QueueListResultInner;
 import com.azure.resourcemanager.servicebus.fluent.inner.QueueResourceInner;
 import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleListResultInner;
 import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.Policykey;
 import com.azure.resourcemanager.servicebus.models.QueueCreateOrUpdateParameters;
+import com.azure.resourcemanager.servicebus.models.QueueListResult;
 import com.azure.resourcemanager.servicebus.models.RegenerateKeysParameters;
 import com.azure.resourcemanager.servicebus.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
+import com.azure.resourcemanager.servicebus.models.SharedAccessAuthorizationRuleListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Queues. */
@@ -56,7 +55,7 @@ public final class QueuesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public QueuesClient(ServiceBusManagementClient client) {
+    QueuesClient(ServiceBusManagementClient client) {
         this.service = RestProxy.create(QueuesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -74,7 +73,7 @@ public final class QueuesClient {
                 + "/namespaces/{namespaceName}/queues")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueueListResultInner>> listAll(
+        Mono<Response<QueueListResult>> listAll(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -134,7 +133,7 @@ public final class QueuesClient {
                 + "/namespaces/{namespaceName}/queues/{queueName}/authorizationRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleListResultInner>> listAuthorizationRules(
+        Mono<Response<SharedAccessAuthorizationRuleListResult>> listAuthorizationRules(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -246,14 +245,14 @@ public final class QueuesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueueListResultInner>> listAllNext(
+        Mono<Response<QueueListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleListResultInner>> listAuthorizationRulesNext(
+        Mono<Response<SharedAccessAuthorizationRuleListResult>> listAuthorizationRulesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -25,13 +25,12 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerinstance.ContainerInstanceManagementClient;
-import com.azure.resourcemanager.containerinstance.fluent.inner.CachedImagesListResultInner;
-import com.azure.resourcemanager.containerinstance.fluent.inner.CapabilitiesListResultInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.UsageInner;
-import com.azure.resourcemanager.containerinstance.fluent.inner.UsageListResultInner;
 import com.azure.resourcemanager.containerinstance.models.CachedImages;
+import com.azure.resourcemanager.containerinstance.models.CachedImagesListResult;
 import com.azure.resourcemanager.containerinstance.models.Capabilities;
+import com.azure.resourcemanager.containerinstance.models.CapabilitiesListResult;
+import com.azure.resourcemanager.containerinstance.models.UsageListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Locations. */
@@ -49,7 +48,7 @@ public final class LocationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public LocationsClient(ContainerInstanceManagementClient client) {
+    LocationsClient(ContainerInstanceManagementClient client) {
         this.service =
             RestProxy.create(LocationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -66,7 +65,7 @@ public final class LocationsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UsageListResultInner>> listUsage(
+        Mono<Response<UsageListResult>> listUsage(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
@@ -77,7 +76,7 @@ public final class LocationsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/cachedImages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CachedImagesListResultInner>> listCachedImages(
+        Mono<Response<CachedImagesListResult>> listCachedImages(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
@@ -88,7 +87,7 @@ public final class LocationsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/capabilities")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CapabilitiesListResultInner>> listCapabilities(
+        Mono<Response<CapabilitiesListResult>> listCapabilities(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
@@ -99,14 +98,14 @@ public final class LocationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CachedImagesListResultInner>> listCachedImagesNext(
+        Mono<Response<CachedImagesListResult>> listCachedImagesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CapabilitiesListResultInner>> listCapabilitiesNext(
+        Mono<Response<CapabilitiesListResult>> listCapabilitiesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

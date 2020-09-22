@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AzureFirewallInner;
-import com.azure.resourcemanager.network.fluent.inner.AzureFirewallListResultInner;
+import com.azure.resourcemanager.network.models.AzureFirewallListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class AzureFirewallsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AzureFirewallsClient(NetworkManagementClient client) {
+    AzureFirewallsClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(AzureFirewallsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -139,7 +138,7 @@ public final class AzureFirewallsClient
                 + "/azureFirewalls")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureFirewallListResultInner>> listByResourceGroup(
+        Mono<Response<AzureFirewallListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -150,7 +149,7 @@ public final class AzureFirewallsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/azureFirewalls")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureFirewallListResultInner>> list(
+        Mono<Response<AzureFirewallListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -160,14 +159,14 @@ public final class AzureFirewallsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureFirewallListResultInner>> listNext(
+        Mono<Response<AzureFirewallListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureFirewallListResultInner>> listAllNext(
+        Mono<Response<AzureFirewallListResult>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
