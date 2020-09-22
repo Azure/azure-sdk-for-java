@@ -8,7 +8,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -54,7 +54,7 @@ public final class ManageVirtualMachineFromMSIEnabledVirtualMachine {
 
         AzureProfile profile = new AzureProfile(null, subscriptionId, AzureEnvironment.AZURE);
 
-        Azure azure = Azure.configure()
+        AzureResourceManager azure = AzureResourceManager.configure()
             .withLogLevel(HttpLogDetailLevel.BASIC)
             .authenticate(credential, profile)
             .withSubscription(subscriptionId);
