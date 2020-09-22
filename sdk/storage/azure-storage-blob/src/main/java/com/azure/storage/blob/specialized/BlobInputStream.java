@@ -35,19 +35,6 @@ public final class BlobInputStream extends StorageInputStream {
     private BlobProperties properties;
 
     /**
-     * Initializes a new instance of the BlobInputStream class.
-     *
-     * @param blobClient A {@link BlobAsyncClient} object which represents the blob that this stream is associated with.
-     * @param accessCondition An {@link BlobRequestConditions} object which represents the access conditions for the
-     * blob.
-     * @throws BlobStorageException An exception representing any error which occurred during the operation.
-     */
-    BlobInputStream(final BlobAsyncClient blobClient, final BlobRequestConditions accessCondition)
-        throws BlobStorageException {
-        this(blobClient, 0, null, accessCondition);
-    }
-
-    /**
      * Initializes a new instance of the BlobInputStream class. Note that if {@code blobRangeOffset} is not {@code 0} or
      * {@code blobRangeLength} is not {@code null}, there will be no content MD5 verification.
      *
@@ -55,19 +42,19 @@ public final class BlobInputStream extends StorageInputStream {
      * with.
      * @param blobRangeOffset The offset of blob data to begin stream.
      * @param blobRangeLength How much data the stream should return after blobRangeOffset.
+     * @param chunkSize The size of the chunk to download.
      * @param accessCondition An {@link BlobRequestConditions} object which represents the access conditions for the
      * blob.
      * @throws BlobStorageException An exception representing any error which occurred during the operation.
      */
-    BlobInputStream(final BlobAsyncClientBase blobClient, long blobRangeOffset, Long blobRangeLength,
-                    final BlobRequestConditions accessCondition)
+    BlobInputStream(final BlobAsyncClientBase blobClient, long blobRangeOffset, Long blobRangeLength, int chunkSize,
+        final BlobRequestConditions accessCondition, final BlobProperties blobProperties)
         throws BlobStorageException {
-        super(blobRangeOffset, blobRangeLength, 4 * Constants.MB,
-            blobClient.getProperties().block().getBlobSize());
+        super(blobRangeOffset, blobRangeLength, chunkSize, blobProperties.getBlobSize());
 
         this.blobClient = blobClient;
         this.accessCondition = accessCondition;
-        this.properties = null;
+        this.properties = blobProperties;
     }
 
     /**
@@ -83,11 +70,6 @@ public final class BlobInputStream extends StorageInputStream {
             ByteBuffer currentBuffer = this.blobClient.downloadWithResponse(new BlobRange(offset,
                 (long) readLength), null, this.accessCondition, false)
                 .flatMap(response -> {
-                    // Only populate properties if it has not been populated yet, this is ok since we etag lock on the
-                    // blob while downloading, so it is guaranteed to be the same.
-                    if (this.properties == null) {
-                        this.properties = buildBlobProperties(response.getDeserializedHeaders());
-                    }
                     return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap);
                 })
                 .block();
@@ -102,21 +84,6 @@ public final class BlobInputStream extends StorageInputStream {
         }
     }
 
-    private static BlobProperties buildBlobProperties(BlobDownloadHeaders hd) {
-        if (hd == null) {
-            return null;
-        }
-        return new BlobProperties(null, hd.getLastModified(), hd.getETag(),
-            hd.getContentLength() == null ? 0 : hd.getContentLength(), hd.getContentType(), null,
-            hd.getContentEncoding(), hd.getContentDisposition(), hd.getContentLanguage(), hd.getCacheControl(),
-            hd.getBlobSequenceNumber(), hd.getBlobType(), hd.getLeaseStatus(), hd.getLeaseState(),
-            hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(), hd.getCopySource(), hd.getCopyProgress(),
-            hd.getCopyCompletionTime(), hd.getCopyStatusDescription(), hd.isServerEncrypted(),
-            null, null, null, null, null, hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
-            hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
-            hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId());
-    }
-
     /**
      * Gets the blob properties.
      * <p>
@@ -126,9 +93,6 @@ public final class BlobInputStream extends StorageInputStream {
      * @return {@link BlobProperties}
      */
     public BlobProperties getProperties() {
-        if (this.properties == null) {
-            this.properties = blobClient.getPropertiesWithResponse(accessCondition).block().getValue();
-        }
         return this.properties;
     }
 
