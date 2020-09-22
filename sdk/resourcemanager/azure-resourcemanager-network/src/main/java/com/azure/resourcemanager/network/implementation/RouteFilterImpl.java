@@ -36,7 +36,8 @@ class RouteFilterImpl
 
     @Override
     protected Mono<RouteFilterInner> createInner() {
-        return this.manager().serviceClient().getRouteFilters().createOrUpdateAsync(resourceGroupName(), name(), inner());
+        return this.manager().serviceClient().getRouteFilters()
+            .createOrUpdateAsync(resourceGroupName(), name(), inner());
     }
 
     @Override

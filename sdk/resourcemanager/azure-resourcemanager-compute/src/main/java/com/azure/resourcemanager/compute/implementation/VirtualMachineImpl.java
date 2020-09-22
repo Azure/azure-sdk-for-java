@@ -254,7 +254,8 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> generalizeAsync() {
-        return this.manager().serviceClient().getVirtualMachines().generalizeAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVirtualMachines()
+            .generalizeAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -264,7 +265,8 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> powerOffAsync() {
-        return this.manager().serviceClient().getVirtualMachines().powerOffAsync(this.resourceGroupName(), this.name(), null);
+        return this.manager().serviceClient().getVirtualMachines()
+            .powerOffAsync(this.resourceGroupName(), this.name(), null);
     }
 
     @Override
@@ -304,12 +306,14 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> simulateEvictionAsync() {
-        return this.manager().serviceClient().getVirtualMachines().simulateEvictionAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVirtualMachines()
+            .simulateEvictionAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void convertToManaged() {
-        this.manager().serviceClient().getVirtualMachines().convertToManagedDisks(this.resourceGroupName(), this.name());
+        this.manager().serviceClient().getVirtualMachines()
+            .convertToManagedDisks(this.resourceGroupName(), this.name());
         this.refresh();
     }
 
@@ -1560,8 +1564,8 @@ class VirtualMachineImpl
             return null;
         } else {
             ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
-            ProximityPlacementGroupInner plgInner =
-                manager().serviceClient().getProximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
+            ProximityPlacementGroupInner plgInner = manager().serviceClient().getProximityPlacementGroups()
+                .getByResourceGroup(id.resourceGroupName(), id.name());
             if (plgInner == null) {
                 return null;
             } else {

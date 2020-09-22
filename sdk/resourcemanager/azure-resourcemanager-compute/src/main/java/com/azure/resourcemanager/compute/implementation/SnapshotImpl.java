@@ -311,7 +311,8 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     protected Mono<SnapshotInner> getInnerAsync() {
-        return this.manager().serviceClient().getSnapshots().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getSnapshots()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private String constructStorageAccountId(String vhdUrl) {

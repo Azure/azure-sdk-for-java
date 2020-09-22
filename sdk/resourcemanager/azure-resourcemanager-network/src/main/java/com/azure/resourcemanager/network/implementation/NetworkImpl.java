@@ -79,7 +79,8 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     protected Mono<VirtualNetworkInner> applyTagsToInnerAsync() {
-        return this.manager().serviceClient().getVirtualNetworks().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this.manager().serviceClient().getVirtualNetworks()
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override

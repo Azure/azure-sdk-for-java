@@ -142,7 +142,9 @@ class ActiveDirectoryGroupImpl
         membersToAdd
             .add(
                 String.format(
-                    "%s%s/directoryObjects/%s", manager().serviceClient().getEndpoint(), manager().tenantId(), objectId));
+                    "%s%s/directoryObjects/%s",
+                    manager().serviceClient().getEndpoint(), manager().tenantId(),
+                    objectId));
         return this;
     }
 

@@ -106,7 +106,8 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                 ActiveDirectoryApplication application = this.taskResult(applicationCreatable.key());
                 createParameters.withAppId(application.applicationId());
             }
-            sp = manager.serviceClient().getServicePrincipals().createAsync(createParameters).map(innerToFluentMap(this));
+            sp = manager.serviceClient().getServicePrincipals()
+                .createAsync(createParameters).map(innerToFluentMap(this));
         }
         return sp
             .flatMap(

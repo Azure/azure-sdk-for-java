@@ -392,7 +392,8 @@ public final class DeploymentImpl extends
 
     @Override
     protected Mono<DeploymentExtendedInner> getInnerAsync() {
-        return this.manager().serviceClient().getDeployments().getAtManagementGroupScopeAsync(resourceGroupName(), name());
+        return this.manager().serviceClient().getDeployments()
+            .getAtManagementGroupScopeAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -548,8 +549,9 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<WhatIfOperationResult> whatIfAsync() {
-        return this.manager().serviceClient().getDeployments().whatIfAsync(resourceGroupName(), name(), deploymentWhatIf)
-                .map(WhatIfOperationResultImpl::new);
+        return this.manager().serviceClient().getDeployments()
+            .whatIfAsync(resourceGroupName(), name(), deploymentWhatIf)
+            .map(WhatIfOperationResultImpl::new);
     }
 
 
@@ -561,6 +563,6 @@ public final class DeploymentImpl extends
     @Override
     public Mono<WhatIfOperationResult> whatIfAtSubscriptionScopeAsync() {
         return this.manager().serviceClient().getDeployments().whatIfAtSubscriptionScopeAsync(name(), deploymentWhatIf)
-                .map(WhatIfOperationResultImpl::new);
+            .map(WhatIfOperationResultImpl::new);
     }
 }

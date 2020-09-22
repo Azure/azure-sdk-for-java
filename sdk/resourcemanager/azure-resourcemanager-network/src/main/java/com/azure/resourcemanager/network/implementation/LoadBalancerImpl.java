@@ -89,7 +89,8 @@ class LoadBalancerImpl
 
     @Override
     protected Mono<LoadBalancerInner> applyTagsToInnerAsync() {
-        return this.manager().serviceClient().getLoadBalancers().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this.manager().serviceClient().getLoadBalancers()
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     // Helpers

@@ -76,8 +76,8 @@ class AvailabilitySetImpl
             return null;
         } else {
             ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
-            ProximityPlacementGroupInner plgInner =
-                manager().serviceClient().getProximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
+            ProximityPlacementGroupInner plgInner = manager().serviceClient().getProximityPlacementGroups()
+                .getByResourceGroup(id.resourceGroupName(), id.name());
             if (plgInner == null) {
                 return null;
             } else {

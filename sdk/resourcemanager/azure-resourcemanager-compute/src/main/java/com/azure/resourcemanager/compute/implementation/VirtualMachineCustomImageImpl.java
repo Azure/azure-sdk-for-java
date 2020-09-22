@@ -224,7 +224,8 @@ class VirtualMachineCustomImageImpl
 
     @Override
     protected Mono<ImageInner> getInnerAsync() {
-        return this.manager().serviceClient().getImages().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getImages()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private ImageOSDisk ensureOsDiskImage() {

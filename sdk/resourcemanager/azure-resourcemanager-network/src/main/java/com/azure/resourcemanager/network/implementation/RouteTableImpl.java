@@ -30,7 +30,8 @@ class RouteTableImpl
 
     @Override
     protected Mono<RouteTableInner> applyTagsToInnerAsync() {
-        return this.manager().serviceClient().getRouteTables().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this.manager().serviceClient().getRouteTables()
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override

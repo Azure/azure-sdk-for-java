@@ -24,7 +24,8 @@ class NetworkWatcherImpl
     NetworkWatcherImpl(String name, final NetworkWatcherInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.packetCaptures = new PacketCapturesImpl(networkManager.serviceClient().getPacketCaptures(), this);
-        this.connectionMonitors = new ConnectionMonitorsImpl(networkManager.serviceClient().getConnectionMonitors(), this);
+        this.connectionMonitors = 
+            new ConnectionMonitorsImpl(networkManager.serviceClient().getConnectionMonitors(), this);
     }
 
     public PacketCapturesImpl packetCaptures() {
@@ -45,8 +46,8 @@ class NetworkWatcherImpl
 
     @Override
     public SecurityGroupView getSecurityGroupView(String vmId) {
-        SecurityGroupViewResultInner securityGroupViewResultInner =
-            this.manager().serviceClient().getNetworkWatchers().getVMSecurityRules(this.resourceGroupName(), this.name(), vmId);
+        SecurityGroupViewResultInner securityGroupViewResultInner = this.manager().serviceClient().getNetworkWatchers()
+            .getVMSecurityRules(this.resourceGroupName(), this.name(), vmId);
         return new SecurityGroupViewImpl(this, securityGroupViewResultInner, vmId);
     }
 
@@ -61,8 +62,8 @@ class NetworkWatcherImpl
     }
 
     public FlowLogSettings getFlowLogSettings(String nsgId) {
-        FlowLogInformationInner flowLogInformationInner =
-            this.manager().serviceClient().getNetworkWatchers().getFlowLogStatus(this.resourceGroupName(), this.name(), nsgId);
+        FlowLogInformationInner flowLogInformationInner = this.manager().serviceClient().getNetworkWatchers()
+            .getFlowLogStatus(this.resourceGroupName(), this.name(), nsgId);
         return new FlowLogSettingsImpl(this, flowLogInformationInner, nsgId);
     }
 

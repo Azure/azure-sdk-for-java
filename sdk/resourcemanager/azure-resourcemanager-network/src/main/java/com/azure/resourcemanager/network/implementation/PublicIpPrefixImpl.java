@@ -63,7 +63,8 @@ class PublicIpPrefixImpl
 
     @Override
     public Mono<PublicIpPrefix> applyTagsAsync() {
-        return this.manager().serviceClient().getPublicIpPrefixes().updateTagsAsync(resourceGroupName(), name(), inner().tags())
+        return this.manager().serviceClient().getPublicIpPrefixes()
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .map(inner -> {
                 setInner(inner);
                 return PublicIpPrefixImpl.this;
