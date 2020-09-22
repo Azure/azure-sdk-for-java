@@ -153,7 +153,7 @@ public final class ResourceManagerUtils {
      * @param environment the azure environment with current request
      * @return the default scope
      */
-    public static String getDefaultScopeFromUrl(String url, AzureEnvironment environment) {
+    static String getDefaultScopeFromUrl(String url, AzureEnvironment environment) {
         String resource = environment.getManagementEndpoint();
         for (Map.Entry<String, String> endpoint : environment.getEndpoints().entrySet()) {
             if (url.contains(endpoint.getValue())) {
@@ -184,7 +184,7 @@ public final class ResourceManagerUtils {
      * @param s the string
      * @return the string without trailing slash
      */
-    public static String removeTrailingSlash(String s) {
+    private static String removeTrailingSlash(String s) {
         if (s == null || s.length() == 0) {
             return s;
         }
