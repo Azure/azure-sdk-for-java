@@ -24,7 +24,7 @@ public abstract class GroupableParentResourceWithTagsImpl<
         InnerModelT extends com.azure.core.management.Resource,
         FluentModelImplT extends
             GroupableParentResourceWithTagsImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
-        ManagerT extends Manager<? extends AzureServiceClient>>
+        ManagerT extends Manager<?>>
     extends GroupableParentResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>
     implements UpdatableWithTags<FluentModelT>, AppliableWithTags<FluentModelT> {
     protected GroupableParentResourceWithTagsImpl(String name, InnerModelT innerObject, ManagerT manager) {

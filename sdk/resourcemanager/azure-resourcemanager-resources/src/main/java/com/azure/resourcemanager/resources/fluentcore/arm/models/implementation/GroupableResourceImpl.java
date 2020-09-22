@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.resources.fluentcore.arm.models.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -25,7 +24,7 @@ public abstract class GroupableResourceImpl<
         FluentModelT extends Resource,
         InnerModelT extends com.azure.core.management.Resource,
         FluentModelImplT extends GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
-        ManagerT extends Manager<? extends AzureServiceClient>>
+        ManagerT extends Manager<?>>
         extends
         ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>
         implements

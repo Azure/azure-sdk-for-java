@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByParent;
@@ -34,7 +33,7 @@ public abstract class IndependentChildrenImpl<
         ImplT extends T,
         InnerT,
         InnerCollectionT,
-        ManagerT extends Manager<? extends AzureServiceClient>,
+        ManagerT extends Manager<?>,
         ParentT extends Resource & HasResourceGroup>
         extends CreatableResourcesImpl<T, ImplT, InnerT>
         implements

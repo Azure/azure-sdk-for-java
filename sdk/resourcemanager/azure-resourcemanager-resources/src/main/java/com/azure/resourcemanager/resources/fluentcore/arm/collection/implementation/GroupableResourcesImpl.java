@@ -3,7 +3,6 @@
 package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation;
 
 import com.azure.core.management.Resource;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -31,7 +30,7 @@ public abstract class GroupableResourcesImpl<
         ImplT extends T,
         InnerT extends Resource,
         InnerCollectionT,
-        ManagerT extends Manager<? extends AzureServiceClient>>
+        ManagerT extends Manager<?>>
         extends CreatableResourcesImpl<T, ImplT, InnerT>
         implements
         SupportsGettingById<T>,

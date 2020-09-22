@@ -27,7 +27,7 @@ public abstract class TestTemplate<
     ResourceT extends GroupableResource<? extends Manager<?>, ?>,
     CollectionT extends
         SupportsListing<ResourceT> & SupportsGettingByResourceGroup<ResourceT> & SupportsDeletingById
-            & SupportsGettingById<ResourceT> & HasManager<? extends Manager<?>>> {
+            & SupportsGettingById<ResourceT> & HasManager<?>> {
 
     private ResourceT resource;
     private CollectionT collection;

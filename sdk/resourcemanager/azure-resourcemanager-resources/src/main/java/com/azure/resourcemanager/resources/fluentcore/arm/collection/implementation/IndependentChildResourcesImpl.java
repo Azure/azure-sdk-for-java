@@ -25,7 +25,7 @@ public abstract class IndependentChildResourcesImpl<
         ImplT extends T,
         InnerT,
         InnerCollectionT,
-        ManagerT extends Manager<? extends AzureServiceClient>,
+        ManagerT extends Manager<?>,
         ParentT extends Resource & HasResourceGroup>
         extends IndependentChildrenImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT, ParentT> {
 

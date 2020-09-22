@@ -21,7 +21,7 @@ public abstract class GroupableParentResourceImpl<
         FluentModelT extends Resource,
         InnerModelT extends com.azure.core.management.Resource,
         FluentModelImplT extends GroupableParentResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
-        ManagerT extends Manager<? extends AzureServiceClient>>
+        ManagerT extends Manager<?>>
         extends
         GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT> {
 
