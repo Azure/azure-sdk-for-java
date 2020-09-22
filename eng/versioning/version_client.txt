@@ -24,8 +24,8 @@ com.azure:azure-cosmos;4.5.0;4.6.0-beta.1
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-encryption;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-appconfiguration;1.1.5;1.2.0-beta.1
-com.azure:azure-data-schemaregistry;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-data-schemaregistry-avro;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-data-schemaregistry;1.0.0-beta.4;1.0.0-beta.5
+com.azure:azure-data-schemaregistry-avro;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-tables;12.0.0-beta.1;12.0.0-beta.2
 com.azure:azure-digitaltwins-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
@@ -133,6 +133,7 @@ com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;1.2.8-bet
 
 unreleased_com.azure:azure-core;1.9.0-beta.1
 unreleased_com.azure:azure-core-amqp;1.6.0-beta.1
+unreleased_com.azure:azure-identity;1.2.0-beta.2
 unreleased_com.azure:azure-messaging-servicebus;7.0.0-beta.7
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
