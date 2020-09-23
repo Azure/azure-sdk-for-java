@@ -44,7 +44,7 @@ public class SerialOperationExecutor implements IExecutor {
     }
 
     @Override
-    public Mono<Void> execute(
+    public Mono<OperationResult> execute(
         int iterationCount,
         boolean isWarmup,
         boolean traceFailures,
@@ -52,48 +52,54 @@ public class SerialOperationExecutor implements IExecutor {
 
         LOGGER.info(String.format("Executor %s started", this.executorId));
 
-        return this.operation.prepare().flatMap((dummy) -> Flux
+        return Flux
             .range(0, iterationCount)
-            .flatMapSequential(
-                (i) -> {
-                    TelemetrySpan telemetry = TelemetrySpan.startNew(isWarmup);
-                    return this.operation.executeOnce()
-                                         .onErrorResume((ex) -> {
-                           telemetry.close();
+            .flatMapSequential((i) -> {
+                final TelemetrySpan telemetry = TelemetrySpan.createNew(isWarmup);
 
-                           if (traceFailures) {
-                               Utility.traceInformation(ex.toString(), Ansi.Color.RED);
-                           }
+                return this.operation
+                    .prepare()
+                    .flatMap((alwaysVoid) -> {
+                        Mono<OperationResult> opResultTask = this.operation.executeOnce()
+                                             .doFirst(() -> telemetry.start())
+                                             .onErrorResume((ex) -> {
+                                                 telemetry.close();
 
-                           this.failedOperationCount++;
+                                                 if (traceFailures) {
+                                                     Utility.traceInformation(ex.toString(),
+                                                         Ansi.Color.RED);
+                                                 }
 
-                           // TODO fabianm extract RU charge from CosmosException and add to totalRuCharges
-                           // if (ex instanceof CosmosException) {
-                           //}
+                                                 this.failedOperationCount++;
 
-                           return Mono.empty();
-                        })
-                                         .map((r) -> {
-                            telemetry.close();
+                                                 // TODO fabianm extract RU charge from
+                                                 //  CosmosException and add to totalRuCharges
+                                                 // if (ex instanceof CosmosException) {
+                                                 //}
 
-                            this.successOperationCount++;
-                            this.totalRuCharges += r.getRuCharges();
+                                                 return null;
+                                             })
+                                             .map((r) -> {
+                                                 telemetry.close();
 
-                            return Mono.empty();
-                        });
-                },
-                1,
-                0)
-            .last()
-            .map((nothing) -> {
-                    LOGGER.info(String.format("Executor %s completed", this.executorId));
+                                                 this.successOperationCount++;
+                                                 this.totalRuCharges += r.getRuCharges();
 
-                    if (completionCallback != null) {
-                        completionCallback.run();
-                    }
+                                                 return r;
+                                             });
 
-                    return Mono.empty();
-                })
-            .then());
+                        return opResultTask;
+                    });
+            })
+            .doFinally((signalType) -> {
+                Utility.traceInformation(
+                    String.format("Executor %s completed - %s", this.executorId, signalType.toString()),
+                    Ansi.Color.GREEN);
+
+                if (completionCallback != null) {
+                    completionCallback.run();
+                }
+            })
+            .last();
     }
 }

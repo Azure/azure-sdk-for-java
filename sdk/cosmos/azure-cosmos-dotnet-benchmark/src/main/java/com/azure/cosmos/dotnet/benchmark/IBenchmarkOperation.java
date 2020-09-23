@@ -4,7 +4,7 @@ import reactor.core.publisher.Mono;
 
 public interface IBenchmarkOperation {
 
-    Mono<Void> prepare();
+    Mono<Object> prepare();
 
     Mono<OperationResult> executeOnce();
 

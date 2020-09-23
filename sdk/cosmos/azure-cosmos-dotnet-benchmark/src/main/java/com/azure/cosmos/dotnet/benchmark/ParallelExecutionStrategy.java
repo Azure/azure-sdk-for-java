@@ -8,14 +8,19 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 import java.util.stream.DoubleStream;
 
 public class ParallelExecutionStrategy implements IExecutionStrategy {
     private static final long OUTPUT_LOOP_DELAY_IN_MS = 1000;
     private final Function<Void, IBenchmarkOperation> benchmarkOperation;
+    private final BenchmarkConfig config;
     private final AtomicInteger pendingExecutorCount = new AtomicInteger();
 
-    public ParallelExecutionStrategy(Function<Void, IBenchmarkOperation> benchmarkOperation) {
+    public ParallelExecutionStrategy(BenchmarkConfig config,
+                                     Function<Void, IBenchmarkOperation> benchmarkOperation) {
+
+        this.config = config;
         this.benchmarkOperation = benchmarkOperation;
     }
 
@@ -32,10 +37,10 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
 
         // Block while warmup happens
         warmupExecutor.execute(
-            (int)(serialExecutorIterationCount * warmupFraction),
+            2,//(int)(serialExecutorIterationCount * warmupFraction),
             true,
             traceFailures,
-            null);
+            null).block();
 
         this.pendingExecutorCount.set(serialExecutorConcurrency);
 
@@ -97,28 +102,38 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
             Ansi.Color.GREEN);
         lastSummary.print(lastSummary.getTotalOperationsCount(), Ansi.Color.GREEN);
 
-
-        Double[] summaryCounters = (Double[])perLoopCounters.stream().skip(5).limit(perLoopCounters.size() - 10).toArray();
         RunSummary runSummary = new RunSummary();
+        if (perLoopCounters.size() > 20) {
+            Double[] summaryCounters =  new Double[perLoopCounters.size() - 10];
+            for(int i = 5; i < perLoopCounters.size() - 5; i++) {
+                summaryCounters[i - 5] = perLoopCounters.get(i);
+            }
+            Arrays.sort(summaryCounters, Comparator.reverseOrder());
 
-        if (summaryCounters.length > 10) {
             Utility.traceInformation("After Excluding outliers", Ansi.Color.GREEN);
-            DoubleStream rpsCounters = Arrays.stream(summaryCounters).sorted(Comparator.reverseOrder()).mapToDouble(d -> d);
-            long signalCount = rpsCounters.count();
+            Supplier<DoubleStream> rpsCounters = () -> Arrays.stream(summaryCounters).mapToDouble(d -> d);
+            long signalCount = summaryCounters.length;
 
-            runSummary.setTop10PercentAverageRps(rpsCounters.limit((int)(0.1 * signalCount)).average().orElse(-1));
-            runSummary.setTop10PercentAverageRps(rpsCounters.limit((int)(0.2 * signalCount)).average().orElse(-1));
-            runSummary.setTop10PercentAverageRps(rpsCounters.limit((int)(0.3 * signalCount)).average().orElse(-1));
-            runSummary.setTop10PercentAverageRps(rpsCounters.limit((int)(0.4 * signalCount)).average().orElse(-1));
-            runSummary.setTop10PercentAverageRps(rpsCounters.limit((int)(0.5 * signalCount)).average().orElse(-1));
-            runSummary.setTop10PercentAverageRps(rpsCounters.limit((int)(0.6 * signalCount)).average().orElse(-1));
-            runSummary.setTop10PercentAverageRps(rpsCounters.limit((int)(0.7 * signalCount)).average().orElse(-1));
-            runSummary.setTop10PercentAverageRps(rpsCounters.limit((int)(0.8 * signalCount)).average().orElse(-1));
-            runSummary.setTop10PercentAverageRps(rpsCounters.limit((int)(0.9 * signalCount)).average().orElse(-1));
-            runSummary.setTop10PercentAverageRps(rpsCounters.limit((int)(0.95 * signalCount)).average().orElse(-1));
-            runSummary.setAverageRps(rpsCounters.average().orElse(-1));
+            runSummary.setTop10PercentAverageRps(rpsCounters.get().limit((int)(0.1 * signalCount)).average().orElse(-1));
+            runSummary.setTop20PercentAverageRps(rpsCounters.get().limit((int)(0.2 * signalCount)).average().orElse(-1));
+            runSummary.setTop30PercentAverageRps(rpsCounters.get().limit((int)(0.3 * signalCount)).average().orElse(-1));
+            runSummary.setTop40PercentAverageRps(rpsCounters.get().limit((int)(0.4 * signalCount)).average().orElse(-1));
+            runSummary.setTop50PercentAverageRps(rpsCounters.get().limit((int)(0.5 * signalCount)).average().orElse(-1));
+            runSummary.setTop60PercentAverageRps(rpsCounters.get().limit((int)(0.6 * signalCount)).average().orElse(-1));
+            runSummary.setTop70PercentAverageRps(rpsCounters.get().limit((int)(0.7 * signalCount)).average().orElse(-1));
+            runSummary.setTop80PercentAverageRps(rpsCounters.get().limit((int)(0.8 * signalCount)).average().orElse(-1));
+            runSummary.setTop90PercentAverageRps(rpsCounters.get().limit((int)(0.9 * signalCount)).average().orElse(-1));
+            runSummary.setTop95PercentAverageRps(rpsCounters.get().limit((int)(0.95 * signalCount)).average().orElse(-1));
+            runSummary.setAverageRps(rpsCounters.get().average().orElse(-1));
 
-            // TODO fabianm add latency percentiles
+            if (this.config.isEnableLatencyPercentiles()) {
+                TelemetrySpan.prepareForCalculations();
+                runSummary.setTop50PercentLatencyInMs(TelemetrySpan.getLatencyPercentile(0.5));
+                runSummary.setTop75PercentLatencyInMs(TelemetrySpan.getLatencyPercentile(0.75));
+                runSummary.setTop90PercentLatencyInMs(TelemetrySpan.getLatencyPercentile(0.9));
+                runSummary.setTop95PercentLatencyInMs(TelemetrySpan.getLatencyPercentile(0.95));
+                runSummary.setTop99PercentLatencyInMs(TelemetrySpan.getLatencyPercentile(0.99));
+            }
 
             String summary = JsonHelper.toJsonString(runSummary);
             Utility.traceInformation(summary, Ansi.Color.GREEN);

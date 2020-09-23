@@ -10,7 +10,7 @@ public interface IExecutor {
 
     double getTotalRuCharges();
 
-    Mono<Void> execute(
+    Mono<OperationResult> execute(
         int iterationCount,
         boolean isWarmup,
         boolean traceFailures,

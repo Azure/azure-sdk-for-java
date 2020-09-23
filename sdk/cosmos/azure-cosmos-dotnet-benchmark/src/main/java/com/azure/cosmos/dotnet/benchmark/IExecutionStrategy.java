@@ -14,6 +14,6 @@ interface IExecutionStrategy {
         BenchmarkConfig config,
         Function<Void, IBenchmarkOperation> benchmarkOperation) {
 
-        return new ParallelExecutionStrategy(benchmarkOperation);
+        return new ParallelExecutionStrategy(config, benchmarkOperation);
     }
 }

@@ -35,14 +35,19 @@ public class InsertBenchmarkOperation implements IBenchmarkOperation {
     }
 
     @Override
-    public Mono<Void> prepare() {
-        String newPartitionKey = UUID.randomUUID().toString();
+    public Mono<Object> prepare() {
         String newId = UUID.randomUUID().toString();
         this.sampleJsonNode.put("id", newId);
-        this.sampleJsonNode.put(this.partitionKeyPath, newPartitionKey);
-        this.partitionKey = new PartitionKey(newPartitionKey);
 
-        return Mono.empty();
+        if ("id".equals(this.partitionKeyPath)) {
+            this.partitionKey = new PartitionKey(newId);
+        } else {
+            String newPartitionKey =  UUID.randomUUID().toString();
+            this.sampleJsonNode.put(this.partitionKeyPath, newPartitionKey);
+            this.partitionKey = new PartitionKey(newPartitionKey);
+        }
+
+        return Mono.just("");
     }
 
     @Override

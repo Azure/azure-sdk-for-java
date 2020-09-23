@@ -10,13 +10,12 @@ public class TelemetrySpan implements AutoCloseable {
     private static double[] latencyHistogram;
     private static boolean preparedForCalcualtions = false;
 
-    private final long startedAtInNanos;
+    private long startedAtInNanos;
     private final boolean disableTelemetry;
 
     private TelemetrySpan(
         boolean disableTelemetry) {
 
-        this.startedAtInNanos = System.nanoTime();
         this.disableTelemetry = disableTelemetry;
     }
 
@@ -31,6 +30,10 @@ public class TelemetrySpan implements AutoCloseable {
                         TimeUnit.NANOSECONDS));
             }
         }
+    }
+
+    public void start() {
+        this.startedAtInNanos = System.nanoTime();
     }
 
     public static void setIncludePercentiles(boolean includePercentiles) {
@@ -48,7 +51,7 @@ public class TelemetrySpan implements AutoCloseable {
         preparedForCalcualtions = false;
     }
 
-    public static TelemetrySpan startNew(
+    public static TelemetrySpan createNew(
         boolean disableTelemetry) {
 
         return new TelemetrySpan(

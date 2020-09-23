@@ -11,6 +11,7 @@ import com.azure.cosmos.dotnet.benchmark.operations.InsertBenchmarkOperation;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import org.fusesource.jansi.Ansi;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -78,14 +80,15 @@ public class Main {
                 .throttlingRetryOptions(new ThrottlingRetryOptions().setMaxRetryAttemptsOnThrottledRequests(0))
                 .buildAsyncClient();
 
-            String partitionKeyPath = Objects.requireNonNull(cosmosClient
+            PartitionKeyDefinition partitionKeyDef = Objects.requireNonNull(cosmosClient
                 .getDatabase(cfg.getDatabase())
                 .getContainer(cfg.getContainer())
                 .read()
                 .block())
-                                             .getProperties()
-                                             .getPartitionKeyDefinition()
-                                             .toString();
+                                                            .getProperties()
+                                                            .getPartitionKeyDefinition();
+
+            String partitionKeyPath = partitionKeyDef.getPaths().get(0);
 
             Integer currentContainerThroughput= Objects.requireNonNull(cosmosClient
                 .getDatabase(cfg.getDatabase())
@@ -97,7 +100,7 @@ public class Main {
 
             Utility.traceInformation(
                 String.format(
-                    "Using containr %s with %d RU/s",
+                    "Using container %s with %d RU/s",
                     cfg.getContainer(),
                     currentContainerThroughput),
                 Ansi.Color.GREEN);
@@ -124,8 +127,8 @@ public class Main {
                 0.01d);
 
             Instant now = Instant.now();
-            String dateString = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(now);
-            String timeString = DateTimeFormatter.ofPattern("HH-mm").format(now);
+            String dateString = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC).format(now);
+            String timeString = DateTimeFormatter.ofPattern("HH-mm").withZone(ZoneOffset.UTC).format(now);
 
             runSummary.setWorkloadType(cfg.getOperation().toString());
             runSummary.setId(

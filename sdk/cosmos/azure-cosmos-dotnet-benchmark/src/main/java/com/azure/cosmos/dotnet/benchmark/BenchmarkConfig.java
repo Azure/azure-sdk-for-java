@@ -49,7 +49,7 @@ public class BenchmarkConfig {
     @Parameter(names = "-n", description = "Number of items to process")
     private int itemCount = 200_000;
 
-    @Parameter(names = "--consistencylevel", description = "Consistency Level", converter = ConsistencyLevelConverter.class)
+    @Parameter(names = "--consistencyLevel", description = "Consistency Level", converter = ConsistencyLevelConverter.class)
     private ConsistencyLevel consistencyLevel = ConsistencyLevel.SESSION;
 
     @Parameter(names = "--enableLatencyPercentiles", description = "Enable latency percentiles")
@@ -101,7 +101,7 @@ public class BenchmarkConfig {
     private boolean disableCoreSdkLogging = false;
 
     @Parameter(names = "--resultsContainer", description = "Container to publish results to")
-    private String resultsContainer = "runSummary";
+    private String resultsContainer = "runsummary";
 
     @Parameter(names = {"-h", "-help", "--help", "/?", "-?", "--?"}, description = "Help", help = true)
     private boolean help = false;
