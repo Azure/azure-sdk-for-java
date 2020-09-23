@@ -16,16 +16,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @RestController
-public class CosmosDbRestController {
+public class CosmosRestController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CosmosDbRestController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CosmosRestController.class);
 
     private static final String CR = "</BR>";
 
     @Autowired
     private UserRepository repository;
 
-    @RequestMapping(value = "/cosmosdb", method = RequestMethod.GET)
+    @RequestMapping(value = "/cosmos", method = RequestMethod.GET)
     @ResponseBody
     public String createUser(HttpServletResponse response) {
         final StringBuilder result = new StringBuilder();

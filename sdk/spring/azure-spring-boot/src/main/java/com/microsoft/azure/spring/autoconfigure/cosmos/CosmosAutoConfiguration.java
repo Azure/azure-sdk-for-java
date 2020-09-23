@@ -3,13 +3,16 @@
 
 package com.microsoft.azure.spring.autoconfigure.cosmos;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -35,13 +38,22 @@ public class CosmosAutoConfiguration extends AbstractCosmosConfiguration {
     }
 
     @Bean
-    public CosmosClientBuilder cosmosClientBuilder() {
+    @ConditionalOnProperty(prefix = "azure.cosmos", name = "secondary-key")
+    public AzureKeyCredential azureKeyCredential() {
+        return new AzureKeyCredential(properties.getKey());
+    }
+
+    @Bean
+    public CosmosClientBuilder cosmosClientBuilder(@Autowired(required = false) AzureKeyCredential azureKeyCredential) {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder();
+        if (null == azureKeyCredential) {
+            cosmosClientBuilder.key(properties.getKey());
+        } else {
+            cosmosClientBuilder.credential(azureKeyCredential);
+        }
         cosmosClientBuilder
             .consistencyLevel(properties.getConsistencyLevel())
-            .key(properties.getKey())
-            .endpoint(properties.getUri())
-            .contentResponseOnWriteEnabled(true);
+            .endpoint(properties.getUri());
         if (ConnectionMode.GATEWAY == properties.getConnectionMode()) {
             cosmosClientBuilder.gatewayMode();
         }

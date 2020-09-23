@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.microsoft.azure.spring.autoconfigure.cosmos.CosmosCredentialConfiguration;
+import com.azure.core.credential.AzureKeyCredential;
+import com.microsoft.azure.spring.autoconfigure.cosmos.CosmosProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,14 +25,18 @@ public class CosmosSampleApplication implements CommandLineRunner {
     @Autowired
     private UserRepository repository;
 
+    @Autowired(required = false)
+    private AzureKeyCredential azureKeyCredential;
+
     @Autowired
-    private ApplicationContext applicationContext;
+    private CosmosProperties properties;
 
     public static void main(String[] args) {
         SpringApplication.run(CosmosSampleApplication.class, args);
     }
 
     public void run(String... var1) throws Exception {
+        Thread.sleep(3000);
         final User testUser = new User("testId", "testFirstName", "testLastName", "test address line one");
 
         // Save the User class to Azure Cosmos DB database.
@@ -60,11 +64,19 @@ public class CosmosSampleApplication implements CommandLineRunner {
         Assert.state(result.getLastName().equals(testUser.getLastName()), "query result lastName doesn't match!");
         LOGGER.info("findOne in User collection get result: {}", result.toString());
 
-        //  Switch keys
-        CosmosCredentialConfiguration bean =
-            applicationContext.getBean(CosmosCredentialConfiguration.class);
-        bean.switchToCredential();
-        LOGGER.info("Switch to credential.");
+        switchKey();
+    }
+
+    /**
+     * Switch cosmos authorization key
+     */
+    private void switchKey() {
+        if (null == azureKeyCredential) {
+            return;
+        }
+
+        azureKeyCredential.update(properties.getSecondaryKey());
+        LOGGER.info("Switch to secondary key.");
 
         final User testUserUpdated = new User("testIdUpdated", "testFirstNameUpdated",
             "testLastNameUpdated", "test address Updated line one");
@@ -81,7 +93,7 @@ public class CosmosSampleApplication implements CommandLineRunner {
         Assert.state(updatedResult.getLastName().equals(testUserUpdated.getLastName()),
             "query updated result lastName doesn't match!");
 
-        bean.switchToKey();
+        azureKeyCredential.update(properties.getKey());
         LOGGER.info("Switch back to key.");
         final Optional<User> userOptional = repository.findById(testUserUpdated.getId()).blockOptional();
         Assert.isTrue(userOptional.isPresent(), "Cannot find updated user.");

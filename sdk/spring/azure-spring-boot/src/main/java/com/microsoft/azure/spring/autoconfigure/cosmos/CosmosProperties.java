@@ -55,9 +55,9 @@ public class CosmosProperties {
     private boolean allowTelemetry = true;
 
     /**
-     * The rotating credential is used to update the key for authorizing request.
+     * The secondaryKey is used to rotate key for authorizing request.
      */
-    private String credential;
+    private String secondaryKey;
 
     /**
      * Represents the connection mode to be used by the client in the Azure Cosmos DB database service.
@@ -131,12 +131,12 @@ public class CosmosProperties {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
     }
 
-    public String getCredential() {
-        return credential;
+    public String getSecondaryKey() {
+        return secondaryKey;
     }
 
-    public void setCredential(String credential) {
-        this.credential = credential;
+    public void setSecondaryKey(String secondaryKey) {
+        this.secondaryKey = secondaryKey;
     }
 
     public ConnectionMode getConnectionMode() {

@@ -18,7 +18,7 @@ public class PropertySettingUtil {
     public static final boolean ALLOW_TELEMETRY_FALSE = false;
     public static final boolean POPULATE_QUERY_METRICS = true;
     public static final ConsistencyLevel CONSISTENCY_LEVEL = ConsistencyLevel.STRONG;
-    public static final String CREDENTIAL = "CredentialString";
+    public static final String SECONDARY_KEY = "SecondaryKeyString";
     public static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(4);
     public static final int MEDIA_REQUEST_TIMEOUT = 3;
     public static final ConnectionMode CONNECTION_MODE = ConnectionMode.DIRECT;
@@ -37,7 +37,7 @@ public class PropertySettingUtil {
     private static final String PROPERTY_CONSISTENCY_LEVEL = "azure.cosmos.consistency-level";
     private static final String PROPERTY_ALLOW_TELEMETRY = "azure.cosmos.allow-telemetry";
     private static final String PROPERTY_POPULATE_QUERY_METRICS = "azure.cosmos.populateQueryMetrics";
-    private static final String PROPERTY_CREDENTIAL = "azure.cosmos.credential";
+    private static final String PROPERTY_SECONDARY_KEY = "azure.cosmos.secondary-key";
     private static final String PROPERTY_CONNECTION_MODE = "azure.cosmos.connection-mode";
 
     public static void setProperties() {
@@ -47,7 +47,7 @@ public class PropertySettingUtil {
         System.setProperty(PROPERTY_CONSISTENCY_LEVEL, CONSISTENCY_LEVEL.name());
         System.setProperty(PROPERTY_ALLOW_TELEMETRY, Boolean.toString(ALLOW_TELEMETRY_TRUE));
         System.setProperty(PROPERTY_POPULATE_QUERY_METRICS, Boolean.toString(POPULATE_QUERY_METRICS));
-        System.setProperty(PROPERTY_CREDENTIAL, CREDENTIAL);
+        System.setProperty(PROPERTY_SECONDARY_KEY, SECONDARY_KEY);
         System.setProperty(PROPERTY_CONNECTION_MODE, CONNECTION_MODE.name());
     }
 
@@ -63,7 +63,7 @@ public class PropertySettingUtil {
         System.clearProperty(PROPERTY_CONSISTENCY_LEVEL);
         System.clearProperty(PROPERTY_ALLOW_TELEMETRY);
         System.clearProperty(PROPERTY_POPULATE_QUERY_METRICS);
-        System.clearProperty(PROPERTY_CREDENTIAL);
+        System.clearProperty(PROPERTY_SECONDARY_KEY);
         System.clearProperty(PROPERTY_CONNECTION_MODE);
     }
 
