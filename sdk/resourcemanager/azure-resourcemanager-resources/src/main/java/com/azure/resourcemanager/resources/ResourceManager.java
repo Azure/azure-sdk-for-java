@@ -129,14 +129,6 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
         Subscriptions subscriptions();
 
         /**
-         * Specifies sdk context for resource manager.
-         *
-         * @param sdkContext the sdk context
-         * @return the authenticated itself for chaining
-         */
-        Authenticated withSdkContext(SdkContext sdkContext);
-
-        /**
          * Specifies a subscription to expose resource management API entry points that work in a subscription.
          *
          * @param subscriptionId the subscription UUID
@@ -188,12 +180,6 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
                 tenants = new TenantsImpl(subscriptionClient.getTenants());
             }
             return tenants;
-        }
-
-        @Override
-        public AuthenticatedImpl withSdkContext(SdkContext sdkContext) {
-            this.sdkContext = sdkContext;
-            return this;
         }
 
         @Override
