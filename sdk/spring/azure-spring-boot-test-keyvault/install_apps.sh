@@ -5,6 +5,4 @@ cd "$(dirname "$0")"
 
 
 sudo apt-get update
-sudo apt-get install -y default-jdk
-sudo apt-get install maven -y
-sudo apt-get install git
+sudo apt-get install -y default-jdk maven git
