@@ -345,7 +345,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -364,7 +364,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -384,7 +384,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -401,7 +401,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -422,7 +422,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified resource group.
      *
     ServiceResponse<PageImpl<MachineInner>> * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -460,7 +460,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -478,7 +478,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -497,7 +497,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;MachineInner&gt; object
@@ -513,7 +513,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;MachineInner&gt; object
@@ -533,7 +533,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;MachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -567,7 +567,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -586,7 +586,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -607,7 +607,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -624,7 +624,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -645,7 +645,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified resource group.
      *
     ServiceResponse<PageImpl<MachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -678,7 +678,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -697,7 +697,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -718,7 +718,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -735,7 +735,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -756,7 +756,7 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     /**
-     * Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the next page of hybrid machines.
+     * Lists all the hybrid machines in the specified subscription.
      *
     ServiceResponse<PageImpl<MachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
