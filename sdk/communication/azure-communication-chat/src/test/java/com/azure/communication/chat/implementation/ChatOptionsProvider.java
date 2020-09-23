@@ -7,7 +7,7 @@ import com.azure.communication.common.CommunicationUser;
 
 import java.util.*;
 
-public class ChatOptionsMocker {
+public class ChatOptionsProvider {
 
     public static CreateChatThreadOptions createThreadOptions(String userId1, String userId2) {
         List<ChatThreadMember> members = new ArrayList<ChatThreadMember>();
