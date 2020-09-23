@@ -13,10 +13,10 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public class InsertBenchmarkOperation implements IBenchmarkOperation {
-    private final String databaseName;
-    private final String containerName;
-    private final String partitionKeyPath;
     private final CosmosAsyncContainer container;
+    private final String containerName;
+    private final String databaseName;
+    private final String partitionKeyPath;
     private final ObjectNode sampleJsonNode;
     private PartitionKey partitionKey;
 
@@ -42,7 +42,7 @@ public class InsertBenchmarkOperation implements IBenchmarkOperation {
         if ("id".equals(this.partitionKeyPath)) {
             this.partitionKey = new PartitionKey(newId);
         } else {
-            String newPartitionKey =  UUID.randomUUID().toString();
+            String newPartitionKey = UUID.randomUUID().toString();
             this.sampleJsonNode.put(this.partitionKeyPath, newPartitionKey);
             this.partitionKey = new PartitionKey(newPartitionKey);
         }

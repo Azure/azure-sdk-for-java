@@ -33,21 +33,23 @@ class Summary {
     }
 
     public Summary add(Summary otherSummary) {
-        this.successfulOperationsCount += otherSummary.successfulOperationsCount;
-        this.failedOperationsCount += otherSummary.failedOperationsCount;
-        this.ruCharges += otherSummary.ruCharges;
-        this.elapsedTimeInMs += otherSummary.elapsedTimeInMs;
+        Summary returnValue = new Summary();
+        returnValue.successfulOperationsCount = this.successfulOperationsCount + otherSummary.successfulOperationsCount;
+        returnValue.failedOperationsCount = this.failedOperationsCount + otherSummary.failedOperationsCount;
+        returnValue.ruCharges = this.ruCharges + otherSummary.ruCharges;
+        returnValue.elapsedTimeInMs = this.elapsedTimeInMs + otherSummary.elapsedTimeInMs;
 
-        return this;
+        return returnValue;
     }
 
     public Summary subtract(Summary otherSummary) {
-        this.successfulOperationsCount -= otherSummary.successfulOperationsCount;
-        this.failedOperationsCount -= otherSummary.failedOperationsCount;
-        this.ruCharges -= otherSummary.ruCharges;
-        this.elapsedTimeInMs -= otherSummary.elapsedTimeInMs;
+        Summary returnValue = new Summary();
+        returnValue.successfulOperationsCount = this.successfulOperationsCount - otherSummary.successfulOperationsCount;
+        returnValue.failedOperationsCount = this.failedOperationsCount - otherSummary.failedOperationsCount;
+        returnValue.ruCharges = this.ruCharges - otherSummary.ruCharges;
+        returnValue.elapsedTimeInMs = this.elapsedTimeInMs - otherSummary.elapsedTimeInMs;
 
-        return this;
+        return returnValue;
     }
 
     public double getRps() {
@@ -61,12 +63,13 @@ class Summary {
 
     private String getPrintableString(long globalTotal) {
         return String.format(
-            "Stats, total: %,d   success: %,d   fail: %,d   RPs: %.2f   RUps: %.2f",
+            "Stats, total: %,d   success: %,d   fail: %,d   RPs: %.2f   RUps: %.2f   msElapsed: %.2f",
             globalTotal,
             this.successfulOperationsCount,
             this.failedOperationsCount,
             this.getRps(),
-            this.getRups());
+            this.getRups(),
+            this.elapsedTimeInMs);
     }
 
     public void print(long globalTotal) {

@@ -10,20 +10,20 @@ import java.io.IOException;
 public final class JsonHelper {
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
-    public static String toJsonString(Object input) {
-        try {
-            return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(input);
-        } catch (JsonProcessingException jsonError) {
-            return "EXCEPTION: " + jsonError.toString();
-        }
-    }
-
     public static JsonNode fromJsonString(String json) {
         try {
             return OBJECT_MAPPER.readTree(json);
         } catch (
             IOException e) {
             throw new IllegalArgumentException(String.format("Unable to parse JSON %s", json), e);
+        }
+    }
+
+    public static String toJsonString(Object input) {
+        try {
+            return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(input);
+        } catch (JsonProcessingException jsonError) {
+            return "EXCEPTION: " + jsonError.toString();
         }
     }
 }

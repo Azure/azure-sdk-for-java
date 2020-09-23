@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
@@ -31,22 +32,9 @@ public class Main {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    private static Function<Void, IBenchmarkOperation> getBenchmarkFactory(
-        BenchmarkConfig cfg,
-        String partitionKeyPath,
-        CosmosAsyncClient cosmosClient) throws IOException {
-
-        String sampleItem = new String(Files.readAllBytes(Paths.get(cfg.getItemTemplateFile())));
-
-        return (dummy) -> new InsertBenchmarkOperation(
-            cosmosClient,
-            cfg.getDatabase(),
-            cfg.getContainer(),
-            partitionKeyPath,
-            sampleItem);
-    }
-
     public static void main(String[] args) throws Exception {
+        CosmosAsyncClient cosmosClient = null;
+
         AnsiConsole.systemInstall();
         try {
             LOGGER.debug("Parsing the arguments ...");
@@ -70,7 +58,7 @@ public class Main {
             cfg.resetKey();
             cfg.print();
 
-            CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+            cosmosClient = new CosmosClientBuilder()
                 .endpoint(cfg.getEndpoint())
                 .key(accountKey)
                 .directMode()
@@ -90,13 +78,13 @@ public class Main {
 
             String partitionKeyPath = partitionKeyDef.getPaths().get(0);
 
-            Integer currentContainerThroughput= Objects.requireNonNull(cosmosClient
+            Integer currentContainerThroughput = Objects.requireNonNull(cosmosClient
                 .getDatabase(cfg.getDatabase())
                 .getContainer(cfg.getContainer())
                 .readThroughput()
                 .block())
-                                                       .getProperties()
-                                                       .getManualThroughput();
+                                                        .getProperties()
+                                                        .getManualThroughput();
 
             Utility.traceInformation(
                 String.format(
@@ -127,8 +115,10 @@ public class Main {
                 0.01d);
 
             Instant now = Instant.now();
-            String dateString = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC).format(now);
-            String timeString = DateTimeFormatter.ofPattern("HH-mm").withZone(ZoneOffset.UTC).format(now);
+            String dateString =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC).format(now);
+            String timeString =
+                DateTimeFormatter.ofPattern("HH-mm").withZone(ZoneOffset.UTC).format(now);
 
             runSummary.setWorkloadType(cfg.getOperation().toString());
             runSummary.setId(
@@ -150,6 +140,11 @@ public class Main {
             runSummary.setAccountName(cfg.getEndpoint());
             runSummary.setPk(cfg.getResultsPartitionKeyValue());
             runSummary.setConsistencyLevel(cfg.getConsistencyLevel().toString());
+            runSummary.setOs(System.getProperty("os.name"));
+            runSummary.setOsVersion(System.getProperty("os.version"));
+            runSummary.setMachineName(InetAddress.getLocalHost().getHostName());
+            runSummary.setCores(Runtime.getRuntime().availableProcessors());
+            runSummary.setRuntimeVersion(System.getProperty("java.version"));
 
             if (cfg.isPublishResults()) {
                 CosmosAsyncContainer resultsContainer = cosmosClient
@@ -165,7 +160,7 @@ public class Main {
 
                 assert resultsResponse != null;
                 Utility.traceInformation(
-                    "Uploaded results successfully:" +JsonHelper.toJsonString(resultsResponse.getItem()),
+                    "Uploaded results successfully:" + JsonHelper.toJsonString(resultsResponse.getItem()),
                     Ansi.Color.GREEN);
             }
         } catch (ParameterException e) {
@@ -173,9 +168,28 @@ public class Main {
             System.err.println("INVALID Usage: " + e.getMessage());
             System.err.println("Try '-help' for more information.");
             throw e;
-        }
-        finally {
+        } finally {
+            if (cosmosClient != null) {
+                cosmosClient.close();
+            }
+
             AnsiConsole.systemUninstall();
         }
+
+    }
+
+    private static Function<Void, IBenchmarkOperation> getBenchmarkFactory(
+        BenchmarkConfig cfg,
+        String partitionKeyPath,
+        CosmosAsyncClient cosmosClient) throws IOException {
+
+        String sampleItem = new String(Files.readAllBytes(Paths.get(cfg.getItemTemplateFile())));
+
+        return (dummy) -> new InsertBenchmarkOperation(
+            cosmosClient,
+            cfg.getDatabase(),
+            cfg.getContainer(),
+            partitionKeyPath,
+            sampleItem);
     }
 }

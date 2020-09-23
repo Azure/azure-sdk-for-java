@@ -416,7 +416,7 @@ Licensed under the MIT License.
                   </descriptorRefs>
                   <archive>
                     <manifest>
-                      <mainClass>com.azure.cosmos.benchmark.Main</mainClass>
+                      <mainClass>com.azure.cosmos.dotnet.benchmark.Main</mainClass>
                     </manifest>
                   </archive>
                 </configuration>

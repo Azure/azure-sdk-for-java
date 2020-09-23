@@ -3,27 +3,19 @@
 
 package com.azure.cosmos.dotnet.benchmark;
 
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
-import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.AnsiConsole;
-import static org.fusesource.jansi.Ansi.ansi;
-import static org.fusesource.jansi.Ansi.Color.GREEN;
 
-import java.io.File;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.time.Duration;
 import java.util.Arrays;
+
+import static org.fusesource.jansi.Ansi.Color.GREEN;
 
 public class BenchmarkConfig {
 
     public final static String USER_AGENT_SUFFIX = "cosmosdbdotnetbenchmark";
-    public final static String DEFAULT_PARTITION_KEY_PATH = "/pk";
 
     @Parameter(names = "-w", description = "Type of Workload:\n"
         + "\tReadTExists - run a READ workload that prints both throughput and latency *\n"

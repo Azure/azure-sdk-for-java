@@ -2,12 +2,17 @@ package com.azure.cosmos.dotnet.benchmark;
 
 import com.azure.cosmos.implementation.guava25.base.Function;
 import org.fusesource.jansi.Ansi;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.DoubleStream;
 
@@ -37,7 +42,7 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
 
         // Block while warmup happens
         warmupExecutor.execute(
-            2,//(int)(serialExecutorIterationCount * warmupFraction),
+            (int)(serialExecutorIterationCount * warmupFraction),
             true,
             traceFailures,
             null).block();
@@ -45,85 +50,109 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
         this.pendingExecutorCount.set(serialExecutorConcurrency);
 
         // Setting up executors and kick-off tests
-        IExecutor[] executors = new IExecutor[serialExecutorConcurrency];
+        final IExecutor[] executors = new IExecutor[serialExecutorConcurrency];
 
         ArrayList<Double> perLoopCounters = new ArrayList<>();
-        Summary lastSummary = new Summary();
-        long startTime = System.nanoTime();
+        AtomicReference<Summary> lastSummary = new AtomicReference<>();
+        lastSummary.set(new Summary());
+        final AtomicLong startTime = new AtomicLong();
 
-        for (int i = 0; i < serialExecutorConcurrency; i++) {
-            executors[i] = new SerialOperationExecutor(
-                String.valueOf(i),
-                this.benchmarkOperation.apply(null));
-            executors[i].execute(
-                serialExecutorIterationCount,
-                false,
-                traceFailures,
-                this.pendingExecutorCount::decrementAndGet).subscribe();
-        }
+        Flux<OperationResult> processingFlux = Flux
+            .range(0, serialExecutorConcurrency)
+            .subscribeOn(Schedulers.elastic())
+            .flatMap((i) -> {
+                    executors[i] = new SerialOperationExecutor(
+                        String.valueOf(i),
+                        this.benchmarkOperation.apply(null));
 
-        // Wait for completion and regularly emit run summaries
-        boolean isLastIterationCompleted;
-        do {
-            isLastIterationCompleted = this.pendingExecutorCount.get() <= 0;
+                    return executors[i].execute(
+                        serialExecutorIterationCount,
+                        false,
+                        traceFailures,
+                        this.pendingExecutorCount::decrementAndGet);
+                },
+                serialExecutorConcurrency)
+            .doFirst(() -> {
+                Utility.traceInformation("Starting executors...", Ansi.Color.GREEN);
+                startTime.set(System.nanoTime());
+            });
 
-            Summary currentTotalSummary = new Summary();
-            for (IExecutor executor : executors) {
-                Summary executorSummary = new Summary(
-                    executor.getSuccessOperationCount(),
-                    executor.getFailedOperationCount(),
-                    executor.getTotalRuCharges());
+        Flux<Boolean> monitoringTimer = Flux
+            .interval(Duration.ofMillis(OUTPUT_LOOP_DELAY_IN_MS))
+            .onBackpressureDrop()
+            .map((time) -> {
+                int pendingExecutorCountSnapshot = this.pendingExecutorCount.get();
+                boolean isLastIterationCompleted = pendingExecutorCountSnapshot <= 0;
 
-                currentTotalSummary = currentTotalSummary.add(executorSummary);
-            }
+                Summary currentTotalSummary = new Summary();
+                for (IExecutor executor : executors) {
+                    Summary executorSummary = new Summary(
+                        executor.getSuccessOperationCount(),
+                        executor.getFailedOperationCount(),
+                        executor.getTotalRuCharges());
 
-            // In-theory summary might be lower than real as its not transactional on time
-            currentTotalSummary.setElapsedTimeInMs(
-                TimeUnit.MILLISECONDS.convert(System.nanoTime() - startTime, TimeUnit.NANOSECONDS));
+                    currentTotalSummary = currentTotalSummary.add(executorSummary);
+                }
 
-            Summary diff = currentTotalSummary.subtract(lastSummary);
-            lastSummary = currentTotalSummary;
+                // In-theory summary might be lower than real as its not transactional on time
+                currentTotalSummary.setElapsedTimeInMs(
+                    TimeUnit.MILLISECONDS.convert(System.nanoTime() - startTime.get(),
+                        TimeUnit.NANOSECONDS));
 
-            diff.print(currentTotalSummary.getTotalOperationsCount());
-            perLoopCounters.add(diff.getRps());
+                Summary lastSummarySnapshot = lastSummary.getAndSet(currentTotalSummary);
+                Summary diff = currentTotalSummary.subtract(lastSummarySnapshot);
 
-            try {
-                Thread.sleep(OUTPUT_LOOP_DELAY_IN_MS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+                diff.print(currentTotalSummary.getTotalOperationsCount());
+                perLoopCounters.add(diff.getRps());
 
-        } while (!isLastIterationCompleted);
+                return isLastIterationCompleted;
+            })
+            .takeUntil((isLastIterationCompleted) -> isLastIterationCompleted);
+
+        monitoringTimer.subscribeOn(Schedulers.elastic()).subscribe();
+        processingFlux.collectList().block();
 
         Utility.traceInformation("", Ansi.Color.GREEN);
         Utility.traceInformation("Summary:", Ansi.Color.GREEN);
         Utility.traceInformation(
             "--------------------------------------------------------------------- ",
             Ansi.Color.GREEN);
-        lastSummary.print(lastSummary.getTotalOperationsCount(), Ansi.Color.GREEN);
+        Summary lastSummarySnapshot = lastSummary.get();
+        lastSummarySnapshot.print(lastSummarySnapshot.getTotalOperationsCount(), Ansi.Color.GREEN);
 
         RunSummary runSummary = new RunSummary();
         if (perLoopCounters.size() > 20) {
-            Double[] summaryCounters =  new Double[perLoopCounters.size() - 10];
-            for(int i = 5; i < perLoopCounters.size() - 5; i++) {
+            Double[] summaryCounters = new Double[perLoopCounters.size() - 10];
+            for (int i = 5; i < perLoopCounters.size() - 5; i++) {
                 summaryCounters[i - 5] = perLoopCounters.get(i);
             }
             Arrays.sort(summaryCounters, Comparator.reverseOrder());
 
             Utility.traceInformation("After Excluding outliers", Ansi.Color.GREEN);
-            Supplier<DoubleStream> rpsCounters = () -> Arrays.stream(summaryCounters).mapToDouble(d -> d);
+            Supplier<DoubleStream> rpsCounters =
+                () -> Arrays.stream(summaryCounters).mapToDouble(d -> d);
             long signalCount = summaryCounters.length;
 
-            runSummary.setTop10PercentAverageRps(rpsCounters.get().limit((int)(0.1 * signalCount)).average().orElse(-1));
-            runSummary.setTop20PercentAverageRps(rpsCounters.get().limit((int)(0.2 * signalCount)).average().orElse(-1));
-            runSummary.setTop30PercentAverageRps(rpsCounters.get().limit((int)(0.3 * signalCount)).average().orElse(-1));
-            runSummary.setTop40PercentAverageRps(rpsCounters.get().limit((int)(0.4 * signalCount)).average().orElse(-1));
-            runSummary.setTop50PercentAverageRps(rpsCounters.get().limit((int)(0.5 * signalCount)).average().orElse(-1));
-            runSummary.setTop60PercentAverageRps(rpsCounters.get().limit((int)(0.6 * signalCount)).average().orElse(-1));
-            runSummary.setTop70PercentAverageRps(rpsCounters.get().limit((int)(0.7 * signalCount)).average().orElse(-1));
-            runSummary.setTop80PercentAverageRps(rpsCounters.get().limit((int)(0.8 * signalCount)).average().orElse(-1));
-            runSummary.setTop90PercentAverageRps(rpsCounters.get().limit((int)(0.9 * signalCount)).average().orElse(-1));
-            runSummary.setTop95PercentAverageRps(rpsCounters.get().limit((int)(0.95 * signalCount)).average().orElse(-1));
+            runSummary.setTop10PercentAverageRps(
+                rpsCounters.get().limit((int)(0.1 * signalCount)).average().orElse(-1));
+            runSummary.setTop20PercentAverageRps(
+                rpsCounters.get().limit((int)(0.2 * signalCount)).average().orElse(-1));
+            runSummary.setTop30PercentAverageRps(
+                rpsCounters.get().limit((int)(0.3 * signalCount)).average().orElse(-1));
+            runSummary.setTop40PercentAverageRps(
+                rpsCounters.get().limit((int)(0.4 * signalCount)).average().orElse(-1));
+            runSummary.setTop50PercentAverageRps(
+                rpsCounters.get().limit((int)(0.5 * signalCount)).average().orElse(-1));
+            runSummary.setTop60PercentAverageRps(
+                rpsCounters.get().limit((int)(0.6 * signalCount)).average().orElse(-1));
+            runSummary.setTop70PercentAverageRps(
+                rpsCounters.get().limit((int)(0.7 * signalCount)).average().orElse(-1));
+            runSummary.setTop80PercentAverageRps(
+                rpsCounters.get().limit((int)(0.8 * signalCount)).average().orElse(-1));
+            runSummary.setTop90PercentAverageRps(
+                rpsCounters.get().limit((int)(0.9 * signalCount)).average().orElse(-1));
+            runSummary.setTop95PercentAverageRps(
+                rpsCounters.get().limit((int)(0.95 * signalCount)).average().orElse(-1));
             runSummary.setAverageRps(rpsCounters.get().average().orElse(-1));
 
             if (this.config.isEnableLatencyPercentiles()) {
@@ -138,7 +167,8 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
             String summary = JsonHelper.toJsonString(runSummary);
             Utility.traceInformation(summary, Ansi.Color.GREEN);
         } else {
-            Utility.traceInformation("Please adjust ItemCount high to run of at-least 1M", Ansi.Color.RED);
+            Utility.traceInformation("Please adjust ItemCount high to run of at-least 1M",
+                Ansi.Color.RED);
         }
 
         Utility.traceInformation(

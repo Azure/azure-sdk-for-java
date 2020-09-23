@@ -1,21 +1,21 @@
 package com.azure.cosmos.dotnet.benchmark;
 
 import org.fusesource.jansi.Ansi;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SerialOperationExecutor implements IExecutor {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     private final IBenchmarkOperation operation;
     private final String executorId;
 
-    private int successOperationCount;
-    private int failedOperationCount;
-    private double totalRuCharges;
+    private final AtomicInteger successOperationCount;
+    private final AtomicInteger failedOperationCount;
+    private final AtomicReference<Double> totalRuCharges;
 
     public SerialOperationExecutor(
         String executorId,
@@ -23,24 +23,25 @@ public class SerialOperationExecutor implements IExecutor {
 
         this.operation = benchmarkOperation;
         this.executorId = executorId;
-        this.successOperationCount = 0;
-        this.failedOperationCount = 0;
-        this.totalRuCharges = 0;
+        this.successOperationCount = new AtomicInteger();
+        this.failedOperationCount = new AtomicInteger();
+        this.totalRuCharges = new AtomicReference<>();
+        this.totalRuCharges.set(0d);
     }
 
     @Override
     public int getSuccessOperationCount() {
-        return this.successOperationCount;
+        return this.successOperationCount.get();
     }
 
     @Override
     public int getFailedOperationCount() {
-        return this.failedOperationCount;
+        return this.failedOperationCount.get();
     }
 
     @Override
     public double getTotalRuCharges() {
-        return this.totalRuCharges;
+        return this.totalRuCharges.get();
     }
 
     @Override
@@ -50,47 +51,43 @@ public class SerialOperationExecutor implements IExecutor {
         boolean traceFailures,
         Runnable completionCallback) {
 
-        LOGGER.info(String.format("Executor %s started", this.executorId));
+        Utility.traceInformation(String.format("Executor %s started", this.executorId), Ansi.Color.GREEN);
 
         return Flux
             .range(0, iterationCount)
+            .subscribeOn(Schedulers.elastic())
             .flatMapSequential((i) -> {
-                final TelemetrySpan telemetry = TelemetrySpan.createNew(isWarmup);
+                    final TelemetrySpan telemetry = TelemetrySpan.createNew(isWarmup);
 
-                return this.operation
-                    .prepare()
-                    .flatMap((alwaysVoid) -> {
-                        Mono<OperationResult> opResultTask = this.operation.executeOnce()
-                                             .doFirst(() -> telemetry.start())
-                                             .onErrorResume((ex) -> {
-                                                 telemetry.close();
+                    return this.operation
+                        .prepare()
+                        .flatMap((alwaysVoid) -> this.operation
+                            .executeOnce()
+                            .doFirst(telemetry::start)
+                            .onErrorResume((ex) -> {
+                                telemetry.close();
 
-                                                 if (traceFailures) {
-                                                     Utility.traceInformation(ex.toString(),
-                                                         Ansi.Color.RED);
-                                                 }
+                                if (traceFailures) {
+                                    Utility.traceInformation(ex.toString(),
+                                        Ansi.Color.RED);
+                                }
 
-                                                 this.failedOperationCount++;
+                                this.failedOperationCount.incrementAndGet();
 
-                                                 // TODO fabianm extract RU charge from
-                                                 //  CosmosException and add to totalRuCharges
-                                                 // if (ex instanceof CosmosException) {
-                                                 //}
+                                return Mono.just(new OperationResult());
+                            })
+                            .map((r) -> {
+                                telemetry.close();
 
-                                                 return null;
-                                             })
-                                             .map((r) -> {
-                                                 telemetry.close();
+                                this.successOperationCount.incrementAndGet();
+                                this.totalRuCharges.getAndUpdate((oldValue) -> oldValue + r.getRuCharges());
 
-                                                 this.successOperationCount++;
-                                                 this.totalRuCharges += r.getRuCharges();
-
-                                                 return r;
-                                             });
-
-                        return opResultTask;
-                    });
-            })
+                                return r;
+                            }));
+                },
+                1,
+                1
+            )
             .doFinally((signalType) -> {
                 Utility.traceInformation(
                     String.format("Executor %s completed - %s", this.executorId, signalType.toString()),
@@ -100,6 +97,8 @@ public class SerialOperationExecutor implements IExecutor {
                     completionCallback.run();
                 }
             })
-            .last();
+            .collectList()
+            .map((results) -> results.get(results.size() - 1));
+
     }
 }
