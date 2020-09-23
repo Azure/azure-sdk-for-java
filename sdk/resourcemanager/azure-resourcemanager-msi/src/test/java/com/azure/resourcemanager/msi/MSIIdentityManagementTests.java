@@ -57,9 +57,8 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        SdkContext sdkContext = new SdkContext();
-        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
+        this.msiManager = MSIManager.authenticate(httpPipeline, profile);
+        this.msiManager.sdkContext().setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         this.resourceManager = msiManager.resourceManager();
     }
 

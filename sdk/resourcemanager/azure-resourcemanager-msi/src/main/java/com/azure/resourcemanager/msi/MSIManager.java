@@ -55,20 +55,7 @@ public final class MSIManager extends Manager<ManagedServiceIdentityClient> {
      * @return the MSIManager
      */
     public static MSIManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return  authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of MSIManager that exposes Managed Service Identity (MSI)
-     * resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the MSIManager
-     */
-    public static MSIManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new MSIManager(httpPipeline, profile, sdkContext);
+        return  new MSIManager(httpPipeline, profile, new SdkContext());
     }
 
     /**
