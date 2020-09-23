@@ -255,7 +255,7 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public Mono<PrivateDnsRecordSet> updateResourceAsync() {
-        return parent().manager().inner().getRecordSets()
+        return parent().manager().serviceClient().getRecordSets()
             .getAsync(parent().resourceGroupName(), parent().name(), recordType(), name())
             .map(recordSetInner -> prepare(recordSetInner))
             .flatMap(recordSetInner -> createOrUpdateAsync(recordSetInner));
@@ -263,7 +263,7 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return parent().manager().inner().getRecordSets()
+        return parent().manager().serviceClient().getRecordSets()
             .deleteAsync(
                 parent().resourceGroupName(),
                 parent().name(),
@@ -274,7 +274,7 @@ class PrivateDnsRecordSetImpl
 
     @Override
     protected Mono<RecordSetInner> getInnerAsync() {
-        return parent().manager().inner().getRecordSets()
+        return parent().manager().serviceClient().getRecordSets()
             .getAsync(parent().resourceGroupName(), parent().name(), recordType(), name());
     }
 
@@ -302,7 +302,7 @@ class PrivateDnsRecordSetImpl
 
     private Mono<PrivateDnsRecordSet> createOrUpdateAsync(RecordSetInner resource) {
         final PrivateDnsRecordSetImpl self = this;
-        return parent().manager().inner().getRecordSets()
+        return parent().manager().serviceClient().getRecordSets()
             .createOrUpdateAsync(
                 parent().resourceGroupName(),
                 parent().name(),

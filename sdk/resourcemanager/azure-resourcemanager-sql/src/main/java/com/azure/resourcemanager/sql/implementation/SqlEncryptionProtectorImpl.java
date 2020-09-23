@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
@@ -163,10 +163,10 @@ public class SqlEncryptionProtectorImpl
         final SqlEncryptionProtectorImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getEncryptionProtectors()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT,
-                this.inner())
+            .createOrUpdateAsync(
+                this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT, this.inner())
             .map(
                 encryptionProtectorInner -> {
                     self.setInner(encryptionProtectorInner);
@@ -193,7 +193,7 @@ public class SqlEncryptionProtectorImpl
     protected Mono<EncryptionProtectorInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getEncryptionProtectors()
             .getAsync(this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT);
     }

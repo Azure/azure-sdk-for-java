@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /** The implementation for {@link VirtualMachineDataDisk} interface. */
 class VirtualMachineDataDiskImpl extends WrapperImpl<DataDisk> implements VirtualMachineDataDisk {
@@ -20,7 +20,7 @@ class VirtualMachineDataDiskImpl extends WrapperImpl<DataDisk> implements Virtua
 
     @Override
     public int size() {
-        return Utils.toPrimitiveInt(this.inner().diskSizeGB());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().diskSizeGB());
     }
 
     @Override

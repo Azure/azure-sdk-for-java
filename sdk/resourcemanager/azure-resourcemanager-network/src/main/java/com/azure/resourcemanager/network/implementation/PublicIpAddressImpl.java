@@ -23,7 +23,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -51,7 +52,7 @@ class PublicIpAddressImpl
     protected Mono<PublicIpAddressInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getPublicIpAddresses()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
     }
@@ -133,7 +134,7 @@ class PublicIpAddressImpl
 
     @Override
     public int idleTimeoutInMinutes() {
-        return Utils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
     }
 
     @Override
@@ -181,8 +182,8 @@ class PublicIpAddressImpl
     @Override
     public Accepted<PublicIpAddress> beginCreate() {
         return AcceptedImpl.newAccepted(logger,
-            this.manager().inner(),
-            () -> this.manager().inner().getPublicIpAddresses()
+            this.manager().serviceClient(),
+            () -> this.manager().serviceClient().getPublicIpAddresses()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
             inner -> new PublicIpAddressImpl(inner.name(), inner, this.manager()),
             PublicIpAddressInner.class,
@@ -203,7 +204,7 @@ class PublicIpAddressImpl
 
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getPublicIpAddresses()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
@@ -303,7 +304,7 @@ class PublicIpAddressImpl
     public Mono<PublicIpAddress> applyTagsAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getPublicIpAddresses()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .flatMap(

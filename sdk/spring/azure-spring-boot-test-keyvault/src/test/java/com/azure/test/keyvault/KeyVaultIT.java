@@ -85,10 +85,8 @@ public class KeyVaultIT {
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
-
-            app.property("azure.keyvault.secret-keys", KEY_VAULT_SECRET_NAME + " , azure-cosmosdb-key");
-            LOGGER.info("====" + KEY_VAULT_SECRET_NAME + " , azure-cosmosdb-key");
-
+            app.property("azure.keyvault.secret-keys", KEY_VAULT_SECRET_NAME);
+            LOGGER.info("====" + KEY_VAULT_SECRET_NAME );
             app.start();
             assertEquals(KEY_VAULT_SECRET_VALUE, app.getProperty(KEY_VAULT_SECRET_NAME));
             LOGGER.info("--------------------->test over");

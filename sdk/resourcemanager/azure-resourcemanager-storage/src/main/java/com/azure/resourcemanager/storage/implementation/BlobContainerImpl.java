@@ -58,7 +58,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public Mono<BlobContainer> createResourceAsync() {
-        BlobContainersClient client = this.manager().inner().getBlobContainers();
+        BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
         return client
             .createAsync(this.resourceGroupName, this.accountName, this.containerName,
                 this.inner().withPublicAccess(cpublicAccess).withMetadata(cmetadata))
@@ -67,7 +67,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public Mono<BlobContainer> updateResourceAsync() {
-        BlobContainersClient client = this.manager().inner().getBlobContainers();
+        BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
         return client
             .updateAsync(this.resourceGroupName, this.accountName, this.containerName,
                 this.inner().withPublicAccess(upublicAccess).withMetadata(umetadata))
@@ -76,7 +76,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     protected Mono<BlobContainerInner> getInnerAsync() {
-        return this.manager().inner().getBlobContainers().getAsync(resourceGroupName, accountName, containerName);
+        return this.manager().serviceClient().getBlobContainers().getAsync(resourceGroupName, accountName, containerName);
     }
 
     @Override

@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.fluent.inner.PolicyDefinitionInner;
+import com.azure.resourcemanager.resources.fluent.models.PolicyDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -92,11 +92,11 @@ class NetworkPeeringImpl
 
     @Override
     public boolean isTrafficForwardingFromRemoteNetworkAllowed() {
-        return Utils.toPrimitiveBoolean(this.inner().allowForwardedTraffic());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().allowForwardedTraffic());
     }
 
     private boolean isAccessFromRemoteNetworkAllowed() {
-        return Utils.toPrimitiveBoolean(this.inner().allowVirtualNetworkAccess());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().allowVirtualNetworkAccess());
     }
 
     // Fluent setters
@@ -227,7 +227,7 @@ class NetworkPeeringImpl
 
     @Override
     public boolean checkAccessBetweenNetworks() {
-        if (!Utils.toPrimitiveBoolean(this.inner().allowVirtualNetworkAccess())) {
+        if (!ResourceManagerUtils.toPrimitiveBoolean(this.inner().allowVirtualNetworkAccess())) {
             // If network access is disabled on this peering, then it's disabled for both networks, regardless of what
             // the remote peering says
             return false;
@@ -240,7 +240,7 @@ class NetworkPeeringImpl
         } else {
             // Access is enabled on local peering, so up to the remote peering to determine whether it's enabled or
             // disabled overall
-            return Utils.toPrimitiveBoolean(remotePeering.inner().allowVirtualNetworkAccess());
+            return ResourceManagerUtils.toPrimitiveBoolean(remotePeering.inner().allowVirtualNetworkAccess());
         }
     }
 
@@ -250,7 +250,7 @@ class NetworkPeeringImpl
         final String networkName = ResourceUtils.nameFromResourceId(this.networkId());
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkPeerings()
             .createOrUpdateAsync(this.parent.resourceGroupName(), networkName, this.name(), this.inner())
             // After successful creation, update the inner
@@ -443,7 +443,7 @@ class NetworkPeeringImpl
         this.remoteNetwork = null;
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkPeerings()
             .getAsync(
                 this.resourceGroupName(), ResourceUtils.nameFromResourceId(this.networkId()), this.inner().name());
@@ -499,9 +499,9 @@ class NetworkPeeringImpl
 
     @Override
     public NetworkPeeringGatewayUse gatewayUse() {
-        if (Utils.toPrimitiveBoolean(this.inner().allowGatewayTransit())) {
+        if (ResourceManagerUtils.toPrimitiveBoolean(this.inner().allowGatewayTransit())) {
             return NetworkPeeringGatewayUse.BY_REMOTE_NETWORK;
-        } else if (Utils.toPrimitiveBoolean(this.inner().useRemoteGateways())) {
+        } else if (ResourceManagerUtils.toPrimitiveBoolean(this.inner().useRemoteGateways())) {
             return NetworkPeeringGatewayUse.ON_REMOTE_NETWORK;
         } else {
             return NetworkPeeringGatewayUse.NONE;

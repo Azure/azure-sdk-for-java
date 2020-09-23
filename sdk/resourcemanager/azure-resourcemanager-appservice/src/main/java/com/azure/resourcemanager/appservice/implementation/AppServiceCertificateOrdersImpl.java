@@ -22,7 +22,7 @@ public class AppServiceCertificateOrdersImpl
     implements AppServiceCertificateOrders {
 
     public AppServiceCertificateOrdersImpl(AppServiceManager manager) {
-        super(manager.inner().getAppServiceCertificateOrders(), manager);
+        super(manager.serviceClient().getAppServiceCertificateOrders(), manager);
     }
 
     @Override

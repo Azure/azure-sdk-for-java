@@ -26,7 +26,7 @@ public class ApplicationGatewaysImpl
     implements ApplicationGateways {
 
     public ApplicationGatewaysImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getApplicationGateways(), networkManager);
+        super(networkManager.serviceClient().getApplicationGateways(), networkManager);
     }
 
     @Override

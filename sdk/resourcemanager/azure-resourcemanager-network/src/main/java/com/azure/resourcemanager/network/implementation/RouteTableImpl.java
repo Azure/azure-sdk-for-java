@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.Route;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -30,7 +30,8 @@ class RouteTableImpl
 
     @Override
     protected Mono<RouteTableInner> applyTagsToInnerAsync() {
-        return this.manager().inner().getRouteTables().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this.manager().serviceClient().getRouteTables()
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
@@ -65,7 +66,7 @@ class RouteTableImpl
     protected Mono<RouteTableInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getRouteTables()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -131,7 +132,7 @@ class RouteTableImpl
     protected Mono<RouteTableInner> createInner() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getRouteTables()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
@@ -143,7 +144,7 @@ class RouteTableImpl
 
     @Override
     public boolean isBgpRoutePropagationDisabled() {
-        return Utils.toPrimitiveBoolean(inner().disableBgpRoutePropagation());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().disableBgpRoutePropagation());
     }
 
     @Override

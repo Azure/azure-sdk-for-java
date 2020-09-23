@@ -19,11 +19,12 @@ import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -80,7 +81,7 @@ class NetworkInterfaceImpl
     protected Mono<NetworkInterfaceInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkInterfaces()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -89,7 +90,7 @@ class NetworkInterfaceImpl
     protected Mono<NetworkInterfaceInner> applyTagsToInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkInterfaces()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
@@ -286,7 +287,7 @@ class NetworkInterfaceImpl
 
     @Override
     public boolean isAcceleratedNetworkingEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableAcceleratedNetworking());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enableAcceleratedNetworking());
     }
 
     @Override
@@ -300,7 +301,7 @@ class NetworkInterfaceImpl
 
     @Override
     public boolean isIPForwardingEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableIpForwarding());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enableIpForwarding());
     }
 
     @Override
@@ -462,8 +463,8 @@ class NetworkInterfaceImpl
     @Override
     public Accepted<NetworkInterface> beginCreate() {
         return AcceptedImpl.newAccepted(logger,
-            this.manager().inner(),
-            () -> this.manager().inner().getNetworkInterfaces()
+            this.manager().serviceClient(),
+            () -> this.manager().serviceClient().getNetworkInterfaces()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
             inner -> new NetworkInterfaceImpl(inner.name(), inner, this.manager()),
             NetworkInterfaceInner.class,
@@ -485,7 +486,7 @@ class NetworkInterfaceImpl
     protected Mono<NetworkInterfaceInner> createInner() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkInterfaces()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }

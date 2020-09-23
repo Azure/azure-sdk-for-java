@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentOperationInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentOperationInner;
 
 import java.time.OffsetDateTime;
 

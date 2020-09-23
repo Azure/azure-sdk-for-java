@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.sql.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
@@ -85,7 +85,7 @@ public class SqlFirewallRuleImpl
     protected Mono<FirewallRuleInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -152,7 +152,7 @@ public class SqlFirewallRuleImpl
         final SqlFirewallRuleImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
@@ -167,7 +167,7 @@ public class SqlFirewallRuleImpl
         final SqlFirewallRuleImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
@@ -181,7 +181,7 @@ public class SqlFirewallRuleImpl
     public Mono<Void> deleteResourceAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }

@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.servicebus.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.inner.SubscriptionResourceInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
@@ -67,17 +67,17 @@ class ServiceBusSubscriptionImpl extends
 
     @Override
     public boolean isBatchedOperationsEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableBatchedOperations());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enableBatchedOperations());
     }
 
     @Override
     public boolean isDeadLetteringEnabledForExpiredMessages() {
-        return Utils.toPrimitiveBoolean(this.inner().deadLetteringOnMessageExpiration());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().deadLetteringOnMessageExpiration());
     }
 
     @Override
     public boolean isSessionEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().requiresSession());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().requiresSession());
     }
 
     @Override
@@ -108,12 +108,12 @@ class ServiceBusSubscriptionImpl extends
 
     @Override
     public int maxDeliveryCountBeforeDeadLetteringMessage() {
-        return Utils.toPrimitiveInt(this.inner().maxDeliveryCount());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().maxDeliveryCount());
     }
 
     @Override
     public long messageCount() {
-        return Utils.toPrimitiveLong(this.inner().messageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().messageCount());
     }
 
     @Override
@@ -122,7 +122,7 @@ class ServiceBusSubscriptionImpl extends
                 || this.inner().countDetails().activeMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().activeMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().activeMessageCount());
     }
 
     @Override
@@ -131,7 +131,7 @@ class ServiceBusSubscriptionImpl extends
                 || this.inner().countDetails().deadLetterMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().deadLetterMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().deadLetterMessageCount());
     }
 
     @Override
@@ -140,7 +140,7 @@ class ServiceBusSubscriptionImpl extends
                 || this.inner().countDetails().scheduledMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().scheduledMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().scheduledMessageCount());
     }
 
     @Override
@@ -149,7 +149,7 @@ class ServiceBusSubscriptionImpl extends
                 || this.inner().countDetails().transferDeadLetterMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().transferDeadLetterMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().transferDeadLetterMessageCount());
     }
 
     @Override
@@ -158,7 +158,7 @@ class ServiceBusSubscriptionImpl extends
                 || this.inner().countDetails().transferMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().transferMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().transferMessageCount());
     }
 
     @Override
@@ -168,7 +168,7 @@ class ServiceBusSubscriptionImpl extends
 
     @Override
     public boolean isDeadLetteringEnabledForFilterEvaluationFailedMessages() {
-        return Utils.toPrimitiveBoolean(this.inner().deadLetteringOnFilterEvaluationExceptions());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().deadLetteringOnFilterEvaluationExceptions());
     }
 
     @Override
@@ -253,7 +253,7 @@ class ServiceBusSubscriptionImpl extends
 
     @Override
     protected Mono<SubscriptionResourceInner> getInnerAsync() {
-        return this.manager().inner().getSubscriptions()
+        return this.manager().serviceClient().getSubscriptions()
                 .getAsync(this.resourceGroupName(),
                         this.namespaceName,
                         this.parentName,
@@ -263,7 +263,7 @@ class ServiceBusSubscriptionImpl extends
     @Override
     protected Mono<ServiceBusSubscription> createChildResourceAsync() {
         final ServiceBusSubscription self = this;
-        return this.manager().inner().getSubscriptions()
+        return this.manager().serviceClient().getSubscriptions()
             .createOrUpdateAsync(this.resourceGroupName(),
                     this.namespaceName,
                     this.parentName,

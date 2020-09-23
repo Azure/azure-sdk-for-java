@@ -29,13 +29,13 @@ import com.azure.resourcemanager.resources.models.ResourceReference;
 import com.azure.resourcemanager.resources.models.TemplateLink;
 import com.azure.resourcemanager.resources.models.WhatIfOperationResult;
 import com.azure.resourcemanager.resources.models.WhatIfResultFormat;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentInner;
-import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
+import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
@@ -181,7 +181,7 @@ public final class DeploymentImpl extends
 
     @Override
     public DeploymentOperations deploymentOperations() {
-        return new DeploymentOperationsImpl(this.manager().inner().getDeploymentOperations(), this);
+        return new DeploymentOperationsImpl(this.manager().serviceClient().getDeploymentOperations(), this);
     }
 
     @Override
@@ -191,7 +191,7 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<Void> cancelAsync() {
-        return this.manager().inner().getDeployments().cancelAsync(resourceGroupName, name());
+        return this.manager().serviceClient().getDeployments().cancelAsync(resourceGroupName, name());
     }
 
 
@@ -202,7 +202,7 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<DeploymentExportResult> exportTemplateAsync() {
-        return this.manager().inner().getDeployments().exportTemplateAsync(resourceGroupName(), name())
+        return this.manager().serviceClient().getDeployments().exportTemplateAsync(resourceGroupName(), name())
             .map(DeploymentExportResultImpl::new);
     }
 
@@ -307,8 +307,8 @@ public final class DeploymentImpl extends
     @Override
     public Accepted<Deployment> beginCreate() {
         return AcceptedImpl.newAccepted(logger,
-            this.manager().inner(),
-            () -> this.manager().inner().getDeployments()
+            this.manager().serviceClient(),
+            () -> this.manager().serviceClient().getDeployments()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters).block(),
             inner -> new DeploymentImpl(inner, inner.name(), resourceManager),
             DeploymentExtendedInner.class,
@@ -333,12 +333,12 @@ public final class DeploymentImpl extends
                         return Mono.just((Indexable) DeploymentImpl.this);
                     }
                 })
-                .flatMap(indexable -> manager().inner().getDeployments()
+                .flatMap(indexable -> manager().serviceClient().getDeployments()
                     .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters))
                 .flatMap(activationResponse -> FluxUtil.collectBytesInByteBufferStream(activationResponse.getValue()))
                 .map(response -> {
                     try {
-                        return (DeploymentExtendedInner) this.manager().inner().getSerializerAdapter()
+                        return (DeploymentExtendedInner) this.manager().serviceClient().getSerializerAdapter()
                             .deserialize(new String(response, StandardCharsets.UTF_8),
                                 DeploymentExtendedInner.class, SerializerEncoding.JSON);
                     } catch (IOException ioe) {
@@ -355,7 +355,7 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<Deployment> createResourceAsync() {
-        return this.manager().inner().getDeployments()
+        return this.manager().serviceClient().getDeployments()
             .createOrUpdateAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters)
             .map(deploymentExtendedInner -> {
                 prepareForUpdate(deploymentExtendedInner);
@@ -392,7 +392,8 @@ public final class DeploymentImpl extends
 
     @Override
     protected Mono<DeploymentExtendedInner> getInnerAsync() {
-        return this.manager().inner().getDeployments().getAtManagementGroupScopeAsync(resourceGroupName(), name());
+        return this.manager().serviceClient().getDeployments()
+            .getAtManagementGroupScopeAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -548,8 +549,9 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<WhatIfOperationResult> whatIfAsync() {
-        return this.manager().inner().getDeployments().whatIfAsync(resourceGroupName(), name(), deploymentWhatIf)
-                .map(WhatIfOperationResultImpl::new);
+        return this.manager().serviceClient().getDeployments()
+            .whatIfAsync(resourceGroupName(), name(), deploymentWhatIf)
+            .map(WhatIfOperationResultImpl::new);
     }
 
 
@@ -560,7 +562,7 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<WhatIfOperationResult> whatIfAtSubscriptionScopeAsync() {
-        return this.manager().inner().getDeployments().whatIfAtSubscriptionScopeAsync(name(), deploymentWhatIf)
-                .map(WhatIfOperationResultImpl::new);
+        return this.manager().serviceClient().getDeployments().whatIfAtSubscriptionScopeAsync(name(), deploymentWhatIf)
+            .map(WhatIfOperationResultImpl::new);
     }
 }

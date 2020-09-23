@@ -11,7 +11,7 @@ import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.DigitalTwinMetadata;
-import com.azure.digitaltwins.core.models.DigitalTwinsModelProperties;
+import com.azure.digitaltwins.core.models.ModelProperties;
 import com.azure.digitaltwins.core.models.UpdateOperationUtility;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -93,7 +93,7 @@ public class ComponentSyncSamples {
             .addCustomProperty("Prop2", 987)
             .addCustomProperty(
                 "Component1",
-                new DigitalTwinsModelProperties()
+                new ModelProperties()
                     .addCustomProperties("ComponentProp1", "Component value 1")
                     .addCustomProperties("ComponentProp2", 123)
             );

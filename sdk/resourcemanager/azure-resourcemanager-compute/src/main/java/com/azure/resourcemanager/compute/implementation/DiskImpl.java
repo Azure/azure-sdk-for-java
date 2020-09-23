@@ -25,7 +25,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,7 +67,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     public int sizeInGB() {
-        return Utils.toPrimitiveInt(this.inner().diskSizeGB());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().diskSizeGB());
     }
 
     @Override
@@ -113,7 +113,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDisks()
             .grantAccessAsync(this.resourceGroupName(), this.name(), grantAccessDataInner)
             .map(accessUriInner -> accessUriInner.accessSas());
@@ -126,7 +126,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     public Mono<Void> revokeAccessAsync() {
-        return this.manager().inner().getDisks().revokeAccessAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getDisks().revokeAccessAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -360,7 +360,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public Mono<Disk> createResourceAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getDisks()
             .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
             .map(innerToFluentMap(this));
@@ -368,14 +368,14 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     protected Mono<DiskInner> getInnerAsync() {
-        return this.manager().inner().getDisks().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getDisks().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Accepted<Disk> beginCreate() {
         return AcceptedImpl.newAccepted(logger,
-            this.manager().inner(),
-            () -> this.manager().inner().getDisks()
+            this.manager().serviceClient(),
+            () -> this.manager().serviceClient().getDisks()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
             inner -> new DiskImpl(inner.name(), inner, this.manager()),
             DiskInner.class,

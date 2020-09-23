@@ -32,8 +32,8 @@ import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -100,12 +100,12 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
 
     @Override
     public int port() {
-        return Utils.toPrimitiveInt(this.inner().port());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().port());
     }
 
     @Override
     public int sslPort() {
-        return Utils.toPrimitiveInt(this.inner().sslPort());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().sslPort());
     }
 
     @Override
@@ -125,7 +125,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
 
     @Override
     public int shardCount() {
-        return Utils.toPrimitiveInt(this.inner().shardCount());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().shardCount());
     }
 
     @Override
@@ -172,7 +172,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     @Override
     public RedisAccessKeys refreshKeys() {
         RedisAccessKeysInner response =
-            this.manager().inner().getRedis().listKeys(this.resourceGroupName(), this.name());
+            this.manager().serviceClient().getRedis().listKeys(this.resourceGroupName(), this.name());
         cachedAccessKeys = new RedisAccessKeysImpl(response);
         return cachedAccessKeys;
     }
@@ -180,7 +180,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     @Override
     public RedisAccessKeys regenerateKey(RedisKeyType keyType) {
         RedisAccessKeysInner response =
-            this.manager().inner().getRedis().regenerateKey(this.resourceGroupName(), this.name(), keyType);
+            this.manager().serviceClient().getRedis().regenerateKey(this.resourceGroupName(), this.name(), keyType);
         cachedAccessKeys = new RedisAccessKeysImpl(response);
         return cachedAccessKeys;
     }
@@ -188,38 +188,38 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     @Override
     public void forceReboot(RebootType rebootType) {
         RedisRebootParameters parameters = new RedisRebootParameters().withRebootType(rebootType);
-        this.manager().inner().getRedis().forceReboot(this.resourceGroupName(), this.name(), parameters);
+        this.manager().serviceClient().getRedis().forceReboot(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void forceReboot(RebootType rebootType, int shardId) {
         RedisRebootParameters parameters = new RedisRebootParameters().withRebootType(rebootType).withShardId(shardId);
-        this.manager().inner().getRedis().forceReboot(this.resourceGroupName(), this.name(), parameters);
+        this.manager().serviceClient().getRedis().forceReboot(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void importData(List<String> files) {
         ImportRdbParameters parameters = new ImportRdbParameters().withFiles(files);
-        this.manager().inner().getRedis().importData(this.resourceGroupName(), this.name(), parameters);
+        this.manager().serviceClient().getRedis().importData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void importData(List<String> files, String fileFormat) {
         ImportRdbParameters parameters = new ImportRdbParameters().withFiles(files).withFormat(fileFormat);
-        this.manager().inner().getRedis().importData(this.resourceGroupName(), this.name(), parameters);
+        this.manager().serviceClient().getRedis().importData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void exportData(String containerSASUrl, String prefix) {
         ExportRdbParameters parameters = new ExportRdbParameters().withContainer(containerSASUrl).withPrefix(prefix);
-        this.manager().inner().getRedis().exportData(this.resourceGroupName(), this.name(), parameters);
+        this.manager().serviceClient().getRedis().exportData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void exportData(String containerSASUrl, String prefix, String fileFormat) {
         ExportRdbParameters parameters =
             new ExportRdbParameters().withContainer(containerSASUrl).withPrefix(prefix).withFormat(fileFormat);
-        this.manager().inner().getRedis().exportData(this.resourceGroupName(), this.name(), parameters);
+        this.manager().serviceClient().getRedis().exportData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
@@ -498,7 +498,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
 
     @Override
     protected Mono<RedisResourceInner> getInnerAsync() {
-        return this.manager().inner().getRedis().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getRedis().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -527,7 +527,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
         this.patchScheduleAdded = false;
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getRedis()
             .updateAsync(resourceGroupName(), name(), updateParameters)
             .map(innerToFluentMap(this))
@@ -536,8 +536,9 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             .flatMapMany(
                 redisCache ->
                     Mono
-                        .delay(SdkContext.getDelayDuration(manager().inner().getDefaultPollInterval()))
-                        .flatMap(o -> manager().inner().getRedis().getByResourceGroupAsync(resourceGroupName(), name()))
+                        .delay(SdkContext.getDelayDuration(manager().serviceClient().getDefaultPollInterval()))
+                        .flatMap(o ->
+                            manager().serviceClient().getRedis().getByResourceGroupAsync(resourceGroupName(), name()))
                         .doOnNext(this::setInner)
                         .repeat()
                         .takeUntil(
@@ -558,7 +559,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
         this.patchScheduleAdded = false;
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getRedis()
             .createAsync(this.resourceGroupName(), this.name(), createParameters)
             .map(innerToFluentMap(this));
@@ -575,7 +576,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
         RedisLinkedServerWithPropertiesInner linkedServerInner =
             this
                 .manager()
-                .inner()
+                .serviceClient()
                 .getLinkedServers()
                 .create(this.resourceGroupName(), this.name(), linkedRedisName, params);
         return linkedServerInner.name();
@@ -583,10 +584,11 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
 
     @Override
     public void removeLinkedServer(String linkedServerName) {
-        RedisLinkedServerWithPropertiesInner linkedServer =
-            this.manager().inner().getLinkedServers().get(this.resourceGroupName(), this.name(), linkedServerName);
+        RedisLinkedServerWithPropertiesInner linkedServer = this.manager().serviceClient().getLinkedServers()
+            .get(this.resourceGroupName(), this.name(), linkedServerName);
 
-        this.manager().inner().getLinkedServers().delete(this.resourceGroupName(), this.name(), linkedServerName);
+        this.manager().serviceClient().getLinkedServers()
+            .delete(this.resourceGroupName(), this.name(), linkedServerName);
 
         RedisResourceInner innerLinkedResource = null;
         RedisResourceInner innerResource = null;
@@ -599,20 +601,20 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             innerLinkedResource =
                 this
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getRedis()
                     .getByResourceGroup(
                         ResourceUtils.groupFromResourceId(linkedServer.id()),
                         ResourceUtils.nameFromResourceId(linkedServer.id()));
 
-            innerResource = this.manager().inner().getRedis().getByResourceGroup(resourceGroupName(), name());
+            innerResource = this.manager().serviceClient().getRedis().getByResourceGroup(resourceGroupName(), name());
         }
     }
 
     @Override
     public ReplicationRole getLinkedServerRole(String linkedServerName) {
-        RedisLinkedServerWithPropertiesInner linkedServer =
-            this.manager().inner().getLinkedServers().get(this.resourceGroupName(), this.name(), linkedServerName);
+        RedisLinkedServerWithPropertiesInner linkedServer = this.manager().serviceClient().getLinkedServers()
+            .get(this.resourceGroupName(), this.name(), linkedServerName);
         if (linkedServer == null) {
             throw logger
                 .logExceptionAsError(
@@ -632,7 +634,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     public Map<String, ReplicationRole> listLinkedServers() {
         Map<String, ReplicationRole> result = new TreeMap<>();
         PagedIterable<RedisLinkedServerWithPropertiesInner> paginatedResponse =
-            this.manager().inner().getLinkedServers().list(this.resourceGroupName(), this.name());
+            this.manager().serviceClient().getLinkedServers().list(this.resourceGroupName(), this.name());
 
         for (RedisLinkedServerWithPropertiesInner linkedServer : paginatedResponse) {
             result.put(linkedServer.name(), linkedServer.serverRole());

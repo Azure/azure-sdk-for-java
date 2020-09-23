@@ -10,7 +10,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryDockerTaskStep
 import com.azure.resourcemanager.containerregistry.models.RegistryTask;
 import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,13 +49,13 @@ class RegistryDockerTaskStepImpl extends RegistryTaskStepImpl
     @Override
     public boolean isPushEnabled() {
         DockerTaskStep dockerTaskStep = dockerTaskStep();
-        return Utils.toPrimitiveBoolean(dockerTaskStep.isPushEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(dockerTaskStep.isPushEnabled());
     }
 
     @Override
     public boolean noCache() {
         DockerTaskStep dockerTaskStep = dockerTaskStep();
-        return Utils.toPrimitiveBoolean(dockerTaskStep.noCache());
+        return ResourceManagerUtils.toPrimitiveBoolean(dockerTaskStep.noCache());
     }
 
     @Override

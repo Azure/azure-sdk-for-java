@@ -8,7 +8,7 @@ import com.azure.resourcemanager.network.models.PublicIpPrefix;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSku;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSkuName;
 import com.azure.resourcemanager.network.models.PublicIpPrefixes;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 /** Tests public Prefixes. */

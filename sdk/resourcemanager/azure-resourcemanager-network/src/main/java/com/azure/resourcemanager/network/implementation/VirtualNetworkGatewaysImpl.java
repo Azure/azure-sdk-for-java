@@ -28,7 +28,7 @@ public class VirtualNetworkGatewaysImpl
     implements VirtualNetworkGateways {
 
     public VirtualNetworkGatewaysImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getVirtualNetworkGateways(), networkManager);
+        super(networkManager.serviceClient().getVirtualNetworkGateways(), networkManager);
     }
 
     @Override

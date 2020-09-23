@@ -8,7 +8,7 @@ import com.azure.resourcemanager.containerregistry.models.OverridingArgument;
 import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
 import com.azure.resourcemanager.containerregistry.models.RegistryDockerTaskRunRequest;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +21,7 @@ class RegistryDockerTaskRunRequestImpl
 
     @Override
     public int timeout() {
-        return Utils.toPrimitiveInt(this.inner.timeout());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner.timeout());
     }
 
     @Override
@@ -34,7 +34,7 @@ class RegistryDockerTaskRunRequestImpl
         if (this.inner.agentConfiguration() == null) {
             return 0;
         }
-        return Utils.toPrimitiveInt(this.inner.agentConfiguration().cpu());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner.agentConfiguration().cpu());
     }
 
     @Override
@@ -44,7 +44,7 @@ class RegistryDockerTaskRunRequestImpl
 
     @Override
     public boolean isArchiveEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner.isArchiveEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner.isArchiveEnabled());
     }
 
     RegistryDockerTaskRunRequestImpl(RegistryTaskRunImpl registryTaskRunImpl) {

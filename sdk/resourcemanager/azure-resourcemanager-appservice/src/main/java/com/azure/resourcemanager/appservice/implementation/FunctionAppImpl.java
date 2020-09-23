@@ -20,7 +20,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -44,6 +44,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -133,7 +134,8 @@ class FunctionAppImpl
                 .build();
             functionServiceHost = baseUrl;
             functionService =
-                RestProxy.create(FunctionService.class, httpPipeline, new AzureJacksonAdapter());
+                RestProxy.create(FunctionService.class, httpPipeline,
+                    SerializerFactory.createDefaultManagementSerializerAdapter());
         }
     }
 
@@ -192,7 +194,7 @@ class FunctionAppImpl
                         .zipWith(
                             this.manager().appServicePlans().getByIdAsync(this.appServicePlanId()),
                             (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
-                                String connectionString = com.azure.resourcemanager.resources.fluentcore.utils.Utils
+                                String connectionString = ResourceManagerUtils
                                     .getStorageConnectionString(storageAccountToSet.name(), storageAccountKey.value(),
                                         manager().environment());
                                 addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
@@ -429,7 +431,7 @@ class FunctionAppImpl
                             "2019-08-01"))
             .map(ListKeysResult::getMasterKey)
             .subscriberContext(
-                context -> context.putAll(FluxUtil.toReactorContext(this.manager().inner().getContext())));
+                context -> context.putAll(FluxUtil.toReactorContext(this.manager().serviceClient().getContext())));
     }
 
     @Override
@@ -505,7 +507,7 @@ class FunctionAppImpl
     @Override
     public Mono<Void> syncTriggersAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .syncFunctionTriggersAsync(resourceGroupName(), name())
             .onErrorResume(

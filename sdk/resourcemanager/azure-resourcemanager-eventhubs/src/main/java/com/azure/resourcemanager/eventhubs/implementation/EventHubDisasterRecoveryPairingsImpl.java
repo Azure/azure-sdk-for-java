@@ -26,7 +26,7 @@ public final class EventHubDisasterRecoveryPairingsImpl
     private EventHubsManager manager;
 
     public EventHubDisasterRecoveryPairingsImpl(EventHubsManager manager) {
-        super(manager.inner().getDisasterRecoveryConfigs());
+        super(manager.serviceClient().getDisasterRecoveryConfigs());
         this.manager = manager;
     }
 

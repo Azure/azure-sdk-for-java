@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeerings;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -72,14 +72,15 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
     protected Mono<VirtualNetworkInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworks()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     protected Mono<VirtualNetworkInner> applyTagsToInnerAsync() {
-        return this.manager().inner().getVirtualNetworks().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this.manager().serviceClient().getVirtualNetworks()
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
@@ -105,7 +106,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
             result =
                 this
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getVirtualNetworks()
                     .checkIpAddressAvailability(this.resourceGroupName(), this.name(), ipAddress);
         } catch (ManagementException e) {
@@ -250,7 +251,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
         }
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworks()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(
@@ -267,12 +268,12 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     public boolean isDdosProtectionEnabled() {
-        return Utils.toPrimitiveBoolean(inner().enableDdosProtection());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().enableDdosProtection());
     }
 
     @Override
     public boolean isVmProtectionEnabled() {
-        return Utils.toPrimitiveBoolean(inner().enableVmProtection());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().enableVmProtection());
     }
 
     @Override

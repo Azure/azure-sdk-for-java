@@ -154,13 +154,13 @@ class ServiceBusNamespaceImpl
 
     @Override
     protected Mono<NamespaceResourceInner> getInnerAsync() {
-        return this.manager().inner().getNamespaces().getByResourceGroupAsync(this.resourceGroupName(),
+        return this.manager().serviceClient().getNamespaces().getByResourceGroupAsync(this.resourceGroupName(),
                 this.name());
     }
 
     @Override
     public Mono<ServiceBusNamespace> createResourceAsync() {
-        Mono<NamespaceResourceInner> createTask = this.manager().inner().getNamespaces()
+        Mono<NamespaceResourceInner> createTask = this.manager().serviceClient().getNamespaces()
             .createOrUpdateAsync(this.resourceGroupName(),
                     this.name(),
                     prepareForCreate(this.inner()))

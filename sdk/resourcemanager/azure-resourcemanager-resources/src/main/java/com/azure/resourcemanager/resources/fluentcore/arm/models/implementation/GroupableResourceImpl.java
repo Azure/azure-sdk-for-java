@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.arm.models.implementation;
 
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;

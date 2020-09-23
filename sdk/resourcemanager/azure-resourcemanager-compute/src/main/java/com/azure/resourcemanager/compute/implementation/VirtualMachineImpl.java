@@ -77,7 +77,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -198,7 +198,7 @@ class VirtualMachineImpl
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         this.virtualMachineExtensions =
-            new VirtualMachineExtensionsImpl(computeManager.inner().getVirtualMachineExtensions(), this);
+            new VirtualMachineExtensionsImpl(computeManager.serviceClient().getVirtualMachineExtensions(), this);
 
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         initializeDataDisks();
@@ -226,7 +226,7 @@ class VirtualMachineImpl
 
     @Override
     protected Mono<VirtualMachineInner> getInnerAsync() {
-        return this.manager().inner().getVirtualMachines()
+        return this.manager().serviceClient().getVirtualMachines()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -239,7 +239,7 @@ class VirtualMachineImpl
     public Mono<Void> deallocateAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .deallocateAsync(this.resourceGroupName(), this.name())
             // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
@@ -254,7 +254,8 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> generalizeAsync() {
-        return this.manager().inner().getVirtualMachines().generalizeAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVirtualMachines()
+            .generalizeAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -264,7 +265,8 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> powerOffAsync() {
-        return this.manager().inner().getVirtualMachines().powerOffAsync(this.resourceGroupName(), this.name(), null);
+        return this.manager().serviceClient().getVirtualMachines()
+            .powerOffAsync(this.resourceGroupName(), this.name(), null);
     }
 
     @Override
@@ -274,7 +276,7 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> restartAsync() {
-        return this.manager().inner().getVirtualMachines().restartAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVirtualMachines().restartAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -284,7 +286,7 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> startAsync() {
-        return this.manager().inner().getVirtualMachines().startAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVirtualMachines().startAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -294,7 +296,7 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> redeployAsync() {
-        return this.manager().inner().getVirtualMachines().redeployAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVirtualMachines().redeployAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -304,12 +306,14 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> simulateEvictionAsync() {
-        return this.manager().inner().getVirtualMachines().simulateEvictionAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getVirtualMachines()
+            .simulateEvictionAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void convertToManaged() {
-        this.manager().inner().getVirtualMachines().convertToManagedDisks(this.resourceGroupName(), this.name());
+        this.manager().serviceClient().getVirtualMachines()
+            .convertToManagedDisks(this.resourceGroupName(), this.name());
         this.refresh();
     }
 
@@ -317,7 +321,7 @@ class VirtualMachineImpl
     public Mono<Void> convertToManagedAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .convertToManagedDisksAsync(this.resourceGroupName(), this.name())
             .flatMap(aVoid -> refreshAsync())
@@ -333,7 +337,7 @@ class VirtualMachineImpl
     public PagedIterable<VirtualMachineSize> availableSizes() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .listAvailableSizes(this.resourceGroupName(), this.name())
             .mapPage(VirtualMachineSizeImpl::new);
@@ -352,7 +356,7 @@ class VirtualMachineImpl
         parameters.withVhdPrefix(vhdPrefix);
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .captureAsync(this.resourceGroupName(), this.name(), parameters)
             .map(
@@ -374,7 +378,7 @@ class VirtualMachineImpl
     public Mono<VirtualMachineInstanceView> refreshInstanceViewAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name(), InstanceViewTypes.INSTANCE_VIEW)
             .map(
@@ -442,7 +446,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(Creatable<Network> creatable) {
         this.nicDefinitionWithPrivateIp =
-            this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
+            this.preparePrimaryNetworkInterface(this.namer.getRandomName("nic", 20))
                 .withNewPrimaryNetwork(creatable);
         return this;
     }
@@ -450,7 +454,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(String addressSpace) {
         this.nicDefinitionWithPrivateIp =
-            this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
+            this.preparePrimaryNetworkInterface(this.namer.getRandomName("nic", 20))
                 .withNewPrimaryNetwork(addressSpace);
         return this;
     }
@@ -458,7 +462,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withExistingPrimaryNetwork(Network network) {
         this.nicDefinitionWithSubnet =
-            this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
+            this.preparePrimaryNetworkInterface(this.namer.getRandomName("nic", 20))
                 .withExistingPrimaryNetwork(network);
         return this;
     }
@@ -498,7 +502,7 @@ class VirtualMachineImpl
             this
                 .networkManager
                 .publicIpAddresses()
-                .define(this.namer.randomName("pip", 15))
+                .define(this.namer.getRandomName("pip", 15))
                 .withRegion(this.regionName());
         PublicIpAddress.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.creatableGroup != null) {
@@ -1442,7 +1446,7 @@ class VirtualMachineImpl
 
     @Override
     public int osDiskSize() {
-        return Utils.toPrimitiveInt(inner().storageProfile().osDisk().diskSizeGB());
+        return ResourceManagerUtils.toPrimitiveInt(inner().storageProfile().osDisk().diskSizeGB());
     }
 
     @Override
@@ -1560,8 +1564,8 @@ class VirtualMachineImpl
             return null;
         } else {
             ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
-            ProximityPlacementGroupInner plgInner =
-                manager().inner().getProximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
+            ProximityPlacementGroupInner plgInner = manager().serviceClient().getProximityPlacementGroups()
+                .getByResourceGroup(id.resourceGroupName(), id.name());
             if (plgInner == null) {
                 return null;
             } else {
@@ -1705,7 +1709,7 @@ class VirtualMachineImpl
                         this
                             .storageManager
                             .storageAccounts()
-                            .define(this.namer.randomName("stg", 24).replace("-", ""))
+                            .define(this.namer.getRandomName("stg", 24).replace("-", ""))
                             .withRegion(this.regionName())
                             .withNewResourceGroup(this.creatableGroup);
                 } else {
@@ -1713,7 +1717,7 @@ class VirtualMachineImpl
                         this
                             .storageManager
                             .storageAccounts()
-                            .define(this.namer.randomName("stg", 24).replace("-", ""))
+                            .define(this.namer.getRandomName("stg", 24).replace("-", ""))
                             .withRegion(this.regionName())
                             .withExistingResourceGroup(this.resourceGroupName());
                 }
@@ -1729,7 +1733,7 @@ class VirtualMachineImpl
     public Mono<VirtualMachine> createResourceAsync() {
         // -- set creation-time only properties
         return prepareCreateResourceAsync()
-            .flatMap(virtualMachine -> this.manager().inner().getVirtualMachines()
+            .flatMap(virtualMachine -> this.manager().serviceClient().getVirtualMachines()
                 .createOrUpdateAsync(resourceGroupName(), vmName, inner())
                 .map(virtualMachineInner -> {
                     reset(virtualMachineInner);
@@ -1762,8 +1766,8 @@ class VirtualMachineImpl
 
     public Accepted<VirtualMachine> beginCreate() {
         return AcceptedImpl.<VirtualMachine, VirtualMachineInner>newAccepted(logger,
-            this.manager().inner(),
-            () -> this.manager().inner().getVirtualMachines()
+            this.manager().serviceClient(),
+            () -> this.manager().serviceClient().getVirtualMachines()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, inner()).block(),
             inner -> new VirtualMachineImpl(inner.name(), inner, this.manager(),
                 this.storageManager, this.networkManager, this.authorizationManager),
@@ -1811,7 +1815,7 @@ class VirtualMachineImpl
         final VirtualMachineImpl self = this;
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .updateAsync(resourceGroupName(), vmName, updateParameter)
             .map(
@@ -1959,11 +1963,11 @@ class VirtualMachineImpl
             if (this.inner().osProfile().computerName() == null) {
                 // VM name cannot contain only numeric values and cannot exceed 15 chars
                 if (vmName.matches("[0-9]+")) {
-                    this.inner().osProfile().withComputerName(namer.randomName("vm", 15));
+                    this.inner().osProfile().withComputerName(namer.getRandomName("vm", 15));
                 } else if (vmName.length() <= 15) {
                     this.inner().osProfile().withComputerName(vmName);
                 } else {
-                    this.inner().osProfile().withComputerName(namer.randomName("vm", 15));
+                    this.inner().osProfile().withComputerName(namer.getRandomName("vm", 15));
                 }
             }
         } else {
@@ -2028,7 +2032,7 @@ class VirtualMachineImpl
                 plgInner.withLocation(this.inner().location());
                 return this
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getProximityPlacementGroups()
                     .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
                     .map(
@@ -2571,7 +2575,7 @@ class VirtualMachineImpl
                 || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
                 return;
             }
-            boolean enableBD = Utils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
+            boolean enableBD = ResourceManagerUtils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
             if (!enableBD) {
                 return;
             }
@@ -2580,7 +2584,7 @@ class VirtualMachineImpl
                 || this.vmImpl.existingStorageAccountToAssociate != null) {
                 return;
             }
-            String accountName = this.vmImpl.namer.randomName("stg", 24).replace("-", "");
+            String accountName = this.vmImpl.namer.getRandomName("stg", 24).replace("-", "");
             Creatable<StorageAccount> storageAccountCreatable;
             if (this.vmImpl.creatableGroup != null) {
                 storageAccountCreatable =
@@ -2611,7 +2615,7 @@ class VirtualMachineImpl
                 || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
                 return;
             }
-            boolean enableBD = Utils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
+            boolean enableBD = ResourceManagerUtils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
             if (!enableBD) {
                 return;
             }

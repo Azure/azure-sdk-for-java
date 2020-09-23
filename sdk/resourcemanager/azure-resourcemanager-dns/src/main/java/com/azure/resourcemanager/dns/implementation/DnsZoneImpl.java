@@ -25,7 +25,7 @@ import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -59,12 +59,12 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
 
     @Override
     public long maxNumberOfRecordSets() {
-        return Utils.toPrimitiveLong(this.inner().maxNumberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().maxNumberOfRecordSets());
     }
 
     @Override
     public long numberOfRecordSets() {
-        return Utils.toPrimitiveLong(this.inner().numberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().numberOfRecordSets());
     }
 
     @Override
@@ -174,8 +174,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
 
     @Override
     public SoaRecordSet getSoaRecordSet() {
-        RecordSetInner inner =
-            this.manager().inner().getRecordSets().get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
+        RecordSetInner inner = this.manager().serviceClient().getRecordSets()
+            .get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
         if (inner == null) {
             return null;
         }
@@ -404,7 +404,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                 self ->
                     self
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getZones()
                         .createOrUpdateAsync(
                             self.resourceGroupName(),
@@ -446,7 +446,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
 
     @Override
     protected Mono<ZoneInner> getInnerAsync() {
-        return this.manager().inner().getZones().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getZones().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private void initRecordSets() {
@@ -469,7 +469,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                 .flatMapPage(
                     this
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getRecordSets()
                         .listByDnsZoneAsync(this.resourceGroupName(), this.name(), pageSize, recordSetSuffix),
                     inner -> {

@@ -108,7 +108,7 @@ public class SqlServerAutomaticTuningImpl
     protected Mono<ServerAutomaticTuningInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerAutomaticTunings()
             .getAsync(this.resourceGroupName, this.sqlServerName);
     }
@@ -123,7 +123,7 @@ public class SqlServerAutomaticTuningImpl
         final SqlServerAutomaticTuningImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerAutomaticTunings()
             .updateAsync(this.resourceGroupName, this.sqlServerName, this.inner())
             .map(

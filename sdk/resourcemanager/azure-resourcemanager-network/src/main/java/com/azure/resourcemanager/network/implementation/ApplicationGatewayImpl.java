@@ -51,7 +51,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -113,7 +113,7 @@ class ApplicationGatewayImpl
     protected Mono<ApplicationGatewayInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getApplicationGateways()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -122,7 +122,7 @@ class ApplicationGatewayImpl
     protected Mono<ApplicationGatewayInner> applyTagsToInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getApplicationGateways()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
@@ -563,7 +563,7 @@ class ApplicationGatewayImpl
                         });
         }
 
-        final ApplicationGatewaysClient innerCollection = this.manager().inner().getApplicationGateways();
+        final ApplicationGatewaysClient innerCollection = this.manager().serviceClient().getApplicationGateways();
         return Flux
             .merge(networkObservable, pipObservable)
             .last(Resource.DUMMY)
@@ -1385,7 +1385,7 @@ class ApplicationGatewayImpl
 
     @Override
     public boolean isHttp2Enabled() {
-        return Utils.toPrimitiveBoolean(inner().enableHttp2());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().enableHttp2());
     }
 
     @Override
@@ -1632,7 +1632,7 @@ class ApplicationGatewayImpl
     @Override
     public Mono<Void> startAsync() {
         Mono<Void> startObservable =
-            this.manager().inner().getApplicationGateways().startAsync(this.resourceGroupName(), this.name());
+            this.manager().serviceClient().getApplicationGateways().startAsync(this.resourceGroupName(), this.name());
         Mono<ApplicationGateway> refreshObservable = refreshAsync();
 
         // Refresh after start to ensure the app gateway operational state is updated
@@ -1642,7 +1642,7 @@ class ApplicationGatewayImpl
     @Override
     public Mono<Void> stopAsync() {
         Mono<Void> stopObservable =
-            this.manager().inner().getApplicationGateways().stopAsync(this.resourceGroupName(), this.name());
+            this.manager().serviceClient().getApplicationGateways().stopAsync(this.resourceGroupName(), this.name());
         Mono<ApplicationGateway> refreshObservable = refreshAsync();
 
         // Refresh after stop to ensure the app gateway operational state is updated
@@ -1674,7 +1674,7 @@ class ApplicationGatewayImpl
     public Mono<Map<String, ApplicationGatewayBackendHealth>> checkBackendHealthAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getApplicationGateways()
             // TODO(not known): Last minutes
             .backendHealthAsync(this.resourceGroupName(), this.name(), null)

@@ -22,7 +22,7 @@ import com.azure.resourcemanager.privatedns.models.TxtRecordSets;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinks;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 /** Implementation for {@link PrivateDnsZone}. */
@@ -65,32 +65,32 @@ class PrivateDnsZoneImpl
 
     @Override
     public long maxNumberOfRecordSets() {
-        return Utils.toPrimitiveLong(inner().maxNumberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(inner().maxNumberOfRecordSets());
     }
 
     @Override
     public long numberOfRecordSets() {
-        return Utils.toPrimitiveLong(inner().numberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(inner().numberOfRecordSets());
     }
 
     @Override
     public long maxNumberOfVirtualNetworkLinks() {
-        return Utils.toPrimitiveLong(inner().maxNumberOfVirtualNetworkLinks());
+        return ResourceManagerUtils.toPrimitiveLong(inner().maxNumberOfVirtualNetworkLinks());
     }
 
     @Override
     public long numberOfVirtualNetworkLinks() {
-        return Utils.toPrimitiveLong(inner().numberOfVirtualNetworkLinks());
+        return ResourceManagerUtils.toPrimitiveLong(inner().numberOfVirtualNetworkLinks());
     }
 
     @Override
     public long maxNumberOfVirtualNetworkLinksWithRegistration() {
-        return Utils.toPrimitiveLong(inner().maxNumberOfVirtualNetworkLinksWithRegistration());
+        return ResourceManagerUtils.toPrimitiveLong(inner().maxNumberOfVirtualNetworkLinksWithRegistration());
     }
 
     @Override
     public long numberOfVirtualNetworkLinksWithRegistration() {
-        return Utils.toPrimitiveLong(inner().numberOfVirtualNetworkLinksWithRegistration());
+        return ResourceManagerUtils.toPrimitiveLong(inner().numberOfVirtualNetworkLinksWithRegistration());
     }
 
     @Override
@@ -165,7 +165,8 @@ class PrivateDnsZoneImpl
 
     @Override
     public SoaRecordSet getSoaRecordSet() {
-        RecordSetInner inner = manager().inner().getRecordSets().get(resourceGroupName(), name(), RecordType.SOA, "@");
+        RecordSetInner inner = manager().serviceClient().getRecordSets()
+            .get(resourceGroupName(), name(), RecordType.SOA, "@");
         return inner == null ? null : new SoaRecordSetImpl(inner.name(), this, inner);
     }
 
@@ -382,7 +383,7 @@ class PrivateDnsZoneImpl
 
     @Override
     public Mono<PrivateDnsZone> createResourceAsync() {
-        return manager().inner().getPrivateZones()
+        return manager().serviceClient().getPrivateZones()
             .createOrUpdateAsync(
                 resourceGroupName(),
                 name(),
@@ -416,7 +417,7 @@ class PrivateDnsZoneImpl
 
     @Override
     protected Mono<PrivateZoneInner> getInnerAsync() {
-        return manager().inner().getPrivateZones().getByResourceGroupAsync(resourceGroupName(), name());
+        return manager().serviceClient().getPrivateZones().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     private PagedIterable<PrivateDnsRecordSet> listRecordSetsIntern(String recordSetSuffix, Integer pageSize) {
@@ -425,7 +426,8 @@ class PrivateDnsZoneImpl
 
     private PagedFlux<PrivateDnsRecordSet> listRecordSetsInternAsync(String recordSetSuffix, Integer pageSize) {
         final PrivateDnsZoneImpl self = this;
-        return manager().inner().getRecordSets().listAsync(resourceGroupName(), name(), pageSize, recordSetSuffix)
+        return manager().serviceClient().getRecordSets()
+            .listAsync(resourceGroupName(), name(), pageSize, recordSetSuffix)
             .mapPage(recordSetInner -> {
                 PrivateDnsRecordSet recordSet = new PrivateDnsRecordSetImpl(
                     recordSetInner.name(), recordSetInner.type(), self, recordSetInner);

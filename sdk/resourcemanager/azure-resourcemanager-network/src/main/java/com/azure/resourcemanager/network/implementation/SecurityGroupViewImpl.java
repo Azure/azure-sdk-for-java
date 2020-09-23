@@ -69,7 +69,7 @@ class SecurityGroupViewImpl extends RefreshableWrapperImpl<SecurityGroupViewResu
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkWatchers()
             .getVMSecurityRulesAsync(parent.resourceGroupName(), parent.name(), vmId);
     }

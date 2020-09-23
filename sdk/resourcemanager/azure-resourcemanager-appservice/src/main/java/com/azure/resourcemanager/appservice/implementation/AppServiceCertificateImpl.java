@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.fluent.inner.CertificateInner;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -111,7 +111,7 @@ class AppServiceCertificateImpl
 
     @Override
     protected Mono<CertificateInner> getInnerAsync() {
-        return this.manager().inner().getCertificates().getByResourceGroupAsync(resourceGroupName(), name());
+        return this.manager().serviceClient().getCertificates().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -140,7 +140,7 @@ class AppServiceCertificateImpl
                             return null;
                         });
         }
-        final CertificatesClient client = this.manager().inner().getCertificates();
+        final CertificatesClient client = this.manager().serviceClient().getCertificates();
         return pfxBytes
             .then(keyVaultBinding)
             .then(client.createOrUpdateAsync(resourceGroupName(), name(), inner()))

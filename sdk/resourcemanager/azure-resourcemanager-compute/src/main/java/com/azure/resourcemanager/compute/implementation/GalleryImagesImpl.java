@@ -18,7 +18,7 @@ public class GalleryImagesImpl extends WrapperImpl<GalleryImagesClient> implemen
     private final ComputeManager manager;
 
     public GalleryImagesImpl(ComputeManager manager) {
-        super(manager.inner().getGalleryImages());
+        super(manager.serviceClient().getGalleryImages());
         this.manager = manager;
     }
 

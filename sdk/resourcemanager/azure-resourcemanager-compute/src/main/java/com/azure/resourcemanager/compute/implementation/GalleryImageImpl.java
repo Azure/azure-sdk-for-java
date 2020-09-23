@@ -19,7 +19,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
 import com.azure.resourcemanager.compute.models.ResourceRange;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryImageInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
 
@@ -99,7 +99,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     @Override
     public Mono<GalleryImage> createResourceAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getGalleryImages()
             .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.inner())
             .map(innerToFluentMap(this));
@@ -108,7 +108,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     @Override
     public Mono<GalleryImage> updateResourceAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getGalleryImages()
             .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.inner())
             .map(innerToFluentMap(this));
@@ -117,7 +117,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     @Override
     protected Mono<GalleryImageInner> getInnerAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getGalleryImages()
             .getAsync(this.resourceGroupName, this.galleryName, this.galleryImageName);
     }

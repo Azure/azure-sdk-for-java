@@ -101,7 +101,7 @@ public class ServicePrincipalsImpl
     }
 
     public ServicePrincipalsClient inner() {
-        return manager().inner().getServicePrincipals();
+        return manager().serviceClient().getServicePrincipals();
     }
 
     @Override

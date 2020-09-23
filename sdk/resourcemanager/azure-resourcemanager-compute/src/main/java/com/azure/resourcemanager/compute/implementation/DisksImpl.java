@@ -26,7 +26,7 @@ public class DisksImpl extends TopLevelModifiableResourcesImpl<Disk, DiskImpl, D
     private final ClientLogger logger = new ClientLogger(this.getClass());
 
     public DisksImpl(ComputeManager computeManager) {
-        super(computeManager.inner().getDisks(), computeManager);
+        super(computeManager.serviceClient().getDisks(), computeManager);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class DisksImpl extends TopLevelModifiableResourcesImpl<Disk, DiskImpl, D
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
         return AcceptedImpl.newAccepted(logger,
-            manager().inner(),
+            manager().serviceClient(),
             () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
             Function.identity(),
             Void.class,

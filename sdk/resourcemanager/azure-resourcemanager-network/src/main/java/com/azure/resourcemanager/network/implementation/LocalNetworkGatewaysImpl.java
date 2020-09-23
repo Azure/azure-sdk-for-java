@@ -28,7 +28,7 @@ public class LocalNetworkGatewaysImpl
     implements LocalNetworkGateways {
 
     public LocalNetworkGatewaysImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getLocalNetworkGateways(), networkManager);
+        super(networkManager.serviceClient().getLocalNetworkGateways(), networkManager);
     }
 
     @Override

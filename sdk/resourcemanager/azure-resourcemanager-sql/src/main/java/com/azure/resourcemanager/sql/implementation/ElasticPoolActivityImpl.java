@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
 import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolActivityInner;
 import java.time.OffsetDateTime;
@@ -41,7 +41,7 @@ class ElasticPoolActivityImpl extends WrapperImpl<ElasticPoolActivityInner> impl
 
     @Override
     public int errorCode() {
-        return Utils.toPrimitiveInt(this.inner().errorCode());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().errorCode());
     }
 
     @Override
@@ -51,7 +51,7 @@ class ElasticPoolActivityImpl extends WrapperImpl<ElasticPoolActivityInner> impl
 
     @Override
     public int errorSeverity() {
-        return Utils.toPrimitiveInt(this.inner().errorSeverity());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().errorSeverity());
     }
 
     @Override
@@ -66,22 +66,22 @@ class ElasticPoolActivityImpl extends WrapperImpl<ElasticPoolActivityInner> impl
 
     @Override
     public int percentComplete() {
-        return Utils.toPrimitiveInt(this.inner().percentComplete());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().percentComplete());
     }
 
     @Override
     public int requestedDatabaseDtuMax() {
-        return Utils.toPrimitiveInt(this.inner().requestedDatabaseDtuMax());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().requestedDatabaseDtuMax());
     }
 
     @Override
     public int requestedDatabaseDtuMin() {
-        return Utils.toPrimitiveInt(this.inner().requestedDatabaseDtuMin());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().requestedDatabaseDtuMin());
     }
 
     @Override
     public int requestedDtu() {
-        return Utils.toPrimitiveInt(this.inner().requestedDtu());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().requestedDtu());
     }
 
     @Override
@@ -91,7 +91,7 @@ class ElasticPoolActivityImpl extends WrapperImpl<ElasticPoolActivityInner> impl
 
     @Override
     public long requestedStorageLimitInGB() {
-        return Utils.toPrimitiveLong(this.inner().requestedStorageLimitInGB());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().requestedStorageLimitInGB());
     }
 
     @Override

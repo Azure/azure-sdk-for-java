@@ -18,7 +18,7 @@ import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.net.Inet4Address;
@@ -67,10 +67,10 @@ class AppServiceDomainImpl
 
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
-        final DomainsClient client = this.manager().inner().getDomains();
+        final DomainsClient client = this.manager().serviceClient().getDomains();
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getTopLevelDomains()
             .listAgreementsAsync(topLevel, new TopLevelDomainAgreementOption())
             // Step 1: Consent to agreements
@@ -97,7 +97,7 @@ class AppServiceDomainImpl
 
     @Override
     protected Mono<DomainInner> getInnerAsync() {
-        return this.manager().inner().getDomains().getByResourceGroupAsync(resourceGroupName(), name());
+        return this.manager().serviceClient().getDomains().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -132,7 +132,7 @@ class AppServiceDomainImpl
 
     @Override
     public boolean privacy() {
-        return Utils.toPrimitiveBoolean(inner().privacy());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().privacy());
     }
 
     @Override
@@ -152,12 +152,12 @@ class AppServiceDomainImpl
 
     @Override
     public boolean autoRenew() {
-        return Utils.toPrimitiveBoolean(inner().autoRenew());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().autoRenew());
     }
 
     @Override
     public boolean readyForDnsRecordManagement() {
-        return Utils.toPrimitiveBoolean(inner().readyForDnsRecordManagement());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().readyForDnsRecordManagement());
     }
 
     @Override
@@ -194,7 +194,7 @@ class AppServiceDomainImpl
             new DomainOwnershipIdentifierInner().withOwnershipId(domainVerificationToken);
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDomains()
             .createOrUpdateOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
             .then(Mono.empty());

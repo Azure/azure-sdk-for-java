@@ -99,7 +99,7 @@ class LocalNetworkGatewayImpl
     protected Mono<LocalNetworkGatewayInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getLocalNetworkGateways()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -108,7 +108,7 @@ class LocalNetworkGatewayImpl
     public Mono<LocalNetworkGateway> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getLocalNetworkGateways()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this));
@@ -135,7 +135,7 @@ class LocalNetworkGatewayImpl
     public Mono<LocalNetworkGateway> applyTagsAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getLocalNetworkGateways()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .flatMap(

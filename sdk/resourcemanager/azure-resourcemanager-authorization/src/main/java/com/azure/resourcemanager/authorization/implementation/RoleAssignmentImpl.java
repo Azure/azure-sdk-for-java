@@ -86,7 +86,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
             .flatMap(
                 roleAssignmentPropertiesInner ->
                     manager()
-                        .roleInner()
+                        .roleServiceClient()
                         .getRoleAssignments()
                         .createAsync(scope(), name(), roleAssignmentPropertiesInner)
                         .retryWhen(
@@ -120,7 +120,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     protected Mono<RoleAssignmentInner> getInnerAsync() {
-        return manager.roleInner().getRoleAssignments().getAsync(scope(), name());
+        return manager.roleServiceClient().getRoleAssignments().getAsync(scope(), name());
     }
 
     @Override

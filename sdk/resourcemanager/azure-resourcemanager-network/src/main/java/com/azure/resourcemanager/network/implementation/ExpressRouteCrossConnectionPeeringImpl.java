@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -33,7 +33,7 @@ class ExpressRouteCrossConnectionPeeringImpl
         ExpressRouteCrossConnectionPeeringInner innerObject,
         ExpressRoutePeeringType type) {
         super(type.toString(), innerObject);
-        this.client = parent.manager().inner().getExpressRouteCrossConnectionPeerings();
+        this.client = parent.manager().serviceClient().getExpressRouteCrossConnectionPeerings();
         this.parent = parent;
         inner().withPeeringType(type);
     }
@@ -167,12 +167,12 @@ class ExpressRouteCrossConnectionPeeringImpl
 
     @Override
     public int azureAsn() {
-        return Utils.toPrimitiveInt(inner().azureAsn());
+        return ResourceManagerUtils.toPrimitiveInt(inner().azureAsn());
     }
 
     @Override
     public long peerAsn() {
-        return Utils.toPrimitiveLong(inner().peerAsn());
+        return ResourceManagerUtils.toPrimitiveLong(inner().peerAsn());
     }
 
     @Override
@@ -202,7 +202,7 @@ class ExpressRouteCrossConnectionPeeringImpl
 
     @Override
     public int vlanId() {
-        return Utils.toPrimitiveInt(inner().vlanId());
+        return ResourceManagerUtils.toPrimitiveInt(inner().vlanId());
     }
 
     @Override
