@@ -13,7 +13,7 @@ import com.azure.resourcemanager.keyvault.models.KeyPermissions;
 import com.azure.resourcemanager.keyvault.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

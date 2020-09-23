@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
@@ -17,7 +17,7 @@ import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
@@ -42,33 +42,33 @@ public final class ManageLinuxWebAppWithTrafficManager {
 
     private static final String CERT_PASSWORD = "StrongPass!12";
 
-    private static Azure azure;
+    private static AzureResourceManager azureResourceManager;
     private static AppServiceDomain domain;
     private static String pfxPath;
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws IOException {
-        rgName = azure.sdkContext().randomResourceName("rgNEMV_", 24);
+    public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
+        rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV_", 24);
 
-        if (ManageLinuxWebAppWithTrafficManager.azure == null) {
-            ManageLinuxWebAppWithTrafficManager.azure = azure;
+        if (ManageLinuxWebAppWithTrafficManager.azureResourceManager == null) {
+            ManageLinuxWebAppWithTrafficManager.azureResourceManager = azureResourceManager;
         }
 
         // New resources
-        final String app1Name = azure.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name = azure.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name = azure.sdkContext().randomResourceName("webapp3-", 20);
-        final String app4Name = azure.sdkContext().randomResourceName("webapp4-", 20);
-        final String app5Name = azure.sdkContext().randomResourceName("webapp5-", 20);
-        final String plan1Name = azure.sdkContext().randomResourceName("jplan1_", 15);
-        final String plan2Name = azure.sdkContext().randomResourceName("jplan2_", 15);
-        final String plan3Name = azure.sdkContext().randomResourceName("jplan3_", 15);
-        final String domainName = azure.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
-        final String tmName = azure.sdkContext().randomResourceName("jsdktm-", 20);
+        final String app1Name = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
+        final String app2Name = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
+        final String app3Name = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
+        final String app4Name = azureResourceManager.sdkContext().randomResourceName("webapp4-", 20);
+        final String app5Name = azureResourceManager.sdkContext().randomResourceName("webapp5-", 20);
+        final String plan1Name = azureResourceManager.sdkContext().randomResourceName("jplan1_", 15);
+        final String plan2Name = azureResourceManager.sdkContext().randomResourceName("jplan2_", 15);
+        final String plan3Name = azureResourceManager.sdkContext().randomResourceName("jplan3_", 15);
+        final String domainName = azureResourceManager.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
+        final String tmName = azureResourceManager.sdkContext().randomResourceName("jsdktm-", 20);
 
         try {
 
@@ -77,11 +77,11 @@ public final class ManageLinuxWebAppWithTrafficManager {
 
             System.out.println("Purchasing a domain " + domainName + "...");
 
-            azure.resourceGroups().define(rgName)
+            azureResourceManager.resourceGroups().define(rgName)
                 .withRegion(Region.US_WEST)
                 .create();
 
-            domain = azure.appServiceDomains().define(domainName)
+            domain = azureResourceManager.appServiceDomains().define(domainName)
                 .withExistingResourceGroup(rgName)
                 .defineRegistrantContact()
                 .withFirstName("Jon")
@@ -174,7 +174,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
 
             System.out.println("Creating a traffic manager " + tmName + " for the web apps...");
 
-            TrafficManagerProfile trafficManager = azure.trafficManagerProfiles().define(tmName)
+            TrafficManagerProfile trafficManager = azureResourceManager.trafficManagerProfiles().define(tmName)
                 .withExistingResourceGroup(rgName)
                 .withLeafDomainLabel(tmName)
                 .withTrafficRoutingMethod(TrafficRoutingMethod.PRIORITY)
@@ -229,7 +229,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -240,7 +240,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
     }
 
     private static AppServicePlan createAppServicePlan(String name, Region region) {
-        return azure.appServicePlans().define(name)
+        return azureResourceManager.appServicePlans().define(name)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withPricingTier(PricingTier.STANDARD_S2)
@@ -249,7 +249,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
     }
 
     private static WebApp createWebApp(String name, AppServicePlan plan) {
-        return azure.webApps().define(name)
+        return azureResourceManager.webApps().define(name)
                 .withExistingLinuxPlan(plan)
                 .withExistingResourceGroup(rgName)
                 .withBuiltInImage(RuntimeStack.NODEJS_4_5)
@@ -277,18 +277,19 @@ public final class ManageLinuxWebAppWithTrafficManager {
             //
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

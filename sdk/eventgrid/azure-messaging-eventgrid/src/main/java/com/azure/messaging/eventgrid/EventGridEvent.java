@@ -45,6 +45,7 @@ public final class EventGridEvent {
      * Create a new instance of the EventGridEvent, with the given required fields.
      * @param subject     the subject of the event.
      * @param eventType   the type of the event, e.g. "Contoso.Items.ItemReceived".
+     * @param data        the data associated with this event.
      * @param dataVersion the version of the data sent along with the event.
      */
     public EventGridEvent(String subject, String eventType, Object data, String dataVersion) {

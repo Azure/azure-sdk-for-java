@@ -19,7 +19,7 @@ public class RedisCachesImpl
     implements RedisCaches {
 
     public RedisCachesImpl(final RedisManager redisManager) {
-        super(redisManager.inner().getRedis(), redisManager);
+        super(redisManager.serviceClient().getRedis(), redisManager);
     }
 
     @Override
@@ -47,6 +47,6 @@ public class RedisCachesImpl
 
     @Override
     public PagedFlux<OperationInner> listOperationsAsync() {
-        return this.manager().inner().getOperations().listAsync();
+        return this.manager().serviceClient().getOperations().listAsync();
     }
 }

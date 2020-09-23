@@ -16,21 +16,21 @@ class ComputeUsageImpl extends WrapperImpl<UsageInner> implements ComputeUsage {
 
     @Override
     public ComputeUsageUnit unit() {
-        return ComputeUsageUnit.fromString(inner().unit());
+        return ComputeUsageUnit.fromString(innerModel().unit());
     }
 
     @Override
     public int currentValue() {
-        return inner().currentValue();
+        return innerModel().currentValue();
     }
 
     @Override
     public long limit() {
-        return inner().limit();
+        return innerModel().limit();
     }
 
     @Override
     public UsageName name() {
-        return inner().name();
+        return innerModel().name();
     }
 }

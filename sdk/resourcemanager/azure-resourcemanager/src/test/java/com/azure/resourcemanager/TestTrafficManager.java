@@ -5,7 +5,7 @@ package com.azure.resourcemanager;
 
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.trafficmanager.models.EndpointType;
 import com.azure.resourcemanager.trafficmanager.models.TargetAzureResourceType;

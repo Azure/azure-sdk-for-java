@@ -18,7 +18,7 @@ public class GalleryImageVersionsImpl extends WrapperImpl<GalleryImageVersionsCl
     private final ComputeManager manager;
 
     public GalleryImageVersionsImpl(ComputeManager manager) {
-        super(manager.inner().getGalleryImageVersions());
+        super(manager.serviceClient().getGalleryImageVersions());
         this.manager = manager;
     }
 
@@ -42,7 +42,7 @@ public class GalleryImageVersionsImpl extends WrapperImpl<GalleryImageVersionsCl
     @Override
     public PagedFlux<GalleryImageVersion> listByGalleryImageAsync(
         final String resourceGroupName, final String galleryName, final String galleryImageName) {
-        return inner()
+        return innerModel()
             .listByGalleryImageAsync(resourceGroupName, galleryName, galleryImageName)
             .mapPage(this::wrapModel);
     }
@@ -50,13 +50,15 @@ public class GalleryImageVersionsImpl extends WrapperImpl<GalleryImageVersionsCl
     @Override
     public PagedIterable<GalleryImageVersion> listByGalleryImage(
         String resourceGroupName, String galleryName, String galleryImageName) {
-        return inner().listByGalleryImage(resourceGroupName, galleryName, galleryImageName).mapPage(this::wrapModel);
+        return innerModel()
+            .listByGalleryImage(resourceGroupName, galleryName, galleryImageName)
+            .mapPage(this::wrapModel);
     }
 
     @Override
     public Mono<GalleryImageVersion> getByGalleryImageAsync(
         String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName) {
-        return inner()
+        return innerModel()
             .getAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName)
             .map(this::wrapModel);
     }
@@ -72,7 +74,7 @@ public class GalleryImageVersionsImpl extends WrapperImpl<GalleryImageVersionsCl
     @Override
     public Mono<Void> deleteByGalleryImageAsync(
         String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName) {
-        return inner().deleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName);
+        return innerModel().deleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName);
     }
 
     @Override

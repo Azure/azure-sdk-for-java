@@ -165,7 +165,7 @@ Learn more [here][EventGridEvent].
 ```java
 List<EventGridEvent> events = new ArrayList<>();
 events.add(
-    new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", "Example Data", 
+    new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", "Example Data",
         "1")
 );
 

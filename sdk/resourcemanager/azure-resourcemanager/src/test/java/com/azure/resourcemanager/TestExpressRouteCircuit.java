@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSkuType;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuits;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
 

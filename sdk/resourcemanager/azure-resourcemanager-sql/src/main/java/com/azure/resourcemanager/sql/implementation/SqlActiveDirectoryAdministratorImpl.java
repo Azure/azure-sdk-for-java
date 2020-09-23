@@ -17,21 +17,21 @@ public class SqlActiveDirectoryAdministratorImpl extends WrapperImpl<ServerAzure
 
     @Override
     public AdministratorType administratorType() {
-        return this.inner().administratorType();
+        return this.innerModel().administratorType();
     }
 
     @Override
     public String signInName() {
-        return this.inner().login();
+        return this.innerModel().login();
     }
 
     @Override
     public String id() {
-        return this.inner().sid().toString();
+        return this.innerModel().sid().toString();
     }
 
     @Override
     public String tenantId() {
-        return this.inner().tenantId().toString();
+        return this.innerModel().tenantId().toString();
     }
 }

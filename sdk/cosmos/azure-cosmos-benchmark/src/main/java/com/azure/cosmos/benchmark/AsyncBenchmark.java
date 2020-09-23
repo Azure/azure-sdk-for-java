@@ -28,6 +28,7 @@ import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -250,7 +251,7 @@ abstract class AsyncBenchmark<T> {
         successMeter = metricsRegistry.meter(SUCCESS_COUNTER_METER_NAME);
         failureMeter = metricsRegistry.meter(FAILURE_COUNTER_METER_NAME);
         if (latencyAwareOperations(configuration.getOperationType())) {
-            latency = metricsRegistry.timer(LATENCY_METER_NAME);
+            latency = metricsRegistry.register(LATENCY_METER_NAME, new Timer(new HdrHistogramResetOnSnapshotReservoir()));
         }
     }
 

@@ -240,7 +240,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source]: src
-[samples_readme]: src/samples/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob-changefeed/src/samples/README.md
 [docs]: http://azure.github.io/azure-sdk-for-java/
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview

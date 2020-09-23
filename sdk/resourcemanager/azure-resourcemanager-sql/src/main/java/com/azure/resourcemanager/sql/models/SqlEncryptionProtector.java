@@ -3,11 +3,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
@@ -17,7 +17,7 @@ import com.azure.resourcemanager.sql.fluent.inner.EncryptionProtectorInner;
 @Fluent
 public interface SqlEncryptionProtector
     extends HasId,
-        HasInner<EncryptionProtectorInner>,
+        HasInnerModel<EncryptionProtectorInner>,
         HasResourceGroup,
         Indexable,
         Refreshable<SqlEncryptionProtector>,

@@ -7,11 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.core.models.IncomingRelationship;
-import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.models.BasicDigitalTwin;
-import com.azure.digitaltwins.core.models.BasicRelationship;
-import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -54,8 +50,8 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 roomModelId,
                 hvacModelId,
                 modelsList -> {
-                    List<ModelData> createdModels = client.createModels(modelsList);
-                    logger.info("Created {} models successfully", createdModels.size());
+                    Iterable<DigitalTwinsModelData> createdModels = client.createModels(modelsList);
+                    logger.info("Created models successfully");
                 }
             );
 
@@ -126,7 +122,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // Create a relation which already exists - should return status code 409 (Conflict).
             assertRestException(
-                () -> client.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload),
+                () -> client.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class),
                 HTTP_PRECON_FAILED
             );
 
@@ -190,7 +186,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // GET a relationship which doesn't exist - should return status code 404 (Not Found).
             assertRestException(
-                () -> client.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID),
+                () -> client.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, String.class),
                 HTTP_NOT_FOUND
             );
 

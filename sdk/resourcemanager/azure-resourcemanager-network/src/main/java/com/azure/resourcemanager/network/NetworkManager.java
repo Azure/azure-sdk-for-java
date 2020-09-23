@@ -48,7 +48,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure network management. */
-public final class NetworkManager extends Manager<NetworkManager, NetworkManagementClient> {
+public final class NetworkManager extends Manager<NetworkManagementClient> {
 
     // Collections
     private PublicIpAddresses publicIPAddresses;

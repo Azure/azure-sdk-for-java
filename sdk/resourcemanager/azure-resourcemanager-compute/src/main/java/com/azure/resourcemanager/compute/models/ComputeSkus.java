@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingByRegion;
@@ -15,9 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point to compute service SKUs. */
 @Fluent
 public interface ComputeSkus
-    extends SupportsListing<ComputeSku>,
-        SupportsListingByRegion<ComputeSku>,
-        HasManager<ComputeManager> {
+    extends SupportsListing<ComputeSku>, SupportsListingByRegion<ComputeSku>, HasManager<ComputeManager> {
     /**
      * Lists all the skus with the specified resource type.
      *

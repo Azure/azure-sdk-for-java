@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;

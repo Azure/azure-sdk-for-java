@@ -10,7 +10,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryFileTaskStep;
 import com.azure.resourcemanager.containerregistry.models.RegistryTask;
 import com.azure.resourcemanager.containerregistry.models.SetValue;
 import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,16 +20,16 @@ class RegistryFileTaskStepImpl extends RegistryTaskStepImpl
     implements RegistryFileTaskStep,
         RegistryFileTaskStep.Definition,
         RegistryFileTaskStep.Update,
-        HasInner<FileTaskStep> {
+        HasInnerModel<FileTaskStep> {
 
     private FileTaskStep inner;
     private FileTaskStepUpdateParameters fileTaskStepUpdateParameters;
     private RegistryTaskImpl taskImpl;
 
     RegistryFileTaskStepImpl(RegistryTaskImpl taskImpl) {
-        super(taskImpl.inner().step());
+        super(taskImpl.innerModel().step());
         this.inner = new FileTaskStep();
-        if (taskImpl.inner().step() != null && !(taskImpl.inner().step() instanceof FileTaskStep)) {
+        if (taskImpl.innerModel().step() != null && !(taskImpl.innerModel().step() instanceof FileTaskStep)) {
             throw new IllegalArgumentException(
                 "Constructor for RegistryFileTaskStepImpl invoked for class that is not FileTaskStep");
         }
@@ -59,7 +59,7 @@ class RegistryFileTaskStepImpl extends RegistryTaskStepImpl
     }
 
     private FileTaskStep fileTaskStep() {
-        TaskStepProperties step = this.taskImpl.inner().step();
+        TaskStepProperties step = this.taskImpl.innerModel().step();
         if (step instanceof FileTaskStep) {
             return (FileTaskStep) step;
         } else {
@@ -138,12 +138,12 @@ class RegistryFileTaskStepImpl extends RegistryTaskStepImpl
     }
 
     @Override
-    public FileTaskStep inner() {
+    public FileTaskStep innerModel() {
         return this.inner;
     }
 
     private boolean isInCreateMode() {
-        if (this.taskImpl.inner().id() == null) {
+        if (this.taskImpl.innerModel().id() == null) {
             return true;
         }
         return false;

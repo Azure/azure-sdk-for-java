@@ -4,11 +4,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.fluent.inner.UsageInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An immutable client-side representation of an Azure compute resource usage info object. */
 @Fluent
-public interface NetworkUsage extends HasInner<UsageInner> {
+public interface NetworkUsage extends HasInnerModel<UsageInner> {
     /** @return the unit of measurement. */
     UsageUnit unit();
 
