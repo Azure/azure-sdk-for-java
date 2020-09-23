@@ -858,7 +858,6 @@ public final class PolicyAssignmentsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyAssignmentInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
-        final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
             nextLink -> listForResourceGroupNextSinglePageAsync(nextLink));
@@ -890,30 +889,6 @@ public final class PolicyAssignmentsClient
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, context),
             nextLink -> listForResourceGroupNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * This operation retrieves the list of all policy assignments associated with the given resource group in the given
-     * subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or
-     * 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy
-     * assignments associated with the resource group, including those that apply directly or apply from containing
-     * scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is
-     * provided, the returned list includes all policy assignments that apply to the resource group, which is everything
-     * in the unfiltered list except those applied to resources contained within the resource group. If
-     * $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the
-     * policy definition whose id is {value} that apply to the resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains policy assignments.
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or
-     *     'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy assignments.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyAssignmentInner> listByResourceGroup(String resourceGroupName, String filter) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter));
     }
 
     /**
@@ -962,7 +937,6 @@ public final class PolicyAssignmentsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyAssignmentInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
-        final Context context = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter));
     }
 
@@ -1261,7 +1235,6 @@ public final class PolicyAssignmentsClient
         String resourceType,
         String resourceName) {
         final String filter = null;
-        final Context context = null;
         return new PagedFlux<>(
             () ->
                 listForResourceSinglePageAsync(
@@ -1360,53 +1333,6 @@ public final class PolicyAssignmentsClient
      * @param resourceName The name of the resource.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or
      *     'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy assignments.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyAssignmentInner> listForResource(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String filter) {
-        return new PagedIterable<>(
-            listForResourceAsync(
-                resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter));
-    }
-
-    /**
-     * This operation retrieves the list of all policy assignments associated with the specified resource in the given
-     * resource group and subscription that match the optional given $filter. Valid values for $filter are: 'atScope()'
-     * or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy
-     * assignments associated with the resource, including those that apply directly or from all containing scopes, as
-     * well as any applied to resources contained within the resource. If $filter=atScope() is provided, the returned
-     * list includes all policy assignments that apply to the resource, which is everything in the unfiltered list
-     * except those applied to resources contained within the resource. If $filter=policyDefinitionId eq '{value}' is
-     * provided, the returned list includes all policy assignments of the policy definition whose id is {value} that
-     * apply to the resource. Three parameters plus the resource name are used to identify a specific resource. If the
-     * resource is not part of a parent resource (the more common case), the parent resource path should not be provided
-     * (or provided as ''). For example a web app could be specified as ({resourceProviderNamespace} == 'Microsoft.Web',
-     * {parentResourcePath} == '', {resourceType} == 'sites', {resourceName} == 'MyWebApp'). If the resource is part of
-     * a parent resource, then all parameters should be provided. For example a virtual machine DNS name could be
-     * specified as ({resourceProviderNamespace} == 'Microsoft.Compute', {parentResourcePath} ==
-     * 'virtualMachines/MyVirtualMachine', {resourceType} == 'domainNames', {resourceName} == 'MyComputerName'). A
-     * convenient alternative to providing the namespace and type name separately is to provide both in the
-     * {resourceType} parameter, format: ({resourceProviderNamespace} == '', {parentResourcePath} == '', {resourceType}
-     * == 'Microsoft.Web/sites', {resourceName} == 'MyWebApp').
-     *
-     * @param resourceGroupName The name of the resource group containing the resource.
-     * @param resourceProviderNamespace The namespace of the resource provider. For example, the namespace of a virtual
-     *     machine is Microsoft.Compute (from Microsoft.Compute/virtualMachines).
-     * @param parentResourcePath The parent resource path. Use empty string if there is none.
-     * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from
-     *     Microsoft.Web/sites).
-     * @param resourceName The name of the resource.
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or
-     *     'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1473,7 +1399,6 @@ public final class PolicyAssignmentsClient
         String resourceType,
         String resourceName) {
         final String filter = null;
-        final Context context = null;
         return new PagedIterable<>(
             listForResourceAsync(
                 resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter));
@@ -1818,7 +1743,6 @@ public final class PolicyAssignmentsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyAssignmentInner> listAsync() {
         final String filter = null;
-        final Context context = null;
         return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1844,28 +1768,6 @@ public final class PolicyAssignmentsClient
     private PagedFlux<PolicyAssignmentInner> listAsync(String filter, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * This operation retrieves the list of all policy assignments associated with the given subscription that match the
-     * optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If
-     * $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription,
-     * including those that apply directly or from management groups that contain the given subscription, as well as any
-     * applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list
-     * includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except
-     * those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is
-     * provided, the returned list includes all policy assignments of the policy definition whose id is {value}.
-     *
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or
-     *     'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy assignments.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyAssignmentInner> list(String filter) {
-        return new PagedIterable<>(listAsync(filter));
     }
 
     /**
@@ -1908,7 +1810,6 @@ public final class PolicyAssignmentsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyAssignmentInner> list() {
         final String filter = null;
-        final Context context = null;
         return new PagedIterable<>(listAsync(filter));
     }
 

@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The Subscription model. */
+/** Subscription information. */
 @Fluent
 public final class SubscriptionInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionInner.class);

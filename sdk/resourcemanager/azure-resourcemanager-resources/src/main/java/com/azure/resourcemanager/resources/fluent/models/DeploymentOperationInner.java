@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.models.DeploymentOperationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeploymentOperation model. */
+/** Deployment operation information. */
 @Fluent
 public final class DeploymentOperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentOperationInner.class);

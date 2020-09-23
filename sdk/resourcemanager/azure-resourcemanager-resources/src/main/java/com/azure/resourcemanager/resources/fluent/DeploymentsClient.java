@@ -2006,7 +2006,6 @@ public final class DeploymentsClient
     public PagedFlux<DeploymentExtendedInner> listAtScopeAsync(String scope) {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, filter, top), nextLink -> listAtScopeNextSinglePageAsync(nextLink));
     }
@@ -2030,23 +2029,6 @@ public final class DeploymentsClient
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, filter, top, context),
             nextLink -> listAtScopeNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get all the deployments at the given scope.
-     *
-     * @param scope The resource scope.
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
-     *     '{state}'.
-     * @param top The number of results to get. If null is passed, returns all deployments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments at the given scope.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentExtendedInner> listAtScope(String scope, String filter, Integer top) {
-        return new PagedIterable<>(listAtScopeAsync(scope, filter, top));
     }
 
     /**
@@ -2081,7 +2063,6 @@ public final class DeploymentsClient
     public PagedIterable<DeploymentExtendedInner> listAtScope(String scope) {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listAtScopeAsync(scope, filter, top));
     }
 
@@ -3544,7 +3525,6 @@ public final class DeploymentsClient
     public PagedFlux<DeploymentExtendedInner> listAtTenantScopeAsync() {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(filter, top),
             nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink));
@@ -3575,22 +3555,6 @@ public final class DeploymentsClient
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments at the tenant scope.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentExtendedInner> listAtTenantScope(String filter, Integer top) {
-        return new PagedIterable<>(listAtTenantScopeAsync(filter, top));
-    }
-
-    /**
-     * Get all the deployments at the tenant scope.
-     *
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
-     *     '{state}'.
-     * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3613,7 +3577,6 @@ public final class DeploymentsClient
     public PagedIterable<DeploymentExtendedInner> listAtTenantScope() {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listAtTenantScopeAsync(filter, top));
     }
 
@@ -5233,7 +5196,6 @@ public final class DeploymentsClient
     public PagedFlux<DeploymentExtendedInner> listAtManagementGroupScopeAsync(String groupId) {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, filter, top),
             nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink));
@@ -5258,24 +5220,6 @@ public final class DeploymentsClient
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, filter, top, context),
             nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get all the deployments for a management group.
-     *
-     * @param groupId The management group ID.
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
-     *     '{state}'.
-     * @param top The number of results to get. If null is passed, returns all deployments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments for a management group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentExtendedInner> listAtManagementGroupScope(
-        String groupId, String filter, Integer top) {
-        return new PagedIterable<>(listAtManagementGroupScopeAsync(groupId, filter, top));
     }
 
     /**
@@ -5310,7 +5254,6 @@ public final class DeploymentsClient
     public PagedIterable<DeploymentExtendedInner> listAtManagementGroupScope(String groupId) {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listAtManagementGroupScopeAsync(groupId, filter, top));
     }
 
@@ -6960,7 +6903,6 @@ public final class DeploymentsClient
     public PagedFlux<DeploymentExtendedInner> listAsync() {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, top), nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink));
     }
@@ -6982,22 +6924,6 @@ public final class DeploymentsClient
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, top, context),
             nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get all the deployments for a subscription.
-     *
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
-     *     '{state}'.
-     * @param top The number of results to get. If null is passed, returns all deployments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments for a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentExtendedInner> list(String filter, Integer top) {
-        return new PagedIterable<>(listAsync(filter, top));
     }
 
     /**
@@ -7028,7 +6954,6 @@ public final class DeploymentsClient
     public PagedIterable<DeploymentExtendedInner> list() {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listAsync(filter, top));
     }
 
@@ -8899,7 +8824,6 @@ public final class DeploymentsClient
     public PagedFlux<DeploymentExtendedInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
@@ -8925,25 +8849,6 @@ public final class DeploymentsClient
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get all the deployments for a resource group.
-     *
-     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case
-     *     insensitive.
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
-     *     '{state}'.
-     * @param top The number of results to get. If null is passed, returns all deployments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments for a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentExtendedInner> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top));
     }
 
     /**
@@ -8980,7 +8885,6 @@ public final class DeploymentsClient
     public PagedIterable<DeploymentExtendedInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top));
     }
 

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TenantListResult model. */
+/** Tenant Ids information. */
 @Fluent
 public final class TenantListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantListResult.class);
