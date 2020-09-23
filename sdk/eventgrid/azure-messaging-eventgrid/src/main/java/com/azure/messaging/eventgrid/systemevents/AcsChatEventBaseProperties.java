@@ -7,9 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ACSChatEventBaseProperties model. */
+/** The AcsChatEventBaseProperties model. */
 @Fluent
-public class ACSChatEventBaseProperties {
+public class AcsChatEventBaseProperties {
     /*
      * The MRI of the target user
      */
@@ -41,9 +41,9 @@ public class ACSChatEventBaseProperties {
      * Set the recipientId property: The MRI of the target user.
      *
      * @param recipientId the recipientId value to set.
-     * @return the ACSChatEventBaseProperties object itself.
+     * @return the AcsChatEventBaseProperties object itself.
      */
-    public ACSChatEventBaseProperties setRecipientId(String recipientId) {
+    public AcsChatEventBaseProperties setRecipientId(String recipientId) {
         this.recipientId = recipientId;
         return this;
     }
@@ -61,9 +61,9 @@ public class ACSChatEventBaseProperties {
      * Set the transactionId property: The transaction id will be used as co-relation vector.
      *
      * @param transactionId the transactionId value to set.
-     * @return the ACSChatEventBaseProperties object itself.
+     * @return the AcsChatEventBaseProperties object itself.
      */
-    public ACSChatEventBaseProperties setTransactionId(String transactionId) {
+    public AcsChatEventBaseProperties setTransactionId(String transactionId) {
         this.transactionId = transactionId;
         return this;
     }
@@ -81,9 +81,9 @@ public class ACSChatEventBaseProperties {
      * Set the threadId property: The chat thread id.
      *
      * @param threadId the threadId value to set.
-     * @return the ACSChatEventBaseProperties object itself.
+     * @return the AcsChatEventBaseProperties object itself.
      */
-    public ACSChatEventBaseProperties setThreadId(String threadId) {
+    public AcsChatEventBaseProperties setThreadId(String threadId) {
         this.threadId = threadId;
         return this;
     }

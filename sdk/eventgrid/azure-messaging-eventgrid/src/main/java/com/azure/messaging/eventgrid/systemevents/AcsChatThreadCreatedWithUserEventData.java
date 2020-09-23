@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The ACSChatThreadCreatedWithUserEventData model. */
+/** The AcsChatThreadCreatedWithUserEventData model. */
 @Fluent
-public final class ACSChatThreadCreatedWithUserEventData extends ACSChatThreadEventBaseProperties {
+public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEventBaseProperties {
     /*
      * The MRI of the creator of the thread
      */
@@ -28,7 +28,7 @@ public final class ACSChatThreadCreatedWithUserEventData extends ACSChatThreadEv
      * The list of properties of users who are part of the thread
      */
     @JsonProperty(value = "members")
-    private List<ACSChatThreadMemberProperties> members;
+    private List<AcsChatThreadMemberProperties> members;
 
     /**
      * Get the createdBy property: The MRI of the creator of the thread.
@@ -43,9 +43,9 @@ public final class ACSChatThreadCreatedWithUserEventData extends ACSChatThreadEv
      * Set the createdBy property: The MRI of the creator of the thread.
      *
      * @param createdBy the createdBy value to set.
-     * @return the ACSChatThreadCreatedWithUserEventData object itself.
+     * @return the AcsChatThreadCreatedWithUserEventData object itself.
      */
-    public ACSChatThreadCreatedWithUserEventData setCreatedBy(String createdBy) {
+    public AcsChatThreadCreatedWithUserEventData setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
         return this;
     }
@@ -63,9 +63,9 @@ public final class ACSChatThreadCreatedWithUserEventData extends ACSChatThreadEv
      * Set the properties property: The thread properties.
      *
      * @param properties the properties value to set.
-     * @return the ACSChatThreadCreatedWithUserEventData object itself.
+     * @return the AcsChatThreadCreatedWithUserEventData object itself.
      */
-    public ACSChatThreadCreatedWithUserEventData setProperties(Map<String, Object> properties) {
+    public AcsChatThreadCreatedWithUserEventData setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
     }
@@ -75,7 +75,7 @@ public final class ACSChatThreadCreatedWithUserEventData extends ACSChatThreadEv
      *
      * @return the members value.
      */
-    public List<ACSChatThreadMemberProperties> getMembers() {
+    public List<AcsChatThreadMemberProperties> getMembers() {
         return this.members;
     }
 
@@ -83,9 +83,9 @@ public final class ACSChatThreadCreatedWithUserEventData extends ACSChatThreadEv
      * Set the members property: The list of properties of users who are part of the thread.
      *
      * @param members the members value to set.
-     * @return the ACSChatThreadCreatedWithUserEventData object itself.
+     * @return the AcsChatThreadCreatedWithUserEventData object itself.
      */
-    public ACSChatThreadCreatedWithUserEventData setMembers(List<ACSChatThreadMemberProperties> members) {
+    public AcsChatThreadCreatedWithUserEventData setMembers(List<AcsChatThreadMemberProperties> members) {
         this.members = members;
         return this;
     }

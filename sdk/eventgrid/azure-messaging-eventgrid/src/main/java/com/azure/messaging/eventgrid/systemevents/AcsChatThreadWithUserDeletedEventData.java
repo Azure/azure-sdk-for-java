@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ACSChatThreadWithUserDeletedEventData model. */
+/** The AcsChatThreadWithUserDeletedEventData model. */
 @Fluent
-public final class ACSChatThreadWithUserDeletedEventData extends ACSChatThreadEventBaseProperties {
+public final class AcsChatThreadWithUserDeletedEventData extends AcsChatThreadEventBaseProperties {
     /*
      * The MRI of the user who deleted the thread
      */
@@ -36,9 +36,9 @@ public final class ACSChatThreadWithUserDeletedEventData extends ACSChatThreadEv
      * Set the deletedBy property: The MRI of the user who deleted the thread.
      *
      * @param deletedBy the deletedBy value to set.
-     * @return the ACSChatThreadWithUserDeletedEventData object itself.
+     * @return the AcsChatThreadWithUserDeletedEventData object itself.
      */
-    public ACSChatThreadWithUserDeletedEventData setDeletedBy(String deletedBy) {
+    public AcsChatThreadWithUserDeletedEventData setDeletedBy(String deletedBy) {
         this.deletedBy = deletedBy;
         return this;
     }
@@ -56,9 +56,9 @@ public final class ACSChatThreadWithUserDeletedEventData extends ACSChatThreadEv
      * Set the deleteTime property: The deletion time of the thread.
      *
      * @param deleteTime the deleteTime value to set.
-     * @return the ACSChatThreadWithUserDeletedEventData object itself.
+     * @return the AcsChatThreadWithUserDeletedEventData object itself.
      */
-    public ACSChatThreadWithUserDeletedEventData setDeleteTime(OffsetDateTime deleteTime) {
+    public AcsChatThreadWithUserDeletedEventData setDeleteTime(OffsetDateTime deleteTime) {
         this.deleteTime = deleteTime;
         return this;
     }

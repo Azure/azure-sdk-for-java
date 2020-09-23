@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ACSChatMessageEventBaseProperties model. */
+/** The AcsChatMessageEventBaseProperties model. */
 @Fluent
-public class ACSChatMessageEventBaseProperties extends ACSChatEventBaseProperties {
+public class AcsChatMessageEventBaseProperties extends AcsChatEventBaseProperties {
     /*
      * The chat message id
      */
@@ -60,9 +60,9 @@ public class ACSChatMessageEventBaseProperties extends ACSChatEventBasePropertie
      * Set the messageId property: The chat message id.
      *
      * @param messageId the messageId value to set.
-     * @return the ACSChatMessageEventBaseProperties object itself.
+     * @return the AcsChatMessageEventBaseProperties object itself.
      */
-    public ACSChatMessageEventBaseProperties setMessageId(String messageId) {
+    public AcsChatMessageEventBaseProperties setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -80,9 +80,9 @@ public class ACSChatMessageEventBaseProperties extends ACSChatEventBasePropertie
      * Set the senderId property: The MRI of the sender.
      *
      * @param senderId the senderId value to set.
-     * @return the ACSChatMessageEventBaseProperties object itself.
+     * @return the AcsChatMessageEventBaseProperties object itself.
      */
-    public ACSChatMessageEventBaseProperties setSenderId(String senderId) {
+    public AcsChatMessageEventBaseProperties setSenderId(String senderId) {
         this.senderId = senderId;
         return this;
     }
@@ -100,9 +100,9 @@ public class ACSChatMessageEventBaseProperties extends ACSChatEventBasePropertie
      * Set the senderDisplayName property: The display name of the sender.
      *
      * @param senderDisplayName the senderDisplayName value to set.
-     * @return the ACSChatMessageEventBaseProperties object itself.
+     * @return the AcsChatMessageEventBaseProperties object itself.
      */
-    public ACSChatMessageEventBaseProperties setSenderDisplayName(String senderDisplayName) {
+    public AcsChatMessageEventBaseProperties setSenderDisplayName(String senderDisplayName) {
         this.senderDisplayName = senderDisplayName;
         return this;
     }
@@ -120,9 +120,9 @@ public class ACSChatMessageEventBaseProperties extends ACSChatEventBasePropertie
      * Set the composeTime property: The original compose time of the message.
      *
      * @param composeTime the composeTime value to set.
-     * @return the ACSChatMessageEventBaseProperties object itself.
+     * @return the AcsChatMessageEventBaseProperties object itself.
      */
-    public ACSChatMessageEventBaseProperties setComposeTime(OffsetDateTime composeTime) {
+    public AcsChatMessageEventBaseProperties setComposeTime(OffsetDateTime composeTime) {
         this.composeTime = composeTime;
         return this;
     }
@@ -140,9 +140,9 @@ public class ACSChatMessageEventBaseProperties extends ACSChatEventBasePropertie
      * Set the type property: The type of the message.
      *
      * @param type the type value to set.
-     * @return the ACSChatMessageEventBaseProperties object itself.
+     * @return the AcsChatMessageEventBaseProperties object itself.
      */
-    public ACSChatMessageEventBaseProperties setType(String type) {
+    public AcsChatMessageEventBaseProperties setType(String type) {
         this.type = type;
         return this;
     }
@@ -160,9 +160,9 @@ public class ACSChatMessageEventBaseProperties extends ACSChatEventBasePropertie
      * Set the version property: The version of the message.
      *
      * @param version the version value to set.
-     * @return the ACSChatMessageEventBaseProperties object itself.
+     * @return the AcsChatMessageEventBaseProperties object itself.
      */
-    public ACSChatMessageEventBaseProperties setVersion(Integer version) {
+    public AcsChatMessageEventBaseProperties setVersion(Integer version) {
         this.version = version;
         return this;
     }

@@ -7,9 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ACSChatMessageReceivedEventData model. */
+/** The AcsChatMessageReceivedEventData model. */
 @Fluent
-public final class ACSChatMessageReceivedEventData extends ACSChatMessageEventBaseProperties {
+public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBaseProperties {
     /*
      * The body of the chat message
      */
@@ -29,9 +29,9 @@ public final class ACSChatMessageReceivedEventData extends ACSChatMessageEventBa
      * Set the messageBody property: The body of the chat message.
      *
      * @param messageBody the messageBody value to set.
-     * @return the ACSChatMessageReceivedEventData object itself.
+     * @return the AcsChatMessageReceivedEventData object itself.
      */
-    public ACSChatMessageReceivedEventData setMessageBody(String messageBody) {
+    public AcsChatMessageReceivedEventData setMessageBody(String messageBody) {
         this.messageBody = messageBody;
         return this;
     }

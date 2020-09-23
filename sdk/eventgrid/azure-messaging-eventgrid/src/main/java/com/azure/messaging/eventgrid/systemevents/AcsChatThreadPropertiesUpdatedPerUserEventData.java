@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The ACSChatThreadPropertiesUpdatedPerUserEventData model. */
+/** The AcsChatThreadPropertiesUpdatedPerUserEventData model. */
 @Fluent
-public final class ACSChatThreadPropertiesUpdatedPerUserEventData extends ACSChatThreadEventBaseProperties {
+public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsChatThreadEventBaseProperties {
     /*
      * The MRI of the user who updated the thread properties
      */
@@ -43,9 +43,9 @@ public final class ACSChatThreadPropertiesUpdatedPerUserEventData extends ACSCha
      * Set the editedBy property: The MRI of the user who updated the thread properties.
      *
      * @param editedBy the editedBy value to set.
-     * @return the ACSChatThreadPropertiesUpdatedPerUserEventData object itself.
+     * @return the AcsChatThreadPropertiesUpdatedPerUserEventData object itself.
      */
-    public ACSChatThreadPropertiesUpdatedPerUserEventData setEditedBy(String editedBy) {
+    public AcsChatThreadPropertiesUpdatedPerUserEventData setEditedBy(String editedBy) {
         this.editedBy = editedBy;
         return this;
     }
@@ -63,9 +63,9 @@ public final class ACSChatThreadPropertiesUpdatedPerUserEventData extends ACSCha
      * Set the editTime property: The time at which the properties of the thread were updated.
      *
      * @param editTime the editTime value to set.
-     * @return the ACSChatThreadPropertiesUpdatedPerUserEventData object itself.
+     * @return the AcsChatThreadPropertiesUpdatedPerUserEventData object itself.
      */
-    public ACSChatThreadPropertiesUpdatedPerUserEventData setEditTime(OffsetDateTime editTime) {
+    public AcsChatThreadPropertiesUpdatedPerUserEventData setEditTime(OffsetDateTime editTime) {
         this.editTime = editTime;
         return this;
     }
@@ -83,9 +83,9 @@ public final class ACSChatThreadPropertiesUpdatedPerUserEventData extends ACSCha
      * Set the properties property: The updated thread properties.
      *
      * @param properties the properties value to set.
-     * @return the ACSChatThreadPropertiesUpdatedPerUserEventData object itself.
+     * @return the AcsChatThreadPropertiesUpdatedPerUserEventData object itself.
      */
-    public ACSChatThreadPropertiesUpdatedPerUserEventData setProperties(Map<String, Object> properties) {
+    public AcsChatThreadPropertiesUpdatedPerUserEventData setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
     }

@@ -3,16 +3,16 @@
 
 package com.azure.messaging.eventgrid;
 
-import com.azure.messaging.eventgrid.systemevents.ACSChatMemberAddedToThreadWithUserEventData;
-import com.azure.messaging.eventgrid.systemevents.ACSChatMemberRemovedFromThreadWithUserEventData;
-import com.azure.messaging.eventgrid.systemevents.ACSChatMessageDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.ACSChatMessageEditedEventData;
-import com.azure.messaging.eventgrid.systemevents.ACSChatMessageReceivedEventData;
-import com.azure.messaging.eventgrid.systemevents.ACSChatThreadCreatedWithUserEventData;
-import com.azure.messaging.eventgrid.systemevents.ACSChatThreadPropertiesUpdatedPerUserEventData;
-import com.azure.messaging.eventgrid.systemevents.ACSChatThreadWithUserDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcssmsDeliveryReportReceivedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcssmsReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMessageEditedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMessageReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatThreadCreatedWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedPerUserEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueModifiedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedEventData;
@@ -507,16 +507,16 @@ public final class SystemEventMappings {
         put(canonicalizeEventType(STORAGE_BLOB_DELETED_EVENT), StorageBlobDeletedEventData.class);
 
         // Communication service events.
-        put(canonicalizeEventType(COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER), ACSChatMemberAddedToThreadWithUserEventData.class);
-        put(canonicalizeEventType(COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER), ACSChatMemberRemovedFromThreadWithUserEventData.class);
-        put(canonicalizeEventType(COMMUNICATION_CHAT_MESSAGE_DELETED), ACSChatMessageDeletedEventData.class);
-        put(canonicalizeEventType(COMMUNICATION_CHAT_MESSAGE_EDITED), ACSChatMessageEditedEventData.class);
-        put(canonicalizeEventType(COMMUNICATION_CHAT_MESSAGE_RECEIVED), ACSChatMessageReceivedEventData.class);
-        put(canonicalizeEventType(COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER), ACSChatThreadCreatedWithUserEventData.class);
-        put(canonicalizeEventType(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER), ACSChatThreadPropertiesUpdatedPerUserEventData.class);
-        put(canonicalizeEventType(COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED), ACSChatThreadWithUserDeletedEventData.class);
-        put(canonicalizeEventType(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED), AcssmsDeliveryReportReceivedEventData.class);
-        put(canonicalizeEventType(COMMUNICATION_SMS_RECEIVED), AcssmsReceivedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER), AcsChatMemberAddedToThreadWithUserEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER), AcsChatMemberRemovedFromThreadWithUserEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MESSAGE_DELETED), AcsChatMessageDeletedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MESSAGE_EDITED), AcsChatMessageEditedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MESSAGE_RECEIVED), AcsChatMessageReceivedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER), AcsChatThreadCreatedWithUserEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER), AcsChatThreadPropertiesUpdatedPerUserEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED), AcsChatThreadWithUserDeletedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED), AcsSmsDeliveryReportReceivedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_SMS_RECEIVED), AcsSmsReceivedEventData.class);
 
         // Web events
         put(canonicalizeEventType(WEB_APP_UPDATED), WebAppUpdatedEventData.class);

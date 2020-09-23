@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AcssmsReceivedEventData model. */
+/** The AcsSmsReceivedEventData model. */
 @Fluent
-public final class AcssmsReceivedEventData extends AcssmsEventBaseProperties {
+public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     /*
      * The SMS content
      */
@@ -36,9 +36,9 @@ public final class AcssmsReceivedEventData extends AcssmsEventBaseProperties {
      * Set the message property: The SMS content.
      *
      * @param message the message value to set.
-     * @return the AcssmsReceivedEventData object itself.
+     * @return the AcsSmsReceivedEventData object itself.
      */
-    public AcssmsReceivedEventData setMessage(String message) {
+    public AcsSmsReceivedEventData setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -56,9 +56,9 @@ public final class AcssmsReceivedEventData extends AcssmsEventBaseProperties {
      * Set the receivedTimestamp property: The time at which the SMS was received.
      *
      * @param receivedTimestamp the receivedTimestamp value to set.
-     * @return the AcssmsReceivedEventData object itself.
+     * @return the AcsSmsReceivedEventData object itself.
      */
-    public AcssmsReceivedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
+    public AcsSmsReceivedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         this.receivedTimestamp = receivedTimestamp;
         return this;
     }

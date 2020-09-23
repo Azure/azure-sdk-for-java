@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ACSChatMessageDeletedEventData model. */
+/** The AcsChatMessageDeletedEventData model. */
 @Fluent
-public final class ACSChatMessageDeletedEventData extends ACSChatMessageEventBaseProperties {
+public final class AcsChatMessageDeletedEventData extends AcsChatMessageEventBaseProperties {
     /*
      * The time at which the message was deleted
      */
@@ -30,9 +30,9 @@ public final class ACSChatMessageDeletedEventData extends ACSChatMessageEventBas
      * Set the deleteTime property: The time at which the message was deleted.
      *
      * @param deleteTime the deleteTime value to set.
-     * @return the ACSChatMessageDeletedEventData object itself.
+     * @return the AcsChatMessageDeletedEventData object itself.
      */
-    public ACSChatMessageDeletedEventData setDeleteTime(OffsetDateTime deleteTime) {
+    public AcsChatMessageDeletedEventData setDeleteTime(OffsetDateTime deleteTime) {
         this.deleteTime = deleteTime;
         return this;
     }

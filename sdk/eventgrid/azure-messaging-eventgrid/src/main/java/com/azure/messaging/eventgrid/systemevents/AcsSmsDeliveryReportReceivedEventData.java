@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The AcssmsDeliveryReportReceivedEventData model. */
+/** The AcsSmsDeliveryReportReceivedEventData model. */
 @Fluent
-public final class AcssmsDeliveryReportReceivedEventData extends AcssmsEventBaseProperties {
+public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBaseProperties {
     /*
      * Status of Delivery
      */
@@ -28,7 +28,7 @@ public final class AcssmsDeliveryReportReceivedEventData extends AcssmsEventBase
      * List of details of delivery attempts made
      */
     @JsonProperty(value = "deliveryAttempts")
-    private List<AcssmsDeliveryAttemptProperties> deliveryAttempts;
+    private List<AcsSmsDeliveryAttemptProperties> deliveryAttempts;
 
     /*
      * The time at which the SMS delivery report was received
@@ -49,9 +49,9 @@ public final class AcssmsDeliveryReportReceivedEventData extends AcssmsEventBase
      * Set the deliveryStatus property: Status of Delivery.
      *
      * @param deliveryStatus the deliveryStatus value to set.
-     * @return the AcssmsDeliveryReportReceivedEventData object itself.
+     * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
-    public AcssmsDeliveryReportReceivedEventData setDeliveryStatus(String deliveryStatus) {
+    public AcsSmsDeliveryReportReceivedEventData setDeliveryStatus(String deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
         return this;
     }
@@ -69,9 +69,9 @@ public final class AcssmsDeliveryReportReceivedEventData extends AcssmsEventBase
      * Set the deliveryStatusDetails property: Details about Delivery Status.
      *
      * @param deliveryStatusDetails the deliveryStatusDetails value to set.
-     * @return the AcssmsDeliveryReportReceivedEventData object itself.
+     * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
-    public AcssmsDeliveryReportReceivedEventData setDeliveryStatusDetails(String deliveryStatusDetails) {
+    public AcsSmsDeliveryReportReceivedEventData setDeliveryStatusDetails(String deliveryStatusDetails) {
         this.deliveryStatusDetails = deliveryStatusDetails;
         return this;
     }
@@ -81,7 +81,7 @@ public final class AcssmsDeliveryReportReceivedEventData extends AcssmsEventBase
      *
      * @return the deliveryAttempts value.
      */
-    public List<AcssmsDeliveryAttemptProperties> getDeliveryAttempts() {
+    public List<AcsSmsDeliveryAttemptProperties> getDeliveryAttempts() {
         return this.deliveryAttempts;
     }
 
@@ -89,10 +89,10 @@ public final class AcssmsDeliveryReportReceivedEventData extends AcssmsEventBase
      * Set the deliveryAttempts property: List of details of delivery attempts made.
      *
      * @param deliveryAttempts the deliveryAttempts value to set.
-     * @return the AcssmsDeliveryReportReceivedEventData object itself.
+     * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
-    public AcssmsDeliveryReportReceivedEventData setDeliveryAttempts(
-            List<AcssmsDeliveryAttemptProperties> deliveryAttempts) {
+    public AcsSmsDeliveryReportReceivedEventData setDeliveryAttempts(
+            List<AcsSmsDeliveryAttemptProperties> deliveryAttempts) {
         this.deliveryAttempts = deliveryAttempts;
         return this;
     }
@@ -110,9 +110,9 @@ public final class AcssmsDeliveryReportReceivedEventData extends AcssmsEventBase
      * Set the receivedTimestamp property: The time at which the SMS delivery report was received.
      *
      * @param receivedTimestamp the receivedTimestamp value to set.
-     * @return the AcssmsDeliveryReportReceivedEventData object itself.
+     * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
-    public AcssmsDeliveryReportReceivedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
+    public AcsSmsDeliveryReportReceivedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         this.receivedTimestamp = receivedTimestamp;
         return this;
     }

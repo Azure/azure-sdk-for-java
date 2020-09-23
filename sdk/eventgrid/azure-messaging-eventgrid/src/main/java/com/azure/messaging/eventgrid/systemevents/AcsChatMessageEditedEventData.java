@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ACSChatMessageEditedEventData model. */
+/** The AcsChatMessageEditedEventData model. */
 @Fluent
-public final class ACSChatMessageEditedEventData extends ACSChatMessageEventBaseProperties {
+public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBaseProperties {
     /*
      * The body of the chat message
      */
@@ -36,9 +36,9 @@ public final class ACSChatMessageEditedEventData extends ACSChatMessageEventBase
      * Set the messageBody property: The body of the chat message.
      *
      * @param messageBody the messageBody value to set.
-     * @return the ACSChatMessageEditedEventData object itself.
+     * @return the AcsChatMessageEditedEventData object itself.
      */
-    public ACSChatMessageEditedEventData setMessageBody(String messageBody) {
+    public AcsChatMessageEditedEventData setMessageBody(String messageBody) {
         this.messageBody = messageBody;
         return this;
     }
@@ -56,9 +56,9 @@ public final class ACSChatMessageEditedEventData extends ACSChatMessageEventBase
      * Set the editTime property: The time at which the message was edited.
      *
      * @param editTime the editTime value to set.
-     * @return the ACSChatMessageEditedEventData object itself.
+     * @return the AcsChatMessageEditedEventData object itself.
      */
-    public ACSChatMessageEditedEventData setEditTime(OffsetDateTime editTime) {
+    public AcsChatMessageEditedEventData setEditTime(OffsetDateTime editTime) {
         this.editTime = editTime;
         return this;
     }

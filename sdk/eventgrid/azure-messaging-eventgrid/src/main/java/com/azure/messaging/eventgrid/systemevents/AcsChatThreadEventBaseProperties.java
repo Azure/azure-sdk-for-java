@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ACSChatThreadEventBaseProperties model. */
+/** The AcsChatThreadEventBaseProperties model. */
 @Fluent
-public class ACSChatThreadEventBaseProperties extends ACSChatEventBaseProperties {
+public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties {
     /*
      * The original creation time of the thread
      */
@@ -36,9 +36,9 @@ public class ACSChatThreadEventBaseProperties extends ACSChatEventBaseProperties
      * Set the createTime property: The original creation time of the thread.
      *
      * @param createTime the createTime value to set.
-     * @return the ACSChatThreadEventBaseProperties object itself.
+     * @return the AcsChatThreadEventBaseProperties object itself.
      */
-    public ACSChatThreadEventBaseProperties setCreateTime(OffsetDateTime createTime) {
+    public AcsChatThreadEventBaseProperties setCreateTime(OffsetDateTime createTime) {
         this.createTime = createTime;
         return this;
     }
@@ -56,9 +56,9 @@ public class ACSChatThreadEventBaseProperties extends ACSChatEventBaseProperties
      * Set the version property: The version of the thread.
      *
      * @param version the version value to set.
-     * @return the ACSChatThreadEventBaseProperties object itself.
+     * @return the AcsChatThreadEventBaseProperties object itself.
      */
-    public ACSChatThreadEventBaseProperties setVersion(Integer version) {
+    public AcsChatThreadEventBaseProperties setVersion(Integer version) {
         this.version = version;
         return this;
     }

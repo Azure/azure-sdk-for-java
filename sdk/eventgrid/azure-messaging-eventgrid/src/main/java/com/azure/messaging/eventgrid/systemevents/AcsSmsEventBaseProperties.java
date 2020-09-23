@@ -7,9 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AcssmsEventBaseProperties model. */
+/** The AcsSmsEventBaseProperties model. */
 @Fluent
-public class AcssmsEventBaseProperties {
+public class AcsSmsEventBaseProperties {
     /*
      * The identity of the SMS message
      */
@@ -41,9 +41,9 @@ public class AcssmsEventBaseProperties {
      * Set the messageId property: The identity of the SMS message.
      *
      * @param messageId the messageId value to set.
-     * @return the AcssmsEventBaseProperties object itself.
+     * @return the AcsSmsEventBaseProperties object itself.
      */
-    public AcssmsEventBaseProperties setMessageId(String messageId) {
+    public AcsSmsEventBaseProperties setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -61,9 +61,9 @@ public class AcssmsEventBaseProperties {
      * Set the from property: The identity of SMS message sender.
      *
      * @param from the from value to set.
-     * @return the AcssmsEventBaseProperties object itself.
+     * @return the AcsSmsEventBaseProperties object itself.
      */
-    public AcssmsEventBaseProperties setFrom(String from) {
+    public AcsSmsEventBaseProperties setFrom(String from) {
         this.from = from;
         return this;
     }
@@ -81,9 +81,9 @@ public class AcssmsEventBaseProperties {
      * Set the to property: The identity of SMS message receiver.
      *
      * @param to the to value to set.
-     * @return the AcssmsEventBaseProperties object itself.
+     * @return the AcsSmsEventBaseProperties object itself.
      */
-    public AcssmsEventBaseProperties setTo(String to) {
+    public AcsSmsEventBaseProperties setTo(String to) {
         this.to = to;
         return this;
     }

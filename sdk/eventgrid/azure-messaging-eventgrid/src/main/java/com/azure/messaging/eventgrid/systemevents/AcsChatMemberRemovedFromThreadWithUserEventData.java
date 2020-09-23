@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ACSChatMemberRemovedFromThreadWithUserEventData model. */
+/** The AcsChatMemberRemovedFromThreadWithUserEventData model. */
 @Fluent
-public final class ACSChatMemberRemovedFromThreadWithUserEventData extends ACSChatThreadEventBaseProperties {
+public final class AcsChatMemberRemovedFromThreadWithUserEventData extends AcsChatThreadEventBaseProperties {
     /*
      * The time at which the user was removed to the thread
      */
@@ -27,7 +27,7 @@ public final class ACSChatMemberRemovedFromThreadWithUserEventData extends ACSCh
      * The details of the user who was removed
      */
     @JsonProperty(value = "memberRemoved")
-    private ACSChatThreadMemberProperties memberRemoved;
+    private AcsChatThreadMemberProperties memberRemoved;
 
     /**
      * Get the time property: The time at which the user was removed to the thread.
@@ -42,9 +42,9 @@ public final class ACSChatMemberRemovedFromThreadWithUserEventData extends ACSCh
      * Set the time property: The time at which the user was removed to the thread.
      *
      * @param time the time value to set.
-     * @return the ACSChatMemberRemovedFromThreadWithUserEventData object itself.
+     * @return the AcsChatMemberRemovedFromThreadWithUserEventData object itself.
      */
-    public ACSChatMemberRemovedFromThreadWithUserEventData setTime(OffsetDateTime time) {
+    public AcsChatMemberRemovedFromThreadWithUserEventData setTime(OffsetDateTime time) {
         this.time = time;
         return this;
     }
@@ -62,9 +62,9 @@ public final class ACSChatMemberRemovedFromThreadWithUserEventData extends ACSCh
      * Set the removedBy property: The MRI of the user who removed the user.
      *
      * @param removedBy the removedBy value to set.
-     * @return the ACSChatMemberRemovedFromThreadWithUserEventData object itself.
+     * @return the AcsChatMemberRemovedFromThreadWithUserEventData object itself.
      */
-    public ACSChatMemberRemovedFromThreadWithUserEventData setRemovedBy(String removedBy) {
+    public AcsChatMemberRemovedFromThreadWithUserEventData setRemovedBy(String removedBy) {
         this.removedBy = removedBy;
         return this;
     }
@@ -74,7 +74,7 @@ public final class ACSChatMemberRemovedFromThreadWithUserEventData extends ACSCh
      *
      * @return the memberRemoved value.
      */
-    public ACSChatThreadMemberProperties getMemberRemoved() {
+    public AcsChatThreadMemberProperties getMemberRemoved() {
         return this.memberRemoved;
     }
 
@@ -82,10 +82,10 @@ public final class ACSChatMemberRemovedFromThreadWithUserEventData extends ACSCh
      * Set the memberRemoved property: The details of the user who was removed.
      *
      * @param memberRemoved the memberRemoved value to set.
-     * @return the ACSChatMemberRemovedFromThreadWithUserEventData object itself.
+     * @return the AcsChatMemberRemovedFromThreadWithUserEventData object itself.
      */
-    public ACSChatMemberRemovedFromThreadWithUserEventData setMemberRemoved(
-            ACSChatThreadMemberProperties memberRemoved) {
+    public AcsChatMemberRemovedFromThreadWithUserEventData setMemberRemoved(
+            AcsChatThreadMemberProperties memberRemoved) {
         this.memberRemoved = memberRemoved;
         return this;
     }

@@ -7,9 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ACSChatThreadMemberProperties model. */
+/** The AcsChatThreadMemberProperties model. */
 @Fluent
-public final class ACSChatThreadMemberProperties {
+public final class AcsChatThreadMemberProperties {
     /*
      * The name of the user
      */
@@ -35,9 +35,9 @@ public final class ACSChatThreadMemberProperties {
      * Set the displayName property: The name of the user.
      *
      * @param displayName the displayName value to set.
-     * @return the ACSChatThreadMemberProperties object itself.
+     * @return the AcsChatThreadMemberProperties object itself.
      */
-    public ACSChatThreadMemberProperties setDisplayName(String displayName) {
+    public AcsChatThreadMemberProperties setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -55,9 +55,9 @@ public final class ACSChatThreadMemberProperties {
      * Set the memberId property: The MRI of the user.
      *
      * @param memberId the memberId value to set.
-     * @return the ACSChatThreadMemberProperties object itself.
+     * @return the AcsChatThreadMemberProperties object itself.
      */
-    public ACSChatThreadMemberProperties setMemberId(String memberId) {
+    public AcsChatThreadMemberProperties setMemberId(String memberId) {
         this.memberId = memberId;
         return this;
     }

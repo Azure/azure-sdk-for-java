@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AcssmsDeliveryAttemptProperties model. */
+/** The AcsSmsDeliveryAttemptProperties model. */
 @Fluent
-public final class AcssmsDeliveryAttemptProperties {
+public final class AcsSmsDeliveryAttemptProperties {
     /*
      * TimeStamp when delivery was attempted
      */
@@ -42,9 +42,9 @@ public final class AcssmsDeliveryAttemptProperties {
      * Set the timestamp property: TimeStamp when delivery was attempted.
      *
      * @param timestamp the timestamp value to set.
-     * @return the AcssmsDeliveryAttemptProperties object itself.
+     * @return the AcsSmsDeliveryAttemptProperties object itself.
      */
-    public AcssmsDeliveryAttemptProperties setTimestamp(OffsetDateTime timestamp) {
+    public AcsSmsDeliveryAttemptProperties setTimestamp(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
         return this;
     }
@@ -62,9 +62,9 @@ public final class AcssmsDeliveryAttemptProperties {
      * Set the segmentsSucceeded property: Number of segments that were successfully delivered.
      *
      * @param segmentsSucceeded the segmentsSucceeded value to set.
-     * @return the AcssmsDeliveryAttemptProperties object itself.
+     * @return the AcsSmsDeliveryAttemptProperties object itself.
      */
-    public AcssmsDeliveryAttemptProperties setSegmentsSucceeded(Integer segmentsSucceeded) {
+    public AcsSmsDeliveryAttemptProperties setSegmentsSucceeded(Integer segmentsSucceeded) {
         this.segmentsSucceeded = segmentsSucceeded;
         return this;
     }
@@ -82,9 +82,9 @@ public final class AcssmsDeliveryAttemptProperties {
      * Set the segmentsFailed property: Number of segments whose delivery failed.
      *
      * @param segmentsFailed the segmentsFailed value to set.
-     * @return the AcssmsDeliveryAttemptProperties object itself.
+     * @return the AcsSmsDeliveryAttemptProperties object itself.
      */
-    public AcssmsDeliveryAttemptProperties setSegmentsFailed(Integer segmentsFailed) {
+    public AcsSmsDeliveryAttemptProperties setSegmentsFailed(Integer segmentsFailed) {
         this.segmentsFailed = segmentsFailed;
         return this;
     }

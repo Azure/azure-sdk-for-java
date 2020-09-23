@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ACSChatMemberAddedToThreadWithUserEventData model. */
+/** The AcsChatMemberAddedToThreadWithUserEventData model. */
 @Fluent
-public final class ACSChatMemberAddedToThreadWithUserEventData extends ACSChatThreadEventBaseProperties {
+public final class AcsChatMemberAddedToThreadWithUserEventData extends AcsChatThreadEventBaseProperties {
     /*
      * The time at which the user was added to the thread
      */
@@ -27,7 +27,7 @@ public final class ACSChatMemberAddedToThreadWithUserEventData extends ACSChatTh
      * The details of the user who was added
      */
     @JsonProperty(value = "memberAdded")
-    private ACSChatThreadMemberProperties memberAdded;
+    private AcsChatThreadMemberProperties memberAdded;
 
     /**
      * Get the time property: The time at which the user was added to the thread.
@@ -42,9 +42,9 @@ public final class ACSChatMemberAddedToThreadWithUserEventData extends ACSChatTh
      * Set the time property: The time at which the user was added to the thread.
      *
      * @param time the time value to set.
-     * @return the ACSChatMemberAddedToThreadWithUserEventData object itself.
+     * @return the AcsChatMemberAddedToThreadWithUserEventData object itself.
      */
-    public ACSChatMemberAddedToThreadWithUserEventData setTime(OffsetDateTime time) {
+    public AcsChatMemberAddedToThreadWithUserEventData setTime(OffsetDateTime time) {
         this.time = time;
         return this;
     }
@@ -62,9 +62,9 @@ public final class ACSChatMemberAddedToThreadWithUserEventData extends ACSChatTh
      * Set the addedBy property: The MRI of the user who added the user.
      *
      * @param addedBy the addedBy value to set.
-     * @return the ACSChatMemberAddedToThreadWithUserEventData object itself.
+     * @return the AcsChatMemberAddedToThreadWithUserEventData object itself.
      */
-    public ACSChatMemberAddedToThreadWithUserEventData setAddedBy(String addedBy) {
+    public AcsChatMemberAddedToThreadWithUserEventData setAddedBy(String addedBy) {
         this.addedBy = addedBy;
         return this;
     }
@@ -74,7 +74,7 @@ public final class ACSChatMemberAddedToThreadWithUserEventData extends ACSChatTh
      *
      * @return the memberAdded value.
      */
-    public ACSChatThreadMemberProperties getMemberAdded() {
+    public AcsChatThreadMemberProperties getMemberAdded() {
         return this.memberAdded;
     }
 
@@ -82,9 +82,9 @@ public final class ACSChatMemberAddedToThreadWithUserEventData extends ACSChatTh
      * Set the memberAdded property: The details of the user who was added.
      *
      * @param memberAdded the memberAdded value to set.
-     * @return the ACSChatMemberAddedToThreadWithUserEventData object itself.
+     * @return the AcsChatMemberAddedToThreadWithUserEventData object itself.
      */
-    public ACSChatMemberAddedToThreadWithUserEventData setMemberAdded(ACSChatThreadMemberProperties memberAdded) {
+    public AcsChatMemberAddedToThreadWithUserEventData setMemberAdded(AcsChatThreadMemberProperties memberAdded) {
         this.memberAdded = memberAdded;
         return this;
     }
