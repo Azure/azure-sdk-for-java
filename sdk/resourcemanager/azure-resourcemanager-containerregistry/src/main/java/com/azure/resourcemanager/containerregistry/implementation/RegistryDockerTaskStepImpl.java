@@ -9,7 +9,7 @@ import com.azure.resourcemanager.containerregistry.models.OverridingArgument;
 import com.azure.resourcemanager.containerregistry.models.RegistryDockerTaskStep;
 import com.azure.resourcemanager.containerregistry.models.RegistryTask;
 import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +20,7 @@ class RegistryDockerTaskStepImpl extends RegistryTaskStepImpl
     implements RegistryDockerTaskStep,
         RegistryDockerTaskStep.Definition,
         RegistryDockerTaskStep.Update,
-        HasInner<DockerTaskStep> {
+        HasInnerModel<DockerTaskStep> {
 
     private DockerTaskStep inner;
     private DockerBuildStepUpdateParameters dockerTaskStepUpdateParameters;

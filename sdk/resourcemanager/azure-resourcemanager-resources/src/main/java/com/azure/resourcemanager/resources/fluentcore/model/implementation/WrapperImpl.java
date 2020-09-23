@@ -3,14 +3,14 @@
 
 package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /**
  * Base implementation for Wrapper interface.
  *
  * @param <InnerT> wrapped type
  */
-public abstract class WrapperImpl<InnerT> implements HasInner<InnerT> {
+public abstract class WrapperImpl<InnerT> implements HasInnerModel<InnerT> {
     private InnerT innerObject;
 
     protected WrapperImpl(InnerT innerObject) {

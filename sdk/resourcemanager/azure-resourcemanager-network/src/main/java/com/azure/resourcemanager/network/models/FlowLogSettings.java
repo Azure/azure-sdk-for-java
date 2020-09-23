@@ -6,7 +6,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.fluent.inner.FlowLogInformationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
@@ -16,7 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 @Fluent
 public interface FlowLogSettings
     extends HasParent<NetworkWatcher>,
-        HasInner<FlowLogInformationInner>,
+        HasInnerModel<FlowLogInformationInner>,
         Updatable<FlowLogSettings.Update>,
         Refreshable<FlowLogSettings> {
     /**

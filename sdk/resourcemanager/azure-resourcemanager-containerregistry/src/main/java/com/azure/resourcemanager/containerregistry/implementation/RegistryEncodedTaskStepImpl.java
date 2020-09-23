@@ -10,7 +10,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryEncodedTaskSte
 import com.azure.resourcemanager.containerregistry.models.RegistryTask;
 import com.azure.resourcemanager.containerregistry.models.SetValue;
 import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +20,7 @@ class RegistryEncodedTaskStepImpl extends RegistryTaskStepImpl
     implements RegistryEncodedTaskStep,
         RegistryEncodedTaskStep.Definition,
         RegistryEncodedTaskStep.Update,
-        HasInner<EncodedTaskStep> {
+        HasInnerModel<EncodedTaskStep> {
 
     private EncodedTaskStep inner;
     private EncodedTaskStepUpdateParameters encodedTaskStepUpdateParameters;

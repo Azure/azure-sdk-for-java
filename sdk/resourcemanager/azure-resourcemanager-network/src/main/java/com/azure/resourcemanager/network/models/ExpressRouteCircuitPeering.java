@@ -8,7 +8,7 @@ import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeering
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChild;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
@@ -16,7 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 @Fluent
 public interface ExpressRouteCircuitPeering
     extends IndependentChild<NetworkManager>,
-        HasInner<ExpressRouteCircuitPeeringInner>,
+        HasInnerModel<ExpressRouteCircuitPeeringInner>,
         Refreshable<ExpressRouteCircuitPeering>,
         Updatable<ExpressRouteCircuitPeering.Update> {
 

@@ -14,7 +14,7 @@ import com.azure.resourcemanager.containerregistry.models.SourceTriggerUpdatePar
 import com.azure.resourcemanager.containerregistry.models.SourceUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.TokenType;
 import com.azure.resourcemanager.containerregistry.models.TriggerStatus;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +23,7 @@ class RegistrySourceTriggerImpl
         RegistrySourceTrigger.Definition,
         RegistrySourceTrigger.Update,
         RegistrySourceTrigger.UpdateDefinition,
-        HasInner<SourceTrigger> {
+        HasInnerModel<SourceTrigger> {
     private SourceTrigger inner;
     private RegistryTaskImpl registryTaskImpl;
     private SourceTriggerUpdateParameters sourceTriggerUpdateParameters;

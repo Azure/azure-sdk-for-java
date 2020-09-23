@@ -7,13 +7,13 @@ import com.azure.resourcemanager.appservice.models.WebAppDiagnosticLogs.UpdateSt
 import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** A web app diagnostic log configuration in a web app. */
 @Fluent
-public interface WebAppDiagnosticLogs extends HasInner<SiteLogsConfigInner>, Indexable, HasParent<WebAppBase> {
+public interface WebAppDiagnosticLogs extends HasInnerModel<SiteLogsConfigInner>, Indexable, HasParent<WebAppBase> {
     /** @return application log level on file system */
     LogLevel applicationLoggingFileSystemLogLevel();
 

@@ -7,14 +7,14 @@ import com.azure.resourcemanager.containerregistry.models.DockerBuildRequest;
 import com.azure.resourcemanager.containerregistry.models.OverridingArgument;
 import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
 import com.azure.resourcemanager.containerregistry.models.RegistryDockerTaskRunRequest;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 class RegistryDockerTaskRunRequestImpl
-    implements RegistryDockerTaskRunRequest, RegistryDockerTaskRunRequest.Definition, HasInner<DockerBuildRequest> {
+    implements RegistryDockerTaskRunRequest, RegistryDockerTaskRunRequest.Definition, HasInnerModel<DockerBuildRequest> {
 
     private DockerBuildRequest inner;
     private RegistryTaskRunImpl registryTaskRunImpl;

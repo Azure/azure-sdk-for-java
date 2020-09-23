@@ -4,14 +4,14 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.io.File;
 import java.io.IOException;
 
 /** A client-side representation of point-to-site configuration for a virtual network gateway. */
 @Fluent
-public interface PointToSiteConfiguration extends HasInner<VpnClientConfiguration> {
+public interface PointToSiteConfiguration extends HasInnerModel<VpnClientConfiguration> {
     /** Grouping of point-to-site configuration definition stages. */
     interface DefinitionStages {
         /**

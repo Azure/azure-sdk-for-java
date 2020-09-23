@@ -10,7 +10,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryFileTaskStep;
 import com.azure.resourcemanager.containerregistry.models.RegistryTask;
 import com.azure.resourcemanager.containerregistry.models.SetValue;
 import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +20,7 @@ class RegistryFileTaskStepImpl extends RegistryTaskStepImpl
     implements RegistryFileTaskStep,
         RegistryFileTaskStep.Definition,
         RegistryFileTaskStep.Update,
-        HasInner<FileTaskStep> {
+        HasInnerModel<FileTaskStep> {
 
     private FileTaskStep inner;
     private FileTaskStepUpdateParameters fileTaskStepUpdateParameters;

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /**
  * An immutable client-side representation of an Azure policy.
@@ -24,7 +24,7 @@ public interface PolicyDefinition extends
         Indexable,
         Refreshable<PolicyDefinition>,
         Updatable<PolicyDefinition.Update>,
-        HasInner<PolicyDefinitionInner> {
+        HasInnerModel<PolicyDefinitionInner> {
 
     /**
      * @return the type of the policy definition

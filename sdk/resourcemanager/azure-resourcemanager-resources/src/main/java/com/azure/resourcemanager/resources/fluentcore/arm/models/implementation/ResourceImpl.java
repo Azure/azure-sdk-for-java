@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.arm.models.implementation
 
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 
 import java.util.ArrayList;
@@ -162,11 +162,11 @@ public abstract class ResourceImpl<
         return this.inner().id() == null;
     }
 
-    protected <InnerT> List<InnerT> innersFromWrappers(Collection<? extends HasInner<InnerT>> wrappers) {
+    protected <InnerT> List<InnerT> innersFromWrappers(Collection<? extends HasInnerModel<InnerT>> wrappers) {
         return innersFromWrappers(wrappers, null);
     }
 
-    protected <InnerT> List<InnerT> innersFromWrappers(Collection<? extends HasInner<InnerT>> wrappers,
+    protected <InnerT> List<InnerT> innersFromWrappers(Collection<? extends HasInnerModel<InnerT>> wrappers,
                                                        List<InnerT> inners) {
         if (wrappers == null || wrappers.size() == 0) {
             return inners;
@@ -174,7 +174,7 @@ public abstract class ResourceImpl<
             if (inners == null) {
                 inners = new ArrayList<>();
             }
-            for (HasInner<InnerT> wrapper : wrappers) {
+            for (HasInnerModel<InnerT> wrapper : wrappers) {
                 inners.add(wrapper.inner());
             }
             return inners;

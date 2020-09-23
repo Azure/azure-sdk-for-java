@@ -7,7 +7,7 @@ import com.azure.resourcemanager.containerregistry.models.OverridingValue;
 import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
 import com.azure.resourcemanager.containerregistry.models.RegistryFileTaskRunRequest;
 import com.azure.resourcemanager.containerregistry.models.SetValue;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 class RegistryFileTaskRunRequestImpl
-    implements RegistryFileTaskRunRequest, RegistryFileTaskRunRequest.Definition, HasInner<FileTaskRunRequest> {
+    implements RegistryFileTaskRunRequest, RegistryFileTaskRunRequest.Definition, HasInnerModel<FileTaskRunRequest> {
 
     private FileTaskRunRequest inner;
     private RegistryTaskRunImpl registryTaskRunImpl;
