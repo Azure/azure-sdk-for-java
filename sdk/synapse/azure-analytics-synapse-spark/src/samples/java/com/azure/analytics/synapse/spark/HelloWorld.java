@@ -49,8 +49,7 @@ public class HelloWorld {
 
         // List Spark batch jobs
         SparkBatchJobCollection jobs = batchClient.getSparkBatchJobs();
-        for (SparkBatchJob job : jobs.getSessions())
-        {
+        for (SparkBatchJob job : jobs.getSessions()) {
             System.out.println(job.getName());
         }
 

@@ -3,25 +3,35 @@
 
 package com.azure.analytics.synapse.spark;
 
-    import com.azure.analytics.synapse.spark.implementation.SparkClientImpl;
-    import com.azure.core.annotation.ServiceClientBuilder;
-    import com.azure.core.credential.TokenCredential;
-    import com.azure.core.http.HttpClient;
-    import com.azure.core.http.HttpHeaders;
-    import com.azure.core.http.HttpPipeline;
-    import com.azure.core.http.HttpPipelineBuilder;
-    import com.azure.core.http.policy.*;
-    import com.azure.core.util.Configuration;
-    import com.azure.core.util.CoreUtils;
-    import com.azure.core.util.logging.ClientLogger;
+import com.azure.analytics.synapse.spark.implementation.SparkClientImpl;
+import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 
-    import java.net.MalformedURLException;
-    import java.net.URL;
-    import java.time.temporal.ChronoUnit;
-    import java.util.ArrayList;
-    import java.util.List;
-    import java.util.Map;
-    import java.util.Objects;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * A builder for creating a new instance of the SparkClient type.
@@ -149,8 +159,8 @@ public final class SparkClientBuilder {
     /**
      * Sets the Spark pool name used for Spark job operations.
      *
-     * @param sparkPoolName
-     * @return
+     * @param sparkPoolName Spark pool name
+     * @return The updated {@link SparkClientBuilder} object.
      */
     public SparkClientBuilder sparkPoolName(String sparkPoolName) {
         this.sparkPoolName = sparkPoolName;

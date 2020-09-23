@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.analytics.synapse.spark;
 
 import com.azure.analytics.synapse.spark.models.SparkSession;
@@ -21,8 +24,7 @@ public class SparkSessionClientTest extends SparkClientTestBase {
      */
     @Test
     public void getSparkSession() {
-        for (SparkSession expectedSparkSession : client.getSparkSessions().getSessions())
-        {
+        for (SparkSession expectedSparkSession : client.getSparkSessions().getSessions()) {
             SparkSession actualSparkSession = client.getSparkSession(expectedSparkSession.getId());
             validateSparkSession(expectedSparkSession, actualSparkSession);
         }

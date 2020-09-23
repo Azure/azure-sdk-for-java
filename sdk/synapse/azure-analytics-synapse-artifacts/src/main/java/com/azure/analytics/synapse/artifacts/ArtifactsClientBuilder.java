@@ -11,7 +11,17 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -27,7 +37,29 @@ import java.util.Objects;
 /**
  * A builder for creating a new instance of the ArtifactsClient type.
  */
-@ServiceClientBuilder(serviceClients = {LinkedServiceAsyncClient.class, DatasetAsyncClient.class, PipelineAsyncClient.class, PipelineRunAsyncClient.class, TriggerAsyncClient.class, TriggerRunAsyncClient.class, DataFlowAsyncClient.class, DataFlowDebugSessionAsyncClient.class, SqlScriptAsyncClient.class, SparkJobDefinitionAsyncClient.class, NotebookAsyncClient.class, LinkedServiceClient.class, DatasetClient.class, PipelineClient.class, PipelineRunClient.class, TriggerClient.class, TriggerRunClient.class, DataFlowClient.class, DataFlowDebugSessionClient.class, SqlScriptClient.class, SparkJobDefinitionClient.class, NotebookClient.class})
+@ServiceClientBuilder(serviceClients = {
+    LinkedServiceAsyncClient.class,
+    DatasetAsyncClient.class,
+    PipelineAsyncClient.class,
+    PipelineRunAsyncClient.class,
+    TriggerAsyncClient.class,
+    TriggerRunAsyncClient.class,
+    DataFlowAsyncClient.class,
+    DataFlowDebugSessionAsyncClient.class,
+    SqlScriptAsyncClient.class,
+    SparkJobDefinitionAsyncClient.class,
+    NotebookAsyncClient.class,
+    LinkedServiceClient.class,
+    DatasetClient.class,
+    PipelineClient.class,
+    PipelineRunClient.class,
+    TriggerClient.class,
+    TriggerRunClient.class,
+    DataFlowClient.class,
+    DataFlowDebugSessionClient.class,
+    SqlScriptClient.class,
+    SparkJobDefinitionClient.class,
+    NotebookClient.class})
 public final class ArtifactsClientBuilder {
     private static final String SYNAPSE_PROPERTIES = "azure-analytics-synapse-artifacts.properties";
     private static final String NAME = "name";

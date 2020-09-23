@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.models.NotebookResource;
@@ -101,8 +104,7 @@ public abstract class ArtifactsClientTestBase extends TestBase {
         return Objects.requireNonNull(client);
     }
 
-    void validateNotebook(NotebookResource expectedNotebook, NotebookResource actualNotebook)
-    {
+    void validateNotebook(NotebookResource expectedNotebook, NotebookResource actualNotebook) {
         assertEquals(expectedNotebook.getName(), actualNotebook.getName());
         assertEquals(expectedNotebook.getId(), actualNotebook.getId());
         assertEquals(expectedNotebook.getProperties().getDescription(), actualNotebook.getProperties().getDescription());

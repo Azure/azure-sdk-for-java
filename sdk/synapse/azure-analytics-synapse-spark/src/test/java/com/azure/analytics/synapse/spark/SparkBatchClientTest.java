@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.analytics.synapse.spark;
 
 import com.azure.analytics.synapse.spark.models.SparkBatchJob;
@@ -21,8 +24,7 @@ public class SparkBatchClientTest extends SparkClientTestBase {
      */
     @Test
     public void getSparkBatchJob() {
-        for (SparkBatchJob expectedSparkJob : client.getSparkBatchJobs().getSessions())
-        {
+        for (SparkBatchJob expectedSparkJob : client.getSparkBatchJobs().getSessions()) {
             SparkBatchJob actualSparkJob = client.getSparkBatchJob(expectedSparkJob.getId());
             validateSparkBatchJob(expectedSparkJob, actualSparkJob);
         }

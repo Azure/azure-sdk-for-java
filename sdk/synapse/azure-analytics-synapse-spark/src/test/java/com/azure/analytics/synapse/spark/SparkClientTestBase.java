@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.analytics.synapse.spark;
 
 import com.azure.analytics.synapse.spark.models.SparkBatchJob;
@@ -12,7 +15,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,8 +105,7 @@ public abstract class SparkClientTestBase extends TestBase {
         return Objects.requireNonNull(client);
     }
 
-    void validateSparkBatchJob(SparkBatchJob expectedSparkJob, SparkBatchJob actualSparkJob)
-    {
+    void validateSparkBatchJob(SparkBatchJob expectedSparkJob, SparkBatchJob actualSparkJob) {
         assertEquals(expectedSparkJob.getName(), actualSparkJob.getName());
         assertEquals(expectedSparkJob.getId(), actualSparkJob.getId());
         assertEquals(expectedSparkJob.getAppId(), actualSparkJob.getAppId());
@@ -112,8 +113,7 @@ public abstract class SparkClientTestBase extends TestBase {
         assertEquals(expectedSparkJob.getArtifactId(), actualSparkJob.getArtifactId());
     }
 
-    void validateSparkSession(SparkSession expectedSparkSession, SparkSession actualSparkSession)
-    {
+    void validateSparkSession(SparkSession expectedSparkSession, SparkSession actualSparkSession) {
         assertEquals(expectedSparkSession.getName(), actualSparkSession.getName());
         assertEquals(expectedSparkSession.getId(), actualSparkSession.getId());
         assertEquals(expectedSparkSession.getAppId(), actualSparkSession.getAppId());

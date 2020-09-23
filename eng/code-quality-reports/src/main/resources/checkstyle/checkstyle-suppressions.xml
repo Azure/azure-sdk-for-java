@@ -469,6 +469,16 @@
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation.AccessControlClientImpl" />
   <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation.AccessControlsImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.artifacts.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.artifacts.implementation..*Impl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.spark.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.spark.implementation..*Impl" />
+
+  <!-- empty class Pattern in Synapse artifacts -->
+  <suppress checks="WhitespaceAround" files=".*[/\\]synapse[/\\]azure-analytics-synapse-artifacts[/\\].*"/>
+
+  <!-- Checkstyle suppressions for naming issues reported in the Synapse artifacts related clients-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]synapse[/\\].*"/>
 
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
