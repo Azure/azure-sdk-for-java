@@ -71,7 +71,7 @@ public class ServerSecurityAlertPoliciesInner {
     /**
      * Get a server's security alert policy.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -85,7 +85,7 @@ public class ServerSecurityAlertPoliciesInner {
     /**
      * Get a server's security alert policy.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -98,7 +98,7 @@ public class ServerSecurityAlertPoliciesInner {
     /**
      * Get a server's security alert policy.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServerSecurityAlertPolicyInner object
@@ -115,7 +115,7 @@ public class ServerSecurityAlertPoliciesInner {
     /**
      * Get a server's security alert policy.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServerSecurityAlertPolicyInner object
@@ -158,7 +158,7 @@ public class ServerSecurityAlertPoliciesInner {
     /**
      * Creates or updates a threat detection policy.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The server security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -173,7 +173,7 @@ public class ServerSecurityAlertPoliciesInner {
     /**
      * Creates or updates a threat detection policy.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The server security alert policy.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -187,7 +187,7 @@ public class ServerSecurityAlertPoliciesInner {
     /**
      * Creates or updates a threat detection policy.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The server security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -205,7 +205,7 @@ public class ServerSecurityAlertPoliciesInner {
     /**
      * Creates or updates a threat detection policy.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The server security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -236,7 +236,7 @@ public class ServerSecurityAlertPoliciesInner {
     /**
      * Creates or updates a threat detection policy.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The server security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -251,7 +251,7 @@ public class ServerSecurityAlertPoliciesInner {
     /**
      * Creates or updates a threat detection policy.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The server security alert policy.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -265,7 +265,7 @@ public class ServerSecurityAlertPoliciesInner {
     /**
      * Creates or updates a threat detection policy.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The server security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -283,7 +283,7 @@ public class ServerSecurityAlertPoliciesInner {
     /**
      * Creates or updates a threat detection policy.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The server security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation

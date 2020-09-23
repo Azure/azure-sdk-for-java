@@ -62,27 +62,27 @@ public class VirtualNetworkRulesInner {
      */
     interface VirtualNetworkRulesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mariadb.v2018_06_01.VirtualNetworkRules get" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("subscriptionId") String subscriptionId, @Path("virtualNetworkRuleName") String virtualNetworkRuleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mariadb.v2018_06_01.VirtualNetworkRules createOrUpdate" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("subscriptionId") String subscriptionId, @Path("virtualNetworkRuleName") String virtualNetworkRuleName, @Query("api-version") String apiVersion, @Body VirtualNetworkRuleInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mariadb.v2018_06_01.VirtualNetworkRules beginCreateOrUpdate" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("subscriptionId") String subscriptionId, @Path("virtualNetworkRuleName") String virtualNetworkRuleName, @Query("api-version") String apiVersion, @Body VirtualNetworkRuleInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mariadb.v2018_06_01.VirtualNetworkRules delete" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}", method = "DELETE", hasBody = true)
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("virtualNetworkRuleName") String virtualNetworkRuleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mariadb.v2018_06_01.VirtualNetworkRules beginDelete" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}", method = "DELETE", hasBody = true)
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("virtualNetworkRuleName") String virtualNetworkRuleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mariadb.v2018_06_01.VirtualNetworkRules listByServer" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/virtualNetworkRules")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB/servers/{serverName}/virtualNetworkRules")
         Observable<Response<ResponseBody>> listByServer(@Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mariadb.v2018_06_01.VirtualNetworkRules listByServerNext" })
@@ -94,7 +94,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Gets a virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -109,7 +109,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Gets a virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -123,7 +123,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Gets a virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -141,7 +141,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Gets a virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -187,7 +187,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Creates or updates an existing virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @param parameters The requested virtual Network Rule Resource state.
@@ -203,7 +203,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Creates or updates an existing virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @param parameters The requested virtual Network Rule Resource state.
@@ -218,7 +218,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Creates or updates an existing virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @param parameters The requested virtual Network Rule Resource state.
@@ -237,7 +237,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Creates or updates an existing virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @param parameters The requested virtual Network Rule Resource state.
@@ -271,7 +271,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Creates or updates an existing virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @param parameters The requested virtual Network Rule Resource state.
@@ -287,7 +287,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Creates or updates an existing virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @param parameters The requested virtual Network Rule Resource state.
@@ -302,7 +302,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Creates or updates an existing virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @param parameters The requested virtual Network Rule Resource state.
@@ -321,7 +321,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Creates or updates an existing virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @param parameters The requested virtual Network Rule Resource state.
@@ -374,7 +374,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Deletes the virtual network rule with the given name.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -388,7 +388,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Deletes the virtual network rule with the given name.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -402,7 +402,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Deletes the virtual network rule with the given name.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -420,7 +420,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Deletes the virtual network rule with the given name.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -449,7 +449,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Deletes the virtual network rule with the given name.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -463,7 +463,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Deletes the virtual network rule with the given name.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -477,7 +477,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Deletes the virtual network rule with the given name.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -495,7 +495,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Deletes the virtual network rule with the given name.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -543,7 +543,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Gets a list of virtual network rules in a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -563,7 +563,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Gets a list of virtual network rules in a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -584,7 +584,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Gets a list of virtual network rules in a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualNetworkRuleInner&gt; object
@@ -602,7 +602,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Gets a list of virtual network rules in a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualNetworkRuleInner&gt; object
@@ -624,7 +624,7 @@ public class VirtualNetworkRulesInner {
     /**
      * Gets a list of virtual network rules in a server.
      *
-    ServiceResponse<PageImpl1<VirtualNetworkRuleInner>> * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+    ServiceResponse<PageImpl1<VirtualNetworkRuleInner>> * @param resourceGroupName The name of the resource group. The name is case insensitive.
     ServiceResponse<PageImpl1<VirtualNetworkRuleInner>> * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualNetworkRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
