@@ -637,14 +637,11 @@ class VirtualMachineScaleSetVMImpl
                     new IllegalStateException(String.format("A data disk with lun '%d' not found", lun)));
         }
         if (dataDisk.createOption() != DiskCreateOptionTypes.ATTACH) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalStateException(
-                        String
-                            .format(
-                                "A data disk with lun '%d' cannot be detached, as it is part of Virtual Machine Scale Set"
-                                    + " model",
-                                lun)));
+            String exceptionMessage = String.format(
+                "A data disk with lun '%d' cannot be detached, as it is part of Virtual Machine Scale Set model",
+                lun
+            );
+            throw logger.logExceptionAsError(new IllegalStateException(exceptionMessage));
         }
         this.managedDataDisks.diskLunsToRemove.add(lun);
         return this;
