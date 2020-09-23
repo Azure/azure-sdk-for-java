@@ -33,7 +33,8 @@ public class CosmosPropertiesTest {
             assertThat(properties.getConsistencyLevel()).isEqualTo(PropertySettingUtil.CONSISTENCY_LEVEL);
             assertThat(properties.isAllowTelemetry()).isEqualTo(PropertySettingUtil.ALLOW_TELEMETRY_TRUE);
             assertThat(properties.isPopulateQueryMetrics()).isEqualTo(PropertySettingUtil.POPULATE_QUERY_METRICS);
-            assertThat(properties.getCredential().getKey()).isEqualTo(PropertySettingUtil.CREDENTIAL);
+            assertThat(properties.getCredential()).isEqualTo(PropertySettingUtil.CREDENTIAL);
+            assertThat(properties.getConnectionMode()).isEqualTo(PropertySettingUtil.CONNECTION_MODE);
         }
 
         PropertySettingUtil.unsetProperties();

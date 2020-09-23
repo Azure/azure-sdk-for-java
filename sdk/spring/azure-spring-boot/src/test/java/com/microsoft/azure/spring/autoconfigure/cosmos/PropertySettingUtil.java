@@ -38,6 +38,7 @@ public class PropertySettingUtil {
     private static final String PROPERTY_ALLOW_TELEMETRY = "azure.cosmos.allow-telemetry";
     private static final String PROPERTY_POPULATE_QUERY_METRICS = "azure.cosmos.populateQueryMetrics";
     private static final String PROPERTY_CREDENTIAL = "azure.cosmos.credential";
+    private static final String PROPERTY_CONNECTION_MODE = "azure.cosmos.connection-mode";
 
     public static void setProperties() {
         System.setProperty(PROPERTY_URI, URI);
@@ -47,6 +48,7 @@ public class PropertySettingUtil {
         System.setProperty(PROPERTY_ALLOW_TELEMETRY, Boolean.toString(ALLOW_TELEMETRY_TRUE));
         System.setProperty(PROPERTY_POPULATE_QUERY_METRICS, Boolean.toString(POPULATE_QUERY_METRICS));
         System.setProperty(PROPERTY_CREDENTIAL, CREDENTIAL);
+        System.setProperty(PROPERTY_CONNECTION_MODE, CONNECTION_MODE.name());
     }
 
     public static void setAllowTelemetryFalse() {
@@ -62,6 +64,7 @@ public class PropertySettingUtil {
         System.clearProperty(PROPERTY_ALLOW_TELEMETRY);
         System.clearProperty(PROPERTY_POPULATE_QUERY_METRICS);
         System.clearProperty(PROPERTY_CREDENTIAL);
+        System.clearProperty(PROPERTY_CONNECTION_MODE);
     }
 
     public static void unsetAllowTelemetry() {

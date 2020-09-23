@@ -30,7 +30,7 @@ public class CosmosSampleApplication implements CommandLineRunner {
     public void run(String... var1) {
         final User testUser = new User("testId", "testFirstName", "testLastName", "test address line one");
 
-        // Save the User class to Azure Cosmos database.
+        // Save the User class to Azure Cosmos DB database.
         final Mono<User> saveUserMono = repository.save(testUser);
 
         final Flux<User> firstNameUserFlux = repository.findByFirstName("testFirstName");

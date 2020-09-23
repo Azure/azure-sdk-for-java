@@ -49,13 +49,13 @@ Open `application.properties` file and add below properties with your Cosmos DB 
 ```properties
 azure.cosmos.uri=your-cosmos-uri
 azure.cosmos.key=your-cosmos-key
-azure.cosmos.database=your-cosmos-database-name
+azure.cosmos.database=your-cosmos-databasename
 ```
 
 Property `azure.cosmos.consistency-level` is also supported.
 
 Property `azure.cosmos.credential` is also supported. AzureKeyCredential feature provides capability to 
-rotate keys on the fly. You can switch keys using switchToSecondaryKey(). For more information on this, see the [Sample Application][sample_cosmos_switch_to_secondary_key] code.
+rotate keys on the fly. You can use `CosmosCredentialConfiguration.switchXXX()` methods to rotate key. For more information on this, see the [Sample Application][sample_cosmos_switch_key] code.
 
 #### (Optional) Add Spring Boot Actuator
 If you choose to add Spring Boot Actuator for Cosmos DB, add `management.health.azure-cosmos.enabled=true` to application.properties.
@@ -167,14 +167,17 @@ public class CosmosSampleApplication implements CommandLineRunner {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     public static void main(String[] args) {
         SpringApplication.run(CosmosSampleApplication.class, args);
     }
 
-    public void run(String... var1) {
+    public void run(String... var1) throws Exception {
         final User testUser = new User("testId", "testFirstName", "testLastName", "test address line one");
 
-        // Save the User class to Azure Cosmos database.
+        // Save the User class to Azure Cosmos DB database.
         final Mono<User> saveUserMono = repository.save(testUser);
 
         final Flux<User> firstNameUserFlux = repository.findByFirstName("testFirstName");
@@ -197,8 +200,36 @@ public class CosmosSampleApplication implements CommandLineRunner {
         final User result = optionalUserResult.get();
         Assert.state(result.getFirstName().equals(testUser.getFirstName()), "query result firstName doesn't match!");
         Assert.state(result.getLastName().equals(testUser.getLastName()), "query result lastName doesn't match!");
-
         LOGGER.info("findOne in User collection get result: {}", result.toString());
+
+        //  Switch keys
+        CosmosCredentialConfiguration bean =
+            applicationContext.getBean(CosmosCredentialConfiguration.class);
+        bean.switchToCredential();
+        LOGGER.info("Switch to credential.");
+
+        final User testUserUpdated = new User("testIdUpdated", "testFirstNameUpdated",
+            "testLastNameUpdated", "test address Updated line one");
+        final User saveUserUpdated = repository.save(testUserUpdated).block();
+        Assert.state(saveUserUpdated != null, "Saved updated user must not be null");
+        Assert.state(saveUserUpdated.getFirstName().equals(testUserUpdated.getFirstName()),
+            "Saved updated user first name doesn't match");
+
+        final Optional<User> optionalUserUpdatedResult = repository.findById(testUserUpdated.getId()).blockOptional();
+        Assert.isTrue(optionalUserUpdatedResult.isPresent(), "Cannot find updated user.");
+        final User updatedResult = optionalUserUpdatedResult.get();
+        Assert.state(updatedResult.getFirstName().equals(testUserUpdated.getFirstName()),
+            "query updated result firstName doesn't match!");
+        Assert.state(updatedResult.getLastName().equals(testUserUpdated.getLastName()),
+            "query updated result lastName doesn't match!");
+
+        bean.switchToKey();
+        LOGGER.info("Switch back to key.");
+        final Optional<User> userOptional = repository.findById(testUserUpdated.getId()).blockOptional();
+        Assert.isTrue(userOptional.isPresent(), "Cannot find updated user.");
+        Assert.state(updatedResult.getFirstName().equals(testUserUpdated.getFirstName()),
+            "query updated result firstName doesn't match!");
+        LOGGER.info("Finished key switch.");
     }
 
     @PostConstruct
@@ -230,7 +261,7 @@ For more information about setting loging in pring, please refer to the [officia
 
 ## Next steps
 
-Besides using this Azure Cosmos DB Spring Boot Starter, you can directly use Spring Data for Azure Cosmos Db package for more complex scenarios. Please refer to [Spring Data for Azure Cosmos DB](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos) for more details.
+Besides using this Azure Cosmos DB Spring Boot Starter, you can directly use Spring Data for Azure Cosmos DB package for more complex scenarios. Please refer to [Spring Data for Azure Cosmos DB](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos) for more details.
 
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code
@@ -248,4 +279,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
-[sample_cosmos_switch_to_secondary_key]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos/SampleApplication.java
+[sample_cosmos_switch_key]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos/src/main/java/com/azure/cosmos/CosmosSampleApplication.java

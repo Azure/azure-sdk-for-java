@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.spring.autoconfigure.cosmos;
 
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
@@ -35,11 +36,16 @@ public class CosmosAutoConfiguration extends AbstractCosmosConfiguration {
 
     @Bean
     public CosmosClientBuilder cosmosClientBuilder() {
-        return new CosmosClientBuilder()
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder();
+        cosmosClientBuilder
             .consistencyLevel(properties.getConsistencyLevel())
             .key(properties.getKey())
-            .endpoint(properties.getUri()).credential(properties.getCredential())
+            .endpoint(properties.getUri())
             .contentResponseOnWriteEnabled(true);
+        if (ConnectionMode.GATEWAY == properties.getConnectionMode()) {
+            cosmosClientBuilder.gatewayMode();
+        }
+        return cosmosClientBuilder;
     }
 
     @Bean

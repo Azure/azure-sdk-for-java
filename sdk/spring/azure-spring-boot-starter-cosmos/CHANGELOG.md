@@ -1,7 +1,8 @@
 # Release History
 
 ## 3.0.0-beta.1 (Unreleased)
-
+- Updated properties prefix from `azure.cosmosdb.xxx` to `azure.cosmos.xxx`.
+- Added new property items `azure.cosmos.credential`, `azure.cosmos.connection-mode`.
 
 ## 2.3.5 (2020-09-14)
 ### Breaking Changes

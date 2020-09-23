@@ -88,7 +88,7 @@ In this section, you clone a containerized Spring Boot application and test it l
    ```properties
    azure.cosmos.uri=your-cosmos-uri
    azure.cosmos.key=your-cosmos-key
-   azure.cosmos.database=your-cosmos-database-name
+   azure.cosmos.database=your-cosmos-databasename
 
    ```
 

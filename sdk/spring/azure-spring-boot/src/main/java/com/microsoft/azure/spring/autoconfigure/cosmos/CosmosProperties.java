@@ -3,7 +3,7 @@
 
 package com.microsoft.azure.spring.autoconfigure.cosmos;
 
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
@@ -55,9 +55,14 @@ public class CosmosProperties {
     private boolean allowTelemetry = true;
 
     /**
-     * The credential is used to authorize request.
+     * The rotating credential is used to update the key for authorizing request.
      */
-    private AzureKeyCredential credential;
+    private String credential;
+
+    /**
+     * Represents the connection mode to be used by the client in the Azure Cosmos DB database service.
+     */
+    private ConnectionMode connectionMode;
 
     /**
      * Response Diagnostics processor
@@ -126,11 +131,19 @@ public class CosmosProperties {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
     }
 
-    public AzureKeyCredential getCredential() {
+    public String getCredential() {
         return credential;
     }
 
-    public void setCredential(AzureKeyCredential credential) {
+    public void setCredential(String credential) {
         this.credential = credential;
+    }
+
+    public ConnectionMode getConnectionMode() {
+        return connectionMode;
+    }
+
+    public void setConnectionMode(ConnectionMode connectionMode) {
+        this.connectionMode = connectionMode;
     }
 }

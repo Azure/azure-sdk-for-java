@@ -1,6 +1,7 @@
 org.springframework.boot.env.EnvironmentPostProcessor=com.microsoft.azure.spring.cloudfoundry.environment.VcapProcessor,\
 com.microsoft.azure.keyvault.spring.KeyVaultEnvironmentPostProcessor
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.microsoft.azure.spring.autoconfigure.cosmos.CosmosAutoConfiguration,\
+com.microsoft.azure.spring.autoconfigure.cosmos.CosmosCredentialConfiguration,\
 com.microsoft.azure.spring.autoconfigure.cosmos.CosmosRepositoriesAutoConfiguration,\
 com.microsoft.azure.spring.autoconfigure.cosmos.CosmosReactiveRepositoriesAutoConfiguration,\
 com.microsoft.azure.spring.autoconfigure.gremlin.GremlinAutoConfiguration,\
