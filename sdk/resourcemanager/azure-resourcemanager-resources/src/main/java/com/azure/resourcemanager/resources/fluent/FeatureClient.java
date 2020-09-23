@@ -100,7 +100,7 @@ public final class FeatureClient extends AzureServiceClient {
      *
      * @return the serializerAdapter value.
      */
-    public SerializerAdapter getSerializerAdapter() {
+    SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
