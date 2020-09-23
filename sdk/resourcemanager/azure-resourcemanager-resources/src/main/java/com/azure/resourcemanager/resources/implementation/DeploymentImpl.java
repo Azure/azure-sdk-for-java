@@ -33,9 +33,9 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentInner;
-import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
+import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 

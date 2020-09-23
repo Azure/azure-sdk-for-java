@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluent.inner.FeatureResultInner;
+import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 
 /**
  * An immutable client-side representation of an Azure feature.

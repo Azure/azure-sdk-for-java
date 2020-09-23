@@ -6,7 +6,7 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupExportResultInner;
+import com.azure.resourcemanager.resources.fluent.models.ResourceGroupExportResultInner;
 
 /**
  * An immutable client-side representation of an Azure deployment template export result.
