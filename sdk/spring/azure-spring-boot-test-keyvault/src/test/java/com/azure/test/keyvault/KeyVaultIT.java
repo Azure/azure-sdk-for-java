@@ -134,8 +134,6 @@ public class KeyVaultIT {
 
         final List<String> commands = new ArrayList<>();
         commands.add(String.format("cd /home/%s", VM_USER_USERNAME));
-        commands.add("apt-get install maven -y");
-        commands.add("apt-get install git");
         commands.add("mkdir azure-sdk-for-java");
         commands.add("cd azure-sdk-for-java");
         commands.add("git init");
