@@ -431,7 +431,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     options.getHeaders(), options.getMetadata(), options.getTags(),
                     options.getTier(), validatedRequestConditions);
 
-            BiFunction<Flux<ByteBuHtffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobMethod =
+            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobMethod =
                 (stream, length) -> blockBlobAsyncClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(
                     ProgressReporter.addProgressReporting(stream,
                         validatedParallelTransferOptions.getProgressReceiver()), length)
