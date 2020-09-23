@@ -88,12 +88,16 @@ public class ApplicationGatewaysImpl
         if (applicationGatewayResourceIds == null) {
             return Flux.empty();
         } else {
-            return Flux.fromIterable(applicationGatewayResourceIds)
-                .flatMapDelayError(id -> {
-                    final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
-                    final String name = ResourceUtils.nameFromResourceId(id);
-                    return this.inner().startAsync(resourceGroupName, name).then(Mono.just(id));
-                }, 32, 32)
+            return Flux
+                .fromIterable(applicationGatewayResourceIds)
+                .flatMapDelayError(
+                    id -> {
+                        final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
+                        final String name = ResourceUtils.nameFromResourceId(id);
+                        return this.inner().startAsync(resourceGroupName, name).then(Mono.just(id));
+                    },
+                    32,
+                    32)
                 .onErrorMap(AggregatedManagementException::convertToManagementException)
                 .subscribeOn(SdkContext.getReactorScheduler());
         }
@@ -104,12 +108,16 @@ public class ApplicationGatewaysImpl
         if (applicationGatewayResourceIds == null) {
             return Flux.empty();
         } else {
-            return Flux.fromIterable(applicationGatewayResourceIds)
-                .flatMapDelayError(id -> {
-                    final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
-                    final String name = ResourceUtils.nameFromResourceId(id);
-                    return this.inner().stopAsync(resourceGroupName, name).then(Mono.just(id));
-                }, 32, 32)
+            return Flux
+                .fromIterable(applicationGatewayResourceIds)
+                .flatMapDelayError(
+                    id -> {
+                        final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
+                        final String name = ResourceUtils.nameFromResourceId(id);
+                        return this.inner().stopAsync(resourceGroupName, name).then(Mono.just(id));
+                    },
+                    32,
+                    32)
                 .onErrorMap(AggregatedManagementException::convertToManagementException)
                 .subscribeOn(SdkContext.getReactorScheduler());
         }

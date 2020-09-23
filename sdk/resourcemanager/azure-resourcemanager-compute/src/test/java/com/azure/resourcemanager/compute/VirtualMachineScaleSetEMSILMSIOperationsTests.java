@@ -112,7 +112,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .create();
 
         Assertions.assertNotNull(virtualMachineScaleSet);
-        Assertions.assertNotNull(virtualMachineScaleSet.inner());
+        Assertions.assertNotNull(virtualMachineScaleSet.innerModel());
         Assertions.assertTrue(virtualMachineScaleSet.isManagedServiceIdentityEnabled());
         Assertions
             .assertNull(
@@ -360,7 +360,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .create();
 
         Assertions.assertNotNull(virtualMachineScaleSet);
-        Assertions.assertNotNull(virtualMachineScaleSet.inner());
+        Assertions.assertNotNull(virtualMachineScaleSet.innerModel());
         Assertions.assertTrue(virtualMachineScaleSet.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
@@ -544,7 +544,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         virtualMachineScaleSet.update().withSystemAssignedManagedServiceIdentity().apply();
 
         Assertions.assertNotNull(virtualMachineScaleSet);
-        Assertions.assertNotNull(virtualMachineScaleSet.inner());
+        Assertions.assertNotNull(virtualMachineScaleSet.innerModel());
         Assertions.assertTrue(virtualMachineScaleSet.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());

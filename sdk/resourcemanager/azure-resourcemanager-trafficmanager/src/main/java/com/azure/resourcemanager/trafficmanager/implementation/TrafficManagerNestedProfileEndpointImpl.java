@@ -19,16 +19,16 @@ class TrafficManagerNestedProfileEndpointImpl extends TrafficManagerEndpointImpl
 
     @Override
     public String nestedProfileId() {
-        return inner().targetResourceId();
+        return innerModel().targetResourceId();
     }
 
     @Override
     public long minimumChildEndpointCount() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().minChildEndpoints());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().minChildEndpoints());
     }
 
     @Override
     public Region sourceTrafficLocation() {
-        return Region.fromName((inner().endpointLocation()));
+        return Region.fromName((innerModel().endpointLocation()));
     }
 }

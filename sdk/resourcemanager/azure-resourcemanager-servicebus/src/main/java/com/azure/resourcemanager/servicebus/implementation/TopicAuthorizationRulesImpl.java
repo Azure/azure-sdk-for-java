@@ -53,7 +53,7 @@ class TopicAuthorizationRulesImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
+        return this.innerModel().deleteAuthorizationRuleAsync(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName,
                 name);
@@ -61,7 +61,7 @@ class TopicAuthorizationRulesImpl
 
     @Override
     protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerByNameAsync(String name) {
-        return this.inner().getAuthorizationRuleAsync(this.resourceGroupName,
+        return this.innerModel().getAuthorizationRuleAsync(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName,
                 name);
@@ -69,12 +69,13 @@ class TopicAuthorizationRulesImpl
 
     @Override
     protected PagedFlux<SharedAccessAuthorizationRuleResourceInner> listInnerAsync() {
-        return this.inner().listAuthorizationRulesAsync(this.resourceGroupName, this.namespaceName, this.topicName);
+        return this.innerModel().listAuthorizationRulesAsync(
+            this.resourceGroupName, this.namespaceName, this.topicName);
     }
 
     @Override
     protected PagedIterable<SharedAccessAuthorizationRuleResourceInner> listInner() {
-        return this.inner().listAuthorizationRules(this.resourceGroupName,
+        return this.innerModel().listAuthorizationRules(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName);
     }

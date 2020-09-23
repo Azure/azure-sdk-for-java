@@ -20,42 +20,42 @@ class VirtualMachineDataDiskImpl extends WrapperImpl<DataDisk> implements Virtua
 
     @Override
     public int size() {
-        return ResourceManagerUtils.toPrimitiveInt(this.inner().diskSizeGB());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().diskSizeGB());
     }
 
     @Override
     public int lun() {
-        return this.inner().lun();
+        return this.innerModel().lun();
     }
 
     @Override
     public CachingTypes cachingType() {
-        return this.inner().caching();
+        return this.innerModel().caching();
     }
 
     @Override
     public DiskCreateOptionTypes creationMethod() {
-        return this.inner().createOption();
+        return this.innerModel().createOption();
     }
 
     @Override
     public StorageAccountTypes storageAccountType() {
-        if (this.inner().managedDisk() == null) {
+        if (this.innerModel().managedDisk() == null) {
             return null;
         }
-        return this.inner().managedDisk().storageAccountType();
+        return this.innerModel().managedDisk().storageAccountType();
     }
 
     @Override
     public String id() {
-        if (this.inner().managedDisk() == null) {
+        if (this.innerModel().managedDisk() == null) {
             return null;
         }
-        return this.inner().managedDisk().id();
+        return this.innerModel().managedDisk().id();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 }

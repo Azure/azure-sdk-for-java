@@ -27,7 +27,7 @@ class WebAppBasicImpl extends WebSiteBaseImpl implements WebAppBasic, HasManager
     @Override
     public Mono<WebApp> refreshAsync() {
         return this.manager().webApps().getByIdAsync(this.id())
-            .doOnNext(site -> this.setInner(site.inner()));
+            .doOnNext(site -> this.setInner(site.innerModel()));
     }
 
     @Override

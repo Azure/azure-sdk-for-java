@@ -67,7 +67,7 @@ class CdnEndpointsImpl extends
 
     public CdnEndpointImpl defineNewEndpoint(String endpointName, String originName, String endpointOriginHostname) {
         CdnEndpointImpl endpoint = this.defineNewEndpoint(endpointName);
-        endpoint.inner().origins().add(
+        endpoint.innerModel().origins().add(
                 new DeepCreatedOrigin()
                         .withName(originName)
                         .withHostname(endpointOriginHostname));
@@ -81,8 +81,8 @@ class CdnEndpointsImpl extends
     public CdnEndpointImpl defineNewEndpoint(String name) {
         CdnEndpointImpl endpoint = this.prepareInlineDefine(
             new CdnEndpointImpl(name, this.getParent(), new EndpointInner()));
-        endpoint.inner().withLocation(endpoint.parent().region().toString());
-        endpoint.inner().withOrigins(new ArrayList<>());
+        endpoint.innerModel().withLocation(endpoint.parent().region().toString());
+        endpoint.innerModel().withOrigins(new ArrayList<>());
         return endpoint;
     }
 

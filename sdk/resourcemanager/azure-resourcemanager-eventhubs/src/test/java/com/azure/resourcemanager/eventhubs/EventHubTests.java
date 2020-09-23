@@ -103,12 +103,12 @@ public class EventHubTests extends ResourceManagerTestBase {
                     .create();
 
         Assertions.assertNotNull(namespace1);
-        Assertions.assertNotNull(namespace1.inner());
+        Assertions.assertNotNull(namespace1.innerModel());
         Assertions.assertNotNull(namespace1.sku());
         Assertions.assertTrue(namespace1.sku().equals(EventHubNamespaceSkuType.STANDARD));
         Assertions.assertTrue(namespace1.isAutoScaleEnabled());
-        Assertions.assertNotNull(namespace1.inner().maximumThroughputUnits());
-        Assertions.assertNotNull(namespace1.inner().sku().capacity());
+        Assertions.assertNotNull(namespace1.innerModel().maximumThroughputUnits());
+        Assertions.assertNotNull(namespace1.innerModel().sku().capacity());
 
         EventHubNamespace namespace2 = eventHubsManager.namespaces()
                 .define(namespaceName2)
@@ -119,11 +119,11 @@ public class EventHubTests extends ResourceManagerTestBase {
                     .create();
 
         Assertions.assertNotNull(namespace2);
-        Assertions.assertNotNull(namespace2.inner());
+        Assertions.assertNotNull(namespace2.innerModel());
         Assertions.assertNotNull(namespace2.sku());
         Assertions.assertTrue(namespace2.sku().equals(EventHubNamespaceSkuType.STANDARD));
-        Assertions.assertNotNull(namespace2.inner().maximumThroughputUnits());
-        Assertions.assertNotNull(namespace2.inner().sku().capacity());
+        Assertions.assertNotNull(namespace2.innerModel().maximumThroughputUnits());
+        Assertions.assertNotNull(namespace2.innerModel().sku().capacity());
         Assertions.assertEquals(11, namespace2.currentThroughputUnits());
 
         EventHubNamespace namespace3 = eventHubsManager.namespaces()
@@ -134,7 +134,7 @@ public class EventHubTests extends ResourceManagerTestBase {
                     .create();
 
         Assertions.assertNotNull(namespace3);
-        Assertions.assertNotNull(namespace3.inner());
+        Assertions.assertNotNull(namespace3.innerModel());
         Assertions.assertNotNull(namespace3.sku());
         Assertions.assertTrue(namespace3.sku().equals(EventHubNamespaceSkuType.BASIC));
 
@@ -166,7 +166,7 @@ public class EventHubTests extends ResourceManagerTestBase {
                     .create();
 
         Assertions.assertNotNull(namespace);
-        Assertions.assertNotNull(namespace.inner());
+        Assertions.assertNotNull(namespace.innerModel());
 
         PagedIterable<EventHub> hubs = namespace.listEventHubs();
         HashSet<String> set = new HashSet<>();
@@ -219,7 +219,7 @@ public class EventHubTests extends ResourceManagerTestBase {
                     .create();
 
         Assertions.assertNotNull(namespace);
-        Assertions.assertNotNull(namespace.inner());
+        Assertions.assertNotNull(namespace.innerModel());
 
         PagedIterable<EventHubNamespaceAuthorizationRule> rules = namespace.listAuthorizationRules();
         HashSet<String> set = new HashSet<>();
@@ -293,7 +293,7 @@ public class EventHubTests extends ResourceManagerTestBase {
                     .create();
 
         Assertions.assertNotNull(eventHub);
-        Assertions.assertNotNull(eventHub.inner());
+        Assertions.assertNotNull(eventHub.innerModel());
 
         PagedIterable<EventHubConsumerGroup> cGroups = eventHub.listConsumerGroups();
         HashSet<String> set = new HashSet<>();
@@ -350,7 +350,7 @@ public class EventHubTests extends ResourceManagerTestBase {
                     .create();
 
         Assertions.assertNotNull(eventHub);
-        Assertions.assertNotNull(eventHub.inner());
+        Assertions.assertNotNull(eventHub.innerModel());
 
         PagedIterable<EventHubAuthorizationRule> rules = eventHub.listAuthorizationRules();
         HashSet<String> set = new HashSet<>();
@@ -422,7 +422,7 @@ public class EventHubTests extends ResourceManagerTestBase {
                     .create();
 
         Assertions.assertNotNull(eventHub1);
-        Assertions.assertNotNull(eventHub1.inner());
+        Assertions.assertNotNull(eventHub1.innerModel());
 
         Assertions.assertNotNull(eventHub1.name());
         Assertions.assertTrue(eventHub1.name().equalsIgnoreCase(eventHubName1));

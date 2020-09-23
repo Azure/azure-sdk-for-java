@@ -50,12 +50,12 @@ public class SpringAppDomainImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public CustomDomainProperties properties() {
-        return inner().properties();
+        return innerModel().properties();
     }
 
     private AppPlatformManager manager() {

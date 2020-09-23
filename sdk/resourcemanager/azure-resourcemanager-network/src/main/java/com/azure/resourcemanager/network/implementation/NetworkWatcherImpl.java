@@ -24,7 +24,7 @@ class NetworkWatcherImpl
     NetworkWatcherImpl(String name, final NetworkWatcherInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.packetCaptures = new PacketCapturesImpl(networkManager.serviceClient().getPacketCaptures(), this);
-        this.connectionMonitors = 
+        this.connectionMonitors =
             new ConnectionMonitorsImpl(networkManager.serviceClient().getConnectionMonitors(), this);
     }
 
@@ -46,8 +46,12 @@ class NetworkWatcherImpl
 
     @Override
     public SecurityGroupView getSecurityGroupView(String vmId) {
-        SecurityGroupViewResultInner securityGroupViewResultInner = this.manager().serviceClient().getNetworkWatchers()
-            .getVMSecurityRules(this.resourceGroupName(), this.name(), vmId);
+        SecurityGroupViewResultInner securityGroupViewResultInner =
+            this
+                .manager()
+                .serviceClient()
+                .getNetworkWatchers()
+                .getVMSecurityRules(this.resourceGroupName(), this.name(), vmId);
         return new SecurityGroupViewImpl(this, securityGroupViewResultInner, vmId);
     }
 
@@ -62,8 +66,12 @@ class NetworkWatcherImpl
     }
 
     public FlowLogSettings getFlowLogSettings(String nsgId) {
-        FlowLogInformationInner flowLogInformationInner = this.manager().serviceClient().getNetworkWatchers()
-            .getFlowLogStatus(this.resourceGroupName(), this.name(), nsgId);
+        FlowLogInformationInner flowLogInformationInner =
+            this
+                .manager()
+                .serviceClient()
+                .getNetworkWatchers()
+                .getFlowLogStatus(this.resourceGroupName(), this.name(), nsgId);
         return new FlowLogSettingsImpl(this, flowLogInformationInner, nsgId);
     }
 
@@ -112,13 +120,16 @@ class NetworkWatcherImpl
             .manager()
             .serviceClient()
             .getNetworkWatchers()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<NetworkWatcherInner> getInnerAsync() {
-        return this.manager().serviceClient().getNetworkWatchers()
+        return this
+            .manager()
+            .serviceClient()
+            .getNetworkWatchers()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -138,7 +149,7 @@ class NetworkWatcherImpl
             .manager()
             .serviceClient()
             .getNetworkWatchers()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags())
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags())
             .flatMap(
                 inner -> {
                     setInner(inner);

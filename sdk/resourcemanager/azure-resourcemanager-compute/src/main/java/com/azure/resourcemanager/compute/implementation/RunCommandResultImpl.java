@@ -21,6 +21,6 @@ class RunCommandResultImpl extends WrapperImpl<RunCommandResultInner> implements
      */
     @Override
     public List<InstanceViewStatus> value() {
-        return inner().value();
+        return innerModel().value();
     }
 }

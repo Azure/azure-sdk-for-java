@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 
@@ -15,7 +15,7 @@ import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 @Fluent
 public interface Feature extends
         Indexable,
-        HasInner<FeatureResultInner>,
+        HasInnerModel<FeatureResultInner>,
         HasName {
 
     /**

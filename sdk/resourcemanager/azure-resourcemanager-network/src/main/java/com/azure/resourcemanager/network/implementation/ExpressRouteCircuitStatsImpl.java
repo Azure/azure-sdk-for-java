@@ -16,21 +16,21 @@ public class ExpressRouteCircuitStatsImpl extends WrapperImpl<ExpressRouteCircui
 
     @Override
     public long primaryBytesIn() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().primarybytesIn());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().primarybytesIn());
     }
 
     @Override
     public long primaryBytesOut() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().primarybytesOut());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().primarybytesOut());
     }
 
     @Override
     public long secondaryBytesIn() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().secondarybytesIn());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().secondarybytesIn());
     }
 
     @Override
     public long secondaryBytesOut() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().secondarybytesOut());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().secondarybytesOut());
     }
 }

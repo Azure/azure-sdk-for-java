@@ -115,8 +115,8 @@ class VirtualMachineExtensionsImpl
     @Override
     protected List<VirtualMachineExtensionImpl> listChildResources() {
         List<VirtualMachineExtensionImpl> childResources = new ArrayList<>();
-        if (getParent().inner().resources() != null) {
-            for (VirtualMachineExtensionInner inner : getParent().inner().resources()) {
+        if (getParent().innerModel().resources() != null) {
+            for (VirtualMachineExtensionInner inner : getParent().innerModel().resources()) {
                 if (inner.name() == null) {
                     // This extension exists in the parent VM extension collection as a reference id.
                     inner.withLocation(getParent().regionName());

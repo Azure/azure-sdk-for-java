@@ -83,7 +83,7 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
                 .create();
 
         Assertions.assertNotNull(identity);
-        Assertions.assertNotNull(identity.inner());
+        Assertions.assertNotNull(identity.innerModel());
         Assertions.assertTrue(identityName.equalsIgnoreCase(identity.name()), String.format("%s == %s", identityName, identity.name()));
         Assertions.assertTrue(rgName.equalsIgnoreCase(identity.resourceGroupName()), String.format("%s == %s", rgName, identity.resourceGroupName()));
 
@@ -95,7 +95,7 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
         identity = msiManager.identities().getById(identity.id());
 
         Assertions.assertNotNull(identity);
-        Assertions.assertNotNull(identity.inner());
+        Assertions.assertNotNull(identity.innerModel());
 
         PagedIterable<Identity> identities = msiManager.identities()
                 .listByResourceGroup(rgName);
@@ -105,7 +105,7 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
         boolean found = false;
         for (Identity id : identities) {
             Assertions.assertNotNull(id);
-            Assertions.assertNotNull(id.inner());
+            Assertions.assertNotNull(id.innerModel());
             if (id.name().equalsIgnoreCase(identityName)) {
                 found = true;
             }

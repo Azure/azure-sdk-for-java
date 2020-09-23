@@ -16,11 +16,11 @@ public class WebhookEventInfoImpl extends WrapperImpl<EventInner> implements Web
 
     @Override
     public EventRequestMessage eventRequestMessage() {
-        return this.inner().eventRequestMessage();
+        return this.innerModel().eventRequestMessage();
     }
 
     @Override
     public EventResponseMessage eventResponseMessage() {
-        return this.inner().eventResponseMessage();
+        return this.innerModel().eventResponseMessage();
     }
 }
