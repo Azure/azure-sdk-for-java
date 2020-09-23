@@ -71,13 +71,13 @@ public final class CertificateUtil {
                 InputStream stream = new ByteArrayInputStream(matcher.group().getBytes(StandardCharsets.UTF_8));
                 x509CertificateList.add((X509Certificate) factory.generateCertificate(stream));
             } catch (CertificateException e) {
-                throw new IllegalStateException(e);
+                throw LOGGER.logExceptionAsError(new IllegalStateException(e));
             }
         }
 
         if (x509CertificateList.size() == 0) {
-            throw new IllegalArgumentException(
-                "PEM certificate provided does not contain -----BEGIN CERTIFICATE-----END CERTIFICATE----- block");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "PEM certificate provided does not contain -----BEGIN CERTIFICATE-----END CERTIFICATE----- block"));
         }
 
         return x509CertificateList;
