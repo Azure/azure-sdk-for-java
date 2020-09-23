@@ -28,7 +28,9 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
                       InnerT innerManagementClient, SdkContext sdkContext) {
         this.httpPipeline = httpPipeline;
         if (httpPipeline != null) {
-            this.resourceManager = ResourceManager.authenticate(httpPipeline, profile)
+            this.resourceManager = ResourceManager.configure()
+                .withHttpPipeline(httpPipeline)
+                .authenticate(null, profile)
                 .withSdkContext(sdkContext)
                 .withDefaultSubscription();
         }

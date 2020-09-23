@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.arm;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -102,4 +103,14 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * @return the configurable object itself for chaining
      */
     T withConfiguration(Configuration configuration);
+
+    /**
+     * Sets the HTTP pipeline.
+     *
+     * If set, it will override all other settings.
+     *
+     * @param httpPipeline the http pipeline
+     * @return the configurable object itself
+     */
+    T withHttpPipeline(HttpPipeline httpPipeline);
 }
