@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/acc83e222b213f24d8367cf567d1e5a299433fec/specification/storage/data-plane/Microsoft.FileStorage/preview/2020-02-10/file.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2020-02-10/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -849,15 +849,6 @@ directive:
 ```
 
 ### FileRangeWriteFromUrl Constant
-``` yaml
-directive:
-- from: swagger-document
-  where: $.parameters.LeaseIdOptional
-  transform: >
-    delete $["x-ms-parameter-grouping"];
-```
-
-### Range Rename
 ``` yaml
 directive:
 - from: swagger-document
