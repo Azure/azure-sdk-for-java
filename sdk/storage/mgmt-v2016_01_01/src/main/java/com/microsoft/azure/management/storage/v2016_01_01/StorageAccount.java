@@ -123,7 +123,9 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
         interface WithKind {
            /**
             * Specifies kind.
-            */
+            * @param kind Required. Indicates the type of storage account. Possible values include: 'Storage', 'BlobStorage'
+            * @return the next definition stage
+*/
             WithSku withKind(Kind kind);
         }
 
@@ -133,36 +135,44 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
         interface WithSku {
            /**
             * Specifies sku.
-            */
+            * @param sku Required. Gets or sets the sku name
+            * @return the next definition stage
+*/
             WithCreate withSku(Sku sku);
         }
 
         /**
-         * The stage of the storageaccount update allowing to specify AccessTier.
+         * The stage of the storageaccount definition allowing to specify AccessTier.
          */
         interface WithAccessTier {
             /**
              * Specifies accessTier.
+             * @param accessTier Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'
+             * @return the next definition stage
              */
             WithCreate withAccessTier(AccessTier accessTier);
         }
 
         /**
-         * The stage of the storageaccount update allowing to specify CustomDomain.
+         * The stage of the storageaccount definition allowing to specify CustomDomain.
          */
         interface WithCustomDomain {
             /**
              * Specifies customDomain.
+             * @param customDomain User domain assigned to the storage account. Name is the CNAME source. Only one custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty string for the custom domain name property
+             * @return the next definition stage
              */
             WithCreate withCustomDomain(CustomDomain customDomain);
         }
 
         /**
-         * The stage of the storageaccount update allowing to specify Encryption.
+         * The stage of the storageaccount definition allowing to specify Encryption.
          */
         interface WithEncryption {
             /**
              * Specifies encryption.
+             * @param encryption Provides the encryption settings on the account. If left unspecified the account encryption settings will remain the same. The default setting is unencrypted
+             * @return the next definition stage
              */
             WithCreate withEncryption(Encryption encryption);
         }
@@ -186,41 +196,49 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
      */
     interface UpdateStages {
         /**
-         * The stage of the storageaccount {0} allowing to specify AccessTier.
+         * The stage of the storageaccount update allowing to specify AccessTier.
          */
         interface WithAccessTier {
             /**
              * Specifies accessTier.
+             * @param accessTier Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'
+             * @return the next update stage
              */
             Update withAccessTier(AccessTier accessTier);
         }
 
         /**
-         * The stage of the storageaccount {0} allowing to specify CustomDomain.
+         * The stage of the storageaccount update allowing to specify CustomDomain.
          */
         interface WithCustomDomain {
             /**
              * Specifies customDomain.
+             * @param customDomain Custom domain assigned to the storage account by the user. Name is the CNAME source. Only one custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty string for the custom domain name property
+             * @return the next update stage
              */
             Update withCustomDomain(CustomDomain customDomain);
         }
 
         /**
-         * The stage of the storageaccount {0} allowing to specify Encryption.
+         * The stage of the storageaccount update allowing to specify Encryption.
          */
         interface WithEncryption {
             /**
              * Specifies encryption.
+             * @param encryption Provides the encryption settings on the account. The default setting is unencrypted
+             * @return the next update stage
              */
             Update withEncryption(Encryption encryption);
         }
 
         /**
-         * The stage of the storageaccount {0} allowing to specify Sku.
+         * The stage of the storageaccount update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS or Premium_LRS, nor can accounts of those sku names be updated to any other value
+             * @return the next update stage
              */
             Update withSku(Sku sku);
         }
