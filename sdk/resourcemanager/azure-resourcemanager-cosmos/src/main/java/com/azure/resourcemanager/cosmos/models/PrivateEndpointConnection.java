@@ -6,13 +6,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** A private endpoint connection. */
 @Fluent
 public interface PrivateEndpointConnection
-    extends HasInner<PrivateEndpointConnectionInner>,
+    extends HasInnerModel<PrivateEndpointConnectionInner>,
         ExternalChildResource<PrivateEndpointConnection, CosmosDBAccount> {
     /**
      * Get private endpoint which the connection belongs to.

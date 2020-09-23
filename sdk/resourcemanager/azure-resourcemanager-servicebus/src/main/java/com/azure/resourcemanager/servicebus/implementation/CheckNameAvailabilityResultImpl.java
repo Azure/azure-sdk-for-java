@@ -25,17 +25,17 @@ class CheckNameAvailabilityResultImpl
 
     @Override
     public boolean isAvailable() {
-        return inner().nameAvailable();
+        return innerModel().nameAvailable();
     }
 
     @Override
     public UnavailableReason unavailabilityReason() {
-        return inner().reason();
+        return innerModel().reason();
     }
 
     @Override
     public String unavailabilityMessage() {
-        return inner().message();
+        return innerModel().message();
     }
 }
 

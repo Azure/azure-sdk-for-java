@@ -22,41 +22,41 @@ class RouteImpl extends ChildResourceImpl<RouteInner, RouteTableImpl, RouteTable
     // Getters
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String destinationAddressPrefix() {
-        return this.inner().addressPrefix();
+        return this.innerModel().addressPrefix();
     }
 
     @Override
     public RouteNextHopType nextHopType() {
-        return this.inner().nextHopType();
+        return this.innerModel().nextHopType();
     }
 
     @Override
     public String nextHopIpAddress() {
-        return this.inner().nextHopIpAddress();
+        return this.innerModel().nextHopIpAddress();
     }
 
     // Fluent setters
 
     @Override
     public RouteImpl withNextHop(RouteNextHopType nextHopType) {
-        this.inner().withNextHopType(nextHopType);
+        this.innerModel().withNextHopType(nextHopType);
         return this;
     }
 
     @Override
     public RouteImpl withDestinationAddressPrefix(String cidr) {
-        this.inner().withAddressPrefix(cidr);
+        this.innerModel().withAddressPrefix(cidr);
         return this;
     }
 
     @Override
     public RouteImpl withNextHopToVirtualAppliance(String ipAddress) {
-        this.inner().withNextHopType(RouteNextHopType.VIRTUAL_APPLIANCE).withNextHopIpAddress(ipAddress);
+        this.innerModel().withNextHopType(RouteNextHopType.VIRTUAL_APPLIANCE).withNextHopIpAddress(ipAddress);
         return this;
     }
 

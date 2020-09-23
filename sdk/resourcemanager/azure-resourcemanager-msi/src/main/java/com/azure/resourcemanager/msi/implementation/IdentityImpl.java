@@ -33,28 +33,28 @@ public final class IdentityImpl
 
     @Override
     public String tenantId() {
-        if (this.inner().tenantId() == null) {
+        if (this.innerModel().tenantId() == null) {
             return null;
         } else {
-            return this.inner().tenantId().toString();
+            return this.innerModel().tenantId().toString();
         }
     }
 
     @Override
     public String principalId() {
-        if (this.inner().principalId() == null) {
+        if (this.innerModel().principalId() == null) {
             return null;
         } else {
-            return this.inner().principalId().toString();
+            return this.innerModel().principalId().toString();
         }
     }
 
     @Override
     public String clientId() {
-        if (this.inner().clientId() == null) {
+        if (this.innerModel().clientId() == null) {
             return null;
         } else {
-            return this.inner().clientId().toString();
+            return this.innerModel().clientId().toString();
         }
     }
 
@@ -109,7 +109,7 @@ public final class IdentityImpl
     @Override
     public Mono<Identity> createResourceAsync() {
         return this.manager().serviceClient().getUserAssignedIdentities()
-                .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
                 .map(innerToFluentMap(this));
     }
 
@@ -125,15 +125,15 @@ public final class IdentityImpl
         return new RoleAssignmentHelper.IdProvider() {
             @Override
             public String principalId() {
-                Objects.requireNonNull(inner());
-                Objects.requireNonNull(inner().principalId());
-                return inner().principalId().toString();
+                Objects.requireNonNull(innerModel());
+                Objects.requireNonNull(innerModel().principalId());
+                return innerModel().principalId().toString();
             }
             @Override
             public String resourceId() {
-                Objects.requireNonNull(inner());
-                Objects.requireNonNull(inner().id());
-                return inner().id();
+                Objects.requireNonNull(innerModel());
+                Objects.requireNonNull(innerModel().id());
+                return innerModel().id();
             }
         };
     }

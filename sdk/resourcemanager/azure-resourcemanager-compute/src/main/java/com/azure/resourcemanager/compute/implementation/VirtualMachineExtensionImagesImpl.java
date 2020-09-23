@@ -45,10 +45,11 @@ public class VirtualMachineExtensionImagesImpl implements VirtualMachineExtensio
                     virtualMachinePublisher
                         .extensionTypes()
                         .listAsync()
-                        .onErrorResume(ManagementException.class,
+                        .onErrorResume(
+                            ManagementException.class,
                             e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e))
-                        .flatMap(virtualMachineExtensionImageType ->
-                            virtualMachineExtensionImageType.versions().listAsync())
+                        .flatMap(
+                            virtualMachineExtensionImageType -> virtualMachineExtensionImageType.versions().listAsync())
                         .flatMap(VirtualMachineExtensionImageVersion::getImageAsync));
     }
 

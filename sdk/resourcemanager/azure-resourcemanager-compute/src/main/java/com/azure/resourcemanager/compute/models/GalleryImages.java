@@ -11,8 +11,7 @@ import reactor.core.publisher.Mono;
 
 /** Entry point to gallery images management API in Azure. */
 @Fluent
-public interface GalleryImages
-    extends SupportsCreating<GalleryImage.DefinitionStages.Blank> {
+public interface GalleryImages extends SupportsCreating<GalleryImage.DefinitionStages.Blank> {
     /**
      * Retrieves information about an image in a gallery.
      *

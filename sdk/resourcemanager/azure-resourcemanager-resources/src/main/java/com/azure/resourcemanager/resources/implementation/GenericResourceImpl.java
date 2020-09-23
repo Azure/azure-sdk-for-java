@@ -77,12 +77,12 @@ final class GenericResourceImpl
 
     @Override
     public Plan plan() {
-        return inner().plan();
+        return innerModel().plan();
     }
 
     @Override
     public Object properties() {
-        return inner().properties();
+        return innerModel().properties();
     }
 
     @Override
@@ -97,7 +97,7 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withProperties(Object properties) {
-        inner().withProperties(properties);
+        innerModel().withProperties(properties);
         return this;
     }
 
@@ -113,7 +113,7 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withPlan(String name, String publisher, String product, String promotionCode) {
-        inner().withPlan(
+        innerModel().withPlan(
             new Plan()
                 .withName(name)
                 .withPublisher(publisher)
@@ -124,7 +124,7 @@ final class GenericResourceImpl
 
     @Override
     public GenericResourceImpl withoutPlan() {
-        inner().withPlan(null);
+        innerModel().withPlan(null);
         return this;
     }
 
@@ -149,7 +149,7 @@ final class GenericResourceImpl
     @Override
     public Accepted<GenericResource> beginCreate() {
         String apiVersion = this.getApiVersionAsync().block();
-        String name = isInCreateMode() ? this.name() : ResourceUtils.nameFromResourceId(inner().id());
+        String name = isInCreateMode() ? this.name() : ResourceUtils.nameFromResourceId(innerModel().id());
 
         return AcceptedImpl.newAccepted(logger,
             this.manager().serviceClient(),
@@ -161,7 +161,7 @@ final class GenericResourceImpl
                     resourceType,
                     name,
                     apiVersion,
-                    inner()).block(),
+                    innerModel()).block(),
             inner -> new GenericResourceImpl(inner.id(), inner, this.manager()),
             GenericResourceInner.class,
             null,
@@ -177,7 +177,7 @@ final class GenericResourceImpl
                 .flatMap(api -> {
                     String name = this.name();
                     if (!isInCreateMode()) {
-                        name = ResourceUtils.nameFromResourceId(inner().id());
+                        name = ResourceUtils.nameFromResourceId(innerModel().id());
                     }
                     return resourceClient.createOrUpdateAsync(
                             resourceGroupName(),
@@ -186,7 +186,7 @@ final class GenericResourceImpl
                             resourceType,
                             name,
                             api,
-                            inner())
+                            innerModel())
                             .subscribeOn(SdkContext.getReactorScheduler())
                             .map(innerToFluentMap(this));
                 });
@@ -202,7 +202,7 @@ final class GenericResourceImpl
                 .flatMap(provider -> {
                     String id;
                     if (!isInCreateMode()) {
-                        id = inner().id();
+                        id = innerModel().id();
                     } else {
                         id = ResourceUtils.constructResourceId(
                             serviceClient.getSubscriptionId(),

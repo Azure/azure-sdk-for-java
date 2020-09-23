@@ -33,37 +33,37 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, KeyVaultSecret, SecretIm
 
     @Override
     public String id() {
-        return inner().getId();
+        return innerModel().getId();
     }
 
     @Override
     public String value() {
-        return inner().getValue();
+        return innerModel().getValue();
     }
 
     @Override
     public SecretProperties attributes() {
-        return inner().getProperties();
+        return innerModel().getProperties();
     }
 
     @Override
     public Map<String, String> tags() {
-        return inner().getProperties().getTags();
+        return innerModel().getProperties().getTags();
     }
 
     @Override
     public String contentType() {
-        return inner().getProperties().getContentType();
+        return innerModel().getProperties().getContentType();
     }
 
     @Override
     public String kid() {
-        return inner().getProperties().getKeyId();
+        return innerModel().getProperties().getKeyId();
     }
 
     @Override
     public boolean managed() {
-        return ResourceManagerUtils.toPrimitiveBoolean(inner().getProperties().isManaged());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().getProperties().isManaged());
     }
 
     @Override
@@ -93,7 +93,7 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, KeyVaultSecret, SecretIm
 
     @Override
     public SecretImpl withTags(Map<String, String> tags) {
-        this.inner().getProperties().setTags(tags);
+        this.innerModel().getProperties().setTags(tags);
         return this;
     }
 
@@ -126,7 +126,7 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, KeyVaultSecret, SecretIm
                 .updateSecretProperties(this.attributes())
                 .map(
                     p -> {
-                        this.inner().setProperties(p);
+                        this.innerModel().setProperties(p);
                         return this;
                     });
         } else {
@@ -136,7 +136,7 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, KeyVaultSecret, SecretIm
 
     @Override
     public SecretImpl withAttributes(SecretProperties attributes) {
-        this.inner().setProperties(attributes);
+        this.innerModel().setProperties(attributes);
         return this;
     }
 
@@ -149,7 +149,7 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, KeyVaultSecret, SecretIm
 
     @Override
     public SecretImpl withContentType(String contentType) {
-        this.inner().getProperties().setContentType(contentType);
+        this.innerModel().getProperties().setContentType(contentType);
         return this;
     }
 }

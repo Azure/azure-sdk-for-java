@@ -4,14 +4,14 @@
 package com.azure.resourcemanager.resources.fluentcore.model;
 
 /**
- * The wrapper around an inner object providing extended functionalities.
+ * The wrapper around an inner model providing extended functionalities.
  *
  * @param <T> the type of the inner object.
  */
-public interface HasInner<T> {
+public interface HasInnerModel<T> {
     /**
-     * @return wrapped inner object providing direct access to the underlying
+     * @return wrapped inner model providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API
      */
-    T inner();
+    T innerModel();
 }

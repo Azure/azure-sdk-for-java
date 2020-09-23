@@ -7,13 +7,13 @@ import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayIpConfig
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasSubnet;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** A client-side representation of an application gateway IP configuration. */
 @Fluent()
 public interface ApplicationGatewayIpConfiguration
-    extends HasInner<ApplicationGatewayIpConfigurationInner>, ChildResource<ApplicationGateway> {
+    extends HasInnerModel<ApplicationGatewayIpConfigurationInner>, ChildResource<ApplicationGateway> {
 
     /** @return the resource ID of the virtual network the application gateway is in */
     String networkId();
@@ -85,8 +85,8 @@ public interface ApplicationGatewayIpConfiguration
      */
     interface Definition<ParentT>
         extends DefinitionStages.Blank<ParentT>,
-        DefinitionStages.WithSubnet<ParentT>,
-        DefinitionStages.WithAttach<ParentT> {
+            DefinitionStages.WithSubnet<ParentT>,
+            DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of application gateway IP configuration update stages. */
@@ -181,7 +181,7 @@ public interface ApplicationGatewayIpConfiguration
      */
     interface UpdateDefinition<ParentT>
         extends UpdateDefinitionStages.Blank<ParentT>,
-        UpdateDefinitionStages.WithSubnet<ParentT>,
-        UpdateDefinitionStages.WithAttach<ParentT> {
+            UpdateDefinitionStages.WithSubnet<ParentT>,
+            UpdateDefinitionStages.WithAttach<ParentT> {
     }
 }

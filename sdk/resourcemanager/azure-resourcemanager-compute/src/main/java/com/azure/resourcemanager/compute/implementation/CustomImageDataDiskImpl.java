@@ -23,49 +23,49 @@ class CustomImageDataDiskImpl
 
     @Override
     public CustomImageDataDiskImpl withDiskSizeInGB(int diskSizeGB) {
-        this.inner().withDiskSizeGB(diskSizeGB);
+        this.innerModel().withDiskSizeGB(diskSizeGB);
         return this;
     }
 
     @Override
     public CustomImageDataDiskImpl withDiskCaching(CachingTypes cachingType) {
-        this.inner().withCaching(cachingType);
+        this.innerModel().withCaching(cachingType);
         return this;
     }
 
     @Override
     public CustomImageDataDiskImpl withLun(int lun) {
-        this.inner().withLun(lun);
+        this.innerModel().withLun(lun);
         return this;
     }
 
     @Override
     public CustomImageDataDiskImpl fromVhd(String sourceVhdUrl) {
-        this.inner().withBlobUri(sourceVhdUrl);
+        this.innerModel().withBlobUri(sourceVhdUrl);
         return this;
     }
 
     @Override
     public CustomImageDataDiskImpl fromSnapshot(String sourceSnapshotId) {
-        this.inner().withSnapshot(new SubResource().withId(sourceSnapshotId));
+        this.innerModel().withSnapshot(new SubResource().withId(sourceSnapshotId));
         return this;
     }
 
     @Override
     public CustomImageDataDiskImpl fromManagedDisk(String sourceManagedDiskId) {
-        this.inner().withManagedDisk(new SubResource().withId(sourceManagedDiskId));
+        this.innerModel().withManagedDisk(new SubResource().withId(sourceManagedDiskId));
         return this;
     }
 
     @Override
     public CustomImageDataDiskImpl fromManagedDisk(Disk sourceManagedDisk) {
-        this.inner().withManagedDisk(new SubResource().withId(sourceManagedDisk.id()));
+        this.innerModel().withManagedDisk(new SubResource().withId(sourceManagedDisk.id()));
         return this;
     }
 
     @Override
     public String name() {
-        return Integer.toString(this.inner().lun());
+        return Integer.toString(this.innerModel().lun());
     }
 
     @Override

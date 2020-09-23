@@ -32,7 +32,7 @@ public class VirtualMachineScaleSetsImpl
         VirtualMachineScaleSetImpl,
         VirtualMachineScaleSetInner,
         VirtualMachineScaleSetsClient,
-    ComputeManager>
+        ComputeManager>
     implements VirtualMachineScaleSets {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;

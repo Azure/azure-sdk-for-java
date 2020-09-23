@@ -18,31 +18,31 @@ public class DeletedVaultImpl extends WrapperImpl<DeletedVaultInner> implements 
 
     @Override
     public String name() {
-        return inner().name();
+        return innerModel().name();
     }
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public String location() {
-        return inner().properties().location();
+        return innerModel().properties().location();
     }
 
     @Override
     public OffsetDateTime deletionDate() {
-        return inner().properties().deletionDate();
+        return innerModel().properties().deletionDate();
     }
 
     @Override
     public OffsetDateTime scheduledPurgeDate() {
-        return inner().properties().scheduledPurgeDate();
+        return innerModel().properties().scheduledPurgeDate();
     }
 
     @Override
     public Map<String, String> tags() {
-        return inner().properties().tags();
+        return innerModel().properties().tags();
     }
 }

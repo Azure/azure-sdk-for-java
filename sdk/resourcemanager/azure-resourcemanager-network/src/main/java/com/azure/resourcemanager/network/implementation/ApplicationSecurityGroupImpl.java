@@ -34,17 +34,17 @@ class ApplicationSecurityGroupImpl
             .manager()
             .serviceClient()
             .getApplicationSecurityGroups()
-            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public String resourceGuid() {
-        return inner().resourceGuid();
+        return innerModel().resourceGuid();
     }
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState().toString();
+        return innerModel().provisioningState().toString();
     }
 }

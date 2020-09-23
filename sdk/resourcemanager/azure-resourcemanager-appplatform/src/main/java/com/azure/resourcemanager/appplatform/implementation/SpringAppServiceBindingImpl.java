@@ -50,12 +50,12 @@ public class SpringAppServiceBindingImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public BindingResourceProperties properties() {
-        return inner().properties();
+        return innerModel().properties();
     }
 
     private AppPlatformManager manager() {

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigur
 /** Implementation for NicIPConfiguration for network interfaces associated with virtual machine scale set. */
 class VirtualMachineScaleSetNicIpConfigurationImpl
     extends NicIpConfigurationBaseImpl<
-            VirtualMachineScaleSetNetworkInterfaceImpl, VirtualMachineScaleSetNetworkInterface>
+        VirtualMachineScaleSetNetworkInterfaceImpl, VirtualMachineScaleSetNetworkInterface>
     implements VirtualMachineScaleSetNicIpConfiguration {
     VirtualMachineScaleSetNicIpConfigurationImpl(
         NetworkInterfaceIpConfigurationInner inner,

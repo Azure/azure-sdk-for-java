@@ -47,12 +47,12 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public boolean securityEnabled() {
-        return ResourceManagerUtils.toPrimitiveBoolean(inner().securityEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().securityEnabled());
     }
 
     @Override
     public String mail() {
-        return inner().mail();
+        return innerModel().mail();
     }
 
     @Override
@@ -186,7 +186,7 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public String id() {
-        return inner().objectId();
+        return innerModel().objectId();
     }
 
     @Override

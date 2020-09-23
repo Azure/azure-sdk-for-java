@@ -7,7 +7,7 @@ import com.azure.resourcemanager.containerregistry.models.OverridingValue;
 import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
 import com.azure.resourcemanager.containerregistry.models.RegistryEncodedTaskRunRequest;
 import com.azure.resourcemanager.containerregistry.models.SetValue;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Map;
 class RegistryEncodedTaskRunRequestImpl
     implements RegistryEncodedTaskRunRequest,
         RegistryEncodedTaskRunRequest.Definition,
-        HasInner<EncodedTaskRunRequest> {
+        HasInnerModel<EncodedTaskRunRequest> {
 
     private EncodedTaskRunRequest inner;
     private RegistryTaskRunImpl registryTaskRunImpl;
@@ -108,7 +108,7 @@ class RegistryEncodedTaskRunRequestImpl
     }
 
     @Override
-    public EncodedTaskRunRequest inner() {
+    public EncodedTaskRunRequest innerModel() {
         return this.inner;
     }
 }
