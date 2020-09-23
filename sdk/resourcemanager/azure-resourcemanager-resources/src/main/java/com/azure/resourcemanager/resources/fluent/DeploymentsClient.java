@@ -2025,7 +2025,7 @@ public final class DeploymentsClient
      * @return all the deployments at the given scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentExtendedInner> listAtScopeAsync(
+    private PagedFlux<DeploymentExtendedInner> listAtScopeAsync(
         String scope, String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, filter, top, context),
@@ -3563,7 +3563,7 @@ public final class DeploymentsClient
      * @return all the deployments at the tenant scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentExtendedInner> listAtTenantScopeAsync(String filter, Integer top, Context context) {
+    private PagedFlux<DeploymentExtendedInner> listAtTenantScopeAsync(String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(filter, top, context),
             nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));
@@ -5253,7 +5253,7 @@ public final class DeploymentsClient
      * @return all the deployments for a management group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentExtendedInner> listAtManagementGroupScopeAsync(
+    private PagedFlux<DeploymentExtendedInner> listAtManagementGroupScopeAsync(
         String groupId, String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, filter, top, context),
@@ -6978,7 +6978,7 @@ public final class DeploymentsClient
      * @return all the deployments for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentExtendedInner> listAsync(String filter, Integer top, Context context) {
+    private PagedFlux<DeploymentExtendedInner> listAsync(String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, top, context),
             nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink, context));
@@ -8920,7 +8920,7 @@ public final class DeploymentsClient
      * @return all the deployments for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentExtendedInner> listByResourceGroupAsync(
+    private PagedFlux<DeploymentExtendedInner> listByResourceGroupAsync(
         String resourceGroupName, String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),

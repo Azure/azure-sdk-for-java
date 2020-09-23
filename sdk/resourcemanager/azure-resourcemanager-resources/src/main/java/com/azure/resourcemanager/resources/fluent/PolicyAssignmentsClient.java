@@ -885,7 +885,7 @@ public final class PolicyAssignmentsClient
      * @return list of policy assignments.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicyAssignmentInner> listByResourceGroupAsync(
+    private PagedFlux<PolicyAssignmentInner> listByResourceGroupAsync(
         String resourceGroupName, String filter, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, context),
@@ -1310,7 +1310,7 @@ public final class PolicyAssignmentsClient
      * @return list of policy assignments.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicyAssignmentInner> listForResourceAsync(
+    private PagedFlux<PolicyAssignmentInner> listForResourceAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -1622,7 +1622,7 @@ public final class PolicyAssignmentsClient
      * @return list of policy assignments.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicyAssignmentInner> listForManagementGroupAsync(
+    private PagedFlux<PolicyAssignmentInner> listForManagementGroupAsync(
         String managementGroupId, String filter, Context context) {
         return new PagedFlux<>(
             () -> listForManagementGroupSinglePageAsync(managementGroupId, filter, context),
@@ -1841,7 +1841,7 @@ public final class PolicyAssignmentsClient
      * @return list of policy assignments.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicyAssignmentInner> listAsync(String filter, Context context) {
+    private PagedFlux<PolicyAssignmentInner> listAsync(String filter, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }

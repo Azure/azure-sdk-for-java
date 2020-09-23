@@ -492,7 +492,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return all the resources for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GenericResourceExpandedInner> listByResourceGroupAsync(
+    private PagedFlux<GenericResourceExpandedInner> listByResourceGroupAsync(
         String resourceGroupName, String filter, String expand, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top, context),
@@ -1308,7 +1308,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return all the resources in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GenericResourceExpandedInner> listAsync(
+    private PagedFlux<GenericResourceExpandedInner> listAsync(
         String filter, String expand, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, expand, top, context),

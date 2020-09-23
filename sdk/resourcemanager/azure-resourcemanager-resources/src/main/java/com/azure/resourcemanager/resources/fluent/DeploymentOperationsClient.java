@@ -501,7 +501,7 @@ public final class DeploymentOperationsClient {
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listAtScopeAsync(
+    private PagedFlux<DeploymentOperationInner> listAtScopeAsync(
         String scope, String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, deploymentName, top, context),
@@ -808,7 +808,7 @@ public final class DeploymentOperationsClient {
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listAtTenantScopeAsync(
+    private PagedFlux<DeploymentOperationInner> listAtTenantScopeAsync(
         String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(deploymentName, top, context),
@@ -1144,7 +1144,7 @@ public final class DeploymentOperationsClient {
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(
+    private PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(
         String groupId, String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, deploymentName, top, context),
@@ -1493,7 +1493,7 @@ public final class DeploymentOperationsClient {
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listAtSubscriptionScopeAsync(
+    private PagedFlux<DeploymentOperationInner> listAtSubscriptionScopeAsync(
         String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtSubscriptionScopeSinglePageAsync(deploymentName, top, context),
@@ -1871,7 +1871,7 @@ public final class DeploymentOperationsClient {
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(
+    private PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(
         String resourceGroupName, String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, deploymentName, top, context),

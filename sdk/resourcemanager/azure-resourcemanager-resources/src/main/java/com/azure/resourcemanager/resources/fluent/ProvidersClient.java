@@ -550,7 +550,7 @@ public final class ProvidersClient {
      * @return all resource providers for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ProviderInner> listAsync(Integer top, String expand, Context context) {
+    private PagedFlux<ProviderInner> listAsync(Integer top, String expand, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(top, expand, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
@@ -729,7 +729,7 @@ public final class ProvidersClient {
      * @return all resource providers for the tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ProviderInner> listAtTenantScopeAsync(Integer top, String expand, Context context) {
+    private PagedFlux<ProviderInner> listAtTenantScopeAsync(Integer top, String expand, Context context) {
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(top, expand, context),
             nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));

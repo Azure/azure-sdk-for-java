@@ -256,7 +256,7 @@ public final class FeatureClient extends AzureServiceClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OperationInner> listOperationsAsync(Context context) {
+    private PagedFlux<OperationInner> listOperationsAsync(Context context) {
         return new PagedFlux<>(
             () -> listOperationsSinglePageAsync(context),
             nextLink -> listOperationsNextSinglePageAsync(nextLink, context));

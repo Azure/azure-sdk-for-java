@@ -827,7 +827,7 @@ public final class TagOperationsClient {
      * @return list of subscription tags.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TagDetailsInner> listAsync(Context context) {
+    private PagedFlux<TagDetailsInner> listAsync(Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }

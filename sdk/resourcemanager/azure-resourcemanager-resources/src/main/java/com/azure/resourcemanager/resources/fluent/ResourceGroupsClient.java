@@ -1329,7 +1329,7 @@ public final class ResourceGroupsClient {
      * @return all the resource groups for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceGroupInner> listAsync(String filter, Integer top, Context context) {
+    private PagedFlux<ResourceGroupInner> listAsync(String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, top, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }

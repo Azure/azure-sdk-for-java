@@ -154,7 +154,7 @@ public final class OperationsClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OperationInner> listAsync(Context context) {
+    private PagedFlux<OperationInner> listAsync(Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
