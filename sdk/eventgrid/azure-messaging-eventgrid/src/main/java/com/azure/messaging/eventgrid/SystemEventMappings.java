@@ -3,6 +3,16 @@
 
 package com.azure.messaging.eventgrid;
 
+import com.azure.messaging.eventgrid.systemevents.ACSChatMemberAddedToThreadWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.ACSChatMemberRemovedFromThreadWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.ACSChatMessageDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ACSChatMessageEditedEventData;
+import com.azure.messaging.eventgrid.systemevents.ACSChatMessageReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.ACSChatThreadCreatedWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.ACSChatThreadPropertiesUpdatedPerUserEventData;
+import com.azure.messaging.eventgrid.systemevents.ACSChatThreadWithUserDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcssmsDeliveryReportReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcssmsReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueModifiedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedEventData;
@@ -335,6 +345,28 @@ public final class SystemEventMappings {
      */
     public static final String STORAGE_BLOB_DELETED_EVENT = "Microsoft.Storage.BlobDeleted";
 
+    // Communication Services events.
+    public static final String COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER =
+        "Microsoft.Communication.ChatMemberAddedToThreadWithUser";
+    public static final String COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER =
+        "Microsoft.Communication.ChatMemberRemovedFromThreadWithUser";
+    public static final String COMMUNICATION_CHAT_MESSAGE_DELETED =
+        "Microsoft.Communication.ChatMessageDeleted";
+    public static final String COMMUNICATION_CHAT_MESSAGE_EDITED =
+        "Microsoft.Communication.ChatMessageEdited";
+    public static final String COMMUNICATION_CHAT_MESSAGE_RECEIVED =
+        "Microsoft.Communication.ChatMessageReceived";
+    public static final String COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER =
+        "Microsoft.Communication.ChatThreadCreatedWithUser";
+    public static final String COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER =
+        "Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser";
+    public static final String COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED =
+        "Microsoft.Communication.ChatThreadWithUserDeleted";
+    public static final String COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED =
+        "Microsoft.Communication.SMSDeliveryReportReceived";
+    public static final String COMMUNICATION_SMS_RECEIVED =
+        "Microsoft.Communication.SMSReceived";
+
     //TODO: When a new service adds an event, add a constant above and a mapping to the corresponding data class below.
 
     private static final Map<String, Class<?>> systemEventMappings = new HashMap<String, Class<?>>() {{
@@ -411,6 +443,18 @@ public final class SystemEventMappings {
         // Storage events.
         put(canonicalizeEventType(STORAGE_BLOB_CREATED_EVENT), StorageBlobCreatedEventData.class);
         put(canonicalizeEventType(STORAGE_BLOB_DELETED_EVENT), StorageBlobDeletedEventData.class);
+
+        // Communication service events.
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER), ACSChatMemberAddedToThreadWithUserEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER), ACSChatMemberRemovedFromThreadWithUserEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MESSAGE_DELETED), ACSChatMessageDeletedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MESSAGE_EDITED), ACSChatMessageEditedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MESSAGE_RECEIVED), ACSChatMessageReceivedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER), ACSChatThreadCreatedWithUserEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER), ACSChatThreadPropertiesUpdatedPerUserEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED), ACSChatThreadWithUserDeletedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED), AcssmsDeliveryReportReceivedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_SMS_RECEIVED), AcssmsReceivedEventData.class);
     }};
 
     /**
