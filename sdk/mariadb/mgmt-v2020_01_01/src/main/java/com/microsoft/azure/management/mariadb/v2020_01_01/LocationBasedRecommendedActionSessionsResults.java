@@ -9,20 +9,21 @@
 package com.microsoft.azure.management.mariadb.v2020_01_01;
 
 import rx.Observable;
-import com.microsoft.azure.management.mariadb.v2020_01_01.implementation.LocationBasedPerformanceTiersInner;
+import com.microsoft.azure.management.mariadb.v2020_01_01.implementation.LocationBasedRecommendedActionSessionsResultsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
- * Type representing LocationBasedPerformanceTiers.
+ * Type representing LocationBasedRecommendedActionSessionsResults.
  */
-public interface LocationBasedPerformanceTiers extends HasInner<LocationBasedPerformanceTiersInner> {
+public interface LocationBasedRecommendedActionSessionsResults extends HasInner<LocationBasedRecommendedActionSessionsResultsInner> {
     /**
-     * List all the performance tiers at specified location in a given subscription.
+     * Recommendation action session operation result.
      *
      * @param locationName The name of the location.
+     * @param operationId The operation identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PerformanceTierProperties> listAsync(String locationName);
+    Observable<RecommendationAction> listAsync(final String locationName, final String operationId);
 
 }
