@@ -56,8 +56,9 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         AzureResourceManager.Authenticated azureAuthed =
-            AzureResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+            AzureResourceManager.authenticate(httpPipeline, profile);
         azureResourceManager = azureAuthed.withDefaultSubscription();
+        setSdkContext(sdkContext, azureResourceManager);
     }
 
     @Override

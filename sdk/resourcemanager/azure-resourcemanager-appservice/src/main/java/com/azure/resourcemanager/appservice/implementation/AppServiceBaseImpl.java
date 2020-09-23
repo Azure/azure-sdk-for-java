@@ -365,7 +365,7 @@ abstract class AppServiceBaseImpl<
     }
 
     private AppServicePlanImpl newDefaultAppServicePlan() {
-        String planName = this.manager().sdkContext().randomResourceName(name() + "plan", 32);
+        String planName = this.manager().resourceManager().sdkContext().randomResourceName(name() + "plan", 32);
         return newDefaultAppServicePlan(planName);
     }
 

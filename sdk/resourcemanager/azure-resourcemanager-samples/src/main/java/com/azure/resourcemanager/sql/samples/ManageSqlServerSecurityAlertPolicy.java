@@ -33,9 +33,9 @@ public class ManageSqlServerSecurityAlertPolicy {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sql", 20);
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("sqlsa", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgsql", 20);
+        final String sqlServerName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("sql", 20);
+        final String storageAccountName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("sqlsa", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgsql", 20);
         final Region region = Region.US_EAST;
         final String dbName = "dbSample";
         final String administratorLogin = "sqladmin3423";

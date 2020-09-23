@@ -48,8 +48,8 @@ public class SamplesTestBase extends ResourceManagerTestBase {
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         azureResourceManager = AzureResourceManager
             .authenticate(httpPipeline, profile)
-            .withSdkContext(sdkContext)
             .withDefaultSubscription();
+        setSdkContext(sdkContext, azureResourceManager);
     }
 
     @Override

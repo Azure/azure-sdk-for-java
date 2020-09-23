@@ -49,13 +49,13 @@ public final class ManageWebAppSourceControl {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws GitAPIException {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
-        final String app4Name       = azureResourceManager.sdkContext().randomResourceName("webapp4-", 20);
-        final String app5Name       = azureResourceManager.sdkContext().randomResourceName("webapp5-", 20);
-        final String app6Name       = azureResourceManager.sdkContext().randomResourceName("webapp6-", 20);
-        final String app7Name       = azureResourceManager.sdkContext().randomResourceName("webapp7-", 20);
+        final String app1Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp1-", 20);
+        final String app2Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp2-", 20);
+        final String app3Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp3-", 20);
+        final String app4Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp4-", 20);
+        final String app5Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp5-", 20);
+        final String app6Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp6-", 20);
+        final String app7Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp7-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
         final String app3Url        = app3Name + suffix;
@@ -63,8 +63,8 @@ public final class ManageWebAppSourceControl {
         final String app5Url        = app5Name + suffix;
         final String app6Url        = app6Name + suffix;
         final String app7Url        = app7Name + suffix;
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
-        final String rg7Name         = azureResourceManager.sdkContext().randomResourceName("rg7NEMV_", 24);
+        final String rgName         = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rg7Name         = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg7NEMV_", 24);
         try {
 
 

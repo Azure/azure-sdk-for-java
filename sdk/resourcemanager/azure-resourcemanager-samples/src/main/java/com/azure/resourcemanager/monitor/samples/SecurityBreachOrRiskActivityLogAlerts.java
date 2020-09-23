@@ -37,8 +37,8 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("saMonitor", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgMonitor", 20);
+        final String storageAccountName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("saMonitor", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgMonitor", 20);
 
         try {
             // ============================================================

@@ -40,15 +40,15 @@ public final class ManageServicePrincipalCredentials {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager.Authenticated authenticated, AzureProfile profile) throws IOException {
-        final String spName         = authenticated.sdkContext().randomResourceName("sp", 20);
-        final String appName        = authenticated.sdkContext().randomResourceName("app", 20);
+        final String spName         = authenticated.roleAssignments().manager().sdkContext().randomResourceName("sp", 20);
+        final String appName        = authenticated.roleAssignments().manager().sdkContext().randomResourceName("app", 20);
         final String appUrl         = "https://" + appName;
-        final String passwordName1  = authenticated.sdkContext().randomResourceName("password", 20);
+        final String passwordName1  = authenticated.roleAssignments().manager().sdkContext().randomResourceName("password", 20);
         final String password1      = "P@ssw0rd";
-        final String passwordName2  = authenticated.sdkContext().randomResourceName("password", 20);
+        final String passwordName2  = authenticated.roleAssignments().manager().sdkContext().randomResourceName("password", 20);
         final String password2      = "StrongP@ss!12";
-        final String certName1      = authenticated.sdkContext().randomResourceName("cert", 20);
-        final String raName         = authenticated.sdkContext().randomUuid();
+        final String certName1      = authenticated.roleAssignments().manager().sdkContext().randomResourceName("cert", 20);
+        final String raName         = authenticated.roleAssignments().manager().sdkContext().randomUuid();
         String servicePrincipalId = "";
         try {
             // ============================================================

@@ -55,8 +55,9 @@ public abstract class SqlServerTest extends ResourceManagerTestBase {
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile, sdkContext);
+        sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile);
         storageManager = StorageManager.authenticate(httpPipeline, profile);
+        setSdkContext(sdkContext, sqlServerManager);
     }
 
     @Override
