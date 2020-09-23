@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2020-09-23)
+## 1.0.0 (2020-09-24)
 
 - Updated class method names.
 - Fixed long-running operation, PUT method, response 201 and Azure-AsyncOperation, succeeded without poll.
