@@ -45,7 +45,8 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
         }
         return Flux.fromIterable(Arrays.asList(tokenCredentials))
             .flatMap(credential -> {
-                String defaultScope = ResourceManagerUtils.getDefaultScopeFromRequest(context.getHttpRequest(), environment);
+                String defaultScope = ResourceManagerUtils.getDefaultScopeFromRequest(
+                    context.getHttpRequest(), environment);
                 return credential.getToken(new TokenRequestContext().addScopes(defaultScope))
                     .map(token -> String.format(SCHEMA_FORMAT, token.getToken()));
             })

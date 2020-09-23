@@ -97,7 +97,7 @@ public final class ResourceManagerUtils {
      * @throws IllegalStateException when no subscription or more than one subscription found
      * @return the only subscription existing in the tenant
      */
-    public static String defaultSubscription(PagedIterable<Subscription> subscriptions) {
+    public static String getDefaultSubscription(PagedIterable<Subscription> subscriptions) {
         List<Subscription> subscriptionList = new ArrayList<>();
         subscriptions.forEach(subscription -> {
             subscriptionList.add(subscription);

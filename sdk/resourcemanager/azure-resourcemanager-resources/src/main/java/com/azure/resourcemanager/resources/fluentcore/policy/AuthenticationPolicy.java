@@ -50,7 +50,8 @@ public class AuthenticationPolicy implements HttpPipelinePolicy {
 
         Mono<AccessToken> tokenResult;
         if (this.scopes == null || this.scopes.length == 0) {
-            String defaultScope = ResourceManagerUtils.getDefaultScopeFromRequest(context.getHttpRequest(), environment);
+            String defaultScope = ResourceManagerUtils.getDefaultScopeFromRequest(
+                context.getHttpRequest(), environment);
             tokenResult = this.credential.getToken(new TokenRequestContext().addScopes(defaultScope));
         } else {
             tokenResult = this.credential.getToken(new TokenRequestContext().addScopes(scopes));

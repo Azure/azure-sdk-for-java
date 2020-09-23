@@ -362,7 +362,7 @@ public final class AzureResourceManager {
         @Override
         public AzureResourceManager withDefaultSubscription() {
             if (subscriptionId == null) {
-                subscriptionId = ResourceManagerUtils.defaultSubscription(this.subscriptions().list());
+                subscriptionId = ResourceManagerUtils.getDefaultSubscription(this.subscriptions().list());
             }
             return new AzureResourceManager(
                 httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);

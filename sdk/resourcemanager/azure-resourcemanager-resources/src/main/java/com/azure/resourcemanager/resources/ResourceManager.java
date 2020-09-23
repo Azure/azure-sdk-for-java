@@ -206,7 +206,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
         @Override
         public ResourceManager withDefaultSubscription() {
             if (profile.getSubscriptionId() == null) {
-                String subscriptionId = ResourceManagerUtils.defaultSubscription(this.subscriptions().list());
+                String subscriptionId = ResourceManagerUtils.getDefaultSubscription(this.subscriptions().list());
                 profile = new AzureProfile(profile.getTenantId(), subscriptionId, profile.getEnvironment());
             }
             return new ResourceManager(httpPipeline, profile, sdkContext);
