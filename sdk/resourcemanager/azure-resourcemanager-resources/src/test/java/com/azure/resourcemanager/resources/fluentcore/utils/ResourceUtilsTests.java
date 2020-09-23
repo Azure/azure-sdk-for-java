@@ -1,21 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.resources;
+package com.azure.resourcemanager.resources.fluentcore.utils;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.time.temporal.ChronoUnit;
 
 public class ResourceUtilsTests {
     @Test
@@ -46,24 +37,10 @@ public class ResourceUtilsTests {
     }
 
     @Test
-    public void canDownloadFile() throws Exception {
-        HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .policies(
-                new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)),
-                new RetryPolicy("Retry-After", ChronoUnit.SECONDS)
-            )
-            .build();
-        byte[] content = Utils.downloadFileAsync("https://www.google.com/humans.txt", httpPipeline).block();
-        String contentString = new String(content);
-        Assertions.assertNotNull(contentString);
-        Assertions.assertTrue(contentString.startsWith("Google is built by a large team of engineers,"));
-    }
-
-    @Test
     public void canGetDefaultScopeFromUrl() throws Exception {
-        Assertions.assertEquals("https://graph.windows.net/.default", Utils.getDefaultScopeFromUrl("https://graph.windows.net/random", AzureEnvironment.AZURE));
-        Assertions.assertEquals("https://vault.azure.net/.default", Utils.getDefaultScopeFromUrl("https://random.vault.azure.net/random", AzureEnvironment.AZURE));
-        Assertions.assertEquals("https://api.applicationinsights.io/.default", Utils.getDefaultScopeFromUrl("https://api.applicationinsights.io/random", AzureEnvironment.AZURE));
-        Assertions.assertEquals("https://api.loganalytics.io/.default", Utils.getDefaultScopeFromUrl("https://api.loganalytics.io/random", AzureEnvironment.AZURE));
+        Assertions.assertEquals("https://graph.windows.net/.default", ResourceManagerUtils.getDefaultScopeFromUrl("https://graph.windows.net/random", AzureEnvironment.AZURE));
+        Assertions.assertEquals("https://vault.azure.net/.default", ResourceManagerUtils.getDefaultScopeFromUrl("https://random.vault.azure.net/random", AzureEnvironment.AZURE));
+        Assertions.assertEquals("https://api.applicationinsights.io/.default", ResourceManagerUtils.getDefaultScopeFromUrl("https://api.applicationinsights.io/random", AzureEnvironment.AZURE));
+        Assertions.assertEquals("https://api.loganalytics.io/.default", ResourceManagerUtils.getDefaultScopeFromUrl("https://api.loganalytics.io/random", AzureEnvironment.AZURE));
     }
 }

@@ -11,7 +11,8 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRouting
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRedirectConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -74,12 +75,12 @@ class ApplicationGatewayRedirectConfigurationImpl
 
     @Override
     public boolean isPathIncluded() {
-        return Utils.toPrimitiveBoolean(this.inner().includePath());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().includePath());
     }
 
     @Override
     public boolean isQueryStringIncluded() {
-        return Utils.toPrimitiveBoolean(this.inner().includeQueryString());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().includeQueryString());
     }
 
     // Verbs

@@ -25,7 +25,7 @@ import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -59,12 +59,12 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
 
     @Override
     public long maxNumberOfRecordSets() {
-        return Utils.toPrimitiveLong(this.inner().maxNumberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().maxNumberOfRecordSets());
     }
 
     @Override
     public long numberOfRecordSets() {
-        return Utils.toPrimitiveLong(this.inner().numberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().numberOfRecordSets());
     }
 
     @Override

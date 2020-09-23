@@ -36,7 +36,7 @@ import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfigu
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
@@ -172,7 +172,8 @@ public class ContainerGroupImpl
                     ShareServiceAsyncClient shareServiceAsyncClient =
                         new ShareServiceClientBuilder()
                             .connectionString(
-                                Utils.getStorageConnectionString(storageAccount.name(), key, manager().environment()))
+                                ResourceManagerUtils.getStorageConnectionString(
+                                    storageAccount.name(), key, manager().environment()))
                             .httpClient(manager().httpPipeline().getHttpClient())
                             .buildAsyncClient();
 

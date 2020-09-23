@@ -4,7 +4,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.ReplicationRole;
@@ -85,7 +85,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
 
     @Override
     public int percentComplete() {
-        return Utils.toPrimitiveInt(this.inner().percentComplete());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().percentComplete());
     }
 
     @Override

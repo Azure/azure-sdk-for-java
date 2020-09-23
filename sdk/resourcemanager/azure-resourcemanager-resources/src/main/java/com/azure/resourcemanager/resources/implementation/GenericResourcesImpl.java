@@ -16,7 +16,7 @@ import com.azure.resourcemanager.resources.models.ResourcesMoveInfo;
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
 import reactor.core.publisher.Mono;
@@ -61,7 +61,7 @@ public final class GenericResourcesImpl
     @Override
     public PagedFlux<GenericResource> listByTagAsync(String resourceGroupName, String tagName, String tagValue) {
         return wrapPageAsync(this.manager().serviceClient().getResources().listByResourceGroupAsync(resourceGroupName,
-                Utils.createOdataFilterForTags(tagName, tagValue), null, null)
+                ResourceManagerUtils.createOdataFilterForTags(tagName, tagValue), null, null)
                 .mapPage(res -> (GenericResourceInner) res));
     }
 

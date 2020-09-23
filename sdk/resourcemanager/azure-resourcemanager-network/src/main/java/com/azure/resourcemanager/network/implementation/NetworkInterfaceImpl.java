@@ -19,11 +19,12 @@ import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -286,7 +287,7 @@ class NetworkInterfaceImpl
 
     @Override
     public boolean isAcceleratedNetworkingEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableAcceleratedNetworking());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enableAcceleratedNetworking());
     }
 
     @Override
@@ -300,7 +301,7 @@ class NetworkInterfaceImpl
 
     @Override
     public boolean isIPForwardingEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableIpForwarding());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enableIpForwarding());
     }
 
     @Override

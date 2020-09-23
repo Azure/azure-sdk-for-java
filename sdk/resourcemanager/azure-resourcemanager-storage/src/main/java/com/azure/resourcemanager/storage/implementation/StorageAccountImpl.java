@@ -5,7 +5,7 @@ package com.azure.resourcemanager.storage.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
 import com.azure.resourcemanager.storage.models.AccessTier;
@@ -180,7 +180,7 @@ class StorageAccountImpl
 
     @Override
     public boolean isHnsEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().isHnsEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().isHnsEnabled());
     }
 
     @Override

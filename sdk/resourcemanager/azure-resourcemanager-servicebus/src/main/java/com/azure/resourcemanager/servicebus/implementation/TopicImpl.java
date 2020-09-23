@@ -6,7 +6,7 @@ package com.azure.resourcemanager.servicebus.implementation;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.inner.TopicResourceInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
@@ -72,32 +72,32 @@ class TopicImpl
 
     @Override
     public long maxSizeInMB() {
-        return Utils.toPrimitiveLong(this.inner().maxSizeInMegabytes());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().maxSizeInMegabytes());
     }
 
     @Override
     public long currentSizeInBytes() {
-        return Utils.toPrimitiveLong(this.inner().sizeInBytes());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().sizeInBytes());
     }
 
     @Override
     public boolean isBatchedOperationsEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableBatchedOperations());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enableBatchedOperations());
     }
 
     @Override
     public boolean isExpressEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableExpress());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enableExpress());
     }
 
     @Override
     public boolean isPartitioningEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enablePartitioning());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enablePartitioning());
     }
 
     @Override
     public boolean isDuplicateDetectionEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().requiresDuplicateDetection());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().requiresDuplicateDetection());
     }
 
     @Override
@@ -131,7 +131,7 @@ class TopicImpl
                 || this.inner().countDetails().activeMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().activeMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().activeMessageCount());
     }
 
     @Override
@@ -140,7 +140,7 @@ class TopicImpl
                 || this.inner().countDetails().deadLetterMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().deadLetterMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().deadLetterMessageCount());
     }
 
     @Override
@@ -149,7 +149,7 @@ class TopicImpl
                 || this.inner().countDetails().scheduledMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().scheduledMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().scheduledMessageCount());
     }
 
     @Override
@@ -158,7 +158,7 @@ class TopicImpl
                 || this.inner().countDetails().transferDeadLetterMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().transferDeadLetterMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().transferDeadLetterMessageCount());
     }
 
     @Override
@@ -167,7 +167,7 @@ class TopicImpl
                 || this.inner().countDetails().transferMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().transferMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().transferMessageCount());
     }
 
     @Override
@@ -175,7 +175,7 @@ class TopicImpl
         if (this.inner().subscriptionCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveInt(this.inner().subscriptionCount());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().subscriptionCount());
     }
 
     @Override

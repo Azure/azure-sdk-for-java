@@ -77,7 +77,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -1446,7 +1446,7 @@ class VirtualMachineImpl
 
     @Override
     public int osDiskSize() {
-        return Utils.toPrimitiveInt(inner().storageProfile().osDisk().diskSizeGB());
+        return ResourceManagerUtils.toPrimitiveInt(inner().storageProfile().osDisk().diskSizeGB());
     }
 
     @Override
@@ -2575,7 +2575,7 @@ class VirtualMachineImpl
                 || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
                 return;
             }
-            boolean enableBD = Utils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
+            boolean enableBD = ResourceManagerUtils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
             if (!enableBD) {
                 return;
             }
@@ -2615,7 +2615,7 @@ class VirtualMachineImpl
                 || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
                 return;
             }
-            boolean enableBD = Utils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
+            boolean enableBD = ResourceManagerUtils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
             if (!enableBD) {
                 return;
             }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.fluent.inner.CertificateInner;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

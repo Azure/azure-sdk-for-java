@@ -18,7 +18,7 @@ import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.net.Inet4Address;
@@ -132,7 +132,7 @@ class AppServiceDomainImpl
 
     @Override
     public boolean privacy() {
-        return Utils.toPrimitiveBoolean(inner().privacy());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().privacy());
     }
 
     @Override
@@ -152,12 +152,12 @@ class AppServiceDomainImpl
 
     @Override
     public boolean autoRenew() {
-        return Utils.toPrimitiveBoolean(inner().autoRenew());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().autoRenew());
     }
 
     @Override
     public boolean readyForDnsRecordManagement() {
-        return Utils.toPrimitiveBoolean(inner().readyForDnsRecordManagement());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().readyForDnsRecordManagement());
     }
 
     @Override

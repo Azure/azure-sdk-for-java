@@ -21,7 +21,7 @@ import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigur
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,7 +53,7 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
     }
 
     public boolean isPrimary() {
-        return Utils.toPrimitiveBoolean(this.inner().primary());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().primary());
     }
 
     @Override

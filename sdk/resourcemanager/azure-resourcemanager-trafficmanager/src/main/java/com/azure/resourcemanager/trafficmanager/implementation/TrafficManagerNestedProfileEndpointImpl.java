@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfileEndpoint;
@@ -24,7 +24,7 @@ class TrafficManagerNestedProfileEndpointImpl extends TrafficManagerEndpointImpl
 
     @Override
     public long minimumChildEndpointCount() {
-        return Utils.toPrimitiveLong(inner().minChildEndpoints());
+        return ResourceManagerUtils.toPrimitiveLong(inner().minChildEndpoints());
     }
 
     @Override

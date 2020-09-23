@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeeri
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionPeeringInner;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,7 +112,7 @@ public class ExpressRouteCrossConnectionImpl
 
     @Override
     public int bandwidthInMbps() {
-        return Utils.toPrimitiveInt(inner().bandwidthInMbps());
+        return ResourceManagerUtils.toPrimitiveInt(inner().bandwidthInMbps());
     }
 
     @Override

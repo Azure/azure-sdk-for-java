@@ -25,7 +25,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,7 +67,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     public int sizeInGB() {
-        return Utils.toPrimitiveInt(this.inner().diskSizeGB());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().diskSizeGB());
     }
 
     @Override

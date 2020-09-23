@@ -6,7 +6,7 @@ import com.azure.resourcemanager.network.models.FlowLogSettings;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
 import com.azure.resourcemanager.network.fluent.inner.FlowLogInformationInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 /** Implementation for {@link FlowLogSettings} and its create and update interfaces. */
@@ -127,21 +127,21 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
 
     @Override
     public boolean enabled() {
-        return Utils.toPrimitiveBoolean(inner().enabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().enabled());
     }
 
     @Override
     public boolean isRetentionEnabled() {
         // will return default values if server response for retention policy was empty
         ensureRetentionPolicy();
-        return Utils.toPrimitiveBoolean(inner().retentionPolicy().enabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().retentionPolicy().enabled());
     }
 
     @Override
     public int retentionDays() {
         // will return default values if server response for retention policy was empty
         ensureRetentionPolicy();
-        return Utils.toPrimitiveInt(inner().retentionPolicy().days());
+        return ResourceManagerUtils.toPrimitiveInt(inner().retentionPolicy().days());
     }
 
     @Override

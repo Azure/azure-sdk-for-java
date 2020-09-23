@@ -8,7 +8,7 @@ import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
 import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SourceControlInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 /**
@@ -48,12 +48,12 @@ class WebAppSourceControlImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     public boolean isManualIntegration() {
-        return Utils.toPrimitiveBoolean(inner().isManualIntegration());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().isManualIntegration());
     }
 
     @Override
     public boolean deploymentRollbackEnabled() {
-        return Utils.toPrimitiveBoolean(inner().deploymentRollbackEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().deploymentRollbackEnabled());
     }
 
     @Override
