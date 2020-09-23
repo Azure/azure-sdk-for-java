@@ -378,20 +378,19 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
-        when(tracer1.start(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class), eq(ProcessKind.SEND))).thenAnswer(
-            invocation -> {
+        when(tracer1.start(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class), eq(ProcessKind.SEND)))
+            .thenAnswer(invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_TRACING_NAMESPACE_VALUE);
                 return passed.addData(PARENT_SPAN_KEY, "value");
-            }
-        );
+            });
+
         when(tracer1.start(eq(AZ_TRACING_SERVICE_NAME + "message"), any(Context.class), eq(ProcessKind.MESSAGE)))
             .thenAnswer(invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_TRACING_NAMESPACE_VALUE);
                 return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
-            }
-        );
+            });
 
         when(tracer1.getSharedSpanBuilder(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class))).thenAnswer(
             invocation -> {
