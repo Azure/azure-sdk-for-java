@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.5 (Unreleased)
+
+
 ## 1.0.0-beta.4 (2020-09-21)
 - Added 4-byte format identifier prefix to serialized payload
 - Updated `module-info` to require `azure-data-schemaregistry` module transitively 

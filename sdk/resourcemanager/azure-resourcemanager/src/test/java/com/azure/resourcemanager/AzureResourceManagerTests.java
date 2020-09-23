@@ -47,7 +47,7 @@ import com.azure.resourcemanager.network.models.VerificationIPFlow;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
@@ -67,6 +67,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -725,7 +726,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     public void testRegions() {
         // Show built-in regions
         System.out.println("Built-in regions list:");
-        int regionsCount = Region.values().length;
+        int regionsCount = Region.values().size();
 
         for (Region region : Region.values()) {
             System.out.println("Name: " + region.name() + ", Label: " + region.label());
@@ -741,7 +742,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         Assertions.assertTrue(region2.name().equalsIgnoreCase("madeUpRegion"));
         Region region3 = Region.fromName("madeupregion");
         Assertions.assertEquals(region3, region2);
-        Assertions.assertEquals(Region.values().length, regionsCount + 1);
+        Assertions.assertEquals(Region.values().size(), regionsCount + 1);
     }
 
     /**
@@ -1322,7 +1323,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         for (String geography : geographies) {
             for (Location location : locations) {
                 if (location.regionType() == RegionType.PHYSICAL) {
-                    if (geography.equals(location.inner().metadata().geographyGroup())) {
+                    if (geography.equals(location.innerModel().metadata().geographyGroup())) {
                         locationGroupByGeography.add(location);
                     }
                 }
@@ -1330,7 +1331,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         }
         for (Location location : locations) {
             if (location.regionType() == RegionType.PHYSICAL) {
-                if (!geographies.contains(location.inner().metadata().geographyGroup())) {
+                if (!geographies.contains(location.innerModel().metadata().geographyGroup())) {
                     locationGroupByGeography.add(location);
                 }
             }
@@ -1338,15 +1339,15 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
 
         for (Location location : locationGroupByGeography) {
             if (location.regionType() == RegionType.PHYSICAL) {
-                Region region = Region.findByLabelOrName(location.name());
+                Region region = findByLabelOrName(location.name());
                 if (region == null) {
                     sb
                         .append("\n").append("/**")
                         .append("\n").append(MessageFormat.format(
                             " * {0} ({1})",
                             location.displayName(),
-                            location.inner().metadata().geographyGroup()))
-                        .append(location.inner().metadata().regionCategory() == RegionCategory.RECOMMENDED
+                            location.innerModel().metadata().geographyGroup()))
+                        .append(location.innerModel().metadata().regionCategory() == RegionCategory.RECOMMENDED
                             ? " (recommended)" : "")
                         .append("\n").append(" */")
                         .append("\n").append(MessageFormat.format(
@@ -1361,8 +1362,19 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         Assertions.assertTrue(sb.length() == 0, sb.toString());
     }
 
+    private static Region findByLabelOrName(String labelOrName) {
+        if (labelOrName == null) {
+            return null;
+        }
+        String nameLowerCase = labelOrName.toLowerCase(Locale.ROOT).replace(" ", "");
+        return Region.values().stream()
+            .filter(r -> nameLowerCase.equals(r.name().toLowerCase(Locale.ROOT)))
+            .findFirst()
+            .orElse(null);
+    }
+
     private static String getLocationVariableName(Location location) {
-        final String geographyGroup = location.inner().metadata().geographyGroup();
+        final String geographyGroup = location.innerModel().metadata().geographyGroup();
         String displayName = location.displayName();
         if ("US".equals(geographyGroup)) {
             if (displayName.contains(" US")) {

@@ -15,11 +15,11 @@ public class DatabaseAccountListReadOnlyKeysResultImpl extends WrapperImpl<Datab
 
     @Override
     public String primaryReadonlyMasterKey() {
-        return this.inner().primaryReadonlyMasterKey();
+        return this.innerModel().primaryReadonlyMasterKey();
     }
 
     @Override
     public String secondaryReadonlyMasterKey() {
-        return this.inner().secondaryReadonlyMasterKey();
+        return this.innerModel().secondaryReadonlyMasterKey();
     }
 }

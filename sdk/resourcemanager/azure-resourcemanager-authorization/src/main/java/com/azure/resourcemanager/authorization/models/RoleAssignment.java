@@ -12,13 +12,13 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 
 /** An immutable client-side representation of an Azure AD role assignment. */
 @Fluent
 public interface RoleAssignment
-    extends Indexable, HasInner<RoleAssignmentInner>, HasId, HasName, HasManager<AuthorizationManager> {
+    extends Indexable, HasInnerModel<RoleAssignmentInner>, HasId, HasName, HasManager<AuthorizationManager> {
     /** @return the role assignment scope */
     String scope();
 

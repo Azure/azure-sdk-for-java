@@ -7,13 +7,13 @@ import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayIpCon
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasSubnet;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** A client-side representation of an virtual network gateway IP configuration. */
 @Fluent
 public interface VirtualNetworkGatewayIpConfiguration
-    extends HasInner<VirtualNetworkGatewayIpConfigurationInner>, ChildResource<VirtualNetworkGateway> {
+    extends HasInnerModel<VirtualNetworkGatewayIpConfigurationInner>, ChildResource<VirtualNetworkGateway> {
     /** @return the resource ID of the virtual network the application gateway is in */
     String networkId();
 
@@ -99,8 +99,8 @@ public interface VirtualNetworkGatewayIpConfiguration
      */
     interface Definition<ParentT>
         extends DefinitionStages.Blank<ParentT>,
-        DefinitionStages.WithAttach<ParentT>,
-        DefinitionStages.WithPublicIPAddress<ParentT> {
+            DefinitionStages.WithAttach<ParentT>,
+            DefinitionStages.WithPublicIPAddress<ParentT> {
     }
 
     /** Grouping of application gateway IP configuration update stages. */

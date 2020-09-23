@@ -7,8 +7,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.resourcemanager.resources.fluent.inner.GenericResourceExpandedInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluent.models.GenericResourceExpandedInner;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.core.management.profile.AzureProfile;
@@ -130,7 +130,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
         Assertions.assertEquals(resourceName, ResourceUtils.nameFromResourceId(resource.id()));
 
         PagedIterable<GenericResourceExpandedInner> resources =
-            genericResources.manager().inner().getResources()
+            genericResources.manager().serviceClient().getResources()
                 .listByResourceGroup(rgName, null, "provisioningState", null);
         Optional<GenericResourceExpandedInner> resourceOpt
             = resources.stream().filter(r -> resourceName.equals(r.name())).findFirst();

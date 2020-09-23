@@ -23,7 +23,7 @@ class ApplicationSecurityGroupImpl
     protected Mono<ApplicationSecurityGroupInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getApplicationSecurityGroups()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -32,19 +32,19 @@ class ApplicationSecurityGroupImpl
     public Mono<ApplicationSecurityGroup> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getApplicationSecurityGroups()
-            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public String resourceGuid() {
-        return inner().resourceGuid();
+        return innerModel().resourceGuid();
     }
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState().toString();
+        return innerModel().provisioningState().toString();
     }
 }

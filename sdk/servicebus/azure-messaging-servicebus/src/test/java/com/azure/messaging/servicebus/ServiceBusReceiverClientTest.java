@@ -24,12 +24,14 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -417,6 +419,18 @@ class ServiceBusReceiverClientTest {
     }
 
     @Test
+    void peekMessageEmptyEntity() {
+        // Arrange
+        when(asyncClient.peekMessage()).thenReturn(Mono.empty());
+
+        // Act
+        final ServiceBusReceivedMessage actual = client.peekMessage();
+
+        // Assert
+        assertNull(actual);
+    }
+
+    @Test
     void peekMessageFromSequence() {
         // Arrange
         final long sequenceNumber = 154;
@@ -431,10 +445,29 @@ class ServiceBusReceiverClientTest {
     }
 
     /**
+     * Verifies there is no error when there are no messages returned.
+     */
+    @Test
+    void peekMessagesEmptyEntity() {
+        // Arrange
+        final int maxMessages = 10;
+        when(asyncClient.peekMessages(maxMessages)).thenReturn(Flux.empty());
+
+        // Act
+        final IterableStream<ServiceBusReceivedMessage> actual = client.peekMessages(maxMessages);
+
+        // Assert
+        assertNotNull(actual);
+
+        final Optional<ServiceBusReceivedMessage> anyMessages = actual.stream().findAny();
+        assertFalse(anyMessages.isPresent());
+    }
+
+    /**
      * Verifies that all requested messages are returned when we can satisfy them all.
      */
     @Test
-    void peekBatchMessagesMax() {
+    void peekMessagesMax() {
         // Arrange
         final int maxMessages = 10;
         Flux<ServiceBusReceivedMessage> messages = Flux.create(sink -> {
@@ -477,7 +510,7 @@ class ServiceBusReceiverClientTest {
      * Verifies that the messages completes when time has elapsed.
      */
     @Test
-    void peekBatchMessagesLessThan() {
+    void peekMessagesLessThan() {
         // Arrange
         final int maxMessages = 10;
         final int returnedMessages = 7;
@@ -521,7 +554,7 @@ class ServiceBusReceiverClientTest {
      * Verifies that all requested messages are returned when we can satisfy them all.
      */
     @Test
-    void peekBatchMessagesMaxSequenceNumber() {
+    void peekMessagesMaxSequenceNumber() {
         // Arrange
         final int maxMessages = 10;
         final long sequenceNumber = 100;

@@ -19,11 +19,11 @@ class ConnectionMonitorQueryResultImpl extends WrapperImpl<ConnectionMonitorQuer
 
     @Override
     public ConnectionMonitorSourceStatus sourceStatus() {
-        return inner().sourceStatus();
+        return innerModel().sourceStatus();
     }
 
     @Override
     public List<ConnectionStateSnapshot> states() {
-        return Collections.unmodifiableList(inner().states());
+        return Collections.unmodifiableList(innerModel().states());
     }
 }

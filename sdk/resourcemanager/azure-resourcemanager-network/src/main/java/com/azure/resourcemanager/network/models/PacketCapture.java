@@ -7,14 +7,14 @@ import com.azure.resourcemanager.network.fluent.inner.PacketCaptureResultInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** Client-side representation of Packet capture object, associated with Network Watcher. */
 @Fluent
-public interface PacketCapture extends HasInner<PacketCaptureResultInner>, HasName, HasId, Indexable {
+public interface PacketCapture extends HasInnerModel<PacketCaptureResultInner>, HasName, HasId, Indexable {
     /** @return the target id value */
     String targetId();
 

@@ -17,7 +17,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -122,7 +122,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                     .create();
 
             System.out.println("Created managed disk holding OS: " + osDisk.id());
-            // Utils.print(osDisk); TODO
+            // ResourceManagerUtils.print(osDisk); TODO
 
             //=============================================================
             // Create Managed disks from the Data VHDs
@@ -144,7 +144,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                 dataDisks.add(dataDisk);
 
                 System.out.println("Created managed disk holding data: " + dataDisk.id());
-                // Utils.print(dataDisk); TODO
+                // ResourceManagerUtils.print(dataDisk); TODO
                 i++;
             }
 

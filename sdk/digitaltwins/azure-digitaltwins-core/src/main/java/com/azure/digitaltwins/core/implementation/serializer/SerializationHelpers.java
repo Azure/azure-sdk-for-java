@@ -1,7 +1,11 @@
 package com.azure.digitaltwins.core.implementation.serializer;
 
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerEncoding;
+
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Encodes the continuation token as a json encoded string
@@ -19,8 +23,8 @@ public class SerializationHelpers {
         try {
             return new JacksonAdapter().serialize(continuationToken, SerializerEncoding.JSON);
         }
-        catch (Exception e){
-            throw new IllegalArgumentException("Invalid continuation token");
+        catch (Exception e) {
+            throw new IllegalArgumentException("Invalid continuation token", e);
         }
     }
 }

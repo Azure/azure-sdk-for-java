@@ -28,8 +28,7 @@ public class EventRoutesTest extends EventRoutesTestBase {
         String eventRouteId = testResourceNamer.randomUuid();
 
         // CREATE
-        EventRoute eventRouteToCreate = new EventRoute();
-        eventRouteToCreate.setEndpointName(EVENT_ROUTE_ENDPOINT_NAME);
+        EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter(FILTER);
         client.createEventRoute(eventRouteId, eventRouteToCreate);
 
@@ -71,8 +70,7 @@ public class EventRoutesTest extends EventRoutesTestBase {
     public void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         String eventRouteId = testResourceNamer.randomUuid();
-        EventRoute eventRouteToCreate = new EventRoute();
-        eventRouteToCreate.setEndpointName(EVENT_ROUTE_ENDPOINT_NAME);
+        EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter("this is not a valid filter");
 
         assertRestException(() -> client.createEventRoute(eventRouteId, eventRouteToCreate), HttpURLConnection.HTTP_BAD_REQUEST);

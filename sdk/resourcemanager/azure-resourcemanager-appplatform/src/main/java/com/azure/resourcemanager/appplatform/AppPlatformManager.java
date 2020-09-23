@@ -17,7 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure App Platform management. */
-public final class AppPlatformManager extends Manager<AppPlatformManager, AppPlatformManagementClient> {
+public final class AppPlatformManager extends Manager<AppPlatformManagementClient> {
     // Collections
     private SpringServices springServices;
     /**

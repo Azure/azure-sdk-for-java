@@ -15,7 +15,7 @@ import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 
 import java.util.Map;
 

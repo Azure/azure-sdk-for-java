@@ -3,10 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import org.apache.qpid.proton.amqp.Binary;
@@ -207,35 +204,6 @@ public final class MessageUtils {
      */
     public static long toPrimitive(Long value) {
         return value != null ? value : 0L;
-    }
-
-    /**
-     * Creates an exception given the error condition and context.
-     *
-     * @param errorCondition Error condition for the AMQP exception.
-     * @param errorContext AMQP context it occurred in.
-     *
-     * @return Corresponding {@link Throwable} for the error condition.
-     */
-    static Throwable toException(ErrorCondition errorCondition, AmqpErrorContext errorContext) {
-        final Symbol condition = errorCondition.getCondition();
-        final String description = errorCondition.getDescription();
-
-        try {
-            return ExceptionUtil.toException(condition.toString(), description, errorContext);
-        } catch (IllegalArgumentException ignored) {
-            final ServiceBusErrorCondition error = ServiceBusErrorCondition.fromString(condition.toString());
-
-            return toException(error, description, errorContext);
-        }
-    }
-
-    static Throwable toException(ServiceBusErrorCondition errorCondition, String description,
-        AmqpErrorContext errorContext) {
-
-        final boolean isTransient = errorCondition.isTransient();
-        final String message = String.format("condition[%s]: %s", errorCondition.toString(), description);
-        return new AmqpException(isTransient, message, errorContext);
     }
 
     private static byte[] reorderBytes(byte[] javaBytes) {

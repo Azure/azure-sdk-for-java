@@ -32,7 +32,7 @@ class AppServiceCertificateKeyVaultBindingImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
@@ -40,9 +40,9 @@ class AppServiceCertificateKeyVaultBindingImpl
         final AppServiceCertificateKeyVaultBinding self = this;
         return parent
             .manager()
-            .inner()
+            .serviceClient()
             .getAppServiceCertificateOrders()
-            .createOrUpdateCertificateAsync(parent.resourceGroupName(), parent.name(), name(), inner())
+            .createOrUpdateCertificateAsync(parent.resourceGroupName(), parent.name(), name(), innerModel())
             .map(
                 appServiceCertificateInner -> {
                     setInner(appServiceCertificateInner);
@@ -52,24 +52,24 @@ class AppServiceCertificateKeyVaultBindingImpl
 
     @Override
     public String keyVaultId() {
-        return inner().keyVaultId();
+        return innerModel().keyVaultId();
     }
 
     @Override
     public String keyVaultSecretName() {
-        return inner().keyVaultSecretName();
+        return innerModel().keyVaultSecretName();
     }
 
     @Override
     public KeyVaultSecretStatus provisioningState() {
-        return inner().provisioningState();
+        return innerModel().provisioningState();
     }
 
     @Override
     protected Mono<AppServiceCertificateResourceInner> getInnerAsync() {
         return parent
             .manager()
-            .inner()
+            .serviceClient()
             .getAppServiceCertificateOrders()
             .getCertificateAsync(parent.resourceGroupName(), parent.name(), name());
     }

@@ -24,7 +24,7 @@ import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 
@@ -202,7 +202,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
                         .append("\n\t\t\tHTTP configuration name: ")
                         .append(backendConfigHealth.name())
                         .append("\n\t\t\tServers: ")
-                        .append(backendConfigHealth.inner().servers().size());
+                        .append(backendConfigHealth.innerModel().servers().size());
                     Assertions.assertNotNull(backendConfigHealth.backendHttpConfiguration());
                     for (ApplicationGatewayBackendServerHealth serverHealth
                         : backendConfigHealth.serverHealths().values()) {

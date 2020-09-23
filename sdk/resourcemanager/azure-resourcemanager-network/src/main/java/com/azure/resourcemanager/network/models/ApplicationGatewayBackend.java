@@ -5,14 +5,14 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.Collection;
 
 /** A client-side representation of an application gateway backend. */
 @Fluent()
 public interface ApplicationGatewayBackend
-    extends HasInner<ApplicationGatewayBackendAddressPool>, ChildResource<ApplicationGateway>, HasBackendNics {
+    extends HasInnerModel<ApplicationGatewayBackendAddressPool>, ChildResource<ApplicationGateway>, HasBackendNics {
 
     /** @return addresses on the backend of the application gateway */
     Collection<ApplicationGatewayBackendAddress> addresses();
