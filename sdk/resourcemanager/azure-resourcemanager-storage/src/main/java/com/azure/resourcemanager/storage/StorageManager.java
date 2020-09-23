@@ -64,19 +64,7 @@ public final class StorageManager extends Manager<StorageManagementClient> {
      * @return the StorageManager
      */
     public static StorageManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of StorageManager that exposes storage resource management API entry points.
-     *
-     * @param httpPipeline the RestClient to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the StorageManager
-     */
-    public static StorageManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new StorageManager(httpPipeline, profile, sdkContext);
+        return new StorageManager(httpPipeline, profile, new SdkContext());
     }
 
     /** The interface allowing configurations to be set. */
