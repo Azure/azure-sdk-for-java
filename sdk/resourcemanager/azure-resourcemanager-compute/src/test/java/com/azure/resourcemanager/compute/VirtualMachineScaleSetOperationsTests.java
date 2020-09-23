@@ -44,12 +44,12 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
@@ -114,7 +114,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         if (isPlaybackMode()) {
             fileUri = new URI("http://nonexisting.blob.core.windows.net/scripts/install_apache.sh");
         } else {
-            final String storageConnectionString = Utils.getStorageConnectionString(
+            final String storageConnectionString = ResourceManagerUtils.getStorageConnectionString(
                 storageAccount.name(), storageAccountKey, storageManager.environment());
             // Get the script to upload
             //

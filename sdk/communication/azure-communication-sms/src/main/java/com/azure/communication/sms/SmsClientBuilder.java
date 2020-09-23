@@ -1,0 +1,189 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.communication.sms;
+
+import com.azure.communication.common.CommunicationClientCredential;
+import com.azure.communication.common.HmacAuthenticationPolicy;
+import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
+import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImplBuilder;
+import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.Configuration;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * SmsClientBuilder that creates SmsAsyncClient and SmsClient.
+ */
+@ServiceClientBuilder(serviceClients = {SmsClient.class, SmsAsyncClient.class})
+public final class SmsClientBuilder {
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private static final String APP_CONFIG_PROPERTIES = "azure-communication-sms.properties";
+
+    private String endpoint;
+    private CommunicationClientCredential credential;
+    private HttpClient httpClient;
+    private HttpPipeline pipeline;
+    private final Configuration configuration = Configuration.getGlobalConfiguration().clone();    
+    private final Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);    
+    private final HttpLogOptions httpLogOptions = new HttpLogOptions();
+    private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
+
+    /**
+     * Set endpoint of the service
+     *
+     * @param endpoint url of the service
+     * @return SmsClientBuilder
+     */
+    public SmsClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
+
+    /**
+     * Set endpoint of the service
+     *
+     * @param pipeline HttpPipeline to use, if a pipeline is not
+     * supplied, the credential and httpClient fields must be set
+     * @return SmsClientBuilder
+     */
+    public SmsClientBuilder pipeline(HttpPipeline pipeline) {
+        this.pipeline = pipeline;
+        return this;
+    }
+
+    /**
+     * Set credential to use
+     *
+     * @param credential credential for signing, overridden by the
+     * pipeline field.
+     * @return SmsClientBuilder
+     */
+    public SmsClientBuilder credential(CommunicationClientCredential credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
+     * Set httpClient to use
+     *
+     * @param httpClient httpClient to use, overridden by the pipeline
+     * field.
+     * @return SmsClientBuilder
+     */
+    public SmsClientBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    /**
+     * Apply additional HttpPipelinePolicy
+     *
+     * @param customPolicy HttpPipelinePolicy object to be applied after
+     *                       AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
+     * @return SmsClientBuilder
+     */
+    public SmsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        this.customPolicies.add(customPolicy);
+        return this;
+    }
+
+    /**
+     * Create asynchronous client applying HMACAuthenticationPolicy, UserAgentPolicy,
+     * RetryPolicy, and CookiePolicy.
+     * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     *
+     * @return SmsAsyncClient instance
+     */
+    public SmsAsyncClient buildAsyncClient() {
+        return new SmsAsyncClient(createServiceImpl());
+    }
+
+    /**
+     * Create synchronous client applying HmacAuthenticationPolicy, UserAgentPolicy,
+     * RetryPolicy, and CookiePolicy.
+     * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     *
+     * @return SmsClient instance
+     */
+    public SmsClient buildClient() {
+        return new SmsClient(buildAsyncClient());
+    }
+
+    private AzureCommunicationSMSServiceImpl createServiceImpl() {
+        Objects.requireNonNull(endpoint);
+
+        if (this.pipeline == null) {
+            Objects.requireNonNull(credential);
+            Objects.requireNonNull(httpClient);
+        }
+
+        HttpPipeline builderPipeline = this.pipeline;
+        if (this.pipeline == null) {
+            HttpPipelinePolicy[] customPolicyArray = null;
+            if (customPolicies.size() > 0) {
+                customPolicyArray = new HttpPipelinePolicy[customPolicies.size()];
+                customPolicyArray = customPolicies.toArray(customPolicyArray);
+            }
+    
+            HmacAuthenticationPolicy hmacAuthenticationPolicy = new HmacAuthenticationPolicy(credential);            
+            builderPipeline = createHttpPipeline(httpClient,
+                hmacAuthenticationPolicy,
+                customPolicyArray);
+        }
+
+        AzureCommunicationSMSServiceImplBuilder clientBuilder = new AzureCommunicationSMSServiceImplBuilder();
+        clientBuilder.endpoint(endpoint)
+            .pipeline(builderPipeline);
+        
+        return clientBuilder.buildClient();
+    }
+
+    private HttpPipeline createHttpPipeline(HttpClient httpClient,
+                                            HttpPipelinePolicy authorizationPolicy,
+                                            HttpPipelinePolicy[] additionalPolicies) {
+
+        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[4];
+        if (additionalPolicies != null) {
+            policies = new HttpPipelinePolicy[4 + additionalPolicies.length];
+            applyAdditionalPolicies(policies, additionalPolicies);
+        }
+        policies[0] = authorizationPolicy;
+        applyRequirePolicies(policies);
+
+        return new HttpPipelineBuilder()
+            .policies(policies)
+            .httpClient(httpClient)
+            .build();
+    }
+
+    private void applyRequirePolicies(HttpPipelinePolicy[] policies) {
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+
+        policies[1] = new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, configuration);
+        policies[2] = new RetryPolicy();
+        policies[3] = new CookiePolicy();
+    }
+
+    private void applyAdditionalPolicies(HttpPipelinePolicy[] policies,
+                                         HttpPipelinePolicy[] customPolicies) {
+        for (int i = 0; i < customPolicies.length; i++) {
+            policies[4 + i] = customPolicies[i];
+
+        }
+    }    
+}

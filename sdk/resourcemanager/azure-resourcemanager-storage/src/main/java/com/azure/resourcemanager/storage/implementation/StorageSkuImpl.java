@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.storage.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.Restriction;
 import com.azure.resourcemanager.storage.models.SkuCapability;
@@ -86,7 +86,7 @@ class StorageSkuImpl implements StorageSku {
     }
 
     @Override
-    public SkuInformationInner inner() {
+    public SkuInformationInner innerModel() {
         return this.inner;
     }
 }

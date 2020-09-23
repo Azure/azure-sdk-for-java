@@ -24,12 +24,12 @@ class RedisPatchScheduleImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public List<ScheduleEntry> scheduleEntries() {
-        return Collections.unmodifiableList(this.inner().scheduleEntries());
+        return Collections.unmodifiableList(this.innerModel().scheduleEntries());
     }
 
     @Override
@@ -38,13 +38,13 @@ class RedisPatchScheduleImpl
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getPatchSchedules()
             .createOrUpdateAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 DefaultName.DEFAULT,
-                this.inner().scheduleEntries())
+                this.innerModel().scheduleEntries())
             .map(
                 patchScheduleInner -> {
                     self.setInner(patchScheduleInner);
@@ -62,7 +62,7 @@ class RedisPatchScheduleImpl
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getPatchSchedules()
             .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), DefaultName.DEFAULT);
     }
@@ -72,7 +72,7 @@ class RedisPatchScheduleImpl
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getPatchSchedules()
             .getAsync(this.parent().resourceGroupName(), this.parent().name(), DefaultName.DEFAULT);
     }

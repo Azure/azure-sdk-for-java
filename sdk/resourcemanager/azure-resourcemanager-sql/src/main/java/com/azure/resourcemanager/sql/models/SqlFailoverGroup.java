@@ -6,7 +6,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.sql.fluent.inner.FailoverGroupInner;
@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface SqlFailoverGroup
     extends Resource,
-        HasInner<FailoverGroupInner>,
+        HasInnerModel<FailoverGroupInner>,
         HasResourceGroup,
         Refreshable<SqlFailoverGroup>,
         Updatable<SqlFailoverGroup.Update> {

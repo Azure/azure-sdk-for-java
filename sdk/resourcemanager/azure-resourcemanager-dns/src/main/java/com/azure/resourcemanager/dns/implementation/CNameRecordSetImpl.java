@@ -19,8 +19,8 @@ class CNameRecordSetImpl extends DnsRecordSetImpl implements CNameRecordSet {
 
     @Override
     public String canonicalName() {
-        if (this.inner().cnameRecord() != null) {
-            return this.inner().cnameRecord().cname();
+        if (this.innerModel().cnameRecord() != null) {
+            return this.innerModel().cnameRecord().cname();
         }
         return null;
     }

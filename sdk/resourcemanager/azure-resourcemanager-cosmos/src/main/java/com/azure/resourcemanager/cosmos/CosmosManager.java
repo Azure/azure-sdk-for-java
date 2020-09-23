@@ -17,7 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure compute resource management. */
-public final class CosmosManager extends Manager<CosmosManager, CosmosDBManagementClient> {
+public final class CosmosManager extends Manager<CosmosDBManagementClient> {
     private CosmosDBAccountsImpl databaseAccounts;
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.

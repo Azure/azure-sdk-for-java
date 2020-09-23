@@ -91,8 +91,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.resources.models.Deployments;
 import com.azure.resourcemanager.resources.models.Features;
 import com.azure.resourcemanager.resources.models.GenericResources;
@@ -362,7 +362,7 @@ public final class AzureResourceManager {
         @Override
         public AzureResourceManager withDefaultSubscription() {
             if (subscriptionId == null) {
-                subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
+                subscriptionId = ResourceManagerUtils.getDefaultSubscription(this.subscriptions().list());
             }
             return new AzureResourceManager(
                 httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);

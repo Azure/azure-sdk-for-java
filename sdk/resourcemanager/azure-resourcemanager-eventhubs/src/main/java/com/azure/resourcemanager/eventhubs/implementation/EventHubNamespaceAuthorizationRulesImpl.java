@@ -25,7 +25,7 @@ public final class EventHubNamespaceAuthorizationRulesImpl
     implements EventHubNamespaceAuthorizationRules {
 
     public EventHubNamespaceAuthorizationRulesImpl(EventHubsManager manager) {
-        super(manager, manager.inner().getNamespaces());
+        super(manager, manager.serviceClient().getNamespaces());
     }
 
     @Override
@@ -50,7 +50,7 @@ public final class EventHubNamespaceAuthorizationRulesImpl
     @Override
     public Mono<EventHubNamespaceAuthorizationRule> getByNameAsync(
         String resourceGroupName, String namespaceName, String name) {
-        return this.inner().getAuthorizationRuleAsync(resourceGroupName,
+        return this.innerModel().getAuthorizationRuleAsync(resourceGroupName,
             namespaceName,
             name)
             .map(this::wrapModel);
@@ -59,7 +59,7 @@ public final class EventHubNamespaceAuthorizationRulesImpl
     @Override
     public PagedIterable<EventHubNamespaceAuthorizationRule> listByNamespace(
         final String resourceGroupName, final String namespaceName) {
-        return inner()
+        return innerModel()
             .listAuthorizationRules(resourceGroupName, namespaceName)
             .mapPage(this::wrapModel);
     }
@@ -67,7 +67,7 @@ public final class EventHubNamespaceAuthorizationRulesImpl
     @Override
     public PagedFlux<EventHubNamespaceAuthorizationRule> listByNamespaceAsync(
         String resourceGroupName, String namespaceName) {
-        return this.inner()
+        return this.innerModel()
             .listAuthorizationRulesAsync(resourceGroupName, namespaceName)
             .mapPage(this::wrapModel);
     }
@@ -84,7 +84,7 @@ public final class EventHubNamespaceAuthorizationRulesImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String name) {
-        return this.inner().deleteAuthorizationRuleAsync(resourceGroupName,
+        return this.innerModel().deleteAuthorizationRuleAsync(resourceGroupName,
                 namespaceName,
                 name);
     }

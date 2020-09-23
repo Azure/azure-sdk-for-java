@@ -16,7 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure private DNS zone management. */
-public final class PrivateDnsZoneManager extends Manager<PrivateDnsZoneManager, PrivateDnsManagementClient> {
+public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementClient> {
 
     private PrivateDnsZones privateZones;
 

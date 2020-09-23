@@ -27,41 +27,41 @@ public class SqlSubscriptionUsageMetricImpl
 
     @Override
     protected Mono<SubscriptionUsageInner> getInnerAsync() {
-        return this.sqlServerManager.inner().getSubscriptionUsages().getAsync(this.location, this.name());
+        return this.sqlServerManager.serviceClient().getSubscriptionUsages().getAsync(this.location, this.name());
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public String displayName() {
-        return this.inner().displayName();
+        return this.innerModel().displayName();
     }
 
     @Override
     public double currentValue() {
-        return this.inner().currentValue() != null ? this.inner().currentValue() : 0;
+        return this.innerModel().currentValue() != null ? this.innerModel().currentValue() : 0;
     }
 
     @Override
     public double limit() {
-        return this.inner().limit() != null ? this.inner().limit() : 0;
+        return this.innerModel().limit() != null ? this.innerModel().limit() : 0;
     }
 
     @Override
     public String unit() {
-        return this.inner().unit();
+        return this.innerModel().unit();
     }
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 }

@@ -17,7 +17,7 @@ public class AutoscaleSettingsImpl
     implements AutoscaleSettings {
 
     public AutoscaleSettingsImpl(final MonitorManager monitorManager) {
-        super(monitorManager.inner().getAutoscaleSettings(), monitorManager);
+        super(monitorManager.serviceClient().getAutoscaleSettings(), monitorManager);
     }
 
     @Override

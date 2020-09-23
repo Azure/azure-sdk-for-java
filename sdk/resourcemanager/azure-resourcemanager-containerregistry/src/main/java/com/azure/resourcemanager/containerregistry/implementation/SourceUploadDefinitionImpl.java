@@ -21,11 +21,11 @@ public class SourceUploadDefinitionImpl extends WrapperImpl<SourceUploadDefiniti
 
     @Override
     public String uploadUrl() {
-        return this.inner().uploadUrl();
+        return this.innerModel().uploadUrl();
     }
 
     @Override
     public String relativePath() {
-        return this.inner().relativePath();
+        return this.innerModel().relativePath();
     }
 }

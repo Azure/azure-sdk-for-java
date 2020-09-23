@@ -24,7 +24,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - [Table of contents](#table-of-contents)
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Including the package](#including-the-package)
+  - [Include the package](#include-the-package)
   - [Authenticate the client](#authenticate-the-client)
     - [Create an Event Hub producer using a connection string](#create-an-event-hub-producer-using-a-connection-string)
     - [Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
@@ -37,7 +37,6 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
   - [Enable client logging](#enable-client-logging)
   - [Enable AMQP transport logging](#enable-amqp-transport-logging)
   - [Exceptions](#exceptions)
-  - [Default SSL library](#default-ssl-library)
 - [Next steps](#next-steps)
 - [Contributing](#contributing)
 

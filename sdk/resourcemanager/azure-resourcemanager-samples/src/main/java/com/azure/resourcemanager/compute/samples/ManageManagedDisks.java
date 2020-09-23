@@ -9,11 +9,11 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.compute.models.SnapshotSkuType;
 import com.azure.resourcemanager.samples.Utils;
 import com.jcraft.jsch.JSchException;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
-import com.azure.resourcemanager.compute.models.DiskSkuTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.Snapshot;
@@ -27,7 +27,7 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.samples.SSHShell;
 
 import java.io.IOException;
@@ -261,7 +261,7 @@ public final class ManageManagedDisks {
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withDataFromDisk(dataDisks.get(0))
-                    .withSku(DiskSkuTypes.STANDARD_LRS)
+                    .withSku(SnapshotSkuType.STANDARD_LRS)
                     .create();
 
             System.out.println("Created managed data snapshot [from managed data disk]");

@@ -20,16 +20,16 @@ public class CheckNameAvailabilityResultImpl extends WrapperImpl<RegistryNameSta
 
     @Override
     public boolean isAvailable() {
-        return inner().nameAvailable();
+        return innerModel().nameAvailable();
     }
 
     @Override
     public String unavailabilityReason() {
-        return inner().reason();
+        return innerModel().reason();
     }
 
     @Override
     public String unavailabilityMessage() {
-        return inner().message();
+        return innerModel().message();
     }
 }
