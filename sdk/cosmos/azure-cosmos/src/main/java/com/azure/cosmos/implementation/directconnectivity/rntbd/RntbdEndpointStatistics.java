@@ -11,6 +11,7 @@ import java.io.IOException;
 
 @JsonSerialize(using = RntbdEndpointStatistics.RntbdEndpointStatsJsonSerializer.class)
 public class RntbdEndpointStatistics {
+
     RntbdEndpointStatistics availableChannels(int availableChannels) {
         this.availableChannels = availableChannels;
         return this;
@@ -31,10 +32,16 @@ public class RntbdEndpointStatistics {
         return this;
     }
 
+    RntbdEndpointStatistics closed(boolean closed) {
+        this.closed = closed;
+        return this;
+    }
+
     private int availableChannels;
     private int acquiredChannels;
     private int executorTaskQueueSize;
     private int inflightRequests;
+    private boolean closed;
 
     public static class RntbdEndpointStatsJsonSerializer extends com.fasterxml.jackson.databind.JsonSerializer<RntbdEndpointStatistics> {
         @Override
@@ -42,6 +49,7 @@ public class RntbdEndpointStatistics {
                               JsonGenerator writer,
                               SerializerProvider serializerProvider) throws IOException {
             writer.writeStartObject();
+            writer.writeBooleanField("isClosed", stats.closed);
             writer.writeNumberField("availableChannels", stats.availableChannels);
             writer.writeNumberField("acquiredChannels", stats.acquiredChannels);
             writer.writeNumberField("executorTaskQueueSize", stats.executorTaskQueueSize);

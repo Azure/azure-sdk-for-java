@@ -257,6 +257,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .availableChannels(this.channelsAvailableMetric())
             .acquiredChannels(this.channelsAcquiredMetric())
             .executorTaskQueueSize(this.executorTaskQueueMetrics())
+            .closed(this.closed.get())
             .inflightRequests(concurrentRequestSnapshot);
         return stats;
     }
