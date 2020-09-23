@@ -48,6 +48,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             "stage");
 
     private final RntbdRequestArgs args;
+    private volatile RntbdEndpointStatistics serviceEndpointStatistics;
 
     private volatile int requestLength;
     private volatile int responseLength;
@@ -175,6 +176,14 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
     public Instant timeSent() {
         return this.timeSent;
+    }
+
+    public void serviceEndpointStatistics(RntbdEndpointStatistics endpointMetrics) {
+        this.serviceEndpointStatistics = endpointMetrics;
+    }
+
+    public RntbdEndpointStatistics serviceEndpointStatistics() {
+        return this.serviceEndpointStatistics;
     }
 
     public long transportRequestId() {

@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -137,6 +138,17 @@ public final class BridgeInternal {
     public static <E extends CosmosException> E setResourceAddress(E e, String resourceAddress) {
         e.setResourceAddress(resourceAddress);
         return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setServiceEndpointStatistics(E e, RntbdEndpointStatistics rntbdEndpointStatistics) {
+        e.setRntbdServiceEndpointStatistics(rntbdEndpointStatistics);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> RntbdEndpointStatistics getServiceEndpointStatistics(E e) {
+        return e.getRntbdServiceEndpointStatistics();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

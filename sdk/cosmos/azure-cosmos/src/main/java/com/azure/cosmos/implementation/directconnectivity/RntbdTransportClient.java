@@ -167,6 +167,7 @@ public final class RntbdTransportClient extends TransportClient {
             if (response != null) {
                 RequestTimeline timeline = record.takeTimelineSnapshot();
                 response.setRequestTimeline(timeline);
+                response.setEndpointStats(record.serviceEndpointStatistics());
             }
 
         })).onErrorMap(throwable -> {
@@ -188,7 +189,10 @@ public final class RntbdTransportClient extends TransportClient {
                     address.toString());
             }
 
-            return error;
+            CosmosException cosmosException = (CosmosException) error;
+            BridgeInternal.setServiceEndpointStatistics(cosmosException, record.serviceEndpointStatistics());
+
+            return cosmosException;
 
         });
 

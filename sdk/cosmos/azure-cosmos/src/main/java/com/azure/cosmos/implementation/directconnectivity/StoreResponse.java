@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,7 @@ public class StoreResponse {
 
     private CosmosDiagnostics cosmosDiagnostics;
     private RequestTimeline requestTimeline;
+    private RntbdEndpointStatistics rntbdEndpointStatistics;
 
     public StoreResponse(
             int status,
@@ -109,6 +111,14 @@ public class StoreResponse {
 
     RequestTimeline getRequestTimeline() {
         return this.requestTimeline;
+    }
+
+    void setEndpointStats(RntbdEndpointStatistics rntbdEndpointStatistics) {
+        this.rntbdEndpointStatistics = rntbdEndpointStatistics;
+    }
+
+    RntbdEndpointStatistics getEndpointStsts() {
+        return this.rntbdEndpointStatistics;
     }
 
     int getSubStatusCode() {

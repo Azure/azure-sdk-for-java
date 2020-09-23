@@ -222,13 +222,16 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         int concurrentRequestSnapshot = this.concurrentRequests.incrementAndGet();
 
+        RntbdEndpointStatistics stat = endpointMetricsSnapshot(concurrentRequestSnapshot);
+        
         if (concurrentRequestSnapshot > this.maxConcurrentRequests) {
             try {
-                return FailFastRntbdRequestRecord.createAndFailFast(
+                FailFastRntbdRequestRecord requestRecord = FailFastRntbdRequestRecord.createAndFailFast(
                     args,
                     concurrentRequestSnapshot,
                     metrics,
                     remoteAddress);
+                requestRecord.serviceEndpointStatistics(stat);
             }
             finally {
                 concurrentRequests.decrementAndGet();
@@ -238,6 +241,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.lastRequestNanoTime.set(args.nanoTimeCreated());
 
         final RntbdRequestRecord record = this.write(args);
+        record.serviceEndpointStatistics(stat);
 
         record.whenComplete((response, error) -> {
             this.concurrentRequests.decrementAndGet();
@@ -245,6 +249,15 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         });
 
         return record;
+    }
+
+    private RntbdEndpointStatistics endpointMetricsSnapshot(int concurrentRequestSnapshot) {
+        RntbdEndpointStatistics stats = new RntbdEndpointStatistics()
+            .availableChannels(this.channelsAvailableMetric())
+            .acquiredChannels(this.channelsAcquiredMetric())
+            .executorTaskQueueSize(this.executorTaskQueueMetrics())
+            .inflightRequests(concurrentRequestSnapshot);
+        return stats;
     }
 
     @Override

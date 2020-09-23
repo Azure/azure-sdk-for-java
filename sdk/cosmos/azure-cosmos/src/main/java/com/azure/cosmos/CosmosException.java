@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.CosmosError;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
@@ -39,13 +40,13 @@ public class CosmosException extends AzureException {
     private static final long serialVersionUID = 1L;
 
     private final static String USER_AGENT = Utils.getUserAgent();
-
     private final int statusCode;
     private final Map<String, String> responseHeaders;
 
     private CosmosDiagnostics cosmosDiagnostics;
     private final RequestTimeline requestTimeline;
     private CosmosError cosmosError;
+    private RntbdEndpointStatistics rntbdEndpointStatistics;
 
     long lsn;
     String partitionKeyRangeId;
@@ -301,5 +302,13 @@ public class CosmosException extends AzureException {
 
     void setResourceAddress(String resourceAddress) {
         this.resourceAddress = resourceAddress;
+    }
+    
+    void setRntbdServiceEndpointStatistics(RntbdEndpointStatistics rntbdEndpointStatistics) {
+        this.rntbdEndpointStatistics = rntbdEndpointStatistics;
+    }
+
+    RntbdEndpointStatistics getRntbdServiceEndpointStatistics() {
+        return this.rntbdEndpointStatistics;
     }
 }
