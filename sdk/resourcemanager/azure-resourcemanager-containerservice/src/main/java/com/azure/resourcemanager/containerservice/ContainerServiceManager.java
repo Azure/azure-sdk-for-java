@@ -18,7 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure Container Service management. */
 public final class ContainerServiceManager
-    extends Manager<ContainerServiceManager, ContainerServiceManagementClient> {
+    extends Manager<ContainerServiceManagementClient> {
     // The service managers
     private KubernetesClustersImpl kubernetesClusters;
 

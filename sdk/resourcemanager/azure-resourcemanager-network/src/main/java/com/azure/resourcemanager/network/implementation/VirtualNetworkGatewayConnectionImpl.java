@@ -15,7 +15,8 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionT
 import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.Collection;
 import java.util.Collections;
 import reactor.core.publisher.Mono;
@@ -80,7 +81,7 @@ public class VirtualNetworkGatewayConnectionImpl
 
     @Override
     public int routingWeight() {
-        return Utils.toPrimitiveInt(inner().routingWeight());
+        return ResourceManagerUtils.toPrimitiveInt(inner().routingWeight());
     }
 
     @Override
@@ -100,12 +101,12 @@ public class VirtualNetworkGatewayConnectionImpl
 
     @Override
     public long egressBytesTransferred() {
-        return Utils.toPrimitiveLong(inner().egressBytesTransferred());
+        return ResourceManagerUtils.toPrimitiveLong(inner().egressBytesTransferred());
     }
 
     @Override
     public long ingressBytesTransferred() {
-        return Utils.toPrimitiveLong(inner().ingressBytesTransferred());
+        return ResourceManagerUtils.toPrimitiveLong(inner().ingressBytesTransferred());
     }
 
     @Override
@@ -115,12 +116,12 @@ public class VirtualNetworkGatewayConnectionImpl
 
     @Override
     public boolean isBgpEnabled() {
-        return Utils.toPrimitiveBoolean(inner().enableBgp());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().enableBgp());
     }
 
     @Override
     public boolean usePolicyBasedTrafficSelectors() {
-        return Utils.toPrimitiveBoolean(inner().usePolicyBasedTrafficSelectors());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().usePolicyBasedTrafficSelectors());
     }
 
     @Override
@@ -197,7 +198,7 @@ public class VirtualNetworkGatewayConnectionImpl
     @Override
     protected Mono<VirtualNetworkGatewayConnectionInner> getInnerAsync() {
         return myManager
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGatewayConnections()
             .getByResourceGroupAsync(resourceGroupName(), name());
     }
@@ -206,7 +207,7 @@ public class VirtualNetworkGatewayConnectionImpl
     public Mono<VirtualNetworkGatewayConnection> createResourceAsync() {
         beforeCreating();
         return myManager
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGatewayConnections()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
@@ -230,7 +231,7 @@ public class VirtualNetworkGatewayConnectionImpl
     public Mono<VirtualNetworkGatewayConnection> applyTagsAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGatewayConnections()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .flatMap(inner -> refreshAsync());

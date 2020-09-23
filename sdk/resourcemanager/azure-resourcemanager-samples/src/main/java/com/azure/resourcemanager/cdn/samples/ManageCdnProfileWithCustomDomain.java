@@ -8,14 +8,14 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 
 import java.util.Map;
 
@@ -31,20 +31,20 @@ import java.util.Map;
 public class ManageCdnProfileWithCustomDomain {
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String rgName = azure.sdkContext().randomResourceName("rgNEMV", 24);
-        final String domainName = azure.sdkContext().randomResourceName("jsdkcdn", 15) + ".com";
-        final String cdnProfileName = azure.sdkContext().randomResourceName("jsdkcdnp", 24);
-        final String cdnEndpointName = azure.sdkContext().randomResourceName("jsdkcdne", 24);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV", 24);
+        final String domainName = azureResourceManager.sdkContext().randomResourceName("jsdkcdn", 15) + ".com";
+        final String cdnProfileName = azureResourceManager.sdkContext().randomResourceName("jsdkcdnp", 24);
+        final String cdnEndpointName = azureResourceManager.sdkContext().randomResourceName("jsdkcdne", 24);
         final Region region = Region.US_WEST;
         final String cnameRecordName = "sample";
         String customDomain = cnameRecordName + "." + domainName;
 
         try {
-            azure.resourceGroups().define(rgName)
+            azureResourceManager.resourceGroups().define(rgName)
                 .withRegion(region)
                 .create();
 
@@ -52,7 +52,7 @@ public class ManageCdnProfileWithCustomDomain {
             // Purchase a domain
 
             System.out.println("Purchasing a domain " + domainName + "...");
-            AppServiceDomain domain = azure.appServiceDomains().define(domainName)
+            AppServiceDomain domain = azureResourceManager.appServiceDomains().define(domainName)
                 .withExistingResourceGroup(rgName)
                 .defineRegistrantContact()
                     .withFirstName("Jon")
@@ -75,7 +75,7 @@ public class ManageCdnProfileWithCustomDomain {
             // Create root DNS zone
 
             System.out.println("Creating root DNS zone " + domainName + "...");
-            DnsZone dnsZone = azure.dnsZones().define(domainName)
+            DnsZone dnsZone = azureResourceManager.dnsZones().define(domainName)
                 .withExistingResourceGroup(rgName)
                 .create();
             System.out.println("Created root DNS zone " + dnsZone.name());
@@ -93,7 +93,7 @@ public class ManageCdnProfileWithCustomDomain {
             // Create CDN profile
 
             System.out.println("Creating CDN profile " + cdnProfileName + "...");
-            CdnProfile cdnProfile = azure.cdnProfiles().define(cdnProfileName)
+            CdnProfile cdnProfile = azureResourceManager.cdnProfiles().define(cdnProfileName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withStandardAkamaiSku()
@@ -139,7 +139,7 @@ public class ManageCdnProfileWithCustomDomain {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -162,16 +162,16 @@ public class ManageCdnProfileWithCustomDomain {
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

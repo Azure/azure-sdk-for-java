@@ -33,7 +33,7 @@ class ExpressRouteCircuitPeeringsImpl
      * @param parent the Express Route Circuit associated with ExpressRouteCircuitPeering
      */
     ExpressRouteCircuitPeeringsImpl(ExpressRouteCircuitImpl parent) {
-        super(parent.manager().inner().getExpressRouteCircuitPeerings(), parent.manager());
+        super(parent.manager().serviceClient().getExpressRouteCircuitPeerings(), parent.manager());
         this.parent = parent;
     }
 

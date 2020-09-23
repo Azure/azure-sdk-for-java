@@ -11,7 +11,6 @@ import com.azure.resourcemanager.compute.models.CreationSource;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
 import com.azure.resourcemanager.compute.models.DiskSkuTypes;
-import com.azure.resourcemanager.compute.models.DiskStorageAccountTypes;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.Snapshot;
@@ -21,7 +20,7 @@ import com.azure.resourcemanager.compute.models.SnapshotStorageAccountTypes;
 import com.azure.resourcemanager.compute.fluent.inner.SnapshotInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.security.InvalidParameterException;
@@ -34,16 +33,6 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     SnapshotImpl(String name, SnapshotInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
-    }
-
-    @Override
-    public DiskSkuTypes sku() {
-        if (this.inner().sku() == null || this.inner().sku().name() == null) {
-            return null;
-        } else {
-            return DiskSkuTypes
-                .fromStorageAccountType(DiskStorageAccountTypes.fromString(this.inner().sku().name().toString()));
-        }
     }
 
     @Override
@@ -67,7 +56,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public int sizeInGB() {
-        return Utils.toPrimitiveInt(this.inner().diskSizeGB());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().diskSizeGB());
     }
 
     @Override
@@ -90,7 +79,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         GrantAccessData grantAccessDataInner = new GrantAccessData();
         grantAccessDataInner.withAccess(AccessLevel.READ).withDurationInSeconds(accessDurationInSeconds);
         return manager()
-            .inner()
+            .serviceClient()
             .getSnapshots()
             .grantAccessAsync(resourceGroupName(), name(), grantAccessDataInner)
             .map(accessUriInner -> accessUriInner.accessSas());
@@ -103,7 +92,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public Mono<Void> revokeAccessAsync() {
-        return this.manager().inner().getSnapshots().revokeAccessAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getSnapshots().revokeAccessAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -164,7 +153,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         if (sourceSnapshot.osType() != null) {
             this.withOSType(sourceSnapshot.osType());
         }
-        this.withSku(sourceSnapshot.sku());
+        this.withSku(sourceSnapshot.skuType());
         return this;
     }
 
@@ -226,7 +215,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         if (sourceSnapshot.osType() != null) {
             this.withOSType(sourceSnapshot.osType());
         }
-        this.withSku(sourceSnapshot.sku());
+        this.withSku(sourceSnapshot.skuType());
         return this;
     }
 
@@ -297,8 +286,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         return this;
     }
 
-    @Override
-    public SnapshotImpl withSku(DiskSkuTypes sku) {
+    private SnapshotImpl withSku(DiskSkuTypes sku) {
         SnapshotSku snapshotSku = new SnapshotSku();
         snapshotSku.withName(SnapshotStorageAccountTypes.fromString(sku.accountType().toString()));
         this.inner().withSku(snapshotSku);
@@ -315,7 +303,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     public Mono<Snapshot> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getSnapshots()
             .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
             .map(innerToFluentMap(this));
@@ -323,7 +311,8 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     protected Mono<SnapshotInner> getInnerAsync() {
-        return this.manager().inner().getSnapshots().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getSnapshots()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private String constructStorageAccountId(String vhdUrl) {

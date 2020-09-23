@@ -132,16 +132,15 @@ public final class AzureEnvironment {
     /**
      * @return the entirety of the endpoints associated with the current environment.
      */
-    public Map<String, String> endpoints() {
+    public Map<String, String> getEndpoints() {
         return endpoints;
     }
 
     /**
-     * @return the array of known environments to Azure SDK.
+     * @return the list of known environments to Azure SDK.
      */
-    public static AzureEnvironment[] knownEnvironments() {
-        List<AzureEnvironment> environments = Arrays.asList(AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT);
-        return environments.toArray(new AzureEnvironment[environments.size()]);
+    public static List<AzureEnvironment> knownEnvironments() {
+        return Arrays.asList(AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT);
     }
 
     /**
@@ -270,7 +269,6 @@ public final class AzureEnvironment {
         return endpoints.get("azureApplicationInsightsResourceId");
     }
 
-
     /**
      * The enum representing available endpoints in an environment.
      */
@@ -298,7 +296,7 @@ public final class AzureEnvironment {
         /** Azure Application Insights. */
         APPLICATION_INSIGHTS("azureApplicationInsightsResourceId");
 
-        private String field;
+        private final String field;
 
         Endpoint(String value) {
             this.field = value;
@@ -318,12 +316,12 @@ public final class AzureEnvironment {
     }
 
     /**
-     * Get the endpoint URL for the current environment.
+     * Gets the endpoint URL for the current environment.
      *
-     * @param endpoint the endpoint
-     * @return the URL
+     * @param endpoint the endpoint.
+     * @return the URL for the endpoint, null if no match.
      */
-    public String url(Endpoint endpoint) {
+    public String getUrlByEndpoint(Endpoint endpoint) {
         return endpoints.get(endpoint.identifier());
     }
 }

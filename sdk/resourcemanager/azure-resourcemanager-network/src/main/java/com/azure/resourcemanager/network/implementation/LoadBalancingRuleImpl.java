@@ -18,7 +18,8 @@ import com.azure.resourcemanager.network.fluent.inner.LoadBalancingRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -52,17 +53,17 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
 
     @Override
     public int idleTimeoutInMinutes() {
-        return Utils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
     }
 
     @Override
     public int frontendPort() {
-        return Utils.toPrimitiveInt(this.inner().frontendPort());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().frontendPort());
     }
 
     @Override
     public int backendPort() {
-        return Utils.toPrimitiveInt(this.inner().backendPort());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().backendPort());
     }
 
     @Override

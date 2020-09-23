@@ -138,7 +138,7 @@ public class SpringAppImpl
 
     @Override
     public Mono<ResourceUploadDefinition> getResourceUploadUrlAsync() {
-        return manager().inner().getApps().getResourceUploadUrlAsync(
+        return manager().serviceClient().getApps().getResourceUploadUrlAsync(
             parent().resourceGroupName(), parent().name(), name());
     }
 
@@ -225,7 +225,7 @@ public class SpringAppImpl
         if (springAppDeploymentToCreate == null) {
             withDefaultActiveDeployment();
         }
-        return manager().inner().getApps().createOrUpdateAsync(
+        return manager().serviceClient().getApps().createOrUpdateAsync(
             parent().resourceGroupName(), parent().name(), name(), new AppResourceInner())
             .thenMany(springAppDeploymentToCreate.createAsync())
             .then(updateResourceAsync());
@@ -233,7 +233,7 @@ public class SpringAppImpl
 
     @Override
     public Mono<SpringApp> updateResourceAsync() {
-        return manager().inner().getApps().updateAsync(
+        return manager().serviceClient().getApps().updateAsync(
             parent().resourceGroupName(), parent().name(), name(), inner())
             .map(inner -> {
                 setInner(inner);
@@ -243,12 +243,12 @@ public class SpringAppImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return manager().inner().getApps().deleteAsync(parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient().getApps().deleteAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override
     protected Mono<AppResourceInner> getInnerAsync() {
-        return manager().inner().getApps().getAsync(parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient().getApps().getAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override

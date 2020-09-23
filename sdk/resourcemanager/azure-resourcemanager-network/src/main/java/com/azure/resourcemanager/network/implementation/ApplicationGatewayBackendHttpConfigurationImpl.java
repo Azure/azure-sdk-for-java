@@ -13,7 +13,8 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayProbe;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -78,12 +79,12 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     @Override
     public boolean isHostHeaderFromBackend() {
-        return Utils.toPrimitiveBoolean(this.inner().pickHostnameFromBackendAddress());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().pickHostnameFromBackendAddress());
     }
 
     @Override
     public boolean isProbeEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().probeEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().probeEnabled());
     }
 
     @Override
@@ -109,7 +110,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     @Override
     public int port() {
-        return Utils.toPrimitiveInt(this.inner().port());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().port());
     }
 
     @Override
@@ -124,7 +125,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     @Override
     public int requestTimeout() {
-        return Utils.toPrimitiveInt(this.inner().requestTimeout());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().requestTimeout());
     }
 
     // Verbs

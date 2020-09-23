@@ -15,8 +15,8 @@ import com.azure.resourcemanager.appservice.models.SlotSwapStatus;
 import com.azure.resourcemanager.appservice.models.SslState;
 import com.azure.resourcemanager.appservice.models.UsageState;
 import com.azure.resourcemanager.appservice.models.WebSiteBase;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -97,7 +97,7 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public boolean scmSiteAlsoStopped() {
-        return Utils.toPrimitiveBoolean(inner().scmSiteAlsoStopped());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().scmSiteAlsoStopped());
     }
 
     @Override
@@ -107,17 +107,17 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public boolean clientAffinityEnabled() {
-        return Utils.toPrimitiveBoolean(inner().clientAffinityEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().clientAffinityEnabled());
     }
 
     @Override
     public boolean clientCertEnabled() {
-        return Utils.toPrimitiveBoolean(inner().clientCertEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().clientCertEnabled());
     }
 
     @Override
     public boolean hostnamesDisabled() {
-        return Utils.toPrimitiveBoolean(inner().hostNamesDisabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().hostNamesDisabled());
     }
 
     @Override
@@ -127,7 +127,7 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public int containerSize() {
-        return Utils.toPrimitiveInt(inner().containerSize());
+        return ResourceManagerUtils.toPrimitiveInt(inner().containerSize());
     }
 
     @Override
@@ -147,7 +147,7 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public boolean httpsOnly() {
-        return Utils.toPrimitiveBoolean(inner().httpsOnly());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().httpsOnly());
     }
 
     @Override
@@ -161,12 +161,12 @@ class WebSiteBaseImpl implements WebSiteBase {
     }
 
     private boolean reserved() {
-        return Utils.toPrimitiveBoolean(inner().reserved());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().reserved());
     }
 
     @Override
     public boolean hyperV() {
-        return Utils.toPrimitiveBoolean(inner().hyperV());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().hyperV());
     }
 
     @Override
@@ -186,7 +186,7 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public int dailyMemoryTimeQuota() {
-        return Utils.toPrimitiveInt(inner().dailyMemoryTimeQuota());
+        return ResourceManagerUtils.toPrimitiveInt(inner().dailyMemoryTimeQuota());
     }
 
     @Override
@@ -196,7 +196,7 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public int maxNumberOfWorkers() {
-        return Utils.toPrimitiveInt(inner().maxNumberOfWorkers());
+        return ResourceManagerUtils.toPrimitiveInt(inner().maxNumberOfWorkers());
     }
 
     @Override
@@ -256,7 +256,7 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     protected void setInner(SiteInner innerObject) {
         this.innerObject = innerObject;
-        
+
         this.hostNamesSet.clear();
         if (inner().hostNames() != null) {
             this.hostNamesSet.addAll(inner().hostNames());

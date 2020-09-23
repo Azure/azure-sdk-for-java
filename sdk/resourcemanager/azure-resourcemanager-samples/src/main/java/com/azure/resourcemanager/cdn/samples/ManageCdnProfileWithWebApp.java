@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -16,7 +16,7 @@ import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -40,44 +40,44 @@ public class ManageCdnProfileWithWebApp {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String resourceGroupName = azure.sdkContext().randomResourceName("rg", 20);
-        final String cdnProfileName = azure.sdkContext().randomResourceName("cdnStandardProfile", 20);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String resourceGroupName = azureResourceManager.sdkContext().randomResourceName("rg", 20);
+        final String cdnProfileName = azureResourceManager.sdkContext().randomResourceName("cdnStandardProfile", 20);
         String[] appNames = new String[8];
 
         try {
             // ============================================================
             // Create a resource group for holding all the created resources
-            azure.resourceGroups().define(resourceGroupName)
+            azureResourceManager.resourceGroups().define(resourceGroupName)
                 .withRegion(Region.US_CENTRAL)
                 .create();
 
             // ============================================================
             // Create 8 websites
             for (int i = 0; i < 8; i++) {
-                appNames[i] = azure.sdkContext().randomResourceName("webapp" + (i + 1) + "-", 20);
+                appNames[i] = azureResourceManager.sdkContext().randomResourceName("webapp" + (i + 1) + "-", 20);
             }
 
             // 2 in US
-            createWebApp(appNames[0], Region.US_WEST, azure, resourceGroupName);
-            createWebApp(appNames[1], Region.US_EAST, azure, resourceGroupName);
+            createWebApp(appNames[0], Region.US_WEST, azureResourceManager, resourceGroupName);
+            createWebApp(appNames[1], Region.US_EAST, azureResourceManager, resourceGroupName);
 
             // 2 in EU
-            createWebApp(appNames[2], Region.EUROPE_WEST, azure, resourceGroupName);
-            createWebApp(appNames[3], Region.EUROPE_NORTH, azure, resourceGroupName);
+            createWebApp(appNames[2], Region.EUROPE_WEST, azureResourceManager, resourceGroupName);
+            createWebApp(appNames[3], Region.EUROPE_NORTH, azureResourceManager, resourceGroupName);
 
             // 2 in Southeast
-            createWebApp(appNames[4], Region.ASIA_SOUTHEAST, azure, resourceGroupName);
-            createWebApp(appNames[5], Region.AUSTRALIA_SOUTHEAST, azure, resourceGroupName);
+            createWebApp(appNames[4], Region.ASIA_SOUTHEAST, azureResourceManager, resourceGroupName);
+            createWebApp(appNames[5], Region.AUSTRALIA_SOUTHEAST, azureResourceManager, resourceGroupName);
 
             // 1 in Brazil
-            createWebApp(appNames[6], Region.BRAZIL_SOUTH, azure, resourceGroupName);
+            createWebApp(appNames[6], Region.BRAZIL_SOUTH, azureResourceManager, resourceGroupName);
 
             // 1 in Japan
-            createWebApp(appNames[7], Region.JAPAN_WEST, azure, resourceGroupName);
+            createWebApp(appNames[7], Region.JAPAN_WEST, azureResourceManager, resourceGroupName);
 
             // =======================================================================================
             // Create CDN profile using Standard Verizon SKU with endpoints in each region of Web apps.
@@ -85,7 +85,7 @@ public class ManageCdnProfileWithWebApp {
 
             // Create CDN Profile definition object that will let us do a for loop
             // to define all 8 endpoints and then parallelize their creation
-            CdnProfile.DefinitionStages.WithStandardCreate profileDefinition = azure.cdnProfiles().define(cdnProfileName)
+            CdnProfile.DefinitionStages.WithStandardCreate profileDefinition = azureResourceManager.cdnProfiles().define(cdnProfileName)
                 .withRegion(Region.US_CENTRAL)
                 .withExistingResourceGroup(resourceGroupName)
                 .withStandardVerizonSku();
@@ -117,9 +117,9 @@ public class ManageCdnProfileWithWebApp {
             }
             return true;
         } finally {
-            if (azure.resourceGroups().getByName(resourceGroupName) != null) {
+            if (azureResourceManager.resourceGroups().getByName(resourceGroupName) != null) {
                 System.out.println("Deleting Resource Group: " + resourceGroupName);
-                azure.resourceGroups().deleteByName(resourceGroupName);
+                azureResourceManager.resourceGroups().deleteByName(resourceGroupName);
                 System.out.println("Deleted Resource Group: " + resourceGroupName);
             } else {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -140,28 +140,28 @@ public class ManageCdnProfileWithWebApp {
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private static WebApp createWebApp(String appName, Region region, Azure azure, String resourceGroupName) {
+    private static WebApp createWebApp(String appName, Region region, AzureResourceManager azureResourceManager, String resourceGroupName) {
         final String appUrl = appName + SUFFIX;
 
         System.out.println("Creating web app " + appName + " with master branch...");
 
-        WebApp app = azure.webApps()
+        WebApp app = azureResourceManager.webApps()
             .define(appName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroupName)

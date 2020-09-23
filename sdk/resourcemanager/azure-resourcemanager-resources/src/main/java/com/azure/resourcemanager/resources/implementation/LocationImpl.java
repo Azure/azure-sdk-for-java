@@ -4,9 +4,9 @@
 package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.resourcemanager.resources.models.Location;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import com.azure.resourcemanager.resources.fluent.inner.LocationInner;
+import com.azure.resourcemanager.resources.fluent.models.LocationInner;
 import com.azure.resourcemanager.resources.models.RegionCategory;
 import com.azure.resourcemanager.resources.models.RegionType;
 

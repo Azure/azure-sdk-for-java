@@ -38,9 +38,9 @@ import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMIn
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMInstanceViewInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -277,7 +277,7 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public int osDiskSizeInGB() {
-        return Utils.toPrimitiveInt(this.inner().storageProfile().osDisk().diskSizeGB());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().storageProfile().osDisk().diskSizeGB());
     }
 
     @Override
@@ -298,7 +298,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean isLinuxPasswordAuthenticationEnabled() {
         if (this.inner().osProfile().linuxConfiguration() != null) {
-            return !Utils
+            return !ResourceManagerUtils
                 .toPrimitiveBoolean(this.inner().osProfile().linuxConfiguration().disablePasswordAuthentication());
         }
         return false;
@@ -307,7 +307,8 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean isWindowsVMAgentProvisioned() {
         if (this.inner().osProfile().windowsConfiguration() != null) {
-            return Utils.toPrimitiveBoolean(this.inner().osProfile().windowsConfiguration().provisionVMAgent());
+            return ResourceManagerUtils.toPrimitiveBoolean(
+                this.inner().osProfile().windowsConfiguration().provisionVMAgent());
         }
         return false;
     }
@@ -315,7 +316,8 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean isWindowsAutoUpdateEnabled() {
         if (this.inner().osProfile().windowsConfiguration() != null) {
-            return Utils.toPrimitiveBoolean(this.inner().osProfile().windowsConfiguration().enableAutomaticUpdates());
+            return ResourceManagerUtils.toPrimitiveBoolean(
+                this.inner().osProfile().windowsConfiguration().enableAutomaticUpdates());
         }
         return false;
     }
@@ -331,7 +333,8 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean bootDiagnosticEnabled() {
         if (this.inner().diagnosticsProfile() != null && this.inner().diagnosticsProfile().bootDiagnostics() != null) {
-            return Utils.toPrimitiveBoolean(this.inner().diagnosticsProfile().bootDiagnostics().enabled());
+            return ResourceManagerUtils.toPrimitiveBoolean(
+                this.inner().diagnosticsProfile().bootDiagnostics().enabled());
         }
         return false;
     }
@@ -649,7 +652,7 @@ class VirtualMachineScaleSetVMImpl
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualMachineScaleSetVMs()
             .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), this.inner())
             .map(

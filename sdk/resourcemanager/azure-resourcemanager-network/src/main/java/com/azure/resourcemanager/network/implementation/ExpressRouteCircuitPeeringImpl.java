@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringCo
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -125,12 +125,12 @@ class ExpressRouteCircuitPeeringImpl
 
     @Override
     public int azureAsn() {
-        return Utils.toPrimitiveInt(inner().azureAsn());
+        return ResourceManagerUtils.toPrimitiveInt(inner().azureAsn());
     }
 
     @Override
     public long peerAsn() {
-        return Utils.toPrimitiveLong(inner().peerAsn());
+        return ResourceManagerUtils.toPrimitiveLong(inner().peerAsn());
     }
 
     @Override
@@ -160,7 +160,7 @@ class ExpressRouteCircuitPeeringImpl
 
     @Override
     public int vlanId() {
-        return Utils.toPrimitiveInt(inner().vlanId());
+        return ResourceManagerUtils.toPrimitiveInt(inner().vlanId());
     }
 
     @Override

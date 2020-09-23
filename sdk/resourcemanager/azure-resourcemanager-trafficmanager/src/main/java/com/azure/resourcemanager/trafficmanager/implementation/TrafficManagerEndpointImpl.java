@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.trafficmanager.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.EndpointMonitorStatus;
@@ -71,12 +71,12 @@ class TrafficManagerEndpointImpl
 
     @Override
     public long routingWeight() {
-        return Utils.toPrimitiveLong(this.inner().weight());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().weight());
     }
 
     @Override
     public long routingPriority() {
-        return Utils.toPrimitiveLong(this.inner().priority());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().priority());
     }
 
     @Override

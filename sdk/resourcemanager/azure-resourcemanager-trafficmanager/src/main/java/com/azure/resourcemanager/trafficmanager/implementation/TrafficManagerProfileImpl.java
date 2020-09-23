@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import com.azure.resourcemanager.trafficmanager.fluent.ProfilesClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.ProfileInner;
@@ -27,7 +27,7 @@ class TrafficManagerProfileImpl
 
     TrafficManagerProfileImpl(String name, final ProfileInner innerModel, final TrafficManager trafficManager) {
         super(name, innerModel, trafficManager);
-        this.endpoints = new TrafficManagerEndpointsImpl(trafficManager.inner().getEndpoints(), this);
+        this.endpoints = new TrafficManagerEndpointsImpl(trafficManager.serviceClient().getEndpoints(), this);
         this.endpoints.enablePostRunMode();
     }
 
@@ -43,7 +43,7 @@ class TrafficManagerProfileImpl
 
     @Override
     public long timeToLive() {
-        return Utils.toPrimitiveLong(this.inner().dnsConfig().ttl());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().dnsConfig().ttl());
     }
 
     @Override
@@ -63,7 +63,7 @@ class TrafficManagerProfileImpl
 
     @Override
     public long monitoringPort() {
-        return Utils.toPrimitiveLong(this.inner().monitorConfig().port());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().monitorConfig().port());
     }
 
     @Override
@@ -100,7 +100,8 @@ class TrafficManagerProfileImpl
 
     @Override
     protected Mono<ProfileInner> getInnerAsync() {
-        return this.manager().inner().getProfiles().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getProfiles()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -232,7 +233,7 @@ class TrafficManagerProfileImpl
     public Mono<TrafficManagerProfile> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getProfiles()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this));
@@ -244,7 +245,7 @@ class TrafficManagerProfileImpl
         // call one can create endpoints without properties those are not applicable for the profile's current routing
         // method. We cannot update the routing method of the profile until existing endpoints contains the properties
         // required for the new routing method.
-        final ProfilesClient innerCollection = this.manager().inner().getProfiles();
+        final ProfilesClient innerCollection = this.manager().serviceClient().getProfiles();
         return this
             .endpoints
             .commitAndGetAllAsync()

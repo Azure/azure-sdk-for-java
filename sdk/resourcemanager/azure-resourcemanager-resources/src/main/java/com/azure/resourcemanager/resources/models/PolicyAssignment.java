@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.resources.fluent.inner.PolicyAssignmentInner;
+import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
 
 /**
  * An immutable client-side representation of an Azure policy assignment.

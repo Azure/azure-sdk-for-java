@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
@@ -18,7 +18,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.samples.DockerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
@@ -46,7 +46,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId) throws IOException, InterruptedException {
+    public static boolean runSample(AzureResourceManager azure, String clientId) throws IOException, InterruptedException {
         // New resources
         final Region region         = Region.US_WEST;
         final String acrName        = azure.sdkContext().randomResourceName("acr", 20);
@@ -223,15 +223,15 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
-            runSample(azure, "");
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
+            runSample(azureResourceManager, "");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

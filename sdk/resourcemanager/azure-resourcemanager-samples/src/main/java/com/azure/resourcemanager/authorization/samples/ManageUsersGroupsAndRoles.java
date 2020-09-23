@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
@@ -37,7 +37,7 @@ public final class ManageUsersGroupsAndRoles {
      * @param profile the profile works with sample
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure.Authenticated authenticated, AzureProfile profile) {
+    public static boolean runSample(AzureResourceManager.Authenticated authenticated, AzureProfile profile) {
         final String userEmail = authenticated.sdkContext().randomResourceName("test", 15);
         final String userName = userEmail.replace("test", "Test ");
         final String spName = authenticated.sdkContext().randomResourceName("sp", 15);
@@ -166,7 +166,7 @@ public final class ManageUsersGroupsAndRoles {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure.Authenticated authenticated = Azure
+            AzureResourceManager.Authenticated authenticated = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile);

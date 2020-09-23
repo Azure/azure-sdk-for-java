@@ -201,7 +201,7 @@ public class KubernetesClusterImpl
         final Mono<List<CredentialResult>> userConfig = listUserConfig(self);
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getManagedClusters()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name())
             .flatMap(
@@ -219,7 +219,7 @@ public class KubernetesClusterImpl
 
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getManagedClusters()
             .createOrUpdateAsync(self.resourceGroupName(), self.name(), self.inner())
             .flatMap(
@@ -338,7 +338,7 @@ public class KubernetesClusterImpl
     public KubernetesClusterImpl addNewAgentPool(KubernetesClusterAgentPoolImpl agentPool) {
         if (!isInCreateMode()) {
             this.addDependency(context ->
-                manager().inner().getAgentPools().createOrUpdateAsync(
+                manager().serviceClient().getAgentPools().createOrUpdateAsync(
                     resourceGroupName(), name(), agentPool.name(), agentPool.getAgentPoolInner())
                     .then(context.voidMono()));
         }

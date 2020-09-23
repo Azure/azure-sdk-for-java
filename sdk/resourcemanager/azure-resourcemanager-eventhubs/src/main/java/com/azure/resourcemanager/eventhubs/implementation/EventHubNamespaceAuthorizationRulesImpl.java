@@ -25,7 +25,7 @@ public final class EventHubNamespaceAuthorizationRulesImpl
     implements EventHubNamespaceAuthorizationRules {
 
     public EventHubNamespaceAuthorizationRulesImpl(EventHubsManager manager) {
-        super(manager, manager.inner().getNamespaces());
+        super(manager, manager.serviceClient().getNamespaces());
     }
 
     @Override

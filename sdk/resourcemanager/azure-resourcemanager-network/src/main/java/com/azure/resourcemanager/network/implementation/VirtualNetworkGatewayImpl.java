@@ -23,11 +23,11 @@ import com.azure.resourcemanager.network.models.VpnType;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionListEntityInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayInner;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -179,7 +179,7 @@ class VirtualNetworkGatewayImpl
     public Mono<Void> resetAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGateways()
             .resetAsync(resourceGroupName(), name())
             .map(
@@ -198,7 +198,7 @@ class VirtualNetworkGatewayImpl
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listConnectionsAsync() {
         PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> connectionInners =
-            this.manager().inner().getVirtualNetworkGateways()
+            this.manager().serviceClient().getVirtualNetworkGateways()
             .listConnectionsAsync(this.resourceGroupName(), this.name());
         return PagedConverter
             .flatMapPage(connectionInners, connectionInner -> connections().getByIdAsync(connectionInner.id()));
@@ -208,7 +208,7 @@ class VirtualNetworkGatewayImpl
     public String generateVpnProfile() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGateways()
             .generateVpnProfile(resourceGroupName(), name(), new VpnClientParameters());
     }
@@ -217,7 +217,7 @@ class VirtualNetworkGatewayImpl
     public Mono<String> generateVpnProfileAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGateways()
             .generateVpnProfileAsync(resourceGroupName(), name(), new VpnClientParameters());
     }
@@ -226,7 +226,7 @@ class VirtualNetworkGatewayImpl
     protected Mono<VirtualNetworkGatewayInner> applyTagsToInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGateways()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
@@ -251,12 +251,12 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public boolean isBgpEnabled() {
-        return Utils.toPrimitiveBoolean(inner().enableBgp());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().enableBgp());
     }
 
     @Override
     public boolean activeActive() {
-        return Utils.toPrimitiveBoolean(inner().active());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().active());
     }
 
     @Override
@@ -308,7 +308,7 @@ class VirtualNetworkGatewayImpl
     protected Mono<VirtualNetworkGatewayInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getVirtualNetworkGateways()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -437,7 +437,7 @@ class VirtualNetworkGatewayImpl
                     VirtualNetworkGatewayImpl
                         .this
                         .manager()
-                        .inner()
+                        .serviceClient()
                         .getVirtualNetworkGateways()
                         .createOrUpdateAsync(resourceGroupName(), name(), inner()));
     }

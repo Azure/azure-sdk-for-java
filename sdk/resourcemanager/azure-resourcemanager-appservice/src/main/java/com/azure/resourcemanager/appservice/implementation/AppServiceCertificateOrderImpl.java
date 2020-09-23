@@ -16,9 +16,9 @@ import com.azure.resourcemanager.appservice.models.CertificateProductType;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -42,7 +42,7 @@ class AppServiceCertificateOrderImpl
     protected Mono<AppServiceCertificateOrderInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getAppServiceCertificateOrders()
             .getByResourceGroupAsync(resourceGroupName(), name());
     }
@@ -56,7 +56,7 @@ class AppServiceCertificateOrderImpl
     public Mono<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getAppServiceCertificateOrders()
             .listCertificatesAsync(resourceGroupName(), name())
             .switchIfEmpty(Mono.empty())
@@ -87,12 +87,12 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public int validityInYears() {
-        return Utils.toPrimitiveInt(inner().validityInYears());
+        return ResourceManagerUtils.toPrimitiveInt(inner().validityInYears());
     }
 
     @Override
     public int keySize() {
-        return Utils.toPrimitiveInt(inner().keySize());
+        return ResourceManagerUtils.toPrimitiveInt(inner().keySize());
     }
 
     @Override
@@ -102,7 +102,7 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public boolean autoRenew() {
-        return Utils.toPrimitiveBoolean(inner().autoRenew());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().autoRenew());
     }
 
     @Override
@@ -158,7 +158,7 @@ class AppServiceCertificateOrderImpl
         certInner.withKeyVaultSecretName(certificateName);
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getAppServiceCertificateOrders()
             .createOrUpdateCertificateAsync(resourceGroupName(), name(), certificateName, certInner)
             .map(
@@ -194,7 +194,7 @@ class AppServiceCertificateOrderImpl
     public Mono<AppServiceCertificateOrder> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getAppServiceCertificateOrders()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this))

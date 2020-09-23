@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
 import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolDatabaseActivityInner;
 import java.time.OffsetDateTime;
@@ -47,7 +47,7 @@ class ElasticPoolDatabaseActivityImpl extends WrapperImpl<ElasticPoolDatabaseAct
 
     @Override
     public int errorCode() {
-        return Utils.toPrimitiveInt(this.inner().errorCode());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().errorCode());
     }
 
     @Override
@@ -57,7 +57,7 @@ class ElasticPoolDatabaseActivityImpl extends WrapperImpl<ElasticPoolDatabaseAct
 
     @Override
     public int errorSeverity() {
-        return Utils.toPrimitiveInt(this.inner().errorSeverity());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().errorSeverity());
     }
 
     @Override
@@ -72,7 +72,7 @@ class ElasticPoolDatabaseActivityImpl extends WrapperImpl<ElasticPoolDatabaseAct
 
     @Override
     public int percentComplete() {
-        return Utils.toPrimitiveInt(this.inner().percentComplete());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().percentComplete());
     }
 
     @Override

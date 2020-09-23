@@ -2,14 +2,14 @@
 
 ### Azure Authentication
 
-The `Azure` class is the simplest entry point for creating and interacting with Azure resources.
+The `AzureResourceManager` class is the simplest entry point for creating and interacting with Azure resources.
 
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.environment().getActiveDirectoryEndpoint())
     .build();
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .authenticate(credential, profile)
     .withDefaultSubscription();
 ```
@@ -426,7 +426,6 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 <tr>
     <td>Active Directory</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//authorization/samples/ManageServicePrincipal.java">Manage service principals using Java</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//authorization/samples/ManageServicePrincipalCredentials.java">Manage credentials for service principals using Java</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//authorization/samples/ManageUsersGroupsAndRoles.java">Manage users and groups and manage their roles</a></li>
 <!--li><a href="https://github.com/Azure-Samples/aad-java-manage-passwords">Manage passwords</li-->

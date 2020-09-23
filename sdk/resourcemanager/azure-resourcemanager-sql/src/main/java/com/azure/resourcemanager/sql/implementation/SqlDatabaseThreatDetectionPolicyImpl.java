@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.sql.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyEmailAccountAdmins;
@@ -111,10 +111,10 @@ public class SqlDatabaseThreatDetectionPolicyImpl
     protected Mono<DatabaseSecurityAlertPolicyInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getDatabaseThreatDetectionPolicies()
-            .getAsync(this.resourceGroupName, this.sqlServerName, this.parent().name(),
-                SecurityAlertPolicyName.DEFAULT);
+            .getAsync(
+                this.resourceGroupName, this.sqlServerName, this.parent().name(), SecurityAlertPolicyName.DEFAULT);
     }
 
     @Override
@@ -122,10 +122,14 @@ public class SqlDatabaseThreatDetectionPolicyImpl
         final SqlDatabaseThreatDetectionPolicyImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getDatabaseThreatDetectionPolicies()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.parent().name(),
-                SecurityAlertPolicyName.DEFAULT, this.inner())
+            .createOrUpdateAsync(
+                this.resourceGroupName,
+                this.sqlServerName,
+                this.parent().name(),
+                SecurityAlertPolicyName.DEFAULT,
+                this.inner())
             .map(
                 databaseSecurityAlertPolicyInner -> {
                     self.setInner(databaseSecurityAlertPolicyInner);

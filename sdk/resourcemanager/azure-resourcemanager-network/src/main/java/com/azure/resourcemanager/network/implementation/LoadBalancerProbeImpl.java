@@ -11,7 +11,8 @@ import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.fluent.inner.ProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -35,17 +36,17 @@ class LoadBalancerProbeImpl extends ChildResourceImpl<ProbeInner, LoadBalancerIm
 
     @Override
     public int intervalInSeconds() {
-        return Utils.toPrimitiveInt(this.inner().intervalInSeconds());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().intervalInSeconds());
     }
 
     @Override
     public int port() {
-        return Utils.toPrimitiveInt(this.inner().port());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().port());
     }
 
     @Override
     public int numberOfProbes() {
-        return Utils.toPrimitiveInt(this.inner().numberOfProbes());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().numberOfProbes());
     }
 
     @Override

@@ -38,9 +38,9 @@ import com.azure.resourcemanager.containerregistry.models.TriggerProperties;
 import com.azure.resourcemanager.containerregistry.models.TriggerStatus;
 import com.azure.resourcemanager.containerregistry.models.TriggerUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.Variant;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -144,7 +144,7 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public int timeout() {
-        return Utils.toPrimitiveInt(this.inner.timeout());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner.timeout());
     }
 
     @Override
@@ -157,7 +157,7 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
         if (this.inner.agentConfiguration() == null) {
             return 0;
         }
-        return Utils.toPrimitiveInt(this.inner.agentConfiguration().cpu());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner.agentConfiguration().cpu());
     }
 
     @Override
@@ -176,14 +176,14 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     }
 
     RegistryTaskImpl(ContainerRegistryManager registryManager, String taskName) {
-        this.tasksInner = registryManager.inner().getTasks();
+        this.tasksInner = registryManager.serviceClient().getTasks();
         this.taskName = taskName;
         this.inner = new TaskInner();
         this.taskUpdateParameters = new TaskUpdateParameters();
     }
 
     RegistryTaskImpl(ContainerRegistryManager registryManager, TaskInner inner) {
-        this.tasksInner = registryManager.inner().getTasks();
+        this.tasksInner = registryManager.serviceClient().getTasks();
         this.taskName = inner.name();
         this.inner = inner;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(this.inner.id());

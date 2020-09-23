@@ -216,7 +216,7 @@ class VirtualMachineCustomImageImpl
         ensureDefaultLuns();
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getImages()
             .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
             .map(innerToFluentMap(this));
@@ -224,7 +224,8 @@ class VirtualMachineCustomImageImpl
 
     @Override
     protected Mono<ImageInner> getInnerAsync() {
-        return this.manager().inner().getImages().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getImages()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private ImageOSDisk ensureOsDiskImage() {

@@ -21,7 +21,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure container instance management. */
 public final class ContainerInstanceManager
-    extends Manager<ContainerInstanceManager, ContainerInstanceManagementClient> {
+    extends Manager<ContainerInstanceManagementClient> {
 
     // The service managers
     private ContainerGroupsImpl containerGroups;

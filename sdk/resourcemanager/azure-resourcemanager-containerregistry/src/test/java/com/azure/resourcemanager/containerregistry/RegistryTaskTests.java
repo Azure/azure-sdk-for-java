@@ -18,7 +18,7 @@ import com.azure.resourcemanager.containerregistry.models.SourceTriggerEvent;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
 import com.azure.resourcemanager.containerregistry.models.TokenType;
 import com.azure.resourcemanager.containerregistry.models.TriggerStatus;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import java.io.File;
 import java.io.FileInputStream;
@@ -1124,7 +1124,7 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertTrue(registryManager.registryTaskRuns().listByRegistry(rgName, acrName).stream().count() == 1);
 
         // cancelling the run we just created
-        registryManager.inner().getRuns().cancel(rgName, acrName, registryTaskRun.runId());
+        registryManager.serviceClient().getRuns().cancel(rgName, acrName, registryTaskRun.runId());
 
         boolean notCanceled = true;
         while (notCanceled) {

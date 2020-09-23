@@ -70,21 +70,21 @@ class CdnEndpointImpl
     @Override
     public Mono<CdnEndpoint> createResourceAsync() {
         final CdnEndpointImpl self = this;
-        return this.parent().manager().inner().getEndpoints().createAsync(this.parent().resourceGroupName(),
+        return this.parent().manager().serviceClient().getEndpoints().createAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
                 this.inner())
             .flatMap(inner -> {
                 self.setInner(inner);
                 return Flux.fromIterable(self.customDomainList)
-                    .flatMapDelayError(customDomainInner -> self.parent().manager().inner()
+                    .flatMapDelayError(customDomainInner -> self.parent().manager().serviceClient()
                         .getCustomDomains().createAsync(
                             self.parent().resourceGroupName(),
                             self.parent().name(),
                             self.name(),
                             self.parent().manager().sdkContext().randomResourceName("CustomDomain", 50),
                             customDomainInner.hostname()), 32, 32)
-                    .then(self.parent().manager().inner()
+                    .then(self.parent().manager().serviceClient()
                         .getCustomDomains().listByEndpointAsync(
                             self.parent().resourceGroupName(),
                             self.parent().name(),
@@ -118,7 +118,7 @@ class CdnEndpointImpl
                 .withHttpPort(originInner.httpPort())
                 .withHttpsPort(originInner.httpsPort());
 
-        Mono<EndpointInner> originUpdateTask = this.parent().manager().inner().getOrigins().updateAsync(
+        Mono<EndpointInner> originUpdateTask = this.parent().manager().serviceClient().getOrigins().updateAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
@@ -126,14 +126,14 @@ class CdnEndpointImpl
                 originUpdateParameters)
             .then(Mono.empty());
 
-        Mono<EndpointInner> endpointUpdateTask = this.parent().manager().inner().getEndpoints().updateAsync(
+        Mono<EndpointInner> endpointUpdateTask = this.parent().manager().serviceClient().getEndpoints().updateAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
                 endpointUpdateParameters);
 
         Flux<CustomDomainInner> customDomainCreateTask = Flux.fromIterable(this.customDomainList)
-            .flatMapDelayError(itemToCreate -> this.parent().manager().inner().getCustomDomains().createAsync(
+            .flatMapDelayError(itemToCreate -> this.parent().manager().serviceClient().getCustomDomains().createAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
@@ -142,7 +142,7 @@ class CdnEndpointImpl
             ), 32, 32);
 
         Flux<CustomDomainInner> customDomainDeleteTask = Flux.fromIterable(this.deletedCustomDomainList)
-            .flatMapDelayError(itemToDelete -> this.parent().manager().inner().getCustomDomains().deleteAsync(
+            .flatMapDelayError(itemToDelete -> this.parent().manager().serviceClient().getCustomDomains().deleteAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
@@ -164,7 +164,7 @@ class CdnEndpointImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.parent().manager().inner().getEndpoints().deleteAsync(this.parent().resourceGroupName(),
+        return this.parent().manager().serviceClient().getEndpoints().deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name());
     }
@@ -176,7 +176,7 @@ class CdnEndpointImpl
             .flatMap(cdnEndpoint -> {
                 self.customDomainList.clear();
                 self.deletedCustomDomainList.clear();
-                return self.parent().manager().inner().getCustomDomains().listByEndpointAsync(
+                return self.parent().manager().serviceClient().getCustomDomains().listByEndpointAsync(
                         self.parent().resourceGroupName(),
                         self.parent().name(),
                         self.name()
@@ -191,14 +191,14 @@ class CdnEndpointImpl
 
     @Override
     protected Mono<EndpointInner> getInnerAsync() {
-        return this.parent().manager().inner().getEndpoints().getAsync(this.parent().resourceGroupName(),
+        return this.parent().manager().serviceClient().getEndpoints().getAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name());
     }
 
     @Override
     public PagedIterable<ResourceUsage> listResourceUsage() {
-        return this.parent().manager().inner().getEndpoints().listResourceUsage(
+        return this.parent().manager().serviceClient().getEndpoints().listResourceUsage(
             this.parent().resourceGroupName(),
             this.parent().name(),
             this.name())
@@ -307,7 +307,7 @@ class CdnEndpointImpl
     @Override
     public Set<String> customDomains() {
         Set<String> set = new HashSet<>();
-        for (CustomDomainInner customDomainInner : this.parent().manager().inner().getCustomDomains()
+        for (CustomDomainInner customDomainInner : this.parent().manager().serviceClient().getCustomDomains()
             .listByEndpoint(this.parent().resourceGroupName(), this.parent().name(), this.name())) {
             set.add(customDomainInner.hostname());
         }

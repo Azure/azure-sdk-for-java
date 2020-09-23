@@ -11,6 +11,6 @@ public class CdnSampleTests extends SamplesTestBase {
 
     @Test
     public void testManageCdnProfileWithCustomDomain() {
-        Assertions.assertTrue(ManageCdnProfileWithCustomDomain.runSample(azure));
+        Assertions.assertTrue(ManageCdnProfileWithCustomDomain.runSample(azureResourceManager));
     }
 }

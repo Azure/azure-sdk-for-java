@@ -78,6 +78,6 @@ public class ExpressRouteCrossConnectionsImpl
     }
 
     public ExpressRouteCrossConnectionsClient inner() {
-        return manager.inner().getExpressRouteCrossConnections();
+        return manager.serviceClient().getExpressRouteCrossConnections();
     }
 }

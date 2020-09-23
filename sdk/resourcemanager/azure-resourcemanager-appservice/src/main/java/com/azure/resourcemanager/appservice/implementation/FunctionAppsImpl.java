@@ -30,7 +30,7 @@ public class FunctionAppsImpl
     implements FunctionApps, SupportsBatchDeletion {
 
     public FunctionAppsImpl(final AppServiceManager manager) {
-        super(manager.inner().getWebApps(), manager);
+        super(manager.serviceClient().getWebApps(), manager);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class FunctionAppsImpl
     public PagedIterable<FunctionEnvelope> listFunctions(String resourceGroupName, String name) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .listFunctions(resourceGroupName, name)
             .mapPage(FunctionEnvelopeImpl::new);

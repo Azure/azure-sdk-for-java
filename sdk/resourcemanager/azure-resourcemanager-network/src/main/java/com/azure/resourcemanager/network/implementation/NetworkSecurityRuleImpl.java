@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -109,7 +109,7 @@ class NetworkSecurityRuleImpl
 
     @Override
     public int priority() {
-        return Utils.toPrimitiveInt(this.inner().priority());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().priority());
     }
 
     @Override

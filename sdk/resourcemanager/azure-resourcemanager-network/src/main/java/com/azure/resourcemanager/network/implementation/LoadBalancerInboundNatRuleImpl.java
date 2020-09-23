@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /** Implementation for LoadBalancerInboundNatRule. */
 class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInner, LoadBalancerImpl, LoadBalancer>
@@ -45,7 +45,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
 
     @Override
     public int backendPort() {
-        return Utils.toPrimitiveInt(this.inner().backendPort());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().backendPort());
     }
 
     @Override
@@ -64,7 +64,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
 
     @Override
     public int frontendPort() {
-        return Utils.toPrimitiveInt(this.inner().frontendPort());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().frontendPort());
     }
 
     @Override
@@ -82,7 +82,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
 
     @Override
     public int idleTimeoutInMinutes() {
-        return Utils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
     }
 
     // Fluent setters

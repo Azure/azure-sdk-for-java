@@ -8,14 +8,14 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.NetworkInterface;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.samples.Utils;
 import reactor.core.publisher.Flux;
@@ -41,14 +41,14 @@ public final class ManageVirtualMachineAsync {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final Azure azure) {
+    public static boolean runSample(final AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String windowsVMName = azure.sdkContext().randomResourceName("wVM", 15);
-        final String linuxVMName = azure.sdkContext().randomResourceName("lVM", 15);
-        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
+        final String windowsVMName = azureResourceManager.sdkContext().randomResourceName("wVM", 15);
+        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("lVM", 15);
+        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final String windowsVmKey = "WindowsVM";
@@ -63,7 +63,7 @@ public final class ManageVirtualMachineAsync {
             //
             final Date t1 = new Date();
 
-            final Creatable<Disk> dataDiskCreatable = azure.disks().define(azure.sdkContext().randomResourceName("dsk-", 15))
+            final Creatable<Disk> dataDiskCreatable = azureResourceManager.disks().define(azureResourceManager.sdkContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withData()
@@ -71,7 +71,7 @@ public final class ManageVirtualMachineAsync {
 
             // Create a data disk to attach to VM
             //
-            Mono<Disk> dataDiskMono = azure.disks().define(azure.sdkContext().randomResourceName("dsk-", 15))
+            Mono<Disk> dataDiskMono = azureResourceManager.disks().define(azureResourceManager.sdkContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withData()
@@ -80,7 +80,7 @@ public final class ManageVirtualMachineAsync {
 
             final Map<String, VirtualMachine> createdVms = new TreeMap<>();
 
-            Mono<NetworkInterface> nicMono = azure.networkInterfaces().define(azure.sdkContext().randomResourceName("nic", 20))
+            Mono<NetworkInterface> nicMono = azureResourceManager.networkInterfaces().define(azureResourceManager.sdkContext().randomResourceName("nic", 20))
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -92,7 +92,7 @@ public final class ManageVirtualMachineAsync {
                     tuple -> Flux.merge(
                         Mono.defer(() -> {
                             System.out.println("Creating a Windows VM");
-                            return azure.virtualMachines().define(windowsVMName)
+                            return azureResourceManager.virtualMachines().define(windowsVMName)
                                 .withRegion(region)
                                 .withExistingResourceGroup(rgName)
                                 .withExistingPrimaryNetworkInterface(tuple.getT2())
@@ -107,7 +107,7 @@ public final class ManageVirtualMachineAsync {
                         }),
                         Mono.defer(() -> {
                             System.out.println("Creating a Linux VM in the same network");
-                            return azure.virtualMachines().define(linuxVMName)
+                            return azureResourceManager.virtualMachines().define(linuxVMName)
                                 .withRegion(region)
                                 .withExistingResourceGroup(rgName)
                                 .withExistingPrimaryNetworkInterface(tuple.getT2())
@@ -162,7 +162,7 @@ public final class ManageVirtualMachineAsync {
 
             //=============================================================
             // List virtual machines and print details
-            azure.virtualMachines().listByResourceGroupAsync(rgName)
+            azureResourceManager.virtualMachines().listByResourceGroupAsync(rgName)
                     .map(virtualMachine -> {
                         System.out.println("Retrieved details for VM: " + virtualMachine.id());
                         return virtualMachine;
@@ -171,15 +171,15 @@ public final class ManageVirtualMachineAsync {
             //=============================================================
             // Delete the virtual machines in parallel
             Flux.merge(
-                    azure.virtualMachines().deleteByIdAsync(windowsVM.id()),
-                    azure.virtualMachines().deleteByIdAsync(linuxVM.id()))
+                    azureResourceManager.virtualMachines().deleteByIdAsync(windowsVM.id()),
+                    azureResourceManager.virtualMachines().deleteByIdAsync(linuxVM.id()))
                     .singleOrEmpty().block();
 
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().deleteByNameAsync(rgName)
+                azureResourceManager.resourceGroups().deleteByNameAsync(rgName)
                         .block();
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
@@ -211,16 +211,16 @@ public final class ManageVirtualMachineAsync {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.models.Plan;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
+import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
 import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
 import reactor.core.publisher.Mono;
@@ -87,7 +87,7 @@ final class GenericResourceImpl
 
     @Override
     protected Mono<GenericResourceInner> getInnerAsync() {
-        return this.manager().inner().getResources().getAsync(
+        return this.manager().serviceClient().getResources().getAsync(
                 resourceGroupName(),
                 resourceProviderNamespace(),
                 parentResourcePath(),
@@ -152,8 +152,8 @@ final class GenericResourceImpl
         String name = isInCreateMode() ? this.name() : ResourceUtils.nameFromResourceId(inner().id());
 
         return AcceptedImpl.newAccepted(logger,
-            this.manager().inner(),
-            () -> this.manager().inner().getResources()
+            this.manager().serviceClient(),
+            () -> this.manager().serviceClient().getResources()
                 .createOrUpdateWithResponseAsync(
                     resourceGroupName(),
                     resourceProviderNamespace,
@@ -172,7 +172,7 @@ final class GenericResourceImpl
     @Override
     public Mono<GenericResource> createResourceAsync() {
         Mono<String> observable = this.getApiVersionAsync();
-        final ResourcesClient resourceClient = this.manager().inner().getResources();
+        final ResourcesClient resourceClient = this.manager().serviceClient().getResources();
         return observable
                 .flatMap(api -> {
                     String name = this.name();
@@ -197,7 +197,7 @@ final class GenericResourceImpl
         if (this.apiVersion != null) {
             apiVersion = Mono.just(this.apiVersion);
         } else {
-            final ResourceManagementClient serviceClient = this.manager().inner();
+            final ResourceManagementClient serviceClient = this.manager().serviceClient();
             apiVersion = this.manager().providers().getByNameAsync(resourceProviderNamespace)
                 .flatMap(provider -> {
                     String id;
