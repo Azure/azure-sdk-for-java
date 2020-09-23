@@ -137,6 +137,7 @@ public class KeyVaultProperties {
         ALLOW_TELEMETRY("allow-telemetry"),
         CASE_SENSITIVE_KEYS("case-sensitive-keys"),
         CERTIFICATE_PASSWORD("certificate-password"),
+        AUTHORITY_HOST("authority-host"),
         CERTIFICATE_PATH("certificate-path"),
         CLIENT_ID("client-id"),
         CLIENT_KEY("client-key"),
