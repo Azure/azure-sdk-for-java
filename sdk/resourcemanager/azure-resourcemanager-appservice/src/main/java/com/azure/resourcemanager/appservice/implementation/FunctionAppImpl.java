@@ -226,7 +226,8 @@ class FunctionAppImpl
 
     @Override
     public OperatingSystem operatingSystem() {
-        return (inner().reserved() == null || !inner().reserved()) ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
+        return (innerModel().reserved() == null || !innerModel().reserved())
+            ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
     }
 
     private void addAppSettingIfNotModified(String key, String value) {
@@ -311,7 +312,7 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withDailyUsageQuota(int quota) {
-        inner().withDailyMemoryTimeQuota(quota);
+        innerModel().withDailyMemoryTimeQuota(quota);
         return this;
     }
 
@@ -402,7 +403,7 @@ class FunctionAppImpl
     protected OperatingSystem appServicePlanOperatingSystem(AppServicePlan appServicePlan) {
         // Consumption plan or premium (elastic) plan would have "functionapp" or "elastic" in "kind" property, no
         // "linux" in it.
-        return (appServicePlan.inner().reserved() == null || !appServicePlan.inner().reserved())
+        return (appServicePlan.innerModel().reserved() == null || !appServicePlan.innerModel().reserved())
             ? OperatingSystem.WINDOWS
             : OperatingSystem.LINUX;
     }
@@ -588,7 +589,7 @@ class FunctionAppImpl
     @Override
     public Mono<FunctionApp> createAsync() {
         if (this.isInCreateMode()) {
-            if (inner().serverFarmId() == null) {
+            if (innerModel().serverFarmId() == null) {
                 withNewConsumptionPlan();
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {

@@ -87,7 +87,8 @@ public class VirtualMachineImagesImpl implements VirtualMachineImages {
                     virtualMachinePublisher
                         .offers()
                         .listAsync()
-                        .onErrorResume(ManagementException.class,
+                        .onErrorResume(
+                            ManagementException.class,
                             e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e))
                         .flatMap(virtualMachineOffer -> virtualMachineOffer.skus().listAsync())
                         .flatMap(virtualMachineSku -> virtualMachineSku.images().listAsync()));

@@ -24,7 +24,7 @@ class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryIm
         return manager()
             .serviceClient()
             .getGalleries()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -33,7 +33,7 @@ class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryIm
         return manager()
             .serviceClient()
             .getGalleries()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -44,22 +44,22 @@ class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryIm
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
     public String description() {
-        return this.inner().description();
+        return this.innerModel().description();
     }
 
     @Override
     public String uniqueName() {
-        return this.inner().identifier().uniqueName();
+        return this.innerModel().identifier().uniqueName();
     }
 
     @Override
     public String provisioningState() {
-        return this.inner().provisioningState().toString();
+        return this.innerModel().provisioningState().toString();
     }
 
     @Override
@@ -84,7 +84,7 @@ class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryIm
 
     @Override
     public GalleryImpl withDescription(String description) {
-        this.inner().withDescription(description);
+        this.innerModel().withDescription(description);
         return this;
     }
 }

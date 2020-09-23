@@ -51,8 +51,7 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
         NetworkInterfaceInner networkInterfaceInner =
             this
                 .inner()
-                .getVirtualMachineScaleSetNetworkInterface(
-                    this.resourceGroupName, this.scaleSetName, instanceId, name);
+                .getVirtualMachineScaleSetNetworkInterface(this.resourceGroupName, this.scaleSetName, instanceId, name);
         if (networkInterfaceInner == null) {
             return null;
         }

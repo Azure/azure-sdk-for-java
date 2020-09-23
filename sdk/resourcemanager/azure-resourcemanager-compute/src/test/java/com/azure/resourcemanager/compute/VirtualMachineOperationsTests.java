@@ -794,13 +794,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         // checking to see if withTag correctly update
         virtualMachine.update().withTag("test", "testValue").apply();
-        Assertions.assertEquals("testValue", virtualMachine.inner().tags().get("test"));
+        Assertions.assertEquals("testValue", virtualMachine.innerModel().tags().get("test"));
 
         // checking to see if withTags correctly updates
         Map<String, String> testTags = new HashMap<String, String>();
         testTags.put("testTag", "testValue");
         virtualMachine.update().withTags(testTags).apply();
-        Assertions.assertEquals(testTags, virtualMachine.inner().tags());
+        Assertions.assertEquals(testTags, virtualMachine.innerModel().tags());
     }
 
     @Test
@@ -851,7 +851,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertTrue(virtualMachine.osDiskSize() > 0);
         Disk disk = computeManager.disks().getById(virtualMachine.osDiskId());
         Assertions.assertNotNull(disk);
-        Assertions.assertEquals(DiskState.ATTACHED, disk.inner().diskState());
+        Assertions.assertEquals(DiskState.ATTACHED, disk.innerModel().diskState());
 
         // call simulate eviction
         virtualMachine.simulateEviction();
@@ -862,7 +862,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNull(virtualMachine.osDiskStorageAccountType());
         Assertions.assertTrue(virtualMachine.osDiskSize() == 0);
         disk = computeManager.disks().getById(virtualMachine.osDiskId());
-        Assertions.assertEquals(DiskState.RESERVED, disk.inner().diskState());
+        Assertions.assertEquals(DiskState.RESERVED, disk.innerModel().diskState());
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

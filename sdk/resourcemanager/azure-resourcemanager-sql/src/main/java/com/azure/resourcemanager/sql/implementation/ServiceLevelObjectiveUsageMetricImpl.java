@@ -19,16 +19,16 @@ class ServiceLevelObjectiveUsageMetricImpl extends WrapperImpl<SloUsageMetric>
 
     @Override
     public ServiceObjectiveName serviceLevelObjective() {
-        return this.inner().serviceLevelObjective();
+        return this.innerModel().serviceLevelObjective();
     }
 
     @Override
     public UUID serviceLevelObjectiveId() {
-        return this.inner().serviceLevelObjectiveId();
+        return this.innerModel().serviceLevelObjectiveId();
     }
 
     @Override
     public double inRangeTimeRatio() {
-        return this.inner().inRangeTimeRatio();
+        return this.innerModel().inRangeTimeRatio();
     }
 }

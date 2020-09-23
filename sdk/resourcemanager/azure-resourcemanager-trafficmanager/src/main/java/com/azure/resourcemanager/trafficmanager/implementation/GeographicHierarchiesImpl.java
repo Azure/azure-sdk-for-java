@@ -26,7 +26,7 @@ class GeographicHierarchiesImpl extends WrapperImpl<GeographicHierarchiesClient>
 
     @Override
     public GeographicLocation getRoot() {
-        TrafficManagerGeographicHierarchyInner defaultHierarchy = this.inner().getDefault();
+        TrafficManagerGeographicHierarchyInner defaultHierarchy = this.innerModel().getDefault();
         if (defaultHierarchy == null) {
             return null;
         }

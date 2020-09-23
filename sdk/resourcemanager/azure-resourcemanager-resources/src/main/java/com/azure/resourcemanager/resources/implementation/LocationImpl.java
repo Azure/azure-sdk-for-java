@@ -23,47 +23,47 @@ final class LocationImpl extends
 
     @Override
     public String subscriptionId() {
-        return this.inner().subscriptionId();
+        return this.innerModel().subscriptionId();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String displayName() {
-        return this.inner().displayName();
+        return this.innerModel().displayName();
     }
 
     @Override
     public String latitude() {
-        return this.inner().metadata() == null ? null : this.inner().metadata().latitude();
+        return this.innerModel().metadata() == null ? null : this.innerModel().metadata().latitude();
     }
 
     @Override
     public String longitude() {
-        return this.inner().metadata() == null ? null : this.inner().metadata().longitude();
+        return this.innerModel().metadata() == null ? null : this.innerModel().metadata().longitude();
     }
 
     @Override
     public RegionType regionType() {
-        return this.inner().metadata() == null ? null : this.inner().metadata().regionType();
+        return this.innerModel().metadata() == null ? null : this.innerModel().metadata().regionType();
     }
 
     @Override
     public RegionCategory regionCategory() {
-        return this.inner().metadata() == null ? null : this.inner().metadata().regionCategory();
+        return this.innerModel().metadata() == null ? null : this.innerModel().metadata().regionCategory();
     }
 
     @Override
     public String geographyGroup() {
-        return this.inner().metadata() == null ? null : this.inner().metadata().geographyGroup();
+        return this.innerModel().metadata() == null ? null : this.innerModel().metadata().geographyGroup();
     }
 
     @Override
     public String physicalLocation() {
-        return this.inner().metadata() == null ? null : this.inner().metadata().physicalLocation();
+        return this.innerModel().metadata() == null ? null : this.innerModel().metadata().physicalLocation();
     }
 
     @Override

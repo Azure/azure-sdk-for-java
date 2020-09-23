@@ -44,18 +44,18 @@ class AvailabilitySetImpl
 
     @Override
     public int updateDomainCount() {
-        return ResourceManagerUtils.toPrimitiveInt(this.inner().platformUpdateDomainCount());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().platformUpdateDomainCount());
     }
 
     @Override
     public int faultDomainCount() {
-        return ResourceManagerUtils.toPrimitiveInt(this.inner().platformFaultDomainCount());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().platformFaultDomainCount());
     }
 
     @Override
     public AvailabilitySetSkuTypes sku() {
-        if (this.inner().sku() != null && this.inner().sku().name() != null) {
-            return AvailabilitySetSkuTypes.fromString(this.inner().sku().name());
+        if (this.innerModel().sku() != null && this.innerModel().sku().name() != null) {
+            return AvailabilitySetSkuTypes.fromString(this.innerModel().sku().name());
         }
         return null;
     }
@@ -64,7 +64,7 @@ class AvailabilitySetImpl
     public Set<String> virtualMachineIds() {
         if (idOfVMsInSet == null) {
             idOfVMsInSet = new HashSet<>();
-            for (SubResource resource : this.inner().virtualMachines()) {
+            for (SubResource resource : this.innerModel().virtualMachines()) {
                 idOfVMsInSet.add(resource.id());
             }
         }
@@ -73,12 +73,15 @@ class AvailabilitySetImpl
 
     @Override
     public ProximityPlacementGroup proximityPlacementGroup() {
-        if (inner().proximityPlacementGroup() == null) {
+        if (innerModel().proximityPlacementGroup() == null) {
             return null;
         } else {
-            ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
-            ProximityPlacementGroupInner plgInner = manager().serviceClient().getProximityPlacementGroups()
-                .getByResourceGroup(id.resourceGroupName(), id.name());
+            ResourceId id = ResourceId.fromString(innerModel().proximityPlacementGroup().id());
+            ProximityPlacementGroupInner plgInner =
+                manager()
+                    .serviceClient()
+                    .getProximityPlacementGroups()
+                    .getByResourceGroup(id.resourceGroupName(), id.name());
             if (plgInner == null) {
                 return null;
             } else {
@@ -89,7 +92,7 @@ class AvailabilitySetImpl
 
     @Override
     public List<InstanceViewStatus> statuses() {
-        return Collections.unmodifiableList(this.inner().statuses());
+        return Collections.unmodifiableList(this.innerModel().statuses());
     }
 
     @Override
@@ -115,34 +118,37 @@ class AvailabilitySetImpl
 
     @Override
     protected Mono<AvailabilitySetInner> getInnerAsync() {
-        return this.manager().serviceClient().getAvailabilitySets()
+        return this
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public AvailabilitySetImpl withUpdateDomainCount(int updateDomainCount) {
-        this.inner().withPlatformUpdateDomainCount(updateDomainCount);
+        this.innerModel().withPlatformUpdateDomainCount(updateDomainCount);
         return this;
     }
 
     @Override
     public AvailabilitySetImpl withFaultDomainCount(int faultDomainCount) {
-        this.inner().withPlatformFaultDomainCount(faultDomainCount);
+        this.innerModel().withPlatformFaultDomainCount(faultDomainCount);
         return this;
     }
 
     @Override
     public AvailabilitySetImpl withSku(AvailabilitySetSkuTypes skuType) {
-        if (this.inner().sku() == null) {
-            this.inner().withSku(new Sku());
+        if (this.innerModel().sku() == null) {
+            this.innerModel().withSku(new Sku());
         }
-        this.inner().sku().withName(skuType.toString());
+        this.innerModel().sku().withName(skuType.toString());
         return this;
     }
 
     @Override
     public AvailabilitySetImpl withProximityPlacementGroup(String proximityPlacementGroupId) {
-        this.inner().withProximityPlacementGroup(new SubResource().withId(proximityPlacementGroupId));
+        this.innerModel().withProximityPlacementGroup(new SubResource().withId(proximityPlacementGroupId));
         this.newProximityPlacementGroupType = null;
         this.newProximityPlacementGroupName = null;
         return this;
@@ -154,14 +160,14 @@ class AvailabilitySetImpl
         this.newProximityPlacementGroupName = proximityPlacementGroupName;
         this.newProximityPlacementGroupType = type;
 
-        this.inner().withProximityPlacementGroup(null);
+        this.innerModel().withProximityPlacementGroup(null);
 
         return this;
     }
 
     @Override
     public AvailabilitySetImpl withoutProximityPlacementGroup() {
-        this.inner().withProximityPlacementGroup(null);
+        this.innerModel().withProximityPlacementGroup(null);
         return this;
     }
 
@@ -170,11 +176,11 @@ class AvailabilitySetImpl
     @Override
     public Mono<AvailabilitySet> createResourceAsync() {
         final AvailabilitySetImpl self = this;
-        if (this.inner().platformFaultDomainCount() == null) {
-            this.inner().withPlatformFaultDomainCount(2);
+        if (this.innerModel().platformFaultDomainCount() == null) {
+            this.innerModel().withPlatformFaultDomainCount(2);
         }
-        if (this.inner().platformUpdateDomainCount() == null) {
-            this.inner().withPlatformUpdateDomainCount(5);
+        if (this.innerModel().platformUpdateDomainCount() == null) {
+            this.innerModel().withPlatformUpdateDomainCount(5);
         }
         return this
             .createNewProximityPlacementGroupAsync()
@@ -183,7 +189,7 @@ class AvailabilitySetImpl
                     manager()
                         .serviceClient()
                         .getAvailabilitySets()
-                        .createOrUpdateAsync(resourceGroupName(), name(), inner())
+                        .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
                         .map(
                             availabilitySetInner -> {
                                 self.setInner(availabilitySetInner);
@@ -197,7 +203,7 @@ class AvailabilitySetImpl
             if (this.newProximityPlacementGroupName != null && !this.newProximityPlacementGroupName.isEmpty()) {
                 ProximityPlacementGroupInner plgInner = new ProximityPlacementGroupInner();
                 plgInner.withProximityPlacementGroupType(this.newProximityPlacementGroupType);
-                plgInner.withLocation(this.inner().location());
+                plgInner.withLocation(this.innerModel().location());
                 return this
                     .manager()
                     .serviceClient()
@@ -205,7 +211,9 @@ class AvailabilitySetImpl
                     .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
                     .map(
                         createdPlgInner -> {
-                            this.inner().withProximityPlacementGroup(new SubResource().withId(createdPlgInner.id()));
+                            this
+                                .innerModel()
+                                .withProximityPlacementGroup(new SubResource().withId(createdPlgInner.id()));
                             return this;
                         });
             }

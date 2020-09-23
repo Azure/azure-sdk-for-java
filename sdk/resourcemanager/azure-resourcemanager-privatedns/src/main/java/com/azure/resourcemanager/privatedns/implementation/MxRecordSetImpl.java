@@ -23,20 +23,20 @@ class MxRecordSetImpl extends PrivateDnsRecordSetImpl implements MxRecordSet {
 
     @Override
     public List<MxRecord> records() {
-        if (inner().mxRecords() != null) {
-            return Collections.unmodifiableList(inner().mxRecords());
+        if (innerModel().mxRecords() != null) {
+            return Collections.unmodifiableList(innerModel().mxRecords());
         }
         return Collections.unmodifiableList(new ArrayList<>());
     }
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (inner().mxRecords() != null && !inner().mxRecords().isEmpty()) {
+        if (innerModel().mxRecords() != null && !innerModel().mxRecords().isEmpty()) {
             if (resource.mxRecords() == null) {
                 resource.withMxRecords(new ArrayList<>());
             }
-            resource.mxRecords().addAll(inner().mxRecords());
-            inner().mxRecords().clear();
+            resource.mxRecords().addAll(innerModel().mxRecords());
+            innerModel().mxRecords().clear();
         }
 
         if (!recordSetRemoveInfo.mxRecords().isEmpty()) {

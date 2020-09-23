@@ -91,7 +91,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId()); // No Local MSI enabled
         Assertions.assertNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId()); // No Local MSI enabled
@@ -301,7 +301,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
@@ -461,7 +461,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
         virtualMachine.update().withSystemAssignedManagedServiceIdentity().apply();
         //
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.managedServiceIdentityType());
         Assertions
