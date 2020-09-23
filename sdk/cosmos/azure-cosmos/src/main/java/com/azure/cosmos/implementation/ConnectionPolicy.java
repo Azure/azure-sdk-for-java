@@ -41,11 +41,11 @@ public final class ConnectionPolicy {
 
     //  Direct connection config properties
     private Duration connectTimeout;
-    private boolean tcpConnectionEndpointRediscoveryEnabled;
     private Duration idleTcpConnectionTimeout;
     private Duration idleTcpEndpointTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
+    private boolean tcpConnectionEndpointRediscoveryEnabled;
 
     /**
      * Constructor.
@@ -91,7 +91,7 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets a value that indicates whether Direct TCP connection endpoint rediscovery should is enabled.
+     * Gets a value that indicates whether Direct TCP connection endpoint rediscovery is enabled.
      *
      * @return {@code true} if Direct TCP connection endpoint rediscovery should is enabled; {@code false} otherwise.
      */
@@ -100,7 +100,7 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Sets a value that indicates whether Direct TCP connection endpoint rediscovery should is enabled.
+     * Sets a value that indicates whether Direct TCP connection endpoint rediscovery is enabled.
      *
      * @return the {@linkplain ConnectionPolicy}.
      */

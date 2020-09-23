@@ -93,11 +93,4 @@ public class RntbdConnectionStateListener {
     }
 
     // endregion
-
-    // region Types
-
-    public enum UpdateStrategy{
-        DEFERRED,
-        IMMEDIATE
-    }
 }

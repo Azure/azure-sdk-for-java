@@ -4,12 +4,12 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -159,6 +159,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         @JsonProperty("eventName")
         private final String name;
 
+        @JsonSerialize(using = ToStringSerializer.class)
         @JsonProperty("startTimeUTC")
         private final Instant startTime;
 

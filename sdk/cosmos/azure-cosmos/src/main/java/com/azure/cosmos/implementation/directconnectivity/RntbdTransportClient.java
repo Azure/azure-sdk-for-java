@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionEvent;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListener;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
@@ -49,8 +50,6 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
-
-import com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
@@ -139,7 +138,7 @@ public final class RntbdTransportClient extends TransportClient {
         final SslContext sslContext,
         final RntbdConnectionStateListener connectionStateListener) {
 
-        this.connectionStateListener = checkNotNull(options, "expected non-null options").connectionEndpointRediscovery
+        this.connectionStateListener = checkNotNull(options, "expected non-null options").connectionEndpointRediscoveryEnabled
             ? checkNotNull( connectionStateListener, "expected non-null connectionStateListener")
             : null;
 
@@ -440,7 +439,7 @@ public final class RntbdTransportClient extends TransportClient {
         private final Duration connectionAcquisitionTimeout;
 
         @JsonProperty()
-        private final boolean connectionEndpointRediscovery;
+        private final boolean connectionEndpointRediscoveryEnabled;
 
         @JsonProperty()
         private final Duration connectTimeout;
@@ -500,7 +499,7 @@ public final class RntbdTransportClient extends TransportClient {
 
             this.bufferPageSize = builder.bufferPageSize;
             this.connectionAcquisitionTimeout = builder.connectionAcquisitionTimeout;
-            this.connectionEndpointRediscovery = builder.connectionEndpointRediscovery;
+            this.connectionEndpointRediscoveryEnabled = builder.connectionEndpointRediscoveryEnabled;
             this.idleChannelTimeout = builder.idleChannelTimeout;
             this.idleChannelTimerResolution = builder.idleChannelTimerResolution;
             this.idleEndpointTimeout = builder.idleEndpointTimeout;
@@ -524,7 +523,7 @@ public final class RntbdTransportClient extends TransportClient {
         private Options(final ConnectionPolicy connectionPolicy) {
             this.bufferPageSize = 8192;
             this.connectionAcquisitionTimeout = Duration.ofSeconds(5L);
-            this.connectionEndpointRediscovery = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
+            this.connectionEndpointRediscoveryEnabled = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
             this.connectTimeout = connectionPolicy.getConnectTimeout();
             this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
             this.idleChannelTimerResolution = Duration.ofMillis(100);
@@ -556,8 +555,8 @@ public final class RntbdTransportClient extends TransportClient {
             return this.connectionAcquisitionTimeout;
         }
 
-        public boolean connectionEndpointRediscovery() {
-            return this.connectionEndpointRediscovery;
+        public boolean isConnectionEndpointRediscoveryEnabled() {
+            return this.connectionEndpointRediscoveryEnabled;
         }
 
         public Duration connectTimeout() {
@@ -662,7 +661,7 @@ public final class RntbdTransportClient extends TransportClient {
          * <pre>{@code RntbdTransportClient.class.getClassLoader().getResourceAsStream("azure.cosmos.directTcp.defaultOptions.json")}</pre>
          * <p>Example: <pre>{@code {
          *   "bufferPageSize": 8192,
-         *   "connectionEndpointRediscovery": true,
+         *   "connectionEndpointRediscoveryEnabled": true,
          *   "connectTimeout": "PT1M",
          *   "idleChannelTimeout": "PT0S",
          *   "idleEndpointTimeout": "PT1M10S",
@@ -751,7 +750,7 @@ public final class RntbdTransportClient extends TransportClient {
 
             private int bufferPageSize;
             private Duration connectionAcquisitionTimeout;
-            private boolean connectionEndpointRediscovery;
+            private boolean connectionEndpointRediscoveryEnabled;
             private Duration connectTimeout;
             private Duration idleChannelTimeout;
             private Duration idleChannelTimerResolution;
@@ -776,7 +775,7 @@ public final class RntbdTransportClient extends TransportClient {
 
                 this.bufferPageSize = DEFAULT_OPTIONS.bufferPageSize;
                 this.connectionAcquisitionTimeout = DEFAULT_OPTIONS.connectionAcquisitionTimeout;
-                this.connectionEndpointRediscovery = DEFAULT_OPTIONS.connectionEndpointRediscovery;
+                this.connectionEndpointRediscoveryEnabled = DEFAULT_OPTIONS.connectionEndpointRediscoveryEnabled;
                 this.connectTimeout = connectionPolicy.getConnectTimeout();
                 this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
                 this.idleChannelTimerResolution = DEFAULT_OPTIONS.idleChannelTimerResolution;
@@ -823,8 +822,8 @@ public final class RntbdTransportClient extends TransportClient {
                 return this;
             }
 
-            public Builder connectionEndpointRediscovery(final boolean value) {
-                this.connectionEndpointRediscovery = value;
+            public Builder connectionEndpointRediscoveryEnabled(final boolean value) {
+                this.connectionEndpointRediscoveryEnabled = value;
                 return this;
             }
 

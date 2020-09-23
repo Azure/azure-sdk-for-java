@@ -82,10 +82,8 @@ import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuListener {
 
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
-        "ParallelDocumentQueryExecutionContext, but not used";
-
-    private static final ObjectMapper mapper = Utils.getSimpleObjectMapper();
-
+        "ParallelDocumentQueryExecutioncontext, but not used";
+    private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private final ItemDeserializer itemDeserializer = new ItemDeserializer.JsonDeserializer();
     private final Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKeyOrResourceToken;

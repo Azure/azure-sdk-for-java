@@ -26,7 +26,7 @@ public final class RntbdAddressCacheToken {
 
     // region Fields
 
-    private static Logger logger = LoggerFactory.getLogger(RntbdAddressCacheToken.class);
+    private final static Logger logger = LoggerFactory.getLogger(RntbdAddressCacheToken.class);
 
     private final URI addressResolverURI;
     private final RntbdEndpoint endpoint;

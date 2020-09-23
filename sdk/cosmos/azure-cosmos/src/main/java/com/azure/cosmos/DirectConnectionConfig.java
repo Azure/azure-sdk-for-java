@@ -21,8 +21,8 @@ public final class DirectConnectionConfig {
     private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 130;
     private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 30;
 
+    private boolean connectionEndpointRediscoveryEnabled;
     private Duration connectTimeout;
-    private boolean enableConnectionEndpointRediscovery;
     private Duration idleConnectionTimeout;
     private Duration idleEndpointTimeout;
     private Duration requestTimeout;
@@ -34,7 +34,7 @@ public final class DirectConnectionConfig {
      */
     public DirectConnectionConfig() {
         this.connectTimeout = DEFAULT_CONNECT_TIMEOUT;
-        this.enableConnectionEndpointRediscovery = false;
+        this.connectionEndpointRediscoveryEnabled = true;
         this.idleConnectionTimeout = Duration.ZERO;
         this.idleEndpointTimeout = DEFAULT_IDLE_ENDPOINT_TIMEOUT;
         this.maxConnectionsPerEndpoint = DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT;
@@ -94,7 +94,7 @@ public final class DirectConnectionConfig {
      * @return {@code true} if Direct TCP connection endpoint rediscovery is enabled; {@code false} otherwise.
      */
     public boolean isConnectionEndpointRediscoveryEnabled() {
-        return this.enableConnectionEndpointRediscovery;
+        return this.connectionEndpointRediscoveryEnabled;
     }
 
     /**
@@ -113,7 +113,7 @@ public final class DirectConnectionConfig {
      * @return the {@linkplain DirectConnectionConfig}.
      */
     public DirectConnectionConfig setConnectionEndpointRediscoveryEnabled(boolean connectionEndpointRediscoveryEnabled) {
-        this.enableConnectionEndpointRediscovery = connectionEndpointRediscoveryEnabled;
+        this.connectionEndpointRediscoveryEnabled = connectionEndpointRediscoveryEnabled;
         return this;
     }
 
