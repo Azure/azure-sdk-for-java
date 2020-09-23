@@ -46,7 +46,7 @@ import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
-import com.azure.storage.file.share.models.RangeList;
+import com.azure.storage.file.share.models.Range;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
@@ -55,6 +55,7 @@ import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
@@ -1636,7 +1637,7 @@ public class ShareFileAsyncClient {
      * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      */
-    public Mono<RangeList> listRangesDiff(String previousSnapshot) {
+    public Mono<ShareFileRangeList> listRangesDiff(String previousSnapshot) {
         try {
             return listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(previousSnapshot))
                 .map(Response::getValue);
@@ -1660,7 +1661,7 @@ public class ShareFileAsyncClient {
      * @param options {@link ShareFileListRangesDiffOptions}.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      */
-    public Mono<Response<RangeList>> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options) {
+    public Mono<Response<ShareFileRangeList>> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
             return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
@@ -1680,14 +1681,16 @@ public class ShareFileAsyncClient {
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    response.getValue().getRanges().stream().map(ShareFileRange::new).collect(Collectors.toList()),
+                    response.getValue().getRanges().stream()
+                        .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+                        .map(ShareFileRange::new).collect(Collectors.toList()),
                     null,
                     response.getHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
-    Mono<Response<RangeList>> listRangesWithResponse(ShareFileRange range,
+    Mono<Response<ShareFileRangeList>> listRangesWithResponse(ShareFileRange range,
         ShareRequestConditions requestConditions, String previousSnapshot, Context context) {
 
         ShareRequestConditions finalRequestConditions = requestConditions == null

@@ -16,7 +16,6 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
-import com.azure.storage.file.share.models.RangeList;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
@@ -24,6 +23,7 @@ import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
@@ -1266,7 +1266,7 @@ public class ShareFileClient {
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public RangeList listRangesDiff(String previousSnapshot) {
+    public ShareFileRangeList listRangesDiff(String previousSnapshot) {
         return this.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(previousSnapshot), null, Context.NONE)
             .getValue();
     }
@@ -1290,10 +1290,10 @@ public class ShareFileClient {
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<RangeList> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options, Duration timeout,
+    public Response<ShareFileRangeList> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Mono<Response<RangeList>> response = shareFileAsyncClient.listRangesWithResponse(options.getRange(),
+        Mono<Response<ShareFileRangeList>> response = shareFileAsyncClient.listRangesWithResponse(options.getRange(),
             options.getRequestConditions(), options.getPreviousSnapshot(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);

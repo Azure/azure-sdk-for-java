@@ -11,16 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * the list of pages.
+ * The list of file ranges.
  */
-@JacksonXmlRootElement(localName = "RangeList")
+@JacksonXmlRootElement(localName = "ShareFileRangeList")
 @Fluent
-public final class RangeList {
+public final class ShareFileRangeList {
     /*
      * The ranges property.
      */
     @JsonProperty("Range")
-    private List<Range> ranges = new ArrayList<>();
+    private List<FileRange> ranges = new ArrayList<>();
 
     /*
      * The clearRanges property.
@@ -33,7 +33,7 @@ public final class RangeList {
      *
      * @return the ranges value.
      */
-    public List<Range> getRanges() {
+    public List<FileRange> getRanges() {
         return this.ranges;
     }
 
@@ -41,9 +41,9 @@ public final class RangeList {
      * Set the ranges property: The ranges property.
      *
      * @param ranges the ranges value to set.
-     * @return the RangeList object itself.
+     * @return the ShareFileRangeList object itself.
      */
-    public RangeList setRanges(List<Range> ranges) {
+    public ShareFileRangeList setRanges(List<FileRange> ranges) {
         this.ranges = ranges;
         return this;
     }
@@ -61,9 +61,9 @@ public final class RangeList {
      * Set the clearRanges property: The clearRanges property.
      *
      * @param clearRanges the clearRanges value to set.
-     * @return the RangeList object itself.
+     * @return the ShareFileRangeList object itself.
      */
-    public RangeList setClearRanges(List<ClearRange> clearRanges) {
+    public ShareFileRangeList setClearRanges(List<ClearRange> clearRanges) {
         this.clearRanges = clearRanges;
         return this;
     }

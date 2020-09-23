@@ -4,8 +4,8 @@ package com.azure.storage.file.share;
 
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
-import com.azure.storage.file.share.models.Range;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileProperties;
@@ -834,7 +834,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
         final String prevSnapshot = "previoussnapshot";
         shareFileAsyncClient.listRangesDiff(prevSnapshot).subscribe(response -> {
             System.out.println("Valid Share File Ranges are:");
-            for (Range range : response.getRanges()) {
+            for (FileRange range : response.getRanges()) {
                 System.out.printf("Start: %s, End: %s%n", range.getStart(), range.getEnd());
             }
         });
@@ -850,7 +850,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
         shareFileAsyncClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions("previoussnapshot")
             .setRange(new ShareFileRange(1024, 2048L))).subscribe(response -> {
             System.out.println("Valid Share File Ranges are:");
-            for (Range range : response.getValue().getRanges()) {
+            for (FileRange range : response.getValue().getRanges()) {
                 System.out.printf("Start: %s, End: %s%n", range.getStart(), range.getEnd());
             }
         });
