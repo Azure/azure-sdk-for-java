@@ -23,7 +23,6 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /**
  * Azure Compute sample for assigning service identity to virtual machine scale set using newly created service principal

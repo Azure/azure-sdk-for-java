@@ -172,7 +172,8 @@ public class ContainerGroupImpl
                     ShareServiceAsyncClient shareServiceAsyncClient =
                         new ShareServiceClientBuilder()
                             .connectionString(
-                                ResourceManagerUtils.getStorageConnectionString(storageAccount.name(), key, manager().environment()))
+                                ResourceManagerUtils.getStorageConnectionString(
+                                    storageAccount.name(), key, manager().environment()))
                             .httpClient(manager().httpPipeline().getHttpClient())
                             .buildAsyncClient();
 

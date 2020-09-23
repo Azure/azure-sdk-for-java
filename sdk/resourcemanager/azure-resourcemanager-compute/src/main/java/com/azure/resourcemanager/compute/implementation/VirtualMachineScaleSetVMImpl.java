@@ -307,7 +307,8 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean isWindowsVMAgentProvisioned() {
         if (this.inner().osProfile().windowsConfiguration() != null) {
-            return ResourceManagerUtils.toPrimitiveBoolean(this.inner().osProfile().windowsConfiguration().provisionVMAgent());
+            return ResourceManagerUtils.toPrimitiveBoolean(
+                this.inner().osProfile().windowsConfiguration().provisionVMAgent());
         }
         return false;
     }
@@ -315,7 +316,8 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean isWindowsAutoUpdateEnabled() {
         if (this.inner().osProfile().windowsConfiguration() != null) {
-            return ResourceManagerUtils.toPrimitiveBoolean(this.inner().osProfile().windowsConfiguration().enableAutomaticUpdates());
+            return ResourceManagerUtils.toPrimitiveBoolean(
+                this.inner().osProfile().windowsConfiguration().enableAutomaticUpdates());
         }
         return false;
     }
@@ -331,7 +333,8 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean bootDiagnosticEnabled() {
         if (this.inner().diagnosticsProfile() != null && this.inner().diagnosticsProfile().bootDiagnostics() != null) {
-            return ResourceManagerUtils.toPrimitiveBoolean(this.inner().diagnosticsProfile().bootDiagnostics().enabled());
+            return ResourceManagerUtils.toPrimitiveBoolean(
+                this.inner().diagnosticsProfile().bootDiagnostics().enabled());
         }
         return false;
     }
