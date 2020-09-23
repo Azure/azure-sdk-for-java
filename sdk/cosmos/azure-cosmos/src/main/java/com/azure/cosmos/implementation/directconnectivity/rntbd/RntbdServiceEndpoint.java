@@ -232,6 +232,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                     metrics,
                     remoteAddress);
                 requestRecord.serviceEndpointStatistics(stat);
+                return requestRecord;
             }
             finally {
                 concurrentRequests.decrementAndGet();
