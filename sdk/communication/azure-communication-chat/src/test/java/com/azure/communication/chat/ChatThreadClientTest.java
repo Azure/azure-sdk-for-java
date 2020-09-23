@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import com.azure.communication.administration.CommunicationIdentityClient;
 import com.azure.communication.administration.CommunicationUserToken;
 import com.azure.communication.common.CommunicationUser;
-import com.azure.communication.chat.implementation.ChatOptionsMocker;
+import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
@@ -54,7 +54,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         client = getChatClientBuilder(response.getToken()).buildClient();
 
-        CreateChatThreadOptions threadRequest = ChatOptionsMocker.createThreadOptions(
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         chatThreadClient = client.createChatThread(threadRequest);
         threadId = chatThreadClient.getChatThreadId();
@@ -67,7 +67,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @Test
     public void canUpdateThread() {
-        UpdateChatThreadOptions threadRequest = ChatOptionsMocker.updateThreadOptions();
+        UpdateChatThreadOptions threadRequest = ChatOptionsProvider.updateThreadOptions();
 
         chatThreadClient.updateChatThread(threadRequest);
 
@@ -77,7 +77,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @Test
     public void canUpdateThreadWithResponse() {
-        UpdateChatThreadOptions threadRequest = ChatOptionsMocker.updateThreadOptions();
+        UpdateChatThreadOptions threadRequest = ChatOptionsProvider.updateThreadOptions();
 
         chatThreadClient.updateChatThreadWithResponse(threadRequest, Context.NONE);
 
@@ -90,7 +90,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         firstAddedThreadMember = communicationClient.createUser();
         secondAddedThreadMember = communicationClient.createUser();
 
-        AddChatThreadMembersOptions options = ChatOptionsMocker.addThreadMembersOptions(
+        AddChatThreadMembersOptions options = ChatOptionsProvider.addThreadMembersOptions(
             firstAddedThreadMember.getId(), secondAddedThreadMember.getId());
 
         chatThreadClient.addMembers(options);
@@ -120,7 +120,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         firstAddedThreadMember = communicationClient.createUser();
         secondAddedThreadMember = communicationClient.createUser();
 
-        AddChatThreadMembersOptions options = ChatOptionsMocker.addThreadMembersOptions(
+        AddChatThreadMembersOptions options = ChatOptionsProvider.addThreadMembersOptions(
             firstAddedThreadMember.getId(), secondAddedThreadMember.getId());
 
         chatThreadClient.addMembersWithResponse(options, Context.NONE);
@@ -147,7 +147,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @Test
     public void canSendThenGetMessage() {
-        SendChatMessageOptions messageRequest = ChatOptionsMocker.sendMessageOptions();
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
@@ -159,7 +159,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @Test
     public void canSendThenGetMessageWithResponse() {
-        SendChatMessageOptions messageRequest = ChatOptionsMocker.sendMessageOptions();
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         SendChatMessageResult response = chatThreadClient.sendMessageWithResponse(messageRequest, Context.NONE).getValue();
 
@@ -171,7 +171,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @Test
     public void canDeleteExistingMessage() {
-        SendChatMessageOptions messageRequest = ChatOptionsMocker.sendMessageOptions();
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
@@ -180,7 +180,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @Test
     public void canDeleteExistingMessageWithResponse() {
-        SendChatMessageOptions messageRequest = ChatOptionsMocker.sendMessageOptions();
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
@@ -189,8 +189,8 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @Test
     public void canUpdateExistingMessage() {
-        SendChatMessageOptions messageRequest = ChatOptionsMocker.sendMessageOptions();
-        UpdateChatMessageOptions updateMessageRequest = ChatOptionsMocker.updateMessageOptions();
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
+        UpdateChatMessageOptions updateMessageRequest = ChatOptionsProvider.updateMessageOptions();
 
         SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
@@ -202,8 +202,8 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @Test
     public void canUpdateExistingMessageWithResponse() {
-        SendChatMessageOptions messageRequest = ChatOptionsMocker.sendMessageOptions();
-        UpdateChatMessageOptions updateMessageRequest = ChatOptionsMocker.updateMessageOptions();
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
+        UpdateChatMessageOptions updateMessageRequest = ChatOptionsProvider.updateMessageOptions();
 
         SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
@@ -215,7 +215,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @Test
     public void canListMessages() {
-        SendChatMessageOptions messageRequest = ChatOptionsMocker.sendMessageOptions();
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
         chatThreadClient.sendMessage(messageRequest);
         chatThreadClient.sendMessage(messageRequest);
 
@@ -237,7 +237,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @Test
     public void canListMessagesWithOptions() {
-        SendChatMessageOptions messageRequest = ChatOptionsMocker.sendMessageOptions();
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
         chatThreadClient.sendMessage(messageRequest);
         chatThreadClient.sendMessage(messageRequest);
 
@@ -272,12 +272,14 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     }
 
     @Test
-    public void canSendThenListReadReceipts() {
-        SendChatMessageOptions messageRequest = ChatOptionsMocker.sendMessageOptions();
+    public void canSendThenListReadReceipts() throws InterruptedException {
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
         chatThreadClient.sendReadReceipt(response.getId());
+
+        Thread.sleep(500);
 
         PagedIterable<ReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
 
@@ -293,12 +295,14 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     }
 
     @Test
-    public void canSendThenListReadReceiptsWithResponse() {
-        SendChatMessageOptions messageRequest = ChatOptionsMocker.sendMessageOptions();
+    public void canSendThenListReadReceiptsWithResponse() throws InterruptedException {
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
         chatThreadClient.sendReadReceiptWithResponse(response.getId(), Context.NONE);
+
+        Thread.sleep(500);
 
         PagedIterable<ReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
 
