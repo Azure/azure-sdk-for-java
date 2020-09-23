@@ -226,13 +226,13 @@ Observable.merge(
 final List<Object> createdResources = new ArrayList<>();
 azure.resourceGroups().define(rgName).withRegion(region).create();
 Flux.merge(
-    azureResourceManager.networks().define(vnetName)
+    azure.networks().define(vnetName)
         .withRegion(region)
         .withExistingResourceGroup(rgName)
         .withAddressSpace("172.16.0.0/16")
         .defineSubnet("Front-end").withAddressPrefix("172.16.1.0/24").attach()
         .createAsync(),
-    azureResourceManager.publicIpAddresses().define(publicIpName)
+    azure.publicIpAddresses().define(publicIpName)
         .withRegion(region)
         .withExistingResourceGroup(rgName)
         .withLeafDomainLabel(publicIpName)
@@ -240,7 +240,7 @@ Flux.merge(
         .flatMapMany(publicIp -> {
             return Flux.merge(
                 Flux.just(publicIp),
-                azureResourceManager.loadBalancers().define(loadBalancerName1)
+                azure.loadBalancers().define(loadBalancerName1)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     // Add two rules that uses above backend and probe
