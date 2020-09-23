@@ -18,7 +18,7 @@ public abstract class WrapperImpl<InnerT> implements HasInnerModel<InnerT> {
     }
 
     @Override
-    public InnerT inner() {
+    public InnerT innerModel() {
         return this.innerObject;
     }
 

@@ -43,7 +43,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
 
     void handleExternalIdentities() {
         if (!this.userAssignedIdentities.isEmpty()) {
-            this.containerGroup.inner().identity().withUserAssignedIdentities(this.userAssignedIdentities);
+            this.containerGroup.innerModel().identity().withUserAssignedIdentities(this.userAssignedIdentities);
         }
     }
 
@@ -101,7 +101,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
 
-        ContainerGroupInner containerGroupInner = this.containerGroup.inner();
+        ContainerGroupInner containerGroupInner = this.containerGroup.innerModel();
         if (containerGroupInner.identity() == null) {
             containerGroupInner.withIdentity(new ContainerGroupIdentity());
         }

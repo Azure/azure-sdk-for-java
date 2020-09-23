@@ -13,5 +13,5 @@ public interface HasInnerModel<T> {
      * @return wrapped inner model providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API
      */
-    T inner();
+    T innerModel();
 }

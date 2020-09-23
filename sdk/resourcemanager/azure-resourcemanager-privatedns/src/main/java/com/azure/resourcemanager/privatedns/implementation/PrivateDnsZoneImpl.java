@@ -60,42 +60,42 @@ class PrivateDnsZoneImpl
 
     @Override
     public String etag() {
-        return inner().etag();
+        return innerModel().etag();
     }
 
     @Override
     public long maxNumberOfRecordSets() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().maxNumberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().maxNumberOfRecordSets());
     }
 
     @Override
     public long numberOfRecordSets() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().numberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().numberOfRecordSets());
     }
 
     @Override
     public long maxNumberOfVirtualNetworkLinks() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().maxNumberOfVirtualNetworkLinks());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().maxNumberOfVirtualNetworkLinks());
     }
 
     @Override
     public long numberOfVirtualNetworkLinks() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().numberOfVirtualNetworkLinks());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().numberOfVirtualNetworkLinks());
     }
 
     @Override
     public long maxNumberOfVirtualNetworkLinksWithRegistration() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().maxNumberOfVirtualNetworkLinksWithRegistration());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().maxNumberOfVirtualNetworkLinksWithRegistration());
     }
 
     @Override
     public long numberOfVirtualNetworkLinksWithRegistration() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().numberOfVirtualNetworkLinksWithRegistration());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().numberOfVirtualNetworkLinksWithRegistration());
     }
 
     @Override
     public ProvisioningState provisioningState() {
-        return inner().provisioningState();
+        return innerModel().provisioningState();
     }
 
     @Override
@@ -387,8 +387,8 @@ class PrivateDnsZoneImpl
             .createOrUpdateAsync(
                 resourceGroupName(),
                 name(),
-                inner(),
-                etagState.ifMatchValueOnUpdate(inner().etag()),
+                innerModel(),
+                etagState.ifMatchValueOnUpdate(innerModel().etag()),
                 etagState.ifNonMatchValueOnCreate())
             .map(innerToFluentMap(this))
             .map(privateDnsZone -> {

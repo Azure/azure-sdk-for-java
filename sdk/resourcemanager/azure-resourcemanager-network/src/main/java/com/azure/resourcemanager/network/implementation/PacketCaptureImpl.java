@@ -122,12 +122,12 @@ public class PacketCaptureImpl
         if (createParameters.filters() == null) {
             createParameters.withFilters(new ArrayList<PacketCaptureFilter>());
         }
-        createParameters.filters().add(pcFilter.inner());
+        createParameters.filters().add(pcFilter.innerModel());
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
@@ -140,41 +140,41 @@ public class PacketCaptureImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public String targetId() {
-        return inner().target();
+        return innerModel().target();
     }
 
     @Override
     public int bytesToCapturePerPacket() {
-        return ResourceManagerUtils.toPrimitiveInt(inner().bytesToCapturePerPacket());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().bytesToCapturePerPacket());
     }
 
     @Override
     public int totalBytesPerSession() {
-        return ResourceManagerUtils.toPrimitiveInt(inner().totalBytesPerSession());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().totalBytesPerSession());
     }
 
     @Override
     public int timeLimitInSeconds() {
-        return ResourceManagerUtils.toPrimitiveInt(inner().timeLimitInSeconds());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().timeLimitInSeconds());
     }
 
     @Override
     public PacketCaptureStorageLocation storageLocation() {
-        return inner().storageLocation();
+        return innerModel().storageLocation();
     }
 
     @Override
     public List<PacketCaptureFilter> filters() {
-        return inner().filters();
+        return innerModel().filters();
     }
 
     @Override
     public ProvisioningState provisioningState() {
-        return inner().provisioningState();
+        return innerModel().provisioningState();
     }
 }

@@ -325,7 +325,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
     }
 
     @Override
-    public RunInner inner() {
+    public RunInner innerModel() {
         return this.inner;
     }
 

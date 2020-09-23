@@ -38,7 +38,7 @@ class ExpressRouteCircuitPeeringImpl
         this.client = client;
         this.parent = parent;
         this.stats = new ExpressRouteCircuitStatsImpl(innerObject.stats());
-        inner().withPeeringType(type);
+        innerModel().withPeeringType(type);
     }
 
     @Override
@@ -49,37 +49,37 @@ class ExpressRouteCircuitPeeringImpl
     }
 
     private ExpressRouteCircuitPeeringConfig ensureMicrosoftPeeringConfig() {
-        if (inner().microsoftPeeringConfig() == null) {
-            inner().withMicrosoftPeeringConfig(new ExpressRouteCircuitPeeringConfig());
+        if (innerModel().microsoftPeeringConfig() == null) {
+            innerModel().withMicrosoftPeeringConfig(new ExpressRouteCircuitPeeringConfig());
         }
-        return inner().microsoftPeeringConfig();
+        return innerModel().microsoftPeeringConfig();
     }
 
     @Override
     public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
         withPrimaryPeerAddressPrefix(String addressPrefix) {
-        inner().withPrimaryPeerAddressPrefix(addressPrefix);
+        innerModel().withPrimaryPeerAddressPrefix(addressPrefix);
         return this;
     }
 
     @Override
     public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
         withSecondaryPeerAddressPrefix(String addressPrefix) {
-        inner().withSecondaryPeerAddressPrefix(addressPrefix);
+        innerModel().withSecondaryPeerAddressPrefix(addressPrefix);
         return this;
     }
 
     @Override
     public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
         withVlanId(int vlanId) {
-        inner().withVlanId(vlanId);
+        innerModel().withVlanId(vlanId);
         return this;
     }
 
     @Override
     public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
         withPeerAsn(long peerASN) {
-        inner().withPeerAsn(peerASN);
+        innerModel().withPeerAsn(peerASN);
         return this;
     }
 
@@ -90,14 +90,14 @@ class ExpressRouteCircuitPeeringImpl
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
     public Mono<ExpressRouteCircuitPeering> createResourceAsync() {
         return this
             .client
-            .createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), inner())
+            .createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), innerModel())
             .flatMap(
                 innerModel -> {
                     this.setInner(innerModel);
@@ -110,62 +110,62 @@ class ExpressRouteCircuitPeeringImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public ExpressRoutePeeringType peeringType() {
-        return inner().peeringType();
+        return innerModel().peeringType();
     }
 
     @Override
     public ExpressRoutePeeringState state() {
-        return inner().state();
+        return innerModel().state();
     }
 
     @Override
     public int azureAsn() {
-        return ResourceManagerUtils.toPrimitiveInt(inner().azureAsn());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().azureAsn());
     }
 
     @Override
     public long peerAsn() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().peerAsn());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().peerAsn());
     }
 
     @Override
     public String primaryPeerAddressPrefix() {
-        return inner().primaryPeerAddressPrefix();
+        return innerModel().primaryPeerAddressPrefix();
     }
 
     @Override
     public String secondaryPeerAddressPrefix() {
-        return inner().secondaryPeerAddressPrefix();
+        return innerModel().secondaryPeerAddressPrefix();
     }
 
     @Override
     public String primaryAzurePort() {
-        return inner().primaryAzurePort();
+        return innerModel().primaryAzurePort();
     }
 
     @Override
     public String secondaryAzurePort() {
-        return inner().secondaryAzurePort();
+        return innerModel().secondaryAzurePort();
     }
 
     @Override
     public String sharedKey() {
-        return inner().sharedKey();
+        return innerModel().sharedKey();
     }
 
     @Override
     public int vlanId() {
-        return ResourceManagerUtils.toPrimitiveInt(inner().vlanId());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().vlanId());
     }
 
     @Override
     public ExpressRouteCircuitPeeringConfig microsoftPeeringConfig() {
-        return inner().microsoftPeeringConfig();
+        return innerModel().microsoftPeeringConfig();
     }
 
     @Override
@@ -175,17 +175,17 @@ class ExpressRouteCircuitPeeringImpl
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState().toString();
+        return innerModel().provisioningState().toString();
     }
 
     @Override
     public String lastModifiedBy() {
-        return inner().lastModifiedBy();
+        return innerModel().lastModifiedBy();
     }
 
     @Override
     public Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig() {
-        return inner().ipv6PeeringConfig();
+        return innerModel().ipv6PeeringConfig();
     }
 
     @Override

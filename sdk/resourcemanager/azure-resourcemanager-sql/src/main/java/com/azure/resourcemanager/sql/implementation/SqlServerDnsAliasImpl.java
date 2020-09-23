@@ -91,7 +91,7 @@ public class SqlServerDnsAliasImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -101,12 +101,12 @@ public class SqlServerDnsAliasImpl
 
     @Override
     public String azureDnsRecord() {
-        return this.inner().azureDnsRecord();
+        return this.innerModel().azureDnsRecord();
     }
 
     @Override
     public String parentId() {
-        return ResourceUtils.parentResourceIdFromResourceId(this.inner().id());
+        return ResourceUtils.parentResourceIdFromResourceId(this.innerModel().id());
     }
 
     @Override

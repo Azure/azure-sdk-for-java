@@ -86,7 +86,7 @@ class StorageSkuImpl implements StorageSku {
     }
 
     @Override
-    public SkuInformationInner inner() {
+    public SkuInformationInner innerModel() {
         return this.inner;
     }
 }

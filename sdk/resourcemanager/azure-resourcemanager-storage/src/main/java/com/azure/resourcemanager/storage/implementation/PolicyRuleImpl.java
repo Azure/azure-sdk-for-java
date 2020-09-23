@@ -151,7 +151,7 @@ class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Up
     }
 
     @Override
-    public ManagementPolicyRule inner() {
+    public ManagementPolicyRule innerModel() {
         return this.inner;
     }
 

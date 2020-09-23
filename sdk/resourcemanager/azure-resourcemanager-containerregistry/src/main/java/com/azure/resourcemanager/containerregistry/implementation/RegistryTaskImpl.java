@@ -64,22 +64,22 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override
     public String regionName() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override
@@ -89,7 +89,7 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public Map<String, String> tags() {
-        return this.inner().tags();
+        return this.innerModel().tags();
     }
 
     @Override
@@ -118,7 +118,7 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     }
 
     @Override
-    public TaskInner inner() {
+    public TaskInner innerModel() {
         return this.inner;
     }
 
@@ -541,7 +541,7 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     }
 
     private boolean isInCreateMode() {
-        if (this.inner().id() == null) {
+        if (this.innerModel().id() == null) {
             return true;
         }
         return false;

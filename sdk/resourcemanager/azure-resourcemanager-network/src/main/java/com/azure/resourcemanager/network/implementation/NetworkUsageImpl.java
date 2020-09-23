@@ -17,21 +17,21 @@ class NetworkUsageImpl extends WrapperImpl<UsageInner> implements NetworkUsage {
 
     @Override
     public UsageUnit unit() {
-        return inner().unit();
+        return innerModel().unit();
     }
 
     @Override
     public long currentValue() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().currentValue());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().currentValue());
     }
 
     @Override
     public long limit() {
-        return ResourceManagerUtils.toPrimitiveLong(inner().limit());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().limit());
     }
 
     @Override
     public UsageName name() {
-        return inner().name();
+        return innerModel().name();
     }
 }

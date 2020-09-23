@@ -22,7 +22,7 @@ public abstract class IndexableWrapperImpl<InnerT>
     }
 
     @Override
-    public InnerT inner() {
+    public InnerT innerModel() {
         return this.innerObject;
     }
 

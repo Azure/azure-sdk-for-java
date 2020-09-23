@@ -108,7 +108,7 @@ class RegistryEncodedTaskRunRequestImpl
     }
 
     @Override
-    public EncodedTaskRunRequest inner() {
+    public EncodedTaskRunRequest innerModel() {
         return this.inner;
     }
 }

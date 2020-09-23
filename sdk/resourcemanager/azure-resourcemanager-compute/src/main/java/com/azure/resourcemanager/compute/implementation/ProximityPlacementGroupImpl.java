@@ -23,27 +23,27 @@ final class ProximityPlacementGroupImpl implements ProximityPlacementGroup {
 
     @Override
     public ProximityPlacementGroupType proximityPlacementGroupType() {
-        return this.inner().proximityPlacementGroupType();
+        return this.innerModel().proximityPlacementGroupType();
     }
 
     @Override
     public List<String> virtualMachineIds() {
-        return getStringListFromSubResourceList(this.inner().virtualMachines());
+        return getStringListFromSubResourceList(this.innerModel().virtualMachines());
     }
 
     @Override
     public List<String> virtualMachineScaleSetIds() {
-        return getStringListFromSubResourceList(this.inner().virtualMachineScaleSets());
+        return getStringListFromSubResourceList(this.innerModel().virtualMachineScaleSets());
     }
 
     @Override
     public List<String> availabilitySetIds() {
-        return getStringListFromSubResourceList(this.inner().availabilitySets());
+        return getStringListFromSubResourceList(this.innerModel().availabilitySets());
     }
 
     @Override
     public String location() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override
@@ -53,11 +53,11 @@ final class ProximityPlacementGroupImpl implements ProximityPlacementGroup {
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
-    public ProximityPlacementGroupInner inner() {
+    public ProximityPlacementGroupInner innerModel() {
         return inner;
     }
 

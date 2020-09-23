@@ -31,7 +31,7 @@ class RegistrySourceTriggerImpl
     RegistrySourceTriggerImpl(String sourceTriggerName, RegistryTaskImpl registryTaskImpl, boolean creation) {
         if (creation) {
             this.registryTaskImpl = registryTaskImpl;
-            if (registryTaskImpl.inner().id() == null) {
+            if (registryTaskImpl.innerModel().id() == null) {
                 this.inner = new SourceTrigger();
                 this.inner.withSourceRepository(new SourceProperties());
                 this.inner.withName(sourceTriggerName);
@@ -258,12 +258,12 @@ class RegistrySourceTriggerImpl
     }
 
     @Override
-    public SourceTrigger inner() {
+    public SourceTrigger innerModel() {
         return this.inner;
     }
 
     private boolean isInCreateMode() {
-        if (this.registryTaskImpl.inner().id() == null) {
+        if (this.registryTaskImpl.innerModel().id() == null) {
             return true;
         }
         return false;

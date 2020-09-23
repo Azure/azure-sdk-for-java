@@ -32,12 +32,12 @@ class DisasterRecoveryPairingAuthorizationRuleImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public List<AccessRights> rights() {
-        return this.inner().rights();
+        return this.innerModel().rights();
     }
 
     @Override

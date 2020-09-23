@@ -24,16 +24,16 @@ final class ProviderImpl extends
 
     @Override
     public String namespace() {
-        return inner().namespace();
+        return innerModel().namespace();
     }
 
     @Override
     public String registrationState() {
-        return inner().registrationState();
+        return innerModel().registrationState();
     }
 
     @Override
     public List<ProviderResourceType> resourceTypes() {
-        return inner().resourceTypes();
+        return innerModel().resourceTypes();
     }
 }

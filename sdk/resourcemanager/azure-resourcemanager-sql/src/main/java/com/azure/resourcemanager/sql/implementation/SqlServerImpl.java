@@ -97,7 +97,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
             .manager()
             .serviceClient()
             .getServers()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(
                 serverInner -> {
                     setInner(serverInner);
@@ -158,42 +158,42 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public String fullyQualifiedDomainName() {
-        return this.inner().fullyQualifiedDomainName();
+        return this.innerModel().fullyQualifiedDomainName();
     }
 
     @Override
     public String administratorLogin() {
-        return this.inner().administratorLogin();
+        return this.innerModel().administratorLogin();
     }
 
     @Override
     public String kind() {
-        return this.inner().kind();
+        return this.innerModel().kind();
     }
 
     @Override
     public String state() {
-        return this.inner().state();
+        return this.innerModel().state();
     }
 
     @Override
     public boolean isManagedServiceIdentityEnabled() {
-        return this.inner().identity() != null && this.inner().identity().type().equals(IdentityType.SYSTEM_ASSIGNED);
+        return this.innerModel().identity() != null && this.innerModel().identity().type().equals(IdentityType.SYSTEM_ASSIGNED);
     }
 
     @Override
     public String systemAssignedManagedServiceIdentityTenantId() {
-        return this.inner().identity() != null ? this.inner().identity().tenantId().toString() : null;
+        return this.innerModel().identity() != null ? this.innerModel().identity().tenantId().toString() : null;
     }
 
     @Override
     public String systemAssignedManagedServiceIdentityPrincipalId() {
-        return this.inner().identity() != null ? this.inner().identity().principalId().toString() : null;
+        return this.innerModel().identity() != null ? this.innerModel().identity().principalId().toString() : null;
     }
 
     @Override
     public IdentityType managedServiceIdentityType() {
-        return this.inner().identity() != null ? this.inner().identity().type() : null;
+        return this.innerModel().identity() != null ? this.innerModel().identity().type() : null;
     }
 
     @Override
@@ -279,7 +279,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public String version() {
-        return this.inner().version();
+        return this.innerModel().version();
     }
 
     @Override
@@ -400,13 +400,13 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public SqlServerImpl withAdministratorLogin(String administratorLogin) {
-        this.inner().withAdministratorLogin(administratorLogin);
+        this.innerModel().withAdministratorLogin(administratorLogin);
         return this;
     }
 
     @Override
     public SqlServerImpl withAdministratorPassword(String administratorLoginPassword) {
-        this.inner().withAdministratorLoginPassword(administratorLoginPassword);
+        this.innerModel().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
     }
 
@@ -583,7 +583,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public SqlServerImpl withSystemAssignedManagedServiceIdentity() {
-        this.inner().withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED));
+        this.innerModel().withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED));
         return this;
     }
 }

@@ -81,43 +81,43 @@ public final class DeploymentImpl extends
 
     @Override
     public String provisioningState() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().provisioningState().toString();
+        return this.innerModel().properties().provisioningState().toString();
     }
 
     @Override
     public String correlationId() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().correlationId();
+        return this.innerModel().properties().correlationId();
     }
 
     @Override
     public OffsetDateTime timestamp() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().timestamp();
+        return this.innerModel().properties().timestamp();
     }
 
     @Override
     public Object outputs() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().outputs();
+        return this.innerModel().properties().outputs();
     }
 
     @Override
     public List<Provider> providers() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
         List<Provider> providers = new ArrayList<>();
-        for (ProviderInner providerInner : this.inner().properties().providers()) {
+        for (ProviderInner providerInner : this.innerModel().properties().providers()) {
             providers.add(new ProviderImpl(providerInner));
         }
         return providers;
@@ -125,58 +125,58 @@ public final class DeploymentImpl extends
 
     @Override
     public List<Dependency> dependencies() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().dependencies();
+        return this.innerModel().properties().dependencies();
     }
 
     @Override
     public String templateHash() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().templateHash();
+        return this.innerModel().properties().templateHash();
     }
 
     @Override
     public TemplateLink templateLink() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().templateLink();
+        return this.innerModel().properties().templateLink();
     }
 
     @Override
     public Object parameters() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().parameters();
+        return this.innerModel().properties().parameters();
     }
 
     @Override
     public ParametersLink parametersLink() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().parametersLink();
+        return this.innerModel().properties().parametersLink();
     }
 
     @Override
     public DeploymentMode mode() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().mode();
+        return innerModel().properties().mode();
     }
 
     @Override
     public List<ResourceReference> outputResources() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().outputResources();
+        return innerModel().properties().outputResources();
     }
 
     @Override
@@ -398,7 +398,7 @@ public final class DeploymentImpl extends
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
@@ -408,7 +408,7 @@ public final class DeploymentImpl extends
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override

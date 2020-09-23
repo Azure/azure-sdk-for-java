@@ -120,7 +120,7 @@ class RegistryDockerTaskRunRequestImpl
     }
 
     @Override
-    public DockerBuildRequest inner() {
+    public DockerBuildRequest innerModel() {
         return this.inner;
     }
 }

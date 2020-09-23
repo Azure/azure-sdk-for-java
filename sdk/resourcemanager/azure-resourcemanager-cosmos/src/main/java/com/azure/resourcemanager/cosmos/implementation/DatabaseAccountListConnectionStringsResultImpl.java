@@ -18,6 +18,6 @@ public class DatabaseAccountListConnectionStringsResultImpl
 
     @Override
     public List<DatabaseAccountConnectionString> connectionStrings() {
-        return this.inner().connectionStrings();
+        return this.innerModel().connectionStrings();
     }
 }

@@ -105,22 +105,22 @@ class NetworkPeeringsImpl
 
     @Override
     public Mono<NetworkPeering> getByParentAsync(String resourceGroup, String parentName, String name) {
-        return this.inner().getAsync(resourceGroup, parentName, name).map(inner -> wrapModel(inner));
+        return this.innerModel().getAsync(resourceGroup, parentName, name).map(inner -> wrapModel(inner));
     }
 
     @Override
     public PagedIterable<NetworkPeering> listByParent(String resourceGroupName, String parentName) {
-        return wrapList(this.inner().list(resourceGroupName, parentName));
+        return wrapList(this.innerModel().list(resourceGroupName, parentName));
     }
 
     @Override
     public PagedIterable<NetworkPeering> list() {
-        return this.wrapList(this.inner().list(this.network.resourceGroupName(), this.network.name()));
+        return this.wrapList(this.innerModel().list(this.network.resourceGroupName(), this.network.name()));
     }
 
     @Override
     public PagedFlux<NetworkPeering> listAsync() {
-        return this.wrapPageAsync(this.inner().listAsync(this.network.resourceGroupName(), this.network.name()));
+        return this.wrapPageAsync(this.innerModel().listAsync(this.network.resourceGroupName(), this.network.name()));
     }
 
     @Override

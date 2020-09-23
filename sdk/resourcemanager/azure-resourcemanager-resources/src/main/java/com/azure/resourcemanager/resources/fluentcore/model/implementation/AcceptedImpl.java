@@ -362,7 +362,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 convertOperation);
 
             if (postActivation != null) {
-                postActivation.accept(accepted.getActivationResponse().getValue().inner());
+                postActivation.accept(accepted.getActivationResponse().getValue().innerModel());
             }
 
             return accepted;

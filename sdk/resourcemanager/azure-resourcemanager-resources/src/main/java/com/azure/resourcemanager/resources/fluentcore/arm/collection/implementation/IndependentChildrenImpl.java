@@ -52,7 +52,7 @@ public abstract class IndependentChildrenImpl<
     }
 
     @Override
-    public InnerCollectionT inner() {
+    public InnerCollectionT innerModel() {
         return this.innerCollection;
     }
 

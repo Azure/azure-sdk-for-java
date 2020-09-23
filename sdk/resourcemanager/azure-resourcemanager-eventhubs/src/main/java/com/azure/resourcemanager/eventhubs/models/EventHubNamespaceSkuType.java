@@ -39,7 +39,7 @@ public class EventHubNamespaceSkuType implements HasInnerModel<Sku> {
     }
 
     @Override
-    public Sku inner() {
+    public Sku innerModel() {
         return this.sku;
     }
 

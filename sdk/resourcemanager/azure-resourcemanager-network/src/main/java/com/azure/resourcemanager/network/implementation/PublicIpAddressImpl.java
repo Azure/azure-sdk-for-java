@@ -61,28 +61,28 @@ class PublicIpAddressImpl
 
     @Override
     public PublicIpAddressImpl withIdleTimeoutInMinutes(int minutes) {
-        this.inner().withIdleTimeoutInMinutes(minutes);
+        this.innerModel().withIdleTimeoutInMinutes(minutes);
         return this;
     }
 
     @Override
     public PublicIpAddressImpl withStaticIP() {
-        this.inner().withPublicIpAllocationMethod(IpAllocationMethod.STATIC);
+        this.innerModel().withPublicIpAllocationMethod(IpAllocationMethod.STATIC);
         return this;
     }
 
     @Override
     public PublicIpAddressImpl withDynamicIP() {
-        this.inner().withPublicIpAllocationMethod(IpAllocationMethod.DYNAMIC);
+        this.innerModel().withPublicIpAllocationMethod(IpAllocationMethod.DYNAMIC);
         return this;
     }
 
     @Override
     public PublicIpAddressImpl withLeafDomainLabel(String dnsName) {
-        if (this.inner().dnsSettings() == null) {
-            this.inner().withDnsSettings(new PublicIpAddressDnsSettings());
+        if (this.innerModel().dnsSettings() == null) {
+            this.innerModel().withDnsSettings(new PublicIpAddressDnsSettings());
         }
-        this.inner().dnsSettings().withDomainNameLabel((dnsName == null) ? null : dnsName.toLowerCase(Locale.ROOT));
+        this.innerModel().dnsSettings().withDomainNameLabel((dnsName == null) ? null : dnsName.toLowerCase(Locale.ROOT));
         return this;
     }
 
@@ -93,10 +93,10 @@ class PublicIpAddressImpl
         // zone or remove one. Trying to remove the last one means attempt to change resource from
         // zonal to regional, which is not supported.
         //
-        if (this.inner().zones() == null) {
-            this.inner().withZones(new ArrayList<String>());
+        if (this.innerModel().zones() == null) {
+            this.innerModel().withZones(new ArrayList<String>());
         }
-        this.inner().zones().add(zoneId.toString());
+        this.innerModel().zones().add(zoneId.toString());
         return this;
     }
 
@@ -106,22 +106,22 @@ class PublicIpAddressImpl
         // Service return `SkuCannotBeChangedOnUpdate` upon attempt to change it.
         // Service default is PublicIPSkuType.BASIC
         //
-        this.inner().withSku(skuType.sku());
+        this.innerModel().withSku(skuType.sku());
         return this;
     }
 
     @Override
     public PublicIpAddressImpl withoutLeafDomainLabel() {
-        this.inner().withDnsSettings(null);
+        this.innerModel().withDnsSettings(null);
         return this;
     }
 
     @Override
     public PublicIpAddressImpl withReverseFqdn(String reverseFqdn) {
-        if (this.inner().dnsSettings() == null) {
-            this.inner().withDnsSettings(new PublicIpAddressDnsSettings());
+        if (this.innerModel().dnsSettings() == null) {
+            this.innerModel().withDnsSettings(new PublicIpAddressDnsSettings());
         }
-        this.inner().dnsSettings().withReverseFqdn(reverseFqdn != null ? reverseFqdn.toLowerCase(Locale.ROOT) : null);
+        this.innerModel().dnsSettings().withReverseFqdn(reverseFqdn != null ? reverseFqdn.toLowerCase(Locale.ROOT) : null);
         return this;
     }
 
@@ -134,23 +134,23 @@ class PublicIpAddressImpl
 
     @Override
     public int idleTimeoutInMinutes() {
-        return ResourceManagerUtils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().idleTimeoutInMinutes());
     }
 
     @Override
     public IpAllocationMethod ipAllocationMethod() {
-        return this.inner().publicIpAllocationMethod();
+        return this.innerModel().publicIpAllocationMethod();
     }
 
     @Override
     public IpVersion version() {
-        return this.inner().publicIpAddressVersion();
+        return this.innerModel().publicIpAddressVersion();
     }
 
     @Override
     public String fqdn() {
-        if (this.inner().dnsSettings() != null) {
-            return this.inner().dnsSettings().fqdn();
+        if (this.innerModel().dnsSettings() != null) {
+            return this.innerModel().dnsSettings().fqdn();
         } else {
             return null;
         }
@@ -158,8 +158,8 @@ class PublicIpAddressImpl
 
     @Override
     public String reverseFqdn() {
-        if (this.inner().dnsSettings() != null) {
-            return this.inner().dnsSettings().reverseFqdn();
+        if (this.innerModel().dnsSettings() != null) {
+            return this.innerModel().dnsSettings().reverseFqdn();
         } else {
             return null;
         }
@@ -167,15 +167,15 @@ class PublicIpAddressImpl
 
     @Override
     public String ipAddress() {
-        return this.inner().ipAddress();
+        return this.innerModel().ipAddress();
     }
 
     @Override
     public String leafDomainLabel() {
-        if (this.inner().dnsSettings() == null) {
+        if (this.innerModel().dnsSettings() == null) {
             return null;
         } else {
-            return this.inner().dnsSettings().domainNameLabel();
+            return this.innerModel().dnsSettings().domainNameLabel();
         }
     }
 
@@ -184,7 +184,7 @@ class PublicIpAddressImpl
         return AcceptedImpl.newAccepted(logger,
             this.manager().serviceClient(),
             () -> this.manager().serviceClient().getPublicIpAddresses()
-                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel()).block(),
             inner -> new PublicIpAddressImpl(inner.name(), inner, this.manager()),
             PublicIpAddressInner.class,
             () -> {
@@ -206,28 +206,28 @@ class PublicIpAddressImpl
             .manager()
             .serviceClient()
             .getPublicIpAddresses()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     private void cleanupDnsSettings() {
         // Clean up empty DNS settings
-        final PublicIpAddressDnsSettings dnsSettings = this.inner().dnsSettings();
+        final PublicIpAddressDnsSettings dnsSettings = this.innerModel().dnsSettings();
         if (dnsSettings != null) {
             if ((dnsSettings.domainNameLabel() == null || dnsSettings.domainNameLabel().isEmpty())
                 && (dnsSettings.fqdn() == null || dnsSettings.fqdn().isEmpty())
                 && (dnsSettings.reverseFqdn() == null || dnsSettings.reverseFqdn().isEmpty())) {
-                this.inner().withDnsSettings(null);
+                this.innerModel().withDnsSettings(null);
             }
         }
     }
 
     private boolean equalsResourceType(String resourceType) {
-        IpConfigurationInner ipConfig = this.inner().ipConfiguration();
+        IpConfigurationInner ipConfig = this.innerModel().ipConfiguration();
         if (ipConfig == null || resourceType == null) {
             return false;
         } else {
-            final String refId = this.inner().ipConfiguration().id();
+            final String refId = this.innerModel().ipConfiguration().id();
             final String resourceType2 = ResourceUtils.resourceTypeFromResourceId(refId);
             return resourceType.equalsIgnoreCase(resourceType2);
         }
@@ -241,7 +241,7 @@ class PublicIpAddressImpl
     @Override
     public LoadBalancerPublicFrontend getAssignedLoadBalancerFrontend() {
         if (this.hasAssignedLoadBalancer()) {
-            final String refId = this.inner().ipConfiguration().id();
+            final String refId = this.innerModel().ipConfiguration().id();
             final String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(refId);
             final LoadBalancer lb = this.myManager.loadBalancers().getById(loadBalancerId);
             final String frontendName = ResourceUtils.nameFromResourceId(refId);
@@ -259,8 +259,8 @@ class PublicIpAddressImpl
     @Override
     public Set<AvailabilityZoneId> availabilityZones() {
         Set<AvailabilityZoneId> zones = new HashSet<>();
-        if (this.inner().zones() != null) {
-            for (String zone : this.inner().zones()) {
+        if (this.innerModel().zones() != null) {
+            for (String zone : this.innerModel().zones()) {
                 zones.add(AvailabilityZoneId.fromString(zone));
             }
         }
@@ -269,18 +269,18 @@ class PublicIpAddressImpl
 
     @Override
     public PublicIPSkuType sku() {
-        return PublicIPSkuType.fromSku(this.inner().sku());
+        return PublicIPSkuType.fromSku(this.innerModel().sku());
     }
 
     @Override
     public List<IpTag> ipTags() {
-        return Collections.unmodifiableList(inner().ipTags() == null ? new ArrayList<IpTag>() : inner().ipTags());
+        return Collections.unmodifiableList(innerModel().ipTags() == null ? new ArrayList<IpTag>() : innerModel().ipTags());
     }
 
     @Override
     public NicIpConfiguration getAssignedNetworkInterfaceIPConfiguration() {
         if (this.hasAssignedNetworkInterface()) {
-            final String refId = this.inner().ipConfiguration().id();
+            final String refId = this.innerModel().ipConfiguration().id();
             final String parentId = ResourceUtils.parentResourceIdFromResourceId(refId);
             final NetworkInterface nic = this.myManager.networkInterfaces().getById(parentId);
             final String childName = ResourceUtils.nameFromResourceId(refId);
@@ -306,7 +306,7 @@ class PublicIpAddressImpl
             .manager()
             .serviceClient()
             .getPublicIpAddresses()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags())
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags())
             .flatMap(
                 inner -> {
                     setInner(inner);
@@ -316,8 +316,8 @@ class PublicIpAddressImpl
 
     @Override
     public PublicIpAddressImpl withIpTag(String tag) {
-        if (inner().ipTags() == null) {
-            inner().withIpTags(new ArrayList<IpTag>());
+        if (innerModel().ipTags() == null) {
+            innerModel().withIpTags(new ArrayList<IpTag>());
         }
         ipTags().add(new IpTag().withTag(tag));
         return this;
@@ -325,19 +325,19 @@ class PublicIpAddressImpl
 
     @Override
     public PublicIpAddressImpl withIpTag(String tag, String ipTagType) {
-        if (inner().ipTags() == null) {
-            inner().withIpTags(new ArrayList<IpTag>());
+        if (innerModel().ipTags() == null) {
+            innerModel().withIpTags(new ArrayList<IpTag>());
         }
-        inner().ipTags().add(new IpTag().withTag(tag).withIpTagType(ipTagType));
+        innerModel().ipTags().add(new IpTag().withTag(tag).withIpTagType(ipTagType));
         return this;
     }
 
     @Override
     public PublicIpAddressImpl withoutIpTag(String tag) {
-        if (tag != null && inner().ipTags() != null) {
-            for (IpTag ipTag : inner().ipTags()) {
+        if (tag != null && innerModel().ipTags() != null) {
+            for (IpTag ipTag : innerModel().ipTags()) {
                 if (tag.equals(ipTag.tag())) {
-                    inner().ipTags().remove(ipTag);
+                    innerModel().ipTags().remove(ipTag);
                     return this;
                 }
             }
@@ -347,7 +347,7 @@ class PublicIpAddressImpl
 
     @Override
     public PublicIpAddressImpl withIpAddressVersion(IpVersion ipVersion) {
-        this.inner().withPublicIpAddressVersion(ipVersion);
+        this.innerModel().withPublicIpAddressVersion(ipVersion);
         return this;
     }
 }

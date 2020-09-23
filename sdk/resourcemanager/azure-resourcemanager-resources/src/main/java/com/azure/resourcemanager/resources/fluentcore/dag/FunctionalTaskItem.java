@@ -67,7 +67,7 @@ public interface FunctionalTaskItem
         }
 
         @Override
-        public TaskGroup.InvocationContext inner() {
+        public TaskGroup.InvocationContext innerModel() {
             return this.innerContext;
         }
 

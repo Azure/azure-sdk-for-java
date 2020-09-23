@@ -29,7 +29,7 @@ class SecurityGroupViewImpl extends RefreshableWrapperImpl<SecurityGroupViewResu
 
     private void initializeFromInner() {
         this.networkInterfaces = new TreeMap<>();
-        List<SecurityGroupNetworkInterface> securityGroupNetworkInterfaces = this.inner().networkInterfaces();
+        List<SecurityGroupNetworkInterface> securityGroupNetworkInterfaces = this.innerModel().networkInterfaces();
         if (securityGroupNetworkInterfaces != null) {
             for (SecurityGroupNetworkInterface networkInterface : securityGroupNetworkInterfaces) {
                 this.networkInterfaces.put(networkInterface.id(), networkInterface);

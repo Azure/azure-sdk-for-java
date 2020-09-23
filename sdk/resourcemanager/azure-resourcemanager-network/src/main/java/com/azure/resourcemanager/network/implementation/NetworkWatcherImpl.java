@@ -24,7 +24,7 @@ class NetworkWatcherImpl
     NetworkWatcherImpl(String name, final NetworkWatcherInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.packetCaptures = new PacketCapturesImpl(networkManager.serviceClient().getPacketCaptures(), this);
-        this.connectionMonitors = 
+        this.connectionMonitors =
             new ConnectionMonitorsImpl(networkManager.serviceClient().getConnectionMonitors(), this);
     }
 
@@ -112,7 +112,7 @@ class NetworkWatcherImpl
             .manager()
             .serviceClient()
             .getNetworkWatchers()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -138,7 +138,7 @@ class NetworkWatcherImpl
             .manager()
             .serviceClient()
             .getNetworkWatchers()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags())
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags())
             .flatMap(
                 inner -> {
                     setInner(inner);

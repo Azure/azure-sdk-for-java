@@ -77,6 +77,6 @@ class FunctionDeploymentSlotImpl
     @Override
     Mono<SiteInner> submitSite(final SitePatchResourceInner siteUpdate) {
         // PATCH does not work for function app slot
-        return submitSiteWithoutSiteConfig(this.inner());
+        return submitSiteWithoutSiteConfig(this.innerModel());
     }
 }

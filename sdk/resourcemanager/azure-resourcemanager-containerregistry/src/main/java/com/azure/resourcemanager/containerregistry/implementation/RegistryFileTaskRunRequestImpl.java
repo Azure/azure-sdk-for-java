@@ -107,7 +107,7 @@ class RegistryFileTaskRunRequestImpl
     }
 
     @Override
-    public FileTaskRunRequest inner() {
+    public FileTaskRunRequest innerModel() {
         return this.inner;
     }
 }
