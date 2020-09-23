@@ -178,7 +178,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public boolean isManagedServiceIdentityEnabled() {
-        return this.innerModel().identity() != null && this.innerModel().identity().type().equals(IdentityType.SYSTEM_ASSIGNED);
+        return this.innerModel().identity() != null
+            && this.innerModel().identity().type().equals(IdentityType.SYSTEM_ASSIGNED);
     }
 
     @Override

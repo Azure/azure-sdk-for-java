@@ -846,7 +846,10 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public SqlDatabaseImpl fromRestorableDroppedDatabase(SqlRestorableDroppedDatabase restorableDroppedDatabase) {
         Objects.requireNonNull(restorableDroppedDatabase);
-        this.innerModel().withRestorableDroppedDatabaseId(restorableDroppedDatabase.id()).withCreateMode(CreateMode.RESTORE);
+        this
+            .innerModel()
+            .withRestorableDroppedDatabaseId(restorableDroppedDatabase.id())
+            .withCreateMode(CreateMode.RESTORE);
         return this;
     }
 

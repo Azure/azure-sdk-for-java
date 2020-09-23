@@ -129,7 +129,9 @@ public class SqlFailoverGroupImpl
 
     @Override
     public ReadWriteEndpointFailoverPolicy readWriteEndpointPolicy() {
-        return this.innerModel().readWriteEndpoint() != null ? this.innerModel().readWriteEndpoint().failoverPolicy() : null;
+        return this.innerModel().readWriteEndpoint() != null
+            ? this.innerModel().readWriteEndpoint().failoverPolicy()
+            : null;
     }
 
     @Override
@@ -142,7 +144,9 @@ public class SqlFailoverGroupImpl
 
     @Override
     public ReadOnlyEndpointFailoverPolicy readOnlyEndpointPolicy() {
-        return this.innerModel().readOnlyEndpoint() != null ? this.innerModel().readOnlyEndpoint().failoverPolicy() : null;
+        return this.innerModel().readOnlyEndpoint() != null
+            ? this.innerModel().readOnlyEndpoint().failoverPolicy()
+            : null;
     }
 
     @Override
@@ -159,13 +163,16 @@ public class SqlFailoverGroupImpl
     public List<PartnerInfo> partnerServers() {
         return Collections
             .unmodifiableList(
-                this.innerModel().partnerServers() != null ? this.innerModel().partnerServers() : new ArrayList<PartnerInfo>());
+                this.innerModel().partnerServers() != null
+                    ? this.innerModel().partnerServers()
+                    : new ArrayList<PartnerInfo>());
     }
 
     @Override
     public List<String> databases() {
         return Collections
-            .unmodifiableList(this.innerModel().databases() != null ? this.innerModel().databases() : new ArrayList<String>());
+            .unmodifiableList(
+                this.innerModel().databases() != null ? this.innerModel().databases() : new ArrayList<String>());
     }
 
     @Override
