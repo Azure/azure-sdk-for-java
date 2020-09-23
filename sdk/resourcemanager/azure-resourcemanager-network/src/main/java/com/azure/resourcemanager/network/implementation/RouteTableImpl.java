@@ -30,7 +30,10 @@ class RouteTableImpl
 
     @Override
     protected Mono<RouteTableInner> applyTagsToInnerAsync() {
-        return this.manager().serviceClient().getRouteTables()
+        return this
+            .manager()
+            .serviceClient()
+            .getRouteTables()
             .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
     }
 
@@ -73,9 +76,13 @@ class RouteTableImpl
 
     @Override
     public List<Subnet> listAssociatedSubnets() {
-        return com.azure.resourcemanager.network.implementation.Utils.listAssociatedSubnets(
-            this.myManager, this.innerModel().subnets()
-        );
+        return com
+            .azure
+            .resourcemanager
+            .network
+            .implementation
+            .Utils
+            .listAssociatedSubnets(this.myManager, this.innerModel().subnets());
     }
 
     // Setters (fluent)

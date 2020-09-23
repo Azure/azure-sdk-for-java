@@ -36,7 +36,10 @@ class RouteFilterImpl
 
     @Override
     protected Mono<RouteFilterInner> createInner() {
-        return this.manager().serviceClient().getRouteFilters()
+        return this
+            .manager()
+            .serviceClient()
+            .getRouteFilters()
             .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
     }
 
@@ -51,11 +54,21 @@ class RouteFilterImpl
         }
 
         if (this.innerModel().peerings() != null) {
-            this.peerings = this.innerModel().peerings().stream().collect(Collectors.toMap(
-                ExpressRouteCircuitPeeringInner::name,
-                peering -> new ExpressRouteCircuitPeeringImpl<>(this, peering,
-                    manager().serviceClient().getExpressRouteCircuitPeerings(), peering.peeringType())
-            ));
+            this.peerings =
+                this
+                    .innerModel()
+                    .peerings()
+                    .stream()
+                    .collect(
+                        Collectors
+                            .toMap(
+                                ExpressRouteCircuitPeeringInner::name,
+                                peering ->
+                                    new ExpressRouteCircuitPeeringImpl<>(
+                                        this,
+                                        peering,
+                                        manager().serviceClient().getExpressRouteCircuitPeerings(),
+                                        peering.peeringType())));
         } else {
             this.peerings = new HashMap<>();
         }

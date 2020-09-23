@@ -13,7 +13,9 @@ import java.util.List;
 /** An immutable client-side representation of Azure reachability report details. */
 @Fluent
 public interface AzureReachabilityReport
-    extends Executable<AzureReachabilityReport>, HasInnerModel<AzureReachabilityReportInner>, HasParent<NetworkWatcher> {
+    extends Executable<AzureReachabilityReport>,
+        HasInnerModel<AzureReachabilityReportInner>,
+        HasParent<NetworkWatcher> {
     /** @return the aggregation level of Azure reachability report. Can be Country, State or City. */
     String aggregationLevel();
 

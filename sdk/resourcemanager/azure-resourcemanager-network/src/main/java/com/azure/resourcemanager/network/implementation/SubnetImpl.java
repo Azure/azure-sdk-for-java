@@ -64,7 +64,9 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public String networkSecurityGroupId() {
-        return (this.innerModel().networkSecurityGroup() != null) ? this.innerModel().networkSecurityGroup().id() : null;
+        return (this.innerModel().networkSecurityGroup() != null)
+            ? this.innerModel().networkSecurityGroup().id()
+            : null;
     }
 
     @Override
@@ -279,7 +281,7 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     @Override
     public SubnetImpl withoutDelegation(String serviceName) {
         if (innerModel().delegations() != null) {
-            for (int i = 0; i < innerModel().delegations().size();) {
+            for (int i = 0; i < innerModel().delegations().size(); ) {
                 if (serviceName.equalsIgnoreCase(innerModel().delegations().get(i).serviceName())) {
                     innerModel().delegations().remove(i);
                 } else {

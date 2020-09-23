@@ -64,10 +64,7 @@ class ApplicationGatewayUrlPathMapImpl
     public ApplicationGatewayBackendHttpConfiguration defaultBackendHttpConfiguration() {
         SubResource backendHttpConfigRef = this.innerModel().defaultBackendHttpSettings();
         return (backendHttpConfigRef != null)
-            ? this
-                .parent()
-                .backendHttpConfigurations()
-                .get(ResourceUtils.nameFromResourceId(backendHttpConfigRef.id()))
+            ? this.parent().backendHttpConfigurations().get(ResourceUtils.nameFromResourceId(backendHttpConfigRef.id()))
             : null;
     }
 

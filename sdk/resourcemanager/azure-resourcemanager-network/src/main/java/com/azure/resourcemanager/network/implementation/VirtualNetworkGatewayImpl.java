@@ -198,8 +198,11 @@ class VirtualNetworkGatewayImpl
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listConnectionsAsync() {
         PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> connectionInners =
-            this.manager().serviceClient().getVirtualNetworkGateways()
-            .listConnectionsAsync(this.resourceGroupName(), this.name());
+            this
+                .manager()
+                .serviceClient()
+                .getVirtualNetworkGateways()
+                .listConnectionsAsync(this.resourceGroupName(), this.name());
         return PagedConverter
             .flatMapPage(connectionInners, connectionInner -> connections().getByIdAsync(connectionInner.id()));
     }
@@ -399,7 +402,8 @@ class VirtualNetworkGatewayImpl
         if (defaultIPConfig.publicIpAddressId() == null) {
             // If public ip not specified, then create a default PIP
             pipObservable =
-                ensureDefaultPipDefinition().createAsync()
+                ensureDefaultPipDefinition()
+                    .createAsync()
                     .map(
                         publicIPAddress -> {
                             defaultIPConfig.withExistingPublicIpAddress(publicIPAddress);
@@ -418,7 +422,8 @@ class VirtualNetworkGatewayImpl
         } else if (creatableNetwork != null) {
             // But if default IP config does not have a subnet specified, then create a VNet
             networkObservable =
-                creatableNetwork.createAsync()
+                creatableNetwork
+                    .createAsync()
                     .map(
                         network -> {
                             // ... and assign the created VNet to the default IP config

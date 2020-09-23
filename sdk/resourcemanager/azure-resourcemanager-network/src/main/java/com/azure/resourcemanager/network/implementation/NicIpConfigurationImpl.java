@@ -297,12 +297,14 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
                 }
             }
 
-            throw logger.logExceptionAsError(new RuntimeException(
-                "A subnet with name '"
-                    + subnetToAssociate
-                    + "' not found under the network '"
-                    + this.existingVirtualNetworkToAssociate.name()
-                    + "'"));
+            throw logger
+                .logExceptionAsError(
+                    new RuntimeException(
+                        "A subnet with name '"
+                            + subnetToAssociate
+                            + "' not found under the network '"
+                            + this.existingVirtualNetworkToAssociate.name()
+                            + "'"));
 
         } else {
             if (subnetToAssociate != null) {

@@ -22,7 +22,7 @@ class ExpressRouteCircuitPeeringsImpl
         ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>,
         ExpressRouteCircuitPeeringInner,
         ExpressRouteCircuitPeeringsClient,
-    NetworkManager,
+        NetworkManager,
         ExpressRouteCircuit>
     implements ExpressRouteCircuitPeerings {
     private final ExpressRouteCircuitImpl parent;
@@ -57,7 +57,8 @@ class ExpressRouteCircuitPeeringsImpl
 
     protected ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
         wrapModel(ExpressRouteCircuitPeeringInner inner) {
-        return (inner == null) ? null
+        return (inner == null)
+            ? null
             : new ExpressRouteCircuitPeeringImpl<>(parent, inner, innerModel(), inner.peeringType());
     }
 

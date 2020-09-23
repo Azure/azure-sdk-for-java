@@ -253,9 +253,7 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
             Update withoutRouteTable();
         }
 
-        /**
-         * The stage of the subnet definition allowing to specify the subnet delegation.
-         */
+        /** The stage of the subnet definition allowing to specify the subnet delegation. */
         interface WithDelegation {
 
             /**

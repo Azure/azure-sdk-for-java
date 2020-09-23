@@ -311,12 +311,16 @@ class NetworkInterfaceImpl
 
     @Override
     public String internalDnsNameLabel() {
-        return (this.innerModel().dnsSettings() != null) ? this.innerModel().dnsSettings().internalDnsNameLabel() : null;
+        return (this.innerModel().dnsSettings() != null)
+            ? this.innerModel().dnsSettings().internalDnsNameLabel()
+            : null;
     }
 
     @Override
     public String internalDomainNameSuffix() {
-        return (this.innerModel().dnsSettings() != null) ? this.innerModel().dnsSettings().internalDomainNameSuffix() : null;
+        return (this.innerModel().dnsSettings() != null)
+            ? this.innerModel().dnsSettings().internalDomainNameSuffix()
+            : null;
     }
 
     @Override
@@ -358,7 +362,9 @@ class NetworkInterfaceImpl
 
     @Override
     public String networkSecurityGroupId() {
-        return (this.innerModel().networkSecurityGroup() != null) ? this.innerModel().networkSecurityGroup().id() : null;
+        return (this.innerModel().networkSecurityGroup() != null)
+            ? this.innerModel().networkSecurityGroup().id()
+            : null;
     }
 
     @Override
@@ -462,24 +468,31 @@ class NetworkInterfaceImpl
 
     @Override
     public Accepted<NetworkInterface> beginCreate() {
-        return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient(),
-            () -> this.manager().serviceClient().getNetworkInterfaces()
-                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel()).block(),
-            inner -> new NetworkInterfaceImpl(inner.name(), inner, this.manager()),
-            NetworkInterfaceInner.class,
-            () -> {
-                Flux<Indexable> dependencyTasksAsync =
-                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
-                dependencyTasksAsync.blockLast();
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                this.manager().serviceClient(),
+                () ->
+                    this
+                        .manager()
+                        .serviceClient()
+                        .getNetworkInterfaces()
+                        .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel())
+                        .block(),
+                inner -> new NetworkInterfaceImpl(inner.name(), inner, this.manager()),
+                NetworkInterfaceInner.class,
+                () -> {
+                    Flux<Indexable> dependencyTasksAsync =
+                        taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                    dependencyTasksAsync.blockLast();
 
-                beforeCreating();
-            },
-            inner -> {
-                innerToFluentMap(this);
-                initializeChildrenFromInner();
-                afterCreating();
-            });
+                    beforeCreating();
+                },
+                inner -> {
+                    innerToFluentMap(this);
+                    initializeChildrenFromInner();
+                    afterCreating();
+                });
     }
 
     @Override
@@ -507,7 +520,9 @@ class NetworkInterfaceImpl
 
         // Associate an NSG if needed
         if (networkSecurityGroup != null) {
-            this.innerModel().withNetworkSecurityGroup(new NetworkSecurityGroupInner().withId(networkSecurityGroup.id()));
+            this
+                .innerModel()
+                .withNetworkSecurityGroup(new NetworkSecurityGroupInner().withId(networkSecurityGroup.id()));
         }
 
         NicIpConfigurationImpl.ensureConfigurations(this.nicIPConfigurations.values());

@@ -262,8 +262,10 @@ class NetworkSecurityRuleImpl
     @Override
     public NetworkSecurityRuleImpl withPriority(int priority) {
         if (priority < 100 || priority > 4096) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "The priority number of a network security rule must be between 100 and 4096."));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "The priority number of a network security rule must be between 100 and 4096."));
         }
 
         this.innerModel().withPriority(priority);

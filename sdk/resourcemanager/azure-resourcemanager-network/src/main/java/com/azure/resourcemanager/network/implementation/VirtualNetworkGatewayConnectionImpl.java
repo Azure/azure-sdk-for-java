@@ -27,7 +27,7 @@ public class VirtualNetworkGatewayConnectionImpl
         VirtualNetworkGatewayConnection,
         VirtualNetworkGatewayConnectionInner,
         VirtualNetworkGatewayConnectionImpl,
-    NetworkManager>
+        NetworkManager>
     implements VirtualNetworkGatewayConnection,
         VirtualNetworkGatewayConnection.Definition,
         VirtualNetworkGatewayConnection.Update,

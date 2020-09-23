@@ -118,9 +118,14 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
 
     @Override
     public Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends() {
-        return com.azure.resourcemanager.network.implementation.Utils.listAssociatedApplicationGatewayBackends(
-            this.parent().manager(), this.innerModel().applicationGatewayBackendAddressPools()
-        );
+        return com
+            .azure
+            .resourcemanager
+            .network
+            .implementation
+            .Utils
+            .listAssociatedApplicationGatewayBackends(
+                this.parent().manager(), this.innerModel().applicationGatewayBackendAddressPools());
     }
 
     @Override

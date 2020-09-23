@@ -46,8 +46,12 @@ class NetworkWatcherImpl
 
     @Override
     public SecurityGroupView getSecurityGroupView(String vmId) {
-        SecurityGroupViewResultInner securityGroupViewResultInner = this.manager().serviceClient().getNetworkWatchers()
-            .getVMSecurityRules(this.resourceGroupName(), this.name(), vmId);
+        SecurityGroupViewResultInner securityGroupViewResultInner =
+            this
+                .manager()
+                .serviceClient()
+                .getNetworkWatchers()
+                .getVMSecurityRules(this.resourceGroupName(), this.name(), vmId);
         return new SecurityGroupViewImpl(this, securityGroupViewResultInner, vmId);
     }
 
@@ -62,8 +66,12 @@ class NetworkWatcherImpl
     }
 
     public FlowLogSettings getFlowLogSettings(String nsgId) {
-        FlowLogInformationInner flowLogInformationInner = this.manager().serviceClient().getNetworkWatchers()
-            .getFlowLogStatus(this.resourceGroupName(), this.name(), nsgId);
+        FlowLogInformationInner flowLogInformationInner =
+            this
+                .manager()
+                .serviceClient()
+                .getNetworkWatchers()
+                .getFlowLogStatus(this.resourceGroupName(), this.name(), nsgId);
         return new FlowLogSettingsImpl(this, flowLogInformationInner, nsgId);
     }
 
@@ -118,7 +126,10 @@ class NetworkWatcherImpl
 
     @Override
     protected Mono<NetworkWatcherInner> getInnerAsync() {
-        return this.manager().serviceClient().getNetworkWatchers()
+        return this
+            .manager()
+            .serviceClient()
+            .getNetworkWatchers()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 

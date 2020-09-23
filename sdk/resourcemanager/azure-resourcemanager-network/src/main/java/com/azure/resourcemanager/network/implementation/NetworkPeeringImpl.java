@@ -23,9 +23,7 @@ import java.util.List;
 class NetworkPeeringImpl
     extends IndependentChildImpl<
         NetworkPeering, Network, VirtualNetworkPeeringInner, NetworkPeeringImpl, NetworkManager>
-    implements NetworkPeering,
-        NetworkPeering.Definition,
-        NetworkPeering.Update {
+    implements NetworkPeering, NetworkPeering.Definition, NetworkPeering.Update {
 
     private NetworkImpl parent;
     private Network remoteNetwork;
@@ -87,7 +85,9 @@ class NetworkPeeringImpl
 
     @Override
     public String remoteNetworkId() {
-        return (this.innerModel().remoteVirtualNetwork() != null) ? this.innerModel().remoteVirtualNetwork().id() : null;
+        return (this.innerModel().remoteVirtualNetwork() != null)
+            ? this.innerModel().remoteVirtualNetwork().id()
+            : null;
     }
 
     @Override
@@ -374,8 +374,7 @@ class NetworkPeeringImpl
                                 .defer(
                                     () -> {
                                         // No matching remote peering, so create one on the remote network
-                                        String peeringName =
-                                            this.manager().sdkContext().randomResourceName("peer", 15);
+                                        String peeringName = this.manager().sdkContext().randomResourceName("peer", 15);
 
                                         WithCreate remotePeeringDefinition =
                                             remoteNetwork

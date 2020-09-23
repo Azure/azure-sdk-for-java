@@ -85,8 +85,8 @@ public interface ApplicationGatewayIpConfiguration
      */
     interface Definition<ParentT>
         extends DefinitionStages.Blank<ParentT>,
-        DefinitionStages.WithSubnet<ParentT>,
-        DefinitionStages.WithAttach<ParentT> {
+            DefinitionStages.WithSubnet<ParentT>,
+            DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of application gateway IP configuration update stages. */
@@ -181,7 +181,7 @@ public interface ApplicationGatewayIpConfiguration
      */
     interface UpdateDefinition<ParentT>
         extends UpdateDefinitionStages.Blank<ParentT>,
-        UpdateDefinitionStages.WithSubnet<ParentT>,
-        UpdateDefinitionStages.WithAttach<ParentT> {
+            UpdateDefinitionStages.WithSubnet<ParentT>,
+            UpdateDefinitionStages.WithAttach<ParentT> {
     }
 }

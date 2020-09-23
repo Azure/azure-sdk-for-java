@@ -14,6 +14,6 @@ public interface VirtualMachineScaleSetNicIpConfiguration
     extends NicIpConfigurationBase,
         HasInnerModel<NetworkInterfaceIpConfigurationInner>,
         ChildResource<VirtualMachineScaleSetNetworkInterface>,
-    HasPrivateIpAddress,
+        HasPrivateIpAddress,
         HasSubnet {
 }

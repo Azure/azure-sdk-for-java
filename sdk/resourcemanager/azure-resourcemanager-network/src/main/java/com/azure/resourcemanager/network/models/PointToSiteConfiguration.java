@@ -137,9 +137,7 @@ public interface PointToSiteConfiguration extends HasInnerModel<VpnClientConfigu
 
     /** Grouping of point-to-site configuration update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the point-to-site configuration definition allowing to specify address pool.
-         */
+        /** The stage of the point-to-site configuration definition allowing to specify address pool. */
         interface WithAddressPool {
             /**
              * Specifies address pool.
@@ -206,9 +204,7 @@ public interface PointToSiteConfiguration extends HasInnerModel<VpnClientConfigu
             Update withRevokedCertificate(String name, String thumbprint);
         }
 
-        /**
-         * The stage of a point-to-site configuration definition allowing to specify which tunnel type will be used.
-         */
+        /** The stage of a point-to-site configuration definition allowing to specify which tunnel type will be used. */
         interface WithTunnelType {
             /**
              * Specifies that only SSTP tunnel type will be used.

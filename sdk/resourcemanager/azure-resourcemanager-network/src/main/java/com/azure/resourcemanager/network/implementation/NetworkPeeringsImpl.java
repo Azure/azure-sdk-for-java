@@ -21,7 +21,7 @@ class NetworkPeeringsImpl
         NetworkPeeringImpl,
         VirtualNetworkPeeringInner,
         VirtualNetworkPeeringsClient,
-    NetworkManager,
+        NetworkManager,
         Network>
     implements NetworkPeerings {
 

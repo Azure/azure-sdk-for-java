@@ -17,7 +17,7 @@ public interface NicIpConfiguration
     extends NicIpConfigurationBase,
         HasInnerModel<NetworkInterfaceIpConfigurationInner>,
         ChildResource<NetworkInterface>,
-    HasPublicIpAddress {
+        HasPublicIpAddress {
 
     /**
      * The entirety of the network interface IP configuration definition.

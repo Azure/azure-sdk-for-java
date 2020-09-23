@@ -14,9 +14,9 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 public interface ApplicationGatewayFrontend
     extends HasInnerModel<ApplicationGatewayFrontendIpConfiguration>,
         ChildResource<ApplicationGateway>,
-    HasPrivateIpAddress,
+        HasPrivateIpAddress,
         HasSubnet,
-    HasPublicIpAddress {
+        HasPublicIpAddress {
 
     /** @return true if the frontend is accessible via a public IP address, else false */
     boolean isPublic();

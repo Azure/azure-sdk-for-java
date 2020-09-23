@@ -99,8 +99,8 @@ public interface VirtualNetworkGatewayIpConfiguration
      */
     interface Definition<ParentT>
         extends DefinitionStages.Blank<ParentT>,
-        DefinitionStages.WithAttach<ParentT>,
-        DefinitionStages.WithPublicIPAddress<ParentT> {
+            DefinitionStages.WithAttach<ParentT>,
+            DefinitionStages.WithPublicIPAddress<ParentT> {
     }
 
     /** Grouping of application gateway IP configuration update stages. */

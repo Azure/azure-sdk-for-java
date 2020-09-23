@@ -82,7 +82,10 @@ class PublicIpAddressImpl
         if (this.innerModel().dnsSettings() == null) {
             this.innerModel().withDnsSettings(new PublicIpAddressDnsSettings());
         }
-        this.innerModel().dnsSettings().withDomainNameLabel((dnsName == null) ? null : dnsName.toLowerCase(Locale.ROOT));
+        this
+            .innerModel()
+            .dnsSettings()
+            .withDomainNameLabel((dnsName == null) ? null : dnsName.toLowerCase(Locale.ROOT));
         return this;
     }
 
@@ -121,7 +124,10 @@ class PublicIpAddressImpl
         if (this.innerModel().dnsSettings() == null) {
             this.innerModel().withDnsSettings(new PublicIpAddressDnsSettings());
         }
-        this.innerModel().dnsSettings().withReverseFqdn(reverseFqdn != null ? reverseFqdn.toLowerCase(Locale.ROOT) : null);
+        this
+            .innerModel()
+            .dnsSettings()
+            .withReverseFqdn(reverseFqdn != null ? reverseFqdn.toLowerCase(Locale.ROOT) : null);
         return this;
     }
 
@@ -181,20 +187,27 @@ class PublicIpAddressImpl
 
     @Override
     public Accepted<PublicIpAddress> beginCreate() {
-        return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient(),
-            () -> this.manager().serviceClient().getPublicIpAddresses()
-                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel()).block(),
-            inner -> new PublicIpAddressImpl(inner.name(), inner, this.manager()),
-            PublicIpAddressInner.class,
-            () -> {
-                Flux<Indexable> dependencyTasksAsync =
-                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
-                dependencyTasksAsync.blockLast();
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                this.manager().serviceClient(),
+                () ->
+                    this
+                        .manager()
+                        .serviceClient()
+                        .getPublicIpAddresses()
+                        .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel())
+                        .block(),
+                inner -> new PublicIpAddressImpl(inner.name(), inner, this.manager()),
+                PublicIpAddressInner.class,
+                () -> {
+                    Flux<Indexable> dependencyTasksAsync =
+                        taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                    dependencyTasksAsync.blockLast();
 
-                this.cleanupDnsSettings();
-            },
-            this::setInner);
+                    this.cleanupDnsSettings();
+                },
+                this::setInner);
     }
 
     // CreateUpdateTaskGroup.ResourceCreator implementation
@@ -274,7 +287,8 @@ class PublicIpAddressImpl
 
     @Override
     public List<IpTag> ipTags() {
-        return Collections.unmodifiableList(innerModel().ipTags() == null ? new ArrayList<IpTag>() : innerModel().ipTags());
+        return Collections
+            .unmodifiableList(innerModel().ipTags() == null ? new ArrayList<IpTag>() : innerModel().ipTags());
     }
 
     @Override

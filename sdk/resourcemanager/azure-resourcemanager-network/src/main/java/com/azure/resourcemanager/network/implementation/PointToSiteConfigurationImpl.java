@@ -66,8 +66,8 @@ class PointToSiteConfigurationImpl extends IndexableWrapperImpl<VpnClientConfigu
             return this;
         } else {
             byte[] content = Files.readAllBytes(certificateFile.toPath());
-            String certificate = new String(content, StandardCharsets.UTF_8)
-                .replace(BEGIN_CERT, "").replace(END_CERT, "");
+            String certificate =
+                new String(content, StandardCharsets.UTF_8).replace(BEGIN_CERT, "").replace(END_CERT, "");
             return this.withAzureCertificate(name, certificate);
         }
     }

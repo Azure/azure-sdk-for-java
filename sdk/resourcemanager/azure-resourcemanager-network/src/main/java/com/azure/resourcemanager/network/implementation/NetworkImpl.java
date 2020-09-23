@@ -79,7 +79,10 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     protected Mono<VirtualNetworkInner> applyTagsToInnerAsync() {
-        return this.manager().serviceClient().getVirtualNetworks()
+        return this
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
             .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
     }
 
@@ -181,7 +184,8 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     public NetworkImpl withoutAddressSpace(String cidr) {
-        if (cidr != null && this.innerModel().addressSpace() != null
+        if (cidr != null
+            && this.innerModel().addressSpace() != null
             && this.innerModel().addressSpace().addressPrefixes() != null) {
             this.innerModel().addressSpace().addressPrefixes().remove(cidr);
         }

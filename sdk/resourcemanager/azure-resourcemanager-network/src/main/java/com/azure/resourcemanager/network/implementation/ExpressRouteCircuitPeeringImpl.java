@@ -18,12 +18,14 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
-class ExpressRouteCircuitPeeringImpl
-    <ParentModelT, ParentInnerT,
+class ExpressRouteCircuitPeeringImpl<
+        ParentModelT,
+        ParentInnerT,
         ParentT extends GroupableResource<NetworkManager, ParentInnerT> & Refreshable<ParentModelT>>
     extends CreatableUpdatableImpl<
-        ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner,
-        ExpressRouteCircuitPeeringImpl< ParentModelT, ParentInnerT, ParentT>>
+        ExpressRouteCircuitPeering,
+        ExpressRouteCircuitPeeringInner,
+        ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>>
     implements ExpressRouteCircuitPeering, ExpressRouteCircuitPeering.Definition, ExpressRouteCircuitPeering.Update {
     private final ExpressRouteCircuitPeeringsClient client;
     private final ParentT parent;
@@ -42,8 +44,8 @@ class ExpressRouteCircuitPeeringImpl
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
-        withAdvertisedPublicPrefixes(String publicPrefix) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withAdvertisedPublicPrefixes(
+        String publicPrefix) {
         ensureMicrosoftPeeringConfig().withAdvertisedPublicPrefixes(Arrays.asList(publicPrefix));
         return this;
     }
@@ -56,29 +58,27 @@ class ExpressRouteCircuitPeeringImpl
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
-        withPrimaryPeerAddressPrefix(String addressPrefix) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withPrimaryPeerAddressPrefix(
+        String addressPrefix) {
         innerModel().withPrimaryPeerAddressPrefix(addressPrefix);
         return this;
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
-        withSecondaryPeerAddressPrefix(String addressPrefix) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withSecondaryPeerAddressPrefix(
+        String addressPrefix) {
         innerModel().withSecondaryPeerAddressPrefix(addressPrefix);
         return this;
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
-        withVlanId(int vlanId) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withVlanId(int vlanId) {
         innerModel().withVlanId(vlanId);
         return this;
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
-        withPeerAsn(long peerASN) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withPeerAsn(long peerASN) {
         innerModel().withPeerAsn(peerASN);
         return this;
     }
