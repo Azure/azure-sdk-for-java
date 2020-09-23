@@ -113,8 +113,12 @@ public final class JsonPatchOperation {
             .append("\"");
 
         if (optionalValue != null) {
-            builder.append(",\"value\":")
-                .append(optionalValue.get());
+            builder.append(",\"value\":");
+            if (optionalValue.isPresent()) {
+                builder.append(optionalValue.get());
+            } else {
+                builder.append("null");
+            }
         }
 
         return builder.append("}");
