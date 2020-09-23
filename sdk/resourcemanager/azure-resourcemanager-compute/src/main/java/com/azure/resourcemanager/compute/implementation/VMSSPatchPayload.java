@@ -43,13 +43,16 @@ class VMSSPatchPayload {
                 // -- --
                 VirtualMachineScaleSetUpdateStorageProfile storageProfile =
                     new VirtualMachineScaleSetUpdateStorageProfile();
-                storageProfile.withDataDisks(scaleSet.innerModel().virtualMachineProfile().storageProfile().dataDisks());
                 storageProfile
-                    .withImageReference(scaleSet.innerModel().virtualMachineProfile().storageProfile().imageReference());
+                    .withDataDisks(scaleSet.innerModel().virtualMachineProfile().storageProfile().dataDisks());
+                storageProfile
+                    .withImageReference(
+                        scaleSet.innerModel().virtualMachineProfile().storageProfile().imageReference());
 
                 if (scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk() != null) {
                     VirtualMachineScaleSetUpdateOSDisk osDisk = new VirtualMachineScaleSetUpdateOSDisk();
-                    osDisk.withCaching(scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().caching());
+                    osDisk
+                        .withCaching(scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().caching());
                     osDisk.withImage(scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().image());
                     osDisk
                         .withManagedDisk(
@@ -75,7 +78,8 @@ class VMSSPatchPayload {
                 VirtualMachineScaleSetUpdateOSProfile osProfile = new VirtualMachineScaleSetUpdateOSProfile();
                 osProfile.withCustomData(scaleSet.innerModel().virtualMachineProfile().osProfile().customData());
                 osProfile
-                    .withLinuxConfiguration(scaleSet.innerModel().virtualMachineProfile().osProfile().linuxConfiguration());
+                    .withLinuxConfiguration(
+                        scaleSet.innerModel().virtualMachineProfile().osProfile().linuxConfiguration());
                 osProfile.withSecrets(scaleSet.innerModel().virtualMachineProfile().osProfile().secrets());
                 osProfile
                     .withWindowsConfiguration(
@@ -94,7 +98,11 @@ class VMSSPatchPayload {
                         .withNetworkInterfaceConfigurations(
                             new ArrayList<VirtualMachineScaleSetUpdateNetworkConfiguration>());
                     for (VirtualMachineScaleSetNetworkConfiguration nicConfig
-                        : scaleSet.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations()) {
+                        : scaleSet
+                            .innerModel()
+                            .virtualMachineProfile()
+                            .networkProfile()
+                            .networkInterfaceConfigurations()) {
                         VirtualMachineScaleSetUpdateNetworkConfiguration nicPatchConfig =
                             new VirtualMachineScaleSetUpdateNetworkConfiguration();
                         nicPatchConfig.withDnsSettings(nicConfig.dnsSettings());

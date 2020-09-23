@@ -373,18 +373,25 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     public Accepted<Disk> beginCreate() {
-        return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient(),
-            () -> this.manager().serviceClient().getDisks()
-                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel()).block(),
-            inner -> new DiskImpl(inner.name(), inner, this.manager()),
-            DiskInner.class,
-            () -> {
-                Flux<Indexable> dependencyTasksAsync =
-                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
-                dependencyTasksAsync.blockLast();
-            },
-            this::setInner);
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                this.manager().serviceClient(),
+                () ->
+                    this
+                        .manager()
+                        .serviceClient()
+                        .getDisks()
+                        .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel())
+                        .block(),
+                inner -> new DiskImpl(inner.name(), inner, this.manager()),
+                DiskInner.class,
+                () -> {
+                    Flux<Indexable> dependencyTasksAsync =
+                        taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                    dependencyTasksAsync.blockLast();
+                },
+                this::setInner);
     }
 
     private DiskSkuTypes fromSnapshotSkuType(SnapshotSkuType skuType) {

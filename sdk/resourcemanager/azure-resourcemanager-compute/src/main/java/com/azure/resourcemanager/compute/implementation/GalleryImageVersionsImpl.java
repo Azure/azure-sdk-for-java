@@ -50,7 +50,9 @@ public class GalleryImageVersionsImpl extends WrapperImpl<GalleryImageVersionsCl
     @Override
     public PagedIterable<GalleryImageVersion> listByGalleryImage(
         String resourceGroupName, String galleryName, String galleryImageName) {
-        return innerModel().listByGalleryImage(resourceGroupName, galleryName, galleryImageName).mapPage(this::wrapModel);
+        return innerModel()
+            .listByGalleryImage(resourceGroupName, galleryName, galleryImageName)
+            .mapPage(this::wrapModel);
     }
 
     @Override

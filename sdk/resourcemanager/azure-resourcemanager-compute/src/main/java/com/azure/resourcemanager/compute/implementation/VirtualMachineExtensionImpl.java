@@ -221,7 +221,8 @@ class VirtualMachineExtensionImpl
         final VirtualMachineExtensionImpl self = this;
         return this
             .client
-            .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.innerModel())
+            .createOrUpdateAsync(
+                this.parent().resourceGroupName(), this.parent().name(), this.name(), this.innerModel())
             .map(
                 inner -> {
                     self.setInner(inner);

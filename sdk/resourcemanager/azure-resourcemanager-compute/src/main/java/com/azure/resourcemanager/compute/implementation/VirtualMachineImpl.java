@@ -170,16 +170,17 @@ class VirtualMachineImpl
     private boolean removeOsProfile;
     private final ClientLogger logger = new ClientLogger(VirtualMachineImpl.class);
     private final ObjectMapper mapper;
-    private static final JacksonAnnotationIntrospector ANNOTATION_INTROSPECTOR = new JacksonAnnotationIntrospector() {
-        @Override
-        public JsonProperty.Access findPropertyAccess(Annotated annotated) {
-            JsonProperty.Access access = super.findPropertyAccess(annotated);
-            if (access == JsonProperty.Access.WRITE_ONLY) {
-                return JsonProperty.Access.AUTO;
+    private static final JacksonAnnotationIntrospector ANNOTATION_INTROSPECTOR =
+        new JacksonAnnotationIntrospector() {
+            @Override
+            public JsonProperty.Access findPropertyAccess(Annotated annotated) {
+                JsonProperty.Access access = super.findPropertyAccess(annotated);
+                if (access == JsonProperty.Access.WRITE_ONLY) {
+                    return JsonProperty.Access.AUTO;
+                }
+                return access;
             }
-            return access;
-        }
-    };
+        };
 
     VirtualMachineImpl(
         String name,
@@ -226,7 +227,10 @@ class VirtualMachineImpl
 
     @Override
     protected Mono<VirtualMachineInner> getInnerAsync() {
-        return this.manager().serviceClient().getVirtualMachines()
+        return this
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -254,7 +258,10 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> generalizeAsync() {
-        return this.manager().serviceClient().getVirtualMachines()
+        return this
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
             .generalizeAsync(this.resourceGroupName(), this.name());
     }
 
@@ -265,7 +272,10 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> powerOffAsync() {
-        return this.manager().serviceClient().getVirtualMachines()
+        return this
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
             .powerOffAsync(this.resourceGroupName(), this.name(), null);
     }
 
@@ -306,13 +316,19 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> simulateEvictionAsync() {
-        return this.manager().serviceClient().getVirtualMachines()
+        return this
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
             .simulateEvictionAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void convertToManaged() {
-        this.manager().serviceClient().getVirtualMachines()
+        this
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
             .convertToManagedDisks(this.resourceGroupName(), this.name());
         this.refresh();
     }
@@ -446,15 +462,15 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(Creatable<Network> creatable) {
         this.nicDefinitionWithPrivateIp =
-            this.preparePrimaryNetworkInterface(this.namer.getRandomName("nic", 20))
-                .withNewPrimaryNetwork(creatable);
+            this.preparePrimaryNetworkInterface(this.namer.getRandomName("nic", 20)).withNewPrimaryNetwork(creatable);
         return this;
     }
 
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(String addressSpace) {
         this.nicDefinitionWithPrivateIp =
-            this.preparePrimaryNetworkInterface(this.namer.getRandomName("nic", 20))
+            this
+                .preparePrimaryNetworkInterface(this.namer.getRandomName("nic", 20))
                 .withNewPrimaryNetwork(addressSpace);
         return this;
     }
@@ -462,7 +478,8 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withExistingPrimaryNetwork(Network network) {
         this.nicDefinitionWithSubnet =
-            this.preparePrimaryNetworkInterface(this.namer.getRandomName("nic", 20))
+            this
+                .preparePrimaryNetworkInterface(this.namer.getRandomName("nic", 20))
                 .withExistingPrimaryNetwork(network);
         return this;
     }
@@ -1201,7 +1218,8 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withoutSecondaryNetworkInterface(String name) {
-        if (this.innerModel().networkProfile() != null && this.innerModel().networkProfile().networkInterfaces() != null) {
+        if (this.innerModel().networkProfile() != null
+            && this.innerModel().networkProfile().networkInterfaces() != null) {
             int idx = -1;
             for (NetworkInterfaceReference nicReference : this.innerModel().networkProfile().networkInterfaces()) {
                 idx++;
@@ -1564,8 +1582,11 @@ class VirtualMachineImpl
             return null;
         } else {
             ResourceId id = ResourceId.fromString(innerModel().proximityPlacementGroup().id());
-            ProximityPlacementGroupInner plgInner = manager().serviceClient().getProximityPlacementGroups()
-                .getByResourceGroup(id.resourceGroupName(), id.name());
+            ProximityPlacementGroupInner plgInner =
+                manager()
+                    .serviceClient()
+                    .getProximityPlacementGroups()
+                    .getByResourceGroup(id.resourceGroupName(), id.name());
             if (plgInner == null) {
                 return null;
             } else {
@@ -1733,12 +1754,18 @@ class VirtualMachineImpl
     public Mono<VirtualMachine> createResourceAsync() {
         // -- set creation-time only properties
         return prepareCreateResourceAsync()
-            .flatMap(virtualMachine -> this.manager().serviceClient().getVirtualMachines()
-                .createOrUpdateAsync(resourceGroupName(), vmName, innerModel())
-                .map(virtualMachineInner -> {
-                    reset(virtualMachineInner);
-                    return this;
-                }));
+            .flatMap(
+                virtualMachine ->
+                    this
+                        .manager()
+                        .serviceClient()
+                        .getVirtualMachines()
+                        .createOrUpdateAsync(resourceGroupName(), vmName, innerModel())
+                        .map(
+                            virtualMachineInner -> {
+                                reset(virtualMachineInner);
+                                return this;
+                            }));
     }
 
     private Mono<VirtualMachine> prepareCreateResourceAsync() {
@@ -1765,22 +1792,35 @@ class VirtualMachineImpl
     }
 
     public Accepted<VirtualMachine> beginCreate() {
-        return AcceptedImpl.<VirtualMachine, VirtualMachineInner>newAccepted(logger,
-            this.manager().serviceClient(),
-            () -> this.manager().serviceClient().getVirtualMachines()
-                .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, innerModel()).block(),
-            inner -> new VirtualMachineImpl(inner.name(), inner, this.manager(),
-                this.storageManager, this.networkManager, this.authorizationManager),
-            VirtualMachineInner.class,
-            () -> {
-                Flux<Indexable> dependencyTasksAsync =
-                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
-                dependencyTasksAsync.blockLast();
+        return AcceptedImpl
+            .<VirtualMachine, VirtualMachineInner>newAccepted(
+                logger,
+                this.manager().serviceClient(),
+                () ->
+                    this
+                        .manager()
+                        .serviceClient()
+                        .getVirtualMachines()
+                        .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, innerModel())
+                        .block(),
+                inner ->
+                    new VirtualMachineImpl(
+                        inner.name(),
+                        inner,
+                        this.manager(),
+                        this.storageManager,
+                        this.networkManager,
+                        this.authorizationManager),
+                VirtualMachineInner.class,
+                () -> {
+                    Flux<Indexable> dependencyTasksAsync =
+                        taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                    dependencyTasksAsync.blockLast();
 
-                // same as createResourceAsync
-                prepareCreateResourceAsync().block();
-            },
-            this::reset);
+                    // same as createResourceAsync
+                    prepareCreateResourceAsync().block();
+                },
+                this::reset);
     }
 
     @Override
@@ -2037,7 +2077,9 @@ class VirtualMachineImpl
                     .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
                     .map(
                         createdPlgInner -> {
-                            this.innerModel().withProximityPlacementGroup(new SubResource().withId(createdPlgInner.id()));
+                            this
+                                .innerModel()
+                                .withProximityPlacementGroup(new SubResource().withId(createdPlgInner.id()));
                             return this;
                         });
             }
@@ -2065,8 +2107,7 @@ class VirtualMachineImpl
         // sets the virtual machine secondary network interfaces
         //
         for (String creatableSecondaryNetworkInterfaceKey : this.creatableSecondaryNetworkInterfaceKeys) {
-            NetworkInterface secondaryNetworkInterface =
-                this.taskResult(creatableSecondaryNetworkInterfaceKey);
+            NetworkInterface secondaryNetworkInterface = this.taskResult(creatableSecondaryNetworkInterfaceKey);
             NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
             nicReference.withPrimary(false);
             nicReference.withId(secondaryNetworkInterface.id());
@@ -2628,8 +2669,10 @@ class VirtualMachineImpl
                 storageAccount = this.vmImpl.existingStorageAccountToAssociate;
             }
             if (storageAccount == null) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "Unable to retrieve expected storageAccount instance for BootDiagnostics"));
+                throw logger
+                    .logExceptionAsError(
+                        new IllegalStateException(
+                            "Unable to retrieve expected storageAccount instance for BootDiagnostics"));
             }
             vmInner()
                 .diagnosticsProfile()

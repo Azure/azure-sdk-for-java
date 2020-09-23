@@ -77,8 +77,11 @@ class AvailabilitySetImpl
             return null;
         } else {
             ResourceId id = ResourceId.fromString(innerModel().proximityPlacementGroup().id());
-            ProximityPlacementGroupInner plgInner = manager().serviceClient().getProximityPlacementGroups()
-                .getByResourceGroup(id.resourceGroupName(), id.name());
+            ProximityPlacementGroupInner plgInner =
+                manager()
+                    .serviceClient()
+                    .getProximityPlacementGroups()
+                    .getByResourceGroup(id.resourceGroupName(), id.name());
             if (plgInner == null) {
                 return null;
             } else {
@@ -115,7 +118,10 @@ class AvailabilitySetImpl
 
     @Override
     protected Mono<AvailabilitySetInner> getInnerAsync() {
-        return this.manager().serviceClient().getAvailabilitySets()
+        return this
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -205,7 +211,9 @@ class AvailabilitySetImpl
                     .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
                     .map(
                         createdPlgInner -> {
-                            this.innerModel().withProximityPlacementGroup(new SubResource().withId(createdPlgInner.id()));
+                            this
+                                .innerModel()
+                                .withProximityPlacementGroup(new SubResource().withId(createdPlgInner.id()));
                             return this;
                         });
             }

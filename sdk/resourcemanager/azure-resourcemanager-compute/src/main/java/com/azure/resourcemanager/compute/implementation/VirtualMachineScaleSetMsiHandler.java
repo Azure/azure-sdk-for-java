@@ -71,8 +71,12 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
             return this;
         } else if (this.scaleSet.innerModel().identity().type().equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
             this.scaleSet.innerModel().identity().withType(ResourceIdentityType.NONE);
-        } else if (this.scaleSet.innerModel().identity().type().equals(
-            ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+        } else if (this
+            .scaleSet
+            .innerModel()
+            .identity()
+            .type()
+            .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
             this.scaleSet.innerModel().identity().withType(ResourceIdentityType.USER_ASSIGNED);
         }
         return this;

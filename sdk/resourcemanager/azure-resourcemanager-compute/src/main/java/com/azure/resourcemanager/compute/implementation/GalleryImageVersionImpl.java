@@ -129,7 +129,8 @@ class GalleryImageVersionImpl
     @Override
     public List<TargetRegion> availableRegions() {
         List<TargetRegion> regions = new ArrayList<TargetRegion>();
-        if (this.innerModel().publishingProfile() != null && this.innerModel().publishingProfile().targetRegions() != null) {
+        if (this.innerModel().publishingProfile() != null
+            && this.innerModel().publishingProfile().targetRegions() != null) {
             for (TargetRegion targetRegion : this.innerModel().publishingProfile().targetRegions()) {
                 regions
                     .add(
@@ -299,7 +300,8 @@ class GalleryImageVersionImpl
 
     @Override
     public Update withoutRegionAvailability(Region region) {
-        if (this.innerModel().publishingProfile() != null && this.innerModel().publishingProfile().targetRegions() != null) {
+        if (this.innerModel().publishingProfile() != null
+            && this.innerModel().publishingProfile().targetRegions() != null) {
             int foundIndex = -1;
             int i = 0;
             String regionNameToRemove = region.toString();

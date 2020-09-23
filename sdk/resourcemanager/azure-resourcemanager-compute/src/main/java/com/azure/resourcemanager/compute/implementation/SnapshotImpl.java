@@ -311,21 +311,27 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     protected Mono<SnapshotInner> getInnerAsync() {
-        return this.manager().serviceClient().getSnapshots()
+        return this
+            .manager()
+            .serviceClient()
+            .getSnapshots()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private String constructStorageAccountId(String vhdUrl) {
         try {
-            return ResourceUtils.constructResourceId(this.manager().subscriptionId(),
-                resourceGroupName(),
-                "Microsoft.Storage",
-                "storageAccounts",
-                vhdUrl.split("\\.")[0].replace("https://", ""),
-                "");
+            return ResourceUtils
+                .constructResourceId(
+                    this.manager().subscriptionId(),
+                    resourceGroupName(),
+                    "Microsoft.Storage",
+                    "storageAccounts",
+                    vhdUrl.split("\\.")[0].replace("https://", ""),
+                    "");
         } catch (RuntimeException ex) {
-            throw logger.logExceptionAsError(
-                new InvalidParameterException(String.format("%s is not valid URI of a blob to import.", vhdUrl)));
+            throw logger
+                .logExceptionAsError(
+                    new InvalidParameterException(String.format("%s is not valid URI of a blob to import.", vhdUrl)));
         }
     }
 }

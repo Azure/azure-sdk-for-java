@@ -256,7 +256,10 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Mono<Void> startAsync() {
-        return this.manager().serviceClient().getVirtualMachineScaleSets()
+        return this
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
             .startAsync(this.resourceGroupName(), this.name(), null);
     }
 
@@ -490,7 +493,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineEvictionPolicyTypes virtualMachineEvictionPolicy() {
-        if (this.innerModel() != null &&  this.innerModel().virtualMachineProfile() != null) {
+        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
             return this.innerModel().virtualMachineProfile().evictionPolicy();
         } else {
             return null;
@@ -572,8 +575,11 @@ public class VirtualMachineScaleSetImpl
             return null;
         } else {
             ResourceId id = ResourceId.fromString(innerModel().proximityPlacementGroup().id());
-            ProximityPlacementGroupInner plgInner = manager().serviceClient().getProximityPlacementGroups()
-                .getByResourceGroup(id.resourceGroupName(), id.name());
+            ProximityPlacementGroupInner plgInner =
+                manager()
+                    .serviceClient()
+                    .getProximityPlacementGroups()
+                    .getByResourceGroup(id.resourceGroupName(), id.name());
             if (plgInner == null) {
                 return null;
             } else {
@@ -615,8 +621,8 @@ public class VirtualMachineScaleSetImpl
     @Override
     public PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceIdAsync(
         String virtualMachineInstanceId) {
-        return this.
-            networkManager
+        return this
+            .networkManager
             .networkInterfaces()
             .listByVirtualMachineScaleSetInstanceIdAsync(
                 this.resourceGroupName(), this.name(), virtualMachineInstanceId);
@@ -644,8 +650,9 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
         if (loadBalancer.publicIpAddressIds().isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Parameter loadBalancer must be an Internet facing load balancer"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Parameter loadBalancer must be an Internet facing load balancer"));
         }
 
         if (isInCreateMode()) {
@@ -689,8 +696,9 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer) {
         if (!loadBalancer.publicIpAddressIds().isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Parameter loadBalancer must be an internal load balancer"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer"));
         }
         String lbNetworkId = null;
         for (LoadBalancerPrivateFrontend frontEnd : loadBalancer.privateFrontends().values()) {
@@ -708,14 +716,16 @@ public class VirtualMachineScaleSetImpl
             // will show a error above VMSS profile page.
             //
             if (!vmNICNetworkId.equalsIgnoreCase(lbNetworkId)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Virtual network associated with scale set virtual machines"
-                        + " and internal load balancer must be same. "
-                        + "'"
-                        + vmNICNetworkId
-                        + "'"
-                        + "'"
-                        + lbNetworkId));
+                throw logger
+                    .logExceptionAsError(
+                        new IllegalArgumentException(
+                            "Virtual network associated with scale set virtual machines"
+                                + " and internal load balancer must be same. "
+                                + "'"
+                                + vmNICNetworkId
+                                + "'"
+                                + "'"
+                                + lbNetworkId));
             }
 
             this.primaryInternalLoadBalancer = loadBalancer;
@@ -725,14 +735,16 @@ public class VirtualMachineScaleSetImpl
             String vmNicVnetId =
                 ResourceUtils.parentResourceIdFromResourceId(primaryNicDefaultIpConfiguration().subnet().id());
             if (!vmNicVnetId.equalsIgnoreCase(lbNetworkId)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Virtual network associated with scale set virtual machines"
-                        + " and internal load balancer must be same. "
-                        + "'"
-                        + vmNicVnetId
-                        + "'"
-                        + "'"
-                        + lbNetworkId));
+                throw logger
+                    .logExceptionAsError(
+                        new IllegalArgumentException(
+                            "Virtual network associated with scale set virtual machines"
+                                + " and internal load balancer must be same. "
+                                + "'"
+                                + vmNicVnetId
+                                + "'"
+                                + "'"
+                                + lbNetworkId));
             }
             this.primaryInternalLoadBalancerToAttachOnUpdate = loadBalancer;
         }
@@ -1141,7 +1153,8 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public boolean isManagedDiskEnabled() {
-        VirtualMachineScaleSetStorageProfile storageProfile = this.innerModel().virtualMachineProfile().storageProfile();
+        VirtualMachineScaleSetStorageProfile storageProfile =
+            this.innerModel().virtualMachineProfile().storageProfile();
         if (isOsDiskFromCustomImage(storageProfile)) {
             return true;
         }
@@ -1227,7 +1240,13 @@ public class VirtualMachineScaleSetImpl
             && this.innerModel().virtualMachineProfile().storageProfile() != null
             && this.innerModel().virtualMachineProfile().storageProfile().osDisk() != null
             && this.innerModel().virtualMachineProfile().storageProfile().osDisk().managedDisk() != null) {
-            return this.innerModel().virtualMachineProfile().storageProfile().osDisk().managedDisk().storageAccountType();
+            return this
+                .innerModel()
+                .virtualMachineProfile()
+                .storageProfile()
+                .osDisk()
+                .managedDisk()
+                .storageAccountType();
         }
         return null;
     }
@@ -1636,7 +1655,8 @@ public class VirtualMachineScaleSetImpl
         if (isInUpdateMode()) {
             return;
         }
-        VirtualMachineScaleSetStorageProfile storageProfile = this.innerModel().virtualMachineProfile().storageProfile();
+        VirtualMachineScaleSetStorageProfile storageProfile =
+            this.innerModel().virtualMachineProfile().storageProfile();
         VirtualMachineScaleSetOSDisk osDisk = storageProfile.osDisk();
         if (isOSDiskFromImage(osDisk)) {
             // ODDisk CreateOption: FROM_IMAGE
@@ -1685,7 +1705,8 @@ public class VirtualMachineScaleSetImpl
         if (isManagedDiskEnabled()) {
             return;
         }
-        final VirtualMachineScaleSetStorageProfile storageProfile = innerModel().virtualMachineProfile().storageProfile();
+        final VirtualMachineScaleSetStorageProfile storageProfile =
+            innerModel().virtualMachineProfile().storageProfile();
         if (isOSDiskFromStoredImage(storageProfile)) {
             // There is a restriction currently that virtual machine's disk cannot be stored in multiple storage
             // accounts if scale set is based on stored image. Remove this check once azure start supporting it.
@@ -1719,7 +1740,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     private void handleUnManagedOSDiskContainers() {
-        final VirtualMachineScaleSetStorageProfile storageProfile = innerModel().virtualMachineProfile().storageProfile();
+        final VirtualMachineScaleSetStorageProfile storageProfile =
+            innerModel().virtualMachineProfile().storageProfile();
         if (isManagedDiskEnabled()) {
             storageProfile.osDisk().withVhdContainers(null);
             return;
@@ -1745,8 +1767,9 @@ public class VirtualMachineScaleSetImpl
         if (isInCreateMode()
             && this.creatableStorageAccountKeys.isEmpty()
             && this.existingStorageAccountsToAssociate.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "Expected storage account(s) for VMSS OS disk containers not found"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalStateException("Expected storage account(s) for VMSS OS disk containers not found"));
         }
 
         for (String storageAccountKey : this.creatableStorageAccountKeys) {
@@ -1968,8 +1991,7 @@ public class VirtualMachineScaleSetImpl
 
         String secondLoadBalancerId = null;
         for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-            if (!subResource.id().toLowerCase(Locale.ROOT)
-                    .startsWith(firstLoadBalancerId.toLowerCase(Locale.ROOT))) {
+            if (!subResource.id().toLowerCase(Locale.ROOT).startsWith(firstLoadBalancerId.toLowerCase(Locale.ROOT))) {
                 secondLoadBalancerId = ResourceUtils.parentResourceIdFromResourceId(subResource.id());
                 break;
             }
@@ -1977,8 +1999,10 @@ public class VirtualMachineScaleSetImpl
 
         if (secondLoadBalancerId == null) {
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-                if (!subResource.id().toLowerCase(Locale.ROOT)
-                        .startsWith(firstLoadBalancerId.toLowerCase(Locale.ROOT))) {
+                if (!subResource
+                    .id()
+                    .toLowerCase(Locale.ROOT)
+                    .startsWith(firstLoadBalancerId.toLowerCase(Locale.ROOT))) {
                     secondLoadBalancerId = ResourceUtils.parentResourceIdFromResourceId(subResource.id());
                     break;
                 }
@@ -2029,8 +2053,9 @@ public class VirtualMachineScaleSetImpl
                 }
             }
         }
-        throw logger.logExceptionAsError(new RuntimeException(
-            "Could not find the primary nic configuration or an IP configuration in it"));
+        throw logger
+            .logExceptionAsError(
+                new RuntimeException("Could not find the primary nic configuration or an IP configuration in it"));
     }
 
     private VirtualMachineScaleSetNetworkConfiguration primaryNicConfiguration() {
@@ -2154,8 +2179,10 @@ public class VirtualMachineScaleSetImpl
         LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
         List<SubResource> toRemove = new ArrayList<>();
         for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-            if (subResource.id().toLowerCase(Locale.ROOT)
-                    .startsWith(loadBalancer.id().toLowerCase(Locale.ROOT) + "/")) {
+            if (subResource
+                .id()
+                .toLowerCase(Locale.ROOT)
+                .startsWith(loadBalancer.id().toLowerCase(Locale.ROOT) + "/")) {
                 toRemove.add(subResource);
             }
         }
@@ -2169,8 +2196,10 @@ public class VirtualMachineScaleSetImpl
         LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
         List<SubResource> toRemove = new ArrayList<>();
         for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-            if (subResource.id().toLowerCase(Locale.ROOT)
-                    .startsWith(loadBalancer.id().toLowerCase(Locale.ROOT) + "/")) {
+            if (subResource
+                .id()
+                .toLowerCase(Locale.ROOT)
+                .startsWith(loadBalancer.id().toLowerCase(Locale.ROOT) + "/")) {
                 toRemove.add(subResource);
             }
         }
@@ -2951,8 +2980,10 @@ public class VirtualMachineScaleSetImpl
                 storageAccount = this.existingStorageAccountToAssociate;
             }
             if (storageAccount == null) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "Unable to retrieve expected storageAccount instance for BootDiagnostics"));
+                throw logger
+                    .logExceptionAsError(
+                        new IllegalStateException(
+                            "Unable to retrieve expected storageAccount instance for BootDiagnostics"));
             }
             vmssInner()
                 .virtualMachineProfile()

@@ -173,7 +173,8 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public boolean isOSBasedOnStoredImage() {
-        if (this.innerModel().storageProfile().osDisk() != null && this.innerModel().storageProfile().osDisk().image() != null) {
+        if (this.innerModel().storageProfile().osDisk() != null
+            && this.innerModel().storageProfile().osDisk().image() != null) {
             return this.innerModel().storageProfile().osDisk().image().uri() != null;
         }
         return false;
@@ -307,8 +308,8 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean isWindowsVMAgentProvisioned() {
         if (this.innerModel().osProfile().windowsConfiguration() != null) {
-            return ResourceManagerUtils.toPrimitiveBoolean(
-                this.innerModel().osProfile().windowsConfiguration().provisionVMAgent());
+            return ResourceManagerUtils
+                .toPrimitiveBoolean(this.innerModel().osProfile().windowsConfiguration().provisionVMAgent());
         }
         return false;
     }
@@ -316,8 +317,8 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean isWindowsAutoUpdateEnabled() {
         if (this.innerModel().osProfile().windowsConfiguration() != null) {
-            return ResourceManagerUtils.toPrimitiveBoolean(
-                this.innerModel().osProfile().windowsConfiguration().enableAutomaticUpdates());
+            return ResourceManagerUtils
+                .toPrimitiveBoolean(this.innerModel().osProfile().windowsConfiguration().enableAutomaticUpdates());
         }
         return false;
     }
@@ -332,16 +333,18 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public boolean bootDiagnosticEnabled() {
-        if (this.innerModel().diagnosticsProfile() != null && this.innerModel().diagnosticsProfile().bootDiagnostics() != null) {
-            return ResourceManagerUtils.toPrimitiveBoolean(
-                this.innerModel().diagnosticsProfile().bootDiagnostics().enabled());
+        if (this.innerModel().diagnosticsProfile() != null
+            && this.innerModel().diagnosticsProfile().bootDiagnostics() != null) {
+            return ResourceManagerUtils
+                .toPrimitiveBoolean(this.innerModel().diagnosticsProfile().bootDiagnostics().enabled());
         }
         return false;
     }
 
     @Override
     public String bootDiagnosticStorageAccountUri() {
-        if (this.innerModel().diagnosticsProfile() != null && this.innerModel().diagnosticsProfile().bootDiagnostics() != null) {
+        if (this.innerModel().diagnosticsProfile() != null
+            && this.innerModel().diagnosticsProfile().bootDiagnostics() != null) {
             return this.innerModel().diagnosticsProfile().bootDiagnostics().storageUri();
         }
         return null;
@@ -381,8 +384,7 @@ class VirtualMachineScaleSetVMImpl
             for (VirtualMachineExtensionInner extensionInner : this.innerModel().resources()) {
                 extensions
                     .put(
-                        extensionInner.name(),
-                        new VirtualMachineScaleSetVMInstanceExtensionImpl(extensionInner, this));
+                        extensionInner.name(), new VirtualMachineScaleSetVMInstanceExtensionImpl(extensionInner, this));
             }
         }
         return Collections.unmodifiableMap(extensions);
@@ -589,8 +591,10 @@ class VirtualMachineScaleSetVMImpl
     public Update withExistingDataDisk(
         Disk dataDisk, int lun, CachingTypes cachingTypes, StorageAccountTypes storageAccountTypes) {
         if (!this.isManagedDiskEnabled()) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalStateException(
+                        ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED));
         }
         if (dataDisk.innerModel().diskState() != DiskState.UNATTACHED) {
             throw logger.logExceptionAsError(new IllegalStateException("Disk need to be in unattached state"));
@@ -611,11 +615,14 @@ class VirtualMachineScaleSetVMImpl
 
     private Update withExistingDataDisk(DataDisk dataDisk, int lun) {
         if (this.tryFindDataDisk(lun, this.innerModel().storageProfile().dataDisks()) != null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                String.format("A data disk with lun '%d' already attached", lun)));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalStateException(String.format("A data disk with lun '%d' already attached", lun)));
         } else if (this.tryFindDataDisk(lun, this.managedDataDisks.existingDisksToAttach) != null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                String.format("A data disk with lun '%d' already scheduled to be attached", lun)));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalStateException(
+                        String.format("A data disk with lun '%d' already scheduled to be attached", lun)));
         }
         this.managedDataDisks.existingDisksToAttach.add(dataDisk);
         return this;
@@ -625,16 +632,19 @@ class VirtualMachineScaleSetVMImpl
     public Update withoutDataDisk(int lun) {
         DataDisk dataDisk = this.tryFindDataDisk(lun, this.innerModel().storageProfile().dataDisks());
         if (dataDisk == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                String.format("A data disk with lun '%d' not found", lun)));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalStateException(String.format("A data disk with lun '%d' not found", lun)));
         }
         if (dataDisk.createOption() != DiskCreateOptionTypes.ATTACH) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                String
-                    .format(
-                        "A data disk with lun '%d' cannot be detached, as it is part of Virtual Machine Scale Set"
-                            + " model",
-                        lun)));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalStateException(
+                        String
+                            .format(
+                                "A data disk with lun '%d' cannot be detached, as it is part of Virtual Machine Scale Set"
+                                    + " model",
+                                lun)));
         }
         this.managedDataDisks.diskLunsToRemove.add(lun);
         return this;

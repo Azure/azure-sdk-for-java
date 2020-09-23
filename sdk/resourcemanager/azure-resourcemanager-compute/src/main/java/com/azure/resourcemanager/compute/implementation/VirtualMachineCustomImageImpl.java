@@ -224,7 +224,10 @@ class VirtualMachineCustomImageImpl
 
     @Override
     protected Mono<ImageInner> getInnerAsync() {
-        return this.manager().serviceClient().getImages()
+        return this
+            .manager()
+            .serviceClient()
+            .getImages()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
