@@ -898,7 +898,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible vaules are key1, key2.
+     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -913,7 +913,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible vaules are key1, key2.
+     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -927,7 +927,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible vaules are key1, key2.
+     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StorageAccountListKeysResultInner object
      */
@@ -945,7 +945,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible vaules are key1, key2.
+     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StorageAccountListKeysResultInner object
      */
