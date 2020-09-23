@@ -31,17 +31,17 @@ The first three starters are also available in [Spring Initializr](http://start.
 
 Starter Name | Version for Spring Boot 2.3.x | Version for Spring Boot 2.2.x | Version for Spring Boot 2.1.x | Version for Spring Boot 2.0.x
 ---|:---:|:---:|:---:|:---:
-[azure-active-directory-spring-boot-starter][azure-active-directory-spring-boot-starter-README] | [![Maven Central][azure-active-directory-spring-boot-starter-Maven Central-2.3.x-img]][azure-active-directory-spring-boot-starter-Maven Central-2.3.x] | [![Maven Central][azure-active-directory-spring-boot-starter-Maven Central-2.2.x-img]][azure-active-directory-spring-boot-starter-Maven Central-2.2.x] | [![][azure-active-directory-spring-boot-starter-Maven Central-2.1.x-img]][azure-active-directory-spring-boot-starter-Maven Central-2.1.x] | [![][azure-active-directory-spring-boot-starter-Maven Central-2.0.x-img]][azure-active-directory-spring-boot-starter-Maven Central-2.0.x]
-[azure-storage-spring-boot-starter][azure-storage-spring-boot-starter-README]] | N/A | [![Maven Central][azure-storage-spring-boot-starter-Maven Central-2.2.x-img]][azure-storage-spring-boot-starter-Maven Central-2.2.x] | [![][azure-storage-spring-boot-starter-Maven Central-2.1.x-img]][azure-storage-spring-boot-starter-Maven Central-2.1.x] | [![][azure-storage-spring-boot-starter-Maven Central-2.0.x-img]][azure-storage-spring-boot-starter-Maven Central-2.0.x]
-[spring-starter-azure-storage][spring-starter-azure-storage-README] | [![Maven Central][spring-starter-azure-storage-Maven Central-2.3.x-img]][spring-starter-azure-storage-Maven Central-2.3.x] | N/A | N/A | N/A
-[azure-keyvault-secrets-spring-boot-starter][azure-keyvault-secrets-spring-boot-starter-README] | [![Maven Central][azure-keyvault-secrets-spring-boot-starter-Maven Central-2.3.x-img]][azure-keyvault-secrets-spring-boot-starter-Maven Central-2.3.x] | [![Maven Central][azure-keyvault-secrets-spring-boot-starter-Maven Central-2.2.x-img]][azure-keyvault-secrets-spring-boot-starter-Maven Central-2.2.x] | [![][azure-keyvault-secrets-spring-boot-starter-Maven Central-2.1.x-img]][azure-keyvault-secrets-spring-boot-starter-Maven Central-2.1.x] | [![][azure-keyvault-secrets-spring-boot-starter-Maven Central-2.0.x-img]][azure-keyvault-secrets-spring-boot-starter-Maven Central-2.0.x]
-[azure-active-directory-b2c-spring-boot-starter][azure-active-directory-b2c-spring-boot-starter-README] | [![Maven Central][azure-active-directory-b2c-spring-boot-starter-Maven Central-2.3.x-img]][azure-active-directory-b2c-spring-boot-starter-Maven Central-2.3.x] | [![Maven Central][azure-active-directory-b2c-spring-boot-starter-Maven Central-2.2.x-img]][azure-active-directory-b2c-spring-boot-starter-Maven Central-2.2.x] | [![Maven Central][azure-active-directory-b2c-spring-boot-starter-Maven Central-2.1.x-img]][azure-active-directory-b2c-spring-boot-starter-Maven Central-2.1.x] | N/A
-[azure-cosmosdb-spring-boot-starter][azure-cosmosdb-spring-boot-starter-README] | [![Maven Central][azure-cosmosdb-spring-boot-starter-Maven Central-2.3.x-img]][azure-cosmosdb-spring-boot-starter-Maven Central-2.3.x] | [![Maven Central][azure-cosmosdb-spring-boot-starter-Maven Central-2.2.x-img]][azure-cosmosdb-spring-boot-starter-Maven Central-2.2.x] | [![][azure-cosmosdb-spring-boot-starter-Maven Central-2.1.x-img]][azure-cosmosdb-spring-boot-starter-Maven Central-2.1.x] | [![][azure-cosmosdb-spring-boot-starter-Maven Central-2.0.x-img]][azure-cosmosdb-spring-boot-starter-Maven Central-2.0.x]
-[azure-mediaservices-spring-boot-starter][azure-mediaservices-spring-boot-starter-README] | N/A | [![Maven Central][azure-mediaservices-spring-boot-starter-Maven Central-2.2.x-img]][azure-mediaservices-spring-boot-starter-Maven Central-2.2.x] | [![][azure-mediaservices-spring-boot-starter-Maven Central-2.1.x-img]][azure-mediaservices-spring-boot-starter-Maven Central-2.1.x] | [![][azure-mediaservices-spring-boot-starter-Maven Central-2.0.x-img]][azure-mediaservices-spring-boot-starter-Maven Central-2.0.x]
-[azure-servicebus-spring-boot-starter][azure-servicebus-spring-boot-starter-README] | N/A | [![Maven Central][azure-servicebus-spring-boot-starter-Maven Central-2.2.x-img]][azure-servicebus-spring-boot-starter-Maven Central-2.2.x] | [![][azure-servicebus-spring-boot-starter-Maven Central-2.1.x-img]][azure-servicebus-spring-boot-starter-Maven Central-2.1.x] | [![][azure-servicebus-spring-boot-starter-Maven Central-2.0.x-img]][azure-servicebus-spring-boot-starter-Maven Central-2.0.x]
-[spring-data-gremlin-boot-starter][spring-data-gremlin-boot-starter-README] | [![Maven Central][spring-data-gremlin-boot-starter-Maven Central-2.3.x-img]][spring-data-gremlin-boot-starter-Maven Central-2.3.x] | [![Maven Central][spring-data-gremlin-boot-starter-Maven Central-2.2.x-img]][spring-data-gremlin-boot-starter-Maven Central-2.2.x] | [![][spring-data-gremlin-boot-starter-Maven Central-2.1.x-img]][spring-data-gremlin-boot-starter-Maven Central-2.1.x] | [![][spring-data-gremlin-boot-starter-Maven Central-2.0.x-img]][spring-data-gremlin-boot-starter-Maven Central-2.0.x]
-[azure-spring-boot-metrics-starter][azure-spring-boot-metrics-starter-README] | [![Maven Central][azure-spring-boot-metrics-starter-Maven Central-2.3.x-img]][azure-spring-boot-metrics-starter-Maven Central-2.3.x] | [![Maven Central][azure-spring-boot-metrics-starter-Maven Central-2.2.x-img]][azure-spring-boot-metrics-starter-Maven Central-2.2.x] | [![][azure-spring-boot-metrics-starter-Maven Central-2.1.x-img]][azure-spring-boot-metrics-starter-Maven Central-2.1.x] | [![][azure-spring-boot-metrics-starter-Maven Central-2.0.x-img]][azure-spring-boot-metrics-starter-Maven Central-2.0.x]
-[azure-servicebus-jms-spring-boot-starter][azure-servicebus-jms-spring-boot-starter-README] | [![Maven Central][azure-servicebus-jms-spring-boot-starter-Maven Central-2.3.x-img]][azure-servicebus-jms-spring-boot-starter-Maven Central-2.3.x] | [![Maven Central][azure-servicebus-jms-spring-boot-starter-Maven Central-2.2.x-img]][azure-servicebus-jms-spring-boot-starter-Maven Central-2.2.x] | [![Maven Central][azure-servicebus-jms-spring-boot-starter-Maven Central-2.1.x-img]][azure-servicebus-jms-spring-boot-starter-Maven Central-2.1.x] | N/A
+[azure-active-directory-spring-boot-starter][aad-starter-readme] | [![Maven Central][aad-starter-mvn-2.3.x-img]][aad-starter-mvn-2.3.x] | [![Maven Central][aad-starter-mvn-2.2.x-img]][aad-starter-mvn-2.2.x] | [![][aad-starter-mvn-2.1.x-img]][aad-starter-mvn-2.1.x] | [![][aad-starter-mvn-2.0.x-img]][aad-starter-mvn-2.0.x]
+[azure-storage-spring-boot-starter][storage-starter-readme] | N/A | [![Maven Central][storage-starter-mvn-2.2.x-img]][storage-starter-mvn-2.2.x] | [![][storage-starter-mvn-2.1.x-img]][storage-starter-mvn-2.1.x] | [![][storage-starter-mvn-2.0.x-img]][storage-starter-mvn-2.0.x]
+[spring-starter-azure-storage][spring-starter-storage-readme] | [![Maven Central][spring-starter-storage-mvn-2.3.x-img]][spring-starter-storage-mvn-2.3.x] | N/A | N/A | N/A
+[azure-keyvault-secrets-spring-boot-starter][keyvault-starter-readme] | [![Maven Central][keyvault-starter-mvn-2.3.x-img]][keyvault-starter-mvn-2.3.x] | [![Maven Central][keyvault-starter-mvn-2.2.x-img]][keyvault-starter-mvn-2.2.x] | [![][keyvault-starter-mvn-2.1.x-img]][keyvault-starter-mvn-2.1.x] | [![][keyvault-starter-mvn-2.0.x-img]][keyvault-starter-mvn-2.0.x]
+[azure-active-directory-b2c-spring-boot-starter][aad-b2c-starter-readme] | [![Maven Central][aad-b2c-starter-mvn-2.3.x-img]][aad-b2c-starter-mvn-2.3.x] | [![Maven Central][aad-b2c-starter-mvn-2.2.x-img]][aad-b2c-starter-mvn-2.2.x] | [![Maven Central][aad-b2c-starter-mvn-2.1.x-img]][aad-b2c-starter-mvn-2.1.x] | N/A
+[azure-cosmosdb-spring-boot-starter][cosmosdb-starter-readme] | [![Maven Central][cosmosdb-starter-mvn-2.3.x-img]][cosmosdb-starter-mvn-2.3.x] | [![Maven Central][cosmosdb-starter-mvn-2.2.x-img]][cosmosdb-starter-mvn-2.2.x] | [![][cosmosdb-starter-mvn-2.1.x-img]][cosmosdb-starter-mvn-2.1.x] | [![][cosmosdb-starter-mvn-2.0.x-img]][cosmosdb-starter-mvn-2.0.x]
+[azure-mediaservices-spring-boot-starter][mediaservices-starter-readme] | N/A | [![Maven Central][mediaservices-starter-mvn-2.2.x-img]][mediaservices-starter-mvn-2.2.x] | [![][mediaservices-starter-mvn-2.1.x-img]][mediaservices-starter-mvn-2.1.x] | [![][mediaservices-starter-mvn-2.0.x-img]][mediaservices-starter-mvn-2.0.x]
+[azure-servicebus-spring-boot-starter][servicebus-starter-readme] | N/A | [![Maven Central][servicebus-starter-mvn-2.2.x-img]][servicebus-starter-mvn-2.2.x] | [![][servicebus-starter-mvn-2.1.x-img]][servicebus-starter-mvn-2.1.x] | [![][servicebus-starter-mvn-2.0.x-img]][servicebus-starter-mvn-2.0.x]
+[spring-data-gremlin-boot-starter][gremlin-starter-readme] | [![Maven Central][gremlin-starter-mvn-2.3.x-img]][gremlin-starter-mvn-2.3.x] | [![Maven Central][gremlin-starter-mvn-2.2.x-img]][gremlin-starter-mvn-2.2.x] | [![][gremlin-starter-mvn-2.1.x-img]][gremlin-starter-mvn-2.1.x] | [![][gremlin-starter-mvn-2.0.x-img]][gremlin-starter-mvn-2.0.x]
+[azure-spring-boot-metrics-starter][metrics-starter-readme] | [![Maven Central][metrics-starter-mvn-2.3.x-img]][metrics-starter-mvn-2.3.x] | [![Maven Central][metrics-starter-mvn-2.2.x-img]][metrics-starter-mvn-2.2.x] | [![][metrics-starter-mvn-2.1.x-img]][metrics-starter-mvn-2.1.x] | [![][metrics-starter-mvn-2.0.x-img]][metrics-starter-mvn-2.0.x]
+[azure-servicebus-jms-spring-boot-starter][jms-starter-readme] | [![Maven Central][jms-starter-mvn-2.3.x-img]][jms-starter-mvn-2.3.x] | [![Maven Central][jms-starter-mvn-2.2.x-img]][jms-starter-mvn-2.2.x] | [![Maven Central][jms-starter-mvn-2.1.x-img]][jms-starter-mvn-2.1.x] | N/A
 
 ## Examples
 The following section provides sample projects illustrating how to use the Azure Spring Boot starters.
@@ -101,96 +101,96 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
 
-[azure-active-directory-spring-boot-starter-README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory/README.md
-[azure-active-directory-spring-boot-starter-Maven Central-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter.svg
-[azure-active-directory-spring-boot-starter-Maven Central-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-active-directory-spring-boot-starter%22
-[azure-active-directory-spring-boot-starter-Maven Central-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter/2.2.svg
-[azure-active-directory-spring-boot-starter-Maven Central-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-spring-boot-starter%20AND%20v:2.2.*
-[azure-active-directory-spring-boot-starter-Maven Central-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter/2.1.svg
-[azure-active-directory-spring-boot-starter-Maven Central-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-spring-boot-starter%20AND%20v:2.1.*
-[azure-active-directory-spring-boot-starter-Maven Central-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter/2.0.svg
-[azure-active-directory-spring-boot-starter-Maven Central-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-spring-boot-starter%20AND%20v:2.0.*
+[aad-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory/README.md
+[aad-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter.svg
+[aad-starter-mvn-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-active-directory-spring-boot-starter%22
+[aad-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter/2.2.svg
+[aad-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-spring-boot-starter%20AND%20v:2.2.*
+[aad-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter/2.1.svg
+[aad-starter-mvn-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-spring-boot-starter%20AND%20v:2.1.*
+[aad-starter-mvn-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter/2.0.svg
+[aad-starter-mvn-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-spring-boot-starter%20AND%20v:2.0.*
 
-[azure-storage-spring-boot-starter-README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-storage/README.md
-[azure-storage-spring-boot-starter-Maven Central-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-storage-spring-boot-starter.svg
-[azure-storage-spring-boot-starter-Maven Central-2.2.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-storage-spring-boot-starter%22
-[azure-storage-spring-boot-starter-Maven Central-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-storage-spring-boot-starter/2.1.svg
-[azure-storage-spring-boot-starter-Maven Central-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-storage-spring-boot-starter%20AND%20v:2.1.*
-[azure-storage-spring-boot-starter-Maven Central-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-storage-spring-boot-starter/2.0.svg
-[azure-storage-spring-boot-starter-Maven Central-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-storage-spring-boot-starter%20AND%20v:2.0.*
+[storage-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-storage/README.md
+[storage-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-storage-spring-boot-starter.svg
+[storage-starter-mvn-2.2.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-storage-spring-boot-starter%22
+[storage-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-storage-spring-boot-starter/2.1.svg
+[storage-starter-mvn-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-storage-spring-boot-starter%20AND%20v:2.1.*
+[storage-starter-mvn-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-storage-spring-boot-starter/2.0.svg
+[storage-starter-mvn-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-storage-spring-boot-starter%20AND%20v:2.0.*
 
-[spring-starter-azure-storage-README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-starter-storage/README.md
-[spring-starter-azure-storage-Maven Central-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-starter-azure-storage.svg
-[spring-starter-azure-storage-Maven Central-2.3.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20%20a:spring-starter-azure-storage
+[spring-starter-storage-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-starter-storage/README.md
+[spring-starter-storage-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-starter-azure-storage.svg
+[spring-starter-storage-mvn-2.3.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20%20a:spring-starter-azure-storage
 
-[azure-keyvault-secrets-spring-boot-starter-README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-secrets/README.md
-[azure-keyvault-secrets-spring-boot-starter-Maven Central-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter.svg
-[azure-keyvault-secrets-spring-boot-starter-Maven Central-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-keyvault-secrets-spring-boot-starter%22
-[azure-keyvault-secrets-spring-boot-starter-Maven Central-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter/2.2.svg
-[azure-keyvault-secrets-spring-boot-starter-Maven Central-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-keyvault-secrets-spring-boot-starter%20AND%20v:2.2.*
-[azure-keyvault-secrets-spring-boot-starter-Maven Central-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter/2.1.svg
-[azure-keyvault-secrets-spring-boot-starter-Maven Central-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-keyvault-secrets-spring-boot-starter%20AND%20v:2.1.*
-[azure-keyvault-secrets-spring-boot-starter-Maven Central-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter/2.0.svg
-[azure-keyvault-secrets-spring-boot-starter-Maven Central-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-keyvault-secrets-spring-boot-starter%20AND%20v:2.0.*
+[keyvault-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-secrets/README.md
+[keyvault-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter.svg
+[keyvault-starter-mvn-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-keyvault-secrets-spring-boot-starter%22
+[keyvault-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter/2.2.svg
+[keyvault-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-keyvault-secrets-spring-boot-starter%20AND%20v:2.2.*
+[keyvault-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter/2.1.svg
+[keyvault-starter-mvn-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-keyvault-secrets-spring-boot-starter%20AND%20v:2.1.*
+[keyvault-starter-mvn-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter/2.0.svg
+[keyvault-starter-mvn-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-keyvault-secrets-spring-boot-starter%20AND%20v:2.0.*
 
-[azure-active-directory-b2c-spring-boot-starter-README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/README.md
-[azure-active-directory-b2c-spring-boot-starter-Maven Central-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter.svg
-[azure-active-directory-b2c-spring-boot-starter-Maven Central-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-active-directory-b2c-spring-boot-starter%22
-[azure-active-directory-b2c-spring-boot-starter-Maven Central-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter/2.2.svg
-[azure-active-directory-b2c-spring-boot-starter-Maven Central-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-b2c-spring-boot-starter%20AND%20v:2.2.*
-[azure-active-directory-b2c-spring-boot-starter-Maven Central-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter/2.1.svg
-[azure-active-directory-b2c-spring-boot-starter-Maven Central-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-b2c-spring-boot-starter%20AND%20v:2.1.*
+[aad-b2c-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/README.md
+[aad-b2c-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter.svg
+[aad-b2c-starter-mvn-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-active-directory-b2c-spring-boot-starter%22
+[aad-b2c-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter/2.2.svg
+[aad-b2c-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-b2c-spring-boot-starter%20AND%20v:2.2.*
+[aad-b2c-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter/2.1.svg
+[aad-b2c-starter-mvn-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-b2c-spring-boot-starter%20AND%20v:2.1.*
  
-[azure-cosmosdb-spring-boot-starter-README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-cosmosdb/README.md
-[azure-cosmosdb-spring-boot-starter-Maven Central-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter.svg
-[azure-cosmosdb-spring-boot-starter-Maven Central-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-cosmosdb-spring-boot-starter%22
-[azure-cosmosdb-spring-boot-starter-Maven Central-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter/2.2.svg
-[azure-cosmosdb-spring-boot-starter-Maven Central-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-cosmosdb-spring-boot-starter%20AND%20v:2.2.*
-[azure-cosmosdb-spring-boot-starter-Maven Central-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter/2.1.svg
-[azure-cosmosdb-spring-boot-starter-Maven Central-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-cosmosdb-spring-boot-starter%20AND%20v:2.1.*
-[azure-cosmosdb-spring-boot-starter-Maven Central-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter/2.0.svg
-[azure-cosmosdb-spring-boot-starter-Maven Central-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-cosmosdb-spring-boot-starter%20AND%20v:2.0.*
+[cosmosdb-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-cosmosdb/README.md
+[cosmosdb-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter.svg
+[cosmosdb-starter-mvn-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-cosmosdb-spring-boot-starter%22
+[cosmosdb-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter/2.2.svg
+[cosmosdb-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-cosmosdb-spring-boot-starter%20AND%20v:2.2.*
+[cosmosdb-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter/2.1.svg
+[cosmosdb-starter-mvn-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-cosmosdb-spring-boot-starter%20AND%20v:2.1.*
+[cosmosdb-starter-mvn-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter/2.0.svg
+[cosmosdb-starter-mvn-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-cosmosdb-spring-boot-starter%20AND%20v:2.0.*
 
-[azure-mediaservices-spring-boot-starter-README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-mediaservices/README.md
-[azure-mediaservices-spring-boot-starter-Maven Central-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-mediaservices-spring-boot-starter.svg
-[azure-mediaservices-spring-boot-starter-Maven Central-2.2.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-mediaservices-spring-boot-starter%22
-[azure-mediaservices-spring-boot-starter-Maven Central-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-mediaservices-spring-boot-starter/2.1.svg
-[azure-mediaservices-spring-boot-starter-Maven Central-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-mediaservices-spring-boot-starter%20AND%20v:2.1.*
-[azure-mediaservices-spring-boot-starter-Maven Central-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-mediaservices-spring-boot-starter/2.0.svg
-[azure-mediaservices-spring-boot-starter-Maven Central-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-mediaservices-spring-boot-starter%20AND%20v:2.0.*
+[mediaservices-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-mediaservices/README.md
+[mediaservices-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-mediaservices-spring-boot-starter.svg
+[mediaservices-starter-mvn-2.2.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-mediaservices-spring-boot-starter%22
+[mediaservices-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-mediaservices-spring-boot-starter/2.1.svg
+[mediaservices-starter-mvn-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-mediaservices-spring-boot-starter%20AND%20v:2.1.*
+[mediaservices-starter-mvn-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-mediaservices-spring-boot-starter/2.0.svg
+[mediaservices-starter-mvn-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-mediaservices-spring-boot-starter%20AND%20v:2.0.*
 
-[azure-servicebus-spring-boot-starter-README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-servicebus/README.md
-[azure-servicebus-spring-boot-starter-Maven Central-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-spring-boot-starter.svg
-[azure-servicebus-spring-boot-starter-Maven Central-2.2.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-servicebus-spring-boot-starter%22
-[azure-servicebus-spring-boot-starter-Maven Central-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-spring-boot-starter/2.1.svg
-[azure-servicebus-spring-boot-starter-Maven Central-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-servicebus-spring-boot-starter%20AND%20v:2.1.*
-[azure-servicebus-spring-boot-starter-Maven Central-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-spring-boot-starter/2.0.svg
-[azure-servicebus-spring-boot-starter-Maven Central-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-servicebus-spring-boot-starter%20AND%20v:2.0.*
+[servicebus-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-servicebus/README.md
+[servicebus-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-spring-boot-starter.svg
+[servicebus-starter-mvn-2.2.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-servicebus-spring-boot-starter%22
+[servicebus-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-spring-boot-starter/2.1.svg
+[servicebus-starter-mvn-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-servicebus-spring-boot-starter%20AND%20v:2.1.*
+[servicebus-starter-mvn-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-spring-boot-starter/2.0.svg
+[servicebus-starter-mvn-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-servicebus-spring-boot-starter%20AND%20v:2.0.*
 
-[spring-data-gremlin-boot-starter-README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-data-gremlin/README.md
-[spring-data-gremlin-boot-starter-Maven Central-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-data-gremlin-boot-starter.svg
-[spring-data-gremlin-boot-starter-Maven Central-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22spring-data-gremlin-boot-starter%22
-[spring-data-gremlin-boot-starter-Maven Central-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-data-gremlin-boot-starter/2.2.svg
-[spring-data-gremlin-boot-starter-Maven Central-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:spring-data-gremlin-boot-starter%20AND%20v:2.2.*
-[spring-data-gremlin-boot-starter-Maven Central-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-data-gremlin-boot-starter/2.1.svg
-[spring-data-gremlin-boot-starter-Maven Central-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:spring-data-gremlin-boot-starter%20AND%20v:2.1.*
-[spring-data-gremlin-boot-starter-Maven Central-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-data-gremlin-boot-starter/2.0.svg
-[spring-data-gremlin-boot-starter-Maven Central-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:spring-data-gremlin-boot-starter%20AND%20v:2.0.*
+[gremlin-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-data-gremlin/README.md
+[gremlin-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-data-gremlin-boot-starter.svg
+[gremlin-starter-mvn-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22spring-data-gremlin-boot-starter%22
+[gremlin-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-data-gremlin-boot-starter/2.2.svg
+[gremlin-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:spring-data-gremlin-boot-starter%20AND%20v:2.2.*
+[gremlin-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-data-gremlin-boot-starter/2.1.svg
+[gremlin-starter-mvn-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:spring-data-gremlin-boot-starter%20AND%20v:2.1.*
+[gremlin-starter-mvn-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-data-gremlin-boot-starter/2.0.svg
+[gremlin-starter-mvn-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:spring-data-gremlin-boot-starter%20AND%20v:2.0.*
 
-[azure-spring-boot-metrics-starter-README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-metrics/README.md
-[azure-spring-boot-metrics-starter-Maven Central-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-spring-boot-metrics-starter.svg
-[azure-spring-boot-metrics-starter-Maven Central-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-spring-boot-metrics-starter%22
-[azure-spring-boot-metrics-starter-Maven Central-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-spring-boot-metrics-starter/2.2.svg
-[azure-spring-boot-metrics-starter-Maven Central-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-spring-boot-metrics-starter%20AND%20v:2.2.*
-[azure-spring-boot-metrics-starter-Maven Central-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-spring-boot-metrics-starter/2.1.svg
-[azure-spring-boot-metrics-starter-Maven Central-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-spring-boot-metrics-starter%20AND%20v:2.1.*
-[azure-spring-boot-metrics-starter-Maven Central-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-spring-boot-metrics-starter/2.0.svg
-[azure-spring-boot-metrics-starter-Maven Central-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-spring-boot-metrics-starter%20AND%20v:2.0.*
+[metrics-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-metrics/README.md
+[metrics-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-spring-boot-metrics-starter.svg
+[metrics-starter-mvn-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-spring-boot-metrics-starter%22
+[metrics-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-spring-boot-metrics-starter/2.2.svg
+[metrics-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-spring-boot-metrics-starter%20AND%20v:2.2.*
+[metrics-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-spring-boot-metrics-starter/2.1.svg
+[metrics-starter-mvn-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-spring-boot-metrics-starter%20AND%20v:2.1.*
+[metrics-starter-mvn-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-spring-boot-metrics-starter/2.0.svg
+[metrics-starter-mvn-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-spring-boot-metrics-starter%20AND%20v:2.0.*
 
-[azure-servicebus-jms-spring-boot-starter-README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-servicebus-jms/README.md
-[azure-servicebus-jms-spring-boot-starter-Maven Central-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter.svg
-[azure-servicebus-jms-spring-boot-starter-Maven Central-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-servicebus-jms-spring-boot-starter%22
-[azure-servicebus-jms-spring-boot-starter-Maven Central-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter/2.2.svg
-[azure-servicebus-jms-spring-boot-starter-Maven Central-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-servicebus-jms-spring-boot-starter%20AND%20v:2.2.*
-[azure-servicebus-jms-spring-boot-starter-Maven Central-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter/2.1.svg
-[azure-servicebus-jms-spring-boot-starter-Maven Central-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-servicebus-jms-spring-boot-starter%20AND%20v:2.1.*
+[jms-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-servicebus-jms/README.md
+[jms-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter.svg
+[jms-starter-mvn-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-servicebus-jms-spring-boot-starter%22
+[jms-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter/2.2.svg
+[jms-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-servicebus-jms-spring-boot-starter%20AND%20v:2.2.*
+[jms-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter/2.1.svg
+[jms-starter-mvn-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-servicebus-jms-spring-boot-starter%20AND%20v:2.1.*
