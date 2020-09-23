@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentExportResultInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentExportResultInner;
 
 /**
  * An immutable client-side representation of an Azure deployment template export result.

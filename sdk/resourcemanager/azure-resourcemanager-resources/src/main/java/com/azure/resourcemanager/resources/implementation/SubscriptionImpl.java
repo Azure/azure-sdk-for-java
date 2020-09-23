@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.models.SubscriptionPolicies;
 import com.azure.resourcemanager.resources.models.SubscriptionState;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import com.azure.resourcemanager.resources.fluent.inner.SubscriptionInner;
+import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
 
 /**

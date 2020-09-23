@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.azure.resourcemanager.resources.models.Feature;
-import com.azure.resourcemanager.resources.fluent.inner.FeatureResultInner;
+import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 
 /**
  * The implementation of {@link Feature}.
