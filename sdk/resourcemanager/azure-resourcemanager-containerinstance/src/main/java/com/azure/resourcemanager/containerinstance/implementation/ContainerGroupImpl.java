@@ -222,7 +222,8 @@ public class ContainerGroupImpl
 
         // Getting the private image registry servers
         this.imageRegistryServers = new ArrayList<>();
-        if (this.innerModel().imageRegistryCredentials() != null && this.innerModel().imageRegistryCredentials().size() > 0) {
+        if (this.innerModel().imageRegistryCredentials() != null
+            && this.innerModel().imageRegistryCredentials().size() > 0) {
             for (ImageRegistryCredential imageRegistry : this.innerModel().imageRegistryCredentials()) {
                 this.imageRegistryServers.add(imageRegistry.server());
             }

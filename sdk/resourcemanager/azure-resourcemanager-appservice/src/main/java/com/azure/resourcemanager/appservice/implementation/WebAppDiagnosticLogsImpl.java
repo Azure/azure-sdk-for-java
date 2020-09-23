@@ -76,7 +76,8 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
         if (innerModel().applicationLogs() == null || innerModel().applicationLogs().azureBlobStorage() == null) {
             return 0;
         } else {
-            return ResourceManagerUtils.toPrimitiveInt(innerModel().applicationLogs().azureBlobStorage().retentionInDays());
+            return ResourceManagerUtils.toPrimitiveInt(
+                innerModel().applicationLogs().azureBlobStorage().retentionInDays());
         }
     }
 

@@ -8,7 +8,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An immutable client-side representation of an Azure Cosmos DB DatabaseAccountListReadOnlyKeysResult. */
 @Fluent
-public interface DatabaseAccountListReadOnlyKeysResult extends HasInnerModel<DatabaseAccountListReadOnlyKeysResultInner> {
+public interface DatabaseAccountListReadOnlyKeysResult
+    extends HasInnerModel<DatabaseAccountListReadOnlyKeysResultInner> {
     /** @return Base 64 encoded value of the primary read-only key. */
     String primaryReadonlyMasterKey();
 

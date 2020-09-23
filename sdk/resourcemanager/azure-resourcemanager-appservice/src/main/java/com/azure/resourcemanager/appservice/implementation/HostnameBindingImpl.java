@@ -201,7 +201,8 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                     .manager()
                     .serviceClient()
                     .getWebApps()
-                    .createOrUpdateHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name, innerModel())
+                    .createOrUpdateHostnameBindingAsync(
+                        parent().resourceGroupName(), parent().name(), name, innerModel())
                     .map(mapper);
         }
 

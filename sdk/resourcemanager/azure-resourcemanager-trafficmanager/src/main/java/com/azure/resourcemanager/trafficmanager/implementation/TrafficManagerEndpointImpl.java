@@ -242,7 +242,8 @@ class TrafficManagerEndpointImpl
             }
         }
         if (!found) {
-            this.innerModel().subnets().add(new EndpointPropertiesSubnetsItem().withFirst(subnetStartIp).withScope(mask));
+            this.innerModel().subnets().add(
+                new EndpointPropertiesSubnetsItem().withFirst(subnetStartIp).withScope(mask));
         }
         return this;
     }
@@ -348,7 +349,8 @@ class TrafficManagerEndpointImpl
             }
         }
         if (!found) {
-            this.innerModel().customHeaders().add(new EndpointPropertiesCustomHeadersItem().withName(name).withValue(value));
+            this.innerModel().customHeaders().add(
+                new EndpointPropertiesCustomHeadersItem().withName(name).withValue(value));
         }
         return this;
     }

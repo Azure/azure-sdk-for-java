@@ -222,7 +222,8 @@ public class SpringServiceImpl
                 .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
         } else if (needUpdate) {
             needUpdate = false;
-            createOrUpdate = manager().serviceClient().getServices().updateAsync(resourceGroupName(), name(), innerModel());
+            createOrUpdate = manager().serviceClient().getServices().updateAsync(
+                resourceGroupName(), name(), innerModel());
         } else {
             return Mono.just(this);
         }

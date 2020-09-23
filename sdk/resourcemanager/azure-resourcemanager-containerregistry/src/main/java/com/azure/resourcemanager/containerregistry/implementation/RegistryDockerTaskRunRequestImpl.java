@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 class RegistryDockerTaskRunRequestImpl
-    implements RegistryDockerTaskRunRequest, RegistryDockerTaskRunRequest.Definition, HasInnerModel<DockerBuildRequest> {
+    implements RegistryDockerTaskRunRequest,
+        RegistryDockerTaskRunRequest.Definition,
+        HasInnerModel<DockerBuildRequest> {
 
     private DockerBuildRequest inner;
     private RegistryTaskRunImpl registryTaskRunImpl;

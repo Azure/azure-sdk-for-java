@@ -263,14 +263,16 @@ public class KubernetesClusterImpl
             .linuxProfile()
             .withSsh(
                 new ContainerServiceSshConfiguration().withPublicKeys(new ArrayList<ContainerServiceSshPublicKey>()));
-        this.innerModel().linuxProfile().ssh().publicKeys().add(new ContainerServiceSshPublicKey().withKeyData(sshKeyData));
+        this.innerModel().linuxProfile().ssh().publicKeys().add(
+            new ContainerServiceSshPublicKey().withKeyData(sshKeyData));
 
         return this;
     }
 
     @Override
     public KubernetesClusterImpl withServicePrincipalClientId(String clientId) {
-        this.innerModel().withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId(clientId));
+        this.innerModel().withServicePrincipalProfile(
+            new ManagedClusterServicePrincipalProfile().withClientId(clientId));
         return this;
     }
 

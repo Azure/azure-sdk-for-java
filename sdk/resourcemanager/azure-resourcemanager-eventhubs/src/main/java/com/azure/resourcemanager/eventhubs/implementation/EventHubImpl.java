@@ -336,7 +336,8 @@ class EventHubImpl
     @Override
     public Mono<EventHub> createResourceAsync() {
         return this.manager.serviceClient().getEventHubs()
-                .createOrUpdateAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), this.innerModel())
+                .createOrUpdateAsync(
+                    ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), this.innerModel())
                 .map(innerToFluentMap(this));
     }
 

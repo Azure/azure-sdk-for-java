@@ -226,7 +226,8 @@ class FunctionAppImpl
 
     @Override
     public OperatingSystem operatingSystem() {
-        return (innerModel().reserved() == null || !innerModel().reserved()) ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
+        return (innerModel().reserved() == null || !innerModel().reserved())
+            ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
     }
 
     private void addAppSettingIfNotModified(String key, String value) {

@@ -69,7 +69,8 @@ class QueueAuthorizationRulesImpl
 
     @Override
     protected PagedFlux<SharedAccessAuthorizationRuleResourceInner> listInnerAsync() {
-        return this.innerModel().listAuthorizationRulesAsync(this.resourceGroupName, this.namespaceName, this.queueName);
+        return this.innerModel().listAuthorizationRulesAsync(
+            this.resourceGroupName, this.namespaceName, this.queueName);
     }
 
     @Override
