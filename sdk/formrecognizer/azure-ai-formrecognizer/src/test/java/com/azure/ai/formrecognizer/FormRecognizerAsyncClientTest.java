@@ -30,9 +30,7 @@ import java.util.List;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.FAILED_TO_DOWNLOAD_IMAGE_CODE;
-import static com.azure.ai.formrecognizer.TestUtils.FAILED_TO_DOWNLOAD_IMAGE_ERROR_MESSAGE;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
-import static com.azure.ai.formrecognizer.TestUtils.IMAGE_URL_IS_BADLY_FORMATTED_ERROR_MESSAGE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_IMAGE_URL_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
@@ -203,7 +201,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .getSyncPoller().getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) httpResponseException.getValue();
             assertEquals(EXPECTED_BAD_ARGUMENT_CODE, errorInformation.getErrorCode());
-            assertEquals(EXPECTED_BAD_ARGUMENT_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
 
@@ -239,7 +236,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             validateExceptionSource(errorResponseException);
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(FAILED_TO_DOWNLOAD_IMAGE_CODE, errorInformation.getErrorCode());
-            assertEquals(FAILED_TO_DOWNLOAD_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
 
@@ -256,7 +252,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
-            assertEquals(IMAGE_URL_IS_BADLY_FORMATTED_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
 
@@ -404,7 +399,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .getSyncPoller().getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(EXPECTED_INVALID_IMAGE_CODE, errorInformation.getErrorCode());
-            assertEquals(EXPECTED_INVALID_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
 
@@ -441,7 +435,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             validateExceptionSource(errorResponseException);
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(FAILED_TO_DOWNLOAD_IMAGE_CODE, errorInformation.getErrorCode());
-            assertEquals(FAILED_TO_DOWNLOAD_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
 
@@ -474,7 +467,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
-            assertEquals(IMAGE_URL_IS_BADLY_FORMATTED_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
 
@@ -1091,7 +1083,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     new RecognizeCustomFormsOptions().setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(EXPECTED_INVALID_MODEL_ID_ERROR_CODE, errorInformation.getErrorCode());
-            assertEquals(EXPECTED_INVALID_MODEL_ID_ERROR_MESSAGE, errorInformation.getMessage());
         }, FORM_JPG);
     }
 
