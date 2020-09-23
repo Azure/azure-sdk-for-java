@@ -507,10 +507,9 @@ class LoadBalancerImpl
             this.creatablePIPKeys.put(this.addDependency(creatablePip), frontendName);
         } else if (!existingPipFrontendName.equalsIgnoreCase(frontendName)) {
             // Existing PIP definition already in use but under a different frontend, so error
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "This public IP address definition is already associated with a frontend under a different name."));
+            String exceptionMessage = 
+                "This public IP address definition is already associated with a frontend under a different name.";
+            throw logger.logExceptionAsError(new IllegalArgumentException(exceptionMessage));
         }
 
         return this;
