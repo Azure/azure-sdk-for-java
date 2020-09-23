@@ -572,4 +572,9 @@
 
   <!-- Suppress Event Grid checks for now -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-messaging-eventgrid[/\\]src[/\\]"/>
+
+   <!-- Don't enforce non-static ClientLogger instances in com.azure.core.util.Option types-->
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
+            files="com.azure.core.util.Option.java"/>
+
 </suppressions>
