@@ -272,7 +272,7 @@ Flux.merge(
 .blockLast();
 ```
 
-[**Link to full sample**](https://github.com/Azure/azure-sdk-for-java/blob/7beda69/sdk/management/samples/src/main/java/com/azure/resourcemanager/compute/samples/ManageVirtualMachineScaleSetAsync.java#L98)
+[**Link to full sample**](https://github.com/Azure/azure-sdk-for-java/blob/15b8e62/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/compute/samples/ManageVirtualMachineScaleSetAsync.java#L88)
 
 ## Additional Samples 
 
