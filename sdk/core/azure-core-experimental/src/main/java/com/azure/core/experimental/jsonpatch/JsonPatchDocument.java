@@ -6,7 +6,6 @@ package com.azure.core.experimental.jsonpatch;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
@@ -24,13 +23,6 @@ import java.util.Optional;
 public class JsonPatchDocument {
     private static final ObjectMapper MAPPER = ((JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter())
         .serializer();
-
-    private static final String ADD = "add";
-    private static final String REMOVE = "remove";
-    private static final String REPLACE = "replace";
-    private static final String MOVE = "move";
-    private static final String COPY = "copy";
-    private static final String TEST = "test";
 
     private final ClientLogger logger = new ClientLogger(JsonPatchDocument.class);
 
@@ -57,11 +49,11 @@ public class JsonPatchDocument {
     }
 
     /**
-     * Gets the JSON Patch operations in this document.
+     * Gets an unmodifiable list of JSON Patch operations in this document.
      *
-     * @return The JSON Patch operations in this document.
+     * @return An unmodifiable list of JSON Patch operations in this document.
      */
-    public List<Object> getJsonPatchOperations() {
+    public List<JsonPatchOperation> getJsonPatchOperations() {
         return Collections.unmodifiableList(operations);
     }
 
@@ -85,7 +77,7 @@ public class JsonPatchDocument {
     public JsonPatchDocument appendAdd(String path, Object value) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(ADD, null, path, serializeValue(value));
+        return appendOperation(JsonPatchOperationKind.ADD, null, path, serializeValue(value));
     }
 
     /**
@@ -105,7 +97,7 @@ public class JsonPatchDocument {
     public JsonPatchDocument appendReplace(String path, Object value) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(REPLACE, null, path, serializeValue(value));
+        return appendOperation(JsonPatchOperationKind.REPLACE, null, path, serializeValue(value));
     }
 
     /**
@@ -126,7 +118,7 @@ public class JsonPatchDocument {
         Objects.requireNonNull(from, "'from' cannot be null.");
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(COPY, from, path, null);
+        return appendOperation(JsonPatchOperationKind.COPY, from, path, null);
     }
 
     /**
@@ -149,7 +141,7 @@ public class JsonPatchDocument {
         Objects.requireNonNull(from, "'from' cannot be null.");
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(MOVE, from, path, null);
+        return appendOperation(JsonPatchOperationKind.MOVE, from, path, null);
     }
 
     /**
@@ -168,7 +160,7 @@ public class JsonPatchDocument {
     public JsonPatchDocument appendRemove(String path) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(REMOVE, null, path, null);
+        return appendOperation(JsonPatchOperationKind.REMOVE, null, path, null);
     }
 
     /**
@@ -188,7 +180,7 @@ public class JsonPatchDocument {
     public JsonPatchDocument appendTest(String path, Object value) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(TEST, null, path, serializeValue(value));
+        return appendOperation(JsonPatchOperationKind.TEST, null, path, serializeValue(value));
     }
 
     private Optional<String> serializeValue(Object value) {
@@ -212,8 +204,9 @@ public class JsonPatchDocument {
         return Optional.of(rawValue);
     }
 
-    private JsonPatchDocument appendOperation(String op, String from, String path, Optional<String> optionalValue) {
-        operations.add(new JsonPatchOperation(op, from, path, optionalValue));
+    private JsonPatchDocument appendOperation(JsonPatchOperationKind operationKind, String from, String path,
+        Optional<String> optionalValue) {
+        operations.add(new JsonPatchOperation(operationKind, from, path, optionalValue));
         return this;
     }
 
@@ -224,23 +217,16 @@ public class JsonPatchDocument {
      */
     @Override
     public String toString() {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        StringBuilder builder = new StringBuilder("[");
 
-        try {
-            JsonGenerator generator = MAPPER.createGenerator(outputStream);
-            generator.writeStartArray();
-
-            for (JsonPatchOperation operation : operations) {
-                generator.writeObject(operation);
+        for (int i = 0; i < operations.size(); i++) {
+            if (i > 0) {
+                builder.append(",");
             }
 
-            generator.writeEndArray();
-            generator.flush();
-            generator.close();
-
-            return outputStream.toString("UTF-8");
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
+            operations.get(i).buildString(builder);
         }
+
+        return builder.append("]").toString();
     }
 }

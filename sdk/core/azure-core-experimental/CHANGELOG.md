@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (2020-09-21)
+## 1.0.0-beta.5 (Unreleased)
 
 - Added `JsonPatchDocument` to support JSON Patch functionality.
 

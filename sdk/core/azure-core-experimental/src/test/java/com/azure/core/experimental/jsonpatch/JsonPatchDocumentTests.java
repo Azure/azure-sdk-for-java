@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class JsonPatchDocumentTests {
     private static final ObjectMapper MAPPER = ((JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter())
         .serializer()
+        .registerModule(JsonPatchDocumentSerializer.getModule())
         .registerModule(JsonPatchOperationSerializer.getModule());
 
     @ParameterizedTest
@@ -32,7 +33,13 @@ public class JsonPatchDocumentTests {
 
     @ParameterizedTest
     @MethodSource("formattingSupplier")
-    public void jsonify(JsonPatchDocument document, String expected) throws IOException {
+    public void jsonifyDocument(JsonPatchDocument document, String expected) throws IOException {
+        assertEquals(expected, MAPPER.writeValueAsString(document).replace(" ", ""));
+    }
+
+    @ParameterizedTest
+    @MethodSource("formattingSupplier")
+    public void jsonifyOperationList(JsonPatchDocument document, String expected) throws IOException {
         assertEquals(expected, MAPPER.writeValueAsString(document.getJsonPatchOperations()).replace(" ", ""));
     }
 

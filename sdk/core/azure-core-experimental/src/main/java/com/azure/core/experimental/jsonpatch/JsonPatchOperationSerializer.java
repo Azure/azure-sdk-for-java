@@ -6,6 +6,7 @@ package com.azure.core.experimental.jsonpatch;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
 /**
  * Handles serialization of a {@link JsonPatchOperation}.
  */
-class JsonPatchOperationSerializer extends JsonSerializer<JsonPatchOperation> {
+public class JsonPatchOperationSerializer extends JsonSerializer<JsonPatchOperation> {
     private static final Module MODULE;
 
     static {
@@ -23,6 +24,11 @@ class JsonPatchOperationSerializer extends JsonSerializer<JsonPatchOperation> {
             .addSerializer(JsonPatchOperation.class, new JsonPatchOperationSerializer());
     }
 
+    /**
+     * Gets the module for this serializer that can be added into an {@link ObjectMapper}.
+     *
+     * @return The module for this serializer.
+     */
     public static Module getModule() {
         return MODULE;
     }
@@ -32,7 +38,7 @@ class JsonPatchOperationSerializer extends JsonSerializer<JsonPatchOperation> {
         throws IOException {
         gen.writeStartObject();
 
-        gen.writeStringField("op", value.getOp());
+        gen.writeStringField("op", value.getOperationKind().toString());
 
         String from = value.getFrom();
         if (from != null) {
