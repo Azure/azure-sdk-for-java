@@ -32,8 +32,8 @@ import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -100,12 +100,12 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
 
     @Override
     public int port() {
-        return Utils.toPrimitiveInt(this.inner().port());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().port());
     }
 
     @Override
     public int sslPort() {
-        return Utils.toPrimitiveInt(this.inner().sslPort());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().sslPort());
     }
 
     @Override
@@ -125,7 +125,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
 
     @Override
     public int shardCount() {
-        return Utils.toPrimitiveInt(this.inner().shardCount());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().shardCount());
     }
 
     @Override
@@ -537,7 +537,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
                 redisCache ->
                     Mono
                         .delay(SdkContext.getDelayDuration(manager().serviceClient().getDefaultPollInterval()))
-                        .flatMap(o -> 
+                        .flatMap(o ->
                             manager().serviceClient().getRedis().getByResourceGroupAsync(resourceGroupName(), name()))
                         .doOnNext(this::setInner)
                         .repeat()

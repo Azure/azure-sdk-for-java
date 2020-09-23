@@ -237,7 +237,7 @@ public final class ManageVirtualMachineScaleSet {
             System.out.println();
 
             // Print virtual machine scale set details
-            // Utils.print(virtualMachineScaleSet);
+            // ResourceManagerUtils.print(virtualMachineScaleSet);
 
             //=============================================================
             // List virtual machine scale set network interfaces

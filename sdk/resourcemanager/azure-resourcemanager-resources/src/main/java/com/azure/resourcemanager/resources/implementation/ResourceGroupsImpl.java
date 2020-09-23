@@ -9,11 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.resources.fluent.models.ResourceGroupInner;
 import reactor.core.publisher.Mono;
 
@@ -47,7 +47,7 @@ public final class ResourceGroupsImpl
     @Override
     public PagedFlux<ResourceGroup> listByTagAsync(String tagName, String tagValue) {
         return wrapPageAsync(manager().serviceClient().getResourceGroups()
-            .listAsync(Utils.createOdataFilterForTags(tagName, tagValue), null));
+            .listAsync(ResourceManagerUtils.createOdataFilterForTags(tagName, tagValue), null));
     }
 
     @Override

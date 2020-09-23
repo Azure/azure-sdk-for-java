@@ -23,7 +23,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -133,7 +134,7 @@ class PublicIpAddressImpl
 
     @Override
     public int idleTimeoutInMinutes() {
-        return Utils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
     }
 
     @Override

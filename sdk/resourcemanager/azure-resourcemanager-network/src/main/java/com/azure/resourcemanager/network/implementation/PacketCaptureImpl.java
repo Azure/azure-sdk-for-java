@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.PacketCaptureStatus;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -150,17 +150,17 @@ public class PacketCaptureImpl
 
     @Override
     public int bytesToCapturePerPacket() {
-        return Utils.toPrimitiveInt(inner().bytesToCapturePerPacket());
+        return ResourceManagerUtils.toPrimitiveInt(inner().bytesToCapturePerPacket());
     }
 
     @Override
     public int totalBytesPerSession() {
-        return Utils.toPrimitiveInt(inner().totalBytesPerSession());
+        return ResourceManagerUtils.toPrimitiveInt(inner().totalBytesPerSession());
     }
 
     @Override
     public int timeLimitInSeconds() {
-        return Utils.toPrimitiveInt(inner().timeLimitInSeconds());
+        return ResourceManagerUtils.toPrimitiveInt(inner().timeLimitInSeconds());
     }
 
     @Override

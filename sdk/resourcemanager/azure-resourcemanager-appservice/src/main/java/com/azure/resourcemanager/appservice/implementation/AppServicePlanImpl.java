@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 /** The implementation for AppServicePlan. */
@@ -41,12 +41,12 @@ class AppServicePlanImpl
 
     @Override
     public int maxInstances() {
-        return Utils.toPrimitiveInt(inner().maximumNumberOfWorkers());
+        return ResourceManagerUtils.toPrimitiveInt(inner().maximumNumberOfWorkers());
     }
 
     @Override
     public int capacity() {
-        return Utils.toPrimitiveInt(inner().sku().capacity());
+        return ResourceManagerUtils.toPrimitiveInt(inner().sku().capacity());
     }
 
     @Override
@@ -56,7 +56,7 @@ class AppServicePlanImpl
 
     @Override
     public int numberOfWebApps() {
-        return Utils.toPrimitiveInt(inner().numberOfSites());
+        return ResourceManagerUtils.toPrimitiveInt(inner().numberOfSites());
     }
 
     @Override

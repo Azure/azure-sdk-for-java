@@ -12,7 +12,8 @@ import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitAuthorizationInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -157,7 +158,7 @@ class ExpressRouteCircuitImpl
 
     @Override
     public boolean isAllowClassicOperations() {
-        return Utils.toPrimitiveBoolean(inner().allowClassicOperations());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().allowClassicOperations());
     }
 
     @Override

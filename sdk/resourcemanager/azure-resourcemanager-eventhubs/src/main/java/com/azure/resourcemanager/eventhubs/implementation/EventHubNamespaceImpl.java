@@ -10,7 +10,7 @@ import com.azure.resourcemanager.eventhubs.fluent.inner.EHNamespaceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.VoidIndexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
@@ -71,17 +71,17 @@ class EventHubNamespaceImpl
 
     @Override
     public boolean isAutoScaleEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().isAutoInflateEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().isAutoInflateEnabled());
     }
 
     @Override
     public int currentThroughputUnits() {
-        return Utils.toPrimitiveInt(this.inner().sku().capacity());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().sku().capacity());
     }
 
     @Override
     public int throughputUnitsUpperLimit() {
-        return Utils.toPrimitiveInt(this.inner().maximumThroughputUnits());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().maximumThroughputUnits());
     }
 
     @Override

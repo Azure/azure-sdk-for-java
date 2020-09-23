@@ -27,8 +27,8 @@ import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.VaultProperties;
 import com.azure.resourcemanager.keyvault.models.VirtualNetworkRule;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
@@ -156,7 +156,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         if (inner().properties() == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(inner().properties().enabledForDeployment());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().properties().enabledForDeployment());
     }
 
     @Override
@@ -164,7 +164,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         if (inner().properties() == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(inner().properties().enabledForDiskEncryption());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().properties().enabledForDiskEncryption());
     }
 
     @Override
@@ -172,7 +172,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         if (inner().properties() == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(inner().properties().enabledForTemplateDeployment());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().properties().enabledForTemplateDeployment());
     }
 
     @Override
@@ -180,7 +180,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         if (inner().properties() == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(inner().properties().enableSoftDelete());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().properties().enableSoftDelete());
     }
 
     @Override
@@ -188,7 +188,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         if (inner().properties() == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(inner().properties().enablePurgeProtection());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().properties().enablePurgeProtection());
     }
 
     @Override

@@ -6,7 +6,7 @@ package com.azure.resourcemanager.keyvault.implementation;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
@@ -102,7 +102,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
 
     @Override
     public boolean isManaged() {
-        return Utils.toPrimitiveBoolean(inner().getProperties().isManaged());
+        return ResourceManagerUtils.toPrimitiveBoolean(inner().getProperties().isManaged());
     }
 
     @Override
@@ -161,7 +161,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
 
     @Override
     public boolean verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
-        return Utils.toPrimitiveBoolean(verifyAsync(algorithm, digest, signature).block());
+        return ResourceManagerUtils.toPrimitiveBoolean(verifyAsync(algorithm, digest, signature).block());
     }
 
     @Override

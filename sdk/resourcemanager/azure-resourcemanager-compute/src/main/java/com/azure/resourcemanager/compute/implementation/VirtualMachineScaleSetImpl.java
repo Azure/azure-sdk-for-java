@@ -78,7 +78,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.StorageManager;
 import reactor.core.Exceptions;
@@ -367,7 +367,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public int capacity() {
-        return Utils.toPrimitiveInt(this.inner().sku().capacity());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().sku().capacity());
     }
 
     @Override
@@ -2890,7 +2890,7 @@ public class VirtualMachineScaleSetImpl
                 || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
                 return;
             }
-            boolean enableBD = Utils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
+            boolean enableBD = ResourceManagerUtils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
             if (!enableBD) {
                 return;
             }
@@ -2938,7 +2938,7 @@ public class VirtualMachineScaleSetImpl
                 || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
                 return;
             }
-            boolean enableBD = Utils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
+            boolean enableBD = ResourceManagerUtils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
             if (!enableBD) {
                 return;
             }

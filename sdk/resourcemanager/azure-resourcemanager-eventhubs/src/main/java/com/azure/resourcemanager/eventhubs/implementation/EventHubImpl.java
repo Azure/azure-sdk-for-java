@@ -18,7 +18,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.resources.fluentcore.dag.VoidIndexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -73,7 +73,7 @@ class EventHubImpl
         if (this.inner().captureDescription() == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(this.inner().captureDescription().enabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().captureDescription().enabled());
     }
 
     @Override
@@ -81,7 +81,7 @@ class EventHubImpl
         if (this.inner().captureDescription() == null) {
             return 0;
         }
-        return Utils.toPrimitiveInt(this.inner().captureDescription().intervalInSeconds());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().captureDescription().intervalInSeconds());
     }
 
     @Override
@@ -89,7 +89,7 @@ class EventHubImpl
         if (this.inner().captureDescription() == null) {
             return 0;
         }
-        int inBytes = Utils.toPrimitiveInt(this.inner().captureDescription().sizeLimitInBytes());
+        int inBytes = ResourceManagerUtils.toPrimitiveInt(this.inner().captureDescription().sizeLimitInBytes());
         if (inBytes != 0) {
             return inBytes / (1024 * 1024);
         } else {
@@ -136,7 +136,7 @@ class EventHubImpl
 
     @Override
     public int messageRetentionPeriodInDays() {
-        return Utils.toPrimitiveInt(this.inner().messageRetentionInDays());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().messageRetentionInDays());
     }
 
     @Override

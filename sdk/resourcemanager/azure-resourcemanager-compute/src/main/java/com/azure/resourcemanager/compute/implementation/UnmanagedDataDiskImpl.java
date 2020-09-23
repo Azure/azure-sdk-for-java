@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.VirtualHardDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +44,12 @@ class UnmanagedDataDiskImpl extends ChildResourceImpl<DataDisk, VirtualMachineIm
 
     @Override
     public int size() {
-        return Utils.toPrimitiveInt(this.inner().diskSizeGB());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().diskSizeGB());
     }
 
     @Override
     public int lun() {
-        return Utils.toPrimitiveInt(this.inner().lun());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().lun());
     }
 
     @Override

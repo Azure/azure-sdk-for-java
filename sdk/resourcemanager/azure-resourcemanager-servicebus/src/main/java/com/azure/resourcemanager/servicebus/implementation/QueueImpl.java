@@ -6,7 +6,7 @@ package com.azure.resourcemanager.servicebus.implementation;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.inner.QueueResourceInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
@@ -69,42 +69,42 @@ class QueueImpl
 
     @Override
     public long maxSizeInMB() {
-        return Utils.toPrimitiveLong(this.inner().maxSizeInMegabytes());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().maxSizeInMegabytes());
     }
 
     @Override
     public long currentSizeInBytes() {
-        return Utils.toPrimitiveLong(this.inner().sizeInBytes());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().sizeInBytes());
     }
 
     @Override
     public boolean isBatchedOperationsEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableBatchedOperations());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enableBatchedOperations());
     }
 
     @Override
     public boolean isDeadLetteringEnabledForExpiredMessages() {
-        return Utils.toPrimitiveBoolean(this.inner().deadLetteringOnMessageExpiration());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().deadLetteringOnMessageExpiration());
     }
 
     @Override
     public boolean isExpressEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableExpress());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enableExpress());
     }
 
     @Override
     public boolean isPartitioningEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enablePartitioning());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().enablePartitioning());
     }
 
     @Override
     public boolean isSessionEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().requiresSession());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().requiresSession());
     }
 
     @Override
     public boolean isDuplicateDetectionEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().requiresDuplicateDetection());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner().requiresDuplicateDetection());
     }
 
     @Override
@@ -143,12 +143,12 @@ class QueueImpl
 
     @Override
     public int maxDeliveryCountBeforeDeadLetteringMessage() {
-        return Utils.toPrimitiveInt(this.inner().maxDeliveryCount());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner().maxDeliveryCount());
     }
 
     @Override
     public long messageCount() {
-        return Utils.toPrimitiveLong(this.inner().messageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().messageCount());
     }
 
     @Override
@@ -157,7 +157,7 @@ class QueueImpl
                 || this.inner().countDetails().activeMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().activeMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().activeMessageCount());
     }
 
     @Override
@@ -166,7 +166,7 @@ class QueueImpl
                 || this.inner().countDetails().deadLetterMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().deadLetterMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().deadLetterMessageCount());
     }
 
     @Override
@@ -175,7 +175,7 @@ class QueueImpl
                 || this.inner().countDetails().scheduledMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().scheduledMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().scheduledMessageCount());
     }
 
     @Override
@@ -184,7 +184,7 @@ class QueueImpl
                 || this.inner().countDetails().transferDeadLetterMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().transferDeadLetterMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().transferDeadLetterMessageCount());
     }
 
     @Override
@@ -193,7 +193,7 @@ class QueueImpl
                 || this.inner().countDetails().transferMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().transferMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.inner().countDetails().transferMessageCount());
     }
 
     @Override

@@ -44,6 +44,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -193,7 +194,7 @@ class FunctionAppImpl
                         .zipWith(
                             this.manager().appServicePlans().getByIdAsync(this.appServicePlanId()),
                             (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
-                                String connectionString = com.azure.resourcemanager.resources.fluentcore.utils.Utils
+                                String connectionString = ResourceManagerUtils
                                     .getStorageConnectionString(storageAccountToSet.name(), storageAccountKey.value(),
                                         manager().environment());
                                 addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
