@@ -62,6 +62,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -172,9 +174,15 @@ public class IdentityClient {
                 if (certificatePassword == null) {
                     byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(certificatePath));
 
-                    credential = ClientCredentialFactory.createFromCertificate(
-                        CertificateUtil.privateKeyFromPem(pemCertificateBytes),
-                        CertificateUtil.publicKeyFromPem(pemCertificateBytes));
+                    List<X509Certificate> x509CertificateList =  CertificateUtil.publicKeyFromPem(pemCertificateBytes);
+                    PrivateKey privateKey = CertificateUtil.privateKeyFromPem(pemCertificateBytes);
+                    if (x509CertificateList.size() == 1) {
+                        credential = ClientCredentialFactory.createFromCertificate(
+                            privateKey, x509CertificateList.get(0));
+                    } else {
+                        credential = ClientCredentialFactory.createFromCertificateChain(
+                            privateKey, x509CertificateList);
+                    }
                 } else {
                     credential = ClientCredentialFactory.createFromCertificate(
                         new FileInputStream(certificatePath), certificatePassword);
