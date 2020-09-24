@@ -242,7 +242,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/synapse/azure-analytics-synapse-accesscontrol/src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azsynapse_docs]: https://docs.microsoft.com/azure/synapse-analytics/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
@@ -254,7 +254,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azsynapse_rest]: https://docs.microsoft.com/rest/api/synapse/
 [azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_synapse_cli_full]: https://docs.microsoft.com/cli/azure/synapse?view=azure-cli-latest
-[accesscontrol_samples]: src/samples/java/com/azure/analytics/synapse/accesscontrol
-[samples_readme]: src/samples/README.md
+[accesscontrol_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/synapse/azure-analytics-synapse-accesscontrol/src/samples/java/com/azure/analytics/synapse/accesscontrol
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/synapse/azure-analytics-synapse-accesscontrol/src/samples/README.md
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
