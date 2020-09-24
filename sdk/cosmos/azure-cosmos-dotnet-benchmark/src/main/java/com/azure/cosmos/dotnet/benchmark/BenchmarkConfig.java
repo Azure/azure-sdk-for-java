@@ -11,8 +11,6 @@ import com.beust.jcommander.ParameterException;
 
 import java.util.Arrays;
 
-import static org.fusesource.jansi.Ansi.Color.GREEN;
-
 public class BenchmarkConfig {
 
     public final static String USER_AGENT_SUFFIX = "cosmosdbdotnetbenchmark";
@@ -214,11 +212,11 @@ public class BenchmarkConfig {
     }
 
     public void print() {
-        Utility.traceInformation("BenchmarkConfig arguments", GREEN);
-        Utility.traceInformation("--------------------------------------------------------------------- ", GREEN);
-        Utility.traceInformation(JsonHelper.toJsonString(this), GREEN);
-        Utility.traceInformation("--------------------------------------------------------------------- ", GREEN);
-        Utility.traceInformation("", GREEN);
+        Utility.traceInformation("BenchmarkConfig arguments");
+        Utility.traceInformation("--------------------------------------------------------------------- ");
+        Utility.traceInformation(JsonHelper.toJsonString(this));
+        Utility.traceInformation("--------------------------------------------------------------------- ");
+        Utility.traceInformation("");
     }
 
     public void validate() {

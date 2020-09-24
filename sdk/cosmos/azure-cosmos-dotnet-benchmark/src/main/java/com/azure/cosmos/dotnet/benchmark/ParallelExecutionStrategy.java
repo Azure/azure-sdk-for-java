@@ -1,7 +1,6 @@
 package com.azure.cosmos.dotnet.benchmark;
 
 import com.azure.cosmos.implementation.guava25.base.Function;
-import org.fusesource.jansi.Ansi;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -73,7 +72,7 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
                 },
                 serialExecutorConcurrency)
             .doFirst(() -> {
-                Utility.traceInformation("Starting executors...", Ansi.Color.GREEN);
+                Utility.traceInformation("Starting executors...");
                 startTime.set(System.nanoTime());
             });
 
@@ -112,13 +111,12 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
         monitoringTimer.subscribeOn(Schedulers.elastic()).subscribe();
         processingFlux.collectList().block();
 
-        Utility.traceInformation("", Ansi.Color.GREEN);
-        Utility.traceInformation("Summary:", Ansi.Color.GREEN);
+        Utility.traceInformation("");
+        Utility.traceInformation("Summary:");
         Utility.traceInformation(
-            "--------------------------------------------------------------------- ",
-            Ansi.Color.GREEN);
+            "--------------------------------------------------------------------- ");
         Summary lastSummarySnapshot = lastSummary.get();
-        lastSummarySnapshot.print(lastSummarySnapshot.getTotalOperationsCount(), Ansi.Color.GREEN);
+        lastSummarySnapshot.print(lastSummarySnapshot.getTotalOperationsCount());
 
         RunSummary runSummary = new RunSummary();
         if (perLoopCounters.size() > 20) {
@@ -128,7 +126,7 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
             }
             Arrays.sort(summaryCounters, Comparator.reverseOrder());
 
-            Utility.traceInformation("After Excluding outliers", Ansi.Color.GREEN);
+            Utility.traceInformation("After Excluding outliers");
             Supplier<DoubleStream> rpsCounters =
                 () -> Arrays.stream(summaryCounters).mapToDouble(d -> d);
             long signalCount = summaryCounters.length;
@@ -165,15 +163,13 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
             }
 
             String summary = JsonHelper.toJsonString(runSummary);
-            Utility.traceInformation(summary, Ansi.Color.GREEN);
+            Utility.traceInformation(summary);
         } else {
-            Utility.traceInformation("Please adjust ItemCount high to run of at-least 1M",
-                Ansi.Color.RED);
+            Utility.traceInformation("!!! Please adjust ItemCount high to run of at-least 1M !!!");
         }
 
         Utility.traceInformation(
-            "--------------------------------------------------------------------- ",
-            Ansi.Color.GREEN);
+            "--------------------------------------------------------------------- ");
 
         return runSummary;
     }

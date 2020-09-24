@@ -1,6 +1,5 @@
 package com.azure.cosmos.dotnet.benchmark;
 
-import org.fusesource.jansi.Ansi;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -51,7 +50,7 @@ public class SerialOperationExecutor implements IExecutor {
         boolean traceFailures,
         Runnable completionCallback) {
 
-        Utility.traceInformation(String.format("Executor %s started", this.executorId), Ansi.Color.GREEN);
+        Utility.traceInformation(String.format("Executor %s started", this.executorId));
 
         return Flux
             .range(0, iterationCount)
@@ -68,8 +67,7 @@ public class SerialOperationExecutor implements IExecutor {
                                 telemetry.close();
 
                                 if (traceFailures) {
-                                    Utility.traceInformation(ex.toString(),
-                                        Ansi.Color.RED);
+                                    Utility.traceInformation(ex.toString());
                                 }
 
                                 this.failedOperationCount.incrementAndGet();
@@ -90,8 +88,7 @@ public class SerialOperationExecutor implements IExecutor {
             )
             .doFinally((signalType) -> {
                 Utility.traceInformation(
-                    String.format("Executor %s completed - %s", this.executorId, signalType.toString()),
-                    Ansi.Color.GREEN);
+                    String.format("Executor %s completed - %s", this.executorId, signalType.toString()));
 
                 if (completionCallback != null) {
                     completionCallback.run();

@@ -1,7 +1,5 @@
 package com.azure.cosmos.dotnet.benchmark;
 
-import org.fusesource.jansi.Ansi;
-
 class Summary {
     private long successfulOperationsCount;
     private long failedOperationsCount;
@@ -74,9 +72,5 @@ class Summary {
 
     public void print(long globalTotal) {
         Utility.traceInformation(this.getPrintableString(globalTotal));
-    }
-
-    public void print(long globalTotal, Ansi.Color color) {
-        Utility.traceInformation(this.getPrintableString(globalTotal), color);
     }
 }

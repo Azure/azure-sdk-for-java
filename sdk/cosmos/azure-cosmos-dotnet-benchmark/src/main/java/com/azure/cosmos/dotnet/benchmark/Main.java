@@ -14,8 +14,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
-import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.AnsiConsole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +33,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
         CosmosAsyncClient cosmosClient = null;
 
-        AnsiConsole.systemInstall();
         try {
             LOGGER.debug("Parsing the arguments ...");
             BenchmarkConfig cfg = new BenchmarkConfig();
@@ -90,16 +87,14 @@ public class Main {
                 String.format(
                     "Using container %s with %d RU/s",
                     cfg.getContainer(),
-                    currentContainerThroughput),
-                Ansi.Color.GREEN);
+                    currentContainerThroughput));
 
             int taskCount = cfg.getTaskCount(currentContainerThroughput);
 
             Utility.traceInformation(
                 String.format(
                     "Starting Inserts with %d tasks",
-                    taskCount),
-                Ansi.Color.GREEN);
+                    taskCount));
 
             Utility.traceInformation("");
 
@@ -160,8 +155,7 @@ public class Main {
 
                 assert resultsResponse != null;
                 Utility.traceInformation(
-                    "Uploaded results successfully:" + JsonHelper.toJsonString(resultsResponse.getItem()),
-                    Ansi.Color.GREEN);
+                    "Uploaded results successfully:" + JsonHelper.toJsonString(resultsResponse.getItem()));
             }
         } catch (ParameterException e) {
             // if any error in parsing the cmd-line options print out the usage help
@@ -172,8 +166,6 @@ public class Main {
             if (cosmosClient != null) {
                 cosmosClient.close();
             }
-
-            AnsiConsole.systemUninstall();
         }
 
     }
