@@ -419,37 +419,55 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         try {
             StorageImplUtils.assertNotNull("options", options);
 
-            BlobRequestConditions validatedRequestConditions = options.getRequestConditions() == null
-                ? new BlobRequestConditions() : options.getRequestConditions();
-            final ParallelTransferOptions validatedParallelTransferOptions =
+            final ParallelTransferOptions parallelTransferOptions =
                 ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+            final BlobHttpHeaders headers = options.getHeaders();
+            final Map<String, String> metadata = options.getMetadata();
+            final Map<String, String> tags = options.getTags();
+            final AccessTier tier = options.getTier();
+            final BlobRequestConditions requestConditions = options.getRequestConditions() == null
+                ? new BlobRequestConditions() : options.getRequestConditions();
+            final boolean computeMd5 = options.isComputeMd5();
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
 
             Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction = (stream) ->
-                uploadInChunks(blockBlobAsyncClient, stream, validatedParallelTransferOptions,
-                    options.getHeaders(), options.getMetadata(), options.getTags(),
-                    options.getTier(), validatedRequestConditions, options.isComputeMd5());
+                uploadInChunks(blockBlobAsyncClient, stream, parallelTransferOptions, headers, metadata, tags,
+                    tier, requestConditions, computeMd5);
 
-            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobMethod =
-                (stream, length) -> UploadUtils.computeMd5(ProgressReporter.addProgressReporting(stream,
-                    validatedParallelTransferOptions.getProgressReceiver()), options.isComputeMd5(), logger)
-                    .flatMap(fluxMd5Wrapper -> blockBlobAsyncClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(
-                    fluxMd5Wrapper.getData(), length)
-                    .setHeaders(options.getHeaders()).setMetadata(options.getMetadata()).setTags(options.getTags())
-                    .setTier(options.getTier()).setRequestConditions(options.getRequestConditions())
-                        .setContentMd5(fluxMd5Wrapper.getMd5())));
+            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobFunction =
+                (stream, length) -> uploadFullBlob(blockBlobAsyncClient, stream, length, parallelTransferOptions,
+                    headers, metadata, tags, tier, requestConditions, computeMd5);
 
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                 options.getDataStream(), options.getLength(),
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong()))
+                (int) Math.min(Integer.MAX_VALUE, parallelTransferOptions.getBlockSizeLong()))
                 : options.getDataFlux();
-            return UploadUtils.uploadFullOrChunked(data, ModelHelper.wrapBlobOptions(validatedParallelTransferOptions),
-                uploadInChunksFunction, uploadFullBlobMethod);
+            return UploadUtils.uploadFullOrChunked(data, ModelHelper.wrapBlobOptions(parallelTransferOptions),
+                uploadInChunksFunction, uploadFullBlobFunction);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    private Mono<Response<BlockBlobItem>> uploadFullBlob(BlockBlobAsyncClient blockBlobAsyncClient,
+        Flux<ByteBuffer> data, long length, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
+        Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
+        BlobRequestConditions requestConditions, boolean computeMd5) {
+        // Report progress as necessary.
+        Flux<ByteBuffer> progressData = ProgressReporter.addProgressReporting(data,
+            parallelTransferOptions.getProgressReceiver());
+
+        return UploadUtils.computeMd5(progressData, computeMd5, logger)
+            .map(fluxMd5Wrapper -> new BlockBlobSimpleUploadOptions(fluxMd5Wrapper.getData(), length)
+                .setHeaders(headers)
+                .setMetadata(metadata)
+                .setTags(tags)
+                .setTier(tier)
+                .setRequestConditions(requestConditions)
+                .setContentMd5(fluxMd5Wrapper.getMd5()))
+            .flatMap(blockBlobAsyncClient::uploadWithResponse);
     }
 
     private Mono<Response<BlockBlobItem>> uploadInChunks(BlockBlobAsyncClient blockBlobAsyncClient,
@@ -485,12 +503,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     progressLock,
                     totalProgress);
 
-                final String blockId = Base64.getEncoder().encodeToString(
-                    UUID.randomUUID().toString().getBytes(UTF_8));
+                final String blockId = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(UTF_8));
                 return UploadUtils.computeMd5(progressData, computeMd5, logger)
-                    .flatMap(fluxMd5Wrapper -> blockBlobAsyncClient
-                        .stageBlockWithResponse(blockId, fluxMd5Wrapper.getData(), bufferAggregator.length(),
-                    fluxMd5Wrapper.getMd5(), requestConditions.getLeaseId()))
+                    .flatMap(fluxMd5Wrapper -> blockBlobAsyncClient.stageBlockWithResponse(blockId,
+                        fluxMd5Wrapper.getData(), bufferAggregator.length(), fluxMd5Wrapper.getMd5(),
+                        requestConditions.getLeaseId()))
                     // We only care about the stageBlock insofar as it was successful,
                     // but we need to collect the ids.
                     .map(x -> blockId)
