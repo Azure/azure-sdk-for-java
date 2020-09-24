@@ -90,7 +90,7 @@ def get_args():
     parser.add_argument(
         '--module',
         type = str,
-        choices = ['spring', 'cosmos'],
+        choices = ['spring', 'cosmos', 'appconfiguration'],
         required = False,
         default = 'cosmos',
         help = 'Specify the target module.'
