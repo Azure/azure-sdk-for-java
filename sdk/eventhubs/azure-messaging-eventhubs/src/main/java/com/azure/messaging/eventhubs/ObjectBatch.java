@@ -29,10 +29,19 @@ public final class ObjectBatch<T> extends EventDataBatchBase {
 
     ObjectBatch(int maxMessageSize, String partitionId, String partitionKey, Class<T> batchType,
                     ErrorContextProvider contextProvider, TracerProvider tracerProvider,
-                    ObjectSerializer serializer, String entityPath, String hostname) {
-        super(maxMessageSize, partitionId, partitionKey, contextProvider, tracerProvider, entityPath, hostname);
+                    ObjectSerializer serializer, String entityPath, String hostname,
+                    boolean isPublishingSequenceNumberRequired) {
+        super(maxMessageSize, partitionId, partitionKey, contextProvider, tracerProvider, entityPath, hostname,
+            isPublishingSequenceNumberRequired);
         this.batchType = Objects.requireNonNull(batchType, "'batchType' cannot be null.");
         this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+    }
+
+    ObjectBatch(int maxMessageSize, String partitionId, String partitionKey, Class<T> batchType,
+                ErrorContextProvider contextProvider, TracerProvider tracerProvider,
+                ObjectSerializer serializer, String entityPath, String hostname) {
+        this(maxMessageSize, partitionId, partitionKey, batchType, contextProvider, tracerProvider,
+            serializer, entityPath, hostname, false);
     }
 
     public boolean tryAdd(T object) {

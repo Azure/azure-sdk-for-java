@@ -234,21 +234,18 @@ public class EventHubProducerClient implements Closeable {
         producer.send(events, options).block();
     }
 
+    /**
+     * Sends the object batch to the associated Event Hub.
+     *
+     * @param objectBatch The batch to send to the service.
+     * @param <T> object type
+     * @return A {@link Mono} that completes when the batch is pushed to the service.
+     * @throws NullPointerException if {@code objectBatch} is {@code null}.
+     * @see EventHubProducerAsyncClient#createBatch(Class)
+     * @see EventHubProducerAsyncClient#createBatch(Class, CreateBatchOptions)
+     */
     public <T> void send(ObjectBatch<T> objectBatch) {
         producer.send(objectBatch).block();
-    }
-
-    public <T> void sendObjects(Iterable<T> objects) {
-        producer.sendObjects(objects).block();
-    }
-
-    public <T> void sendObjects(Iterable<T> objects, SendOptions sendOptions) {
-        producer.sendObjects(objects, sendOptions).block();
-    }
-
-    public <T> void sendObjects(Iterable<T> objects, Iterable<Map<String, Object>> eventProperties,
-                                      SendOptions sendOptions) {
-        producer.sendObjects(objects, eventProperties, sendOptions).block();
     }
 
     /**

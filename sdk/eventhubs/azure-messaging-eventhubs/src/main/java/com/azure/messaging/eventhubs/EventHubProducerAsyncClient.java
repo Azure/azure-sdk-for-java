@@ -40,7 +40,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -539,19 +538,6 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     public <T> Mono<Void> send(ObjectBatch<T> objectBatch) {
         return this.sendInternal(objectBatch);
-    }
-
-    public <T> Mono<Void> sendObjects(Iterable<T> objects) {
-        return Mono.empty();
-    }
-
-    public <T> Mono<Void> sendObjects(Iterable<T> objects, SendOptions sendOptions) {
-        return Mono.empty();
-    }
-
-    public <T> Mono<Void> sendObjects(Iterable<T> objects, Iterable<Map<String, Object>> eventProperties,
-                                      SendOptions sendOptions) {
-        return Mono.empty();
     }
 
     /**
