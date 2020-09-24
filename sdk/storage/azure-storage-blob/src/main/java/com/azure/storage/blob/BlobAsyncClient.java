@@ -11,16 +11,16 @@ import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.options.BlobUploadFromFileOptions;
-import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
+import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
+import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -429,14 +429,16 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction = (stream) ->
                 uploadInChunks(blockBlobAsyncClient, stream, validatedParallelTransferOptions,
                     options.getHeaders(), options.getMetadata(), options.getTags(),
-                    options.getTier(), validatedRequestConditions);
+                    options.getTier(), validatedRequestConditions, options.isCalculateAndVerifyMd5());
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobMethod =
-                (stream, length) -> blockBlobAsyncClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(
-                    ProgressReporter.addProgressReporting(stream,
-                        validatedParallelTransferOptions.getProgressReceiver()), length)
+                (stream, length) -> UploadUtils.computeMd5(ProgressReporter.addProgressReporting(stream,
+                    validatedParallelTransferOptions.getProgressReceiver()), options.isCalculateAndVerifyMd5(), logger)
+                    .flatMap(fluxMd5Wrapper -> blockBlobAsyncClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(
+                    fluxMd5Wrapper.getData(), length)
                     .setHeaders(options.getHeaders()).setMetadata(options.getMetadata()).setTags(options.getTags())
-                    .setTier(options.getTier()).setRequestConditions(options.getRequestConditions()));
+                    .setTier(options.getTier()).setRequestConditions(options.getRequestConditions())
+                        .setContentMd5(fluxMd5Wrapper.getMd5())));
 
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                 options.getDataStream(), options.getLength(),
@@ -453,7 +455,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     private Mono<Response<BlockBlobItem>> uploadInChunks(BlockBlobAsyncClient blockBlobAsyncClient,
         Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
-        BlobRequestConditions requestConditions) {
+        BlobRequestConditions requestConditions, boolean computeMd5) {
         // TODO: Sample/api reference
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();
@@ -485,8 +487,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
                 final String blockId = Base64.getEncoder().encodeToString(
                     UUID.randomUUID().toString().getBytes(UTF_8));
-                return blockBlobAsyncClient.stageBlockWithResponse(blockId, progressData, bufferAggregator.length(),
-                    null, requestConditions.getLeaseId())
+                return UploadUtils.computeMd5(progressData, computeMd5, logger)
+                    .flatMap(fluxMd5Wrapper -> blockBlobAsyncClient
+                        .stageBlockWithResponse(blockId, fluxMd5Wrapper.getData(), bufferAggregator.length(),
+                    fluxMd5Wrapper.getMd5(), requestConditions.getLeaseId()))
                     // We only care about the stageBlock insofar as it was successful,
                     // but we need to collect the ids.
                     .map(x -> blockId)

@@ -1225,6 +1225,44 @@ class BlockBlobAPITest extends APISpec {
         10 * Constants.MB  | 3 * Constants.MB  | 3        || 4 // Data does not squarely fit in buffers.
     }
 
+    @Unroll
+    @Requires({ liveMode() })
+    def "Async buffered upload md5"() {
+        setup:
+        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
+            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+            .getBlobAsyncClient(blobAsyncClient.getBlobName())
+
+        when:
+        def data = getRandomData(dataSize)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4)
+        blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data)).setParallelTransferOptions(parallelTransferOptions).setCalculateAndVerifyMd5(true)).block()
+        data.position(0)
+
+        then:
+        // Due to memory issues, this check only runs on small to medium sized data sets.
+        if (dataSize < 100 * 1024 * 1024) {
+            StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
+                .assertNext({ assert it == data })
+                .verifyComplete()
+        }
+
+        StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
+            .assertNext({ assert it.getCommittedBlocks().size() == blockCount })
+            .verifyComplete()
+
+        where:
+        dataSize  | bufferSize  | numBuffs || blockCount
+        35        | 5           | 2        || 7 // Requires cycling through the same buffers multiple times.
+        35        | 5           | 5        || 7 // Most buffers may only be used once.
+        100       | 10          | 2        || 10 // Larger data set.
+        100       | 10          | 5        || 10 // Larger number of Buffs.
+        10        | 1           | 10       || 10 // Exactly enough buffer space to hold all the data.
+        50        | 10          | 2        || 5 // Larger data.
+        10        | 2           | 4        || 5
+        10        | 3           | 3        || 4 // Data does not squarely fit in buffers.
+    }
+
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
         result.position(0)
         for (ByteBuffer buffer : buffers) {
