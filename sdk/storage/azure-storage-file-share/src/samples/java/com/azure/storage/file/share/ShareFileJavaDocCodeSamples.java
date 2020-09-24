@@ -837,7 +837,8 @@ public class ShareFileJavaDocCodeSamples {
     public void listRangesDiffOptionalOverload() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.listRangesDiffWithResponse#ShareFileListRangesDiffOptions-Duration-Context
-        ShareFileRangeList rangeList = fileClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions("previoussnapshot")
+        ShareFileRangeList rangeList = fileClient.listRangesDiffWithResponse(
+            new ShareFileListRangesDiffOptions("previoussnapshot")
             .setRange(new ShareFileRange(1024, 2048L)), Duration.ofSeconds(1), new Context(key1, value1)).getValue();
         System.out.println("Valid Share File Ranges are:");
         for (FileRange range : rangeList.getRanges()) {
