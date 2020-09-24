@@ -238,7 +238,7 @@ public final class FeaturesClient {
      * @return all the preview features that are available through AFEC for the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<FeatureResultInner> listAllAsync(Context context) {
+    private PagedFlux<FeatureResultInner> listAllAsync(Context context) {
         return new PagedFlux<>(
             () -> listAllSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
@@ -396,7 +396,7 @@ public final class FeaturesClient {
      * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<FeatureResultInner> listAsync(String resourceProviderNamespace, Context context) {
+    private PagedFlux<FeatureResultInner> listAsync(String resourceProviderNamespace, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceProviderNamespace, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));

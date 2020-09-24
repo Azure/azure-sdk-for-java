@@ -22,7 +22,7 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     private final HttpPipeline httpPipeline;
     private final SdkContext sdkContext;
 
-    protected final InnerT innerManagementClient;
+    private final InnerT innerManagementClient;
 
     protected Manager(HttpPipeline httpPipeline, AzureProfile profile,
                       InnerT innerManagementClient, SdkContext sdkContext) {

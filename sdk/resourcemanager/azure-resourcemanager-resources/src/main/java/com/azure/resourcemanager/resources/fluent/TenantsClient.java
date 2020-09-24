@@ -153,7 +153,7 @@ public final class TenantsClient {
      * @return the tenants for your account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TenantIdDescriptionInner> listAsync(Context context) {
+    private PagedFlux<TenantIdDescriptionInner> listAsync(Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }

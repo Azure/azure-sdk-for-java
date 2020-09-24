@@ -195,6 +195,7 @@ public final class RntbdTransportClient extends TransportClient {
             BridgeInternal.setRntbdRequestLength(cosmosException, record.requestLength());
             BridgeInternal.setRntbdResponseLength(cosmosException, record.responseLength());
             BridgeInternal.setRequestBodyLength(cosmosException, request.getContentLength());
+            BridgeInternal.setRequestTimeline(cosmosException, record.takeTimelineSnapshot());
 
             return cosmosException;
         });

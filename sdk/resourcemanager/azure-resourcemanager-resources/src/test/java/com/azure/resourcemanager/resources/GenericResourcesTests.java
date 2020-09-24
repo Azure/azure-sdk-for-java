@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.resources.fluent.models.GenericResourceExpandedInner;
@@ -131,7 +132,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
 
         PagedIterable<GenericResourceExpandedInner> resources =
             genericResources.manager().serviceClient().getResources()
-                .listByResourceGroup(rgName, null, "provisioningState", null);
+                .listByResourceGroup(rgName, null, "provisioningState", null, Context.NONE);
         Optional<GenericResourceExpandedInner> resourceOpt
             = resources.stream().filter(r -> resourceName.equals(r.name())).findFirst();
         Assertions.assertTrue(resourceOpt.isPresent());

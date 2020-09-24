@@ -11,6 +11,7 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -327,7 +328,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         } else {
             Accepted<T> accepted = new AcceptedImpl<InnerT, T>(
                 activationResponse,
-                client.getSerializerAdapter(),
+                SerializerFactory.createDefaultManagementSerializerAdapter(),
                 client.getHttpPipeline(),
                 SdkContext.getDelayDuration(client.getDefaultPollInterval()),
                 innerType, innerType,
@@ -355,7 +356,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         } else {
             Accepted<T> accepted = new AcceptedImpl<InnerT, T>(
                 activationResponse,
-                client.getSerializerAdapter(),
+                SerializerFactory.createDefaultManagementSerializerAdapter(),
                 client.getHttpPipeline(),
                 SdkContext.getDelayDuration(client.getDefaultPollInterval()),
                 innerType, innerType,

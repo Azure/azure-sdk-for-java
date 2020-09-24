@@ -1312,7 +1312,6 @@ public final class ResourceGroupsClient {
     public PagedFlux<ResourceGroupInner> listAsync() {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedFlux<>(() -> listSinglePageAsync(filter, top), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1329,25 +1328,9 @@ public final class ResourceGroupsClient {
      * @return all the resource groups for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceGroupInner> listAsync(String filter, Integer top, Context context) {
+    private PagedFlux<ResourceGroupInner> listAsync(String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, top, context), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all the resource groups for a subscription.
-     *
-     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;You can filter by tag names and values.
-     *     For example, to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'.
-     * @param top The number of results to return. If null is passed, returns all resource groups.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resource groups for a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceGroupInner> list(String filter, Integer top) {
-        return new PagedIterable<>(listAsync(filter, top));
     }
 
     /**
@@ -1378,7 +1361,6 @@ public final class ResourceGroupsClient {
     public PagedIterable<ResourceGroupInner> list() {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listAsync(filter, top));
     }
 

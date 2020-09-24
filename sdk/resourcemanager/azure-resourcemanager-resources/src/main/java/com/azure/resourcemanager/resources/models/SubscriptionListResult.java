@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SubscriptionListResult model. */
+/** Subscription list operation response. */
 @Fluent
 public final class SubscriptionListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionListResult.class);

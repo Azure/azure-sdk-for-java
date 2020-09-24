@@ -196,17 +196,18 @@ public class StoreResult {
             jsonGenerator.writeNumberField("itemLSN", storeResult.itemLSN);
             jsonGenerator.writeStringField("sessionToken", (storeResult.sessionToken != null ? storeResult.sessionToken.convertToString() : null));
             jsonGenerator.writeStringField("exception", BridgeInternal.getInnerErrorMessage(storeResult.exception));
+            jsonGenerator.writeObjectField("transportRequestTimeline", storeResult.storeResponse != null ?
+                storeResult.storeResponse.getRequestTimeline() :
+                storeResult.exception != null ? BridgeInternal.getRequestTimeline(storeResult.exception) : null);
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResult.storeResponse != null ? storeResult.storeResponse.getRequestTimeline() : null);
             jsonGenerator.writeObjectField("rntbdRequestLengthInBytes", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getRntbdRequestLength() : BridgeInternal.getRntbdRequestLength(storeResult.exception));
             jsonGenerator.writeObjectField("rntbdResponseLengthInBytes", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getRntbdResponseLength() : BridgeInternal.getRntbdResponseLength(storeResult.exception));
-
             jsonGenerator.writeObjectField("requestPayloadLengthInBytes", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getRequestPayloadLength() :  BridgeInternal.getRequestBodyLength(storeResult.exception));
             jsonGenerator.writeObjectField("responsePayloadLengthInBytes", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getResponseBodyLength() : null);
-
             jsonGenerator.writeEndObject();
         }
     }

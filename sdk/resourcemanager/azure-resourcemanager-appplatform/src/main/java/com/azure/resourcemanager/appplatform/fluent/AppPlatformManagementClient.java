@@ -77,7 +77,7 @@ public final class AppPlatformManagementClient extends AzureServiceClient {
      *
      * @return the serializerAdapter value.
      */
-    public SerializerAdapter getSerializerAdapter() {
+    SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 

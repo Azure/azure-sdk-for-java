@@ -482,7 +482,6 @@ public final class DeploymentOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtScopeAsync(String scope, String deploymentName) {
         final Integer top = null;
-        final Context context = null;
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, deploymentName, top),
             nextLink -> listAtScopeNextSinglePageAsync(nextLink));
@@ -501,27 +500,11 @@ public final class DeploymentOperationsClient {
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listAtScopeAsync(
+    private PagedFlux<DeploymentOperationInner> listAtScopeAsync(
         String scope, String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, deploymentName, top, context),
             nextLink -> listAtScopeNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all deployments operations for a deployment.
-     *
-     * @param scope The resource scope.
-     * @param deploymentName The name of the deployment.
-     * @param top The number of results to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listAtScope(String scope, String deploymentName, Integer top) {
-        return new PagedIterable<>(listAtScopeAsync(scope, deploymentName, top));
     }
 
     /**
@@ -555,7 +538,6 @@ public final class DeploymentOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtScope(String scope, String deploymentName) {
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listAtScopeAsync(scope, deploymentName, top));
     }
 
@@ -790,7 +772,6 @@ public final class DeploymentOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtTenantScopeAsync(String deploymentName) {
         final Integer top = null;
-        final Context context = null;
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(deploymentName, top),
             nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink));
@@ -808,26 +789,11 @@ public final class DeploymentOperationsClient {
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listAtTenantScopeAsync(
+    private PagedFlux<DeploymentOperationInner> listAtTenantScopeAsync(
         String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(deploymentName, top, context),
             nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all deployments operations for a deployment.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param top The number of results to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName, Integer top) {
-        return new PagedIterable<>(listAtTenantScopeAsync(deploymentName, top));
     }
 
     /**
@@ -859,7 +825,6 @@ public final class DeploymentOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName) {
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listAtTenantScopeAsync(deploymentName, top));
     }
 
@@ -1125,7 +1090,6 @@ public final class DeploymentOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(String groupId, String deploymentName) {
         final Integer top = null;
-        final Context context = null;
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, deploymentName, top),
             nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink));
@@ -1144,28 +1108,11 @@ public final class DeploymentOperationsClient {
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(
+    private PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(
         String groupId, String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, deploymentName, top, context),
             nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all deployments operations for a deployment.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param top The number of results to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(
-        String groupId, String deploymentName, Integer top) {
-        return new PagedIterable<>(listAtManagementGroupScopeAsync(groupId, deploymentName, top));
     }
 
     /**
@@ -1199,7 +1146,6 @@ public final class DeploymentOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(String groupId, String deploymentName) {
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listAtManagementGroupScopeAsync(groupId, deploymentName, top));
     }
 
@@ -1475,7 +1421,6 @@ public final class DeploymentOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtSubscriptionScopeAsync(String deploymentName) {
         final Integer top = null;
-        final Context context = null;
         return new PagedFlux<>(
             () -> listAtSubscriptionScopeSinglePageAsync(deploymentName, top),
             nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink));
@@ -1493,26 +1438,11 @@ public final class DeploymentOperationsClient {
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listAtSubscriptionScopeAsync(
+    private PagedFlux<DeploymentOperationInner> listAtSubscriptionScopeAsync(
         String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtSubscriptionScopeSinglePageAsync(deploymentName, top, context),
             nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all deployments operations for a deployment.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param top The number of results to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(String deploymentName, Integer top) {
-        return new PagedIterable<>(listAtSubscriptionScopeAsync(deploymentName, top));
     }
 
     /**
@@ -1544,7 +1474,6 @@ public final class DeploymentOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(String deploymentName) {
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listAtSubscriptionScopeAsync(deploymentName, top));
     }
 
@@ -1852,7 +1781,6 @@ public final class DeploymentOperationsClient {
     public PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(
         String resourceGroupName, String deploymentName) {
         final Integer top = null;
-        final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, deploymentName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -1871,28 +1799,11 @@ public final class DeploymentOperationsClient {
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(
+    private PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(
         String resourceGroupName, String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, deploymentName, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all deployments operations for a deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param top The number of results to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listByResourceGroup(
-        String resourceGroupName, String deploymentName, Integer top) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, deploymentName, top));
     }
 
     /**
@@ -1927,7 +1838,6 @@ public final class DeploymentOperationsClient {
     public PagedIterable<DeploymentOperationInner> listByResourceGroup(
         String resourceGroupName, String deploymentName) {
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, deploymentName, top));
     }
 

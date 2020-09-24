@@ -2,6 +2,7 @@
 
 ## 2.0.0-beta.5 (Unreleased)
 
+- Renamed `Azure` to `AzureResourceManager`
 
 ## 2.0.0-beta.4 (2020-09-02)
 

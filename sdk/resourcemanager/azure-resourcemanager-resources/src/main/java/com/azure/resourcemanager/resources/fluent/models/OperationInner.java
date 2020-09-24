@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.models.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Operation model. */
+/** Microsoft.Resources operation. */
 @Fluent
 public final class OperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
