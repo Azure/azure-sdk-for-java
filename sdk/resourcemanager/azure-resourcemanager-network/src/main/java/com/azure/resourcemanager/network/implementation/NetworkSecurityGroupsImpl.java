@@ -17,8 +17,8 @@ public class NetworkSecurityGroupsImpl
         NetworkSecurityGroup,
         NetworkSecurityGroupImpl,
         NetworkSecurityGroupInner,
-    NetworkSecurityGroupsClient,
-    NetworkManager>
+        NetworkSecurityGroupsClient,
+        NetworkManager>
     implements NetworkSecurityGroups {
 
     public NetworkSecurityGroupsImpl(final NetworkManager networkManager) {

@@ -8,7 +8,7 @@ import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
@@ -22,7 +22,7 @@ public interface EventHubConsumerGroup extends
     NestedResource,
     HasManager<EventHubsManager>,
     Refreshable<EventHubConsumerGroup>,
-    HasInner<ConsumerGroupInner>,
+        HasInnerModel<ConsumerGroupInner>,
     Updatable<EventHubConsumerGroup.Update> {
     /**
      * @return the resource group of the namespace where parent event hub resides

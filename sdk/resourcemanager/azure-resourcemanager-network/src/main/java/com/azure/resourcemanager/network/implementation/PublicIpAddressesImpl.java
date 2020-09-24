@@ -19,7 +19,7 @@ import java.util.function.Function;
 /** Implementation for {@link PublicIpAddresses}. */
 public class PublicIpAddressesImpl
     extends TopLevelModifiableResourcesImpl<
-    PublicIpAddress, PublicIpAddressImpl, PublicIpAddressInner, PublicIpAddressesClient, NetworkManager>
+        PublicIpAddress, PublicIpAddressImpl, PublicIpAddressInner, PublicIpAddressesClient, NetworkManager>
     implements PublicIpAddresses {
 
     private final ClientLogger logger = new ClientLogger(this.getClass());
@@ -61,11 +61,13 @@ public class PublicIpAddressesImpl
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
-        return AcceptedImpl.newAccepted(logger,
-            manager().serviceClient(),
-            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
-            Function.identity(),
-            Void.class,
-            null);
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                manager().serviceClient(),
+                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
+                Function.identity(),
+                Void.class,
+                null);
     }
 }

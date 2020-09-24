@@ -16,11 +16,11 @@ class LocalizableStringImpl extends WrapperImpl<LocalizableStringInner> implemen
 
     @Override
     public String value() {
-        return this.inner().value();
+        return this.innerModel().value();
     }
 
     @Override
     public String localizedValue() {
-        return this.inner().localizedValue();
+        return this.innerModel().localizedValue();
     }
 }

@@ -4,16 +4,16 @@
 package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /**
- * The implementation for {@link Indexable} and {@link HasInner}.
+ * The implementation for {@link Indexable} and {@link HasInnerModel}.
  *
  * @param <InnerT> wrapped type
  */
 public abstract class IndexableWrapperImpl<InnerT>
         extends IndexableImpl
-        implements HasInner<InnerT> {
+        implements HasInnerModel<InnerT> {
     private InnerT innerObject;
 
     protected IndexableWrapperImpl(InnerT innerObject) {
@@ -22,7 +22,7 @@ public abstract class IndexableWrapperImpl<InnerT>
     }
 
     @Override
-    public InnerT inner() {
+    public InnerT innerModel() {
         return this.innerObject;
     }
 

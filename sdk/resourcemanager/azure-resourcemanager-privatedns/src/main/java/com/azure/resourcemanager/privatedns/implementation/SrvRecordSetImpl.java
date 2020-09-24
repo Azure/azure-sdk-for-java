@@ -23,20 +23,20 @@ class SrvRecordSetImpl extends PrivateDnsRecordSetImpl implements SrvRecordSet {
 
     @Override
     public List<SrvRecord> records() {
-        if (inner().srvRecords() != null) {
-            return Collections.unmodifiableList(inner().srvRecords());
+        if (innerModel().srvRecords() != null) {
+            return Collections.unmodifiableList(innerModel().srvRecords());
         }
         return Collections.unmodifiableList(new ArrayList<>());
     }
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (inner().srvRecords() != null && inner().srvRecords().size() > 0) {
+        if (innerModel().srvRecords() != null && innerModel().srvRecords().size() > 0) {
             if (resource.srvRecords() == null) {
                 resource.withSrvRecords(new ArrayList<>());
             }
-            resource.srvRecords().addAll(inner().srvRecords());
-            inner().srvRecords().clear();
+            resource.srvRecords().addAll(innerModel().srvRecords());
+            innerModel().srvRecords().clear();
         }
         if (recordSetRemoveInfo.srvRecords().size() > 0) {
             if (resource.srvRecords() != null) {

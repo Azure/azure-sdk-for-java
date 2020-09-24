@@ -9,7 +9,7 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.time.OffsetDateTime;
@@ -18,7 +18,7 @@ import java.util.Map;
 /** An immutable client-side representation of an Azure registry task. */
 @Fluent()
 public interface RegistryTask
-    extends Resource, HasInner<TaskInner>, Refreshable<RegistryTask>, Updatable<RegistryTask.Update> {
+    extends Resource, HasInnerModel<TaskInner>, Refreshable<RegistryTask>, Updatable<RegistryTask.Update> {
 
     /** @return the name of the resource's resource group */
     String resourceGroupName();

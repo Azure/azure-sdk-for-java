@@ -6,14 +6,15 @@ package com.azure.resourcemanager.resources;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluent.FeatureClient;
-import com.azure.resourcemanager.resources.fluent.FeatureClientBuilder;
+import com.azure.resourcemanager.resources.implementation.FeatureClientBuilder;
 import com.azure.resourcemanager.resources.fluent.PolicyClient;
-import com.azure.resourcemanager.resources.fluent.PolicyClientBuilder;
+import com.azure.resourcemanager.resources.implementation.PolicyClientBuilder;
 import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
-import com.azure.resourcemanager.resources.fluent.ResourceManagementClientBuilder;
+import com.azure.resourcemanager.resources.implementation.ResourceManagementClientBuilder;
 import com.azure.resourcemanager.resources.fluent.SubscriptionClient;
-import com.azure.resourcemanager.resources.fluent.SubscriptionClientBuilder;
+import com.azure.resourcemanager.resources.implementation.SubscriptionClientBuilder;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.implementation.DeploymentsImpl;
 import com.azure.resourcemanager.resources.implementation.FeaturesImpl;
 import com.azure.resourcemanager.resources.implementation.GenericResourcesImpl;
@@ -37,7 +38,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 
 import java.util.Objects;
 
@@ -206,7 +206,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
         @Override
         public ResourceManager withDefaultSubscription() {
             if (profile.getSubscriptionId() == null) {
-                String subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
+                String subscriptionId = ResourceManagerUtils.getDefaultSubscription(this.subscriptions().list());
                 profile = new AzureProfile(profile.getTenantId(), subscriptionId, profile.getEnvironment());
             }
             return new ResourceManager(httpPipeline, profile, sdkContext);
@@ -247,7 +247,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      * @return wrapped inner feature client providing direct access to auto-generated API implementation,
      * based on Azure REST API.
      */
-    public FeatureClient featureServiceClient() {
+    public FeatureClient featureClient() {
         return featureClient;
     }
 
@@ -255,7 +255,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      * @return wrapped inner subscription client providing direct access to auto-generated API implementation,
      * based on Azure REST API.
      */
-    public SubscriptionClient subscriptionServiceClient() {
+    public SubscriptionClient subscriptionClient() {
         return subscriptionClient;
     }
 
@@ -263,7 +263,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      * @return wrapped inner policy client providing direct access to auto-generated API implementation,
      * based on Azure REST API.
      */
-    public PolicyClient policyServiceClient() {
+    public PolicyClient policyClient() {
         return policyClient;
     }
 

@@ -5,13 +5,13 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** A client-side representation for a Kubernetes cluster agent pool. */
 @Fluent
 public interface KubernetesClusterAgentPool
-    extends ChildResource<KubernetesCluster>, HasInner<ManagedClusterAgentPoolProfile> {
+    extends ChildResource<KubernetesCluster>, HasInnerModel<ManagedClusterAgentPoolProfile> {
 
     /** @return the number of agents (virtual machines) to host docker containers */
     int count();

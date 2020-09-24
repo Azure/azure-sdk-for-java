@@ -125,8 +125,8 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .attach()
                 .create();
 
-        network.subnets().get(subnetName).inner().withPrivateEndpointNetworkPolicies("Disabled");
-        network.subnets().get(subnetName).inner().withPrivateLinkServiceNetworkPolicies("Disabled");
+        network.subnets().get(subnetName).innerModel().withPrivateEndpointNetworkPolicies("Disabled");
+        network.subnets().get(subnetName).innerModel().withPrivateLinkServiceNetworkPolicies("Disabled");
 
         network.update().updateSubnet(subnetName).parent().apply();
 
@@ -154,7 +154,7 @@ public class CosmosDBTests extends ResourceManagerTestBase {
         PrivateEndpointInner privateEndpoint =
             new PrivateEndpointInner()
                 .withPrivateLinkServiceConnections(Arrays.asList(privateLinkServiceConnection))
-                .withSubnet(network.subnets().get(subnetName).inner());
+                .withSubnet(network.subnets().get(subnetName).innerModel());
 
         privateEndpoint.withLocation(region.toString());
         privateEndpoint = networkManager.serviceClient().getPrivateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);

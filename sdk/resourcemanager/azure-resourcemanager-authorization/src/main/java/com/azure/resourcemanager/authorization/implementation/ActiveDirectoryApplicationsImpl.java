@@ -12,7 +12,6 @@ import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.ApplicationsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.UUID;
 
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
@@ -21,7 +20,7 @@ import reactor.core.publisher.Mono;
 /** The implementation of Applications and its parent interfaces. */
 public class ActiveDirectoryApplicationsImpl
     extends CreatableResourcesImpl<ActiveDirectoryApplication, ActiveDirectoryApplicationImpl, ApplicationInner>
-    implements ActiveDirectoryApplications, HasManager<AuthorizationManager>, HasInner<ApplicationsClient> {
+    implements ActiveDirectoryApplications, HasManager<AuthorizationManager> {
     private ApplicationsClient innerCollection;
     private AuthorizationManager manager;
 

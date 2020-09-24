@@ -24,7 +24,7 @@ public interface ApplicationGateway
         Updatable<ApplicationGateway.Update>,
         UpdatableWithTags<ApplicationGateway>,
         HasSubnet,
-    HasPrivateIpAddress {
+        HasPrivateIpAddress {
 
     // Actions
 

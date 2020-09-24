@@ -172,7 +172,7 @@ final class ComputeSkuImpl implements ComputeSku {
     }
 
     @Override
-    public ResourceSkuInner inner() {
+    public ResourceSkuInner innerModel() {
         return this.inner;
     }
 }

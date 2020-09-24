@@ -100,7 +100,7 @@ class PastaImpl
 
     @Override
     protected Mono<PastaInner> getInnerAsync() {
-        return Mono.just(this.inner());
+        return Mono.just(this.innerModel());
     }
 
     private Mono<IPasta> toErrorObservable(Throwable throwable) {

@@ -10,6 +10,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import com.azure.resourcemanager.resources.implementation.ResourceManagementClientBuilder;
 import java.time.Duration;
 
 /** Initializes a new instance of the ResourceManagementClient type. */
@@ -73,7 +74,7 @@ public final class ResourceManagementClient extends AzureServiceClient {
      *
      * @return the serializerAdapter value.
      */
-    public SerializerAdapter getSerializerAdapter() {
+    SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
@@ -180,8 +181,10 @@ public final class ResourceManagementClient extends AzureServiceClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
+     * @param subscriptionId The ID of the target subscription.
+     * @param endpoint server parameter.
      */
-    ResourceManagementClient(
+    public ResourceManagementClient(
         HttpPipeline httpPipeline,
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,

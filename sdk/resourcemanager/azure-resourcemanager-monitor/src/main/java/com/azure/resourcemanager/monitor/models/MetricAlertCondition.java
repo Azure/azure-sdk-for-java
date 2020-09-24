@@ -5,12 +5,12 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.Collection;
 
 /** An immutable client-side representation of an Azure metric dynamic alert criteria. */
 @Fluent
-public interface MetricAlertCondition extends HasInner<MetricCriteria>, HasParent<MetricAlert> {
+public interface MetricAlertCondition extends HasInnerModel<MetricCriteria>, HasParent<MetricAlert> {
     /**
      * Get name of the criteria.
      *

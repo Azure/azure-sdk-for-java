@@ -7,7 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluent.inner.TenantIdDescriptionInner;
+import com.azure.resourcemanager.resources.fluent.models.TenantIdDescriptionInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;

@@ -210,12 +210,14 @@ public class VirtualMachinesImpl
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
-        return AcceptedImpl.newAccepted(logger,
-            manager().serviceClient(),
-            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
-            Function.identity(),
-            Void.class,
-            null);
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                manager().serviceClient(),
+                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
+                Function.identity(),
+                Void.class,
+                null);
     }
 
     // Getters
