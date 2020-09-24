@@ -1,19 +1,19 @@
-# Microsoft Azure Cosmos DB .NET Benchmark tool
-// TODO port for java usage
+# Port of the Microsoft Azure Cosmos DB .NET Benchmark tool for Java
+
 ## Sample tool usage
 ```
-dotnet run CosmosBenchmark.csproj -e {ACCOUNT_ENDPOINT} -k {ACCOUNT_KEY}
+java -jar ./azure-cosmos-dotnet-benchmark-4.0.1-beta.1-jar-with-dependencies.jar -e {ACCOUNT_ENDPOINT} -k {ACCOUNT_KEY}
 ```
 
-Dry tun targeting emulator will look like below
+Dry run targeting emulator will look like below
 ```
-dotnet run CosmosBenchmark.csproj -e "https://localhost:8081" -k "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
+java -jar ./azure-cosmos-dotnet-benchmark-4.0.1-beta.1-jar-with-dependencies.jar -e "https://localhost:8081" -k "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
 ```
 
-To target Microsoft.Azure.Cosmos\src\Microsoft.Azure.Cosmos.csproj
+Run targeting a production account
 ```
 export OSSProjectRef=True
-dotnet run CosmosBenchmark.csproj -e {ACCOUNT_ENDPOINT} -k {ACCOUNT_KEY}
+java -jar ./azure-cosmos-dotnet-benchmark-4.0.1-beta.1-jar-with-dependencies.jar -e {ACCOUNT_ENDPOINT} -k {ACCOUNT_KEY}
 ```
 
 
@@ -25,15 +25,14 @@ export ACCOUNT_KEY=<KEY>
 export RESULTS_PK="runs-summary" #For test runs use different one
 export PL=300
 
-dotnet run -c Release  -- -e $ACCOUNT_ENDPOINT -k $ACCOUNT_KEY --publishresults --resultspartitionkeyvalue $RESULTS_PK -commitid $(git log -1 | head -n 1 | cut -d ' ' -f 2) --commitdate $(git log -1 --date=format:'%Y-%m-%d %H:%M:%S' | grep Date | cut -f 2- -d ':' | sed 's/^[ \t]*//;s/[ \t]*$//' | cut -f 1 -d ' ') --committime $(git log -1 --date=format:'%Y-%m-%d %H:%M:%S' | grep Date | cut -f 2- -d ':' | sed 's/^[ \t]*//;s/[ \t]*$//' | cut -f 2 -d ' ') --branchname $(git rev-parse --abbrev-ref HEAD)  --database testdb --container testcol --partitionkeypath /pk -n 500000 -w ReadStreamExistsV3 --pl $PL 
+java -jar ./azure-cosmos-dotnet-benchmark-4.0.1-beta.1-jar-with-dependencies.jar -e $ACCOUNT_ENDPOINT -k $ACCOUNT_KEY --publishResults --resultsPartitionKeyValue $RESULTS_PK -commitId $(git log -1 | head -n 1 | cut -d ' ' -f 2) --commitDate $(git log -1 --date=format:'%Y-%m-%d %H:%M:%S' | grep Date | cut -f 2- -d ':' | sed 's/^[ \t]*//;s/[ \t]*$//' | cut -f 1 -d ' ') --commitTime $(git log -1 --date=format:'%Y-%m-%d %H:%M:%S' | grep Date | cut -f 2- -d ':' | sed 's/^[ \t]*//;s/[ \t]*$//' | cut -f 2 -d ' ') --branchName $(git rev-parse --abbrev-ref HEAD)  --database testdb --container testcol --partitionKeyPath /id -n 500000 -w Insert -pl $PL 
 ```
 
 
-![image](https://user-images.githubusercontent.com/6880899/61565403-8e41bd00-aa96-11e9-9996-b7fc77c3aed3.png)
 
 ## Usage
 ```
->dotnet run CosmosBenchmark.csproj
+>java -jar ./azure-cosmos-dotnet-benchmark-4.0.1-beta.1-jar-with-dependencies.jar
 CosmosBenchmark 1.0.0
 Copyright (C) 2019 CosmosBenchmark
 
@@ -49,17 +48,11 @@ Copyright (C) 2019 CosmosBenchmark
 
   -n                     Number of documents to insert
 
-  --cleanuponstart       Start with new collection
+  --partitionKeyPath     Container partition key path
 
-  --cleanuponfinish      Clean-up after run
+  -pl                   Degree of parallism
 
-  --partitionkeypath     Container partition key path
-
-  --pl                   Degree of parallism
-
-  --itemtemplatefile     Item template
-
-  --minthreadpoolsize    Min thread pool size
+  --itemTemplateFile     Item template
 
   --help                 Display this help screen.
 
