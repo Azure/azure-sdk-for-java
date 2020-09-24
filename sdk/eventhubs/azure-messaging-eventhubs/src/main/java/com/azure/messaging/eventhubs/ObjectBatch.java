@@ -64,13 +64,13 @@ public final class ObjectBatch<T> extends EventDataBatchBase {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         return serializer.serializeAsync(outputStream, object)
-            .map(s -> {
+            .then(Mono.defer(() -> {
                 EventData eventData = new EventData(outputStream.toByteArray());
                 if (eventProperties != null) {
                     eventData.getProperties().putAll(eventProperties);
                 }
-                return tryAdd(eventData);
-            });
+                return Mono.just(tryAdd(eventData));
+            }));
     }
 
 }

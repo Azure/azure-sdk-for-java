@@ -141,6 +141,8 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
             }
         }
 
+        event.setSerializer(this.serializer);
+
         final PartitionContext partitionContext = new PartitionContext(fullyQualifiedNamespace, eventHubName,
             consumerGroup, partitionId);
         return new PartitionEvent(partitionContext, event, lastEnqueuedEventProperties.get());
