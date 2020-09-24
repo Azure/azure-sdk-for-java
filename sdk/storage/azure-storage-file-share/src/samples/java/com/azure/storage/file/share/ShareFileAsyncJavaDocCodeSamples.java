@@ -853,7 +853,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
                 for (FileRange range : response.getValue().getRanges()) {
                     System.out.printf("Start: %s, End: %s%n", range.getStart(), range.getEnd());
                 }
-        });
+            });
         // END: com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiffWithResponse#ShareFileListRangesDiffOptions
     }
 
