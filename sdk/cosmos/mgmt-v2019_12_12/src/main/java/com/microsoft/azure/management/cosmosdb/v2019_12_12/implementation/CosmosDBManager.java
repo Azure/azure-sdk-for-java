@@ -34,6 +34,7 @@ import com.microsoft.azure.management.cosmosdb.v2019_12_12.MongoDBResources;
 import com.microsoft.azure.management.cosmosdb.v2019_12_12.TableResources;
 import com.microsoft.azure.management.cosmosdb.v2019_12_12.CassandraResources;
 import com.microsoft.azure.management.cosmosdb.v2019_12_12.GremlinResources;
+import com.microsoft.azure.management.cosmosdb.v2019_12_12.NotebookWorkspaces;
 import com.microsoft.azure.management.cosmosdb.v2019_12_12.PrivateLinkResources;
 import com.microsoft.azure.management.cosmosdb.v2019_12_12.PrivateEndpointConnections;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
@@ -61,6 +62,7 @@ public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDB
     private TableResources tableResources;
     private CassandraResources cassandraResources;
     private GremlinResources gremlinResources;
+    private NotebookWorkspaces notebookWorkspaces;
     private PrivateLinkResources privateLinkResources;
     private PrivateEndpointConnections privateEndpointConnections;
     /**
@@ -288,6 +290,16 @@ public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDB
             this.gremlinResources = new GremlinResourcesImpl(this);
         }
         return this.gremlinResources;
+    }
+
+    /**
+     * @return Entry point to manage NotebookWorkspaces.
+     */
+    public NotebookWorkspaces notebookWorkspaces() {
+        if (this.notebookWorkspaces == null) {
+            this.notebookWorkspaces = new NotebookWorkspacesImpl(this);
+        }
+        return this.notebookWorkspaces;
     }
 
     /**
