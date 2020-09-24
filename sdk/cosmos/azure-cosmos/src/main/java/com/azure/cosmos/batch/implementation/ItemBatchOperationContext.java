@@ -16,7 +16,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Context for a particular Batch operation.
  */
-public class ItemBatchOperationContext implements AutoCloseable {
+class ItemBatchOperationContext implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(ItemBatchOperationContext.class);
 
@@ -30,7 +30,7 @@ public class ItemBatchOperationContext implements AutoCloseable {
      *
      * @param partitionKeyRangeId the partition key range id
      */
-    public ItemBatchOperationContext(final String partitionKeyRangeId) {
+    ItemBatchOperationContext(final String partitionKeyRangeId) {
         this(partitionKeyRangeId, null);
     }
 
@@ -40,7 +40,7 @@ public class ItemBatchOperationContext implements AutoCloseable {
      * @param partitionKeyRangeId the partition key range id
      * @param retryPolicy the retry policy
      */
-    public ItemBatchOperationContext(
+    ItemBatchOperationContext(
         final String partitionKeyRangeId,
         final BatchPartitionKeyRangeGoneRetryPolicy retryPolicy) {
 
@@ -56,7 +56,7 @@ public class ItemBatchOperationContext implements AutoCloseable {
      * @param completer the completer
      * @param result the result
      */
-    public final void complete(BatchAsyncBatcher completer, TransactionalBatchOperationResult<?> result) {
+    final void complete(BatchAsyncBatcher completer, TransactionalBatchOperationResult<?> result) {
         if (this.assertBatcher(completer)) {
             this.operationResultFuture.complete(result);
         }
@@ -69,7 +69,7 @@ public class ItemBatchOperationContext implements AutoCloseable {
      * @param completer the completer
      * @param error the error
      */
-    public final void fail(BatchAsyncBatcher completer, Throwable error) {
+    final void fail(BatchAsyncBatcher completer, Throwable error) {
         if (this.assertBatcher(completer, error)) {
             this.operationResultFuture.completeExceptionally(error);
         }
@@ -83,7 +83,7 @@ public class ItemBatchOperationContext implements AutoCloseable {
      *
      * @return indicates whether a retry should be attempted.
      */
-    public final Mono<ShouldRetryResult> shouldRetry(final TransactionalBatchOperationResult<?> result) {
+    final Mono<ShouldRetryResult> shouldRetry(final TransactionalBatchOperationResult<?> result) {
 
         checkNotNull(result, "expected non-null result");
 
@@ -117,7 +117,7 @@ public class ItemBatchOperationContext implements AutoCloseable {
      *
      * @return the current batcher
      */
-    public final BatchAsyncBatcher getCurrentBatcher() {
+    private BatchAsyncBatcher getCurrentBatcher() {
         return currentBatcher;
     }
 
@@ -126,7 +126,7 @@ public class ItemBatchOperationContext implements AutoCloseable {
      *
      * @param value the value
      */
-    public final void setCurrentBatcher(BatchAsyncBatcher value) {
+    final void setCurrentBatcher(BatchAsyncBatcher value) {
         currentBatcher = value;
     }
 
@@ -135,7 +135,7 @@ public class ItemBatchOperationContext implements AutoCloseable {
      *
      * @return the operation result future
      */
-    public final CompletableFuture<TransactionalBatchOperationResult<?>> getOperationResultFuture() {
+    final CompletableFuture<TransactionalBatchOperationResult<?>> getOperationResultFuture() {
         return this.operationResultFuture;
     }
 
@@ -144,7 +144,7 @@ public class ItemBatchOperationContext implements AutoCloseable {
      *
      * @return the partition key range id
      */
-    public final String getPartitionKeyRangeId() {
+    final String getPartitionKeyRangeId() {
         return partitionKeyRangeId;
     }
 

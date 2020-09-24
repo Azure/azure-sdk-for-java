@@ -7,7 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 
-public class TransactionalBatchRequestOptions {
+public final class TransactionalBatchRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private IndexingDirective indexingDirective;
     private String sessionToken;
@@ -123,7 +123,7 @@ public class TransactionalBatchRequestOptions {
     }
 
     public RequestOptions toRequestOptions() {
-        RequestOptions requestOptions = new RequestOptions();
+        final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
         requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
         requestOptions.setConsistencyLevel(getConsistencyLevel());

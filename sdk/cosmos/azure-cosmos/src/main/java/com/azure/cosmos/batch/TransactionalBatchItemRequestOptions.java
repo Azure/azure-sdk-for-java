@@ -5,7 +5,7 @@ package com.azure.cosmos.batch;
 
 import com.azure.cosmos.implementation.RequestOptions;
 
-public class TransactionalBatchItemRequestOptions {
+public final class TransactionalBatchItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
 
@@ -24,7 +24,7 @@ public class TransactionalBatchItemRequestOptions {
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    public TransactionalBatchItemRequestOptions setIfMatchETag(String ifMatchETag) {
+    public TransactionalBatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         this.ifMatchETag = ifMatchETag;
         return this;
     }
@@ -44,13 +44,13 @@ public class TransactionalBatchItemRequestOptions {
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    public TransactionalBatchItemRequestOptions setIfNoneMatchETag(String ifNoneMatchEtag) {
+    public TransactionalBatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         this.ifNoneMatchETag = ifNoneMatchEtag;
         return this;
     }
 
     public RequestOptions toRequestOptions() {
-        RequestOptions requestOptions = new RequestOptions();
+        final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
         requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
         return requestOptions;

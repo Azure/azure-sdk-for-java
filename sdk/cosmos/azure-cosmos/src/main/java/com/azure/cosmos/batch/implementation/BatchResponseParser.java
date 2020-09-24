@@ -32,10 +32,10 @@ import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.RETRY_AF
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.SUB_STATUS;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 
-public class BatchResponseParser {
+public final class BatchResponseParser {
 
     private final static Logger logger = LoggerFactory.getLogger(BatchResponseParser.class);
-    private static char HYBRID_V1 = 129;
+    private final static char HYBRID_V1 = 129;
 
     /** Creates a transactional batch response} from a exception
      *
@@ -50,8 +50,8 @@ public class BatchResponseParser {
         final ServerBatchRequest request) {
 
         if (throwable instanceof CosmosException) {
-            CosmosException cosmosException = (CosmosException) throwable;
-            TransactionalBatchResponse response =  new TransactionalBatchResponse(
+            final CosmosException cosmosException = (CosmosException) throwable;
+            final TransactionalBatchResponse response =  new TransactionalBatchResponse(
                 cosmosException.getStatusCode(),
                 cosmosException.getSubStatusCode(),
                 cosmosException.getMessage(),
@@ -81,7 +81,7 @@ public class BatchResponseParser {
         final boolean shouldPromoteOperationStatus) {
 
         TransactionalBatchResponse response = null;
-        String responseContent = documentServiceResponse.getResponseBodyAsString();
+        final String responseContent = documentServiceResponse.getResponseBodyAsString();
 
         if (StringUtils.isNotEmpty(responseContent)) {
             response = BatchResponseParser.populateFromResponseContentAsync(documentServiceResponse, request, shouldPromoteOperationStatus);
@@ -153,17 +153,17 @@ public class BatchResponseParser {
         final ServerBatchRequest request,
         final boolean shouldPromoteOperationStatus) {
 
-        ArrayList<TransactionalBatchOperationResult<?>> results = new ArrayList<>();
-        String responseContent = documentServiceResponse.getResponseBodyAsString();
+        final ArrayList<TransactionalBatchOperationResult<?>> results = new ArrayList<>();
+        final String responseContent = documentServiceResponse.getResponseBodyAsString();
 
         if (responseContent.charAt(0) != HYBRID_V1) {
             // Read from a json response body. To enable hybrid row just complete the else part
-            ObjectMapper mapper = Utils.getSimpleObjectMapper();
+            final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
             try{
-                ObjectNode[] objectNodes = mapper.readValue(documentServiceResponse.getResponseBodyAsString(), ObjectNode[].class);
+                final ObjectNode[] objectNodes = mapper.readValue(documentServiceResponse.getResponseBodyAsString(), ObjectNode[].class);
                 for (ObjectNode objectInArray : objectNodes) {
-                    TransactionalBatchOperationResult<?> batchOperationResult = BatchResponseParser.createBatchOperationResultFromJson(objectInArray);
+                    final TransactionalBatchOperationResult<?> batchOperationResult = BatchResponseParser.createBatchOperationResultFromJson(objectInArray);
                     results.add(batchOperationResult);
                 }
             } catch (IOException ex) {
@@ -192,7 +192,7 @@ public class BatchResponseParser {
             }
         }
 
-        TransactionalBatchResponse response = new TransactionalBatchResponse(
+        final TransactionalBatchResponse response = new TransactionalBatchResponse(
             responseStatusCode,
             responseSubStatusCode,
             null,
@@ -215,32 +215,32 @@ public class BatchResponseParser {
      * @return the result
      */
     private static TransactionalBatchOperationResult<?> createBatchOperationResultFromJson(ObjectNode objectNode) {
-        TransactionalBatchOperationResult<?> transactionalBatchOperationResult = new TransactionalBatchOperationResult<>();
+        final TransactionalBatchOperationResult<?> transactionalBatchOperationResult = new TransactionalBatchOperationResult<>();
 
-        JsonSerializable jsonSerializable = new JsonSerializable(objectNode);
+        final JsonSerializable jsonSerializable = new JsonSerializable(objectNode);
         transactionalBatchOperationResult.setResponseStatus(jsonSerializable.getInt(FIELD_STATUS_CODE));
 
-        Integer subStatusCode = jsonSerializable.getInt(FIELD_SUBSTATUS_CODE);
+        final Integer subStatusCode = jsonSerializable.getInt(FIELD_SUBSTATUS_CODE);
         if(subStatusCode != null) {
             transactionalBatchOperationResult.setSubStatusCode(subStatusCode);
         }
 
-        Double requestCharge = jsonSerializable.getDouble(FIELD_REQUEST_CHARGE);
+        final Double requestCharge = jsonSerializable.getDouble(FIELD_REQUEST_CHARGE);
         if(requestCharge != null) {
             transactionalBatchOperationResult.setRequestCharge(requestCharge);
         }
 
-        Integer retryAfterMilliseconds = jsonSerializable.getInt(FIELD_RETRY_AFTER_MILLISECONDS);
+        final Integer retryAfterMilliseconds = jsonSerializable.getInt(FIELD_RETRY_AFTER_MILLISECONDS);
         if(retryAfterMilliseconds != null) {
             transactionalBatchOperationResult.setRetryAfter(Duration.ofMillis(retryAfterMilliseconds));
         }
 
-        String etag = jsonSerializable.getString(FIELD_ETAG);
+        final String etag = jsonSerializable.getString(FIELD_ETAG);
         if(etag != null) {
             transactionalBatchOperationResult.setETag(etag);
         }
 
-        ObjectNode resourceBody = jsonSerializable.getObject(FIELD_RESOURCE_BODY);
+        final ObjectNode resourceBody = jsonSerializable.getObject(FIELD_RESOURCE_BODY);
         if(resourceBody != null) {
             transactionalBatchOperationResult.setResourceObject(resourceBody);
         }

@@ -61,8 +61,8 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
     }
 
     // TODO(rakkuma): Similarly for hybrid row, operation needs to be written in Hybrid row.
-    public static JsonSerializable writeOperation(ItemBatchOperation<?> operation) {
-        JsonSerializable jsonSerializable = new JsonSerializable();
+    static JsonSerializable writeOperation(final ItemBatchOperation<?> operation) {
+        final JsonSerializable jsonSerializable = new JsonSerializable();
 
         jsonSerializable.set(FIELD_OPERATION_TYPE, BatchExecUtils.getStringOperationType(operation.getOperationType()));
 
@@ -100,7 +100,7 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
      *
      * @return an underestimate of the serialized length of this {@link ItemBatchOperation}.
      */
-    public int getApproximateSerializedLength() {
+    int getApproximateSerializedLength() {
 
         int length = 0;
 
@@ -116,7 +116,7 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
             length += this.materialisedResource.length();
         }
 
-        RequestOptions requestOptions = this.getRequestOptions();
+        final RequestOptions requestOptions = this.getRequestOptions();
 
         if (requestOptions != null) {
 
@@ -130,18 +130,18 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
                 length += 7; // "Default", "Include", "Exclude" are possible values
             }
 
-            Map<String, Object> properties = requestOptions.getProperties();
+            final Map<String, Object> properties = requestOptions.getProperties();
 
             if (properties != null) {
 
-                byte[] binaryId = (byte[]) properties.computeIfPresent(WFConstants.BackendHeaders.BINARY_ID, (k, v) ->
+                final byte[] binaryId = (byte[]) properties.computeIfPresent(WFConstants.BackendHeaders.BINARY_ID, (k, v) ->
                     v instanceof byte[] ? (byte[]) v : null);
 
                 if (binaryId != null) {
                     length += binaryId.length;
                 }
 
-                byte[] epk = (byte[]) properties.computeIfPresent(WFConstants.BackendHeaders.EFFECTIVE_PARTITION_KEY, (k, v) ->
+                final byte[] epk = (byte[]) properties.computeIfPresent(WFConstants.BackendHeaders.EFFECTIVE_PARTITION_KEY, (k, v) ->
                     v instanceof byte[] ? (byte[]) v : null);
 
                 if (epk != null) {
@@ -159,22 +159,16 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
      * @return a {@link CompletableFuture future} that will complete when the resource is materialized or an error
      * occurs.
      */
-    public CompletableFuture<Boolean> materializeResource() {
-
-        if (this.materialisedResource == null && this.resource != null) {
-
-            return CompletableFuture.completedFuture(true).thenApply(t -> {
-                try{
+    CompletableFuture<Void> materializeResource() {
+        return CompletableFuture.runAsync(() -> {
+            if (this.materialisedResource == null && this.resource != null) {
+                try {
                     this.materialisedResource = Utils.getSimpleObjectMapper().writeValueAsString(this.resource);
                 } catch (Exception ex) {
                     throw new CompletionException(ex);
                 }
-
-                return true;
-            });
-        }
-
-        return CompletableFuture.completedFuture(Boolean.TRUE);
+            }
+        });
     }
 
     /**
@@ -197,7 +191,7 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
      *
      * @return a reference to the {@link ItemBatchOperation current operation}.
      */
-    public ItemBatchOperation<?> attachContext(final ItemBatchOperationContext context) {
+    ItemBatchOperation<?> attachContext(final ItemBatchOperationContext context) {
         checkNotNull(context, "expected non-null context");
 
         if (this.context != null)
@@ -213,11 +207,11 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
         return this.id;
     }
 
-    public int getOperationIndex() {
+    int getOperationIndex() {
         return this.operationIndex;
     }
 
-    public ItemBatchOperation<?> setOperationIndex(final int value) {
+    ItemBatchOperation<?> setOperationIndex(final int value) {
         this.operationIndex = value;
         return this;
     }
@@ -235,11 +229,11 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
         return this;
     }
 
-    public String getPartitionKeyJson() {
+    private String getPartitionKeyJson() {
         return partitionKeyJson;
     }
 
-    public ItemBatchOperation<?> setPartitionKeyJson(final String value) {
+    ItemBatchOperation<?> setPartitionKeyJson(final String value) {
         partitionKeyJson = value;
         return this;
     }

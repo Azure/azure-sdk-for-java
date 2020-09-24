@@ -30,14 +30,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class TransactionalBatchResponse implements AutoCloseable, List<TransactionalBatchOperationResult<?>> {
 
     private final static Logger logger = LoggerFactory.getLogger(TransactionalBatchResponse.class);
-    private boolean isDisposed;
 
-    private final Map<String, String> responseHeaders;
+    private Map<String, String> responseHeaders;
     private final int responseStatus;
     private String errorMessage;
     private List<TransactionalBatchOperationResult<?>> results;
     private int subStatusCode;
-    private volatile List<ItemBatchOperation<?>> operations;
+    private List<ItemBatchOperation<?>> operations;
     private CosmosDiagnostics cosmosDiagnostics;
 
     /**
@@ -54,9 +53,9 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
         final int responseStatus,
         final int subStatusCode,
         final String errorMessage,
-        Map<String, String> responseHeaders,
-        CosmosDiagnostics cosmosDiagnostics,
-        List<ItemBatchOperation<?>> operations) {
+        final Map<String, String> responseHeaders,
+        final CosmosDiagnostics cosmosDiagnostics,
+        final List<ItemBatchOperation<?>> operations) {
 
         checkNotNull(responseStatus, "expected non-null responseStatus");
         checkNotNull(responseHeaders, "expected non-null responseHeaders");
@@ -71,7 +70,7 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
         this.results = new ArrayList<>();
     }
 
-    public void createAndPopulateResults(List<ItemBatchOperation<?>> operations, int retryAfterMilliseconds) {
+    public void createAndPopulateResults(final List<ItemBatchOperation<?>> operations, final int retryAfterMilliseconds) {
         for (int i = 0; i < operations.size(); i++) {
             this.results.add(
                 new TransactionalBatchOperationResult<>(this.getResponseStatus())
@@ -98,7 +97,7 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
         checkArgument(index >= 0, "expected non-negative index");
         checkNotNull(type, "expected non-null type");
 
-        TransactionalBatchOperationResult<?> result = this.results.get(index);
+        final TransactionalBatchOperationResult<?> result = this.results.get(index);
         T resource = null;
 
         if (result.getResourceObject() != null) {
@@ -169,7 +168,7 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
      * @return the request charge measured in request units.
      */
     public double getRequestCharge() {
-        String value = this.responseHeaders.get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        final String value = this.responseHeaders.get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
         try {
             return Double.valueOf(value);
         } catch (NumberFormatException e) {
@@ -334,15 +333,9 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
      * Closes the current {@link TransactionalBatchResponse}.
      */
     public void close() {
-        if (!this.isDisposed) {
-            this.isDisposed = true;
-            if (operations != null) {
-                for (ItemBatchOperation<?> operation : operations) {
-                    operation.close();
-                }
-
-                this.operations = null;
-            }
-        }
+        this.operations = null;
+        this.responseHeaders = null;
+        this.results = null;
+        this.cosmosDiagnostics = null;
     }
 }

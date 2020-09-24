@@ -35,7 +35,7 @@ public abstract class ServerBatchRequest {
      * @param maxBodyLength Maximum length allowed for the request body.
      * @param maxOperationCount Maximum number of operations allowed in the request.
      */
-    protected ServerBatchRequest(int maxBodyLength, int maxOperationCount) {
+    ServerBatchRequest(int maxBodyLength, int maxOperationCount) {
         this.maxBodyLength = maxBodyLength;
         this.maxOperationCount = maxOperationCount;
         this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
@@ -50,7 +50,7 @@ public abstract class ServerBatchRequest {
      *
      * @return Any pending operations that were not included in the request.
      */
-    public final List<ItemBatchOperation<?>> createBodyStreamAsync(
+    final List<ItemBatchOperation<?>> createBodyStreamAsync(
         final List<ItemBatchOperation<?>> operations) {
         return createBodyStreamAsync(operations, false);
     }
@@ -68,7 +68,7 @@ public abstract class ServerBatchRequest {
      *
      * @return Any pending operations that were not included in the request.
      */
-    protected final List<ItemBatchOperation<?>> createBodyStreamAsync(
+    final List<ItemBatchOperation<?>> createBodyStreamAsync(
         final List<ItemBatchOperation<?>> operations,
         final boolean ensureContinuousOperationIndexes) {
 
@@ -77,12 +77,12 @@ public abstract class ServerBatchRequest {
         int totalSerializedLength = 0;
         int totalOperationCount = 0;
 
-        ArrayNode arrayNode =  Utils.getSimpleObjectMapper().createArrayNode();
+        final ArrayNode arrayNode =  Utils.getSimpleObjectMapper().createArrayNode();
 
         for(ItemBatchOperation<?> operation : operations) {
 
-            JsonSerializable operationJsonSerializable = ItemBatchOperation.writeOperation(operation);
-            int operationSerializedLength = operationJsonSerializable.toString().length();
+            final JsonSerializable operationJsonSerializable = ItemBatchOperation.writeOperation(operation);
+            final int operationSerializedLength = operationJsonSerializable.toString().length();
 
             if (totalOperationCount != 0 &&
                 (totalSerializedLength + operationSerializedLength > this.maxBodyLength || totalOperationCount + 1 > this.maxOperationCount)) {
@@ -106,7 +106,7 @@ public abstract class ServerBatchRequest {
 
         checkState(this.requestBody != null, "expected non-null body");
 
-        String requestBody = this.requestBody;
+        final String requestBody = this.requestBody;
         this.requestBody = null;
 
         return requestBody;
@@ -124,18 +124,18 @@ public abstract class ServerBatchRequest {
     }
 
     public boolean isAtomicBatch() {
-        return isAtomicBatch;
+        return this.isAtomicBatch;
     }
 
-    public void setAtomicBatch(boolean atomicBatch) {
-        isAtomicBatch = atomicBatch;
+    void setAtomicBatch(boolean atomicBatch) {
+        this.isAtomicBatch = atomicBatch;
     }
 
     public boolean isShouldContinueOnError() {
-        return shouldContinueOnError;
+        return this.shouldContinueOnError;
     }
 
-    public void setShouldContinueOnError(boolean shouldContinueOnError) {
+    void setShouldContinueOnError(boolean shouldContinueOnError) {
         this.shouldContinueOnError = shouldContinueOnError;
     }
 

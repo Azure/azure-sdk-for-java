@@ -18,11 +18,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Response of a cross partition key batch request.
  */
-public class PartitionKeyRangeBatchResponse extends TransactionalBatchResponse {
+final class PartitionKeyRangeBatchResponse extends TransactionalBatchResponse {
 
     // Results sorted in the order operations had been added.
-    private final TransactionalBatchOperationResult<?>[] resultsByOperationIndex;
-    private final TransactionalBatchResponse serverResponse;
+    private TransactionalBatchOperationResult<?>[] resultsByOperationIndex;
+    private TransactionalBatchResponse serverResponse;
 
     /**
      * Initializes a new instance of the {@link PartitionKeyRangeBatchResponse} class.
@@ -30,7 +30,7 @@ public class PartitionKeyRangeBatchResponse extends TransactionalBatchResponse {
      * @param originalOperationsCount Original operations that generated the server responses.
      * @param serverResponse Response from the server.
      */
-    public PartitionKeyRangeBatchResponse(
+    PartitionKeyRangeBatchResponse(
         final int originalOperationsCount,
         final TransactionalBatchResponse serverResponse) {
 
@@ -79,7 +79,7 @@ public class PartitionKeyRangeBatchResponse extends TransactionalBatchResponse {
             index);
         checkNotNull(type, "expected non-null type");
 
-        TransactionalBatchOperationResult<?> result = this.resultsByOperationIndex[index];
+        final TransactionalBatchOperationResult<?> result = this.resultsByOperationIndex[index];
 
         T resource = null;
         if (result.getResourceObject() != null) {
@@ -125,6 +125,10 @@ public class PartitionKeyRangeBatchResponse extends TransactionalBatchResponse {
         if (this.serverResponse != null) {
             this.serverResponse.close();
         }
+
+        this.serverResponse = null;
+        this.resultsByOperationIndex = null;
+
         super.close();
     }
 }

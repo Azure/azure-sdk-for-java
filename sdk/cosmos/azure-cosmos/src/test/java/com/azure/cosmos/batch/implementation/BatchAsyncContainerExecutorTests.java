@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.batch.emulatortest;
+package com.azure.cosmos.batch.implementation;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.batch.implementation.BatchAsyncContainerExecutor;
-import com.azure.cosmos.batch.implementation.ItemBatchOperation;
+import com.azure.cosmos.batch.BatchTestBase;
 import com.azure.cosmos.batch.TransactionalBatchOperationResult;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
@@ -28,7 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -109,7 +107,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
             .id(id)
             .build();
 
-        CompletableFuture<Boolean> resp = executor.validateAndMaterializeOperation(operation, requestOptions);
+        executor.validateAndMaterializeOperation(operation, requestOptions);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -129,7 +127,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
             .build();
 
         try {
-            CompletableFuture<Boolean> resp = executor.validateAndMaterializeOperation(operation, requestOptions);
+            executor.validateAndMaterializeOperation(operation, requestOptions);
             fail("Should throw exception");
         } catch (Exception ex) {
             assertTrue(ex instanceof IllegalStateException && ex.getMessage().contains("UnsupportedBulkRequestOptions"), "Should fail");
@@ -156,7 +154,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
             .build();
 
         try {
-            CompletableFuture<Boolean> resp = executor.validateAndMaterializeOperation(operation, requestOptions);
+            executor.validateAndMaterializeOperation(operation, requestOptions);
             fail("Should throw exception");
         } catch (Exception ex) {
             assertTrue(ex instanceof IllegalStateException && ex.getMessage().contains("expected byte array value for"), "Should fail");
@@ -184,7 +182,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
             .build();
 
         try {
-            CompletableFuture<Boolean> resp = executor.validateAndMaterializeOperation(operation, requestOptions);
+            executor.validateAndMaterializeOperation(operation, requestOptions);
             fail("Should throw exception");
         } catch (Exception ex) {
             assertTrue(ex instanceof IllegalStateException && ex.getMessage().contains("partition key and effective partition key may not both be set"), "Should fail");

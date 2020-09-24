@@ -7,7 +7,7 @@ import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class ServerOperationBatchRequest {
+final class ServerOperationBatchRequest {
 
     private final PartitionKeyRangeServerBatchRequest batchRequest;
     private final List<ItemBatchOperation<?>> pendingOperations;
@@ -32,7 +32,7 @@ public class ServerOperationBatchRequest {
      * Gets the PartitionKeyRangeServerBatchRequest.
      * @return key for this pair
      */
-    public PartitionKeyRangeServerBatchRequest getBatchRequest() {
+    PartitionKeyRangeServerBatchRequest getBatchRequest() {
         return this.batchRequest;
     }
 
@@ -40,7 +40,7 @@ public class ServerOperationBatchRequest {
      * Gets list of ItemBatchOperation.
      * @return value for this pair
      */
-    public List<ItemBatchOperation<?>> getBatchPendingOperations() {
+    List<ItemBatchOperation<?>> getBatchPendingOperations() {
         return this.pendingOperations;
     }
 }

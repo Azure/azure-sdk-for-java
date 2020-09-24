@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class TransactionalBatchCore implements TransactionalBatch {
+public final class TransactionalBatchCore implements TransactionalBatch {
 
     private final CosmosAsyncContainer container;
     private final ArrayList<ItemBatchOperation<?>> operations;
@@ -31,9 +31,7 @@ public class TransactionalBatchCore implements TransactionalBatch {
      * @param container a container of items on which the batch operations are to be performed.
      * @param partitionKey the partition key for all items on which batch operations are to be performed.
      */
-    public TransactionalBatchCore(
-        final CosmosAsyncContainer container,
-        final PartitionKey partitionKey) {
+    public TransactionalBatchCore(CosmosAsyncContainer container, PartitionKey partitionKey) {
 
         checkNotNull(container, "expected non-null container");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -45,9 +43,7 @@ public class TransactionalBatchCore implements TransactionalBatch {
     }
 
     @Override
-    public <TItem> TransactionalBatch createItem(
-        final TItem item,
-        final TransactionalBatchItemRequestOptions requestOptions) {
+    public <TItem> TransactionalBatch createItem(TItem item, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(item, "expected non-null item");
 
@@ -63,7 +59,7 @@ public class TransactionalBatchCore implements TransactionalBatch {
     }
 
     @Override
-    public TransactionalBatch deleteItem(final String id, final TransactionalBatchItemRequestOptions requestOptions) {
+    public TransactionalBatch deleteItem(String id, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
 
@@ -76,7 +72,7 @@ public class TransactionalBatchCore implements TransactionalBatch {
     }
 
     @Override
-    public TransactionalBatch readItem(final String id, final TransactionalBatchItemRequestOptions requestOptions) {
+    public TransactionalBatch readItem(String id, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
 
@@ -90,8 +86,8 @@ public class TransactionalBatchCore implements TransactionalBatch {
 
     @Override
     public <TItem> TransactionalBatch replaceItem(
-        final String id,
-        final TItem item,
+        String id,
+        TItem item,
         TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
@@ -107,9 +103,7 @@ public class TransactionalBatchCore implements TransactionalBatch {
     }
 
     @Override
-    public <TItem> TransactionalBatch upsertItem(
-        final TItem item,
-        final TransactionalBatchItemRequestOptions requestOptions) {
+    public <TItem> TransactionalBatch upsertItem(TItem item, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(item, "expected non-null item");
 
@@ -137,14 +131,14 @@ public class TransactionalBatchCore implements TransactionalBatch {
     @Override
     public Mono<TransactionalBatchResponse> executeAsync(TransactionalBatchRequestOptions requestOptions) {
 
-        BatchExecutor executor = new BatchExecutor(
+        final BatchExecutor executor = new BatchExecutor(
             this.container,
             this.partitionKey,
             new ArrayList<>(this.operations),
             requestOptions.toRequestOptions());
 
         this.operations.clear();
-        Mono<TransactionalBatchResponse> responseMono = executor.executeAsync();
+        final Mono<TransactionalBatchResponse> responseMono = executor.executeAsync();
 
         return withContext(context -> CosmosBridgeInternal.getTracerProvider(container).
             traceEnabledBatchResponsePublisher(responseMono,

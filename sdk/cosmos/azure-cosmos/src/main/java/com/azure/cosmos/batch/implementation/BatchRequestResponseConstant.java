@@ -13,30 +13,30 @@ public class BatchRequestResponseConstant {
     public static final int MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES = 220201;
     public static final int MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST = 100;
 
-    public static final String FIELD_OPERATION_TYPE = "operationType";
-    public static final String FIELD_RESOURCE_TYPE = "resourceType";
-    public static final String FIELD_TIME_TO_LIVE_IN_SECONDS = "timeToLiveInSeconds";
-    public static final String FIELD_ID = "id";
-    public static final String FIELD_INDEXING_DIRECTIVE = "indexingDirective";
-    public static final String FIELD_IF_MATCH = "ifMatch";
-    public static final String FIELD_IF_NONE_MATCH = "ifNoneMatch";
-    public static final String FIELD_PARTITION_KEY = "partitionKey";
-    public static final String FIELD_RESOURCE_BODY = "resourceBody";
-    public static final String FIELD_BINARY_ID = "binaryId";
-    public static final String FIELD_EFFECTIVE_PARTITIONKEY = "effectivePartitionKey";
-    public static final String FIELD_STATUS_CODE = "statusCode";
-    public static final String FIELD_SUBSTATUS_CODE = "subStatusCode";
-    public static final String FIELD_REQUEST_CHARGE = "requestCharge";
-    public static final String FIELD_RETRY_AFTER_MILLISECONDS = "retryAfterMilliseconds";
-    public static final String FIELD_ETAG = "eTag";
-    public static final String FIELD_MINIMAL_RETURN_PREFERENCE = "minimalReturnPreference";
-    public static final String FIELD_IS_CLIENTENCRYPTED = "isClientEncrypted";
+    static final String FIELD_OPERATION_TYPE = "operationType";
+    static final String FIELD_RESOURCE_TYPE = "resourceType";
+    static final String FIELD_TIME_TO_LIVE_IN_SECONDS = "timeToLiveInSeconds";
+    static final String FIELD_ID = "id";
+    static final String FIELD_INDEXING_DIRECTIVE = "indexingDirective";
+    static final String FIELD_IF_MATCH = "ifMatch";
+    static final String FIELD_IF_NONE_MATCH = "ifNoneMatch";
+    static final String FIELD_PARTITION_KEY = "partitionKey";
+    static final String FIELD_RESOURCE_BODY = "resourceBody";
+    static final String FIELD_BINARY_ID = "binaryId";
+    static final String FIELD_EFFECTIVE_PARTITIONKEY = "effectivePartitionKey";
+    static final String FIELD_STATUS_CODE = "statusCode";
+    static final String FIELD_SUBSTATUS_CODE = "subStatusCode";
+    static final String FIELD_REQUEST_CHARGE = "requestCharge";
+    static final String FIELD_RETRY_AFTER_MILLISECONDS = "retryAfterMilliseconds";
+    static final String FIELD_ETAG = "eTag";
+    static final String FIELD_MINIMAL_RETURN_PREFERENCE = "minimalReturnPreference";
+    static final String FIELD_IS_CLIENTENCRYPTED = "isClientEncrypted";
 
     // Batch supported operation type for json
-    public static final String OPERATION_CREATE = "Create";
-    public static final String OPERATION_PATCH = "Patch";
-    public static final String OPERATION_READ = "Read";
-    public static final String OPERATION_UPSERT = "Upsert";
-    public static final String OPERATION_DELETE = "Delete";
-    public static final String OPERATION_REPLACE = "Replace";
+    static final String OPERATION_CREATE = "Create";
+    static final String OPERATION_PATCH = "Patch";
+    static final String OPERATION_READ = "Read";
+    static final String OPERATION_UPSERT = "Upsert";
+    static final String OPERATION_DELETE = "Delete";
+    static final String OPERATION_REPLACE = "Replace";
 }

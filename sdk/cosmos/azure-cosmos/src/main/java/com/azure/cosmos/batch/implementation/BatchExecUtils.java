@@ -50,11 +50,11 @@ public class BatchExecUtils {
      * @param result a {@link TransactionalBatchOperationResult}
      * @return a new {@link RxDocumentServiceResponse batch response message}.
      */
-    public static RxDocumentServiceResponse convertToDocumentServiceResponse(TransactionalBatchOperationResult<?> result) {
+    public static RxDocumentServiceResponse convertToDocumentServiceResponse(final TransactionalBatchOperationResult<?> result) {
 
-        Map<String, String> headers = getResponseHeadersFromBatchOperationResult(result);
+        final Map<String, String> headers = getResponseHeadersFromBatchOperationResult(result);
 
-        StoreResponse storeResponse = new StoreResponse(
+        final StoreResponse storeResponse = new StoreResponse(
             result.getResponseStatus(),
             new ArrayList<>(headers.entrySet()),
             result.getResourceObject() != null ? Utils.getUTF8BytesOrNull(result.getResourceObject().toString()) : null);
@@ -63,11 +63,13 @@ public class BatchExecUtils {
             DirectBridgeInternal.setCosmosDiagnostics(storeResponse, result.getCosmosDiagnostics());
         }
 
+        result.close();
+
         return new RxDocumentServiceResponse(storeResponse);
     }
 
     static Map<String, String> getResponseHeadersFromBatchOperationResult(TransactionalBatchOperationResult<?> result) {
-        Map<String, String> headers = new HashMap<>();
+        final Map<String, String> headers = new HashMap<>();
 
         headers.put(HttpConstants.HttpHeaders.SUB_STATUS, String.valueOf(result.getSubStatusCode()));
         headers.put(HttpConstants.HttpHeaders.E_TAG, result.getETag());
@@ -81,7 +83,7 @@ public class BatchExecUtils {
     }
 
     static Mono<DocumentCollection> getCollectionInfoAsync(AsyncDocumentClient documentClient, CosmosAsyncContainer container) {
-        RxClientCollectionCache clientCollectionCache = documentClient.getCollectionCache();
+        final RxClientCollectionCache clientCollectionCache = documentClient.getCollectionCache();
         return clientCollectionCache
             .resolveByNameAsync(
                 BridgeInternal.getMetaDataDiagnosticContext(BridgeInternal.createCosmosDiagnostics()),
@@ -89,28 +91,12 @@ public class BatchExecUtils {
                 null);
     }
 
-    public static void ensureValid(
+    static void ensureValid(
         final List<ItemBatchOperation<?>> operations,
         final RequestOptions options) {
 
         final String errorMessage = BatchExecUtils.isValid(operations, options);
         checkArgument(errorMessage == null, errorMessage);
-    }
-
-    public static String getPartitionKeyRangeId(
-        final PartitionKey key,
-        final PartitionKeyDefinition keyDefinition,
-        final CollectionRoutingMap collectionRoutingMap) {
-
-        checkNotNull(key, "expected non-null key");
-        checkNotNull(keyDefinition, "expected non-null keyDefinition");
-        checkNotNull(collectionRoutingMap, "expected non-null collectionRoutingMap");
-
-        String epkString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(
-            BridgeInternal.getPartitionKeyInternal(key),
-            keyDefinition);
-
-        return collectionRoutingMap.getRangeByEffectivePartitionKey(epkString).getId();
     }
 
     public static String isValid(final List<ItemBatchOperation<?>> operations, final RequestOptions batchOptions) {

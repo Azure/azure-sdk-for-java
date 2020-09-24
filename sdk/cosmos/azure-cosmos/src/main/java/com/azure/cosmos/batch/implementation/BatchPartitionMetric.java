@@ -5,13 +5,13 @@ package com.azure.cosmos.batch.implementation;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
-public class BatchPartitionMetric {
+final class BatchPartitionMetric {
 
     private long numberOfItemsOperatedOn;
     private long timeTakenInMilliseconds;
     private long numberOfThrottles;
 
-    public BatchPartitionMetric() {
+    BatchPartitionMetric() {
         this.numberOfItemsOperatedOn = 0;
         this.timeTakenInMilliseconds = 0;
         this.numberOfThrottles = 0;
@@ -49,7 +49,7 @@ public class BatchPartitionMetric {
      *
      * @return total numberOfItemsOperatedOn.
      */
-    public long getNumberOfItemsOperatedOn() {
+    long getNumberOfItemsOperatedOn() {
         return numberOfItemsOperatedOn;
     }
 
@@ -58,7 +58,7 @@ public class BatchPartitionMetric {
      *
      * @return total timeTakenInMilliseconds.
      */
-    public long getTimeTakenInMilliseconds() {
+    long getTimeTakenInMilliseconds() {
         return timeTakenInMilliseconds;
     }
 
@@ -67,7 +67,7 @@ public class BatchPartitionMetric {
      *
      * @return total numberOfThrottles.
      */
-    public long getNumberOfThrottles() {
+    long getNumberOfThrottles() {
         return numberOfThrottles;
     }
 

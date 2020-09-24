@@ -27,7 +27,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * <p>
  * {@link BatchAsyncBatcher}
  */
-public class BatchAsyncStreamer implements AutoCloseable {
+final class BatchAsyncStreamer implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(BatchAsyncStreamer.class);
 
@@ -47,16 +47,15 @@ public class BatchAsyncStreamer implements AutoCloseable {
     private final HashedWheelTimer timer;
 
     private volatile Timeout currentTimeout;
-    private volatile Timeout congestionControlTimeout;
-    private Semaphore limiter;
+    private Timeout congestionControlTimeout;
+    private final Semaphore limiter;
 
     private int congestionDegreeOfConcurrency = 1;
     private long congestionWaitTimeInMilliseconds = 100;
-    private BatchPartitionMetric oldPartitionMetric;
-    private BatchPartitionMetric partitionMetric;
+    private final BatchPartitionMetric oldPartitionMetric;
+    private final BatchPartitionMetric partitionMetric;
 
-
-    public BatchAsyncStreamer(
+    BatchAsyncStreamer(
         final int maxBatchOperationCount,
         final int maxBatchByteSize,
         final HashedWheelTimer timer,
@@ -88,7 +87,7 @@ public class BatchAsyncStreamer implements AutoCloseable {
         this.startCongestionControlTimer();
     }
 
-    public final void add(ItemBatchOperation<?> operation) {
+    void add(final ItemBatchOperation<?> operation) {
 
         BatchAsyncBatcher toDispatch = null;
 
@@ -101,6 +100,7 @@ public class BatchAsyncStreamer implements AutoCloseable {
 
         if (toDispatch != null) {
             toDispatch.dispatchBatch(this.partitionMetric);  // result discarded for fire and forget
+            this.resetTimer();
         }
     }
 
@@ -148,6 +148,12 @@ public class BatchAsyncStreamer implements AutoCloseable {
     }
 
     private void resetTimer() {
+
+        // Cancel the current timeout so that a small batch is not dispatched.
+        if (this.currentTimeout != null) {
+            this.currentTimeout.cancel();
+        }
+
         this.currentTimeout = this.timer.newTimeout(
             timeout -> this.dispatchTimer(),
             dispatchTimerInMilliseconds,
@@ -164,17 +170,17 @@ public class BatchAsyncStreamer implements AutoCloseable {
     private void runCongestionControl() {
 
         while (true) {
-            long elapsedTimeInMilliseconds = this.partitionMetric.getTimeTakenInMilliseconds() - this.oldPartitionMetric.getTimeTakenInMilliseconds();
+            final long elapsedTimeInMilliseconds = this.partitionMetric.getTimeTakenInMilliseconds() - this.oldPartitionMetric.getTimeTakenInMilliseconds();
 
             if (elapsedTimeInMilliseconds >= this.congestionWaitTimeInMilliseconds) {
 
-                long diffThrottle = this.partitionMetric.getNumberOfThrottles() - this.oldPartitionMetric.getNumberOfThrottles();
-                long changeItemsCount = this.partitionMetric.getNumberOfItemsOperatedOn() - this.oldPartitionMetric.getNumberOfItemsOperatedOn();
+                final long diffThrottle = this.partitionMetric.getNumberOfThrottles() - this.oldPartitionMetric.getNumberOfThrottles();
+                final long changeItemsCount = this.partitionMetric.getNumberOfItemsOperatedOn() - this.oldPartitionMetric.getNumberOfItemsOperatedOn();
                 this.oldPartitionMetric.add(changeItemsCount, elapsedTimeInMilliseconds, diffThrottle);
 
                 if (diffThrottle > 0) {
                     // Decrease should not lead to degreeOfConcurrency 0 as this will just block the thread here and no one would release it.
-                    int decreaseCount = Math.min(this.congestionDecreaseFactor, this.congestionDegreeOfConcurrency / 2);
+                    final int decreaseCount = Math.min(this.congestionDecreaseFactor, this.congestionDegreeOfConcurrency / 2);
 
                     // We got a throttle so we need to back off on the degree of concurrency.
                     try {

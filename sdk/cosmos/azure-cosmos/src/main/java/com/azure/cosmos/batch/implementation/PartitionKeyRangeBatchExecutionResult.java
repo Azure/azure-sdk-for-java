@@ -7,13 +7,13 @@ import com.azure.cosmos.batch.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
-public final class PartitionKeyRangeBatchExecutionResult {
+final class PartitionKeyRangeBatchExecutionResult {
 
     private final Iterable<ItemBatchOperation<?>> operations;
     private final String partitionKeyRangeId;
     private final TransactionalBatchResponse serverResponse;
 
-    public PartitionKeyRangeBatchExecutionResult(
+    PartitionKeyRangeBatchExecutionResult(
         final String pkRangeId,
         final Iterable<ItemBatchOperation<?>> operations,
         final TransactionalBatchResponse serverResponse) {
@@ -24,7 +24,7 @@ public final class PartitionKeyRangeBatchExecutionResult {
     }
 
     public boolean isSplit() {
-        TransactionalBatchResponse response = this.getServerResponse();
+        final TransactionalBatchResponse response = this.getServerResponse();
 
         return response != null && response.getResponseStatus() == HttpResponseStatus.GONE.code()
             && (response.getSubStatusCode() == SubStatusCodes.COMPLETING_SPLIT
@@ -40,7 +40,7 @@ public final class PartitionKeyRangeBatchExecutionResult {
         return partitionKeyRangeId;
     }
 
-    public TransactionalBatchResponse getServerResponse() {
+    TransactionalBatchResponse getServerResponse() {
         return serverResponse;
     }
 }

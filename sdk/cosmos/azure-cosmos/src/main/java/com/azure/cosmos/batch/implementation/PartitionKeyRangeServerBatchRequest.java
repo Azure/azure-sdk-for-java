@@ -19,7 +19,7 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
      * @param maxBodyLength Maximum length allowed for the request body.
      * @param maxOperationCount Maximum number of operations allowed in the request.
      */
-    PartitionKeyRangeServerBatchRequest(
+    private PartitionKeyRangeServerBatchRequest(
         final String partitionKeyRangeId,
         int maxBodyLength,
         int maxOperationCount) {
@@ -44,7 +44,7 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
      * @return A newly created instance of {@link PartitionKeyRangeServerBatchRequest} and the overflow
      * ItemBatchOperation not being processed.
      */
-    public static CompletableFuture<ServerOperationBatchRequest> createAsync(
+    static CompletableFuture<ServerOperationBatchRequest> createAsync(
         final String partitionKeyRangeId,
         final List<ItemBatchOperation<?>> operations,
         final int maxBodyLength,

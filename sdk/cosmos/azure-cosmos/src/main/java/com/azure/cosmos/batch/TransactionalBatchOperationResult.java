@@ -17,7 +17,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * @param <TResource> the type parameter
  */
-public class TransactionalBatchOperationResult<TResource> implements AutoCloseable {
+public final class TransactionalBatchOperationResult<TResource> implements AutoCloseable {
 
     private final static Logger logger = LoggerFactory.getLogger(TransactionalBatchOperationResult.class);
 
@@ -254,5 +254,6 @@ public class TransactionalBatchOperationResult<TResource> implements AutoCloseab
 
         this.resource = null;
         this.resourceObject = null;
+        this.cosmosDiagnostics = null;
     }
 }

@@ -36,7 +36,7 @@ import static io.netty.handler.codec.http.HttpResponseStatus.TOO_MANY_REQUESTS;
  * The result of the request is used to wire up all responses with the original tasks for each operation.
  * @see ItemBatchOperation
  */
-public class BatchAsyncBatcher {
+class BatchAsyncBatcher {
 
     private static final Logger logger = LoggerFactory.getLogger(BatchAsyncBatcher.class);
 
@@ -49,7 +49,7 @@ public class BatchAsyncBatcher {
     private final int maxBatchOperationCount;
     private final BatchAsyncBatcherRetrier retrier;
 
-    public BatchAsyncBatcher(
+    BatchAsyncBatcher(
         final int maxBatchOperationCount,
         final int maxBatchByteSize,
         final BatchAsyncBatcherExecutor executor,
@@ -67,7 +67,7 @@ public class BatchAsyncBatcher {
         this.retrier = retrier;
     }
 
-    public boolean tryAdd(ItemBatchOperation<?> operation) {
+    boolean tryAdd(final ItemBatchOperation<?> operation) {
 
         if (this.dispatched) {
             logger.error("Add operation attempted on dispatched batch.");
@@ -82,7 +82,7 @@ public class BatchAsyncBatcher {
             return false;
         }
 
-        int itemByteSize = operation.getApproximateSerializedLength();
+        final int itemByteSize = operation.getApproximateSerializedLength();
 
         if (!this.operations.isEmpty() && itemByteSize + this.currentSize > this.maxBatchByteSize) {
             logger.info("Batch is full - Max byte size {} reached.", this.maxBatchByteSize);
@@ -99,13 +99,12 @@ public class BatchAsyncBatcher {
         return true;
     }
 
-    void dispatchBatch(BatchPartitionMetric partitionMetric) {
+    void dispatchBatch(final BatchPartitionMetric partitionMetric) {
 
         checkState(interlockIncrementCheck.tryAcquire(), "failed to acquire dispatch permit");
 
         this.createBatchRequestAsync()
             .exceptionally(exception -> {
-                logger.error("exception: {} {}", exception.getMessage(), exception.getStackTrace());
 
                 // Exceptions happening during request creation, fail the entire list
                 this.failBatchOperations(this.operations, exception);
@@ -113,29 +112,18 @@ public class BatchAsyncBatcher {
             }).thenAcceptAsync(batchRequest -> {
 
                 // Serialization might leave some pending operations out of the batch
-                PartitionKeyRangeServerBatchRequest serverRequest = batchRequest.getBatchRequest();
+                final PartitionKeyRangeServerBatchRequest serverRequest = batchRequest.getBatchRequest();
                 final List<ItemBatchOperation<?>> batchPendingOperations = batchRequest.getBatchPendingOperations();
 
-                try {
-                    // Any overflow goes to a new batch
-                    for (ItemBatchOperation<?> batchOperation : batchPendingOperations) {
-                        this.retrier.apply(batchOperation).exceptionally((exception) -> {
-                            batchOperation.getContext().fail(this, exception);
-                            return null;
-                        });
-                    }
-                } catch (Exception exception) {
-                    // If retrier throws some exception, fail the pending operation but try out the serverRequest
-                    this.failBatchOperations(batchPendingOperations, exception);
+                // Any overflow goes to a new batch
+                for (ItemBatchOperation<?> batchOperation : batchPendingOperations) {
+                    this.retrier.apply(batchOperation).exceptionally((exception) -> {
+                        batchOperation.getContext().fail(this, exception);
+                        return null;
+                    });
                 }
 
-                try {
-                   this.executeServerRequest(serverRequest, partitionMetric);
-                } catch (Throwable throwable) {
-                    // Exceptions happening during execution, fail all the tasks part of the request (excluding overflow)
-                    this.failBatchOperations(serverRequest.getOperations(), throwable);
-                    throw new CompletionException(throwable);
-                }
+                this.executeServerRequest(serverRequest, partitionMetric);
             })
             .exceptionally(throwable -> {
                 logger.error("Exception encountered in executing batch: {} {}", throwable.getMessage(), throwable.getStackTrace());
@@ -148,7 +136,7 @@ public class BatchAsyncBatcher {
             });
     }
 
-    public CompletableFuture<ServerOperationBatchRequest> createBatchRequestAsync() {
+    CompletableFuture<ServerOperationBatchRequest> createBatchRequestAsync() {
 
         // All operations should be for the same PKRange
         final String partitionKeyRangeId = this.operations.get(0).getContext().getPartitionKeyRangeId();
@@ -162,11 +150,11 @@ public class BatchAsyncBatcher {
             false);
     }
 
-    private void executeServerRequest(PartitionKeyRangeServerBatchRequest serverRequest, BatchPartitionMetric partitionMetric) throws Throwable {
+    private void executeServerRequest(final PartitionKeyRangeServerBatchRequest serverRequest, final BatchPartitionMetric partitionMetric) {
 
-        Instant startBatchExecution = Instant.now();
+        final Instant startBatchExecution = Instant.now();
         this.executor.apply(serverRequest)
-            .subscribe((PartitionKeyRangeBatchExecutionResult executionResult) -> {
+            .subscribe((final PartitionKeyRangeBatchExecutionResult executionResult) -> {
 
                 // Fill partition metric
                 boolean throttled = executionResult.getServerResponse().stream().anyMatch(r -> r.getResponseStatus() == TOO_MANY_REQUESTS.code());
@@ -175,31 +163,38 @@ public class BatchAsyncBatcher {
                     Duration.between(startBatchExecution, Instant.now()).toMillis(),
                     throttled ? 1 : 0);
 
-                PartitionKeyRangeBatchResponse batchResponse = new PartitionKeyRangeBatchResponse(
+                try (PartitionKeyRangeBatchResponse batchResponse = new PartitionKeyRangeBatchResponse(
                     serverRequest.getOperations().size(),
-                    executionResult.getServerResponse());
+                    executionResult.getServerResponse())) {
 
-                for (ItemBatchOperation<?> itemBatchOperation : batchResponse.getBatchOperations()) {
+                    for (final ItemBatchOperation<?> itemBatchOperation : batchResponse.getBatchOperations()) {
 
-                    TransactionalBatchOperationResult<?> operationResult = batchResponse.get(itemBatchOperation.getOperationIndex());
-                    ItemBatchOperationContext context = itemBatchOperation.getContext();
+                        final TransactionalBatchOperationResult<?> operationResult = batchResponse.get(itemBatchOperation.getOperationIndex());
+                        final ItemBatchOperationContext context = itemBatchOperation.getContext();
 
-                    operationResult.setCosmosDiagnostics(batchResponse.getCosmosDiagnostics());
+                        operationResult.setCosmosDiagnostics(batchResponse.getCosmosDiagnostics());
 
-                    if (!operationResult.isSuccessStatusCode()) {
-                        context.shouldRetry(operationResult).subscribe(
-                            result -> {
-                                if (result.shouldRetry) {
-                                    this.retrier.apply(itemBatchOperation).exceptionally((exception) -> {
-                                        context.fail(this, exception);
-                                        return null;
-                                    });
-                                } else {
-                                    context.complete(this, operationResult);
-                                }
-                            });
-                    } else {
-                        context.complete(this, operationResult);
+                        if (!operationResult.isSuccessStatusCode()) {
+                            context.shouldRetry(operationResult).subscribe(
+                                result -> {
+                                    if (result.shouldRetry) {
+                                        this.retrier.apply(itemBatchOperation).exceptionally((exception) -> {
+                                            context.fail(this, exception);
+                                            return null;
+                                        });
+                                    } else {
+                                        context.complete(this, operationResult);
+
+                                        // Close the operation when completing
+                                        itemBatchOperation.close();
+                                    }
+                                });
+                        } else {
+                            context.complete(this, operationResult);
+
+                            // Close the operation when completing
+                            itemBatchOperation.close();
+                        }
                     }
                 }
 
@@ -212,13 +207,13 @@ public class BatchAsyncBatcher {
         });
     }
 
-    private void failBatchOperations(List<ItemBatchOperation<?>> batchOperations, Throwable exception) {
+    private void failBatchOperations(final List<ItemBatchOperation<?>> batchOperations, final Throwable exception) {
         for (ItemBatchOperation<?> batchOperation : batchOperations) {
             batchOperation.getContext().fail(this, exception);
         }
     }
 
-    public final boolean isEmpty() {
+    final boolean isEmpty() {
         return this.operations.isEmpty();
     }
 }

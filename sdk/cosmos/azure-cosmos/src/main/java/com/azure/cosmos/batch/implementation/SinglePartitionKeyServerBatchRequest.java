@@ -33,14 +33,14 @@ public final class SinglePartitionKeyServerBatchRequest extends ServerBatchReque
      *
      * @return A newly created instance of {@link SinglePartitionKeyServerBatchRequest}.
      */
-    public static SinglePartitionKeyServerBatchRequest createAsync(
+    static SinglePartitionKeyServerBatchRequest createAsync(
         final PartitionKey partitionKey,
         final List<ItemBatchOperation<?>> operations) {
 
         checkNotNull(partitionKey, "expected non-null partitionKey");
         checkNotNull(operations, "expected non-null operations");
 
-        SinglePartitionKeyServerBatchRequest request = new SinglePartitionKeyServerBatchRequest(partitionKey);
+        final SinglePartitionKeyServerBatchRequest request = new SinglePartitionKeyServerBatchRequest(partitionKey);
 
         request.setAtomicBatch(true);
         request.setShouldContinueOnError(false);

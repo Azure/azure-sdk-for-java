@@ -62,7 +62,8 @@ public class BatchOperationResultTests {
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void toResponseMessageHasPropertiesMapped() {
         TransactionalBatchOperationResult<?> result = createTestResult();
-        RxDocumentServiceResponse response = BatchExecUtils.convertToDocumentServiceResponse(result);
+        TransactionalBatchOperationResult<?> copiedResult = new TransactionalBatchOperationResult<>(result);
+        RxDocumentServiceResponse response = BatchExecUtils.convertToDocumentServiceResponse(copiedResult);
 
         assertEquals(result.getResponseStatus(), response.getStatusCode());
         assertEquals(String.valueOf(result.getSubStatusCode()), response.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS));

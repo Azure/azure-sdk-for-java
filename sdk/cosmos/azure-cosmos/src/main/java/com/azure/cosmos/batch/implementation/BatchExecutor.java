@@ -14,16 +14,14 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-
-public final class BatchExecutor {
+final class BatchExecutor {
 
     private final CosmosAsyncContainer container;
     private final List<ItemBatchOperation<?>> operations;
     private final RequestOptions options;
     private final PartitionKey partitionKey;
 
-    public BatchExecutor(
+    BatchExecutor(
         final CosmosAsyncContainer container,
         final PartitionKey partitionKey,
         final List<ItemBatchOperation<?>> operations,
@@ -35,25 +33,18 @@ public final class BatchExecutor {
         this.options = options;
     }
 
-    public Mono<TransactionalBatchResponse> executeAsync() {
-
-        BatchExecUtils.ensureValid(this.operations, this.options);
-        final ArrayList<ItemBatchOperation<?>> operations = new ArrayList<>(this.operations);
-        SinglePartitionKeyServerBatchRequest request = SinglePartitionKeyServerBatchRequest.createAsync(this.partitionKey, operations);
-
-        return executeBatchRequestAsync(request);
-    }
 
     /**
-     * Makes a single batch request to the server.
-     *
-     * @param request A server request with a set of operations on items.
+     * Create a batch request from list of operations and executes it.
      *
      * @return Response from the server.
      */
-    private Mono<TransactionalBatchResponse> executeBatchRequestAsync(final SinglePartitionKeyServerBatchRequest request) {
+    final Mono<TransactionalBatchResponse> executeAsync() {
 
-        checkNotNull(request, "expected non-null request");
+        BatchExecUtils.ensureValid(this.operations, this.options);
+        final ArrayList<ItemBatchOperation<?>> operations = new ArrayList<>(this.operations);
+
+        final SinglePartitionKeyServerBatchRequest request = SinglePartitionKeyServerBatchRequest.createAsync(this.partitionKey, operations);
         request.setAtomicBatch(true);
         request.setShouldContinueOnError(false);
 

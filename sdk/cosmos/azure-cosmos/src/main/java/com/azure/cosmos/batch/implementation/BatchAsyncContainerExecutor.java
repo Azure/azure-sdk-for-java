@@ -45,7 +45,7 @@ import static com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper
  * <p>
  * {@link BatchAsyncStreamer}
  */
-public class BatchAsyncContainerExecutor implements AutoCloseable {
+public final class BatchAsyncContainerExecutor implements AutoCloseable {
 
     private static final int DEFAULT_MAX_DEGREE_OF_CONCURRENCY = 50;
     private final HashedWheelTimer timer = new HashedWheelTimer();
@@ -80,15 +80,15 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
 
         checkNotNull(operation, "expected non-null operation");
 
-        CompletableFuture<TransactionalBatchOperationResult<?>> future = this.validateAndMaterializeOperation(operation, options)
+        final CompletableFuture<TransactionalBatchOperationResult<?>> future = this.validateAndMaterializeOperation(operation, options)
             .thenComposeAsync(
-                t -> this.resolvePartitionKeyRangeIdAsync(operation)
+                (Void t) -> this.resolvePartitionKeyRangeIdAsync(operation)
                     .toFuture().thenCompose(
                         (String resolvedPartitionKeyRangeId) -> {
 
-                            BatchAsyncStreamer streamer = this.getOrAddStreamerForPartitionKeyRange(resolvedPartitionKeyRangeId);
+                            final BatchAsyncStreamer streamer = this.getOrAddStreamerForPartitionKeyRange(resolvedPartitionKeyRangeId);
 
-                            ItemBatchOperationContext context = new ItemBatchOperationContext(
+                            final ItemBatchOperationContext context = new ItemBatchOperationContext(
                                 resolvedPartitionKeyRangeId,
                                 BatchAsyncContainerExecutor.getRetryPolicy(this.throttlingRetryOptions));
                             operation.attachContext(context);
@@ -101,7 +101,7 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
         return Mono.fromFuture(future);
     }
 
-    public CompletableFuture<Boolean> validateAndMaterializeOperation(
+    CompletableFuture<Void> validateAndMaterializeOperation(
         final ItemBatchOperation<?> operation,
         final RequestOptions options) {
 
@@ -113,13 +113,12 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
 
             BatchAsyncContainerExecutor.validateOperationEpk(operation, options);
         }
+
         // This is used to get approximate length while adding to Batcher.
         return operation.materializeResource();
     }
 
-    private Mono<PartitionKeyRangeBatchExecutionResult> executeAsync(PartitionKeyRangeServerBatchRequest request) {
-        request.setAtomicBatch(false);
-        request.setShouldContinueOnError(true);
+    private Mono<PartitionKeyRangeBatchExecutionResult> executeAsync(final PartitionKeyRangeServerBatchRequest request) {
 
         BridgeInternal.recordBulkSemaphoreStatisticsStart(request.getCosmosDiagnostics());
         final Semaphore limiter = this.getOrAddLimiterForPartitionKeyRange(request.getPartitionKeyRangeId());
@@ -132,7 +131,7 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
 
         BridgeInternal.recordBulkSemaphoreStatisticsEnd(request.getCosmosDiagnostics());
 
-        Mono<TransactionalBatchResponse> transactionalBatchResponse = this.docClientWrapper
+        final Mono<TransactionalBatchResponse> transactionalBatchResponse = this.docClientWrapper
             .executeBatchRequest(BridgeInternal.getLink(container), request, new RequestOptions(), false);
 
         return transactionalBatchResponse
@@ -148,19 +147,19 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
             });
     }
 
-    private static BatchPartitionKeyRangeGoneRetryPolicy getRetryPolicy(ThrottlingRetryOptions throttlingRetryOptions) {
+    private static BatchPartitionKeyRangeGoneRetryPolicy getRetryPolicy(final ThrottlingRetryOptions throttlingRetryOptions) {
         return new BatchPartitionKeyRangeGoneRetryPolicy(
             new ResourceThrottleRetryPolicy(
                 throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
                 throttlingRetryOptions.getMaxRetryWaitTime()));
     }
 
-    private CompletableFuture<Void> reBatchAsync(ItemBatchOperation<?> operation) {
+    private CompletableFuture<Void> reBatchAsync(final ItemBatchOperation<?> operation) {
 
         return CompletableFuture.runAsync(() -> {
             this.resolvePartitionKeyRangeIdAsync(operation).subscribe(
                 (String resolvedPartitionKeyRangeId) -> {
-                    BatchAsyncStreamer streamer = this.getOrAddStreamerForPartitionKeyRange(resolvedPartitionKeyRangeId);
+                    final BatchAsyncStreamer streamer = this.getOrAddStreamerForPartitionKeyRange(resolvedPartitionKeyRangeId);
                     streamer.add(operation);
             });
         });
@@ -183,10 +182,10 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
             throw new IllegalStateException("EPK is not supported");
         }
 
-        Mono<String> pkRangeIdMono = BatchExecUtils.getCollectionInfoAsync(this.docClientWrapper, container)
+        final Mono<String> pkRangeIdMono = BatchExecUtils.getCollectionInfoAsync(this.docClientWrapper, container)
             .flatMap(collection -> {
-                PartitionKeyDefinition definition = collection.getPartitionKey();
-                PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
+                final PartitionKeyDefinition definition = collection.getPartitionKey();
+                final PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
                 operation.setPartitionKeyJson(partitionKeyInternal.toJson());
 
                 return this.docClientWrapper.getPartitionKeyRangeCache()
@@ -219,13 +218,13 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
             || properties.containsKey(BackendHeaders.EFFECTIVE_PARTITION_KEY_STRING)
             || properties.containsKey(HttpHeaders.PARTITION_KEY)) {
 
-            byte[] epk = (byte[]) properties.computeIfPresent(BackendHeaders.EFFECTIVE_PARTITION_KEY,
+            final byte[] epk = (byte[]) properties.computeIfPresent(BackendHeaders.EFFECTIVE_PARTITION_KEY,
                 (k, v) -> v instanceof byte[] ? v : null);
 
-            String epkString = (String) properties.computeIfPresent(BackendHeaders.EFFECTIVE_PARTITION_KEY_STRING,
+            final String epkString = (String) properties.computeIfPresent(BackendHeaders.EFFECTIVE_PARTITION_KEY_STRING,
                 (k, v) -> v.getClass()  == String.class ? v : null);
 
-            String pkString = (String) properties.computeIfPresent(HttpHeaders.PARTITION_KEY,
+            final String pkString = (String) properties.computeIfPresent(HttpHeaders.PARTITION_KEY,
                 (k, v) -> v.getClass() == String.class ? v : null);
 
             checkState(!((epk == null && pkString == null) || (epkString == null)),
@@ -238,11 +237,11 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
         }
     }
 
-    private Semaphore getOrAddLimiterForPartitionKeyRange(String partitionKeyRangeId) {
+    private Semaphore getOrAddLimiterForPartitionKeyRange(final String partitionKeyRangeId) {
         return this.limiters.computeIfAbsent(partitionKeyRangeId, id -> new Semaphore(1));
     }
 
-    private BatchAsyncStreamer getOrAddStreamerForPartitionKeyRange(String partitionKeyRangeId) {
+    private BatchAsyncStreamer getOrAddStreamerForPartitionKeyRange(final String partitionKeyRangeId) {
 
         return this.streamers.computeIfAbsent(partitionKeyRangeId, id -> new BatchAsyncStreamer(
             this.maxOperationCount,
@@ -256,12 +255,11 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
 
     private PartitionKeyInternal getPartitionKeyInternal(
         final ItemBatchOperation<?> operation,
-        PartitionKeyDefinition partitionKeyDefinition) {
+        final PartitionKeyDefinition partitionKeyDefinition) {
 
         checkNotNull(operation, "expected non-null operation");
 
-        PartitionKey partitionKey = operation.getPartitionKey();
-
+        final PartitionKey partitionKey = operation.getPartitionKey();
         if (partitionKey == null) {
             return ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
         } else {

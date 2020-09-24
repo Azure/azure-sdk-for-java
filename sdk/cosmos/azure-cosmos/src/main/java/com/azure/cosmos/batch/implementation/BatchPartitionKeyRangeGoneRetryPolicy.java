@@ -22,14 +22,14 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * See {@link BatchAsyncBatcher}
  * See {@link ItemBatchOperationContext}
  */
-public final class BatchPartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy {
+final class BatchPartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy {
 
     private static final int MAX_RETRIES = 1;
 
     private final DocumentClientRetryPolicy nextRetryPolicy;
     private int attemptedRetries;
 
-    public BatchPartitionKeyRangeGoneRetryPolicy(DocumentClientRetryPolicy nextRetryPolicy) {
+    BatchPartitionKeyRangeGoneRetryPolicy(DocumentClientRetryPolicy nextRetryPolicy) {
         this.nextRetryPolicy = nextRetryPolicy;
     }
 

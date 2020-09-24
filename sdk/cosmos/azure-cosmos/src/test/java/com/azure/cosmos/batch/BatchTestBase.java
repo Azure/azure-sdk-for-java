@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.batch.emulatortest;
+package com.azure.cosmos.batch;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -38,7 +38,7 @@ public class BatchTestBase extends TestSuiteBase {
     TestDoc TestDocPk1ExistingC;
     TestDoc TestDocPk1ExistingD;
 
-    BatchTestBase(CosmosClientBuilder clientBuilder) {
+    public BatchTestBase(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
@@ -79,7 +79,7 @@ public class BatchTestBase extends TestSuiteBase {
         return new TestDoc(UUID.randomUUID().toString(), this.random.nextInt(), description, partitionKey);
     }
 
-    TestDoc populateTestDoc(String id, String partitionKey) {
+    public TestDoc populateTestDoc(String id, String partitionKey) {
         String description = StringUtils.repeat("x", 20);
         return new TestDoc(id, this.random.nextInt(), description, partitionKey);
     }
