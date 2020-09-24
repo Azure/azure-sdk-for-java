@@ -99,11 +99,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
     @Override
     public void addCredits(int credits) {
         if (!isDisposed.get()) {
-            try {
-                dispatcher.invoke(() -> receiver.flow(credits));
-            } catch (IOException e) {
-                logger.warning("Unable to schedule work to add more credits.", e);
-            }
+           receiver.flow(credits);
         }
     }
 

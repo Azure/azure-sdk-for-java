@@ -176,7 +176,7 @@ class PartitionPumpManager {
                     .window(maxBatchSize);
             }
             partitionEventFlux
-                .flatMap(Flux::collectList)
+                .concatMap(Flux::collectList)
                 .publishOn(Schedulers.boundedElastic())
                 .subscribe(partitionEventBatch -> {
                     processEvents(partitionContext, partitionProcessor,

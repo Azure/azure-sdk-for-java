@@ -154,7 +154,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             // For a new link, add the prefetch as credits.
             linkCreditsAdded.set(true);
             next.addCredits(prefetch);
-            next.setEmptyCreditListener(this::getCreditsToAdd);
+            next.setEmptyCreditListener(this::replenishCredits);
 
             currentLinkSubscriptions = Disposables.composite(
                 next.getEndpointStates().subscribe(
@@ -307,14 +307,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
 
         Operators.addCap(REQUESTED, this, request);
-
-        final AmqpReceiveLink link = currentLink;
-        if (link != null && !linkCreditsAdded.getAndSet(true)) {
-            int credits = getCreditsToAdd();
-            logger.verbose("Link credits not yet added. Adding: {}", credits);
-            link.addCredits(credits);
-        }
-
         drain();
     }
 
@@ -457,6 +449,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
         messageQueue.clear();
         return true;
+    }
+
+    private int replenishCredits() {
+        return 1;
     }
 
     private int getCreditsToAdd() {
