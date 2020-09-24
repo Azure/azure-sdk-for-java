@@ -3,6 +3,7 @@
 
 module com.azure.messaging.eventhubs {
     requires transitive com.azure.core;
+    requires transitive com.azure.core.experimental;
     requires transitive com.azure.core.amqp;
 
     requires com.microsoft.azure.qpid.protonj.extensions;

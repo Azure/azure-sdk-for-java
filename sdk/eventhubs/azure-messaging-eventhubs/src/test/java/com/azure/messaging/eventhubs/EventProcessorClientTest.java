@@ -474,7 +474,7 @@ public class EventProcessorClientTest {
 
     private PartitionEvent getEvent(EventData event) {
         PartitionContext context = new PartitionContext("test-ns", "foo", "bar", "baz");
-        return new PartitionEvent(context, event, null);
+        return new PartitionEvent(context, event, null, null);
     }
 
     private static final class TestPartitionProcessor extends PartitionProcessor {
