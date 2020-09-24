@@ -211,7 +211,7 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
     /** @return entry point to network resource usage management API entry point */
     public NetworkUsages usages() {
         if (this.networkUsages == null) {
-            this.networkUsages = new NetworkUsagesImpl(super.innerManagementClient);
+            this.networkUsages = new NetworkUsagesImpl(this.serviceClient());
         }
         return this.networkUsages;
     }
