@@ -205,7 +205,7 @@ final class GenericResourceImpl
                         id = innerModel().id();
                     } else {
                         id = ResourceUtils.constructResourceId(
-                            serviceClient.getSubscriptionId(),
+                            this.manager().subscriptionId(),
                             resourceGroupName(),
                             resourceProviderNamespace(),
                             resourceType(),
