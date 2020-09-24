@@ -87,12 +87,12 @@ com.azure.resourcemanager:azure-resourcemanager-network;2.0.0-beta.4;2.0.0
 com.azure.resourcemanager:azure-resourcemanager-privatedns;2.0.0-beta.4;2.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-resources;2.0.0-beta.4;2.0.0
 com.azure.resourcemanager:azure-resourcemanager-redis;2.0.0-beta.4;2.0.0-beta.5
-com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.4;2.0.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-servicebus;2.0.0-beta.5;2.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-sql;2.0.0-beta.4;2.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-storage;2.0.0-beta.4;2.0.0
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.0.0-beta.4;2.0.0-beta.5
-com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.4;2.0.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.1;2.0.0-beta.1
 com.azure:azure-spring-boot-starter-active-directory-b2c;3.0.0-beta.1;3.0.0-beta.1
 com.azure:azure-spring-boot-starter-active-directory;3.0.0-beta.1;3.0.0-beta.1
 com.azure:azure-spring-boot-starter-cosmos;3.0.0-beta.1;3.0.0-beta.1
