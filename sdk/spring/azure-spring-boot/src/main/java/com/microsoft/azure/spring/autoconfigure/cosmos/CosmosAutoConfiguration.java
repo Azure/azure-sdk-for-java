@@ -38,20 +38,14 @@ public class CosmosAutoConfiguration extends AbstractCosmosConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "azure.cosmos", name = "secondary-key")
     public AzureKeyCredential azureKeyCredential() {
         return new AzureKeyCredential(properties.getKey());
     }
 
     @Bean
-    public CosmosClientBuilder cosmosClientBuilder(@Autowired(required = false) AzureKeyCredential azureKeyCredential) {
+    public CosmosClientBuilder cosmosClientBuilder(AzureKeyCredential azureKeyCredential) {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder();
-        if (null == azureKeyCredential) {
-            cosmosClientBuilder.key(properties.getKey());
-        } else {
-            cosmosClientBuilder.credential(azureKeyCredential);
-        }
-        cosmosClientBuilder
+        cosmosClientBuilder.credential(azureKeyCredential)
             .consistencyLevel(properties.getConsistencyLevel())
             .endpoint(properties.getUri());
         if (ConnectionMode.GATEWAY == properties.getConnectionMode()) {

@@ -50,12 +50,13 @@ Open `application.properties` file and add below properties with your Cosmos DB 
 azure.cosmos.uri=your-cosmos-uri
 azure.cosmos.key=your-cosmos-key
 azure.cosmos.database=your-cosmos-databasename
+azure.cosmos.populateQueryMetrics=true
+secondary-key=put-your-cosmos-secondary-key-here
 ```
 
 Property `azure.cosmos.consistency-level` is also supported.
 
-Property `azure.cosmos.credential` is also supported. AzureKeyCredential feature provides capability to 
-rotate keys on the fly. You can use `CosmosCredentialConfiguration.switchXXX()` methods to rotate key. For more information on this, see the [Sample Application][sample_cosmos_switch_key] code.
+AzureKeyCredential feature provides capability to rotate keys on the fly. You can use `AzureKeyCredential.update()` methods to rotate key. For more information on this, see the [Sample Application][sample_cosmos_switch_key] code.
 
 #### (Optional) Add Spring Boot Actuator
 If you choose to add Spring Boot Actuator for Cosmos DB, add `management.health.azure-cosmos.enabled=true` to application.properties.
@@ -157,7 +158,7 @@ So far ReactiveCosmosRepository provides basic save, delete and find operations.
 
 ### Create an Application class
 Here create an application class with all the components
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/cosmos/CosmosSampleApplication.java#L18-L65 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/cosmos/CosmosSampleApplication.java#L21-L116 -->
 ```java
 @SpringBootApplication
 public class CosmosSampleApplication implements CommandLineRunner {
@@ -167,18 +168,25 @@ public class CosmosSampleApplication implements CommandLineRunner {
     @Autowired
     private UserRepository repository;
 
-    @Autowired(required = false)
+    @Autowired
     private AzureKeyCredential azureKeyCredential;
 
     @Autowired
     private CosmosProperties properties;
 
+    /**
+     * The secondaryKey is used to rotate key for authorizing request.
+     */
+    @Value("${secondary-key}")
+    private String secondaryKey;
+
     public static void main(String[] args) {
         SpringApplication.run(CosmosSampleApplication.class, args);
     }
 
-    public void run(String... var1) throws Exception {
-        final User testUser = new User("testId", "testFirstName", "testLastName", "test address line one");
+    public void run(String... var1) {
+        final User testUser = new User("testId", "testFirstName",
+            "testLastName", "test address line one");
 
         // Save the User class to Azure Cosmos DB database.
         final Mono<User> saveUserMono = repository.save(testUser);
@@ -193,7 +201,8 @@ public class CosmosSampleApplication implements CommandLineRunner {
 
         final User savedUser = saveUserMono.block();
         Assert.state(savedUser != null, "Saved user must not be null");
-        Assert.state(savedUser.getFirstName().equals(testUser.getFirstName()), "Saved user first name doesn't match");
+        Assert.state(savedUser.getFirstName().equals(testUser.getFirstName()),
+            "Saved user first name doesn't match");
 
         firstNameUserFlux.collectList().block();
 
@@ -201,8 +210,10 @@ public class CosmosSampleApplication implements CommandLineRunner {
         Assert.isTrue(optionalUserResult.isPresent(), "Cannot find user.");
 
         final User result = optionalUserResult.get();
-        Assert.state(result.getFirstName().equals(testUser.getFirstName()), "query result firstName doesn't match!");
-        Assert.state(result.getLastName().equals(testUser.getLastName()), "query result lastName doesn't match!");
+        Assert.state(result.getFirstName().equals(testUser.getFirstName()),
+            "query result firstName doesn't match!");
+        Assert.state(result.getLastName().equals(testUser.getLastName()),
+            "query result lastName doesn't match!");
         LOGGER.info("findOne in User collection get result: {}", result.toString());
 
         switchKey();
@@ -212,11 +223,7 @@ public class CosmosSampleApplication implements CommandLineRunner {
      * Switch cosmos authorization key
      */
     private void switchKey() {
-        if (null == azureKeyCredential) {
-            return;
-        }
-
-        azureKeyCredential.update(properties.getSecondaryKey());
+        azureKeyCredential.update(secondaryKey);
         LOGGER.info("Switch to secondary key.");
 
         final User testUserUpdated = new User("testIdUpdated", "testFirstNameUpdated",
@@ -290,4 +297,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
-[sample_cosmos_switch_key]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos/src/main/java/com/azure/cosmos/CosmosSampleApplication.java
+[sample_cosmos_switch_key]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos/SampleApplication.java

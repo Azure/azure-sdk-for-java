@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.core.credential.AzureKeyCredential;
-import com.microsoft.azure.spring.autoconfigure.cosmos.CosmosProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +23,11 @@ public class CosmosSampleApplication implements CommandLineRunner {
     @Autowired
     private UserRepository repository;
 
-    @Autowired(required = false)
-    private AzureKeyCredential azureKeyCredential;
-
-    @Autowired
-    private CosmosProperties properties;
-
     public static void main(String[] args) {
         SpringApplication.run(CosmosSampleApplication.class, args);
     }
 
-    public void run(String... var1) throws Exception {
-        Thread.sleep(3000);
+    public void run(String... var1) {
         final User testUser = new User("testId", "testFirstName", "testLastName", "test address line one");
 
         // Save the User class to Azure Cosmos DB database.
@@ -62,44 +53,8 @@ public class CosmosSampleApplication implements CommandLineRunner {
         final User result = optionalUserResult.get();
         Assert.state(result.getFirstName().equals(testUser.getFirstName()), "query result firstName doesn't match!");
         Assert.state(result.getLastName().equals(testUser.getLastName()), "query result lastName doesn't match!");
+
         LOGGER.info("findOne in User collection get result: {}", result.toString());
-
-        switchKey();
-    }
-
-    /**
-     * Switch cosmos authorization key
-     */
-    private void switchKey() {
-        if (null == azureKeyCredential) {
-            return;
-        }
-
-        azureKeyCredential.update(properties.getSecondaryKey());
-        LOGGER.info("Switch to secondary key.");
-
-        final User testUserUpdated = new User("testIdUpdated", "testFirstNameUpdated",
-            "testLastNameUpdated", "test address Updated line one");
-        final User saveUserUpdated = repository.save(testUserUpdated).block();
-        Assert.state(saveUserUpdated != null, "Saved updated user must not be null");
-        Assert.state(saveUserUpdated.getFirstName().equals(testUserUpdated.getFirstName()),
-            "Saved updated user first name doesn't match");
-
-        final Optional<User> optionalUserUpdatedResult = repository.findById(testUserUpdated.getId()).blockOptional();
-        Assert.isTrue(optionalUserUpdatedResult.isPresent(), "Cannot find updated user.");
-        final User updatedResult = optionalUserUpdatedResult.get();
-        Assert.state(updatedResult.getFirstName().equals(testUserUpdated.getFirstName()),
-            "query updated result firstName doesn't match!");
-        Assert.state(updatedResult.getLastName().equals(testUserUpdated.getLastName()),
-            "query updated result lastName doesn't match!");
-
-        azureKeyCredential.update(properties.getKey());
-        LOGGER.info("Switch back to key.");
-        final Optional<User> userOptional = repository.findById(testUserUpdated.getId()).blockOptional();
-        Assert.isTrue(userOptional.isPresent(), "Cannot find updated user.");
-        Assert.state(updatedResult.getFirstName().equals(testUserUpdated.getFirstName()),
-            "query updated result firstName doesn't match!");
-        LOGGER.info("Finished key switch.");
     }
 
     @PostConstruct
