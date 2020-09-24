@@ -160,10 +160,10 @@ public class UploadUtils {
         if (computeMd5) {
             try {
                 return data.reduce(MessageDigest.getInstance("MD5"), (digest, buffer) -> {
-                        int position = buffer.position();
-                        byte[] bytes = FluxUtil.byteBufferToArray(buffer);
-                        digest.update(bytes, 0, bytes.length);
-                        buffer.position(position);
+                    int position = buffer.position();
+                    byte[] bytes = FluxUtil.byteBufferToArray(buffer);
+                    digest.update(bytes, 0, bytes.length);
+                    buffer.position(position);
                     return digest;
                 }).map(messageDigest -> new FluxMd5Wrapper(data, messageDigest.digest()));
             } catch (NoSuchAlgorithmException e) {
