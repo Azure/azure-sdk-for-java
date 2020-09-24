@@ -26,4 +26,4 @@ jobs:
           inputs:
             mavenPomFile: pom.xml
             goals: clean verify
-            options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
+            options: '-Dgpg.skip -Dmaven.wagon.http.pool=false -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
