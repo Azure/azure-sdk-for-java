@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
@@ -41,8 +42,8 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
      * @return true if sample runs successfully
      */
     public static boolean runSample(final AzureResourceManager azureResourceManager, int defaultPollingInterval) throws InterruptedException {
-        final String rgPrefix = azureResourceManager.sdkContext().randomResourceName("rgJavaTest", 16);
-        final String deploymentPrefix = azureResourceManager.sdkContext().randomResourceName("javaTest", 16);
+        final String rgPrefix = SdkContext.getThreadLocalSdkContext().randomResourceName("rgJavaTest", 16);
+        final String deploymentPrefix = SdkContext.getThreadLocalSdkContext().randomResourceName("javaTest", 16);
         final String sshKey = getSSHPublicKey();
         final int numDeployments = 3;
         final int pollingInterval = defaultPollingInterval < 0 ? 15 : defaultPollingInterval; // in seconds

@@ -11,6 +11,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.DatabaseEdition;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
@@ -38,8 +39,8 @@ public final class ManageSqlDatabase {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqlserver", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSDSI", 20);
+        final String sqlServerName = SdkContext.getThreadLocalSdkContext().randomResourceName("sqlserver", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgRSDSI", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
         final String firewallRuleIPAddress = "10.0.0.1";

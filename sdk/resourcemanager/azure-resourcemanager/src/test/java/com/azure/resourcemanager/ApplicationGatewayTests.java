@@ -66,8 +66,9 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        SdkContext.setThreadLocalSdkContext(sdkContext);
         AzureResourceManager.Authenticated azureAuthed =
-            AzureResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+            AzureResourceManager.authenticate(httpPipeline, profile);
         azureResourceManager = azureAuthed.withDefaultSubscription();
     }
 
@@ -82,7 +83,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testAppGatewaysInternalComplex() throws Exception {
-        new TestApplicationGateway().new PrivateComplex(azureResourceManager.sdkContext())
+        new TestApplicationGateway().new PrivateComplex(SdkContext.getThreadLocalSdkContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
@@ -93,7 +94,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testAppGatewaysPublicUrlPathBased() throws Exception {
-        new TestApplicationGateway().new UrlPathBased(azureResourceManager.sdkContext())
+        new TestApplicationGateway().new UrlPathBased(SdkContext.getThreadLocalSdkContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
@@ -273,15 +274,15 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testAppGatewaysInternalMinimal() throws Exception {
-        new TestApplicationGateway().new PrivateMinimal(azureResourceManager.sdkContext())
+        new TestApplicationGateway().new PrivateMinimal(SdkContext.getThreadLocalSdkContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testAppGatewaysStartStop() throws Exception {
-        String rgName = azureResourceManager.sdkContext().randomResourceName("rg", 13);
+        String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rg", 13);
         Region region = Region.US_EAST;
-        String name = azureResourceManager.sdkContext().randomResourceName("ag", 15);
+        String name = SdkContext.getThreadLocalSdkContext().randomResourceName("ag", 15);
         ApplicationGateway appGateway =
             azureResourceManager
                 .applicationGateways()
@@ -387,7 +388,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testAppGatewaysInternetFacingMinimal() throws Exception {
-        new TestApplicationGateway().new PublicMinimal(azureResourceManager.sdkContext())
+        new TestApplicationGateway().new PublicMinimal(SdkContext.getThreadLocalSdkContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
@@ -398,7 +399,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testAppGatewaysInternetFacingComplex() throws Exception {
-        new TestApplicationGateway().new PublicComplex(azureResourceManager.sdkContext())
+        new TestApplicationGateway().new PublicComplex(SdkContext.getThreadLocalSdkContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 }

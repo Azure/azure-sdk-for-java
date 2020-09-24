@@ -14,6 +14,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -44,11 +45,11 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final int frontendVMCount = 4;
         final int backendVMCount = 4;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEPP", 24);
-        final String frontEndNsgName = azureResourceManager.sdkContext().randomResourceName("fensg", 24);
-        final String backEndNsgName = azureResourceManager.sdkContext().randomResourceName("bensg", 24);
-        final String networkName = azureResourceManager.sdkContext().randomResourceName("vnetCOMV", 24);
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("stgCOMV", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgNEPP", 24);
+        final String frontEndNsgName = SdkContext.getThreadLocalSdkContext().randomResourceName("fensg", 24);
+        final String backEndNsgName = SdkContext.getThreadLocalSdkContext().randomResourceName("bensg", 24);
+        final String networkName = SdkContext.getThreadLocalSdkContext().randomResourceName("vnetCOMV", 24);
+        final String storageAccountName = SdkContext.getThreadLocalSdkContext().randomResourceName("stgCOMV", 20);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_SOUTH_CENTRAL;

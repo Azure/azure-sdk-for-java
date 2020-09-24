@@ -9,6 +9,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
@@ -39,8 +40,8 @@ public final class DeployUsingARMTemplateWithTags {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, IllegalAccessException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSAT", 24);
-        final String deploymentName = azureResourceManager.sdkContext().randomResourceName("dpRSAT", 24);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgRSAT", 24);
+        final String deploymentName = SdkContext.getThreadLocalSdkContext().randomResourceName("dpRSAT", 24);
         try {
             String templateJson = getTemplate(azureResourceManager);
 
@@ -140,8 +141,8 @@ public final class DeployUsingARMTemplateWithTags {
     }
 
     private static String getTemplate(AzureResourceManager azureResourceManager) throws IllegalAccessException, JsonProcessingException, IOException {
-        final String hostingPlanName = azureResourceManager.sdkContext().randomResourceName("hpRSAT", 24);
-        final String webappName = azureResourceManager.sdkContext().randomResourceName("wnRSAT", 24);
+        final String hostingPlanName = SdkContext.getThreadLocalSdkContext().randomResourceName("hpRSAT", 24);
+        final String webappName = SdkContext.getThreadLocalSdkContext().randomResourceName("wnRSAT", 24);
 
         try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/templateValue.json")) {
 

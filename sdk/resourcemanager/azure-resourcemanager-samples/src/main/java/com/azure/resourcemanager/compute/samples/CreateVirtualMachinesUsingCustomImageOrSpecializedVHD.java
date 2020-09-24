@@ -14,6 +14,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.SSHShell;
 import com.azure.resourcemanager.samples.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -43,11 +44,11 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azureResourceManager.sdkContext().randomResourceName("VM2", 15);
-        final String linuxVMName3 = azureResourceManager.sdkContext().randomResourceName("VM3", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIPDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 15);
+        final String linuxVMName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM1", 15);
+        final String linuxVMName2 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM2", 15);
+        final String linuxVMName3 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM3", 15);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOMV", 15);
+        final String publicIPDnsLabel = SdkContext.getThreadLocalSdkContext().randomResourceName("pip", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
 

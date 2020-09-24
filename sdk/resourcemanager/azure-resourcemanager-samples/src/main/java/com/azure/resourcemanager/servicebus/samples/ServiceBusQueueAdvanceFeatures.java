@@ -14,6 +14,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
@@ -48,10 +49,10 @@ public final class ServiceBusQueueAdvanceFeatures {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgSB04_", 24);
-        final String namespaceName = azureResourceManager.sdkContext().randomResourceName("namespace", 20);
-        final String queue1Name = azureResourceManager.sdkContext().randomResourceName("queue1_", 24);
-        final String queue2Name = azureResourceManager.sdkContext().randomResourceName("queue2_", 24);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgSB04_", 24);
+        final String namespaceName = SdkContext.getThreadLocalSdkContext().randomResourceName("namespace", 20);
+        final String queue1Name = SdkContext.getThreadLocalSdkContext().randomResourceName("queue1_", 24);
+        final String queue2Name = SdkContext.getThreadLocalSdkContext().randomResourceName("queue2_", 24);
         final String sendRuleName = "SendRule";
 
         try {

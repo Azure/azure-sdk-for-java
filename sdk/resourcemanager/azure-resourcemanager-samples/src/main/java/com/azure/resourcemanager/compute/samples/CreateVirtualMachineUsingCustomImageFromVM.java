@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.jcraft.jsch.JSchException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -43,12 +44,12 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azureResourceManager.sdkContext().randomResourceName("VM2", 15);
-        final String linuxVMName3 = azureResourceManager.sdkContext().randomResourceName("VM3", 15);
-        final String customImageName = azureResourceManager.sdkContext().randomResourceName("img", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIpDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 15);
+        final String linuxVMName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM1", 15);
+        final String linuxVMName2 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM2", 15);
+        final String linuxVMName3 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM3", 15);
+        final String customImageName = SdkContext.getThreadLocalSdkContext().randomResourceName("img", 15);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOMV", 15);
+        final String publicIpDnsLabel = SdkContext.getThreadLocalSdkContext().randomResourceName("pip", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;

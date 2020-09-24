@@ -15,7 +15,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure KeyVault resource management. */
 public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
@@ -55,20 +54,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
      * @return the KeyVaultManager
      */
     public static KeyVaultManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of KeyVaultManager that exposes KeyVault resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the KeyVaultManager
-     */
-    public static KeyVaultManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new KeyVaultManager(httpPipeline, profile, sdkContext);
+        return authenticate(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -93,7 +79,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
     }
 
     private KeyVaultManager(
-        final HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        final HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -101,9 +87,8 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
+                .buildClient());
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
         this.tenantId = profile.getTenantId();
     }
 

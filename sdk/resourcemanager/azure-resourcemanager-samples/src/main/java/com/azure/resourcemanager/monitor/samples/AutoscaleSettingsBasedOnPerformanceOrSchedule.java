@@ -40,9 +40,9 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String webappName = azureResourceManager.sdkContext().randomResourceName("MyTestScaleWebApp", 20);
-        final String autoscaleSettingsName = azureResourceManager.sdkContext().randomResourceName("autoscalename1", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("myResourceGroup", 20);
+        final String webappName = SdkContext.getThreadLocalSdkContext().randomResourceName("MyTestScaleWebApp", 20);
+        final String autoscaleSettingsName = SdkContext.getThreadLocalSdkContext().randomResourceName("autoscalename1", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("myResourceGroup", 20);
 
         try {
             // ============================================================

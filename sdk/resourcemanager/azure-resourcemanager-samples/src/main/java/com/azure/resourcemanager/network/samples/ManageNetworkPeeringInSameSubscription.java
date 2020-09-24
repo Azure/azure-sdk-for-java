@@ -14,6 +14,7 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.Arrays;
@@ -67,10 +68,10 @@ public final class ManageNetworkPeeringInSameSubscription {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST;
-        final String resourceGroupName = azureResourceManager.sdkContext().randomResourceName("rg", 15);
-        final String vnetAName = azureResourceManager.sdkContext().randomResourceName("net", 15);
-        final String vnetBName = azureResourceManager.sdkContext().randomResourceName("net", 15);
-        final String peeringABName = azureResourceManager.sdkContext().randomResourceName("peer", 15);
+        final String resourceGroupName = SdkContext.getThreadLocalSdkContext().randomResourceName("rg", 15);
+        final String vnetAName = SdkContext.getThreadLocalSdkContext().randomResourceName("net", 15);
+        final String vnetBName = SdkContext.getThreadLocalSdkContext().randomResourceName("net", 15);
+        final String peeringABName = SdkContext.getThreadLocalSdkContext().randomResourceName("peer", 15);
         try {
 
             //=============================================================

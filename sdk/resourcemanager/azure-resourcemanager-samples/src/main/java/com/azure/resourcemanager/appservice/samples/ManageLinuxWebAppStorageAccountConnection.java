@@ -50,11 +50,11 @@ public final class ManageLinuxWebAppStorageAccountConnection {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
+        final String app1Name       = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp1-", 20);
         final String app1Url        = app1Name + suffix;
-        final String storageName    = azureResourceManager.sdkContext().randomResourceName("jsdkstore", 20);
-        final String containerName  = azureResourceManager.sdkContext().randomResourceName("jcontainer", 20);
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String storageName    = SdkContext.getThreadLocalSdkContext().randomResourceName("jsdkstore", 20);
+        final String containerName  = SdkContext.getThreadLocalSdkContext().randomResourceName("jcontainer", 20);
+        final String rgName         = SdkContext.getThreadLocalSdkContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 

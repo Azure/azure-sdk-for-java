@@ -62,20 +62,7 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
      * @return the interface exposing Graph RBAC management API entry points that work across subscriptions
      */
     public static AuthorizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of GraphRbacManager that exposes Graph RBAC management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls
-     * @param profile the profile used in Active Directory
-     * @param sdkContext the sdk context
-     * @return the interface exposing Graph RBAC management API entry points that work across subscriptions
-     */
-    public static AuthorizationManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new AuthorizationManager(httpPipeline, profile, sdkContext);
+        return authenticate(httpPipeline, profile);
     }
 
     /**
@@ -112,7 +99,7 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
         }
     }
 
-    private AuthorizationManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private AuthorizationManager(HttpPipeline httpPipeline, AzureProfile profile) {
         this.graphRbacManagementClient =
             new GraphRbacManagementClientBuilder()
                 .pipeline(httpPipeline)
@@ -126,7 +113,7 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
         this.tenantId = profile.getTenantId();
-        this.sdkContext = sdkContext;
+        this.sdkContext = SdkContext.getThreadLocalSdkContext();
     }
 
     /**

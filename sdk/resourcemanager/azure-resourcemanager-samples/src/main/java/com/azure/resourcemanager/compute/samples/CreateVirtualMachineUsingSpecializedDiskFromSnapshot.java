@@ -19,6 +19,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.ArrayList;
@@ -39,15 +40,15 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azureResourceManager.sdkContext().randomResourceName("VM2", 15);
-        final String managedOSSnapshotName = azureResourceManager.sdkContext().randomResourceName("ss-os-", 15);
-        final String managedDataDiskSnapshotPrefix = azureResourceManager.sdkContext().randomResourceName("ss-data-", 15);
-        final String managedNewOSDiskName = azureResourceManager.sdkContext().randomResourceName("ds-os-nw-", 15);
-        final String managedNewDataDiskNamePrefix = azureResourceManager.sdkContext().randomResourceName("ds-data-nw-", 15);
+        final String linuxVMName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM1", 15);
+        final String linuxVMName2 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM2", 15);
+        final String managedOSSnapshotName = SdkContext.getThreadLocalSdkContext().randomResourceName("ss-os-", 15);
+        final String managedDataDiskSnapshotPrefix = SdkContext.getThreadLocalSdkContext().randomResourceName("ss-data-", 15);
+        final String managedNewOSDiskName = SdkContext.getThreadLocalSdkContext().randomResourceName("ds-os-nw-", 15);
+        final String managedNewDataDiskNamePrefix = SdkContext.getThreadLocalSdkContext().randomResourceName("ds-data-nw-", 15);
 
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIpDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 15);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOMV", 15);
+        final String publicIpDnsLabel = SdkContext.getThreadLocalSdkContext().randomResourceName("pip", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;

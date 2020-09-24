@@ -14,6 +14,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
@@ -48,11 +49,11 @@ public final class ServiceBusPublishSubscribeBasic {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgSB02_", 24);
-        final String namespaceName = azureResourceManager.sdkContext().randomResourceName("namespace", 20);
-        final String topicName = azureResourceManager.sdkContext().randomResourceName("topic_", 24);
-        final String subscription1Name = azureResourceManager.sdkContext().randomResourceName("sub1_", 24);
-        final String subscription2Name = azureResourceManager.sdkContext().randomResourceName("sub2_", 24);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgSB02_", 24);
+        final String namespaceName = SdkContext.getThreadLocalSdkContext().randomResourceName("namespace", 20);
+        final String topicName = SdkContext.getThreadLocalSdkContext().randomResourceName("topic_", 24);
+        final String subscription1Name = SdkContext.getThreadLocalSdkContext().randomResourceName("sub1_", 24);
+        final String subscription2Name = SdkContext.getThreadLocalSdkContext().randomResourceName("sub2_", 24);
 
         try {
             //============================================================

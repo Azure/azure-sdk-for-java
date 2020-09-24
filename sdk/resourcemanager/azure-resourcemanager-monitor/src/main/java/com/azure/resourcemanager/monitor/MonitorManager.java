@@ -23,8 +23,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure Monitor. */
 public final class MonitorManager extends Manager<MonitorClient> {
@@ -47,36 +45,14 @@ public final class MonitorManager extends Manager<MonitorClient> {
     /**
      * Creates an instance of MonitorManager that exposes Monitor API entry points.
      *
-     * @param credential the credential to use
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the MonitorManager
-     */
-    public static MonitorManager authenticate(
-        TokenCredential credential, AzureProfile profile, SdkContext sdkContext) {
-        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile, sdkContext);
-    }
-    /**
-     * Creates an instance of MonitorManager that exposes Monitor API entry points.
-     *
      * @param httpPipeline the HttpPipeline to be used for API calls.
      * @param profile the profile to use
      * @return the MonitorManager
      */
     public static MonitorManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return new MonitorManager(httpPipeline, profile, new SdkContext());
+        return new MonitorManager(httpPipeline, profile);
     }
-    /**
-     * Creates an instance of MonitorManager that exposes Monitor API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the MonitorManager
-     */
-    public static MonitorManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new MonitorManager(httpPipeline, profile, sdkContext);
-    }
+
     /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
@@ -144,7 +120,7 @@ public final class MonitorManager extends Manager<MonitorClient> {
         }
     }
 
-    private MonitorManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private MonitorManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -152,7 +128,6 @@ public final class MonitorManager extends Manager<MonitorClient> {
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
+                .buildClient());
     }
 }

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorization
 import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.time.Duration;
@@ -34,8 +35,8 @@ public class ManageEventHubEvents {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgEvHb", 24);
-        final String namespaceName = azureResourceManager.sdkContext().randomResourceName("ns", 24);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgEvHb", 24);
+        final String namespaceName = SdkContext.getThreadLocalSdkContext().randomResourceName("ns", 24);
         final String eventHubName = "FirstEventHub";
         String diagnosticSettingId = null;
 

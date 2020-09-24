@@ -46,8 +46,9 @@ public class ContainerInstanceManagementTest extends ResourceManagerTestBase {
         rgName = generateRandomResourceName("rg", 20);
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        SdkContext.setThreadLocalSdkContext(sdkContext);
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        containerInstanceManager = ContainerInstanceManager.authenticate(httpPipeline, profile, sdkContext);
+        containerInstanceManager = ContainerInstanceManager.authenticate(httpPipeline, profile);
     }
 
     @Override

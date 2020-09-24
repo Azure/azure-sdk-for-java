@@ -17,6 +17,7 @@ import com.azure.resourcemanager.monitor.models.MetricAlertRuleCondition;
 import com.azure.resourcemanager.monitor.models.MetricAlertRuleTimeAggregation;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.time.Duration;
@@ -36,7 +37,7 @@ public final class WebAppPerformanceMonitoringAlerts {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgMonitor", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgMonitor", 20);
 
         try {
             // ============================================================

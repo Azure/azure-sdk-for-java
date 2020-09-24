@@ -15,6 +15,9 @@ import java.util.function.Function;
  * The class to contain the common factory methods required for SDK framework.
  */
 public class SdkContext {
+
+    private static final ThreadLocal<SdkContext> SDK_CONTEXT_THREAD_LOCAL = new ThreadLocal<>();
+
     private Function<String, IdentifierProvider> identifierFunction = ResourceNamer::new;
     private static DelayProvider delayProvider = new ResourceDelayProvider();
     private static Scheduler reactorScheduler = Schedulers.parallel();
@@ -127,5 +130,25 @@ public class SdkContext {
      */
     public static void setReactorScheduler(Scheduler reactorScheduler) {
         SdkContext.reactorScheduler = reactorScheduler;
+    }
+
+    /**
+     * @return The SdkContext instance in thread local.
+     */
+    public static SdkContext getThreadLocalSdkContext() {
+        SdkContext sdkContext = SDK_CONTEXT_THREAD_LOCAL.get();
+        if (sdkContext == null) {
+            sdkContext = new SdkContext();
+            SDK_CONTEXT_THREAD_LOCAL.set(sdkContext);
+        }
+        return sdkContext;
+    }
+
+    /**
+     * Sets the SdkContext instance to thread local.
+     * @param sdkContext the SdkContext instance.
+     */
+    public static void setThreadLocalSdkContext(SdkContext sdkContext) {
+        SDK_CONTEXT_THREAD_LOCAL.set(sdkContext);
     }
 }

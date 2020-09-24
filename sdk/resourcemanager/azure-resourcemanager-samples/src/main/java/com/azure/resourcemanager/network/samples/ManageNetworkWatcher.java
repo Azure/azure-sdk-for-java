@@ -70,17 +70,17 @@ public final class ManageNetworkWatcher {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_NORTH_CENTRAL;
-        final String nwName = azureResourceManager.sdkContext().randomResourceName("nw", 8);
+        final String nwName = SdkContext.getThreadLocalSdkContext().randomResourceName("nw", 8);
 
         final String userName = "tirekicker";
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 20);
-        final String dnsLabel = azureResourceManager.sdkContext().randomResourceName("pipdns", 20);
+        final String vnetName = SdkContext.getThreadLocalSdkContext().randomResourceName("vnet", 20);
+        final String dnsLabel = SdkContext.getThreadLocalSdkContext().randomResourceName("pipdns", 20);
         final String subnetName = "subnet1";
-        final String nsgName = azureResourceManager.sdkContext().randomResourceName("nsg", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rg", 24);
-        final String saName = azureResourceManager.sdkContext().randomResourceName("sa", 24);
-        final String vmName = azureResourceManager.sdkContext().randomResourceName("vm", 24);
-        final String packetCaptureName = azureResourceManager.sdkContext().randomResourceName("pc", 8);
+        final String nsgName = SdkContext.getThreadLocalSdkContext().randomResourceName("nsg", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rg", 24);
+        final String saName = SdkContext.getThreadLocalSdkContext().randomResourceName("sa", 24);
+        final String vmName = SdkContext.getThreadLocalSdkContext().randomResourceName("vm", 24);
+        final String packetCaptureName = SdkContext.getThreadLocalSdkContext().randomResourceName("pc", 8);
         final String packetCaptureStorageContainer = "packetcapture";
         // file name to save packet capture log locally
         final String packetCaptureFile = "packetcapture.cap";

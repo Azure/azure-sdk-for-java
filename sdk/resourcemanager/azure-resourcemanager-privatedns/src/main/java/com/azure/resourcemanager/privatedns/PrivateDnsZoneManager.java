@@ -13,7 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure private DNS zone management. */
 public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementClient> {
@@ -48,20 +47,7 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementCli
      * @return the PrivateDnsZoneManager
      */
     public static PrivateDnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return new PrivateDnsZoneManager(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of PrivateDnsZoneManager that exposes private DNS zone management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the PrivateDnsZoneManager
-     */
-    public static PrivateDnsZoneManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new PrivateDnsZoneManager(httpPipeline, profile, sdkContext);
+        return new PrivateDnsZoneManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -83,7 +69,7 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementCli
         }
     }
 
-    private PrivateDnsZoneManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private PrivateDnsZoneManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -91,8 +77,7 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementCli
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext
+                .buildClient()
         );
     }
 

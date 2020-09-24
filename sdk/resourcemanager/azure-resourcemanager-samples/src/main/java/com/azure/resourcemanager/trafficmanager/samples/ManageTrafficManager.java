@@ -18,6 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 
@@ -50,13 +51,13 @@ public final class ManageTrafficManager {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
-        final String rgName                     = azureResourceManager.sdkContext().randomResourceName("rgNEMV_", 24);
-        final String domainName                 = azureResourceManager.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
+        final String rgName                     = SdkContext.getThreadLocalSdkContext().randomResourceName("rgNEMV_", 24);
+        final String domainName                 = SdkContext.getThreadLocalSdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
         final String certPassword               = "StrongPass!12";
-        final String appServicePlanNamePrefix   = azureResourceManager.sdkContext().randomResourceName("jplan1_", 15);
-        final String webAppNamePrefix           = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String tmName                     = azureResourceManager.sdkContext().randomResourceName("jsdktm-", 20);
+        final String appServicePlanNamePrefix   = SdkContext.getThreadLocalSdkContext().randomResourceName("jplan1_", 15);
+        final String webAppNamePrefix           = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp1-", 20);
+        final String tmName                     = SdkContext.getThreadLocalSdkContext().randomResourceName("jsdktm-", 20);
         final List<Region> regions              = new ArrayList<>();
         // The regions in which web app needs to be created
         //

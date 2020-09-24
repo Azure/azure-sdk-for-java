@@ -18,6 +18,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.ArrayList;
@@ -44,9 +45,9 @@ public final class ManageVirtualMachineWithDisk {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIPDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 15);
+        final String linuxVMName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM1", 15);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOMV", 15);
+        final String publicIPDnsLabel = SdkContext.getThreadLocalSdkContext().randomResourceName("pip", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;
@@ -56,7 +57,7 @@ public final class ManageVirtualMachineWithDisk {
             //
             System.out.println("Creating an empty managed disk");
 
-            Disk dataDisk1 = azureResourceManager.disks().define(azureResourceManager.sdkContext().randomResourceName("dsk-", 15))
+            Disk dataDisk1 = azureResourceManager.disks().define(SdkContext.getThreadLocalSdkContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withData()
@@ -67,7 +68,7 @@ public final class ManageVirtualMachineWithDisk {
 
             // Prepare first creatable data disk
             //
-            Creatable<Disk> dataDiskCreatable1 = azureResourceManager.disks().define(azureResourceManager.sdkContext().randomResourceName("dsk-", 15))
+            Creatable<Disk> dataDiskCreatable1 = azureResourceManager.disks().define(SdkContext.getThreadLocalSdkContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withData()
@@ -75,7 +76,7 @@ public final class ManageVirtualMachineWithDisk {
 
             // Prepare second creatable data disk
             //
-            Creatable<Disk> dataDiskCreatable2 = azureResourceManager.disks().define(azureResourceManager.sdkContext().randomResourceName("dsk-", 15))
+            Creatable<Disk> dataDiskCreatable2 = azureResourceManager.disks().define(SdkContext.getThreadLocalSdkContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withData()

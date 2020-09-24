@@ -46,9 +46,9 @@ public class SamplesTestBase extends ResourceManagerTestBase {
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        SdkContext.setThreadLocalSdkContext(sdkContext);
         azureResourceManager = AzureResourceManager
             .authenticate(httpPipeline, profile)
-            .withSdkContext(sdkContext)
             .withDefaultSubscription();
     }
 

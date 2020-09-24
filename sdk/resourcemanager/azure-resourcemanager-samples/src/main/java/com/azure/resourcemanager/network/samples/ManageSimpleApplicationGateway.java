@@ -11,6 +11,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.io.File;
@@ -61,7 +62,7 @@ public final class ManageSimpleApplicationGateway {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEAGS", 15);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgNEAGS", 15);
         try {
             //=======================================================================
             // Create an application gateway

@@ -24,6 +24,7 @@ import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInt
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.ArrayList;
@@ -51,9 +52,9 @@ public final class ManageVirtualMachineScaleSet {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST2;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOVS", 15);
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 24);
-        final String loadBalancerName1 = azureResourceManager.sdkContext().randomResourceName("intlb" + "-", 18);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOVS", 15);
+        final String vnetName = SdkContext.getThreadLocalSdkContext().randomResourceName("vnet", 24);
+        final String loadBalancerName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("intlb" + "-", 18);
         final String publicIpName = "pip-" + loadBalancerName1;
         final String frontendName = loadBalancerName1 + "-FE1";
         final String backendPoolName1 = loadBalancerName1 + "-BAP1";
@@ -65,7 +66,7 @@ public final class ManageVirtualMachineScaleSet {
         final String httpsLoadBalancingRule = "httpsRule";
         final String natPool50XXto22 = "natPool50XXto22";
         final String natPool60XXto23 = "natPool60XXto23";
-        final String vmssName =  azureResourceManager.sdkContext().randomResourceName("vmss", 24);
+        final String vmssName =  SdkContext.getThreadLocalSdkContext().randomResourceName("vmss", 24);
 
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";

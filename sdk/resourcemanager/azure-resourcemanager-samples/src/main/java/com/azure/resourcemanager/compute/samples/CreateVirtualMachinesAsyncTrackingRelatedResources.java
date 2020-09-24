@@ -16,6 +16,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -61,7 +62,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final int desiredVMCount = 6;
         final Region region = Region.US_WEST;
-        final String resourceGroupName = azureResourceManager.sdkContext().randomResourceName("rg", 15);
+        final String resourceGroupName = SdkContext.getThreadLocalSdkContext().randomResourceName("rg", 15);
         final List<Throwable> errors = new ArrayList<>();
 
         try {
@@ -95,7 +96,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                 Collection<Creatable<? extends Resource>> relatedDefinitions = new ArrayList<>();
 
                 // Define a network for each VM
-                String networkName = azureResourceManager.sdkContext().randomResourceName("net", 14);
+                String networkName = SdkContext.getThreadLocalSdkContext().randomResourceName("net", 14);
                 Creatable<Network> networkDefinition = azureResourceManager.networks().define(networkName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup)
@@ -103,14 +104,14 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                 relatedDefinitions.add(networkDefinition);
 
                 // Define a PIP for each VM
-                String pipName = azureResourceManager.sdkContext().randomResourceName("pip", 14);
+                String pipName = SdkContext.getThreadLocalSdkContext().randomResourceName("pip", 14);
                 Creatable<PublicIpAddress> pipDefinition = azureResourceManager.publicIpAddresses().define(pipName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup);
                 relatedDefinitions.add(pipDefinition);
 
                 // Define a NIC for each VM
-                String nicName = azureResourceManager.sdkContext().randomResourceName("nic", 14);
+                String nicName = SdkContext.getThreadLocalSdkContext().randomResourceName("nic", 14);
                 Creatable<NetworkInterface> nicDefinition = azureResourceManager.networkInterfaces().define(nicName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup)
@@ -119,13 +120,13 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                         .withNewPrimaryPublicIPAddress(pipDefinition);
 
                 // Define an availability set for each VM
-                String availabilitySetName = azureResourceManager.sdkContext().randomResourceName("as", 14);
+                String availabilitySetName = SdkContext.getThreadLocalSdkContext().randomResourceName("as", 14);
                 Creatable<AvailabilitySet> availabilitySetDefinition = azureResourceManager.availabilitySets().define(availabilitySetName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup);
                 relatedDefinitions.add(availabilitySetDefinition);
 
-                String vmName = azureResourceManager.sdkContext().randomResourceName("vm", 14);
+                String vmName = SdkContext.getThreadLocalSdkContext().randomResourceName("vm", 14);
 
                 // Define a VM
                 String userName;

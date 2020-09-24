@@ -36,14 +36,14 @@ public class ManageLinuxFunctionAppSourceControl {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
+        final String app1Name       = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp1-", 20);
+        final String app2Name       = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp2-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
-        final String plan1Name      = azureResourceManager.sdkContext().randomResourceName("plan1-", 20);
-        final String plan2Name      = azureResourceManager.sdkContext().randomResourceName("plan2-", 20);
-        final String storage1Name   = azureResourceManager.sdkContext().randomResourceName("storage1", 20);
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String plan1Name      = SdkContext.getThreadLocalSdkContext().randomResourceName("plan1-", 20);
+        final String plan2Name      = SdkContext.getThreadLocalSdkContext().randomResourceName("plan2-", 20);
+        final String storage1Name   = SdkContext.getThreadLocalSdkContext().randomResourceName("storage1", 20);
+        final String rgName         = SdkContext.getThreadLocalSdkContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 

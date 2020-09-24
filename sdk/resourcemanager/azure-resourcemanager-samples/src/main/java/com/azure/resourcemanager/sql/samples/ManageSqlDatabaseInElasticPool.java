@@ -11,6 +11,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.DatabaseEdition;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
@@ -41,8 +42,8 @@ public final class ManageSqlDatabaseInElasticPool {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqlserver", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSSDEP", 20);
+        final String sqlServerName = SdkContext.getThreadLocalSdkContext().randomResourceName("sqlserver", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgRSSDEP", 20);
         final String elasticPoolName = "myElasticPool";
         final String elasticPool2Name = "secondElasticPool";
         final String administratorLogin = "sqladmin3423";

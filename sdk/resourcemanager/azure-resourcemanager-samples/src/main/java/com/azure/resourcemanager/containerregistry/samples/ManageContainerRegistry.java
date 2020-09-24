@@ -13,6 +13,7 @@ import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.DockerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
@@ -47,8 +48,8 @@ public class ManageContainerRegistry {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgACR", 15);
-        final String acrName = azureResourceManager.sdkContext().randomResourceName("acrsample", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgACR", 15);
+        final String acrName = SdkContext.getThreadLocalSdkContext().randomResourceName("acrsample", 20);
         final Region region = Region.US_EAST;
         final String dockerImageName = "hello-world";
         final String dockerImageTag = "latest";

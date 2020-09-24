@@ -42,10 +42,10 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String objectId) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqlsrv", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgsql", 20);
-        final String vaultName = azureResourceManager.sdkContext().randomResourceName("sqlkv", 20);
-        final String keyName = azureResourceManager.sdkContext().randomResourceName("sqlkey", 20);
+        final String sqlServerName = SdkContext.getThreadLocalSdkContext().randomResourceName("sqlsrv", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgsql", 20);
+        final String vaultName = SdkContext.getThreadLocalSdkContext().randomResourceName("sqlkv", 20);
+        final String keyName = SdkContext.getThreadLocalSdkContext().randomResourceName("sqlkey", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
 

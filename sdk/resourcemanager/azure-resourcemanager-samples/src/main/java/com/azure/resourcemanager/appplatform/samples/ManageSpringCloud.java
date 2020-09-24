@@ -22,6 +22,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
@@ -72,13 +73,13 @@ public class ManageSpringCloud {
      * @throws IllegalStateException unexcepted state
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rg", 24);
-        final String serviceName  = azureResourceManager.sdkContext().randomResourceName("service", 24);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rg", 24);
+        final String serviceName  = SdkContext.getThreadLocalSdkContext().randomResourceName("service", 24);
         final Region region = Region.US_EAST;
-        final String domainName = azureResourceManager.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
-        final String certOrderName = azureResourceManager.sdkContext().randomResourceName("cert", 15);
-        final String vaultName = azureResourceManager.sdkContext().randomResourceName("vault", 15);
-        final String certName = azureResourceManager.sdkContext().randomResourceName("cert", 15);
+        final String domainName = SdkContext.getThreadLocalSdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
+        final String certOrderName = SdkContext.getThreadLocalSdkContext().randomResourceName("cert", 15);
+        final String vaultName = SdkContext.getThreadLocalSdkContext().randomResourceName("vault", 15);
+        final String certName = SdkContext.getThreadLocalSdkContext().randomResourceName("cert", 15);
 
         try {
             azureResourceManager.resourceGroups().define(rgName)

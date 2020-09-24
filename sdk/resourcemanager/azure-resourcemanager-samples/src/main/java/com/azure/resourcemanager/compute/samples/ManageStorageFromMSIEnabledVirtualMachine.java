@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
@@ -37,9 +38,9 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String pipName = azureResourceManager.sdkContext().randomResourceName("pip1", 15);
+        final String linuxVMName = SdkContext.getThreadLocalSdkContext().randomResourceName("VM1", 15);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOMV", 15);
+        final String pipName = SdkContext.getThreadLocalSdkContext().randomResourceName("pip1", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;
@@ -76,7 +77,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
 
             // Prepare custom script t install az cli that uses MSI to create a storage account
             //
-            final String stgName = azureResourceManager.sdkContext().randomResourceName("st44", 15);
+            final String stgName = SdkContext.getThreadLocalSdkContext().randomResourceName("st44", 15);
             installCommand = installCommand.replace("{stgName}", stgName)
                     .replace("{rgName}", rgName)
                     .replace("{location}", region.name());

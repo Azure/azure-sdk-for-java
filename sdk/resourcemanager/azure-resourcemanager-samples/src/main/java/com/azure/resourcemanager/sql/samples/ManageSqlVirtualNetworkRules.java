@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRule;
@@ -37,11 +38,11 @@ public class ManageSqlVirtualNetworkRules {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqlserver", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSSDFW", 20);
+        final String sqlServerName = SdkContext.getThreadLocalSdkContext().randomResourceName("sqlserver", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgRSSDFW", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnetsql", 20);
+        final String vnetName = SdkContext.getThreadLocalSdkContext().randomResourceName("vnetsql", 20);
 
         try {
 

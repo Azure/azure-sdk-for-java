@@ -12,6 +12,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
@@ -33,9 +34,9 @@ public final class ManageSqlImportExportDatabase {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqlserver", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgsql", 20);
-        String storageName = azureResourceManager.sdkContext().randomResourceName(sqlServerName, 23);
+        final String sqlServerName = SdkContext.getThreadLocalSdkContext().randomResourceName("sqlserver", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgsql", 20);
+        String storageName = SdkContext.getThreadLocalSdkContext().randomResourceName(sqlServerName, 23);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
         final String dbFromSampleName = "db-from-sample";

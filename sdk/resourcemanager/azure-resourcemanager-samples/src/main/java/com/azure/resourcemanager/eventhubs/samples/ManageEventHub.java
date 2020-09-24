@@ -14,6 +14,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -35,12 +36,12 @@ public class ManageEventHub {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV_", 24);
-        final String namespaceName1 = azureResourceManager.sdkContext().randomResourceName("ns", 14);
-        final String namespaceName2 = azureResourceManager.sdkContext().randomResourceName("ns", 14);
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("stg", 14);
-        final String eventHubName1 = azureResourceManager.sdkContext().randomResourceName("eh", 14);
-        final String eventHubName2 = azureResourceManager.sdkContext().randomResourceName("eh", 14);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgNEMV_", 24);
+        final String namespaceName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("ns", 14);
+        final String namespaceName2 = SdkContext.getThreadLocalSdkContext().randomResourceName("ns", 14);
+        final String storageAccountName = SdkContext.getThreadLocalSdkContext().randomResourceName("stg", 14);
+        final String eventHubName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("eh", 14);
+        final String eventHubName2 = SdkContext.getThreadLocalSdkContext().randomResourceName("eh", 14);
         try {
 
             //============================================================

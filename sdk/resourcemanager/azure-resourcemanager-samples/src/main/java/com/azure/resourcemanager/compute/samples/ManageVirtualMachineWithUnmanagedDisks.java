@@ -17,6 +17,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.Date;
@@ -44,9 +45,9 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String windowsVMName = azureResourceManager.sdkContext().randomResourceName("wVM", 15);
-        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("lVM", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
+        final String windowsVMName = SdkContext.getThreadLocalSdkContext().randomResourceName("wVM", 15);
+        final String linuxVMName = SdkContext.getThreadLocalSdkContext().randomResourceName("lVM", 15);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOMV", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final String dataDiskName = "disk2";

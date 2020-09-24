@@ -14,6 +14,7 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
@@ -37,10 +38,10 @@ public final class ManageWebAppSlots {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String resourceGroupName     = azureResourceManager.sdkContext().randomResourceName("rg", 24);
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
+        final String resourceGroupName     = SdkContext.getThreadLocalSdkContext().randomResourceName("rg", 24);
+        final String app1Name       = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp1-", 20);
+        final String app2Name       = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp2-", 20);
+        final String app3Name       = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp3-", 20);
         final String slotName       = "staging";
 
         try {

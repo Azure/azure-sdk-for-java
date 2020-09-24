@@ -38,13 +38,13 @@ public final class ManageUsersGroupsAndRoles {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager.Authenticated authenticated, AzureProfile profile) {
-        final String userEmail = authenticated.sdkContext().randomResourceName("test", 15);
+        final String userEmail = SdkContext.getThreadLocalSdkContext().randomResourceName("test", 15);
         final String userName = userEmail.replace("test", "Test ");
-        final String spName = authenticated.sdkContext().randomResourceName("sp", 15);
-        final String raName1 = authenticated.sdkContext().randomUuid();
-        final String raName2 = authenticated.sdkContext().randomUuid();
-        final String groupEmail1 = authenticated.sdkContext().randomResourceName("group1", 15);
-        final String groupEmail2 = authenticated.sdkContext().randomResourceName("group2", 15);
+        final String spName = SdkContext.getThreadLocalSdkContext().randomResourceName("sp", 15);
+        final String raName1 = SdkContext.getThreadLocalSdkContext().randomUuid();
+        final String raName2 = SdkContext.getThreadLocalSdkContext().randomUuid();
+        final String groupEmail1 = SdkContext.getThreadLocalSdkContext().randomResourceName("group1", 15);
+        final String groupEmail2 = SdkContext.getThreadLocalSdkContext().randomResourceName("group2", 15);
         final String groupName1 = groupEmail1.replace("group1", "Group ");
         final String groupName2 = groupEmail2.replace("group2", "Group ");
         String spId = "";

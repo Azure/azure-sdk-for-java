@@ -108,9 +108,10 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        AzureResourceManager.Authenticated azureAuthed = AzureResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        SdkContext.setThreadLocalSdkContext(sdkContext);
+        AzureResourceManager.Authenticated azureAuthed = AzureResourceManager.authenticate(httpPipeline, profile);
         azureResourceManager = azureAuthed.withDefaultSubscription();
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
+        this.msiManager = MSIManager.authenticate(httpPipeline, profile);
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 import java.util.Map;
 
@@ -35,10 +36,10 @@ public class ManageCdnProfileWithCustomDomain {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV", 24);
-        final String domainName = azureResourceManager.sdkContext().randomResourceName("jsdkcdn", 15) + ".com";
-        final String cdnProfileName = azureResourceManager.sdkContext().randomResourceName("jsdkcdnp", 24);
-        final String cdnEndpointName = azureResourceManager.sdkContext().randomResourceName("jsdkcdne", 24);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgNEMV", 24);
+        final String domainName = SdkContext.getThreadLocalSdkContext().randomResourceName("jsdkcdn", 15) + ".com";
+        final String cdnProfileName = SdkContext.getThreadLocalSdkContext().randomResourceName("jsdkcdnp", 24);
+        final String cdnEndpointName = SdkContext.getThreadLocalSdkContext().randomResourceName("jsdkcdne", 24);
         final Region region = Region.US_WEST;
         final String cnameRecordName = "sample";
         String customDomain = cnameRecordName + "." + domainName;

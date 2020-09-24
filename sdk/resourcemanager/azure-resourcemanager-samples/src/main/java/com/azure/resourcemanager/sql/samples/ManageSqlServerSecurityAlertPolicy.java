@@ -9,6 +9,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
@@ -33,9 +34,9 @@ public class ManageSqlServerSecurityAlertPolicy {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sql", 20);
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("sqlsa", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgsql", 20);
+        final String sqlServerName = SdkContext.getThreadLocalSdkContext().randomResourceName("sql", 20);
+        final String storageAccountName = SdkContext.getThreadLocalSdkContext().randomResourceName("sqlsa", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgsql", 20);
         final Region region = Region.US_EAST;
         final String dbName = "dbSample";
         final String administratorLogin = "sqladmin3423";

@@ -43,11 +43,11 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        String groupName = azureResourceManager.sdkContext().randomResourceName("group", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        String roleAssignmentName = azureResourceManager.sdkContext().randomUuid();
-        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String pipName = azureResourceManager.sdkContext().randomResourceName("pip1", 15);
+        String groupName = SdkContext.getThreadLocalSdkContext().randomResourceName("group", 15);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOMV", 15);
+        String roleAssignmentName = SdkContext.getThreadLocalSdkContext().randomUuid();
+        final String linuxVMName = SdkContext.getThreadLocalSdkContext().randomResourceName("VM1", 15);
+        final String pipName = SdkContext.getThreadLocalSdkContext().randomResourceName("pip1", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_SOUTH_CENTRAL;
@@ -132,7 +132,7 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
 
             // Prepare custom script t install az cli that uses MSI to create a storage account
             //
-            final String stgName = azureResourceManager.sdkContext().randomResourceName("st44", 15);
+            final String stgName = SdkContext.getThreadLocalSdkContext().randomResourceName("st44", 15);
             installCommand = installCommand.replace("{stgName}", stgName)
                     .replace("{rgName}", rgName)
                     .replace("{location}", region.name());

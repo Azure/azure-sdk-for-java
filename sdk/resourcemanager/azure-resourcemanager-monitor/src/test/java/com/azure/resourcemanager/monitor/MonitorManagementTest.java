@@ -56,11 +56,12 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        SdkContext.setThreadLocalSdkContext(sdkContext);
         appServiceManager = AppServiceManager.authenticate(httpPipeline, profile);
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         monitorManager = MonitorManager.authenticate(httpPipeline, profile);
-        computeManager = ComputeManager.authenticate(httpPipeline, profile, sdkContext);
+        computeManager = ComputeManager.authenticate(httpPipeline, profile);
         storageManager = StorageManager.authenticate(httpPipeline, profile);
 
         //        eventHubManager = EventHubManager

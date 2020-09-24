@@ -11,6 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -38,8 +39,8 @@ public final class DeployUsingARMTemplateAsync {
      * @return true if sample runs successfully
      */
     public static boolean runSample(final AzureResourceManager azureResourceManager) throws InterruptedException {
-        final String rgPrefix = azureResourceManager.sdkContext().randomResourceName("rgJavaTest", 16);
-        final String deploymentPrefix = azureResourceManager.sdkContext().randomResourceName("javaTest", 16);
+        final String rgPrefix = SdkContext.getThreadLocalSdkContext().randomResourceName("rgJavaTest", 16);
+        final String deploymentPrefix = SdkContext.getThreadLocalSdkContext().randomResourceName("javaTest", 16);
         final String sshKey = getSSHPublicKey();
         final int numDeployments = 3;
 

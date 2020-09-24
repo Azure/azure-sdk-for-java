@@ -15,6 +15,7 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListConnectionStringsResult;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 /**
@@ -33,8 +34,8 @@ public final class CreateCosmosDBWithKindMongoDB {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String docDBName = azureResourceManager.sdkContext().randomResourceName("docDb", 10);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV", 24);
+        final String docDBName = SdkContext.getThreadLocalSdkContext().randomResourceName("docDb", 10);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgNEMV", 24);
 
         try {
             //============================================================

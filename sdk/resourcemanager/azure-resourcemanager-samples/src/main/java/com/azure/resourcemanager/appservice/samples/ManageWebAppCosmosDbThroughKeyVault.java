@@ -41,10 +41,10 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) {
         // New resources
         final Region region         = Region.US_WEST;
-        final String appName        = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
-        final String vaultName      = azureResourceManager.sdkContext().randomResourceName("vault", 20);
-        final String cosmosName     = azureResourceManager.sdkContext().randomResourceName("cosmosdb", 20);
+        final String appName        = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp1-", 20);
+        final String rgName         = SdkContext.getThreadLocalSdkContext().randomResourceName("rg1NEMV_", 24);
+        final String vaultName      = SdkContext.getThreadLocalSdkContext().randomResourceName("vault", 20);
+        final String cosmosName     = SdkContext.getThreadLocalSdkContext().randomResourceName("cosmosdb", 20);
         final String appUrl         = appName + ".azurewebsites.net";
 
         try {

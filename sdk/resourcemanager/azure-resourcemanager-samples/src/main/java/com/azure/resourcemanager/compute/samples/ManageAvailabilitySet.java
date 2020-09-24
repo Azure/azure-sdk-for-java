@@ -18,6 +18,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 /**
@@ -40,12 +41,12 @@ public final class ManageAvailabilitySet {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMA", 15);
-        final String availSetName1 = azureResourceManager.sdkContext().randomResourceName("av1", 15);
-        final String availSetName2 = azureResourceManager.sdkContext().randomResourceName("av2", 15);
-        final String vm1Name = azureResourceManager.sdkContext().randomResourceName("vm1", 15);
-        final String vm2Name = azureResourceManager.sdkContext().randomResourceName("vm2", 15);
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 15);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOMA", 15);
+        final String availSetName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("av1", 15);
+        final String availSetName2 = SdkContext.getThreadLocalSdkContext().randomResourceName("av2", 15);
+        final String vm1Name = SdkContext.getThreadLocalSdkContext().randomResourceName("vm1", 15);
+        final String vm2Name = SdkContext.getThreadLocalSdkContext().randomResourceName("vm2", 15);
+        final String vnetName = SdkContext.getThreadLocalSdkContext().randomResourceName("vnet", 15);
 
         final String userName = "tirekicker";
         final String password = Utils.password();

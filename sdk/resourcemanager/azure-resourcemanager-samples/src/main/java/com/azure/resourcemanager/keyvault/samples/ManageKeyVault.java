@@ -14,6 +14,7 @@ import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 /**
@@ -36,9 +37,9 @@ public final class ManageKeyVault {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) {
-        final String vaultName1 = azureResourceManager.sdkContext().randomResourceName("vault1", 20);
-        final String vaultName2 = azureResourceManager.sdkContext().randomResourceName("vault2", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV", 24);
+        final String vaultName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("vault1", 20);
+        final String vaultName2 = SdkContext.getThreadLocalSdkContext().randomResourceName("vault2", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgNEMV", 24);
 
         try {
             //============================================================

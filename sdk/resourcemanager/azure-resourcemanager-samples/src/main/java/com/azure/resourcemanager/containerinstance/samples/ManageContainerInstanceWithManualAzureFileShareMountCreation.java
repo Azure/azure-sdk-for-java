@@ -35,10 +35,10 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgACI", 15);
-        final String aciName = azureResourceManager.sdkContext().randomResourceName("acisample", 20);
-        final String saName = azureResourceManager.sdkContext().randomResourceName("sa", 20);
-        final String shareName = azureResourceManager.sdkContext().randomResourceName("fileshare", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgACI", 15);
+        final String aciName = SdkContext.getThreadLocalSdkContext().randomResourceName("acisample", 20);
+        final String saName = SdkContext.getThreadLocalSdkContext().randomResourceName("sa", 20);
+        final String shareName = SdkContext.getThreadLocalSdkContext().randomResourceName("fileshare", 20);
         final String containerImageName = "seanmckenna/aci-hellofiles";
         final String volumeMountName = "aci-helloshare";
 

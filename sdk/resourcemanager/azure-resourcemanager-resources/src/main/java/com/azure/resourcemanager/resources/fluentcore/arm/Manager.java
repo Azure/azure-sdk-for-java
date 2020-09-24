@@ -25,16 +25,15 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     protected final InnerT innerManagementClient;
 
     protected Manager(HttpPipeline httpPipeline, AzureProfile profile,
-                      InnerT innerManagementClient, SdkContext sdkContext) {
+                      InnerT innerManagementClient) {
         this.httpPipeline = httpPipeline;
         if (httpPipeline != null) {
             this.resourceManager = ResourceManager.authenticate(httpPipeline, profile)
-                .withSdkContext(sdkContext)
                 .withDefaultSubscription();
         }
         this.subscriptionId = profile.getSubscriptionId();
         this.environment = profile.getEnvironment();
-        this.sdkContext = sdkContext;
+        this.sdkContext = SdkContext.getThreadLocalSdkContext();
         this.innerManagementClient = innerManagementClient;
     }
 

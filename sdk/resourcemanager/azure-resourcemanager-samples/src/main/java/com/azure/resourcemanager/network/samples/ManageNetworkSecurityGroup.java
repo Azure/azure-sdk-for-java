@@ -18,6 +18,7 @@ import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.SSHShell;
 import com.azure.resourcemanager.samples.Utils;
 import com.jcraft.jsch.JSchException;
@@ -45,15 +46,15 @@ public final class ManageNetworkSecurityGroup {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws UnsupportedEncodingException, JSchException {
         final Region region = Region.US_NORTH_CENTRAL;
-        final String frontEndNSGName = azureResourceManager.sdkContext().randomResourceName("fensg", 24);
-        final String backEndNSGName = azureResourceManager.sdkContext().randomResourceName("bensg", 24);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMS", 24);
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 24);
-        final String networkInterfaceName1 = azureResourceManager.sdkContext().randomResourceName("nic1", 24);
-        final String networkInterfaceName2 = azureResourceManager.sdkContext().randomResourceName("nic2", 24);
-        final String publicIPAddressLeafDNS1 = azureResourceManager.sdkContext().randomResourceName("pip1", 24);
-        final String frontEndVMName = azureResourceManager.sdkContext().randomResourceName("fevm", 24);
-        final String backEndVMName = azureResourceManager.sdkContext().randomResourceName("bevm", 24);
+        final String frontEndNSGName = SdkContext.getThreadLocalSdkContext().randomResourceName("fensg", 24);
+        final String backEndNSGName = SdkContext.getThreadLocalSdkContext().randomResourceName("bensg", 24);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgNEMS", 24);
+        final String vnetName = SdkContext.getThreadLocalSdkContext().randomResourceName("vnet", 24);
+        final String networkInterfaceName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("nic1", 24);
+        final String networkInterfaceName2 = SdkContext.getThreadLocalSdkContext().randomResourceName("nic2", 24);
+        final String publicIPAddressLeafDNS1 = SdkContext.getThreadLocalSdkContext().randomResourceName("pip1", 24);
+        final String frontEndVMName = SdkContext.getThreadLocalSdkContext().randomResourceName("fevm", 24);
+        final String backEndVMName = SdkContext.getThreadLocalSdkContext().randomResourceName("bevm", 24);
         final String userName = "tirekicker";
         try {
             final String sshKey = SSHShell.generateSSHKeys(null, null).getSshPublicKey();

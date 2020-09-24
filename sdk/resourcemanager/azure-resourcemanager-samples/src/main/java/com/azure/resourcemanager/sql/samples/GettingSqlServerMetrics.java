@@ -52,10 +52,10 @@ public class GettingSqlServerMetrics {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws ClassNotFoundException, SQLException {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqltest", 20);
+        final String sqlServerName = SdkContext.getThreadLocalSdkContext().randomResourceName("sqltest", 20);
         final String dbName = "dbSample";
         final String epName = "epSample";
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgsql", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgsql", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);

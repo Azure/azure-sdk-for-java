@@ -14,6 +14,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
@@ -46,13 +47,13 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgSB04_", 24);
-        final String namespaceName = azureResourceManager.sdkContext().randomResourceName("namespace", 20);
-        final String topic1Name = azureResourceManager.sdkContext().randomResourceName("topic1_", 24);
-        final String topic2Name = azureResourceManager.sdkContext().randomResourceName("topic2_", 24);
-        final String subscription1Name = azureResourceManager.sdkContext().randomResourceName("subs_", 24);
-        final String subscription2Name = azureResourceManager.sdkContext().randomResourceName("subs_", 24);
-        final String subscription3Name = azureResourceManager.sdkContext().randomResourceName("subs_", 24);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgSB04_", 24);
+        final String namespaceName = SdkContext.getThreadLocalSdkContext().randomResourceName("namespace", 20);
+        final String topic1Name = SdkContext.getThreadLocalSdkContext().randomResourceName("topic1_", 24);
+        final String topic2Name = SdkContext.getThreadLocalSdkContext().randomResourceName("topic2_", 24);
+        final String subscription1Name = SdkContext.getThreadLocalSdkContext().randomResourceName("subs_", 24);
+        final String subscription2Name = SdkContext.getThreadLocalSdkContext().randomResourceName("subs_", 24);
+        final String subscription3Name = SdkContext.getThreadLocalSdkContext().randomResourceName("subs_", 24);
         final String sendRuleName = "SendRule";
         final String manageRuleName = "ManageRule";
 

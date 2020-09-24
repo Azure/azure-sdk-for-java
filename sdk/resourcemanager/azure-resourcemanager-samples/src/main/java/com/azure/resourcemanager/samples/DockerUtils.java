@@ -189,8 +189,8 @@ public class DockerUtils {
      */
     public static DockerClient fromNewDockerVM(AzureResourceManager azureResourceManager, String rgName, Region region,
                                                String registryServerUrl, String username, String password) {
-        final String dockerVMName = azureResourceManager.sdkContext().randomResourceName("dockervm", 15);
-        final String publicIPDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 10);
+        final String dockerVMName = SdkContext.getThreadLocalSdkContext().randomResourceName("dockervm", 15);
+        final String publicIPDnsLabel = SdkContext.getThreadLocalSdkContext().randomResourceName("pip", 10);
         final String vmUserName = "dockerUser";
         final String vmPassword = Utils.password();
 

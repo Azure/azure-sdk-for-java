@@ -12,6 +12,7 @@ import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlServer;
@@ -38,13 +39,13 @@ public final class ManageLinuxWebAppSqlConnection {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         // New resources
         final String suffix = ".azurewebsites.net";
-        final String appName = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
+        final String appName = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp1-", 20);
         final String appUrl = appName + suffix;
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("jsdkserver", 20);
-        final String sqlDbName = azureResourceManager.sdkContext().randomResourceName("jsdkdb", 20);
+        final String sqlServerName = SdkContext.getThreadLocalSdkContext().randomResourceName("jsdkserver", 20);
+        final String sqlDbName = SdkContext.getThreadLocalSdkContext().randomResourceName("jsdkdb", 20);
         final String admin = "jsdkadmin";
         final String password = Utils.password();
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 

@@ -13,6 +13,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.ArrayList;
@@ -35,11 +36,11 @@ public final class ManageVirtualMachineExtension {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("lVM", 10);
-        final String windowsVMName = azureResourceManager.sdkContext().randomResourceName("wVM", 10);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOVE", 15);
-        final String pipDnsLabelLinuxVM = azureResourceManager.sdkContext().randomResourceName("rgPip1", 25);
-        final String pipDnsLabelWindowsVM = azureResourceManager.sdkContext().randomResourceName("rgPip2", 25);
+        final String linuxVMName = SdkContext.getThreadLocalSdkContext().randomResourceName("lVM", 10);
+        final String windowsVMName = SdkContext.getThreadLocalSdkContext().randomResourceName("wVM", 10);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOVE", 15);
+        final String pipDnsLabelLinuxVM = SdkContext.getThreadLocalSdkContext().randomResourceName("rgPip1", 25);
+        final String pipDnsLabelWindowsVM = SdkContext.getThreadLocalSdkContext().randomResourceName("rgPip2", 25);
 
         // Linux configurations
         //

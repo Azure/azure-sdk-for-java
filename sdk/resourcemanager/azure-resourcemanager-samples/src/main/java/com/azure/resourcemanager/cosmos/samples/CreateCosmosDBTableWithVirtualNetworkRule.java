@@ -16,6 +16,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.List;
@@ -36,9 +37,9 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String docDBName = azureResourceManager.sdkContext().randomResourceName("cosmosdb", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgcosmosdb", 24);
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnetcosmosdb", 20);
+        final String docDBName = SdkContext.getThreadLocalSdkContext().randomResourceName("cosmosdb", 15);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgcosmosdb", 24);
+        final String vnetName = SdkContext.getThreadLocalSdkContext().randomResourceName("vnetcosmosdb", 20);
 
         try {
             // ============================================================

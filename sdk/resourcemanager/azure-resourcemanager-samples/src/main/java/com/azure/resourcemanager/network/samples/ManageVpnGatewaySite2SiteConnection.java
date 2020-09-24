@@ -13,6 +13,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 /**
@@ -34,11 +35,11 @@ public final class ManageVpnGatewaySite2SiteConnection {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST2;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rg", 20);
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 20);
-        final String vpnGatewayName = azureResourceManager.sdkContext().randomResourceName("vngw", 20);
-        final String localGatewayName = azureResourceManager.sdkContext().randomResourceName("lngw", 20);
-        final String connectionName = azureResourceManager.sdkContext().randomResourceName("con", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rg", 20);
+        final String vnetName = SdkContext.getThreadLocalSdkContext().randomResourceName("vnet", 20);
+        final String vpnGatewayName = SdkContext.getThreadLocalSdkContext().randomResourceName("vngw", 20);
+        final String localGatewayName = SdkContext.getThreadLocalSdkContext().randomResourceName("lngw", 20);
+        final String connectionName = SdkContext.getThreadLocalSdkContext().randomResourceName("con", 20);
 
 
         try {

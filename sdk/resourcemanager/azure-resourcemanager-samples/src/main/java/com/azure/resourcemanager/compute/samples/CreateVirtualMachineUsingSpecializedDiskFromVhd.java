@@ -19,6 +19,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.ArrayList;
@@ -38,13 +39,13 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azureResourceManager.sdkContext().randomResourceName("VM2", 15);
-        final String managedOSDiskName = azureResourceManager.sdkContext().randomResourceName("ds-os-", 15);
-        final String managedDataDiskNamePrefix = azureResourceManager.sdkContext().randomResourceName("ds-data-", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIpDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 15);
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("stg", 15);
+        final String linuxVMName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM1", 15);
+        final String linuxVMName2 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM2", 15);
+        final String managedOSDiskName = SdkContext.getThreadLocalSdkContext().randomResourceName("ds-os-", 15);
+        final String managedDataDiskNamePrefix = SdkContext.getThreadLocalSdkContext().randomResourceName("ds-data-", 15);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOMV", 15);
+        final String publicIpDnsLabel = SdkContext.getThreadLocalSdkContext().randomResourceName("pip", 15);
+        final String storageAccountName = SdkContext.getThreadLocalSdkContext().randomResourceName("stg", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;

@@ -19,6 +19,7 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 /**
@@ -45,10 +46,10 @@ public final class ManageRedisCache {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String redisCacheName1 = azureResourceManager.sdkContext().randomResourceName("rc1", 20);
-        final String redisCacheName2 = azureResourceManager.sdkContext().randomResourceName("rc2", 20);
-        final String redisCacheName3 = azureResourceManager.sdkContext().randomResourceName("rc3", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRCMC", 20);
+        final String redisCacheName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("rc1", 20);
+        final String redisCacheName2 = SdkContext.getThreadLocalSdkContext().randomResourceName("rc2", 20);
+        final String redisCacheName3 = SdkContext.getThreadLocalSdkContext().randomResourceName("rc3", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgRCMC", 20);
         try {
             // ============================================================
             // Define a redis cache

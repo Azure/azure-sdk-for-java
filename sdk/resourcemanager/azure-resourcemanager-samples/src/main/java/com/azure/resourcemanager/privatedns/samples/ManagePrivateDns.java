@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -39,13 +40,13 @@ public class ManagePrivateDns {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV", 24);
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnetwork-1", 24);
-        final String subnetName = azureResourceManager.sdkContext().randomResourceName("subnet-1", 24);
-        final String linkName = azureResourceManager.sdkContext().randomResourceName("vnlink-1", 24);
-        final String vm1Name = azureResourceManager.sdkContext().randomResourceName("vm1-", 24);
-        final String vm2Name = azureResourceManager.sdkContext().randomResourceName("vm2-", 24);
-        final String rsName = azureResourceManager.sdkContext().randomResourceName("recordset1-", 24);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgNEMV", 24);
+        final String vnetName = SdkContext.getThreadLocalSdkContext().randomResourceName("vnetwork-1", 24);
+        final String subnetName = SdkContext.getThreadLocalSdkContext().randomResourceName("subnet-1", 24);
+        final String linkName = SdkContext.getThreadLocalSdkContext().randomResourceName("vnlink-1", 24);
+        final String vm1Name = SdkContext.getThreadLocalSdkContext().randomResourceName("vm1-", 24);
+        final String vm2Name = SdkContext.getThreadLocalSdkContext().randomResourceName("vm2-", 24);
+        final String rsName = SdkContext.getThreadLocalSdkContext().randomResourceName("recordset1-", 24);
         final String userName = "tirekicker";
         final String password = Utils.password();
 

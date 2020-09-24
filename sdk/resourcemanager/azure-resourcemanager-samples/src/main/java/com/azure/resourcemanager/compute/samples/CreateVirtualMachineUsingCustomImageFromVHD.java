@@ -12,6 +12,7 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.jcraft.jsch.JSchException;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
@@ -45,12 +46,12 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.sdkContext().randomResourceName("VM1", 10);
-        final String linuxVMName2 = azureResourceManager.sdkContext().randomResourceName("VM2", 10);
-        final String linuxVMName3 = azureResourceManager.sdkContext().randomResourceName("VM3", 10);
-        final String customImageName = azureResourceManager.sdkContext().randomResourceName("img", 10);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIPDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 10);
+        final String linuxVMName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM1", 10);
+        final String linuxVMName2 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM2", 10);
+        final String linuxVMName3 = SdkContext.getThreadLocalSdkContext().randomResourceName("VM3", 10);
+        final String customImageName = SdkContext.getThreadLocalSdkContext().randomResourceName("img", 10);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOMV", 15);
+        final String publicIPDnsLabel = SdkContext.getThreadLocalSdkContext().randomResourceName("pip", 10);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;

@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -38,9 +39,9 @@ public final class ManageVirtualMachinesInParallel {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final int vmCount = 10;
         final Region region = Region.US_SOUTH_CENTRAL;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOPP", 24);
-        final String networkName = azureResourceManager.sdkContext().randomResourceName("vnetCOMV", 24);
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("stgCOMV", 20);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgCOPP", 24);
+        final String networkName = SdkContext.getThreadLocalSdkContext().randomResourceName("vnetCOMV", 24);
+        final String storageAccountName = SdkContext.getThreadLocalSdkContext().randomResourceName("stgCOMV", 20);
         final String userName = "tirekicker";
         final String password = Utils.password();
         try {

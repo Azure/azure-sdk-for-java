@@ -11,6 +11,7 @@ import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeT
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.SSHShell;
 import com.azure.resourcemanager.samples.Utils;
 import com.jcraft.jsch.JSchException;
@@ -37,8 +38,8 @@ public class ManageKubernetesCluster {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, JSchException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgaks", 15);
-        final String aksName = azureResourceManager.sdkContext().randomResourceName("akssample", 30);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgaks", 15);
+        final String aksName = SdkContext.getThreadLocalSdkContext().randomResourceName("akssample", 30);
         final Region region = Region.US_EAST;
         String servicePrincipalClientId = clientId; // replace with a real service principal client id
         String servicePrincipalSecret = secret; // and corresponding secret

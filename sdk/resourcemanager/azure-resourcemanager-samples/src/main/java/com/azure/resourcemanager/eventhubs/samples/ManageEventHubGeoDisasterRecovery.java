@@ -35,11 +35,11 @@ public class ManageEventHubGeoDisasterRecovery {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV_", 24);
-        final String primaryNamespaceName = azureResourceManager.sdkContext().randomResourceName("ns", 14);
-        final String secondaryNamespaceName = azureResourceManager.sdkContext().randomResourceName("ns", 14);
-        final String geoDRName = azureResourceManager.sdkContext().randomResourceName("geodr", 14);
-        final String eventHubName = azureResourceManager.sdkContext().randomResourceName("eh", 14);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgNEMV_", 24);
+        final String primaryNamespaceName = SdkContext.getThreadLocalSdkContext().randomResourceName("ns", 14);
+        final String secondaryNamespaceName = SdkContext.getThreadLocalSdkContext().randomResourceName("ns", 14);
+        final String geoDRName = SdkContext.getThreadLocalSdkContext().randomResourceName("geodr", 14);
+        final String eventHubName = SdkContext.getThreadLocalSdkContext().randomResourceName("eh", 14);
         boolean isFailOverSucceeded = false;
         EventHubDisasterRecoveryPairing pairing = null;
 

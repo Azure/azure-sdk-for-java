@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.util.Date;
@@ -36,12 +37,12 @@ public final class ManageIPAddress {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String publicIPAddressName1 = azureResourceManager.sdkContext().randomResourceName("pip1", 20);
-        final String publicIPAddressName2 = azureResourceManager.sdkContext().randomResourceName("pip2", 20);
-        final String publicIPAddressLeafDNS1 = azureResourceManager.sdkContext().randomResourceName("pip1", 20);
-        final String publicIPAddressLeafDNS2 = azureResourceManager.sdkContext().randomResourceName("pip2", 20);
-        final String vmName = azureResourceManager.sdkContext().randomResourceName("vm", 8);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMP", 24);
+        final String publicIPAddressName1 = SdkContext.getThreadLocalSdkContext().randomResourceName("pip1", 20);
+        final String publicIPAddressName2 = SdkContext.getThreadLocalSdkContext().randomResourceName("pip2", 20);
+        final String publicIPAddressLeafDNS1 = SdkContext.getThreadLocalSdkContext().randomResourceName("pip1", 20);
+        final String publicIPAddressLeafDNS2 = SdkContext.getThreadLocalSdkContext().randomResourceName("pip2", 20);
+        final String vmName = SdkContext.getThreadLocalSdkContext().randomResourceName("vm", 8);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgNEMP", 24);
         final String userName = "tirekicker";
         final String password = Utils.password();
 

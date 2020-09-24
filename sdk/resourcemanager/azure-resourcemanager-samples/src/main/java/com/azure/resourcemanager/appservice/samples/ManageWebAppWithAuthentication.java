@@ -15,6 +15,7 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
@@ -38,15 +39,15 @@ public final class ManageWebAppWithAuthentication {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
-        final String app4Name       = azureResourceManager.sdkContext().randomResourceName("webapp4-", 20);
+        final String app1Name       = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp1-", 20);
+        final String app2Name       = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp2-", 20);
+        final String app3Name       = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp3-", 20);
+        final String app4Name       = SdkContext.getThreadLocalSdkContext().randomResourceName("webapp4-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
         final String app3Url        = app3Name + suffix;
         final String app4Url        = app4Name + suffix;
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName         = SdkContext.getThreadLocalSdkContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 

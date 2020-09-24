@@ -16,6 +16,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
@@ -36,12 +37,12 @@ public final class ManageStorageAccountNetworkRules {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgSTMS", 8);
-        final String networkName = azureResourceManager.sdkContext().randomResourceName("nw", 8);
+        final String rgName = SdkContext.getThreadLocalSdkContext().randomResourceName("rgSTMS", 8);
+        final String networkName = SdkContext.getThreadLocalSdkContext().randomResourceName("nw", 8);
         final String subnetName = "subnetA";
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("sa", 8);
-        final String publicIpName = azureResourceManager.sdkContext().randomResourceName("pip", 8);
-        final String vmName = azureResourceManager.sdkContext().randomResourceName("vm", 8);
+        final String storageAccountName = SdkContext.getThreadLocalSdkContext().randomResourceName("sa", 8);
+        final String publicIpName = SdkContext.getThreadLocalSdkContext().randomResourceName("pip", 8);
+        final String vmName = SdkContext.getThreadLocalSdkContext().randomResourceName("vm", 8);
 
         try {
             // ============================================================
