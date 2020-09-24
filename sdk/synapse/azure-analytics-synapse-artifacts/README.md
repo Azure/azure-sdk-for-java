@@ -227,9 +227,6 @@ All client libraries, by default, use the Tomcat-native Boring SSL library to en
 ## Next steps
 Several Synapse Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Azure Synapse Analytics.
 
-## Next steps samples
-Samples are explained in detail [here][samples_readme].
-
 ###  Additional documentation
 For more extensive documentation on Azure Synapse Analytics, see the [API reference documentation][azsynapse_rest].
 
@@ -255,6 +252,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_synapse_cli_full]: https://docs.microsoft.com/cli/azure/synapse?view=azure-cli-latest
 [accesscontrol_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/synapse/azure-analytics-synapse-accesscontrol/src/samples/java/com/azure/analytics/synapse/accesscontrol
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/synapse/azure-analytics-synapse-accesscontrol/src/samples/README.md
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
