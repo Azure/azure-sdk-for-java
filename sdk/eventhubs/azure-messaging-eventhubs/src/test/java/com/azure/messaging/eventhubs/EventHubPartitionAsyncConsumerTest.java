@@ -8,9 +8,10 @@ import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
@@ -234,17 +235,30 @@ class EventHubPartitionAsyncConsumerTest {
         Object o = 0;
         ObjectSerializer testSerializer = new ObjectSerializer() {
             @Override
-            public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
-                if (clazz.isInstance(o)) {
-                    return Mono.just(clazz.cast(o));
+            public <T> T deserialize(InputStream inputStream, TypeReference<T> typeReference) {
+                return null;
+            }
+
+            @Override
+            public <T> Mono<T> deserializeAsync(InputStream inputStream, TypeReference<T> typeReference) {
+                if (typeReference.getJavaType().getTypeName().equals(o.getClass().getTypeName())) {
+
+//                    typeReference.getJavaType().getTypeName()
+                    return Mono.empty();
                 }
                 return null;
             }
 
             @Override
-            public <S extends OutputStream> Mono<S> serialize(S stream, Object value) {
-                return null;
+            public void serialize(OutputStream outputStream, Object o) {
+                this.serializeAsync(outputStream, o).block();
             }
+
+            @Override
+            public Mono<Void> serializeAsync(OutputStream outputStream, Object o) {
+                return Mono.empty();
+            }
+
         };
 
         // Arrange
@@ -269,7 +283,8 @@ class EventHubPartitionAsyncConsumerTest {
                 verifyLastEnqueuedInformation(false, last,
                     partitionEvent.getLastEnqueuedEventProperties());
                 Assertions.assertSame(event, partitionEvent.getData());
-                Assertions.assertSame(Integer.class.cast(o), partitionEvent.getDeserializedObject(Integer.class).block());
+                Assertions.assertSame(Integer.class.cast(o),
+                    partitionEvent.getData().getDeserializedObjectAsync(Integer.class).block());
             })
             .thenCancel()
             .verify();

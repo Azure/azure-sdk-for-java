@@ -10,9 +10,11 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
+import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.time.Duration;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -150,6 +152,14 @@ public class EventHubProducerClient implements Closeable {
         return producer.createBatch(options).block(tryTimeout);
     }
 
+    public <T> ObjectBatch<T> createBatch(Class<T> objectType) {
+        return producer.createBatch(objectType).block();
+    }
+
+    public <T> ObjectBatch<T> createBatch(Class<T> objectType, CreateBatchOptions options) {
+        return producer.createBatch(objectType, options).block();
+    }
+
     /**
      * Sends a single event to the associated Event Hub. If the size of the single event exceeds the maximum size
      * allowed, an exception will be triggered and the send will fail.
@@ -222,6 +232,23 @@ public class EventHubProducerClient implements Closeable {
      */
     public void send(Iterable<EventData> events, SendOptions options) {
         producer.send(events, options).block();
+    }
+
+    public <T> void send(ObjectBatch<T> objectBatch) {
+        producer.send(objectBatch).block();
+    }
+
+    public <T> void sendObjects(Iterable<T> objects) {
+        producer.sendObjects(objects).block();
+    }
+
+    public <T> void sendObjects(Iterable<T> objects, SendOptions sendOptions) {
+        producer.sendObjects(objects, sendOptions).block();
+    }
+
+    public <T> void sendObjects(Iterable<T> objects, Iterable<Map<String, Object>> eventProperties,
+                                      SendOptions sendOptions) {
+        producer.sendObjects(objects, eventProperties, sendOptions).block();
     }
 
     /**

@@ -11,6 +11,7 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -34,6 +35,14 @@ public final class ObjectBatch<T> extends EventDataBatchBase {
         this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
     }
 
+    public boolean tryAdd(T object) {
+        return tryAdd(object, null);
+    }
+
+    public boolean tryAdd(T object, Map<String, Object> eventProperties) {
+        return tryAddAsync(object, eventProperties).block();
+    }
+
     /**
      * Tries to asynchronously serialize an object into an EventData payload and add the EventData to the batch.
      *
@@ -44,14 +53,24 @@ public final class ObjectBatch<T> extends EventDataBatchBase {
      * @throws AmqpException if serialized object as {@link EventData} is larger than the maximum size
      *      of the {@link EventDataBatch}.
      */
-    public Mono<Boolean> tryAdd(final T object) {
+    public Mono<Boolean> tryAddAsync(T object) {
+        return tryAddAsync(object, null);
+    }
+
+    public Mono<Boolean> tryAddAsync(T object, Map<String, Object> eventProperties) {
         if (object == null) {
             return monoError(logger, new IllegalArgumentException("object cannot be null"));
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         return serializer.serializeAsync(outputStream, object)
-            .map(s -> tryAdd(new EventData(outputStream.toByteArray())));
+            .map(s -> {
+                EventData eventData = new EventData(outputStream.toByteArray());
+                if (eventProperties != null) {
+                    eventData.getProperties().putAll(eventProperties);
+                }
+                return tryAdd(eventData);
+            });
     }
 
 }
