@@ -15,10 +15,10 @@ import com.azure.resourcemanager.appservice.models.PythonVersion;
 import com.azure.resourcemanager.appservice.models.SupportedTlsVersions;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import java.util.Map;
 
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -104,11 +104,11 @@ public class WebAppConfigTests extends AppServiceTest {
 
         // Logs
         webApp = webApp.update().withContainerLoggingEnabled().apply();
-        Assertions.assertTrue(webApp.diagnosticLogsConfig().inner().httpLogs().fileSystem().enabled());
+        Assertions.assertTrue(webApp.diagnosticLogsConfig().innerModel().httpLogs().fileSystem().enabled());
         // verify on new instance
         // https://github.com/Azure/azure-libraries-for-java/issues/759
         webApp = appServiceManager.webApps().getById(webApp.id());
-        Assertions.assertTrue(webApp.diagnosticLogsConfig().inner().httpLogs().fileSystem().enabled());
+        Assertions.assertTrue(webApp.diagnosticLogsConfig().innerModel().httpLogs().fileSystem().enabled());
     }
 
     @Test

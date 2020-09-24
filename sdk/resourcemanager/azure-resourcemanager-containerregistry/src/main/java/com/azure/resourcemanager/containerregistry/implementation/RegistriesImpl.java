@@ -33,7 +33,7 @@ public class RegistriesImpl
     private final StorageManager storageManager;
 
     public RegistriesImpl(final ContainerRegistryManager manager, final StorageManager storageManager) {
-        super(manager.inner().getRegistries(), manager);
+        super(manager.serviceClient().getRegistries(), manager);
         this.storageManager = storageManager;
     }
 
@@ -176,13 +176,12 @@ public class RegistriesImpl
     public Mono<SourceUploadDefinition> getBuildSourceUploadUrlAsync(String rgName, String acrName) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getRegistries()
             .getBuildSourceUploadUrlAsync(rgName, acrName)
             .map(sourceUploadDefinitionInner -> new SourceUploadDefinitionImpl(sourceUploadDefinitionInner));
     }
 
-    @Override
     public WebhooksClient webhooks() {
         return new WebhooksClientImpl(this.manager(), null);
     }

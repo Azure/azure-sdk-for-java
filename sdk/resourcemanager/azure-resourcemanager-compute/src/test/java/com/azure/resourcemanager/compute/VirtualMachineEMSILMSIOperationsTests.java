@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.compute;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
@@ -11,40 +10,20 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.msi.MSIManager;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.ResourceManager;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
+public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest {
     private String rgName = "";
     private Region region = Region.fromName("West Central US");
     private final String vmName = "javavm";
-
-    private ComputeManager computeManager;
-    private MSIManager msiManager;
-    private ResourceManager resourceManager;
-    private NetworkManager networkManager;
-
-    @Override
-    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile)
-        throws IOException {
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
-        this.resourceManager = msiManager.resourceManager();
-        this.computeManager = ComputeManager.authenticate(httpPipeline, profile, sdkContext);
-        this.networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
-    }
 
     @Override
     protected void cleanUpResources() {
@@ -112,7 +91,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId()); // No Local MSI enabled
         Assertions.assertNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId()); // No Local MSI enabled
@@ -233,7 +212,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
         Assertions.assertNotNull(virtualMachine.managedServiceIdentityType());
         Assertions
             .assertTrue(
-                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
+                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         //
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
@@ -244,7 +223,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
         Assertions.assertNotNull(virtualMachine.managedServiceIdentityType());
         Assertions
             .assertTrue(
-                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
+                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         //
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
@@ -258,7 +237,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
         Assertions.assertNotNull(virtualMachine.managedServiceIdentityType());
         Assertions
             .assertTrue(
-                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
+                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
         // Remove identities one by one (second one)
@@ -322,7 +301,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
@@ -482,12 +461,12 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
         virtualMachine.update().withSystemAssignedManagedServiceIdentity().apply();
         //
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.managedServiceIdentityType());
         Assertions
             .assertTrue(
-                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
+                virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
         Assertions.assertEquals(1, virtualMachine.userAssignedManagedServiceIdentityIds().size());

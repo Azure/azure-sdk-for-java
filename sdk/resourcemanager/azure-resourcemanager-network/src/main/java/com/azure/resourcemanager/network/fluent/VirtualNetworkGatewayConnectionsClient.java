@@ -33,13 +33,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionResetSharedKeyInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionSharedKeyInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionListResultInner;
 import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.models.TagsObject;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionListResult;
 import com.azure.resourcemanager.network.models.VpnPacketCaptureStartParameters;
 import com.azure.resourcemanager.network.models.VpnPacketCaptureStopParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -65,7 +64,7 @@ public final class VirtualNetworkGatewayConnectionsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualNetworkGatewayConnectionsClient(NetworkManagementClient client) {
+    VirtualNetworkGatewayConnectionsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -175,7 +174,7 @@ public final class VirtualNetworkGatewayConnectionsClient
                 + "/connections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkGatewayConnectionListResultInner>> listByResourceGroup(
+        Mono<Response<VirtualNetworkGatewayConnectionListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -231,7 +230,7 @@ public final class VirtualNetworkGatewayConnectionsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkGatewayConnectionListResultInner>> listNext(
+        Mono<Response<VirtualNetworkGatewayConnectionListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

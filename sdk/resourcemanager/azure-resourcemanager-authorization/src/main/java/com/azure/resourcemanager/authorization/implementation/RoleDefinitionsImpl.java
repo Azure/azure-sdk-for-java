@@ -11,12 +11,11 @@ import com.azure.resourcemanager.authorization.models.RoleDefinitions;
 import com.azure.resourcemanager.authorization.fluent.inner.RoleDefinitionInner;
 import com.azure.resourcemanager.authorization.fluent.RoleDefinitionsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of RoleDefinitions and its parent interfaces. */
 public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, RoleDefinitionImpl, RoleDefinitionInner>
-    implements RoleDefinitions, HasInner<RoleDefinitionsClient> {
+    implements RoleDefinitions {
     private final AuthorizationManager manager;
 
     public RoleDefinitionsImpl(final AuthorizationManager manager) {
@@ -85,8 +84,7 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
         return this.manager;
     }
 
-    @Override
     public RoleDefinitionsClient inner() {
-        return manager().roleInner().getRoleDefinitions();
+        return manager().roleServiceClient().getRoleDefinitions();
     }
 }

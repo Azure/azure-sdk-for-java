@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerinstance.ContainerInstanceManagementClient;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerExecResponseInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.LogsInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequest;
@@ -44,7 +43,7 @@ public final class ContainersClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ContainersClient(ContainerInstanceManagementClient client) {
+    ContainersClient(ContainerInstanceManagementClient client) {
         this.service =
             RestProxy.create(ContainersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -303,6 +302,24 @@ public final class ContainersClient {
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the logs for a specified container instance in a specified resource group and container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LogsInner listLogs(String resourceGroupName, String containerGroupName, String containerName) {
+        final Integer tail = null;
+        final Context context = null;
+        return listLogsAsync(resourceGroupName, containerGroupName, containerName, tail).block();
+    }
+
+    /**
+     * Get the logs for a specified container instance in a specified resource group and container group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param containerName The name of the container instance.
      * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
      *     available logs are shown up to 4mb.
      * @param context The context to associate with this operation.
@@ -315,24 +332,6 @@ public final class ContainersClient {
     public LogsInner listLogs(
         String resourceGroupName, String containerGroupName, String containerName, Integer tail, Context context) {
         return listLogsAsync(resourceGroupName, containerGroupName, containerName, tail, context).block();
-    }
-
-    /**
-     * Get the logs for a specified container instance in a specified resource group and container group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logs for a specified container instance in a specified resource group and container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogsInner listLogs(String resourceGroupName, String containerGroupName, String containerName) {
-        final Integer tail = null;
-        final Context context = null;
-        return listLogsAsync(resourceGroupName, containerGroupName, containerName, tail).block();
     }
 
     /**

@@ -47,11 +47,14 @@ public class TopQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
-    public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
+    public void queryDocumentsWithTop(Boolean qmEnabled) throws Exception {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
-        options.setQueryMetricsEnabled(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
 
         int expectedTotalSize = 20;
         int expectedNumberOfPages = 3;

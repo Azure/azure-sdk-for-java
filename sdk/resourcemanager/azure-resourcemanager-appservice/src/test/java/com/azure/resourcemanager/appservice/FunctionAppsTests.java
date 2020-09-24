@@ -9,13 +9,14 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
+import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.SkuName;
-import com.azure.resourcemanager.resources.core.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.test.utils.TestUtilities;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -53,7 +54,7 @@ public class FunctionAppsTests extends AppServiceTest {
         rgName1 = generateRandomResourceName("javacsmrg", 20);
         rgName2 = generateRandomResourceName("javacsmrg", 20);
 
-        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
+        storageManager = StorageManager.authenticate(httpPipeline, profile);
 
         super.initializeClients(httpPipeline, profile);
     }
@@ -144,7 +145,7 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertEquals(functionApp2.name(), functionApp.name());
 
         // List
-        PagedIterable<FunctionApp> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
+        PagedIterable<FunctionAppBasic> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(1, TestUtilities.getSize(functionApps));
         functionApps = appServiceManager.functionApps().listByResourceGroup(rgName2);
         Assertions.assertEquals(2, TestUtilities.getSize(functionApps));
@@ -216,20 +217,20 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp1);
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForConsumptionPlan());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
 
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
         Assertions.assertEquals(Region.US_EAST, plan1.region());
         Assertions.assertEquals(new PricingTier(SkuName.DYNAMIC.toString(), "Y1"), plan1.pricingTier());
-        Assertions.assertTrue(plan1.inner().reserved());
+        Assertions.assertTrue(plan1.innerModel().reserved());
         Assertions
             .assertTrue(
                 Arrays
-                    .asList(functionApp1.inner().kind().split(","))
+                    .asList(functionApp1.innerModel().kind().split(","))
                     .containsAll(Arrays.asList("linux", "functionapp")));
 
-        PagedIterable<FunctionApp> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
+        PagedIterable<FunctionAppBasic> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(1, TestUtilities.getSize(functionApps));
 
         // function app with app service plan
@@ -245,12 +246,12 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp2);
-        assertLinuxJava(functionApp2, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForDedicatedPlan());
+        assertLinuxJava(functionApp2, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
 
         AppServicePlan plan2 = appServiceManager.appServicePlans().getById(functionApp2.appServicePlanId());
         Assertions.assertNotNull(plan2);
         Assertions.assertEquals(PricingTier.STANDARD_S1, plan2.pricingTier());
-        Assertions.assertTrue(plan2.inner().reserved());
+        Assertions.assertTrue(plan2.innerModel().reserved());
 
         // one more function app using existing app service plan
         FunctionApp functionApp3 =
@@ -264,7 +265,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp3);
-        assertLinuxJava(functionApp3, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForDedicatedPlan());
+        assertLinuxJava(functionApp3, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
 
         // wait for deploy
         if (!isPlaybackMode()) {
@@ -308,8 +309,8 @@ public class FunctionAppsTests extends AppServiceTest {
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
         Assertions.assertEquals(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"), plan1.pricingTier());
-        Assertions.assertTrue(plan1.inner().reserved());
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForDedicatedPlan());
+        Assertions.assertTrue(plan1.innerModel().reserved());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
 
         // wait for deploy
         if (!isPlaybackMode()) {
@@ -360,7 +361,7 @@ public class FunctionAppsTests extends AppServiceTest {
             .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
             .create();
         Assertions.assertNotNull(functionApp1);
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11.getLinuxFxVersionForConsumptionPlan());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11.getLinuxFxVersion());
     }
 
     private static Map<String, AppSetting> assertLinuxJava(FunctionApp functionApp, String linuxFxVersion) {
@@ -368,9 +369,9 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions
             .assertTrue(
                 Arrays
-                    .asList(functionApp.inner().kind().split(","))
+                    .asList(functionApp.innerModel().kind().split(","))
                     .containsAll(Arrays.asList("linux", "functionapp")));
-        Assertions.assertTrue(functionApp.inner().reserved());
+        Assertions.assertTrue(functionApp.innerModel().reserved());
 
         Map<String, AppSetting> appSettings = functionApp.getAppSettings();
         Assertions.assertNotNull(appSettings);

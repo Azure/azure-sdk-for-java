@@ -26,7 +26,7 @@ class ApplicationGatewayIpConfigurationImpl
     // Getters
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     // Fluent setters
@@ -44,7 +44,7 @@ class ApplicationGatewayIpConfigurationImpl
     @Override
     public ApplicationGatewayIpConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
         SubResource subnetRef = new SubResource().withId(networkId + "/subnets/" + subnetName);
-        this.inner().withSubnet(subnetRef);
+        this.innerModel().withSubnet(subnetRef);
         return this;
     }
 
@@ -57,7 +57,7 @@ class ApplicationGatewayIpConfigurationImpl
 
     @Override
     public String networkId() {
-        SubResource subnetRef = this.inner().subnet();
+        SubResource subnetRef = this.innerModel().subnet();
         if (subnetRef != null) {
             return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
         } else {
@@ -67,7 +67,7 @@ class ApplicationGatewayIpConfigurationImpl
 
     @Override
     public String subnetName() {
-        SubResource subnetRef = this.inner().subnet();
+        SubResource subnetRef = this.innerModel().subnet();
         if (subnetRef != null) {
             return ResourceUtils.nameFromResourceId(subnetRef.id());
         } else {
@@ -77,6 +77,6 @@ class ApplicationGatewayIpConfigurationImpl
 
     @Override
     public Subnet getSubnet() {
-        return Utils.getAssociatedSubnet(this.parent().manager(), this.inner().subnet());
+        return Utils.getAssociatedSubnet(this.parent().manager(), this.innerModel().subnet());
     }
 }

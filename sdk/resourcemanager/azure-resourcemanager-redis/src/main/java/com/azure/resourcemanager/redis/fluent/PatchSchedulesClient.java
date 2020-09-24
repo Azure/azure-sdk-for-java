@@ -28,10 +28,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.redis.RedisManagementClient;
 import com.azure.resourcemanager.redis.fluent.inner.RedisPatchScheduleInner;
-import com.azure.resourcemanager.redis.fluent.inner.RedisPatchScheduleListResultInner;
 import com.azure.resourcemanager.redis.models.DefaultName;
+import com.azure.resourcemanager.redis.models.RedisPatchScheduleListResult;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -51,7 +50,7 @@ public final class PatchSchedulesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PatchSchedulesClient(RedisManagementClient client) {
+    PatchSchedulesClient(RedisManagementClient client) {
         this.service =
             RestProxy.create(PatchSchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -70,7 +69,7 @@ public final class PatchSchedulesClient {
                 + "/{cacheName}/patchSchedules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisPatchScheduleListResultInner>> listByRedisResource(
+        Mono<Response<RedisPatchScheduleListResult>> listByRedisResource(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -128,7 +127,7 @@ public final class PatchSchedulesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisPatchScheduleListResultInner>> listByRedisResourceNext(
+        Mono<Response<RedisPatchScheduleListResult>> listByRedisResourceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

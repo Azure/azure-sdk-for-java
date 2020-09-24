@@ -23,8 +23,8 @@ class NSRecordSetImpl extends DnsRecordSetImpl implements NSRecordSet {
     @Override
     public List<String> nameServers() {
         List<String> nameServers = new ArrayList<>();
-        if (this.inner().nsRecords() != null) {
-            for (NsRecord nsRecord : this.inner().nsRecords()) {
+        if (this.innerModel().nsRecords() != null) {
+            for (NsRecord nsRecord : this.innerModel().nsRecords()) {
                 nameServers.add(nsRecord.nsdname());
             }
         }
@@ -33,15 +33,15 @@ class NSRecordSetImpl extends DnsRecordSetImpl implements NSRecordSet {
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (this.inner().nsRecords() != null && this.inner().nsRecords().size() > 0) {
+        if (this.innerModel().nsRecords() != null && this.innerModel().nsRecords().size() > 0) {
             if (resource.nsRecords() == null) {
                 resource.withNsRecords(new ArrayList<NsRecord>());
             }
 
-            for (NsRecord record : this.inner().nsRecords()) {
+            for (NsRecord record : this.innerModel().nsRecords()) {
                 resource.nsRecords().add(record);
             }
-            this.inner().nsRecords().clear();
+            this.innerModel().nsRecords().clear();
         }
 
         if (this.recordSetRemoveInfo.nsRecords().size() > 0) {

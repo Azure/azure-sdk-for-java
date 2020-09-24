@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.ListTableServicesInner;
 import com.azure.resourcemanager.storage.fluent.inner.TableServicePropertiesInner;
 import com.azure.resourcemanager.storage.models.CorsRules;
@@ -44,7 +43,7 @@ public final class TableServicesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public TableServicesClient(StorageManagementClient client) {
+    TableServicesClient(StorageManagementClient client) {
         this.service =
             RestProxy.create(TableServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetExtensionInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetExtensionListResultInner;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtensionListResult;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtensionUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -55,7 +54,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualMachineScaleSetExtensionsClient(ComputeManagementClient client) {
+    VirtualMachineScaleSetExtensionsClient(ComputeManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -141,7 +140,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
                 + "/virtualMachineScaleSets/{vmScaleSetName}/extensions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetExtensionListResultInner>> list(
+        Mono<Response<VirtualMachineScaleSetExtensionListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vmScaleSetName") String vmScaleSetName,
@@ -153,7 +152,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetExtensionListResultInner>> listNext(
+        Mono<Response<VirtualMachineScaleSetExtensionListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -1289,25 +1288,6 @@ public final class VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set containing the extension.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetExtensionInner get(
-        String resourceGroupName, String vmScaleSetName, String vmssExtensionName, String expand, Context context) {
-        return getAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, expand, context).block();
-    }
-
-    /**
-     * The operation to get the extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set containing the extension.
-     * @param vmssExtensionName The name of the VM scale set extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1319,6 +1299,25 @@ public final class VirtualMachineScaleSetExtensionsClient {
         final String expand = null;
         final Context context = null;
         return getAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, expand).block();
+    }
+
+    /**
+     * The operation to get the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set containing the extension.
+     * @param vmssExtensionName The name of the VM scale set extension.
+     * @param expand The expand expression to apply on the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine Scale Set Extension.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineScaleSetExtensionInner get(
+        String resourceGroupName, String vmScaleSetName, String vmssExtensionName, String expand, Context context) {
+        return getAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, expand, context).block();
     }
 
     /**

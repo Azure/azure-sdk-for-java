@@ -24,7 +24,7 @@ public class ContainerGroupsImpl
     implements ContainerGroups {
 
     public ContainerGroupsImpl(final ContainerInstanceManager manager) {
-        super(manager.inner().getContainerGroups(), manager);
+        super(manager.serviceClient().getContainerGroups(), manager);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ContainerGroupsImpl
 
     @Override
     protected Mono<Void> deleteInnerAsync(String resourceGroupName, String name) {
-        return this.manager().inner().getContainerGroups().deleteAsync(resourceGroupName, name).then();
+        return this.manager().serviceClient().getContainerGroups().deleteAsync(resourceGroupName, name).then();
     }
 
     @Override
@@ -52,8 +52,8 @@ public class ContainerGroupsImpl
 
     @Override
     public String getLogContent(String resourceGroupName, String containerGroupName, String containerName) {
-        LogsInner logsInner =
-            this.manager().inner().getContainers().listLogs(resourceGroupName, containerGroupName, containerName);
+        LogsInner logsInner = this.manager().serviceClient().getContainers()
+            .listLogs(resourceGroupName, containerGroupName, containerName);
 
         return logsInner != null ? logsInner.content() : null;
     }
@@ -64,7 +64,7 @@ public class ContainerGroupsImpl
         LogsInner logsInner =
             this
                 .manager()
-                .inner()
+                .serviceClient()
                 .getContainers()
                 .listLogs(resourceGroupName, containerGroupName, containerName, tailLineCount);
 
@@ -75,7 +75,7 @@ public class ContainerGroupsImpl
     public Mono<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getContainers()
             .listLogsAsync(resourceGroupName, containerGroupName, containerName)
             .map(LogsInner::content);
@@ -86,7 +86,7 @@ public class ContainerGroupsImpl
         String resourceGroupName, String containerGroupName, String containerName, int tailLineCount) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getContainers()
             .listLogsAsync(resourceGroupName, containerGroupName, containerName, tailLineCount)
             .map(LogsInner::content);
@@ -99,7 +99,7 @@ public class ContainerGroupsImpl
 
     @Override
     public PagedFlux<Operation> listOperationsAsync() {
-        return this.manager().inner().getOperations().listAsync();
+        return this.manager().serviceClient().getOperations().listAsync();
     }
 
     @Override
@@ -109,7 +109,7 @@ public class ContainerGroupsImpl
 
     @Override
     public PagedFlux<CachedImages> listCachedImagesAsync(String location) {
-        return this.manager().inner().getLocations().listCachedImagesAsync(location);
+        return this.manager().serviceClient().getLocations().listCachedImagesAsync(location);
     }
 
     @Override
@@ -119,17 +119,17 @@ public class ContainerGroupsImpl
 
     @Override
     public PagedFlux<Capabilities> listCapabilitiesAsync(String location) {
-        return this.manager().inner().getLocations().listCapabilitiesAsync(location);
+        return this.manager().serviceClient().getLocations().listCapabilitiesAsync(location);
     }
 
     @Override
     public void start(String resourceGroupName, String containerGroupName) {
-        this.manager().inner().getContainerGroups().start(resourceGroupName, containerGroupName);
+        this.manager().serviceClient().getContainerGroups().start(resourceGroupName, containerGroupName);
     }
 
     @Override
     public Mono<Void> startAsync(String resourceGroupName, String containerGroupName) {
-        return this.manager().inner().getContainerGroups().startAsync(resourceGroupName, containerGroupName);
+        return this.manager().serviceClient().getContainerGroups().startAsync(resourceGroupName, containerGroupName);
     }
 
     @Override

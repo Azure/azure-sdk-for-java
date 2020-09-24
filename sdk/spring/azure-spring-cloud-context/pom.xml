@@ -12,14 +12,14 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>spring-cloud-azure-context</artifactId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
 
   <name>Spring Cloud Azure Context</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.14</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-telemetry</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-telemetry;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-telemetry;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -106,7 +106,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:azure:[1.34.0]</include> <!-- {x-include-update;spring_com.microsoft.azure:azure;external_dependency} -->
-                <include>com.microsoft.azure:spring-cloud-azure-telemetry:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-telemetry;current} -->
+                <include>com.microsoft.azure:spring-cloud-azure-telemetry:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-telemetry;current} -->
                 <include>commons-io:commons-io:[2.5]</include> <!-- {x-include-update;commons-io:commons-io;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-aop:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->

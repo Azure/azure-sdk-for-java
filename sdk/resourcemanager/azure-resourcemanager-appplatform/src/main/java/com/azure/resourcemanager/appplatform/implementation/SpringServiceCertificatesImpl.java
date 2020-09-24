@@ -89,14 +89,17 @@ public class SpringServiceCertificatesImpl
         return inner().listAsync(parent().resourceGroupName(), parent().name()).mapPage(this::wrapModel);
     }
 
-    @Override
     public CertificatesClient inner() {
-        return manager().inner().getCertificates();
+        return manager().serviceClient().getCertificates();
     }
 
-    Mono<SpringServiceCertificate> createOrUpdateAsync(String name, CertificateProperties properties) {
-        return inner().createOrUpdateAsync(
-            parent().resourceGroupName(), parent().name(), name, properties
-        ).map(this::wrapModel);
+    SpringServiceCertificate prepareCreateOrUpdate(String name, CertificateProperties properties) {
+        return prepareInlineDefine(
+            new SpringServiceCertificateImpl(
+                name, parent(), new CertificateResourceInner().withProperties(properties)));
+    }
+
+    void prepareDelete(String name) {
+        prepareInlineRemove(new SpringServiceCertificateImpl(name, parent(), new CertificateResourceInner()));
     }
 }

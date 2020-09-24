@@ -2,7 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.privatedns;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
@@ -10,29 +15,50 @@ import com.azure.resourcemanager.privatedns.models.ARecordSet;
 import com.azure.resourcemanager.privatedns.models.AaaaRecordSet;
 import com.azure.resourcemanager.privatedns.models.CnameRecordSet;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.core.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.test.utils.TestUtilities;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class PrivateDnsZoneRecordSetETagTests extends TestBase {
-    private String rgName = "";
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
-    public PrivateDnsZoneRecordSetETagTests() {
-        super(TestBase.RunCondition.BOTH);
-    }
+public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestBase {
+    private String rgName = "";
 
     protected ResourceManager resourceManager;
     protected PrivateDnsZoneManager privateZoneManager;
 
     @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
+    }
+
+    @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
-        privateZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
+            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
+        privateZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile);
         rgName = generateRandomResourceName("prdnsrstest", 15);
     }
 
@@ -91,9 +117,6 @@ public class PrivateDnsZoneRecordSetETagTests extends TestBase {
 
     @Test
     public void canCreateRecordSetsWithDefaultETag() {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
@@ -166,7 +189,7 @@ public class PrivateDnsZoneRecordSetETagTests extends TestBase {
                         .withETagCheck()
                         .attach()
                     .create();
-        } catch (Exception exception) {
+        } catch (ManagementException exception) {
             compositeException = exception;
         }
         Assertions.assertNotNull(compositeException);

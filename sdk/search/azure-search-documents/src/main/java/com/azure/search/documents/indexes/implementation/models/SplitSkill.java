@@ -8,6 +8,9 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.SplitSkillLanguage;
+import com.azure.search.documents.indexes.models.TextSplitMode;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -38,11 +41,16 @@ public class SplitSkill extends SearchIndexerSkill {
     @JsonProperty(value = "maximumPageLength")
     private Integer maximumPageLength;
 
-    /** Creates an instance of SplitSkill class. */
+    /**
+     * Creates an instance of SplitSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public SplitSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 
@@ -104,15 +112,5 @@ public class SplitSkill extends SearchIndexerSkill {
     public SplitSkill setMaximumPageLength(Integer maximumPageLength) {
         this.maximumPageLength = maximumPageLength;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

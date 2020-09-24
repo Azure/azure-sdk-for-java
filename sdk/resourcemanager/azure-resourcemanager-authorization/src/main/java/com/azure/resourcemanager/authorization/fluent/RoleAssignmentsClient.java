@@ -28,10 +28,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.AuthorizationManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentInner;
-import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentListResultInner;
 import com.azure.resourcemanager.authorization.models.RoleAssignmentCreateParameters;
+import com.azure.resourcemanager.authorization.models.RoleAssignmentListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
@@ -52,7 +51,7 @@ public final class RoleAssignmentsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public RoleAssignmentsClient(AuthorizationManagementClient client) {
+    RoleAssignmentsClient(AuthorizationManagementClient client) {
         this.service =
             RestProxy.create(RoleAssignmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -72,7 +71,7 @@ public final class RoleAssignmentsClient
                 + "/roleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentListResultInner>> listForResource(
+        Mono<Response<RoleAssignmentListResult>> listForResource(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
@@ -90,7 +89,7 @@ public final class RoleAssignmentsClient
                 + "/roleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentListResultInner>> listByResourceGroup(
+        Mono<Response<RoleAssignmentListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("$filter") String filter,
@@ -167,7 +166,7 @@ public final class RoleAssignmentsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentListResultInner>> list(
+        Mono<Response<RoleAssignmentListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
@@ -178,7 +177,7 @@ public final class RoleAssignmentsClient
         @Get("/{scope}/providers/Microsoft.Authorization/roleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentListResultInner>> listForScope(
+        Mono<Response<RoleAssignmentListResult>> listForScope(
             @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("$filter") String filter,
@@ -189,28 +188,28 @@ public final class RoleAssignmentsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentListResultInner>> listForResourceNext(
+        Mono<Response<RoleAssignmentListResult>> listForResourceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentListResultInner>> listForResourceGroupNext(
+        Mono<Response<RoleAssignmentListResult>> listForResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentListResultInner>> listNext(
+        Mono<Response<RoleAssignmentListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentListResultInner>> listForScopeNext(
+        Mono<Response<RoleAssignmentListResult>> listForScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -27,9 +27,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
-import com.azure.resourcemanager.storage.fluent.inner.BlobServiceItemsInner;
 import com.azure.resourcemanager.storage.fluent.inner.BlobServicePropertiesInner;
+import com.azure.resourcemanager.storage.models.BlobServiceItems;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BlobServices. */
@@ -47,7 +46,7 @@ public final class BlobServicesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public BlobServicesClient(StorageManagementClient client) {
+    BlobServicesClient(StorageManagementClient client) {
         this.service =
             RestProxy.create(BlobServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -66,7 +65,7 @@ public final class BlobServicesClient {
                 + "/storageAccounts/{accountName}/blobServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BlobServiceItemsInner>> list(
+        Mono<Response<BlobServiceItems>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,

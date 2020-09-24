@@ -18,11 +18,14 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.KuduAuthenticationPolicy;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.fasterxml.jackson.core.JsonParseException;
 
 import java.io.ByteArrayInputStream;
@@ -49,8 +52,8 @@ class KuduClient {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    private String host;
-    private KuduService service;
+    private final String host;
+    private final KuduService service;
 
     KuduClient(WebAppBase webAppBase) {
         if (webAppBase.defaultHostname() == null) {
@@ -65,7 +68,12 @@ class KuduClient {
         this.host = "https://" + host;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         for (int i = 0, count = webAppBase.manager().httpPipeline().getPolicyCount(); i < count; ++i) {
-            policies.add(webAppBase.manager().httpPipeline().getPolicy(i));
+            HttpPipelinePolicy policy = webAppBase.manager().httpPipeline().getPolicy(i);
+            if (!(policy instanceof AuthenticationPolicy)
+                && !(policy instanceof ProviderRegistrationPolicy)
+                && !(policy instanceof AuxiliaryAuthenticationPolicy)) {
+                policies.add(policy);
+            }
         }
         policies.add(new KuduAuthenticationPolicy(webAppBase));
         HttpPipeline httpPipeline = new HttpPipelineBuilder()
@@ -73,7 +81,8 @@ class KuduClient {
             .httpClient(webAppBase.manager().httpPipeline().getHttpClient())
             .build();
 
-        service = RestProxy.create(KuduService.class, httpPipeline, new AzureJacksonAdapter());
+        service = RestProxy.create(KuduService.class, httpPipeline,
+            SerializerFactory.createDefaultManagementSerializerAdapter());
     }
 
     @Host("{$host}")
@@ -326,17 +335,20 @@ class KuduClient {
                 flux ->
                     flux
                         .zipWith(
-                            Flux.range(1, 30),
+                            Flux.range(1, 6),
                             (Throwable throwable, Integer integer) -> {
                                 if (throwable instanceof ManagementException
                                         && ((ManagementException) throwable).getResponse().getStatusCode() == 502
-                                    || throwable instanceof JsonParseException) {
+                                    || throwable instanceof JsonParseException
+//                                    || throwable instanceof TimeoutException
+//                                    || throwable instanceof SocketTimeoutException
+                                ) {
                                     return integer;
                                 } else {
                                     throw logger.logExceptionAsError(Exceptions.propagate(throwable));
                                 }
                             })
-                        .flatMap(i -> Mono.delay(Duration.ofSeconds(i))));
+                        .flatMap(i -> Mono.delay(Duration.ofSeconds(((long) i) * 10))));
     }
 
 }

@@ -3,22 +3,22 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosContainer;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 
 final public class ItemOperations {
 
     /**
-     * Note: although this method is public, this API may change in future.
+     * Note: this method is deprecated - please use CosmosContainer.readMany instead
      * <p>
      * Reads many documents.
      *
@@ -31,11 +31,12 @@ final public class ItemOperations {
     public static <T> FeedResponse<T> readMany(CosmosContainer container,
                                                List<Pair<String, PartitionKey>> itemKeyList,
                                                Class<T> classType) {
+
         return readManyAsync(CosmosBridgeInternal.getCosmosAsyncContainer(container), itemKeyList, classType).block();
     }
 
     /**
-     * Note: although this method is public, this API may change in future.
+     * Note: this method is deprecated - please use CosmosAsyncContainer.readMany instead
      * <p>
      * Reads many documents.
      *
@@ -49,19 +50,30 @@ final public class ItemOperations {
                                                           List<Pair<String, PartitionKey>> itemKeyList,
                                                           Class<T> classType) {
 
+        if (container == null) {
+            throw new IllegalArgumentException("Parameter container is required and cannot be null.");
+        }
 
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setMaxDegreeOfParallelism(-1);
-        return readManyInternal(container, itemKeyList, new CosmosQueryRequestOptions(), classType);
+        return container.readMany(convertItemKeyList(itemKeyList), classType);
     }
 
-    static <T> Mono<FeedResponse<T>> readManyInternal(CosmosAsyncContainer container,
-                                                      List<Pair<String, PartitionKey>> itemKeyList,
-                                                      CosmosQueryRequestOptions options,
-                                                      Class<T> classType) {
+    private static List<CosmosItemIdentity> convertItemKeyList(
+        List<Pair<String, PartitionKey>> itemKeyList) {
 
-        return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase())
-            .readMany(itemKeyList, BridgeInternal.getLink(container), options, classType);
+        if (itemKeyList != null) {
+            List<CosmosItemIdentity> itemIdentities = new ArrayList<>(itemKeyList.size());
+            for (int i = 0; i < itemKeyList.size(); i++) {
+
+                itemIdentities.add(
+                    new CosmosItemIdentity(
+                        itemKeyList.get(i).getRight(),
+                        itemKeyList.get(i).getLeft()));
+            }
+
+            return itemIdentities;
+        }
+
+        return new ArrayList<>();
     }
 
     private ItemOperations() {}

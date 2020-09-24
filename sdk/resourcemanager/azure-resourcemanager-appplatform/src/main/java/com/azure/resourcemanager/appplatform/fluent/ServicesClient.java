@@ -33,12 +33,11 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceListInner;
 import com.azure.resourcemanager.appplatform.models.NameAvailability;
 import com.azure.resourcemanager.appplatform.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.appplatform.models.RegenerateTestKeyRequestPayload;
+import com.azure.resourcemanager.appplatform.models.ServiceResourceList;
 import com.azure.resourcemanager.appplatform.models.TestKeyType;
 import com.azure.resourcemanager.appplatform.models.TestKeys;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -66,7 +65,7 @@ public final class ServicesClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ServicesClient(AppPlatformManagementClient client) {
+    ServicesClient(AppPlatformManagementClient client) {
         this.service = RestProxy.create(ServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -96,7 +95,7 @@ public final class ServicesClient
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -211,7 +210,7 @@ public final class ServicesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/Spring")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceResourceListInner>> list(
+        Mono<Response<ServiceResourceList>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -222,7 +221,7 @@ public final class ServicesClient
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceResourceListInner>> listByResourceGroup(
+        Mono<Response<ServiceResourceList>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -233,14 +232,14 @@ public final class ServicesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceResourceListInner>> listBySubscriptionNext(
+        Mono<Response<ServiceResourceList>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceResourceListInner>> listNext(
+        Mono<Response<ServiceResourceList>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -1563,6 +1562,8 @@ public final class ServicesClient
     }
 
     /**
+     * Disable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1607,6 +1608,8 @@ public final class ServicesClient
     }
 
     /**
+     * Disable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1650,6 +1653,8 @@ public final class ServicesClient
     }
 
     /**
+     * Disable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1665,6 +1670,8 @@ public final class ServicesClient
     }
 
     /**
+     * Disable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1681,6 +1688,8 @@ public final class ServicesClient
     }
 
     /**
+     * Disable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1694,6 +1703,8 @@ public final class ServicesClient
     }
 
     /**
+     * Disable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1708,6 +1719,8 @@ public final class ServicesClient
     }
 
     /**
+     * Enable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1752,6 +1765,8 @@ public final class ServicesClient
     }
 
     /**
+     * Enable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1795,6 +1810,8 @@ public final class ServicesClient
     }
 
     /**
+     * Enable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1817,6 +1834,8 @@ public final class ServicesClient
     }
 
     /**
+     * Enable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1840,6 +1859,8 @@ public final class ServicesClient
     }
 
     /**
+     * Enable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
@@ -1854,6 +1875,8 @@ public final class ServicesClient
     }
 
     /**
+     * Enable test endpoint functionality for a Service.
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.

@@ -7,12 +7,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.DockerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
@@ -24,6 +24,7 @@ import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 import com.github.dockerjava.core.command.PushImageResultCallback;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -42,12 +43,12 @@ public class ManageContainerRegistry {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String rgName = azure.sdkContext().randomResourceName("rgACR", 15);
-        final String acrName = azure.sdkContext().randomResourceName("acrsample", 20);
+    public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
+        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgACR", 15);
+        final String acrName = azureResourceManager.sdkContext().randomResourceName("acrsample", 20);
         final Region region = Region.US_EAST;
         final String dockerImageName = "hello-world";
         final String dockerImageTag = "latest";
@@ -61,7 +62,7 @@ public class ManageContainerRegistry {
 
             Date t1 = new Date();
 
-            Registry azureRegistry = azure.containerRegistries().define(acrName)
+            Registry azureRegistry = azureResourceManager.containerRegistries().define(acrName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withBasicSku()
@@ -77,7 +78,7 @@ public class ManageContainerRegistry {
             // Create a Docker client that will be used to push/pull images to/from the Azure Container Registry
 
             RegistryCredentials acrCredentials = azureRegistry.getCredentials();
-            DockerClient dockerClient = DockerUtils.createDockerClient(azure, rgName, region,
+            DockerClient dockerClient = DockerUtils.createDockerClient(azureResourceManager, rgName, region,
                     azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
 
             //=============================================================
@@ -158,13 +159,10 @@ public class ManageContainerRegistry {
             }
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -172,7 +170,6 @@ public class ManageContainerRegistry {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
@@ -187,18 +184,19 @@ public class ManageContainerRegistry {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

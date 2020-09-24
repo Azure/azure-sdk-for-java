@@ -23,6 +23,7 @@
     <module>azure-spring-boot-test-aad</module>
     <module>azure-spring-boot-test-cosmosdb</module>
     <module>azure-spring-boot-test-keyvault</module>
+    <module>azure-spring-boot-test-servicebus-jms</module>
     <module>azure-spring-cloud-test-eventhubs</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc</module>
@@ -71,12 +72,11 @@
     <module>azure-spring-integration-storage-queue</module>
     <module>azure-spring-integration-test</module>
     <module>azure-spring-cloud-messaging</module>
-    <module>azure-spring-cloud-starter-appconfiguration-config</module>
     <module>azure-spring-cloud-starter-cache</module>
     <module>azure-spring-cloud-starter-eventhubs</module>
     <module>azure-spring-cloud-starter-eventhubs-kafka</module>
     <module>azure-spring-cloud-starter-servicebus</module>
-    <module>azure-spring-cloud-starter-storage</module>
+    <module>azure-spring-starter-storage</module>
     <module>azure-spring-cloud-starter-storage-queue</module>
     <module>azure-spring-cloud-servicebus-stream-binder-core</module>
     <module>azure-spring-cloud-stream-binder-test</module>

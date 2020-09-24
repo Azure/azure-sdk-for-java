@@ -10,6 +10,7 @@
             "com\\.azure\\..+\\.samples(\\..+)?",
             "com\\.fasterxml\\.jackson\\..+",
             "reactor\\.netty\\..+",
+            "reactor\\.util\\..+",
             "io\\.netty\\..+",
             "com\\.nimbusds(\\..+)?",
             "com\\.microsoft\\.azure\\..+",
@@ -19,7 +20,8 @@
             "io\\.micrometer(\\..+)?",
             "com\\.azure\\.data\\.cosmos(\\..+)?",
             "com\\.azure\\.spring\\.data\\.cosmos\\..+",
-            "org\\.springframework\\.data\\..+"
+            "org\\.springframework\\.data\\..+",
+            "org\\.apache\\.avro\\..+"
           ]
         }
       }
@@ -93,6 +95,12 @@
       {
         "regex": true,
         "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(class|interface|enum) com\\.azure\\.communication\\.common\\..*",
+        "justification": "azure-communication-common classes are allowed to be exposed."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(interface|class|enum) com\\.azure\\.core.*",
         "justification": "azure-core classes are allowed to be exposed by dependencies using them."
       },
@@ -125,6 +133,12 @@
         "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(class|interface|enum) com\\.azure\\.perf\\.test\\.core\\..*",
         "justification": "perf-test classes are allowed to be exposed."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(interface|class|enum) com\\.azure\\.cosmos.*",
+        "justification": "azure-cosmos classes are allowed to be exposed by dependencies using them."
       },
       {
         "code": "java.method.finalMethodAddedToNonFinalClass",
@@ -165,6 +179,34 @@
         "code": "java.method.finalMethodAddedToNonFinalClass",
         "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.util.paging.ContinuablePagedFluxCore<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
         "justification": "Reactor added new final APIs to Flux."
+      },
+      {
+        "regex": true,
+        "code": "java\\.annotation\\.added",
+        "new": "^(method|parameter)\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(FacetResult|SearchServiceStatistics)::.+$",
+        "justification": "Annotations better indicate which parameters are required when handling service requests and responses."
+      },
+      {
+        "regex": true,
+        "code": "java\\.annotation\\.attributeAdded",
+        "new": "^parameter\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(AnalyzedTokenInfo|CorsOptions|FieldMapping|IndexerExecutionResult|SearchIndexerStatus|SearchServiceCounters|TextWeights|AutocompleteResult)::<init>\\(.+\\)$",
+        "justification": "Annotations attributes better indicate which parameters are required when handling service requests and responses."
+      },
+
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class com.azure.data.schemaregistry.SchemaRegistryAsyncClient",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class com.azure.data.schemaregistry.models.SchemaProperties",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class com.azure.data.schemaregistry.models.SerializationType",
+        "justification": "This is a preview release"
       }
     ]
   }

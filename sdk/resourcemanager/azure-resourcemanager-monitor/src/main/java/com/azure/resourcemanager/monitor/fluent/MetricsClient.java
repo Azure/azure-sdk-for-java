@@ -21,7 +21,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.ResponseInner;
 import com.azure.resourcemanager.monitor.models.ResultType;
 import java.time.Duration;
@@ -42,7 +41,7 @@ public final class MetricsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public MetricsClient(MonitorClient client) {
+    MetricsClient(MonitorClient client) {
         this.service = RestProxy.create(MetricsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -440,6 +439,41 @@ public final class MetricsClient {
      * **Lists the metric values for a resource**.
      *
      * @param resourceUri The identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseInner list(String resourceUri) {
+        final String timespan = null;
+        final Duration interval = null;
+        final String metricnames = null;
+        final String aggregation = null;
+        final Integer top = null;
+        final String orderby = null;
+        final String filter = null;
+        final ResultType resultType = null;
+        final String metricnamespace = null;
+        final Context context = null;
+        return listAsync(
+                resourceUri,
+                timespan,
+                interval,
+                metricnames,
+                aggregation,
+                top,
+                orderby,
+                filter,
+                resultType,
+                metricnamespace)
+            .block();
+    }
+
+    /**
+     * **Lists the metric values for a resource**.
+     *
+     * @param resourceUri The identifier of the resource.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
@@ -490,41 +524,6 @@ public final class MetricsClient {
                 resultType,
                 metricnamespace,
                 context)
-            .block();
-    }
-
-    /**
-     * **Lists the metric values for a resource**.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseInner list(String resourceUri) {
-        final String timespan = null;
-        final Duration interval = null;
-        final String metricnames = null;
-        final String aggregation = null;
-        final Integer top = null;
-        final String orderby = null;
-        final String filter = null;
-        final ResultType resultType = null;
-        final String metricnamespace = null;
-        final Context context = null;
-        return listAsync(
-                resourceUri,
-                timespan,
-                interval,
-                metricnames,
-                aggregation,
-                top,
-                orderby,
-                filter,
-                resultType,
-                metricnamespace)
             .block();
     }
 }

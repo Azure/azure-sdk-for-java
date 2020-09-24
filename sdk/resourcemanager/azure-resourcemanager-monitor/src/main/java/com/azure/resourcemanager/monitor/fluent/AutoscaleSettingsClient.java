@@ -29,9 +29,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
-import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingResourceInner;
+import com.azure.resourcemanager.monitor.models.AutoscaleSettingResourceCollection;
 import com.azure.resourcemanager.monitor.models.AutoscaleSettingResourcePatch;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -56,7 +55,7 @@ public final class AutoscaleSettingsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AutoscaleSettingsClient(MonitorClient client) {
+    AutoscaleSettingsClient(MonitorClient client) {
         this.service =
             RestProxy.create(AutoscaleSettingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -75,7 +74,7 @@ public final class AutoscaleSettingsClient
                 + "/autoscalesettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoscaleSettingResourceCollectionInner>> listByResourceGroup(
+        Mono<Response<AutoscaleSettingResourceCollection>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -144,7 +143,7 @@ public final class AutoscaleSettingsClient
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/autoscalesettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoscaleSettingResourceCollectionInner>> list(
+        Mono<Response<AutoscaleSettingResourceCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -154,14 +153,14 @@ public final class AutoscaleSettingsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoscaleSettingResourceCollectionInner>> listByResourceGroupNext(
+        Mono<Response<AutoscaleSettingResourceCollection>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoscaleSettingResourceCollectionInner>> listBySubscriptionNext(
+        Mono<Response<AutoscaleSettingResourceCollection>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

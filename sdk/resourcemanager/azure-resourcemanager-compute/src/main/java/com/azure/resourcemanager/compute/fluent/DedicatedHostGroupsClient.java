@@ -29,9 +29,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.DedicatedHostGroupInner;
-import com.azure.resourcemanager.compute.fluent.inner.DedicatedHostGroupListResultInner;
+import com.azure.resourcemanager.compute.models.DedicatedHostGroupListResult;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -56,7 +55,7 @@ public final class DedicatedHostGroupsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DedicatedHostGroupsClient(ComputeManagementClient client) {
+    DedicatedHostGroupsClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(DedicatedHostGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -132,7 +131,7 @@ public final class DedicatedHostGroupsClient
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedHostGroupListResultInner>> listByResourceGroup(
+        Mono<Response<DedicatedHostGroupListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -143,7 +142,7 @@ public final class DedicatedHostGroupsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/hostGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedHostGroupListResultInner>> list(
+        Mono<Response<DedicatedHostGroupListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -153,14 +152,14 @@ public final class DedicatedHostGroupsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedHostGroupListResultInner>> listByResourceGroupNext(
+        Mono<Response<DedicatedHostGroupListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedHostGroupListResultInner>> listBySubscriptionNext(
+        Mono<Response<DedicatedHostGroupListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

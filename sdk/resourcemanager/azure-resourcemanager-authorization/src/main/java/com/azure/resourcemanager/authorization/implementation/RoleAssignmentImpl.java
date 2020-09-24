@@ -44,7 +44,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public boolean isInCreateMode() {
-        return inner().id() == null;
+        return innerModel().id() == null;
     }
 
     @Override
@@ -86,7 +86,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
             .flatMap(
                 roleAssignmentPropertiesInner ->
                     manager()
-                        .roleInner()
+                        .roleServiceClient()
                         .getRoleAssignments()
                         .createAsync(scope(), name(), roleAssignmentPropertiesInner)
                         .retryWhen(
@@ -120,22 +120,22 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     protected Mono<RoleAssignmentInner> getInnerAsync() {
-        return manager.roleInner().getRoleAssignments().getAsync(scope(), name());
+        return manager.roleServiceClient().getRoleAssignments().getAsync(scope(), name());
     }
 
     @Override
     public String scope() {
-        return inner().scope();
+        return innerModel().scope();
     }
 
     @Override
     public String roleDefinitionId() {
-        return inner().roleDefinitionId();
+        return innerModel().roleDefinitionId();
     }
 
     @Override
     public String principalId() {
-        return inner().principalId();
+        return innerModel().principalId();
     }
 
     @Override
@@ -188,7 +188,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public RoleAssignmentImpl withScope(String scope) {
-        this.inner().withScope(scope);
+        this.innerModel().withScope(scope);
         return this;
     }
 
@@ -209,7 +209,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override

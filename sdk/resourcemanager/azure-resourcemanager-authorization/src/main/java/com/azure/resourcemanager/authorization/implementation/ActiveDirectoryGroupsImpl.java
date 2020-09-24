@@ -25,7 +25,7 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     public PagedIterable<ActiveDirectoryGroup> list() {
-        return wrapList(this.manager.inner().getGroups().list(null));
+        return wrapList(this.manager.serviceClient().getGroups().list(null));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ActiveDirectoryGroupsImpl
     @Override
     public Mono<ActiveDirectoryGroup> getByIdAsync(String id) {
         return manager
-            .inner()
+            .serviceClient()
             .getGroups()
             .getAsync(id)
             .map(groupInner -> new ActiveDirectoryGroupImpl(groupInner, manager()));
@@ -52,13 +52,13 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryGroup> listAsync() {
-        return wrapPageAsync(manager().inner().getGroups().listAsync(null));
+        return wrapPageAsync(manager().serviceClient().getGroups().listAsync(null));
     }
 
     @Override
     public Mono<ActiveDirectoryGroup> getByNameAsync(String name) {
         return manager()
-            .inner()
+            .serviceClient()
             .getGroups()
             .listAsync(String.format("displayName eq '%s'", name))
             .singleOrEmpty()
@@ -82,7 +82,7 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return manager().inner().getGroups().deleteAsync(id);
+        return manager().serviceClient().getGroups().deleteAsync(id);
     }
 
     @Override
@@ -90,8 +90,17 @@ public class ActiveDirectoryGroupsImpl
         return this.manager;
     }
 
-    @Override
     public GroupsClient inner() {
-        return manager().inner().getGroups();
+        return manager().serviceClient().getGroups();
+    }
+
+    @Override
+    public PagedIterable<ActiveDirectoryGroup> listByFilter(String filter) {
+        return new PagedIterable<>(listByFilterAsync(filter));
+    }
+
+    @Override
+    public PagedFlux<ActiveDirectoryGroup> listByFilterAsync(String filter) {
+        return inner().listAsync(filter).mapPage(this::wrapModel);
     }
 }

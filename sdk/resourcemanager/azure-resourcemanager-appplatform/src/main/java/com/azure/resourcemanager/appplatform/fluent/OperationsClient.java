@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.AvailableOperationsInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.OperationDetailInner;
+import com.azure.resourcemanager.appplatform.models.AvailableOperations;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Operations. */
@@ -45,7 +44,7 @@ public final class OperationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public OperationsClient(AppPlatformManagementClient client) {
+    OperationsClient(AppPlatformManagementClient client) {
         this.service =
             RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -62,14 +61,14 @@ public final class OperationsClient {
         @Get("/providers/Microsoft.AppPlatform/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailableOperationsInner>> list(
+        Mono<Response<AvailableOperations>> list(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailableOperationsInner>> listNext(
+        Mono<Response<AvailableOperations>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

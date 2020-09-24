@@ -25,10 +25,8 @@ import java.util.concurrent.TimeUnit;
 public class AADAuthenticationProperties {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
-
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
-
-    private static final long DEFAULT_JWKSETCACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
+    private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
 
     /**
      * Default UserGroup configuration.
@@ -74,7 +72,7 @@ public class AADAuthenticationProperties {
     /**
      * The lifespan of the cached JWK set before it expires, default is 5 minutes.
      */
-    private long jwkSetCacheLifespan = DEFAULT_JWKSETCACHE_LIFESPAN;
+    private long jwkSetCacheLifespan = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
     /**
      * Azure Tenant ID.
@@ -92,8 +90,9 @@ public class AADAuthenticationProperties {
      */
     private Boolean sessionStateless = false;
 
-    @DeprecatedConfigurationProperty(reason = "Configuration moved to UserGroup class to keep UserGroup properties "
-            + "together", replacement = "azure.activedirectory.user-group.allowed-groups")
+    @DeprecatedConfigurationProperty(
+        reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
+        replacement = "azure.activedirectory.user-group.allowed-groups")
     public List<String> getActiveDirectoryGroups() {
         return userGroup.getAllowedGroups();
     }
@@ -121,7 +120,7 @@ public class AADAuthenticationProperties {
          * Node is a UserGroup.
          */
         @NotEmpty
-        private String value = "Group";
+        private String value = Constants.OBJECT_TYPE_GROUP;
 
         /**
          * Key of the JSON Node containing the Azure Object ID for the {@code UserGroup}.

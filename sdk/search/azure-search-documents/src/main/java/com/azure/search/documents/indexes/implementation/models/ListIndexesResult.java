@@ -20,9 +20,15 @@ public final class ListIndexesResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchIndex> indexes;
 
-    /** Creates an instance of ListIndexesResult class. */
+    /**
+     * Creates an instance of ListIndexesResult class.
+     *
+     * @param indexes the indexes value to set.
+     */
     @JsonCreator
-    public ListIndexesResult(@JsonProperty(value = "value") List<SearchIndex> indexes) {
+    public ListIndexesResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchIndex> indexes) {
         this.indexes = indexes;
     }
 
@@ -33,16 +39,5 @@ public final class ListIndexesResult {
      */
     public List<SearchIndex> getIndexes() {
         return this.indexes;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getIndexes() != null) {
-            getIndexes().forEach(e -> e.validate());
-        }
     }
 }

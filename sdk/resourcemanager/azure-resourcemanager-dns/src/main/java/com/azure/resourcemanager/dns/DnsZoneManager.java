@@ -5,17 +5,19 @@ package com.azure.resourcemanager.dns;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.dns.fluent.DnsManagementClient;
+import com.azure.resourcemanager.dns.fluent.DnsManagementClientBuilder;
 import com.azure.resourcemanager.dns.implementation.DnsZonesImpl;
 import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure DNS zone management. */
-public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementClient> {
+public final class DnsZoneManager extends Manager<DnsManagementClient> {
     // Collections
     private DnsZones zones;
 
@@ -88,7 +90,8 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
             profile,
             new DnsManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .subscriptionId(profile.subscriptionId())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient(),
             sdkContext);
     }

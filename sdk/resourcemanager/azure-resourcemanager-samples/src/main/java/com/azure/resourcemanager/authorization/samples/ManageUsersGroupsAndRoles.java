@@ -7,8 +7,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.Azure;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
@@ -37,7 +37,7 @@ public final class ManageUsersGroupsAndRoles {
      * @param profile the profile works with sample
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure.Authenticated authenticated, AzureProfile profile) {
+    public static boolean runSample(AzureResourceManager.Authenticated authenticated, AzureProfile profile) {
         final String userEmail = authenticated.sdkContext().randomResourceName("test", 15);
         final String userName = userEmail.replace("test", "Test ");
         final String spName = authenticated.sdkContext().randomResourceName("sp", 15);
@@ -70,7 +70,7 @@ public final class ManageUsersGroupsAndRoles {
                     .define(raName1)
                     .forUser(user)
                     .withBuiltInRole(BuiltInRole.READER)
-                    .withSubscriptionScope(profile.subscriptionId())
+                    .withSubscriptionScope(profile.getSubscriptionId())
                     .create();
             System.out.println("Created Role Assignment:");
             Utils.print(roleAssignment1);
@@ -85,7 +85,7 @@ public final class ManageUsersGroupsAndRoles {
             // Get role by scope and role name
 
             RoleDefinition roleDefinition = authenticated.roleDefinitions()
-                    .getByScopeAndRoleName("subscriptions/" + profile.subscriptionId(), "Contributor");
+                    .getByScopeAndRoleName("subscriptions/" + profile.getSubscriptionId(), "Contributor");
             Utils.print(roleDefinition);
 
             // ============================================================
@@ -107,7 +107,7 @@ public final class ManageUsersGroupsAndRoles {
                     .define(raName2)
                     .forServicePrincipal(sp)
                     .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-                    .withSubscriptionScope(profile.subscriptionId())
+                    .withSubscriptionScope(profile.getSubscriptionId())
                     .create();
             System.out.println("Created Role Assignment:");
             Utils.print(roleAssignment2);
@@ -143,9 +143,6 @@ public final class ManageUsersGroupsAndRoles {
             Utils.print(group2);
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Service Principal: " + spName);
@@ -155,7 +152,6 @@ public final class ManageUsersGroupsAndRoles {
                 System.out.println("Did not create Service Principal in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**
@@ -167,9 +163,10 @@ public final class ManageUsersGroupsAndRoles {
         try {
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure.Authenticated authenticated = Azure
+            AzureResourceManager.Authenticated authenticated = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile);

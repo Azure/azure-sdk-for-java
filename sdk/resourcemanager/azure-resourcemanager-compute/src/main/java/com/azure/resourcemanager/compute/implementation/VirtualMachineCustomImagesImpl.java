@@ -17,7 +17,7 @@ public class VirtualMachineCustomImagesImpl
     implements VirtualMachineCustomImages {
 
     public VirtualMachineCustomImagesImpl(final ComputeManager computeManager) {
-        super(computeManager.inner().getImages(), computeManager);
+        super(computeManager.serviceClient().getImages(), computeManager);
     }
 
     @Override

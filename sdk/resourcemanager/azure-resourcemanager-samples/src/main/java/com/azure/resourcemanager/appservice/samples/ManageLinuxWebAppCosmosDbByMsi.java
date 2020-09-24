@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 //import com.azure.management.containerregistry.AccessKeyType;
 //import com.azure.management.containerregistry.Registry;
 //import com.azure.management.containerregistry.RegistryCredentials;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 
 /**
  * Azure App Service basic sample for managing web apps.
@@ -26,10 +26,10 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         System.out.println("removed later");
         return true;
 //        // New resources
@@ -56,7 +56,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //                    .create();
 //
 //            System.out.println("Created CosmosDB");
-//            Utils.print(cosmosDBAccount);
+//            ResourceManagerUtils.print(cosmosDBAccount);
 //
 //            //============================================================
 //            // Create a service principal
@@ -128,7 +128,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //
 //            Date t2 = new Date();
 //            System.out.println("Created Azure Container Registry: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureRegistry.id());
-//            Utils.print(azureRegistry);
+//            ResourceManagerUtils.print(azureRegistry);
 //
 //            //=============================================================
 //            // Create a Docker client that will be used to push/pull images to/from the Azure Container Registry
@@ -164,7 +164,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //                    .create();
 //
 //            System.out.println("Created web app " + app1.name());
-//            Utils.print(app1);
+//            ResourceManagerUtils.print(app1);
 //
 //            return true;
 //        } catch (Exception e) {
@@ -196,17 +196,18 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
-            runSample(azure);
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
+            runSample(azureResourceManager);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

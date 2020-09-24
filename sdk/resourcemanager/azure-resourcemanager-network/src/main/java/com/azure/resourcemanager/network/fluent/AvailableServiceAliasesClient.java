@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AvailableServiceAliasInner;
-import com.azure.resourcemanager.network.fluent.inner.AvailableServiceAliasesResultInner;
+import com.azure.resourcemanager.network.models.AvailableServiceAliasesResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailableServiceAliases. */
@@ -45,7 +44,7 @@ public final class AvailableServiceAliasesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AvailableServiceAliasesClient(NetworkManagementClient client) {
+    AvailableServiceAliasesClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(AvailableServiceAliasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -63,7 +62,7 @@ public final class AvailableServiceAliasesClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/availableServiceAliases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailableServiceAliasesResultInner>> list(
+        Mono<Response<AvailableServiceAliasesResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @PathParam("subscriptionId") String subscriptionId,
@@ -76,7 +75,7 @@ public final class AvailableServiceAliasesClient {
                 + "/{location}/availableServiceAliases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailableServiceAliasesResultInner>> listByResourceGroup(
+        Mono<Response<AvailableServiceAliasesResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("location") String location,
@@ -88,14 +87,14 @@ public final class AvailableServiceAliasesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailableServiceAliasesResultInner>> listNext(
+        Mono<Response<AvailableServiceAliasesResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailableServiceAliasesResultInner>> listByResourceGroupNext(
+        Mono<Response<AvailableServiceAliasesResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

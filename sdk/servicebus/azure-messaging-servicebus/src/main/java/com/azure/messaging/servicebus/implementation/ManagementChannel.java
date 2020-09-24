@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.SessionErrorContext;
+import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
@@ -20,13 +21,11 @@ import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
-import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -36,6 +35,7 @@ import reactor.core.publisher.SynchronousSink;
 import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -148,7 +148,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber, String sessionId, String associatedLinkName) {
         return peek(fromSequenceNumber, sessionId, associatedLinkName, 1)
-            .last();
+            .next();
     }
 
     /**
@@ -286,7 +286,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxLinkSize,
+    public Mono<Long> schedule(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime, int maxLinkSize,
         String associatedLinkName, ServiceBusTransactionContext transactionContext) {
         message.setScheduledEnqueueTime(scheduledEnqueueTime);
 
@@ -449,10 +449,31 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 }
 
                 final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
-                final String statusDescription = RequestResponseUtils.getStatusDescription(response);
+
+                if (statusCode == AmqpResponseCode.NO_CONTENT) {
+                    sink.next(response);
+                    return;
+                }
+
                 final String errorCondition = RequestResponseUtils.getErrorCondition(response);
-                final Throwable throwable = MessageUtils.toException(
-                    new ErrorCondition(Symbol.getSymbol(errorCondition), statusDescription), channel.getErrorContext());
+
+                if (statusCode == AmqpResponseCode.NOT_FOUND) {
+                    final AmqpErrorCondition amqpErrorCondition = AmqpErrorCondition.fromString(errorCondition);
+
+                    if (amqpErrorCondition == AmqpErrorCondition.MESSAGE_NOT_FOUND) {
+                        logger.info("There was no matching message found.");
+                        sink.next(response);
+                        return;
+                    } else if (amqpErrorCondition == AmqpErrorCondition.SESSION_NOT_FOUND) {
+                        logger.info("There was no matching session found.");
+                        sink.next(response);
+                        return;
+                    }
+                }
+
+                final String statusDescription = RequestResponseUtils.getStatusDescription(response);
+                final Throwable throwable = ExceptionUtil.toException(errorCondition, statusDescription,
+                    channel.getErrorContext());
 
                 logger.warning("status[{}] description[{}] condition[{}] Operation not successful.",
                     statusCode, statusDescription, errorCondition);

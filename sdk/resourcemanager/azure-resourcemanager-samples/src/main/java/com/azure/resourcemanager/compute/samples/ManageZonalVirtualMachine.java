@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
@@ -15,8 +15,8 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 /**
@@ -29,17 +29,17 @@ import com.azure.resourcemanager.samples.Utils;
 public final class ManageZonalVirtualMachine {
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST2;
-        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
-        final String vmName1 = azure.sdkContext().randomResourceName("lVM1", 15);
-        final String vmName2 = azure.sdkContext().randomResourceName("lVM2", 15);
-        final String pipName1 = azure.sdkContext().randomResourceName("pip1", 15);
-        final String pipName2 = azure.sdkContext().randomResourceName("pip2", 15);
-        final String diskName = azure.sdkContext().randomResourceName("ds", 15);
+        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
+        final String vmName1 = azureResourceManager.sdkContext().randomResourceName("lVM1", 15);
+        final String vmName2 = azureResourceManager.sdkContext().randomResourceName("lVM2", 15);
+        final String pipName1 = azureResourceManager.sdkContext().randomResourceName("pip1", 15);
+        final String pipName2 = azureResourceManager.sdkContext().randomResourceName("pip2", 15);
+        final String diskName = azureResourceManager.sdkContext().randomResourceName("ds", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
 
@@ -50,7 +50,7 @@ public final class ManageZonalVirtualMachine {
 
             System.out.println("Creating a zonal VM with implicitly zoned related resources (PublicIP, Disk)");
 
-            VirtualMachine virtualMachine1 = azure.virtualMachines()
+            VirtualMachine virtualMachine1 = azureResourceManager.virtualMachines()
                     .define(vmName1)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
@@ -74,7 +74,7 @@ public final class ManageZonalVirtualMachine {
 
             System.out.println("Creating a zonal public ip address");
 
-            PublicIpAddress publicIPAddress = azure.publicIpAddresses()
+            PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses()
                     .define(pipName2)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -93,7 +93,7 @@ public final class ManageZonalVirtualMachine {
 
             System.out.println("Creating a zonal data disk");
 
-            Disk dataDisk = azure.disks()
+            Disk dataDisk = azureResourceManager.disks()
                     .define(diskName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -112,7 +112,7 @@ public final class ManageZonalVirtualMachine {
 
             System.out.println("Creating a zonal VM with implicitly zoned related resources (PublicIP, Disk)");
 
-            VirtualMachine virtualMachine2 = azure.virtualMachines()
+            VirtualMachine virtualMachine2 = azureResourceManager.virtualMachines()
                     .define(vmName2)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
@@ -133,16 +133,11 @@ public final class ManageZonalVirtualMachine {
             Utils.print(virtualMachine2);
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -150,7 +145,6 @@ public final class ManageZonalVirtualMachine {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
@@ -165,18 +159,19 @@ public final class ManageZonalVirtualMachine {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

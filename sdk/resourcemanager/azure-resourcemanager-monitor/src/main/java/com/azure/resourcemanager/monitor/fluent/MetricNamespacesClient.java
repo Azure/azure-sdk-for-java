@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
-import com.azure.resourcemanager.monitor.fluent.inner.MetricNamespaceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricNamespaceInner;
+import com.azure.resourcemanager.monitor.models.MetricNamespaceCollection;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetricNamespaces. */
@@ -45,7 +44,7 @@ public final class MetricNamespacesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public MetricNamespacesClient(MonitorClient client) {
+    MetricNamespacesClient(MonitorClient client) {
         this.service =
             RestProxy.create(MetricNamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -62,7 +61,7 @@ public final class MetricNamespacesClient {
         @Get("/{resourceUri}/providers/microsoft.insights/metricNamespaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetricNamespaceCollectionInner>> list(
+        Mono<Response<MetricNamespaceCollection>> list(
             @HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion,

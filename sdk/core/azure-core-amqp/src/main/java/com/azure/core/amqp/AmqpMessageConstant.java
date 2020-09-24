@@ -93,7 +93,36 @@ public enum AmqpMessageConstant {
     /**
      * The name of the entity that published a message.
      */
-    PUBLISHER_ANNOTATION_NAME("x-opt-publisher");
+    PUBLISHER_ANNOTATION_NAME("x-opt-publisher"),
+    /**
+     * The name representing scheduled enqueue time.
+     */
+    SCHEDULED_ENQUEUE_UTC_TIME_NAME("x-opt-scheduled-enqueue-time"),
+    /**
+     * The identifier associated with a given via-partition.
+     */
+    VIA_PARTITION_KEY_ANNOTATION_NAME("x-opt-via-partition-key"),
+    /**
+     * The identifier for locked until.
+     */
+    LOCKED_UNTIL_KEY_ANNOTATION_NAME("x-opt-locked-until"),
+    /**
+     * The identifier for deadletter source.
+     */
+    DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME("x-opt-deadletter-source"),
+    /**
+     * The name representing enqueue sequence number.
+     * This one appears to always be 0, but is always returned with each message.
+     */
+    ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME("x-opt-enqueue-sequence-number"),
+    /**
+     * The identifier for deadletter description.
+     */
+    DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME("DeadLetterErrorDescription"),
+    /**
+     * The identifier for deadletter reason.
+     */
+    DEAD_LETTER_REASON_ANNOTATION_NAME("DeadLetterReason");
 
     private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;

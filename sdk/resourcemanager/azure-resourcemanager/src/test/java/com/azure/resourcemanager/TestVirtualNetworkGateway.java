@@ -3,6 +3,7 @@
 package com.azure.resourcemanager;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.LocalNetworkGateway;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.Subnet;
@@ -10,19 +11,19 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
-import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.resources.core.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.test.utils.TestUtilities;
+import org.junit.jupiter.api.Assertions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** Tests Virtual Network Gateway. */
 public class TestVirtualNetworkGateway {
@@ -197,7 +198,7 @@ public class TestVirtualNetworkGateway {
 
             // Create virtual network gateway
             final List<VirtualNetworkGateway> gws = new ArrayList<>();
-            Flux<?> vngwObservable =
+            Mono<VirtualNetworkGateway> vngwObservable =
                 gateways
                     .define(gatewayName1)
                     .withRegion(region)
@@ -207,7 +208,7 @@ public class TestVirtualNetworkGateway {
                     .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                     .createAsync();
 
-            Flux<?> vngw2Observable =
+            Mono<VirtualNetworkGateway> vngw2Observable =
                 gateways
                     .define(gatewayName2)
                     .withRegion(region)

@@ -12,13 +12,13 @@ import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInne
 import com.azure.resourcemanager.authorization.fluent.ServicePrincipalsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
 /** The implementation of ServicePrincipals and its parent interfaces. */
 public class ServicePrincipalsImpl
     extends CreatableWrappersImpl<ServicePrincipal, ServicePrincipalImpl, ServicePrincipalInner>
-    implements ServicePrincipals, HasManager<AuthorizationManager>, HasInner<ServicePrincipalsClient> {
+    implements ServicePrincipals, HasManager<AuthorizationManager> {
     private ServicePrincipalsClient innerCollection;
     private AuthorizationManager manager;
 
@@ -30,25 +30,15 @@ public class ServicePrincipalsImpl
 
     @Override
     public PagedIterable<ServicePrincipal> list() {
-        return inner()
-            .list(null)
-            .mapPage(
-                servicePrincipalInner -> {
-                    ServicePrincipalImpl servicePrincipal = wrapModel(servicePrincipalInner);
-                    return servicePrincipal.refreshCredentialsAsync().block();
-                });
+        return new PagedIterable<>(listAsync());
     }
 
     @Override
     public PagedFlux<ServicePrincipal> listAsync() {
-        return inner()
-            .listAsync(null)
-            .mapPage(
-                servicePrincipalInner -> {
-                    ServicePrincipalImpl servicePrincipal = wrapModel(servicePrincipalInner);
-                    servicePrincipal.refreshCredentialsAsync();
-                    return servicePrincipal;
-                });
+        return PagedConverter.flatMapPage(inner().listAsync(), servicePrincipalInner -> {
+            ServicePrincipalImpl servicePrincipal = this.wrapModel(servicePrincipalInner);
+            return servicePrincipal.refreshCredentialsAsync().thenReturn(servicePrincipal);
+        });
     }
 
     @Override
@@ -109,8 +99,20 @@ public class ServicePrincipalsImpl
         return this.manager;
     }
 
-    @Override
     public ServicePrincipalsClient inner() {
-        return manager().inner().getServicePrincipals();
+        return manager().serviceClient().getServicePrincipals();
+    }
+
+    @Override
+    public PagedIterable<ServicePrincipal> listByFilter(String filter) {
+        return new PagedIterable<>(listByFilterAsync(filter));
+    }
+
+    @Override
+    public PagedFlux<ServicePrincipal> listByFilterAsync(String filter) {
+        return PagedConverter.flatMapPage(inner().listAsync(filter), servicePrincipalInner -> {
+            ServicePrincipalImpl servicePrincipal = this.wrapModel(servicePrincipalInner);
+            return servicePrincipal.refreshCredentialsAsync().thenReturn(servicePrincipal);
+        });
     }
 }

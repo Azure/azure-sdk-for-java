@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.SecurityRuleListResultInner;
+import com.azure.resourcemanager.network.models.SecurityRuleListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DefaultSecurityRules. */
@@ -45,7 +44,7 @@ public final class DefaultSecurityRulesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DefaultSecurityRulesClient(NetworkManagementClient client) {
+    DefaultSecurityRulesClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(DefaultSecurityRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -65,7 +64,7 @@ public final class DefaultSecurityRulesClient {
                 + "/networkSecurityGroups/{networkSecurityGroupName}/defaultSecurityRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityRuleListResultInner>> list(
+        Mono<Response<SecurityRuleListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkSecurityGroupName") String networkSecurityGroupName,
@@ -92,7 +91,7 @@ public final class DefaultSecurityRulesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityRuleListResultInner>> listNext(
+        Mono<Response<SecurityRuleListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

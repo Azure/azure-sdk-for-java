@@ -21,7 +21,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionImageInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -41,7 +40,7 @@ public final class VirtualMachineExtensionImagesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualMachineExtensionImagesClient(ComputeManagementClient client) {
+    VirtualMachineExtensionImagesClient(ComputeManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -711,6 +710,26 @@ public final class VirtualMachineExtensionImagesClient {
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine extension image versions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type) {
+        final String filter = null;
+        final Integer top = null;
+        final String orderby = null;
+        final Context context = null;
+        return listVersionsAsync(location, publisherName, type, filter, top, orderby).block();
+    }
+
+    /**
+     * Gets a list of virtual machine extension image versions.
+     *
+     * @param location The name of a supported Azure region.
+     * @param publisherName The publisherName parameter.
+     * @param type The type parameter.
      * @param filter The filter to apply on the operation.
      * @param top The top parameter.
      * @param orderby The orderby parameter.
@@ -730,25 +749,5 @@ public final class VirtualMachineExtensionImagesClient {
         String orderby,
         Context context) {
         return listVersionsAsync(location, publisherName, type, filter, top, orderby, context).block();
-    }
-
-    /**
-     * Gets a list of virtual machine extension image versions.
-     *
-     * @param location The name of a supported Azure region.
-     * @param publisherName The publisherName parameter.
-     * @param type The type parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image versions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type) {
-        final String filter = null;
-        final Integer top = null;
-        final String orderby = null;
-        final Context context = null;
-        return listVersionsAsync(location, publisherName, type, filter, top, orderby).block();
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.Objects;
@@ -24,10 +25,11 @@ public class ConnectionOptions {
     private final Scheduler scheduler;
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
+    private final ClientOptions clientOptions;
 
     public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
             CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
-            ProxyOptions proxyOptions, Scheduler scheduler) {
+            ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' is required.");
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' is required.");
@@ -36,6 +38,11 @@ public class ConnectionOptions {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' is required.");
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' is required.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' is required.");
+        this.clientOptions = clientOptions;
+    }
+
+    public ClientOptions getClientOptions() {
+        return clientOptions;
     }
 
     public String getFullyQualifiedNamespace() {

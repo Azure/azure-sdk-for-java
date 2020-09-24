@@ -34,11 +34,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
-import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupExportResultInner;
-import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
-import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupListResultInner;
+import com.azure.resourcemanager.resources.fluent.models.ResourceGroupExportResultInner;
+import com.azure.resourcemanager.resources.fluent.models.ResourceGroupInner;
 import com.azure.resourcemanager.resources.models.ExportTemplateRequest;
+import com.azure.resourcemanager.resources.models.ResourceGroupListResult;
 import com.azure.resourcemanager.resources.models.ResourceGroupPatchable;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -59,7 +58,7 @@ public final class ResourceGroupsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ResourceGroupsClient(ResourceManagementClient client) {
+    ResourceGroupsClient(ResourceManagementClient client) {
         this.service =
             RestProxy.create(ResourceGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -145,7 +144,7 @@ public final class ResourceGroupsClient {
         @Get("/subscriptions/{subscriptionId}/resourcegroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceGroupListResultInner>> list(
+        Mono<Response<ResourceGroupListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("$top") Integer top,
@@ -157,7 +156,7 @@ public final class ResourceGroupsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceGroupListResultInner>> listNext(
+        Mono<Response<ResourceGroupListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -212,7 +211,7 @@ public final class ResourceGroupsClient {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkExistenceWithResponseAsync(String resourceGroupName, Context context) {
+    private Mono<Response<Boolean>> checkExistenceWithResponseAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -265,29 +264,6 @@ public final class ResourceGroupsClient {
      * Checks whether a resource group exists.
      *
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkExistenceAsync(String resourceGroupName, Context context) {
-        return checkExistenceWithResponseAsync(resourceGroupName, context)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks whether a resource group exists.
-     *
-     * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -311,16 +287,11 @@ public final class ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkExistence(String resourceGroupName, Context context) {
-        Boolean value = checkExistenceAsync(resourceGroupName, context).block();
-        if (value != null) {
-            return value;
-        } else {
-            throw logger.logExceptionAsError(new NullPointerException());
-        }
+    public Response<Boolean> checkExistenceWithResponse(String resourceGroupName, Context context) {
+        return checkExistenceWithResponseAsync(resourceGroupName, context).block();
     }
 
     /**
@@ -387,7 +358,7 @@ public final class ResourceGroupsClient {
      * @return resource group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceGroupInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<ResourceGroupInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, ResourceGroupInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -453,33 +424,6 @@ public final class ResourceGroupsClient {
      *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
      *     characters.
      * @param parameters Resource group information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceGroupInner> createOrUpdateAsync(
-        String resourceGroupName, ResourceGroupInner parameters, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, parameters, context)
-            .flatMap(
-                (Response<ResourceGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a resource group.
-     *
-     * @param resourceGroupName The name of the resource group to create or update. Can include alphanumeric,
-     *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
-     *     characters.
-     * @param parameters Resource group information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -504,8 +448,9 @@ public final class ResourceGroupsClient {
      * @return resource group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceGroupInner createOrUpdate(String resourceGroupName, ResourceGroupInner parameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, parameters, context).block();
+    public Response<ResourceGroupInner> createOrUpdateWithResponse(
+        String resourceGroupName, ResourceGroupInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, parameters, context).block();
     }
 
     /**
@@ -561,7 +506,7 @@ public final class ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -618,7 +563,7 @@ public final class ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, context);
         return this
@@ -684,7 +629,7 @@ public final class ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, Context context) {
         return beginDeleteAsync(resourceGroupName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -768,7 +713,7 @@ public final class ResourceGroupsClient {
      * @return a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceGroupInner>> getWithResponseAsync(String resourceGroupName, Context context) {
+    private Mono<Response<ResourceGroupInner>> getWithResponseAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -821,29 +766,6 @@ public final class ResourceGroupsClient {
      * Gets a resource group.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceGroupInner> getAsync(String resourceGroupName, Context context) {
-        return getWithResponseAsync(resourceGroupName, context)
-            .flatMap(
-                (Response<ResourceGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a resource group.
-     *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -865,8 +787,8 @@ public final class ResourceGroupsClient {
      * @return a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceGroupInner get(String resourceGroupName, Context context) {
-        return getAsync(resourceGroupName, context).block();
+    public Response<ResourceGroupInner> getWithResponse(String resourceGroupName, Context context) {
+        return getWithResponseAsync(resourceGroupName, context).block();
     }
 
     /**
@@ -931,7 +853,7 @@ public final class ResourceGroupsClient {
      * @return resource group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceGroupInner>> updateWithResponseAsync(
+    private Mono<Response<ResourceGroupInner>> updateWithResponseAsync(
         String resourceGroupName, ResourceGroupPatchable parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -995,32 +917,6 @@ public final class ResourceGroupsClient {
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
      * @param parameters Resource group information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceGroupInner> updateAsync(
-        String resourceGroupName, ResourceGroupPatchable parameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, parameters, context)
-            .flatMap(
-                (Response<ResourceGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is
-     * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
-     *
-     * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
-     * @param parameters Resource group information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1044,8 +940,9 @@ public final class ResourceGroupsClient {
      * @return resource group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceGroupInner update(String resourceGroupName, ResourceGroupPatchable parameters, Context context) {
-        return updateAsync(resourceGroupName, parameters, context).block();
+    public Response<ResourceGroupInner> updateWithResponse(
+        String resourceGroupName, ResourceGroupPatchable parameters, Context context) {
+        return updateWithResponseAsync(resourceGroupName, parameters, context).block();
     }
 
     /**
@@ -1108,7 +1005,7 @@ public final class ResourceGroupsClient {
      * @return resource group export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> exportTemplateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> exportTemplateWithResponseAsync(
         String resourceGroupName, ExportTemplateRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1178,7 +1075,7 @@ public final class ResourceGroupsClient {
      * @return resource group export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner>
+    private PollerFlux<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner>
         beginExportTemplateAsync(String resourceGroupName, ExportTemplateRequest parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = exportTemplateWithResponseAsync(resourceGroupName, parameters, context);
@@ -1255,7 +1152,7 @@ public final class ResourceGroupsClient {
      * @return resource group export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceGroupExportResultInner> exportTemplateAsync(
+    private Mono<ResourceGroupExportResultInner> exportTemplateAsync(
         String resourceGroupName, ExportTemplateRequest parameters, Context context) {
         return beginExportTemplateAsync(resourceGroupName, parameters, context)
             .last()
@@ -1306,7 +1203,7 @@ public final class ResourceGroupsClient {
      * @return all the resource groups for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceGroupInner>> listSinglePageAsync(String filter, Integer top) {
+    private Mono<PagedResponse<ResourceGroupInner>> listSinglePageAsync(String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1355,7 +1252,7 @@ public final class ResourceGroupsClient {
      * @return all the resource groups for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceGroupInner>> listSinglePageAsync(String filter, Integer top, Context context) {
+    private Mono<PagedResponse<ResourceGroupInner>> listSinglePageAsync(String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1407,6 +1304,20 @@ public final class ResourceGroupsClient {
     /**
      * Gets all the resource groups for a subscription.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resource groups for a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ResourceGroupInner> listAsync() {
+        final String filter = null;
+        final Integer top = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all the resource groups for a subscription.
+     *
      * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;You can filter by tag names and values.
      *     For example, to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'.
      * @param top The number of results to return. If null is passed, returns all resource groups.
@@ -1417,41 +1328,9 @@ public final class ResourceGroupsClient {
      * @return all the resource groups for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceGroupInner> listAsync(String filter, Integer top, Context context) {
+    private PagedFlux<ResourceGroupInner> listAsync(String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, top, context), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all the resource groups for a subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resource groups for a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceGroupInner> listAsync() {
-        final String filter = null;
-        final Integer top = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all the resource groups for a subscription.
-     *
-     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;You can filter by tag names and values.
-     *     For example, to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'.
-     * @param top The number of results to return. If null is passed, returns all resource groups.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resource groups for a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceGroupInner> list(String filter, Integer top) {
-        return new PagedIterable<>(listAsync(filter, top));
     }
 
     /**
@@ -1482,7 +1361,6 @@ public final class ResourceGroupsClient {
     public PagedIterable<ResourceGroupInner> list() {
         final String filter = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listAsync(filter, top));
     }
 
@@ -1496,7 +1374,7 @@ public final class ResourceGroupsClient {
      * @return list of resource groups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceGroupInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ResourceGroupInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1525,7 +1403,7 @@ public final class ResourceGroupsClient {
      * @return list of resource groups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ResourceGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ResourceGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

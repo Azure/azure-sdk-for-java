@@ -40,19 +40,18 @@ public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogs
         return this.myManager;
     }
 
-    @Override
     public ActivityLogsClient inner() {
-        return this.myManager.inner().getActivityLogs();
+        return this.myManager.serviceClient().getActivityLogs();
     }
 
     @Override
     public PagedIterable<LocalizableString> listEventCategories() {
-        return this.manager().inner().getEventCategories().list().mapPage(LocalizableStringImpl::new);
+        return this.manager().serviceClient().getEventCategories().list().mapPage(LocalizableStringImpl::new);
     }
 
     @Override
     public PagedFlux<LocalizableString> listEventCategoriesAsync() {
-        return this.manager().inner().getEventCategories().listAsync().mapPage(LocalizableStringImpl::new);
+        return this.manager().serviceClient().getEventCategories().listAsync().mapPage(LocalizableStringImpl::new);
     }
 
     @Override
@@ -155,7 +154,7 @@ public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogs
     private PagedIterable<EventData> listEventDataForTenant(String filter) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getTenantActivityLogs()
             .list(filter, createPropertyFilter())
             .mapPage(EventDataImpl::new);
@@ -168,7 +167,7 @@ public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogs
     private PagedFlux<EventData> listEventDataForTenantAsync(String filter) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getTenantActivityLogs()
             .listAsync(filter, createPropertyFilter())
             .mapPage(EventDataImpl::new);

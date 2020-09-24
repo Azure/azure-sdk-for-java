@@ -11,12 +11,11 @@ import com.azure.resourcemanager.authorization.models.RoleAssignments;
 import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentInner;
 import com.azure.resourcemanager.authorization.fluent.RoleAssignmentsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of RoleAssignments and its parent interfaces. */
 public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, RoleAssignmentImpl, RoleAssignmentInner>
-    implements RoleAssignments, HasInner<RoleAssignmentsClient> {
+    implements RoleAssignments {
     private final AuthorizationManager manager;
 
     public RoleAssignmentsImpl(final AuthorizationManager manager) {
@@ -89,8 +88,7 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
         return this.manager;
     }
 
-    @Override
     public RoleAssignmentsClient inner() {
-        return manager().roleInner().getRoleAssignments();
+        return manager().roleServiceClient().getRoleAssignments();
     }
 }

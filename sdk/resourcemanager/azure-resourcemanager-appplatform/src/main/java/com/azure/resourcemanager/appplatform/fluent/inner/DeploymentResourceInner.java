@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appplatform.models.DeploymentResourceProperties;
+import com.azure.resourcemanager.appplatform.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,6 +22,12 @@ public final class DeploymentResourceInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private DeploymentResourceProperties properties;
+
+    /*
+     * Sku of the Deployment resource
+     */
+    @JsonProperty(value = "sku")
+    private Sku sku;
 
     /**
      * Get the properties property: Properties of the Deployment resource.
@@ -43,6 +50,26 @@ public final class DeploymentResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the sku property: Sku of the Deployment resource.
+     *
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: Sku of the Deployment resource.
+     *
+     * @param sku the sku value to set.
+     * @return the DeploymentResourceInner object itself.
+     */
+    public DeploymentResourceInner withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -50,6 +77,9 @@ public final class DeploymentResourceInner extends ProxyResource {
     public void validate() {
         if (properties() != null) {
             properties().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
         }
     }
 }

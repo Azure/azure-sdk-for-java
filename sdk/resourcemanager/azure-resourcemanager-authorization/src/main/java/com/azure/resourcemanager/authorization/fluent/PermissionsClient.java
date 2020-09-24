@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.AuthorizationManagementClient;
-import com.azure.resourcemanager.authorization.fluent.inner.PermissionGetResultInner;
 import com.azure.resourcemanager.authorization.fluent.inner.PermissionInner;
+import com.azure.resourcemanager.authorization.models.PermissionGetResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Permissions. */
@@ -45,7 +44,7 @@ public final class PermissionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PermissionsClient(AuthorizationManagementClient client) {
+    PermissionsClient(AuthorizationManagementClient client) {
         this.service =
             RestProxy.create(PermissionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -64,7 +63,7 @@ public final class PermissionsClient {
                 + "/permissions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PermissionGetResultInner>> listByResourceGroup(
+        Mono<Response<PermissionGetResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -77,7 +76,7 @@ public final class PermissionsClient {
                 + "/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/permissions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PermissionGetResultInner>> listForResource(
+        Mono<Response<PermissionGetResult>> listForResource(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
@@ -92,14 +91,14 @@ public final class PermissionsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PermissionGetResultInner>> listForResourceGroupNext(
+        Mono<Response<PermissionGetResult>> listForResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PermissionGetResultInner>> listForResourceNext(
+        Mono<Response<PermissionGetResult>> listForResourceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

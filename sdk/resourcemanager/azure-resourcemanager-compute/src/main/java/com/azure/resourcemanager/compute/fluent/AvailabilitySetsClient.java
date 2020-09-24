@@ -29,12 +29,11 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.AvailabilitySetInner;
-import com.azure.resourcemanager.compute.fluent.inner.AvailabilitySetListResultInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineSizeInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineSizeListResultInner;
+import com.azure.resourcemanager.compute.models.AvailabilitySetListResult;
 import com.azure.resourcemanager.compute.models.AvailabilitySetUpdate;
+import com.azure.resourcemanager.compute.models.VirtualMachineSizeListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -58,7 +57,7 @@ public final class AvailabilitySetsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AvailabilitySetsClient(ComputeManagementClient client) {
+    AvailabilitySetsClient(ComputeManagementClient client) {
         this.service =
             RestProxy.create(AvailabilitySetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -133,7 +132,7 @@ public final class AvailabilitySetsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/availabilitySets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailabilitySetListResultInner>> list(
+        Mono<Response<AvailabilitySetListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -146,7 +145,7 @@ public final class AvailabilitySetsClient
                 + "/availabilitySets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailabilitySetListResultInner>> listByResourceGroup(
+        Mono<Response<AvailabilitySetListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -159,7 +158,7 @@ public final class AvailabilitySetsClient
                 + "/availabilitySets/{availabilitySetName}/vmSizes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineSizeListResultInner>> listAvailableSizes(
+        Mono<Response<VirtualMachineSizeListResult>> listAvailableSizes(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("availabilitySetName") String availabilitySetName,
@@ -171,14 +170,14 @@ public final class AvailabilitySetsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailabilitySetListResultInner>> listBySubscriptionNext(
+        Mono<Response<AvailabilitySetListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailabilitySetListResultInner>> listNext(
+        Mono<Response<AvailabilitySetListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

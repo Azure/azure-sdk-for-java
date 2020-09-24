@@ -33,10 +33,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.inner.ListVirtualHubsResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualHubInner;
 import com.azure.resourcemanager.network.models.EffectiveRoutesParameters;
+import com.azure.resourcemanager.network.models.ListVirtualHubsResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class VirtualHubsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VirtualHubsClient(NetworkManagementClient client) {
+    VirtualHubsClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(VirtualHubsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -139,7 +138,7 @@ public final class VirtualHubsClient
                 + "/virtualHubs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVirtualHubsResultInner>> listByResourceGroup(
+        Mono<Response<ListVirtualHubsResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -150,7 +149,7 @@ public final class VirtualHubsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualHubs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVirtualHubsResultInner>> list(
+        Mono<Response<ListVirtualHubsResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -175,14 +174,14 @@ public final class VirtualHubsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVirtualHubsResultInner>> listByResourceGroupNext(
+        Mono<Response<ListVirtualHubsResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVirtualHubsResultInner>> listNext(
+        Mono<Response<ListVirtualHubsResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

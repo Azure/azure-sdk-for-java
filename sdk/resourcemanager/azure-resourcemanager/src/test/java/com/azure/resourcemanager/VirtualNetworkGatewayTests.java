@@ -3,29 +3,61 @@
 
 package com.azure.resourcemanager;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.Troubleshooting;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class VirtualNetworkGatewayTests extends TestBase {
-    private Azure azure;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
+    private AzureResourceManager azureResourceManager;
+
+    @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
+    }
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        Azure.Authenticated azureAuthed =
-            Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
-        azure = azureAuthed.withDefaultSubscription();
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        SdkContext sdkContext = new SdkContext();
+        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        AzureResourceManager.Authenticated azureAuthed =
+            AzureResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        azureResourceManager = azureAuthed.withDefaultSubscription();
     }
 
     @Override
@@ -35,16 +67,16 @@ public class VirtualNetworkGatewayTests extends TestBase {
     @Test
     @Disabled("Service has bug that cause 'InternalServerError' - record this once service is fixed")
     public void testNetworkWatcherTroubleshooting() throws Exception {
-        String gatewayName = sdkContext.randomResourceName("vngw", 8);
-        String connectionName = sdkContext.randomResourceName("vngwc", 8);
+        String gatewayName = generateRandomResourceName("vngw", 8);
+        String connectionName = generateRandomResourceName("vngwc", 8);
 
         TestNetworkWatcher tnw = new TestNetworkWatcher();
-        NetworkWatcher nw = tnw.createResource(azure.networkWatchers());
+        NetworkWatcher nw = tnw.createResource(azureResourceManager.networkWatchers());
         Region region = nw.region();
         String resourceGroup = nw.resourceGroupName();
 
         VirtualNetworkGateway vngw1 =
-            azure
+            azureResourceManager
                 .virtualNetworkGateways()
                 .define(gatewayName)
                 .withRegion(region)
@@ -55,7 +87,7 @@ public class VirtualNetworkGatewayTests extends TestBase {
                 .create();
 
         VirtualNetworkGateway vngw2 =
-            azure
+            azureResourceManager
                 .virtualNetworkGateways()
                 .define(gatewayName + "2")
                 .withRegion(region)
@@ -75,9 +107,9 @@ public class VirtualNetworkGatewayTests extends TestBase {
 
         // Create storage account to store troubleshooting information
         StorageAccount storageAccount =
-            azure
+            azureResourceManager
                 .storageAccounts()
-                .define("sa" + sdkContext.randomResourceName("", 8))
+                .define("sa" + generateRandomResourceName("", 8))
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
@@ -110,7 +142,7 @@ public class VirtualNetworkGatewayTests extends TestBase {
                 .execute();
         Assertions.assertEquals("Healthy", troubleshooting.code());
 
-        azure.resourceGroups().deleteByName(resourceGroup);
+        azureResourceManager.resourceGroups().deleteByName(resourceGroup);
     }
 
     /**
@@ -120,8 +152,8 @@ public class VirtualNetworkGatewayTests extends TestBase {
      */
     @Test
     public void testVirtualNetworkGateways() throws Exception {
-        new TestVirtualNetworkGateway().new Basic(azure.virtualNetworkGateways().manager())
-            .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+        new TestVirtualNetworkGateway().new Basic(azureResourceManager.virtualNetworkGateways().manager())
+            .runTest(azureResourceManager.virtualNetworkGateways(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -132,8 +164,8 @@ public class VirtualNetworkGatewayTests extends TestBase {
      */
     @Test
     public void testVirtualNetworkGatewaySiteToSite() throws Exception {
-        new TestVirtualNetworkGateway().new SiteToSite(azure.virtualNetworkGateways().manager())
-            .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+        new TestVirtualNetworkGateway().new SiteToSite(azureResourceManager.virtualNetworkGateways().manager())
+            .runTest(azureResourceManager.virtualNetworkGateways(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -144,8 +176,8 @@ public class VirtualNetworkGatewayTests extends TestBase {
      */
     @Test
     public void testVirtualNetworkGatewayVNetToVNet() throws Exception {
-        new TestVirtualNetworkGateway().new VNetToVNet(azure.virtualNetworkGateways().manager())
-            .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+        new TestVirtualNetworkGateway().new VNetToVNet(azureResourceManager.virtualNetworkGateways().manager())
+            .runTest(azureResourceManager.virtualNetworkGateways(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -155,7 +187,7 @@ public class VirtualNetworkGatewayTests extends TestBase {
      */
     @Test
     public void testVirtualNetworkGatewayPointToSite() throws Exception {
-        new TestVirtualNetworkGateway().new PointToSite(azure.virtualNetworkGateways().manager())
-            .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+        new TestVirtualNetworkGateway().new PointToSite(azureResourceManager.virtualNetworkGateways().manager())
+            .runTest(azureResourceManager.virtualNetworkGateways(), azureResourceManager.resourceGroups());
     }
 }

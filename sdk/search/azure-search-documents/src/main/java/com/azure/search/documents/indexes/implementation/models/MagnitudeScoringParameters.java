@@ -32,11 +32,16 @@ public final class MagnitudeScoringParameters {
     @JsonProperty(value = "constantBoostBeyondRange")
     private Boolean shouldBoostBeyondRangeByConstant;
 
-    /** Creates an instance of MagnitudeScoringParameters class. */
+    /**
+     * Creates an instance of MagnitudeScoringParameters class.
+     *
+     * @param boostingRangeStart the boostingRangeStart value to set.
+     * @param boostingRangeEnd the boostingRangeEnd value to set.
+     */
     @JsonCreator
     public MagnitudeScoringParameters(
-            @JsonProperty(value = "boostingRangeStart") double boostingRangeStart,
-            @JsonProperty(value = "boostingRangeEnd") double boostingRangeEnd) {
+            @JsonProperty(value = "boostingRangeStart", required = true) double boostingRangeStart,
+            @JsonProperty(value = "boostingRangeEnd", required = true) double boostingRangeEnd) {
         this.boostingRangeStart = boostingRangeStart;
         this.boostingRangeEnd = boostingRangeEnd;
     }
@@ -51,12 +56,6 @@ public final class MagnitudeScoringParameters {
     }
 
     /**
-     * Set the boostingRangeStart property: The field value at which boosting starts.
-     *
-     * @param boostingRangeStart the boostingRangeStart value to set.
-     * @return the MagnitudeScoringParameters object itself.
-     */
-    /**
      * Get the boostingRangeEnd property: The field value at which boosting ends.
      *
      * @return the boostingRangeEnd value.
@@ -65,12 +64,6 @@ public final class MagnitudeScoringParameters {
         return this.boostingRangeEnd;
     }
 
-    /**
-     * Set the boostingRangeEnd property: The field value at which boosting ends.
-     *
-     * @param boostingRangeEnd the boostingRangeEnd value to set.
-     * @return the MagnitudeScoringParameters object itself.
-     */
     /**
      * Get the shouldBoostBeyondRangeByConstant property: A value indicating whether to apply a constant boost for field
      * values beyond the range end value; default is false.
@@ -92,11 +85,4 @@ public final class MagnitudeScoringParameters {
         this.shouldBoostBeyondRangeByConstant = shouldBoostBeyondRangeByConstant;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

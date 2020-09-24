@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.AuthorizationManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.ProviderOperationsMetadataInner;
-import com.azure.resourcemanager.authorization.fluent.inner.ProviderOperationsMetadataListResultInner;
+import com.azure.resourcemanager.authorization.models.ProviderOperationsMetadataListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProviderOperationsMetadatas. */
@@ -45,7 +44,7 @@ public final class ProviderOperationsMetadatasClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ProviderOperationsMetadatasClient(AuthorizationManagementClient client) {
+    ProviderOperationsMetadatasClient(AuthorizationManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -75,7 +74,7 @@ public final class ProviderOperationsMetadatasClient {
         @Get("/providers/Microsoft.Authorization/providerOperations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderOperationsMetadataListResultInner>> list(
+        Mono<Response<ProviderOperationsMetadataListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$expand") String expand,
@@ -85,7 +84,7 @@ public final class ProviderOperationsMetadatasClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderOperationsMetadataListResultInner>> listNext(
+        Mono<Response<ProviderOperationsMetadataListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -244,22 +243,6 @@ public final class ProviderOperationsMetadatasClient {
      * Gets provider operations metadata for the specified resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand Specifies whether to expand the values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata for the specified resource provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderOperationsMetadataInner get(String resourceProviderNamespace, String expand, Context context) {
-        return getAsync(resourceProviderNamespace, expand, context).block();
-    }
-
-    /**
-     * Gets provider operations metadata for the specified resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -270,6 +253,22 @@ public final class ProviderOperationsMetadatasClient {
         final String expand = null;
         final Context context = null;
         return getAsync(resourceProviderNamespace, expand).block();
+    }
+
+    /**
+     * Gets provider operations metadata for the specified resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param expand Specifies whether to expand the values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for the specified resource provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProviderOperationsMetadataInner get(String resourceProviderNamespace, String expand, Context context) {
+        return getAsync(resourceProviderNamespace, expand, context).block();
     }
 
     /**

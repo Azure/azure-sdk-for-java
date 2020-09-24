@@ -7,16 +7,18 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.NetworkPlugin;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.SSHShell;
 import com.azure.resourcemanager.samples.Utils;
+import com.jcraft.jsch.JSchException;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -33,15 +35,15 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @param clientId secondary service principal client ID
      * @param secret secondary service principal secret
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId, String secret) {
-        final String rgName = azure.sdkContext().randomResourceName("rgaks", 15);
-        final String vnetName = azure.sdkContext().randomResourceName("vnetaks", 20);
-        final String aksName = azure.sdkContext().randomResourceName("akssample", 30);
+    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, JSchException {
+        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgaks", 15);
+        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnetaks", 20);
+        final String aksName = azureResourceManager.sdkContext().randomResourceName("akssample", 30);
         final Region region = Region.US_CENTRAL;
         String servicePrincipalClientId = clientId; // replace it with a real service principal client id
         String servicePrincipalSecret = secret; // and the corresponding secret
@@ -53,7 +55,7 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
             // Create a virtual network with two subnets.
             System.out.println("Create a virtual network with two subnets: subnet1 and subnet2");
 
-            Network virtualNetwork = azure.networks().define(vnetName)
+            Network virtualNetwork = azureResourceManager.networks().define(vnetName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withAddressSpace("192.168.0.0/16")
@@ -108,10 +110,10 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
 
             Date t1 = new Date();
 
-            KubernetesCluster kubernetesCluster = azure.kubernetesClusters().define(aksName)
+            KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters().define(aksName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
-                .withLatestVersion()
+                .withDefaultVersion()
                 .withRootUsername(rootUserName)
                 .withSshKey(sshKeys.getSshPublicKey())
                 .withServicePrincipalClientId(servicePrincipalClientId)
@@ -142,7 +144,9 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
             t1 = new Date();
 
             kubernetesCluster.update()
-                .withAgentPoolVirtualMachineCount(2)
+                .updateAgentPool("agentpool")
+                    .withAgentPoolVirtualMachineCount(2)
+                    .parent()
                 .apply();
 
             t2 = new Date();
@@ -150,13 +154,10 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
             Utils.print(kubernetesCluster);
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -164,7 +165,6 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
@@ -179,18 +179,19 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure, "", "");
+            runSample(azureResourceManager, "", "");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

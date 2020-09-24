@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.UsageInner;
-import com.azure.resourcemanager.storage.fluent.inner.UsageListResultInner;
+import com.azure.resourcemanager.storage.models.UsageListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Usages. */
@@ -45,7 +44,7 @@ public final class UsagesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public UsagesClient(StorageManagementClient client) {
+    UsagesClient(StorageManagementClient client) {
         this.service = RestProxy.create(UsagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -61,7 +60,7 @@ public final class UsagesClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UsageListResultInner>> listByLocation(
+        Mono<Response<UsageListResult>> listByLocation(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,

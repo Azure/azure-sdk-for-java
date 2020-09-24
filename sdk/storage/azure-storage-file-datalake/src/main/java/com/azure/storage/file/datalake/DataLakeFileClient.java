@@ -7,11 +7,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryResponse;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
@@ -23,6 +25,7 @@ import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
+import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -149,6 +152,75 @@ public class DataLakeFileClient extends DataLakePathClient {
         Mono<Response<Void>> response = dataLakePathAsyncClient.deleteWithResponse(null, requestConditions, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Creates a new file. By default this method will not overwrite an existing file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.upload#InputStream-long}
+     *
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark
+     * support.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     * @return Information about the uploaded path.
+     */
+    public PathInfo upload(InputStream data, long length) {
+        return upload(data, length, false);
+    }
+
+    /**
+     * Creates a new file, or updates the content of an existing file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.upload#InputStream-long-boolean}
+     *
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark
+     * support.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     * @param overwrite Whether or not to overwrite, should data exist on the bfilelob.
+     * @return Information about the uploaded path.
+     */
+    public PathInfo upload(InputStream data, long length, boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return uploadWithResponse(new FileParallelUploadOptions(data, length).setRequestConditions(requestConditions),
+            null, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new file.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadWithResponse#FileParallelUploadOptions-Duration-Context}
+     *
+     * @param options {@link FileParallelUploadOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Information about the uploaded path.
+     */
+    public Response<PathInfo> uploadWithResponse(FileParallelUploadOptions options, Duration timeout,
+        Context context) {
+        Objects.requireNonNull(options);
+        Mono<Response<PathInfo>> upload = this.dataLakeFileAsyncClient.uploadWithResponse(options)
+            .subscriberContext(FluxUtil.toReactorContext(context));
+
+        try {
+            return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
+        } catch (UncheckedIOException e) {
+            throw logger.logExceptionAsError(e);
+        }
     }
 
     /**
@@ -492,10 +564,11 @@ public class DataLakeFileClient extends DataLakePathClient {
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response = blockBlobClient.downloadToFileWithResponse(
-                filePath, Transforms.toBlobRange(range),
-                Transforms.toBlobParallelTransferOptions(parallelTransferOptions),
-                Transforms.toBlobDownloadRetryOptions(downloadRetryOptions),
-                Transforms.toBlobRequestConditions(requestConditions), rangeGetContentMd5, openOptions, timeout,
+                new BlobDownloadToFileOptions(filePath)
+                    .setRange(Transforms.toBlobRange(range)).setParallelTransferOptions(parallelTransferOptions)
+                    .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(downloadRetryOptions))
+                    .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
+                    .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
                 context);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
         }, logger);

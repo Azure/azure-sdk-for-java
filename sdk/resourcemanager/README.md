@@ -12,7 +12,7 @@ Various documentation is available to help you get started
 
 ## Migration from older version of Azure management library 
 
-If you are an existing user of the older version of Azure management library for Java (the namespace of old packages contains ``com.microsoft.azure.management.**``) and you are looking for a migration guide to the new version of the SDK, please refer to [this migration guide here](docs/MIGRATION_GUIDE.md)
+If you are an existing user of the older version of Azure management library for Java (the namespace of old packages contains ``com.microsoft.azure.management.**``) and you are looking for a migration guide to the new version of the SDK, please refer to [this migration guide here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/MIGRATION_GUIDE.md)
 
 ## Getting started
 
@@ -23,12 +23,12 @@ If you are an existing user of the older version of Azure management library for
 
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure:azure-resourcemanager;current})
+[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager;current})
 ```xml
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.0.0-beta.3</version>
+  <version>2.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -46,7 +46,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -58,7 +58,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.5.4</version>
+  <version>1.6.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -82,7 +82,7 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.environment().getActiveDirectoryEndpoint())
     .build();
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .authenticate(credential, profile)
     .withDefaultSubscription();
 ```
@@ -118,6 +118,10 @@ The key concepts of Azure Management Libraries includes:
 - Web app and Function app
 - Key Vault
 - Cosmos
+- Monitor
+- Spring Cloud
+- Event Hubs
+- Redis Cache
 
 ## Examples
 
@@ -225,11 +229,9 @@ azure.storageAccounts().define(storageAccountName)
     .withGeneralPurposeAccountKindV2()
     .withOnlyHttpsTraffic()
     .createAsync()
-    .filter(indexable -> indexable instanceof StorageAccount)
-    .last()
-    .flatMapMany(indexable -> azure.storageBlobContainers()
+    .flatMap(storageAccount -> azure.storageBlobContainers()
         .defineContainer("container")
-        .withExistingBlobService(rgName, ((StorageAccount) indexable).name())
+        .withExistingBlobService(rgName, storageAccount.name())
         .withPublicAccess(PublicAccess.BLOB)
         .createAsync()
     )
@@ -249,7 +251,7 @@ azure.virtualMachines().listByResourceGroupAsync(rgName)
 You can customize various aspects of the client.
 
 ```java
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .configure()
     .withHttpClient(customizedHttpClient)
     .withPolicy(additionalPolicy)
@@ -263,12 +265,12 @@ Instead of include the complete Azure Management Libraries, you can choose to in
 
 For example, here is sample maven dependency for Compute package.
 
-[//]: # ({x-version-update-start;com.azure:azure-resourcemanager-compute;current})
+[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-compute;current})
 ```xml
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.0.0-beta.3</version>
+  <version>2.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -297,7 +299,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 Sample code to enable logging in Azure Management Libraries.
 ```java
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .configure()
     .withLogLevel(HttpLogDetailLevel.BASIC)
     .authenticate(credential, profile)
@@ -318,16 +320,16 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[docs]: http://azure.github.io/azure-sdk-for-java/
+[docs]: http://azure.github.io/azure-sdk-for-java/resourcemanager.html
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: ../identity/azure-identity
-[azure_core_http_netty]: ../core/azure-core-http-netty
-[azure_core_http_okhttp]: ../core/azure-core-http-okhttp
-[azure_core]: ../core/azure-core
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity
+[azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-netty
+[azure_core_http_okhttp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-okhttp
+[azure_core]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[authenticate]: docs/AUTH.md
-[sample]: docs/SAMPLE.md
-[design]: docs/DESIGN.md
-[design_preview]: docs/DESIGN_PREVIEW.md
+[authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md
+[sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SAMPLE.md
+[design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md
+[design_preview]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN_PREVIEW.md
 [reactor]: https://projectreactor.io/

@@ -17,9 +17,10 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -31,6 +32,7 @@ import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAuthenticationPolicy;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlots;
+import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
@@ -39,6 +41,10 @@ import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -54,7 +60,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 /** The implementation for FunctionApp. */
 class FunctionAppImpl
@@ -82,10 +87,6 @@ class FunctionAppImpl
     private final FunctionAppKeyService functionAppKeyService;
     private FunctionService functionService;
     private FunctionDeploymentSlots deploymentSlots;
-
-    private Function<AppServicePlan, SiteConfigResourceInner> linuxFxVersionSetter = null;
-    private Mono<AppServicePlan> cachedAppServicePlanObservable =
-        null; // potentially shared between submitSiteConfig and submitAppSettings
 
     private String functionAppKeyServiceHost;
     private String functionServiceHost;
@@ -119,7 +120,12 @@ class FunctionAppImpl
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             for (int i = 0, count = manager().httpPipeline().getPolicyCount(); i < count; ++i) {
-                policies.add(manager().httpPipeline().getPolicy(i));
+                HttpPipelinePolicy policy = manager().httpPipeline().getPolicy(i);
+                if (!(policy instanceof AuthenticationPolicy)
+                    && !(policy instanceof ProviderRegistrationPolicy)
+                    && !(policy instanceof AuxiliaryAuthenticationPolicy)) {
+                    policies.add(policy);
+                }
             }
             policies.add(new FunctionAuthenticationPolicy(this));
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
@@ -128,7 +134,8 @@ class FunctionAppImpl
                 .build();
             functionServiceHost = baseUrl;
             functionService =
-                RestProxy.create(FunctionService.class, httpPipeline, new AzureJacksonAdapter());
+                RestProxy.create(FunctionService.class, httpPipeline,
+                    SerializerFactory.createDefaultManagementSerializerAdapter());
         }
     }
 
@@ -172,18 +179,6 @@ class FunctionAppImpl
     }
 
     @Override
-    Mono<Indexable> submitSiteConfig() {
-        if (linuxFxVersionSetter != null) {
-            cachedAppServicePlanObservable = this.cachedAppServicePlanObservable(); // first usage, so get a new one
-            return cachedAppServicePlanObservable
-                .map(linuxFxVersionSetter)
-                .flatMap(ignored -> FunctionAppImpl.super.submitSiteConfig());
-        } else {
-            return super.submitSiteConfig();
-        }
-    }
-
-    @Override
     Mono<Indexable> submitAppSettings() {
         if (storageAccountCreatable != null && this.taskResult(storageAccountCreatable.key()) != null) {
             storageAccountToSet = this.taskResult(storageAccountCreatable.key());
@@ -191,18 +186,15 @@ class FunctionAppImpl
         if (storageAccountToSet == null) {
             return super.submitAppSettings();
         } else {
-            if (cachedAppServicePlanObservable == null) {
-                cachedAppServicePlanObservable = this.cachedAppServicePlanObservable();
-            }
             return Flux
                 .concat(
                     storageAccountToSet
                         .getKeysAsync()
                         .map(storageAccountKeys -> storageAccountKeys.get(0))
                         .zipWith(
-                            cachedAppServicePlanObservable,
+                            this.manager().appServicePlans().getByIdAsync(this.appServicePlanId()),
                             (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
-                                String connectionString = com.azure.resourcemanager.resources.fluentcore.utils.Utils
+                                String connectionString = ResourceManagerUtils
                                     .getStorageConnectionString(storageAccountToSet.name(), storageAccountKey.value(),
                                         manager().environment());
                                 addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
@@ -227,7 +219,6 @@ class FunctionAppImpl
                                 currentStorageAccount = storageAccountToSet;
                                 storageAccountToSet = null;
                                 storageAccountCreatable = null;
-                                cachedAppServicePlanObservable = null;
                                 return this;
                             }));
         }
@@ -235,7 +226,8 @@ class FunctionAppImpl
 
     @Override
     public OperatingSystem operatingSystem() {
-        return (inner().reserved() == null || !inner().reserved()) ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
+        return (innerModel().reserved() == null || !innerModel().reserved())
+            ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
     }
 
     private void addAppSettingIfNotModified(String key, String value) {
@@ -256,14 +248,6 @@ class FunctionAppImpl
         SkuDescription description = pricingTier.toSkuDescription();
         return SkuName.DYNAMIC.toString().equalsIgnoreCase(description.tier())
             || SkuName.ELASTIC_PREMIUM.toString().equalsIgnoreCase(description.tier());
-    }
-
-    private static boolean isConsumptionPlan(PricingTier pricingTier) {
-        if (pricingTier == null || pricingTier.toSkuDescription() == null) {
-            return true;
-        }
-        SkuDescription description = pricingTier.toSkuDescription();
-        return SkuName.DYNAMIC.toString().equalsIgnoreCase(description.tier());
     }
 
     @Override
@@ -293,24 +277,6 @@ class FunctionAppImpl
         } else {
             return withWebAppAlwaysOn(false);
         }
-    }
-
-    @Override
-    public FunctionAppImpl withNewStorageAccount(String name, com.azure.resourcemanager.storage.models.SkuName sku) {
-        StorageAccount.DefinitionStages.WithGroup storageDefine =
-            manager().storageManager().storageAccounts().define(name).withRegion(regionName());
-        if (super.creatableGroup != null && isInCreateMode()) {
-            storageAccountCreatable =
-                storageDefine.withNewResourceGroup(super.creatableGroup).withGeneralPurposeAccountKind().withSku(sku);
-        } else {
-            storageAccountCreatable =
-                storageDefine
-                    .withExistingResourceGroup(resourceGroupName())
-                    .withGeneralPurposeAccountKind()
-                    .withSku(sku);
-        }
-        this.addDependency(storageAccountCreatable);
-        return this;
     }
 
     @Override
@@ -346,7 +312,7 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withDailyUsageQuota(int quota) {
-        inner().withDailyMemoryTimeQuota(quota);
+        innerModel().withDailyMemoryTimeQuota(quota);
         return this;
     }
 
@@ -399,15 +365,7 @@ class FunctionAppImpl
         }
         withRuntime(runtimeStack.runtime());
         withRuntimeVersion(runtimeStack.version());
-        linuxFxVersionSetter =
-            appServicePlan -> {
-                if (appServicePlan == null || isConsumptionPlan(appServicePlan.pricingTier())) {
-                    siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersionForConsumptionPlan());
-                } else {
-                    siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersionForDedicatedPlan());
-                }
-                return siteConfig;
-            };
+        siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersion());
         return this;
     }
 
@@ -431,7 +389,6 @@ class FunctionAppImpl
 
     @Override
     protected void cleanUpContainerSettings() {
-        linuxFxVersionSetter = null;
         if (siteConfig != null && siteConfig.linuxFxVersion() != null) {
             siteConfig.withLinuxFxVersion(null);
         }
@@ -446,14 +403,9 @@ class FunctionAppImpl
     protected OperatingSystem appServicePlanOperatingSystem(AppServicePlan appServicePlan) {
         // Consumption plan or premium (elastic) plan would have "functionapp" or "elastic" in "kind" property, no
         // "linux" in it.
-        return (appServicePlan.inner().reserved() == null || !appServicePlan.inner().reserved())
+        return (appServicePlan.innerModel().reserved() == null || !appServicePlan.innerModel().reserved())
             ? OperatingSystem.WINDOWS
             : OperatingSystem.LINUX;
-    }
-
-    private Mono<AppServicePlan> cachedAppServicePlanObservable() {
-        // it could get more than one subscriber, so hot observable + caching
-        return this.manager().appServicePlans().getByIdAsync(this.appServicePlanId()).cache();
     }
 
     @Override
@@ -480,7 +432,12 @@ class FunctionAppImpl
                             "2019-08-01"))
             .map(ListKeysResult::getMasterKey)
             .subscriberContext(
-                context -> context.putAll(FluxUtil.toReactorContext(this.manager().inner().getContext())));
+                context -> context.putAll(FluxUtil.toReactorContext(this.manager().serviceClient().getContext())));
+    }
+
+    @Override
+    public PagedIterable<FunctionEnvelope> listFunctions() {
+        return this.manager().functionApps().listFunctions(resourceGroupName(), name());
     }
 
     @Override
@@ -551,7 +508,7 @@ class FunctionAppImpl
     @Override
     public Mono<Void> syncTriggersAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .syncFunctionTriggersAsync(resourceGroupName(), name())
             .onErrorResume(
@@ -630,15 +587,15 @@ class FunctionAppImpl
     }
 
     @Override
-    public Flux<Indexable> createAsync() {
+    public Mono<FunctionApp> createAsync() {
         if (this.isInCreateMode()) {
-            if (inner().serverFarmId() == null) {
+            if (innerModel().serverFarmId() == null) {
                 withNewConsumptionPlan();
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
                     this.manager().sdkContext().randomResourceName(name(), 20),
-                    com.azure.resourcemanager.storage.models.SkuName.STANDARD_GRS);
+                    StorageAccountSkuType.STANDARD_GRS);
             }
         }
         return super.createAsync();

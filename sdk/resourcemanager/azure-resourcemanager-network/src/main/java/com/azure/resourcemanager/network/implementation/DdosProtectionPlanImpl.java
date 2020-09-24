@@ -25,7 +25,7 @@ class DdosProtectionPlanImpl
     protected Mono<DdosProtectionPlanInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDdosProtectionPlans()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -34,24 +34,24 @@ class DdosProtectionPlanImpl
     public Mono<DdosProtectionPlan> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDdosProtectionPlans()
-            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public String resourceGuid() {
-        return inner().resourceGuid();
+        return innerModel().resourceGuid();
     }
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState().toString();
+        return innerModel().provisioningState().toString();
     }
 
     @Override
     public List<SubResource> virtualNetworks() {
-        return Collections.unmodifiableList(inner().virtualNetworks());
+        return Collections.unmodifiableList(innerModel().virtualNetworks());
     }
 }

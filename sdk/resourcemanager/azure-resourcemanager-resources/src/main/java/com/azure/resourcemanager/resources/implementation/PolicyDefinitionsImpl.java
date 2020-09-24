@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.models.PolicyDefinitions;
 import com.azure.resourcemanager.resources.models.PolicyType;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.azure.resourcemanager.resources.fluent.inner.PolicyDefinitionInner;
+import com.azure.resourcemanager.resources.fluent.models.PolicyDefinitionInner;
 import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
 import reactor.core.publisher.Mono;
 

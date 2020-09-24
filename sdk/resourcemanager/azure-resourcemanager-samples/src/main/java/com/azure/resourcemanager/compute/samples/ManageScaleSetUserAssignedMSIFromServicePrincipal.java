@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
@@ -20,9 +20,9 @@ import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 
 /**
  * Azure Compute sample for assigning service identity to virtual machine scale set using newly created service principal
@@ -39,7 +39,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
      * @param authenticated instance of Authenticated
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure.Authenticated authenticated) {
+    public static boolean runSample(AzureResourceManager.Authenticated authenticated) {
         Region region = Region.US_WEST_CENTRAL;
         String vmssName = authenticated.sdkContext().randomResourceName("vmss", 15);
         String spName1 = authenticated.sdkContext().randomResourceName("sp1", 21);
@@ -52,16 +52,16 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
         final String userName = "tirekicker";
         final String password = com.azure.resourcemanager.samples.Utils.password();
 
-        Azure azure = null;
+        AzureResourceManager azureResourceManager = null;
 
         try {
-            azure = authenticated.withDefaultSubscription();
+            azureResourceManager = authenticated.withDefaultSubscription();
 
             System.out.println("Creating network for virtual machine scale sets");
 
             // ============================================================
             // Create Virtual Machine Scale Set
-            Network network = azure.networks()
+            Network network = azureResourceManager.networks()
                     .define("vmssvnet")
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
@@ -69,7 +69,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                     .withSubnet("subnet1", "10.0.0.0/28")
                     .create();
 
-            VirtualMachineScaleSet virtualMachineScaleSet1 = azure.virtualMachineScaleSets()
+            VirtualMachineScaleSet virtualMachineScaleSet1 = azureResourceManager.virtualMachineScaleSets()
                     .define(vmssName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -89,10 +89,10 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                     .definePasswordCredential("sppass")
                     .withPasswordValue("StrongPass!12")
                     .attach()
-                    .withNewRole(BuiltInRole.CONTRIBUTOR, Utils.resourceGroupId(virtualMachineScaleSet1.id()))
+                    .withNewRole(BuiltInRole.CONTRIBUTOR, resourceGroupId(virtualMachineScaleSet1.id()))
                     .create();
 
-            Identity identity1 = azure.identities().define(identityName1)
+            Identity identity1 = azureResourceManager.identities().define(identityName1)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .create();
@@ -103,7 +103,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
 
             // ============================================================
             // Create a managed service identity #2
-            Identity identity2 = azure.identities().define(identityName2)
+            Identity identity2 = azureResourceManager.identities().define(identityName2)
                     .withRegion(region)
                     .withNewResourceGroup(rgName + "2")
                     .create();
@@ -137,12 +137,9 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 ex.printStackTrace();
             }
             return true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
         } finally {
-            if (azure != null) {
-                azure.resourceGroups().beginDeleteByName(rgName);
+            if (azureResourceManager != null) {
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 try {
                     authenticated.servicePrincipals().deleteById(servicePrincipal.id());
                 } catch (Exception e) {
@@ -157,7 +154,17 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 e.printStackTrace();
             }
         }
-        return false;
+    }
+
+    /**
+     * @param id resource id
+     * @return resource group id for the resource id provided
+     */
+    private static String resourceGroupId(String id) {
+        final ResourceId resourceId = ResourceId.fromString(id);
+        return String.format("/subscriptions/%s/resourceGroups/%s",
+            resourceId.subscriptionId(),
+            resourceId.resourceGroupName());
     }
 
     /**
@@ -171,9 +178,10 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure.Authenticated authenticated = Azure
+            AzureResourceManager.Authenticated authenticated = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile);

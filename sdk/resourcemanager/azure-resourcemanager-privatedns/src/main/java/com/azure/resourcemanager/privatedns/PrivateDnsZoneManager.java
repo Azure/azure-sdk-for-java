@@ -4,17 +4,19 @@ package com.azure.resourcemanager.privatedns;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.privatedns.fluent.PrivateDnsManagementClient;
+import com.azure.resourcemanager.privatedns.fluent.PrivateDnsManagementClientBuilder;
 import com.azure.resourcemanager.privatedns.implementation.PrivateDnsZonesImpl;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure private DNS zone management. */
-public final class PrivateDnsZoneManager extends Manager<PrivateDnsZoneManager, PrivateDnsManagementClient> {
+public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementClient> {
 
     private PrivateDnsZones privateZones;
 
@@ -87,7 +89,8 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsZoneManager, 
             profile,
             new PrivateDnsManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .subscriptionId(profile.subscriptionId())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient(),
             sdkContext
         );

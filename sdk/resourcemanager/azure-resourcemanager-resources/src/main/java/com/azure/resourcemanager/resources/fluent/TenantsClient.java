@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.SubscriptionClient;
-import com.azure.resourcemanager.resources.fluent.inner.TenantIdDescriptionInner;
-import com.azure.resourcemanager.resources.fluent.inner.TenantListResultInner;
+import com.azure.resourcemanager.resources.fluent.models.TenantIdDescriptionInner;
+import com.azure.resourcemanager.resources.models.TenantListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Tenants. */
@@ -45,7 +44,7 @@ public final class TenantsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public TenantsClient(SubscriptionClient client) {
+    TenantsClient(SubscriptionClient client) {
         this.service = RestProxy.create(TenantsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -61,14 +60,14 @@ public final class TenantsClient {
         @Get("/tenants")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TenantListResultInner>> list(
+        Mono<Response<TenantListResult>> list(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TenantListResultInner>> listNext(
+        Mono<Response<TenantListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -80,7 +79,7 @@ public final class TenantsClient {
      * @return the tenants for your account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TenantIdDescriptionInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<TenantIdDescriptionInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -111,7 +110,7 @@ public final class TenantsClient {
      * @return the tenants for your account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TenantIdDescriptionInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<TenantIdDescriptionInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -154,7 +153,7 @@ public final class TenantsClient {
      * @return the tenants for your account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TenantIdDescriptionInner> listAsync(Context context) {
+    private PagedFlux<TenantIdDescriptionInner> listAsync(Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
@@ -195,7 +194,7 @@ public final class TenantsClient {
      * @return tenant Ids information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TenantIdDescriptionInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<TenantIdDescriptionInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -224,7 +223,7 @@ public final class TenantsClient {
      * @return tenant Ids information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TenantIdDescriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<TenantIdDescriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

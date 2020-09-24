@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.inner.ListVpnServerConfigurationsResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VpnServerConfigurationInner;
+import com.azure.resourcemanager.network.models.ListVpnServerConfigurationsResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class VpnServerConfigurationsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VpnServerConfigurationsClient(NetworkManagementClient client) {
+    VpnServerConfigurationsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(VpnServerConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -140,7 +139,7 @@ public final class VpnServerConfigurationsClient
                 + "/vpnServerConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVpnServerConfigurationsResultInner>> listByResourceGroup(
+        Mono<Response<ListVpnServerConfigurationsResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -151,7 +150,7 @@ public final class VpnServerConfigurationsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnServerConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVpnServerConfigurationsResultInner>> list(
+        Mono<Response<ListVpnServerConfigurationsResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -161,14 +160,14 @@ public final class VpnServerConfigurationsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVpnServerConfigurationsResultInner>> listByResourceGroupNext(
+        Mono<Response<ListVpnServerConfigurationsResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVpnServerConfigurationsResultInner>> listNext(
+        Mono<Response<ListVpnServerConfigurationsResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

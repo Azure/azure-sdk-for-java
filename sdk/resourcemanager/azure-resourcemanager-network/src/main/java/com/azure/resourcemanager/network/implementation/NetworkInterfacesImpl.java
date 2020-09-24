@@ -31,7 +31,7 @@ public class NetworkInterfacesImpl
     private final ClientLogger logger = new ClientLogger(this.getClass());
 
     public NetworkInterfacesImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getNetworkInterfaces(), networkManager);
+        super(networkManager.serviceClient().getNetworkInterfaces(), networkManager);
     }
 
     @Override
@@ -100,12 +100,13 @@ public class NetworkInterfacesImpl
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
-        return AcceptedImpl.newAccepted(logger,
-            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
-            Function.identity(),
-            manager().inner().getSerializerAdapter(),
-            manager().inner().getHttpPipeline(),
-            Void.class,
-            null);
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                manager().serviceClient(),
+                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
+                Function.identity(),
+                Void.class,
+                null);
     }
 }

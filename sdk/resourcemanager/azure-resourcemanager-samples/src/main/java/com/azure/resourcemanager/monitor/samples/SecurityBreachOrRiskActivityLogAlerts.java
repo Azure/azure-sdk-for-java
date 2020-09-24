@@ -8,12 +8,12 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.monitor.models.ActionGroup;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
 import com.azure.resourcemanager.monitor.models.EventData;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.AccessTier;
@@ -33,19 +33,19 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String storageAccountName = azure.sdkContext().randomResourceName("saMonitor", 20);
-        final String rgName = azure.sdkContext().randomResourceName("rgMonitor", 20);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("saMonitor", 20);
+        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgMonitor", 20);
 
         try {
             // ============================================================
             // Create a storage account
             System.out.println("Creating a Storage Account");
 
-            StorageAccount storageAccount = azure.storageAccounts().define(storageAccountName)
+            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(storageAccountName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withBlobStorageAccountKind()
@@ -57,7 +57,7 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
 
             // ============================================================
             // Create an action group to send notifications in case activity log alert condition will be triggered
-            ActionGroup ag = azure.actionGroups().define("securityBreachActionGroup")
+            ActionGroup ag = azureResourceManager.actionGroups().define("securityBreachActionGroup")
                     .withExistingResourceGroup(rgName)
                     .defineReceiver("tierOne")
                         .withPushNotification("security_on_duty@securecorporation.com")
@@ -74,10 +74,10 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
 
             // ============================================================
             // Set a trigger to fire each time
-            ActivityLogAlert ala = azure.alertRules().activityLogAlerts()
+            ActivityLogAlert ala = azureResourceManager.alertRules().activityLogAlerts()
                     .define("Potential security breach alert")
                     .withExistingResourceGroup(rgName)
-                    .withTargetSubscription(azure.subscriptionId())
+                    .withTargetSubscription(azureResourceManager.subscriptionId())
                     .withDescription("Security StorageAccounts ListAccountKeys trigger")
                     .withRuleEnabled()
                     .withActionGroups(ag.id())
@@ -96,9 +96,9 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
             // for near real time monitoring.
             SdkContext.sleep(6 * 60000);
 
-            OffsetDateTime recordDateTime = azure.sdkContext().dateTimeNow();
+            OffsetDateTime recordDateTime = OffsetDateTime.parse("2020-08-03T16:34:27.009944500+08:00");
             // get activity logs for the same period.
-            PagedIterable<EventData> logs = azure.activityLogs().defineQuery()
+            PagedIterable<EventData> logs = azureResourceManager.activityLogs().defineQuery()
                     .startingFrom(recordDateTime.minusDays(7))
                     .endsBefore(recordDateTime)
                     .withAllPropertiesInResponse()
@@ -123,19 +123,15 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
             }
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
-            if (azure.resourceGroups().getByName(rgName) != null) {
+            if (azureResourceManager.resourceGroups().getByName(rgName) != null) {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } else {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**
@@ -147,18 +143,19 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

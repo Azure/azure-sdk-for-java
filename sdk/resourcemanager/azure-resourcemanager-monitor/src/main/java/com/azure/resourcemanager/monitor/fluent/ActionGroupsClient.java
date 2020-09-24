@@ -30,9 +30,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
-import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupListInner;
 import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupResourceInner;
+import com.azure.resourcemanager.monitor.models.ActionGroupList;
 import com.azure.resourcemanager.monitor.models.ActionGroupPatchBody;
 import com.azure.resourcemanager.monitor.models.EnableRequest;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -58,7 +57,7 @@ public final class ActionGroupsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ActionGroupsClient(MonitorClient client) {
+    ActionGroupsClient(MonitorClient client) {
         this.service =
             RestProxy.create(ActionGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -133,7 +132,7 @@ public final class ActionGroupsClient
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/actionGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ActionGroupListInner>> list(
+        Mono<Response<ActionGroupList>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -145,7 +144,7 @@ public final class ActionGroupsClient
                 + "/actionGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ActionGroupListInner>> listByResourceGroup(
+        Mono<Response<ActionGroupList>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,

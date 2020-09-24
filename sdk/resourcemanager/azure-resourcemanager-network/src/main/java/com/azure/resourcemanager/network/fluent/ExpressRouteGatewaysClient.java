@@ -27,7 +27,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteGatewayInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteGatewayListInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -52,7 +51,7 @@ public final class ExpressRouteGatewaysClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ExpressRouteGatewaysClient(NetworkManagementClient client) {
+    ExpressRouteGatewaysClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(ExpressRouteGatewaysService.class, client.getHttpPipeline(), client.getSerializerAdapter());

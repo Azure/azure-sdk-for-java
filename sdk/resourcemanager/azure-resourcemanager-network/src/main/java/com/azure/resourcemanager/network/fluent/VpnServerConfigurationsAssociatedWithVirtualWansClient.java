@@ -24,7 +24,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VpnServerConfigurationsResponseInner;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -48,7 +47,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public VpnServerConfigurationsAssociatedWithVirtualWansClient(NetworkManagementClient client) {
+    VpnServerConfigurationsAssociatedWithVirtualWansClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(

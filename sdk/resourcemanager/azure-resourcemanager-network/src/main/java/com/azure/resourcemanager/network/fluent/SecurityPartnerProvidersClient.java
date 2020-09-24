@@ -32,9 +32,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.SecurityPartnerProviderInner;
-import com.azure.resourcemanager.network.fluent.inner.SecurityPartnerProviderListResultInner;
+import com.azure.resourcemanager.network.models.SecurityPartnerProviderListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -62,7 +61,7 @@ public final class SecurityPartnerProvidersClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public SecurityPartnerProvidersClient(NetworkManagementClient client) {
+    SecurityPartnerProvidersClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(SecurityPartnerProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -140,7 +139,7 @@ public final class SecurityPartnerProvidersClient
                 + "/securityPartnerProviders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityPartnerProviderListResultInner>> listByResourceGroup(
+        Mono<Response<SecurityPartnerProviderListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -151,7 +150,7 @@ public final class SecurityPartnerProvidersClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/securityPartnerProviders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityPartnerProviderListResultInner>> list(
+        Mono<Response<SecurityPartnerProviderListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -161,14 +160,14 @@ public final class SecurityPartnerProvidersClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityPartnerProviderListResultInner>> listByResourceGroupNext(
+        Mono<Response<SecurityPartnerProviderListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityPartnerProviderListResultInner>> listNext(
+        Mono<Response<SecurityPartnerProviderListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
-import com.azure.data.tables.models.Entity;
-import com.azure.data.tables.models.QueryParams;
+import com.azure.data.tables.models.ListEntitiesOptions;
+import com.azure.data.tables.models.ListTablesOptions;
+import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
 
 /**
@@ -47,9 +48,9 @@ public class TableServiceAsyncClientCodeSnippets {
         TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
             .connectionString("connectionString")
             .buildAsyncClient();
-        QueryParams queryParams = new QueryParams().setFilter("TableName eq OfficeSupplies");
+        ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq OfficeSupplies");
 
-        tableServiceAsyncClient.listTables(queryParams).subscribe(azureTable -> {
+        tableServiceAsyncClient.listTables(options).subscribe(azureTable -> {
             System.out.println(azureTable.getName());
         }, error -> {
                 System.err.println("There was an error querying the service. Error: " + error);
@@ -64,8 +65,8 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
-        Entity entity = new Entity("markers", "crayolaMarkers");
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableClient("OfficeSupplies");
+        TableEntity entity = new TableEntity("markers", "crayolaMarkers");
 
         tableAsyncClient.createEntity(entity).subscribe(tableEntity -> {
             System.out.println("Insert Entity Successful. Entity: " + tableEntity);
@@ -82,16 +83,16 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableClient("OfficeSupplies");
         String partitionKey = "markers";
         String rowKey = "crayolaMarkers";
 
         tableAsyncClient.getEntity(partitionKey, rowKey).flatMap(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
 
-            //delete entity without an ifUnchanged param will default to always deleting
+            //delete entity without an eTag param will perform an unconditional delete
             //(using "*" as match condition in request)
-            return tableAsyncClient.deleteEntity(tableEntity);
+            return tableAsyncClient.deleteEntity(partitionKey, rowKey);
         }).subscribe(
             Void -> { },
             error -> System.err.println("There was an error deleting the Entity. Error: " + error),
@@ -106,7 +107,7 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableClient("OfficeSupplies");
         String partitionKey = "markers";
         String rowKey = "crayolaMarkers";
 
@@ -131,7 +132,7 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableClient("OfficeSupplies");
         String partitionKey = "markers";
         String rowKey = "crayolaMarkers";
 
@@ -156,12 +157,12 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
-        QueryParams queryParams = new QueryParams()
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableClient("OfficeSupplies");
+        ListEntitiesOptions options = new ListEntitiesOptions()
             .setFilter("Product eq markers")
             .setSelect("Seller, Price");
 
-        tableAsyncClient.listEntities(queryParams).subscribe(tableEntity -> {
+        tableAsyncClient.listEntities(options).subscribe(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
         }, error -> {
                 System.err.println("There was an error querying the table. Error: " + error);
@@ -176,7 +177,7 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableClient("OfficeSupplies");
 
         tableAsyncClient.getEntity("crayolaMarkers", "markers")
             .subscribe(tableEntity -> {

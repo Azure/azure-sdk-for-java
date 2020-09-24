@@ -6,9 +6,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
@@ -29,14 +29,14 @@ public class DeployVirtualMachineUsingARMTemplate {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String rgName = azure.sdkContext().randomResourceName("rgRSAT", 24);
-        final String deploymentName = azure.sdkContext().randomResourceName("dpRSAT", 24);
+    public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, IllegalAccessException {
+        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSAT", 24);
+        final String deploymentName = azureResourceManager.sdkContext().randomResourceName("dpRSAT", 24);
         try {
-            String templateJson = DeployVirtualMachineUsingARMTemplate.getTemplate(azure);
+            String templateJson = DeployVirtualMachineUsingARMTemplate.getTemplate(azureResourceManager);
 
             System.out.println(templateJson);
 
@@ -45,7 +45,7 @@ public class DeployVirtualMachineUsingARMTemplate {
 
             System.out.println("Creating a resource group with name: " + rgName);
 
-            azure.resourceGroups().define(rgName)
+            azureResourceManager.resourceGroups().define(rgName)
                     .withRegion(Region.US_WEST)
                     .create();
 
@@ -58,7 +58,7 @@ public class DeployVirtualMachineUsingARMTemplate {
 
             System.out.println("Starting a deployment for an Azure Virtual Machine with managed disks: " + deploymentName);
 
-            azure.deployments().define(deploymentName)
+            azureResourceManager.deployments().define(deploymentName)
                     .withExistingResourceGroup(rgName)
                     .withTemplate(templateJson)
                     .withParameters("{}")
@@ -66,27 +66,22 @@ public class DeployVirtualMachineUsingARMTemplate {
                     .create();
 
             System.out.println("Started a deployment for an Azure Virtual Machine with managed disks: " + deploymentName);
-            Deployment deployment = azure.deployments().getByResourceGroup(rgName, deploymentName);
+            Deployment deployment = azureResourceManager.deployments().getByResourceGroup(rgName, deploymentName);
             System.out.println("Current deployment status : " + deployment.provisioningState());
 
             while (!(deployment.provisioningState().equalsIgnoreCase("Succeeded")
                     || deployment.provisioningState().equalsIgnoreCase("Failed")
                     || deployment.provisioningState().equalsIgnoreCase("Cancelled"))) {
                 SdkContext.sleep(10000);
-                deployment = azure.deployments().getByResourceGroup(rgName, deploymentName);
+                deployment = azureResourceManager.deployments().getByResourceGroup(rgName, deploymentName);
                 System.out.println("Current deployment status : " + deployment.provisioningState());
             }
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -94,7 +89,6 @@ public class DeployVirtualMachineUsingARMTemplate {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
@@ -110,25 +104,26 @@ public class DeployVirtualMachineUsingARMTemplate {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private static String getTemplate(Azure azure) throws IllegalAccessException, JsonProcessingException, IOException {
+    private static String getTemplate(AzureResourceManager azureResourceManager) throws IllegalAccessException, JsonProcessingException, IOException {
         final String adminUsername = "tirekicker";
         final String adminPassword = Utils.password();
-        final String osDiskName = azure.sdkContext().randomResourceName("osdisk-", 24);
+        final String osDiskName = azureResourceManager.sdkContext().randomResourceName("osdisk-", 24);
 
         try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/virtualMachineWithManagedDisksTemplate.json")) {
 

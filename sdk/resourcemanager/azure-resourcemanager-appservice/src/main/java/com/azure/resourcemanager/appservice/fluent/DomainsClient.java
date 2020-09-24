@@ -32,18 +32,17 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainAvailabilityCheckResultInner;
-import com.azure.resourcemanager.appservice.fluent.inner.DomainCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainControlCenterSsoRequestInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
-import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifierCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifierInner;
-import com.azure.resourcemanager.appservice.fluent.inner.NameIdentifierCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.NameIdentifierInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.DomainCollection;
+import com.azure.resourcemanager.appservice.models.DomainOwnershipIdentifierCollection;
 import com.azure.resourcemanager.appservice.models.DomainPatchResource;
 import com.azure.resourcemanager.appservice.models.DomainRecommendationSearchParameters;
+import com.azure.resourcemanager.appservice.models.NameIdentifierCollection;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -67,7 +66,7 @@ public final class DomainsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DomainsClient(WebSiteManagementClient client) {
+    DomainsClient(WebSiteManagementClient client) {
         this.service = RestProxy.create(DomainsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -94,7 +93,7 @@ public final class DomainsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DomainCollectionInner>> list(
+        Mono<Response<DomainCollection>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -114,7 +113,7 @@ public final class DomainsClient
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<NameIdentifierCollectionInner>> listRecommendations(
+        Mono<Response<NameIdentifierCollection>> listRecommendations(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -127,7 +126,7 @@ public final class DomainsClient
                 + "/domains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DomainCollectionInner>> listByResourceGroup(
+        Mono<Response<DomainCollection>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -199,7 +198,7 @@ public final class DomainsClient
                 + "/domains/{domainName}/domainOwnershipIdentifiers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DomainOwnershipIdentifierCollectionInner>> listOwnershipIdentifiers(
+        Mono<Response<DomainOwnershipIdentifierCollection>> listOwnershipIdentifiers(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("domainName") String domainName,
@@ -287,28 +286,28 @@ public final class DomainsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DomainCollectionInner>> listNext(
+        Mono<Response<DomainCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<NameIdentifierCollectionInner>> listRecommendationsNext(
+        Mono<Response<NameIdentifierCollection>> listRecommendationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DomainCollectionInner>> listByResourceGroupNext(
+        Mono<Response<DomainCollection>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DomainOwnershipIdentifierCollectionInner>> listOwnershipIdentifiersNext(
+        Mono<Response<DomainOwnershipIdentifierCollection>> listOwnershipIdentifiersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -1644,6 +1643,22 @@ public final class DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String domainName) {
+        final Boolean forceHardDeleteDomain = null;
+        final Context context = null;
+        deleteAsync(resourceGroupName, domainName, forceHardDeleteDomain).block();
+    }
+
+    /**
+     * Description for Delete a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
      *     is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
      * @param context The context to associate with this operation.
@@ -1654,22 +1669,6 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, Context context) {
         deleteAsync(resourceGroupName, domainName, forceHardDeleteDomain, context).block();
-    }
-
-    /**
-     * Description for Delete a domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of the domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String domainName) {
-        final Boolean forceHardDeleteDomain = null;
-        final Context context = null;
-        deleteAsync(resourceGroupName, domainName, forceHardDeleteDomain).block();
     }
 
     /**

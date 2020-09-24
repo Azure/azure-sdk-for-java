@@ -134,6 +134,17 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRequestTimeline(E e, RequestTimeline requestTimeline) {
+        e.setRequestTimeline(requestTimeline);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> RequestTimeline getRequestTimeline(E e) {
+        return e.getRequestTimeline();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> E setResourceAddress(E e, String resourceAddress) {
         e.setResourceAddress(resourceAddress);
         return e;
@@ -180,6 +191,11 @@ public final class BridgeInternal {
     public static <E extends CosmosException> void setRequestHeaders(CosmosException cosmosException,
                                                                      Map<String, String> requestHeaders) {
         cosmosException.requestHeaders = requestHeaders;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setSubStatusCode(CosmosException documentClientException, int subStatusCode) {
+        documentClientException.setSubStatusCode(subStatusCode);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -411,8 +427,9 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void recordAddressResolutionEnd(CosmosDiagnostics cosmosDiagnostics,
-                                                  String identifier) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier);
+                                                  String identifier,
+                                                  String errorMessage) {
+        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier, errorMessage);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

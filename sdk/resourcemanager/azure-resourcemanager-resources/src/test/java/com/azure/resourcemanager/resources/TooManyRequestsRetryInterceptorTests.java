@@ -8,7 +8,7 @@
 // */
 //package com.azure.management.resources;
 //
-//import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+//import com.azure.core.management.Region;
 //import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 //import com.microsoft.rest.RestClient;
 //import org.junit.jupiter.api.Disabled;
@@ -18,7 +18,7 @@
 //import rx.functions.Func1;
 //import rx.schedulers.Schedulers;
 //
-//public class TooManyRequestsRetryInterceptorTests extends ResourceManagerTestBase {
+//public class TooManyRequestsRetryInterceptorTests extends ResourceManagementTest {
 //    private static ResourceGroups resourceGroups;
 //
 //    private String rgName;

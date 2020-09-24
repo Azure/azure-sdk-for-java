@@ -28,20 +28,19 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectInner;
-import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectListResultInner;
 import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialListResultInner;
 import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialListResultInner;
 import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
-import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalListResultInner;
+import com.azure.resourcemanager.authorization.models.DirectoryObjectListResult;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
+import com.azure.resourcemanager.authorization.models.KeyCredentialListResult;
 import com.azure.resourcemanager.authorization.models.KeyCredentialsUpdateParameters;
+import com.azure.resourcemanager.authorization.models.PasswordCredentialListResult;
 import com.azure.resourcemanager.authorization.models.PasswordCredentialsUpdateParameters;
 import com.azure.resourcemanager.authorization.models.ServicePrincipalBase;
 import com.azure.resourcemanager.authorization.models.ServicePrincipalCreateParameters;
+import com.azure.resourcemanager.authorization.models.ServicePrincipalListResult;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -60,7 +59,7 @@ public final class ServicePrincipalsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ServicePrincipalsClient(GraphRbacManagementClient client) {
+    ServicePrincipalsClient(GraphRbacManagementClient client) {
         this.service =
             RestProxy.create(ServicePrincipalsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -88,7 +87,7 @@ public final class ServicePrincipalsClient {
         @Get("/{tenantID}/servicePrincipals")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ServicePrincipalListResultInner>> list(
+        Mono<Response<ServicePrincipalListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
@@ -133,7 +132,7 @@ public final class ServicePrincipalsClient {
         @Get("/{tenantID}/servicePrincipals/{objectId}/owners")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResultInner>> listOwners(
+        Mono<Response<DirectoryObjectListResult>> listOwners(
             @HostParam("$host") String endpoint,
             @PathParam("objectId") String objectId,
             @QueryParam("api-version") String apiVersion,
@@ -144,7 +143,7 @@ public final class ServicePrincipalsClient {
         @Get("/{tenantID}/servicePrincipals/{objectId}/keyCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<KeyCredentialListResultInner>> listKeyCredentials(
+        Mono<Response<KeyCredentialListResult>> listKeyCredentials(
             @HostParam("$host") String endpoint,
             @PathParam("objectId") String objectId,
             @QueryParam("api-version") String apiVersion,
@@ -167,7 +166,7 @@ public final class ServicePrincipalsClient {
         @Get("/{tenantID}/servicePrincipals/{objectId}/passwordCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<PasswordCredentialListResultInner>> listPasswordCredentials(
+        Mono<Response<PasswordCredentialListResult>> listPasswordCredentials(
             @HostParam("$host") String endpoint,
             @PathParam("objectId") String objectId,
             @QueryParam("api-version") String apiVersion,
@@ -190,7 +189,7 @@ public final class ServicePrincipalsClient {
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ServicePrincipalListResultInner>> listNext(
+        Mono<Response<ServicePrincipalListResult>> listNext(
             @HostParam("$host") String endpoint,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,
@@ -201,7 +200,7 @@ public final class ServicePrincipalsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResultInner>> listOwnersNext(
+        Mono<Response<DirectoryObjectListResult>> listOwnersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -51,11 +51,11 @@ public class VirtualMachinesImpl
         StorageManager storageManager,
         NetworkManager networkManager,
         AuthorizationManager authorizationManager) {
-        super(computeManager.inner().getVirtualMachines(), computeManager);
+        super(computeManager.serviceClient().getVirtualMachines(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.authorizationManager = authorizationManager;
-        this.vmSizes = new VirtualMachineSizesImpl(computeManager.inner().getVirtualMachineSizes());
+        this.vmSizes = new VirtualMachineSizesImpl(computeManager.serviceClient().getVirtualMachineSizes());
     }
 
     // Actions
@@ -210,13 +210,14 @@ public class VirtualMachinesImpl
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
-        return AcceptedImpl.newAccepted(logger,
-            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
-            Function.identity(),
-            manager().inner().getSerializerAdapter(),
-            manager().inner().getHttpPipeline(),
-            Void.class,
-            null);
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                manager().serviceClient(),
+                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
+                Function.identity(),
+                Void.class,
+                null);
     }
 
     // Getters

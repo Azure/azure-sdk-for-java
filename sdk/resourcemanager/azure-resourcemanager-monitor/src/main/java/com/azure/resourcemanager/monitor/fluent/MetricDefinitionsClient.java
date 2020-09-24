@@ -25,9 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
-import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionInner;
+import com.azure.resourcemanager.monitor.models.MetricDefinitionCollection;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetricDefinitions. */
@@ -45,7 +44,7 @@ public final class MetricDefinitionsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public MetricDefinitionsClient(MonitorClient client) {
+    MetricDefinitionsClient(MonitorClient client) {
         this.service =
             RestProxy.create(MetricDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -62,7 +61,7 @@ public final class MetricDefinitionsClient {
         @Get("/{resourceUri}/providers/microsoft.insights/metricDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetricDefinitionCollectionInner>> list(
+        Mono<Response<MetricDefinitionCollection>> list(
             @HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion,

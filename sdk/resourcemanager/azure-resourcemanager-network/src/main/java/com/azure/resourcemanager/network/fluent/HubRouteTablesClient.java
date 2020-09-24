@@ -31,9 +31,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.HubRouteTableInner;
-import com.azure.resourcemanager.network.fluent.inner.ListHubRouteTablesResultInner;
+import com.azure.resourcemanager.network.models.ListHubRouteTablesResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public final class HubRouteTablesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public HubRouteTablesClient(NetworkManagementClient client) {
+    HubRouteTablesClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(HubRouteTablesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -118,7 +117,7 @@ public final class HubRouteTablesClient {
                 + "/{virtualHubName}/hubRouteTables")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListHubRouteTablesResultInner>> list(
+        Mono<Response<ListHubRouteTablesResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -130,7 +129,7 @@ public final class HubRouteTablesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListHubRouteTablesResultInner>> listNext(
+        Mono<Response<ListHubRouteTablesResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

@@ -28,6 +28,18 @@ public interface TriggerRuns {
     Completable rerunAsync(String resourceGroupName, String factoryName, String triggerName, String runId);
 
     /**
+     * Cancel a single trigger instance by runId.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable cancelAsync(String resourceGroupName, String factoryName, String triggerName, String runId);
+
+    /**
      * Query trigger runs.
      *
      * @param resourceGroupName The resource group name.

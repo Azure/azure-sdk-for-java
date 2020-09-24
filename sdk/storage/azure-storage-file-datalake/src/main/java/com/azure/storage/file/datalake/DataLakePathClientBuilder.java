@@ -240,6 +240,8 @@ public final class DataLakePathClientBuilder {
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, file system name, path name)
      *
+     * <p>If the path name contains special characters, pass in the url encoded version of the path name. </p>
+     *
      * <p>If the endpoint is to a file/directory in the root container, this method will fail as it will interpret the
      * path name as the file system name. With only one path element, it is impossible to distinguish between a file
      * system name and a path in the root file system, so it is assumed to be the file system name as this is much more
@@ -291,7 +293,8 @@ public final class DataLakePathClientBuilder {
     /**
      * Sets the name of the file/directory.
      *
-     * @param pathName Name of the path.
+     * @param pathName Name of the path. If the path name contains special characters, pass in the url encoded version
+     * of the path name.
      * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code pathName} is {@code null}
      */

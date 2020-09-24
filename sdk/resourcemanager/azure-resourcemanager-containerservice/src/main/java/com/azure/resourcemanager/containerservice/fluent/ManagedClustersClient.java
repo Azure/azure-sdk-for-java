@@ -33,13 +33,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.containerservice.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.inner.CredentialResultsInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterAccessProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
-import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterListResultInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterUpgradeProfileInner;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterListResult;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -68,7 +67,7 @@ public final class ManagedClustersClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ManagedClustersClient(ContainerServiceManagementClient client) {
+    ManagedClustersClient(ContainerServiceManagementClient client) {
         this.service =
             RestProxy.create(ManagedClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -85,7 +84,7 @@ public final class ManagedClustersClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedClusterListResultInner>> list(
+        Mono<Response<ManagedClusterListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -97,7 +96,7 @@ public final class ManagedClustersClient
                 + "/managedClusters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedClusterListResultInner>> listByResourceGroup(
+        Mono<Response<ManagedClusterListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -281,14 +280,14 @@ public final class ManagedClustersClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedClusterListResultInner>> listNext(
+        Mono<Response<ManagedClusterListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedClusterListResultInner>> listByResourceGroupNext(
+        Mono<Response<ManagedClusterListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

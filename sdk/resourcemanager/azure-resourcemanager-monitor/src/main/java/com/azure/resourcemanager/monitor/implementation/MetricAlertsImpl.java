@@ -17,7 +17,7 @@ class MetricAlertsImpl
     implements MetricAlerts {
 
     MetricAlertsImpl(final MonitorManager monitorManager) {
-        super(monitorManager.inner().getMetricAlerts(), monitorManager);
+        super(monitorManager.serviceClient().getMetricAlerts(), monitorManager);
     }
 
     @Override

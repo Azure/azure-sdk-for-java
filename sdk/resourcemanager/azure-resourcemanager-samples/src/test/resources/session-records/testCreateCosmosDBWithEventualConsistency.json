@@ -1186,7 +1186,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "91e0b032-5421-4d0e-94e0-ea91e70bf766",
-      "Body" : "{\"primaryMasterKey\":\"1sXgABJwWdUBFwG0XSpO0EtO8c6ceXmNmZyWdsGHzxzFWQ9war1NsyVD4yXryDB15UwL78DzPkqRPUIwKnUJcA==\",\"secondaryMasterKey\":\"l2WRGtDJ2B6owmlJafEwELZZrJM59v95fgoCsVkQ1a2OOfaZLjr46stdyqtDVDrtcXiWpNo16MVm3TsE1StyLg==\",\"primaryReadonlyMasterKey\":\"HdEhuaOhDvI02QdkwZaqIO00G6TkR57T2hRo1akRrJHR2EYfHLXOivQZUbvZiZPQoxWlgsmYidKbsQtNrtzXoA==\",\"secondaryReadonlyMasterKey\":\"Y8mbhGDr1gpp2GmBr3mr3UqcsyPD4JozNnNk5eK52uhVoEuuHbGueeXpaBd4LRUr7U5kUXkD9OwphoyeiUguIQ==\"}"
+      "Body" : "{\"primaryMasterKey\":\"***REMOVED***\",\"secondaryMasterKey\":\"***REMOVED***\",\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -1213,7 +1213,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "d403b17b-fbe2-4802-af43-917e3b4602a2",
-      "Body" : "{\"primaryReadonlyMasterKey\":\"HdEhuaOhDvI02QdkwZaqIO00G6TkR57T2hRo1akRrJHR2EYfHLXOivQZUbvZiZPQoxWlgsmYidKbsQtNrtzXoA==\",\"secondaryReadonlyMasterKey\":\"Y8mbhGDr1gpp2GmBr3mr3UqcsyPD4JozNnNk5eK52uhVoEuuHbGueeXpaBd4LRUr7U5kUXkD9OwphoyeiUguIQ==\"}"
+      "Body" : "{\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -1240,7 +1240,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "f2b5b00a-1eef-4975-aee1-92239227b071",
-      "Body" : "{\"primaryMasterKey\":\"1sXgABJwWdUBFwG0XSpO0EtO8c6ceXmNmZyWdsGHzxzFWQ9war1NsyVD4yXryDB15UwL78DzPkqRPUIwKnUJcA==\",\"secondaryMasterKey\":\"l2WRGtDJ2B6owmlJafEwELZZrJM59v95fgoCsVkQ1a2OOfaZLjr46stdyqtDVDrtcXiWpNo16MVm3TsE1StyLg==\",\"primaryReadonlyMasterKey\":\"HdEhuaOhDvI02QdkwZaqIO00G6TkR57T2hRo1akRrJHR2EYfHLXOivQZUbvZiZPQoxWlgsmYidKbsQtNrtzXoA==\",\"secondaryReadonlyMasterKey\":\"Y8mbhGDr1gpp2GmBr3mr3UqcsyPD4JozNnNk5eK52uhVoEuuHbGueeXpaBd4LRUr7U5kUXkD9OwphoyeiUguIQ==\"}"
+      "Body" : "{\"primaryMasterKey\":\"***REMOVED***\",\"secondaryMasterKey\":\"***REMOVED***\",\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "DELETE",

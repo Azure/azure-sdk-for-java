@@ -4,54 +4,52 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0cec4c11-d0fe-49bd-a2de-5bab40aaf6a3",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "01cd5ed7-05bc-4dd7-990d-8edf2914c801",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
-      "StatusCode" : "201",
-      "Date" : "Tue, 28 Jul 2020 00:15:12 GMT",
+      "StatusCode" : "204",
+      "Date" : "Fri, 21 Aug 2020 21:00:51 GMT",
       "Cache-Control" : "no-cache",
-      "x-ms-request-id" : "ba0a65c8-5002-000c-5874-643688000000",
-      "Body" : "{\"odata.metadata\":\"https://connieystorage.table.core.windows.net/$metadata#Tables/@Element\",\"TableName\":\"tablename98680d59\"}",
-      "Preference-Applied" : "return-content",
-      "x-ms-client-request-id" : "0cec4c11-d0fe-49bd-a2de-5bab40aaf6a3",
-      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8",
-      "Location" : "https://connieystorage.table.core.windows.net/Tables('tablename98680d59')"
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename138955aa')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "a4fe25f4-5002-00d4-37fe-777a0d000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "01cd5ed7-05bc-4dd7-990d-8edf2914c801",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename138955aa')"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.table.core.windows.net/tablename98680d59",
+    "Uri" : "https://REDACTED.table.core.windows.net/tablename138955aa",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f60cf0de-6886-471c-b0c6-6d54071668ee",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "3871e99e-c5b1-4cb3-a41f-7fea762d25db",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
-      "StatusCode" : "201",
-      "Date" : "Tue, 28 Jul 2020 00:15:12 GMT",
+      "StatusCode" : "204",
+      "Date" : "Fri, 21 Aug 2020 21:00:51 GMT",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/datetime'2020-07-28T00%3A15%3A12.633066Z'",
-      "x-ms-request-id" : "ba0a65cc-5002-000c-5b74-643688000000",
-      "Body" : "{\"odata.metadata\":\"https://connieystorage.table.core.windows.net/$metadata#tablename98680d59/@Element\",\"odata.etag\":\"W/\\\"datetime'2020-07-28T00%3A15%3A12.633066Z'\\\"\",\"PartitionKey\":\"partitionkey47171b\",\"RowKey\":\"rowkey748239d5b\",\"Timestamp\":\"2020-07-28T00:15:12.633066Z\"}",
-      "Preference-Applied" : "return-content",
-      "x-ms-client-request-id" : "f60cf0de-6886-471c-b0c6-6d54071668ee",
-      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8",
-      "Location" : "https://connieystorage.table.core.windows.net/tablename98680d59(PartitionKey='partitionkey47171b',RowKey='rowkey748239d5b')"
+      "ETag" : "W/datetime'2020-08-21T21%3A00%3A52.1204715Z'",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/tablename138955aa(PartitionKey='partitionkey15652b',RowKey='rowkey879055459')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "a4fe2600-5002-00d4-40fe-777a0d000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "3871e99e-c5b1-4cb3-a41f-7fea762d25db",
+      "Location" : "https://brsiegelsample.table.core.windows.net/tablename138955aa(PartitionKey='partitionkey15652b',RowKey='rowkey879055459')"
     },
     "Exception" : null
   } ],
-  "variables" : [ "tablename98680d59", "partitionkey47171b", "rowkey748239d5b" ]
+  "variables" : [ "tablename138955aa", "partitionkey15652b", "rowkey879055459" ]
 }

@@ -27,19 +27,18 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.ADGroupInner;
 import com.azure.resourcemanager.authorization.fluent.inner.CheckGroupMembershipResultInner;
 import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectInner;
-import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectListResultInner;
-import com.azure.resourcemanager.authorization.fluent.inner.GroupGetMemberGroupsResultInner;
-import com.azure.resourcemanager.authorization.fluent.inner.GroupListResultInner;
 import com.azure.resourcemanager.authorization.models.AddOwnerParameters;
 import com.azure.resourcemanager.authorization.models.CheckGroupMembershipParameters;
+import com.azure.resourcemanager.authorization.models.DirectoryObjectListResult;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import com.azure.resourcemanager.authorization.models.GroupAddMemberParameters;
 import com.azure.resourcemanager.authorization.models.GroupCreateParameters;
 import com.azure.resourcemanager.authorization.models.GroupGetMemberGroupsParameters;
+import com.azure.resourcemanager.authorization.models.GroupGetMemberGroupsResult;
+import com.azure.resourcemanager.authorization.models.GroupListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Groups. */
@@ -57,7 +56,7 @@ public final class GroupsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public GroupsClient(GraphRbacManagementClient client) {
+    GroupsClient(GraphRbacManagementClient client) {
         this.service = RestProxy.create(GroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -119,7 +118,7 @@ public final class GroupsClient {
         @Get("/{tenantID}/groups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<GroupListResultInner>> list(
+        Mono<Response<GroupListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
@@ -130,7 +129,7 @@ public final class GroupsClient {
         @Get("/{tenantID}/groups/{objectId}/members")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResultInner>> getGroupMembers(
+        Mono<Response<DirectoryObjectListResult>> getGroupMembers(
             @HostParam("$host") String endpoint,
             @PathParam("objectId") String objectId,
             @QueryParam("api-version") String apiVersion,
@@ -163,7 +162,7 @@ public final class GroupsClient {
         @Post("/{tenantID}/groups/{objectId}/getMemberGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<GroupGetMemberGroupsResultInner>> getMemberGroups(
+        Mono<Response<GroupGetMemberGroupsResult>> getMemberGroups(
             @HostParam("$host") String endpoint,
             @PathParam("objectId") String objectId,
             @QueryParam("api-version") String apiVersion,
@@ -175,7 +174,7 @@ public final class GroupsClient {
         @Get("/{tenantID}/groups/{objectId}/owners")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResultInner>> listOwners(
+        Mono<Response<DirectoryObjectListResult>> listOwners(
             @HostParam("$host") String endpoint,
             @PathParam("objectId") String objectId,
             @QueryParam("api-version") String apiVersion,
@@ -210,7 +209,7 @@ public final class GroupsClient {
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<GroupListResultInner>> listNext(
+        Mono<Response<GroupListResult>> listNext(
             @HostParam("$host") String endpoint,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,
@@ -221,7 +220,7 @@ public final class GroupsClient {
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResultInner>> getGroupMembersNext(
+        Mono<Response<DirectoryObjectListResult>> getGroupMembersNext(
             @HostParam("$host") String endpoint,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,
@@ -232,7 +231,7 @@ public final class GroupsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResultInner>> listOwnersNext(
+        Mono<Response<DirectoryObjectListResult>> listOwnersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

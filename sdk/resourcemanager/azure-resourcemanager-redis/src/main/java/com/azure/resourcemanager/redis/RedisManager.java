@@ -5,17 +5,19 @@ package com.azure.resourcemanager.redis;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.redis.fluent.RedisManagementClient;
+import com.azure.resourcemanager.redis.fluent.RedisManagementClientBuilder;
 import com.azure.resourcemanager.redis.implementation.RedisCachesImpl;
 import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure redis resource management. */
-public final class RedisManager extends Manager<RedisManager, RedisManagementClient> {
+public final class RedisManager extends Manager<RedisManagementClient> {
     // Collections
     private RedisCaches redisCaches;
 
@@ -88,8 +90,8 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
             profile,
             new RedisManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient(),
             sdkContext);
     }
