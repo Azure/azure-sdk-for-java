@@ -62,7 +62,7 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
      * @return the interface exposing Graph RBAC management API entry points that work across subscriptions
      */
     public static AuthorizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new AuthorizationManager(httpPipeline, profile);
     }
 
     /**
