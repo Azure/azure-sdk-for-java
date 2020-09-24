@@ -7,12 +7,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.SearchOptions;
 
-import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -23,19 +23,27 @@ import java.util.Set;
  * Search</a>.
  */
 public final class SearchFilter {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchFilter.class);
-    private static final SimpleDateFormat SIMPLE_DATE_FORMAT =
-        new SimpleDateFormat(DateTimeFormatter.ISO_INSTANT.toString());
+    private static final ClientLogger LOGGER;
+    private static final Set<Class<?>> SAFE_CLASSES;
 
-    private static final Set<Class<?>> SAFE_CLASSES = new HashSet<>(Arrays.asList(
-        boolean.class, Boolean.class,
-        byte.class, Byte.class,
-        short.class, Short.class,
-        int.class, Integer.class,
-        long.class, Long.class,
-        float.class, Float.class,
-        double.class, Double.class
-    ));
+    static {
+        LOGGER = new ClientLogger(SearchFilter.class);
+        SAFE_CLASSES = new HashSet<>(20);
+        SAFE_CLASSES.add(boolean.class);
+        SAFE_CLASSES.add(Boolean.class);
+        SAFE_CLASSES.add(byte.class);
+        SAFE_CLASSES.add(Byte.class);
+        SAFE_CLASSES.add(short.class);
+        SAFE_CLASSES.add(Short.class);
+        SAFE_CLASSES.add(int.class);
+        SAFE_CLASSES.add(Integer.class);
+        SAFE_CLASSES.add(long.class);
+        SAFE_CLASSES.add(Long.class);
+        SAFE_CLASSES.add(float.class);
+        SAFE_CLASSES.add(Float.class);
+        SAFE_CLASSES.add(double.class);
+        SAFE_CLASSES.add(Double.class);
+    }
 
     /**
      * Create an OData filter expression from a formattable string.
@@ -59,23 +67,26 @@ public final class SearchFilter {
         for (int i = 0; i < args.length; i++) {
             Object arg = args[i];
             if (arg == null) {
-                cleanedArgs[i] = "null";
+                cleanedArgs[i] = null;
                 continue;
             }
 
             Class<?> argClass = arg.getClass();
-            if (SAFE_CLASSES.contains(argClass)) {
+            if (Objects.equals(arg, Float.NEGATIVE_INFINITY) || Objects.equals(arg, Double.NEGATIVE_INFINITY)) {
+                cleanedArgs[i] = "-INF";
+            } else if (Objects.equals(arg, Float.POSITIVE_INFINITY) || Objects.equals(arg, Double.POSITIVE_INFINITY)) {
+                cleanedArgs[i] = "INF";
+            } else if (SAFE_CLASSES.contains(argClass)) {
                 cleanedArgs[i] = arg;
-            } else if (argClass.isAssignableFrom(Date.class)) {
-                cleanedArgs[i] = SIMPLE_DATE_FORMAT.format((Date) arg);
-            } else if (argClass.isAssignableFrom(OffsetDateTime.class)) {
-                cleanedArgs[i] = DateTimeFormatter.ISO_INSTANT.format((OffsetDateTime) arg);
-            } else if (argClass.isAssignableFrom(CharSequence.class)) {
+            } else if (arg instanceof Date) {
+                cleanedArgs[i] = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+                    .format(OffsetDateTime.ofInstant(((Date) arg).toInstant(), ZoneOffset.UTC));
+            } else if (arg instanceof OffsetDateTime) {
+                cleanedArgs[i] = DateTimeFormatter.ISO_OFFSET_DATE_TIME.format((OffsetDateTime) arg);
+            } else if (arg instanceof CharSequence) {
                 cleanedArgs[i] = quote(((CharSequence) arg).toString());
-            } else if (argClass.isAssignableFrom(char.class) || argClass.isAssignableFrom(Character.class)) {
+            } else if (argClass.isAssignableFrom(char.class) || arg instanceof Character) {
                 cleanedArgs[i] = quote(((Character) arg).toString());
-            } else if (argClass.isAssignableFrom(StringBuilder.class)) {
-                cleanedArgs[i] = quote(((StringBuilder) arg).toString());
             } else {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                     "Unable to convert argument %s from type %s to an OData literal.", arg, argClass.getName())));
@@ -105,5 +116,8 @@ public final class SearchFilter {
         }
 
         return builder.append("'").toString();
+    }
+
+    private SearchFilter() {
     }
 }
