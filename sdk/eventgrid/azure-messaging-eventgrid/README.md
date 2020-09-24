@@ -35,7 +35,7 @@ within your project, you can use [Maven][maven].
 
 ### Prerequisites
 
-- [Java Development Kit (JDK) with version 8 or above][jdk]
+- [[Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable) with version 8 or above][jdk]
 - An [Azure subscription][azure_subscription]
 - An [Event Grid][eventgrid] topic or domain. To create the resource, you can use [Azure portal][portal] or 
 [Azure CLI][cli]

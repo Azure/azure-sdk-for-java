@@ -12,7 +12,7 @@ Use the client library for App Configuration to create and manage application co
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable) with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [App Configuration Store][app_config_store]
 

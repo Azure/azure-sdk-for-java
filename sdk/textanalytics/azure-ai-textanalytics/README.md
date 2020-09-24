@@ -14,7 +14,7 @@ and includes six main functions:
 ## Getting started
 
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable) with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Text Analytics account][text_analytics_account] to use this package.
 

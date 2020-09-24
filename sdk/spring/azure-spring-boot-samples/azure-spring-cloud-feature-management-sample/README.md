@@ -7,7 +7,7 @@ This sample describes how to use [spring-cloud-feature-management](https://githu
 
 ### Prerequisite
 
-* A [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable), version 8.
+* A [Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable), version 8.
 * [Apache Maven](http://maven.apache.org/), version 3.0 or later.
 
 ### How to run without Azure Configuration Service

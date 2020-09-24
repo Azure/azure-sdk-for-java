@@ -29,7 +29,7 @@ fewer changes requested. In particular, it is recommended to review:
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable) with version 8 or above
 - [Maven][maven]
 - Git
 - Microsoft Azure subscription

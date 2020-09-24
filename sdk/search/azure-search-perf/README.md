@@ -6,7 +6,7 @@ Represents Performance tests for Azure Search SDK for Java.
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable) with version 8 or above
 
 ### Adding the package to your product
 

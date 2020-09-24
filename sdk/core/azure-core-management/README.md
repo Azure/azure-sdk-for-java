@@ -6,7 +6,7 @@ Azure Core Management library is a collection of classes common to the [Azure Re
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable) with version 8 or above
 
 ### Adding the package to your product
 

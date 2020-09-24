@@ -45,7 +45,7 @@ Use the Azure Cognitive Search client library to:
 
 ### Prerequisites
 
-* [Java Development Kit (JDK) with version 8 or above][jdk]
+* [[Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable) with version 8 or above][jdk]
 * [Azure subscription][azure_subscription]
 * [Azure Cognitive Search service][search]
 * To create a new search service, you can use the [Azure portal][create_search_service_docs],

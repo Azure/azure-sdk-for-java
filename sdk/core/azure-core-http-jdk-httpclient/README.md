@@ -7,7 +7,7 @@ part of JDK 11.
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 11 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable) with version 11 or above
 
 ### Adding the package to your product
 

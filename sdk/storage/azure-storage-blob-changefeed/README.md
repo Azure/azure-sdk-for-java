@@ -9,7 +9,7 @@ process change events that occur in your Blob Storage account at a low cost.
 ## Getting started
 ### Prerequisites
 
-- [Java Development Kit (JDK)][jdk] with version 8 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable) with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 

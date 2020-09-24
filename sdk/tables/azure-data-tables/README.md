@@ -22,7 +22,7 @@ best parts of Azure cloud.
 
 ### Prerequisites
 
-- [Java Development Kit (JDK)][jdk] with version 8 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable) with version 8 or above
 - [Azure Subscription][azure_subscription]
 - An existing Azure storage account or Azure Cosmos DB Table API account
 

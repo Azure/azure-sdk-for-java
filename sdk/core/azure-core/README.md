@@ -15,7 +15,7 @@ APIs in one client library, you will know how to use them in other client librar
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable) with version 8 or above
 
 ### Include the package
 

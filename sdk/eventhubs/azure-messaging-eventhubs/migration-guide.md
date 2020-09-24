@@ -25,7 +25,7 @@ For users new to the Java SDK for Event Hubs, please see the [README for azure-m
 - [Additional samples](#additional-samples)
 
 ## Prerequisites
-Java Development Kit (JDK) with version 8 or above.
+[Java Development Kit (JDK)](https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable) with version 8 or above.
 
 ## Updated Maven dependencies
 
