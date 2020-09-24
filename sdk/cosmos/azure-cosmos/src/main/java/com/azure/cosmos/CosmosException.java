@@ -52,6 +52,9 @@ public class CosmosException extends AzureException {
     Map<String, String> requestHeaders;
     Uri requestUri;
     String resourceAddress;
+    private int requestPayloadLength;
+    private int rntbdRequestLength;
+    private int rntbdResponseLength;
 
     protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
@@ -302,4 +305,29 @@ public class CosmosException extends AzureException {
     void setResourceAddress(String resourceAddress) {
         this.resourceAddress = resourceAddress;
     }
+
+    void setRntbdRequestLength(int rntbdRequestLength) {
+        this.rntbdRequestLength = rntbdRequestLength;
+    }
+
+    int getRntbdRequestLength() {
+        return this.rntbdRequestLength;
+    }
+
+    void setRntbdResponseLength(int rntbdResponseLength) {
+        this.rntbdResponseLength = rntbdResponseLength;
+    }
+
+    int getRntbdResponseLength() {
+        return this.rntbdResponseLength;
+    }
+
+    void setRequestPayloadLength(int requestBodyLength) {
+        this.requestPayloadLength = requestBodyLength;
+    }
+
+    int getRequestPayloadLength() {
+        return this.requestPayloadLength;
+    }
+
 }

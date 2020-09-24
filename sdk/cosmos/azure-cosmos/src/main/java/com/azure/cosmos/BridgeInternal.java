@@ -134,6 +134,39 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdRequestLength(E e, int requestLen) {
+        e.setRntbdRequestLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdRequestLength(E e) {
+        return e.getRntbdRequestLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRequestBodyLength(E e, int requestLen) {
+        e.setRequestPayloadLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRequestBodyLength(E e) {
+        return e.getRequestPayloadLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdResponseLength(E e, int requestLen) {
+        e.setRntbdResponseLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdResponseLength(E e) {
+        return e.getRntbdResponseLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> E setResourceAddress(E e, String resourceAddress) {
         e.setResourceAddress(resourceAddress);
         return e;
