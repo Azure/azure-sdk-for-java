@@ -5,7 +5,7 @@ This starter provides auto-configuration of Azure Cache for Redis. Azure Cache f
 
 ## Getting started
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
 

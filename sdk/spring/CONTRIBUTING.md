@@ -25,7 +25,7 @@ submission is consistent with the project standards and is ready to be accepted 
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) with version 8 or above
 - [Maven][maven]
 - Git
 - Microsoft Azure subscription

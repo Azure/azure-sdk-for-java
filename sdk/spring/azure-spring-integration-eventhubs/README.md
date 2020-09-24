@@ -7,7 +7,7 @@ Event Hubs is a fully managed, real-time data ingestion service that’s simple,
 
 ## Getting started
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
 

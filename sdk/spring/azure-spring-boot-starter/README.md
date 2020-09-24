@@ -5,7 +5,7 @@ This repository is for Spring Boot Starters of Azure services. It helps Spring B
 
 ## Getting started
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven](http://maven.apache.org/) 3.0 and above
 

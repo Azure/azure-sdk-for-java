@@ -11,7 +11,7 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 
 * An Azure subscription. If you don't already have an Azure subscription, you can activate your [MSDN subscriber benefits](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/) or sign up for a [free Azure account](https://azure.microsoft.com/free/).
 
-* A [Java Development Kit (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/), version 1.8.
+* A [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable), version 1.8.
 
 * [Apache Maven](http://maven.apache.org/), version 3.0 or later.
 
