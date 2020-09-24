@@ -1795,7 +1795,8 @@ class VirtualMachineImpl
         return AcceptedImpl
             .<VirtualMachine, VirtualMachineInner>newAccepted(
                 logger,
-                this.manager().serviceClient(),
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
                 () ->
                     this
                         .manager()

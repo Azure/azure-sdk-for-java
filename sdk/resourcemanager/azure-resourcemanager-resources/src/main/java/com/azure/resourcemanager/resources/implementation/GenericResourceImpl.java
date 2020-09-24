@@ -152,7 +152,8 @@ final class GenericResourceImpl
         String name = isInCreateMode() ? this.name() : ResourceUtils.nameFromResourceId(innerModel().id());
 
         return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient(),
+            this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager().serviceClient().getResources()
                 .createOrUpdateWithResponseAsync(
                     resourceGroupName(),
