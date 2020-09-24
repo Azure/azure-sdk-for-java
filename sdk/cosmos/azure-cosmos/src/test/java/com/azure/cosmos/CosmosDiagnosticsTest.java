@@ -221,6 +221,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineDirect(diagnostics);
             validateJson(diagnostics);
+
+            // validate that on failed operation request timeline is populated
+            try {
+                cosmosContainer.createItem(internalObjectNode);
+                fail("expected 409");
+            } catch (CosmosException e) {
+                validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
+            }
         } finally {
             if (testDirectClient != null) {
                 testDirectClient.close();
@@ -488,6 +496,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"serializationType\":\"ITEM_DESERIALIZATION\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
     }
+
+
+
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void addressResolutionStatistics() {
