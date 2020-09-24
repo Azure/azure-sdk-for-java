@@ -72,10 +72,6 @@ Copyright (C) 2019 CosmosBenchmark
   --version              Display version information.
 ```
 
-## Running on Azure
-
-If you quickly get results, you can use our [guide to leverage Azure Container Instances](./AzureContainerInstances/README.md) to execute the benchmarks in any number of Azure regions with very little setup required.
-
 ## Key concepts
 n/a
 
