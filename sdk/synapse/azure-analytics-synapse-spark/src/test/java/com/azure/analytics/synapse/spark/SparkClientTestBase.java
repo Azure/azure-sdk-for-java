@@ -33,6 +33,7 @@ public abstract class SparkClientTestBase extends TestBase {
     private final Map<String, String> properties = CoreUtils.getProperties(SYNAPSE_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+    private final String FAKE_SPARK_POOL = "testsparkpool";
 
     protected String getEndpoint() {
         String endpoint = interceptorManager.isPlaybackMode()
@@ -44,7 +45,7 @@ public abstract class SparkClientTestBase extends TestBase {
 
     protected String getSparkPoolName() {
         String sparkPoolName = interceptorManager.isPlaybackMode()
-            ? "fakeSparkPool"
+            ? FAKE_SPARK_POOL
             : Configuration.getGlobalConfiguration().get("AZURE_SYNAPSE_SPARK_POOL_NAME");
         Objects.requireNonNull(sparkPoolName);
         return sparkPoolName;
