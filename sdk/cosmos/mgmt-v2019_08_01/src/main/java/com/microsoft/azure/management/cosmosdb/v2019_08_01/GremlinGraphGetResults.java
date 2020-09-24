@@ -24,44 +24,9 @@ import java.util.Map;
  */
 public interface GremlinGraphGetResults extends HasInner<GremlinGraphGetResultsInner>, Indexable, Refreshable<GremlinGraphGetResults>, Updatable<GremlinGraphGetResults.Update>, HasManager<CosmosDBManager> {
     /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
-     * @return the conflictResolutionPolicy value.
-     */
-    ConflictResolutionPolicy conflictResolutionPolicy();
-
-    /**
-     * @return the defaultTtl value.
-     */
-    Integer defaultTtl();
-
-    /**
-     * @return the gremlinGraphGetResultsId value.
-     */
-    String gremlinGraphGetResultsId();
-
-    /**
      * @return the id value.
      */
     String id();
-
-    /**
-     * @return the indexingPolicy value.
-     */
-    IndexingPolicy indexingPolicy();
 
     /**
      * @return the location value.
@@ -74,9 +39,9 @@ public interface GremlinGraphGetResults extends HasInner<GremlinGraphGetResultsI
     String name();
 
     /**
-     * @return the partitionKey value.
+     * @return the resource value.
      */
-    ContainerPartitionKey partitionKey();
+    GremlinGraphGetPropertiesResource resource();
 
     /**
      * @return the tags value.
@@ -87,11 +52,6 @@ public interface GremlinGraphGetResults extends HasInner<GremlinGraphGetResultsI
      * @return the type value.
      */
     String type();
-
-    /**
-     * @return the uniqueKeyPolicy value.
-     */
-    UniqueKeyPolicy uniqueKeyPolicy();
 
     /**
      * The entirety of the GremlinGraphGetResults definition.
