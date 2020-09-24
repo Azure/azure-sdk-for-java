@@ -10,7 +10,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.PhpVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
@@ -37,13 +37,13 @@ public final class ManageWebAppSqlConnection {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String appName        = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
+        final String appName        = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp1-", 20);
         final String appUrl         = appName + suffix;
-        final String sqlServerName  = azureResourceManager.sdkContext().randomResourceName("jsdkserver", 20);
-        final String sqlDbName      = azureResourceManager.sdkContext().randomResourceName("jsdkdb", 20);
+        final String sqlServerName  = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jsdkserver", 20);
+        final String sqlDbName      = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jsdkdb", 20);
         final String admin          = "jsdkadmin";
         final String password       = Utils.password();
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName         = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 

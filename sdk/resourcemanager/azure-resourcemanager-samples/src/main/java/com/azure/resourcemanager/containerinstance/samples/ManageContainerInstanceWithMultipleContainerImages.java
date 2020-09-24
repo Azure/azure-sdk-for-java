@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
@@ -31,8 +31,8 @@ public class ManageContainerInstanceWithMultipleContainerImages {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgACI", 15);
-        final String aciName = azureResourceManager.sdkContext().randomResourceName("acisample", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgACI", 15);
+        final String aciName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("acisample", 20);
         final String containerImageName1 = "microsoft/aci-helloworld";
         final String containerImageName2 = "microsoft/aci-tutorial-sidecar";
 

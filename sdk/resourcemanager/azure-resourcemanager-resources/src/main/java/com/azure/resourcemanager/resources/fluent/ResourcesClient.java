@@ -34,8 +34,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.resources.fluent.inner.GenericResourceExpandedInner;
-import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
+import com.azure.resourcemanager.resources.fluent.models.GenericResourceExpandedInner;
+import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.resources.models.ResourceListResult;
 import com.azure.resourcemanager.resources.models.ResourcesMoveInfo;
@@ -302,7 +302,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return all the resources for a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupSinglePageAsync(
+    private Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, String filter, String expand, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -372,7 +372,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return all the resources for a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupSinglePageAsync(
+    private Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, String filter, String expand, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -449,6 +449,25 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * Get all the resources for a resource group.
      *
      * @param resourceGroupName The resource group with the resources to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources for a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<GenericResourceExpandedInner> listByResourceGroupAsync(String resourceGroupName) {
+        final String filter = null;
+        final String expand = null;
+        final Integer top = null;
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get all the resources for a resource group.
+     *
+     * @param resourceGroupName The resource group with the resources to get.
      * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
      *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
      *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
@@ -472,62 +491,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return all the resources for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GenericResourceExpandedInner> listByResourceGroupAsync(
+    private PagedFlux<GenericResourceExpandedInner> listByResourceGroupAsync(
         String resourceGroupName, String filter, String expand, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get all the resources for a resource group.
-     *
-     * @param resourceGroupName The resource group with the resources to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources for a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GenericResourceExpandedInner> listByResourceGroupAsync(String resourceGroupName) {
-        final String filter = null;
-        final String expand = null;
-        final Integer top = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get all the resources for a resource group.
-     *
-     * @param resourceGroupName The resource group with the resources to get.
-     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
-     *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
-     *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
-     *     example, to filter by a resource type, use: $filter=resourceType eq
-     *     'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the
-     *     filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example,
-     *     to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
-     *     name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or
-     *     operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name
-     *     and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value,
-     *     the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties
-     *     together when filtering. The combinations you can use are: substringof and/or resourceType, plan and
-     *     plan/publisher and plan/name, identity and identity/principalId.
-     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
-     *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-     * @param top The number of results to return. If null is passed, returns all resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources for a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GenericResourceExpandedInner> listByResourceGroup(
-        String resourceGroupName, String filter, String expand, Integer top) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, expand, top));
     }
 
     /**
@@ -576,7 +544,6 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         final String filter = null;
         final String expand = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, expand, top));
     }
 
@@ -645,7 +612,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> moveResourcesWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> moveResourcesWithResponseAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -715,7 +682,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginMoveResourcesAsync(
+    private PollerFlux<PollResult<Void>, Void> beginMoveResourcesAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -795,7 +762,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> moveResourcesAsync(
+    private Mono<Void> moveResourcesAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
         return beginMoveResourcesAsync(sourceResourceGroupName, parameters, context)
             .last()
@@ -904,7 +871,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> validateMoveResourcesWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> validateMoveResourcesWithResponseAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -979,7 +946,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginValidateMoveResourcesAsync(
+    private PollerFlux<PollResult<Void>, Void> beginValidateMoveResourcesAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1067,7 +1034,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> validateMoveResourcesAsync(
+    private Mono<Void> validateMoveResourcesAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
         return beginValidateMoveResourcesAsync(sourceResourceGroupName, parameters, context)
             .last()
@@ -1136,7 +1103,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return all the resources in a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GenericResourceExpandedInner>> listSinglePageAsync(
+    private Mono<PagedResponse<GenericResourceExpandedInner>> listSinglePageAsync(
         String filter, String expand, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1200,7 +1167,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return all the resources in a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GenericResourceExpandedInner>> listSinglePageAsync(
+    private Mono<PagedResponse<GenericResourceExpandedInner>> listSinglePageAsync(
         String filter, String expand, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1268,6 +1235,22 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     /**
      * Get all the resources in a subscription.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<GenericResourceExpandedInner> listAsync() {
+        final String filter = null;
+        final String expand = null;
+        final Integer top = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter, expand, top), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get all the resources in a subscription.
+     *
      * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
      *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
      *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
@@ -1291,57 +1274,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return all the resources in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GenericResourceExpandedInner> listAsync(
+    private PagedFlux<GenericResourceExpandedInner> listAsync(
         String filter, String expand, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, expand, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get all the resources in a subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources in a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GenericResourceExpandedInner> listAsync() {
-        final String filter = null;
-        final String expand = null;
-        final Integer top = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, expand, top), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get all the resources in a subscription.
-     *
-     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
-     *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
-     *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
-     *     example, to filter by a resource type, use: $filter=resourceType eq
-     *     'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the
-     *     filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example,
-     *     to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
-     *     name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or
-     *     operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name
-     *     and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value,
-     *     the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties
-     *     together when filtering. The combinations you can use are: substringof and/or resourceType, plan and
-     *     plan/publisher and plan/name, identity and identity/principalId.
-     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
-     *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-     * @param top The number of results to return. If null is passed, returns all resource groups.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources in a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GenericResourceExpandedInner> list(String filter, String expand, Integer top) {
-        return new PagedIterable<>(listAsync(filter, expand, top));
     }
 
     /**
@@ -1387,7 +1324,6 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         final String filter = null;
         final String expand = null;
         final Integer top = null;
-        final Context context = null;
         return new PagedIterable<>(listAsync(filter, expand, top));
     }
 
@@ -1483,7 +1419,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkExistenceWithResponseAsync(
+    private Mono<Response<Boolean>> checkExistenceWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -1590,49 +1526,6 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to check whether it exists.
      * @param apiVersion The API version to use for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkExistenceAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String apiVersion,
-        Context context) {
-        return checkExistenceWithResponseAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                apiVersion,
-                context)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks whether a resource exists.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case
-     *     insensitive.
-     * @param resourceProviderNamespace The resource provider of the resource to check.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type.
-     * @param resourceName The name of the resource to check whether it exists.
-     * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1676,10 +1569,10 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkExistence(
+    public Response<Boolean> checkExistenceWithResponse(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -1687,21 +1580,15 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         Context context) {
-        Boolean value =
-            checkExistenceAsync(
-                    resourceGroupName,
-                    resourceProviderNamespace,
-                    parentResourcePath,
-                    resourceType,
-                    resourceName,
-                    apiVersion,
-                    context)
-                .block();
-        if (value != null) {
-            return value;
-        } else {
-            throw logger.logExceptionAsError(new NullPointerException());
-        }
+        return checkExistenceWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                context)
+            .block();
     }
 
     /**
@@ -1796,7 +1683,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -1906,7 +1793,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -2049,7 +1936,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
+    private Mono<Void> deleteAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -2235,7 +2122,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -2359,7 +2246,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateAsync(
+    private PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -2511,7 +2398,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> createOrUpdateAsync(
+    private Mono<GenericResourceInner> createOrUpdateAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -2705,7 +2592,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -2829,7 +2716,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateAsync(
+    private PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -2981,7 +2868,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> updateAsync(
+    private Mono<GenericResourceInner> updateAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -3168,7 +3055,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GenericResourceInner>> getWithResponseAsync(
+    private Mono<Response<GenericResourceInner>> getWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -3275,49 +3162,6 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @param resourceType The resource type of the resource.
      * @param resourceName The name of the resource to get.
      * @param apiVersion The API version to use for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> getAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String apiVersion,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                apiVersion,
-                context)
-            .flatMap(
-                (Response<GenericResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case
-     *     insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource.
-     * @param resourceName The name of the resource to get.
-     * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3358,7 +3202,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner get(
+    public Response<GenericResourceInner> getWithResponse(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -3366,7 +3210,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         Context context) {
-        return getAsync(
+        return getWithResponseAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -3423,7 +3267,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkExistenceByIdWithResponseAsync(
+    private Mono<Response<Boolean>> checkExistenceByIdWithResponseAsync(
         String resourceId, String apiVersion, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3473,32 +3317,6 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion, Context context) {
-        return checkExistenceByIdWithResponseAsync(resourceId, apiVersion, context)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks by ID whether a resource exists.
-     *
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
-     * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3525,16 +3343,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkExistenceById(String resourceId, String apiVersion, Context context) {
-        Boolean value = checkExistenceByIdAsync(resourceId, apiVersion, context).block();
-        if (value != null) {
-            return value;
-        } else {
-            throw logger.logExceptionAsError(new NullPointerException());
-        }
+    public Response<Boolean> checkExistenceByIdWithResponse(String resourceId, String apiVersion, Context context) {
+        return checkExistenceByIdWithResponseAsync(resourceId, apiVersion, context).block();
     }
 
     /**
@@ -3582,7 +3395,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(
         String resourceId, String apiVersion, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3634,7 +3447,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteByIdAsync(
+    private PollerFlux<PollResult<Void>, Void> beginDeleteByIdAsync(
         String resourceId, String apiVersion, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(resourceId, apiVersion, context);
@@ -3709,7 +3522,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteByIdAsync(String resourceId, String apiVersion, Context context) {
+    private Mono<Void> deleteByIdAsync(String resourceId, String apiVersion, Context context) {
         return beginDeleteByIdAsync(resourceId, apiVersion, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -3803,7 +3616,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3868,7 +3681,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateByIdAsync(
+    private PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -3954,7 +3767,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> createOrUpdateByIdAsync(
+    private Mono<GenericResourceInner> createOrUpdateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
         return beginCreateOrUpdateByIdAsync(resourceId, apiVersion, parameters, context)
             .last()
@@ -4054,7 +3867,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateByIdWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateByIdWithResponseAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -4119,7 +3932,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateByIdAsync(
+    private PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -4205,7 +4018,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> updateByIdAsync(
+    private Mono<GenericResourceInner> updateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
         return beginUpdateByIdAsync(resourceId, apiVersion, parameters, context)
             .last()
@@ -4295,7 +4108,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return a resource by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GenericResourceInner>> getByIdWithResponseAsync(
+    private Mono<Response<GenericResourceInner>> getByIdWithResponseAsync(
         String resourceId, String apiVersion, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -4345,32 +4158,6 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource by ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion, Context context) {
-        return getByIdWithResponseAsync(resourceId, apiVersion, context)
-            .flatMap(
-                (Response<GenericResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a resource by ID.
-     *
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
-     * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4395,8 +4182,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return a resource by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner getById(String resourceId, String apiVersion, Context context) {
-        return getByIdAsync(resourceId, apiVersion, context).block();
+    public Response<GenericResourceInner> getByIdWithResponse(String resourceId, String apiVersion, Context context) {
+        return getByIdWithResponseAsync(resourceId, apiVersion, context).block();
     }
 
     /**
@@ -4409,7 +4196,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return list of resource groups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -4438,7 +4225,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return list of resource groups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupNextSinglePageAsync(
+    private Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupNextSinglePageAsync(
         String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -4467,7 +4254,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return list of resource groups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GenericResourceExpandedInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<GenericResourceExpandedInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -4496,7 +4283,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return list of resource groups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GenericResourceExpandedInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<GenericResourceExpandedInner>> listNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.servicebus.fluent.inner.TopicResourceInner;
@@ -24,7 +24,7 @@ public interface Topic extends
     IndependentChildResource<ServiceBusManager, TopicResourceInner>,
     Refreshable<Topic>,
     Updatable<Topic.Update>,
-    HasInner<TopicResourceInner> {
+        HasInnerModel<TopicResourceInner> {
 
     /**
      * @return the exact time the topic was created

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachinePublishers;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageResourceInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Flux;
 
@@ -87,7 +87,8 @@ public class VirtualMachineImagesImpl implements VirtualMachineImages {
                     virtualMachinePublisher
                         .offers()
                         .listAsync()
-                        .onErrorResume(ManagementException.class,
+                        .onErrorResume(
+                            ManagementException.class,
                             e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e))
                         .flatMap(virtualMachineOffer -> virtualMachineOffer.skus().listAsync())
                         .flatMap(virtualMachineSku -> virtualMachineSku.images().listAsync()));

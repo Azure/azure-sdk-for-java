@@ -125,11 +125,8 @@ class LinuxDiskVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionM
      * @return the retrieved virtual machine
      */
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
-        return computeManager
-            .inner()
-            .getVirtualMachines()
-            .getByResourceGroupAsync(rgName, vmName);
-            // Exception if vm not found
+        return computeManager.serviceClient().getVirtualMachines().getByResourceGroupAsync(rgName, vmName);
+        // Exception if vm not found
     }
 
     private boolean hasEncryptionExtensionInstanceView() {

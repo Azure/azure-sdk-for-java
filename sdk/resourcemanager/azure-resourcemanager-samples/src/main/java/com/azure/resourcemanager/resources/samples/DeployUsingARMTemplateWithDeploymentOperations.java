@@ -11,7 +11,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -41,8 +41,8 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
      * @return true if sample runs successfully
      */
     public static boolean runSample(final AzureResourceManager azureResourceManager, int defaultPollingInterval) throws InterruptedException {
-        final String rgPrefix = azureResourceManager.sdkContext().randomResourceName("rgJavaTest", 16);
-        final String deploymentPrefix = azureResourceManager.sdkContext().randomResourceName("javaTest", 16);
+        final String rgPrefix = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgJavaTest", 16);
+        final String deploymentPrefix = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("javaTest", 16);
         final String sshKey = getSSHPublicKey();
         final int numDeployments = 3;
         final int pollingInterval = defaultPollingInterval < 0 ? 15 : defaultPollingInterval; // in seconds

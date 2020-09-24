@@ -22,12 +22,12 @@ public class TestIdentifierProvider implements IdentifierProvider {
     }
 
     @Override
-    public String randomName(String prefix, int maxLen) {
+    public String getRandomName(String prefix, int maxLen) {
         return testResourceNamer.randomName(prefix, maxLen);
     }
 
     @Override
-    public String randomUuid() {
+    public String getRandomUuid() {
         return testResourceNamer.randomUuid();
     }
 }

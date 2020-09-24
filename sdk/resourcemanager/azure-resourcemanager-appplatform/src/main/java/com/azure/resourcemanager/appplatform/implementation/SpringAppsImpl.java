@@ -100,6 +100,6 @@ public class SpringAppsImpl
     }
 
     public AppsClient inner() {
-        return manager().inner().getApps();
+        return manager().serviceClient().getApps();
     }
 }

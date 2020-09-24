@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.exception.DockerClientException;
@@ -189,8 +189,8 @@ public class DockerUtils {
      */
     public static DockerClient fromNewDockerVM(AzureResourceManager azureResourceManager, String rgName, Region region,
                                                String registryServerUrl, String username, String password) {
-        final String dockerVMName = azureResourceManager.sdkContext().randomResourceName("dockervm", 15);
-        final String publicIPDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 10);
+        final String dockerVMName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("dockervm", 15);
+        final String publicIPDnsLabel = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("pip", 10);
         final String vmUserName = "dockerUser";
         final String vmPassword = Utils.password();
 

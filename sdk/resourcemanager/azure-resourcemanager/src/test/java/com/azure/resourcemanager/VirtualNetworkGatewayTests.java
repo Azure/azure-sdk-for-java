@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.Troubleshooting;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
@@ -56,8 +56,9 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         AzureResourceManager.Authenticated azureAuthed =
-            AzureResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+            AzureResourceManager.authenticate(httpPipeline, profile);
         azureResourceManager = azureAuthed.withDefaultSubscription();
+        setSdkContext(sdkContext, azureResourceManager);
     }
 
     @Override

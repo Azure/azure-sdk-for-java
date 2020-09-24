@@ -20,16 +20,16 @@ public class CheckNameAvailabilityResultImpl extends WrapperImpl<CheckNameAvaila
 
     @Override
     public boolean isAvailable() {
-        return this.inner().available();
+        return this.innerModel().available();
     }
 
     @Override
     public String unavailabilityReason() {
-        return this.inner().reason() != null ? this.inner().reason().toString() : null;
+        return this.innerModel().reason() != null ? this.innerModel().reason().toString() : null;
     }
 
     @Override
     public String unavailabilityMessage() {
-        return this.inner().message();
+        return this.innerModel().message();
     }
 }

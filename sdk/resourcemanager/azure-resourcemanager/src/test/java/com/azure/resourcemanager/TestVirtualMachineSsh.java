@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +23,7 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().resourceManager().sdkContext().randomResourceName("vm", 10);
 
         final String sshKey =
             "ssh-rsa"
@@ -75,8 +75,8 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
                 }
             }
 
-            Assertions.assertNotNull(vm.inner().osProfile().linuxConfiguration().ssh());
-            Assertions.assertTrue(vm.inner().osProfile().linuxConfiguration().ssh().publicKeys().size() > 0);
+            Assertions.assertNotNull(vm.innerModel().osProfile().linuxConfiguration().ssh());
+            Assertions.assertTrue(vm.innerModel().osProfile().linuxConfiguration().ssh().publicKeys().size() > 0);
         }
         return vm;
     }

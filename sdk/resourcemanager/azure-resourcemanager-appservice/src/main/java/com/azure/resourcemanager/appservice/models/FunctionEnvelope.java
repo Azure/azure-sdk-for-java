@@ -4,11 +4,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.resourcemanager.appservice.fluent.inner.FunctionEnvelopeInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.Map;
 
 /** An immutable representation of function Information. */
-public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner> {
+public interface FunctionEnvelope extends HasInnerModel<FunctionEnvelopeInner> {
 
     /** @return the functionAppId value */
     String functionAppId();

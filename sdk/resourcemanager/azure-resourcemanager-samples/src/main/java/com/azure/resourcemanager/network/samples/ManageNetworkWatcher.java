@@ -23,7 +23,7 @@ import com.azure.resourcemanager.network.models.PcProtocol;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
@@ -70,17 +70,17 @@ public final class ManageNetworkWatcher {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_NORTH_CENTRAL;
-        final String nwName = azureResourceManager.sdkContext().randomResourceName("nw", 8);
+        final String nwName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("nw", 8);
 
         final String userName = "tirekicker";
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 20);
-        final String dnsLabel = azureResourceManager.sdkContext().randomResourceName("pipdns", 20);
+        final String vnetName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vnet", 20);
+        final String dnsLabel = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("pipdns", 20);
         final String subnetName = "subnet1";
-        final String nsgName = azureResourceManager.sdkContext().randomResourceName("nsg", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rg", 24);
-        final String saName = azureResourceManager.sdkContext().randomResourceName("sa", 24);
-        final String vmName = azureResourceManager.sdkContext().randomResourceName("vm", 24);
-        final String packetCaptureName = azureResourceManager.sdkContext().randomResourceName("pc", 8);
+        final String nsgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("nsg", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg", 24);
+        final String saName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("sa", 24);
+        final String vmName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vm", 24);
+        final String packetCaptureName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("pc", 8);
         final String packetCaptureStorageContainer = "packetcapture";
         // file name to save packet capture log locally
         final String packetCaptureFile = "packetcapture.cap";

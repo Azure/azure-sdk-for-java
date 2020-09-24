@@ -10,6 +10,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import com.azure.resourcemanager.resources.implementation.SubscriptionClientBuilder;
 import java.time.Duration;
 
 /** Initializes a new instance of the SubscriptionClient type. */
@@ -61,7 +62,7 @@ public final class SubscriptionClient extends AzureServiceClient {
      *
      * @return the serializerAdapter value.
      */
-    public SerializerAdapter getSerializerAdapter() {
+    SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
@@ -132,8 +133,9 @@ public final class SubscriptionClient extends AzureServiceClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
+     * @param endpoint server parameter.
      */
-    SubscriptionClient(
+    public SubscriptionClient(
         HttpPipeline httpPipeline,
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,

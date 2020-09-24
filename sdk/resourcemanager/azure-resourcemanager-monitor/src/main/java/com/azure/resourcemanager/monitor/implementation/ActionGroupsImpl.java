@@ -18,7 +18,7 @@ public class ActionGroupsImpl
     implements ActionGroups {
 
     public ActionGroupsImpl(final MonitorManager monitorManager) {
-        super(monitorManager.inner().getActionGroups(), monitorManager);
+        super(monitorManager.serviceClient().getActionGroups(), monitorManager);
     }
 
     @Override

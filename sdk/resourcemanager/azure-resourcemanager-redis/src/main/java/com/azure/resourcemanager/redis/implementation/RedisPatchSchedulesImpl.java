@@ -82,7 +82,7 @@ class RedisPatchSchedulesImpl
         return this
             .getParent()
             .manager()
-            .inner()
+            .serviceClient()
             .getPatchSchedules()
             .listByRedisResourceAsync(this.getParent().resourceGroupName(), this.getParent().name())
             .map(

@@ -9,8 +9,9 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -34,10 +35,10 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgACI", 15);
-        final String aciName = azureResourceManager.sdkContext().randomResourceName("acisample", 20);
-        final String saName = azureResourceManager.sdkContext().randomResourceName("sa", 20);
-        final String shareName = azureResourceManager.sdkContext().randomResourceName("fileshare", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgACI", 15);
+        final String aciName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("acisample", 20);
+        final String saName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("sa", 20);
+        final String shareName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("fileshare", 20);
         final String containerImageName = "seanmckenna/aci-hellofiles";
         final String volumeMountName = "aci-helloshare";
 
@@ -54,7 +55,7 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
             StorageAccountKey storageAccountKey = storageAccount.getKeys().get(0);
 
             ShareClient shareClient = new ShareClientBuilder()
-                .connectionString(com.azure.resourcemanager.resources.fluentcore.utils.Utils.getStorageConnectionString(
+                .connectionString(ResourceManagerUtils.getStorageConnectionString(
                     saName,
                     storageAccountKey.value(),
                     azureResourceManager.containerGroups().manager().environment()

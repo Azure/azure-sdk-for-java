@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -31,9 +31,9 @@ public final class ManageResource {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSMR", 24);
-        final String resourceName1 = azureResourceManager.sdkContext().randomResourceName("rn1", 24);
-        final String resourceName2 = azureResourceManager.sdkContext().randomResourceName("rn2", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgRSMR", 24);
+        final String resourceName1 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rn1", 24);
+        final String resourceName2 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rn2", 24);
         try {
 
 

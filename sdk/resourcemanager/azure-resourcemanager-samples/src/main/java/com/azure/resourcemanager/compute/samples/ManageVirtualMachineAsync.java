@@ -15,7 +15,7 @@ import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.NetworkInterface;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.samples.Utils;
 import reactor.core.publisher.Flux;
@@ -46,9 +46,9 @@ public final class ManageVirtualMachineAsync {
      */
     public static boolean runSample(final AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String windowsVMName = azureResourceManager.sdkContext().randomResourceName("wVM", 15);
-        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("lVM", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
+        final String windowsVMName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("wVM", 15);
+        final String linuxVMName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("lVM", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgCOMV", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final String windowsVmKey = "WindowsVM";
@@ -63,7 +63,7 @@ public final class ManageVirtualMachineAsync {
             //
             final Date t1 = new Date();
 
-            final Creatable<Disk> dataDiskCreatable = azureResourceManager.disks().define(azureResourceManager.sdkContext().randomResourceName("dsk-", 15))
+            final Creatable<Disk> dataDiskCreatable = azureResourceManager.disks().define(azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withData()
@@ -71,7 +71,7 @@ public final class ManageVirtualMachineAsync {
 
             // Create a data disk to attach to VM
             //
-            Mono<Disk> dataDiskMono = azureResourceManager.disks().define(azureResourceManager.sdkContext().randomResourceName("dsk-", 15))
+            Mono<Disk> dataDiskMono = azureResourceManager.disks().define(azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withData()
@@ -80,7 +80,7 @@ public final class ManageVirtualMachineAsync {
 
             final Map<String, VirtualMachine> createdVms = new TreeMap<>();
 
-            Mono<NetworkInterface> nicMono = azureResourceManager.networkInterfaces().define(azureResourceManager.sdkContext().randomResourceName("nic", 20))
+            Mono<NetworkInterface> nicMono = azureResourceManager.networkInterfaces().define(azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("nic", 20))
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")

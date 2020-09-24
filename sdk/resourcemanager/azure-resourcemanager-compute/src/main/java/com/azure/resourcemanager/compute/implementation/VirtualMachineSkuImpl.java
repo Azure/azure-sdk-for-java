@@ -8,7 +8,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineOffer;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.compute.models.VirtualMachineSku;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 
 /** The implementation for {@link Sku}. */
 class VirtualMachineSkuImpl implements VirtualMachineSku {

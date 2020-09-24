@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.DockerUtils;
@@ -49,9 +49,9 @@ public class ManageLinuxWebAppWithContainerRegistry {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, InterruptedException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgACR", 15);
-        final String acrName = azureResourceManager.sdkContext().randomResourceName("acrsample", 20);
-        final String appName = azureResourceManager.sdkContext().randomResourceName("webapp", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgACR", 15);
+        final String acrName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("acrsample", 20);
+        final String appName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp", 20);
         final String appUrl = appName + ".azurewebsites.net";
         final Region region = Region.US_EAST;
         final String dockerImageName = "tomcat";

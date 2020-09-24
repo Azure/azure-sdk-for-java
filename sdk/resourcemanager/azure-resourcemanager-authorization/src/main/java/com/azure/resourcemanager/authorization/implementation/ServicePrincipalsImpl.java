@@ -12,14 +12,13 @@ import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInne
 import com.azure.resourcemanager.authorization.fluent.ServicePrincipalsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
 /** The implementation of ServicePrincipals and its parent interfaces. */
 public class ServicePrincipalsImpl
     extends CreatableWrappersImpl<ServicePrincipal, ServicePrincipalImpl, ServicePrincipalInner>
-    implements ServicePrincipals, HasManager<AuthorizationManager>, HasInner<ServicePrincipalsClient> {
+    implements ServicePrincipals, HasManager<AuthorizationManager> {
     private ServicePrincipalsClient innerCollection;
     private AuthorizationManager manager;
 
@@ -101,7 +100,7 @@ public class ServicePrincipalsImpl
     }
 
     public ServicePrincipalsClient inner() {
-        return manager().inner().getServicePrincipals();
+        return manager().serviceClient().getServicePrincipals();
     }
 
     @Override

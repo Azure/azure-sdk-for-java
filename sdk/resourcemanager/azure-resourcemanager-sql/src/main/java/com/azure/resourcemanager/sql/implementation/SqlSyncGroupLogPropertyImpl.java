@@ -17,31 +17,31 @@ public class SqlSyncGroupLogPropertyImpl extends WrapperImpl<SyncGroupLogPropert
 
     @Override
     public OffsetDateTime timestamp() {
-        return this.inner().timestamp();
+        return this.innerModel().timestamp();
     }
 
     @Override
     public SyncGroupLogType type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override
     public String source() {
-        return this.inner().source();
+        return this.innerModel().source();
     }
 
     @Override
     public String details() {
-        return this.inner().details();
+        return this.innerModel().details();
     }
 
     @Override
     public String tracingId() {
-        return this.inner().tracingId().toString();
+        return this.innerModel().tracingId().toString();
     }
 
     @Override
     public String operationStatus() {
-        return this.inner().operationStatus();
+        return this.innerModel().operationStatus();
     }
 }

@@ -17,7 +17,7 @@ import com.azure.resourcemanager.monitor.models.MetricDefinition;
 import com.azure.resourcemanager.monitor.models.MetricValue;
 import com.azure.resourcemanager.monitor.models.TimeSeriesElement;
 import com.azure.resourcemanager.monitor.fluent.inner.MetadataValueInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
@@ -60,8 +60,8 @@ public final class QueryMetricsAndActivityLogs {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("saMonitor", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgMonitor", 20);
+        final String storageAccountName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("saMonitor", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgMonitor", 20);
 
         try {
             // ============================================================

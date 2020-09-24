@@ -5,6 +5,7 @@ package com.azure.resourcemanager.authorization;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.fluent.AuthorizationManagementClient;
 import com.azure.resourcemanager.authorization.fluent.AuthorizationManagementClientBuilder;
 import com.azure.resourcemanager.authorization.fluent.GraphRbacManagementClient;
@@ -23,15 +24,14 @@ import com.azure.resourcemanager.authorization.models.RoleDefinitions;
 import com.azure.resourcemanager.authorization.models.ServicePrincipals;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.model.HasServiceClient;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure Graph RBAC management. */
-public final class AuthorizationManager implements HasInner<GraphRbacManagementClient> {
+public final class AuthorizationManager implements HasServiceClient<GraphRbacManagementClient> {
     private final String tenantId;
-    private final SdkContext sdkContext;
+    private SdkContext sdkContext;
     // The sdk clients
     private final GraphRbacManagementClient graphRbacManagementClient;
     private final AuthorizationManagementClient authorizationManagementClient;
@@ -62,20 +62,7 @@ public final class AuthorizationManager implements HasInner<GraphRbacManagementC
      * @return the interface exposing Graph RBAC management API entry points that work across subscriptions
      */
     public static AuthorizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of GraphRbacManager that exposes Graph RBAC management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls
-     * @param profile the profile used in Active Directory
-     * @param sdkContext the sdk context
-     * @return the interface exposing Graph RBAC management API entry points that work across subscriptions
-     */
-    public static AuthorizationManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new AuthorizationManager(httpPipeline, profile, sdkContext);
+        return new AuthorizationManager(httpPipeline, profile);
     }
 
     /**
@@ -88,7 +75,7 @@ public final class AuthorizationManager implements HasInner<GraphRbacManagementC
     }
 
     @Override
-    public GraphRbacManagementClient inner() {
+    public GraphRbacManagementClient serviceClient() {
         return this.graphRbacManagementClient;
     }
 
@@ -112,7 +99,7 @@ public final class AuthorizationManager implements HasInner<GraphRbacManagementC
         }
     }
 
-    private AuthorizationManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private AuthorizationManager(HttpPipeline httpPipeline, AzureProfile profile) {
         this.graphRbacManagementClient =
             new GraphRbacManagementClientBuilder()
                 .pipeline(httpPipeline)
@@ -126,14 +113,13 @@ public final class AuthorizationManager implements HasInner<GraphRbacManagementC
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
         this.tenantId = profile.getTenantId();
-        this.sdkContext = sdkContext;
     }
 
     /**
      * @return wrapped inner authorization client providing direct access to auto-generated API implementation, based on
      *     Azure REST API
      */
-    public AuthorizationManagementClient roleInner() {
+    public AuthorizationManagementClient roleServiceClient() {
         return authorizationManagementClient;
     }
 
@@ -144,6 +130,9 @@ public final class AuthorizationManager implements HasInner<GraphRbacManagementC
 
     /** @return the sdk context in graph manager */
     public SdkContext sdkContext() {
+        if (sdkContext == null) {
+            sdkContext = new SdkContext();
+        }
         return sdkContext;
     }
 

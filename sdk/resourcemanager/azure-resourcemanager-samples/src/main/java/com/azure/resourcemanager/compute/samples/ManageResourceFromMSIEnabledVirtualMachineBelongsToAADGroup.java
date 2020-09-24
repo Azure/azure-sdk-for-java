@@ -15,7 +15,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
@@ -43,11 +43,11 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        String groupName = azureResourceManager.sdkContext().randomResourceName("group", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        String roleAssignmentName = azureResourceManager.sdkContext().randomUuid();
-        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String pipName = azureResourceManager.sdkContext().randomResourceName("pip1", 15);
+        String groupName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("group", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgCOMV", 15);
+        String roleAssignmentName = azureResourceManager.resourceGroups().manager().sdkContext().randomUuid();
+        final String linuxVMName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("VM1", 15);
+        final String pipName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("pip1", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_SOUTH_CENTRAL;
@@ -132,7 +132,7 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
 
             // Prepare custom script t install az cli that uses MSI to create a storage account
             //
-            final String stgName = azureResourceManager.sdkContext().randomResourceName("st44", 15);
+            final String stgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("st44", 15);
             installCommand = installCommand.replace("{stgName}", stgName)
                     .replace("{rgName}", rgName)
                     .replace("{location}", region.name());

@@ -18,7 +18,7 @@ class TrafficManagerAzureEndpointImpl extends TrafficManagerEndpointImpl impleme
 
     @Override
     public String targetAzureResourceId() {
-        return inner().targetResourceId();
+        return innerModel().targetResourceId();
     }
 
     @Override

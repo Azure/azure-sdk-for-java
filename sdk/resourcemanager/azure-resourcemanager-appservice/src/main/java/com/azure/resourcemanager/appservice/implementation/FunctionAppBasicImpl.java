@@ -27,7 +27,7 @@ class FunctionAppBasicImpl extends WebSiteBaseImpl implements FunctionAppBasic, 
     @Override
     public Mono<FunctionApp> refreshAsync() {
         return this.manager().functionApps().getByIdAsync(this.id())
-            .doOnNext(site -> this.setInner(site.inner()));
+            .doOnNext(site -> this.setInner(site.innerModel()));
     }
 
     @Override

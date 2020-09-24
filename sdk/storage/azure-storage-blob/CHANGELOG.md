@@ -5,6 +5,7 @@
 - Added support to specify Arrow Output Serialization when querying a blob. 
 - Added support to undelete a container. 
 
+- Added support to specify block size when using BlobInputStream.
 - Fixed a bug where users could not download more than 5000MB of data in one shot in the downloadToFile API.
 - Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
 - Fixed a bug where Default Azure Credential would not work with Azurite.

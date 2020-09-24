@@ -188,7 +188,11 @@ public final class RntbdTransportClient extends TransportClient {
                     address.toString());
             }
 
-            return error;
+            assert error instanceof CosmosException;
+            CosmosException cosmosException = (CosmosException) error;
+            BridgeInternal.setRequestTimeline(cosmosException, record.takeTimelineSnapshot());
+
+            return cosmosException;
 
         });
 

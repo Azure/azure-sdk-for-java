@@ -17,46 +17,46 @@ public class FunctionEnvelopeImpl extends WrapperImpl<FunctionEnvelopeInner> imp
 
     @Override
     public String functionAppId() {
-        return this.inner().functionAppId();
+        return this.innerModel().functionAppId();
     }
 
     @Override
     public String scriptRootPathHref() {
-        return this.inner().scriptRootPathHref();
+        return this.innerModel().scriptRootPathHref();
     }
 
     @Override
     public String scriptHref() {
-        return this.inner().scriptHref();
+        return this.innerModel().scriptHref();
     }
 
     @Override
     public String configHref() {
-        return this.inner().configHref();
+        return this.innerModel().configHref();
     }
 
     @Override
     public String secretsFileHref() {
-        return this.inner().secretsFileHref();
+        return this.innerModel().secretsFileHref();
     }
 
     @Override
     public String href() {
-        return this.inner().href();
+        return this.innerModel().href();
     }
 
     @Override
     public Object config() {
-        return this.inner().config();
+        return this.innerModel().config();
     }
 
     @Override
     public Map<String, String> files() {
-        return this.inner().files();
+        return this.innerModel().files();
     }
 
     @Override
     public String testData() {
-        return this.inner().testData();
+        return this.innerModel().testData();
     }
 }

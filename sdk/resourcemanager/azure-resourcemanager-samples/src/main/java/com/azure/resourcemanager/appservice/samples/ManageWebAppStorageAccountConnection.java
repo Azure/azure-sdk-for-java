@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
@@ -51,11 +51,11 @@ public final class ManageWebAppStorageAccountConnection {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
+        final String app1Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp1-", 20);
         final String app1Url        = app1Name + suffix;
-        final String storageName    = azureResourceManager.sdkContext().randomResourceName("jsdkstore", 20);
-        final String containerName  = azureResourceManager.sdkContext().randomResourceName("jcontainer", 20);
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String storageName    = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jsdkstore", 20);
+        final String containerName  = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jcontainer", 20);
+        final String rgName         = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 
@@ -120,7 +120,7 @@ public final class ManageWebAppStorageAccountConnection {
             System.out.println("Warming up " + app1Url + "/azure-samples-blob-traverser...");
             Utils.curl("http://" + app1Url + "/azure-samples-blob-traverser/");
             SdkContext.sleep(5000);
-            System.out.println("Utils.curling " + app1Url + "/azure-samples-blob-traverser...");
+            System.out.println("ResourceManagerUtils.curling " + app1Url + "/azure-samples-blob-traverser...");
             System.out.println(Utils.curl("http://" + app1Url + "/azure-samples-blob-traverser/"));
 
             return true;

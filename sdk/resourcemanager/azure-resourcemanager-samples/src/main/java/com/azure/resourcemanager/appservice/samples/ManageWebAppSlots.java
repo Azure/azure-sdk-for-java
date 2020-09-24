@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -37,10 +37,10 @@ public final class ManageWebAppSlots {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String resourceGroupName     = azureResourceManager.sdkContext().randomResourceName("rg", 24);
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
+        final String resourceGroupName     = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg", 24);
+        final String app1Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp1-", 20);
+        final String app2Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp2-", 20);
+        final String app3Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp3-", 20);
         final String slotName       = "staging";
 
         try {
