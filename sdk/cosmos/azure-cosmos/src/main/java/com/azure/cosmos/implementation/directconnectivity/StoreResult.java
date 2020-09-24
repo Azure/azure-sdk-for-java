@@ -196,7 +196,9 @@ public class StoreResult {
             jsonGenerator.writeNumberField("itemLSN", storeResult.itemLSN);
             jsonGenerator.writeStringField("sessionToken", (storeResult.sessionToken != null ? storeResult.sessionToken.convertToString() : null));
             jsonGenerator.writeStringField("exception", BridgeInternal.getInnerErrorMessage(storeResult.exception));
-            jsonGenerator.writeObjectField("transportRequestTimeline", storeResult.storeResponse != null ? storeResult.storeResponse.getRequestTimeline() : null);
+            jsonGenerator.writeObjectField("transportRequestTimeline", storeResult.storeResponse != null ?
+                storeResult.storeResponse.getRequestTimeline() :
+                storeResult.exception != null ? BridgeInternal.getRequestTimeline(storeResult.exception) : null);
             jsonGenerator.writeEndObject();
         }
     }
