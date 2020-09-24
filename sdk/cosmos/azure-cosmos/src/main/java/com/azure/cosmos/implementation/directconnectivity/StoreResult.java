@@ -199,7 +199,6 @@ public class StoreResult {
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getRequestTimeline() :
                 storeResult.exception != null ? BridgeInternal.getRequestTimeline(storeResult.exception) : null);
-            jsonGenerator.writeObjectField("transportRequestTimeline", storeResult.storeResponse != null ? storeResult.storeResponse.getRequestTimeline() : null);
             jsonGenerator.writeObjectField("rntbdRequestLengthInBytes", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getRntbdRequestLength() : BridgeInternal.getRntbdRequestLength(storeResult.exception));
             jsonGenerator.writeObjectField("rntbdResponseLengthInBytes", storeResult.storeResponse != null ?
