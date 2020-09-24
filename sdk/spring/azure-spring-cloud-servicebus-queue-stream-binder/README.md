@@ -108,6 +108,7 @@ Set it to `true` if a message that trigger any exception in consumer will be for
 Set it to `false` if a message that trigger any exception in consumer will be re-queued. 
 
 Default: `false`
+
 ## Examples
 
 Please use this `sample` as a reference for how to use this binder in your projects. 
