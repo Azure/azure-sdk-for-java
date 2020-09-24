@@ -1290,8 +1290,8 @@ public class ShareFileClient {
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareFileRangeList> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options, Duration timeout,
-        Context context) {
+    public Response<ShareFileRangeList> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options,
+        Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", options);
         Mono<Response<ShareFileRangeList>> response = shareFileAsyncClient.listRangesWithResponse(options.getRange(),
             options.getRequestConditions(), options.getPreviousSnapshot(), context);

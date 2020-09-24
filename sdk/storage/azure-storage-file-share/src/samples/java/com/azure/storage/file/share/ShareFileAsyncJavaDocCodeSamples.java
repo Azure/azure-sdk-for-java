@@ -849,10 +849,10 @@ public class ShareFileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiffWithResponse#ShareFileListRangesDiffOptions
         shareFileAsyncClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions("previoussnapshot")
             .setRange(new ShareFileRange(1024, 2048L))).subscribe(response -> {
-            System.out.println("Valid Share File Ranges are:");
-            for (FileRange range : response.getValue().getRanges()) {
-                System.out.printf("Start: %s, End: %s%n", range.getStart(), range.getEnd());
-            }
+                System.out.println("Valid Share File Ranges are:");
+                for (FileRange range : response.getValue().getRanges()) {
+                    System.out.printf("Start: %s, End: %s%n", range.getStart(), range.getEnd());
+                }
         });
         // END: com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiffWithResponse#ShareFileListRangesDiffOptions
     }
