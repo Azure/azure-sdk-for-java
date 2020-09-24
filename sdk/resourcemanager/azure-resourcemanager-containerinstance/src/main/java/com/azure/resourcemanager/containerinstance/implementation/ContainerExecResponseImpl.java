@@ -16,11 +16,11 @@ public class ContainerExecResponseImpl extends WrapperImpl<ContainerExecResponse
 
     @Override
     public String webSocketUri() {
-        return this.inner().webSocketUri();
+        return this.innerModel().webSocketUri();
     }
 
     @Override
     public String password() {
-        return this.inner().password();
+        return this.innerModel().password();
     }
 }

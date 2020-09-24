@@ -39,5 +39,5 @@ java:
     models-subpackage: implementation.models
     context-client-method-parameter: true
     custom-types-subpackage: models
-    custom-types: IncomingRelationship,EventRoute,EventRoutesListOptions
+    required-fields-as-ctor-args: true
 ```

@@ -9,7 +9,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 
 /**
@@ -29,10 +29,10 @@ public final class ManageResourceGroup {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSMA", 24);
-        final String rgName2 = azureResourceManager.sdkContext().randomResourceName("rgRSMA", 24);
-        final String resourceTagName = azureResourceManager.sdkContext().randomResourceName("rgRSTN", 24);
-        final String resourceTagValue = azureResourceManager.sdkContext().randomResourceName("rgRSTV", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgRSMA", 24);
+        final String rgName2 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgRSMA", 24);
+        final String resourceTagName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgRSTN", 24);
+        final String resourceTagValue = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgRSTV", 24);
         try {
 
 

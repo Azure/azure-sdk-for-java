@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
@@ -17,7 +17,7 @@ import com.azure.resourcemanager.storage.fluent.inner.ImmutabilityPolicyInner;
 /** Type representing ImmutabilityPolicy. */
 @Fluent
 public interface ImmutabilityPolicy
-    extends HasInner<ImmutabilityPolicyInner>,
+    extends HasInnerModel<ImmutabilityPolicyInner>,
         Indexable,
         Refreshable<ImmutabilityPolicy>,
         Updatable<ImmutabilityPolicy.Update>,

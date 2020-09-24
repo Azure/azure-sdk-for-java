@@ -16,7 +16,7 @@ import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
@@ -50,23 +50,23 @@ public final class ManageWebAppWithTrafficManager {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
-        rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV_", 24);
+        rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgNEMV_", 24);
 
         if (ManageWebAppWithTrafficManager.azureResourceManager == null) {
             ManageWebAppWithTrafficManager.azureResourceManager = azureResourceManager;
         }
 
         // New resources
-        final String app1Name = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
-        final String app4Name = azureResourceManager.sdkContext().randomResourceName("webapp4-", 20);
-        final String app5Name = azureResourceManager.sdkContext().randomResourceName("webapp5-", 20);
-        final String plan1Name = azureResourceManager.sdkContext().randomResourceName("jplan1_", 15);
-        final String plan2Name = azureResourceManager.sdkContext().randomResourceName("jplan2_", 15);
-        final String plan3Name = azureResourceManager.sdkContext().randomResourceName("jplan3_", 15);
-        final String domainName = azureResourceManager.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
-        final String tmName = azureResourceManager.sdkContext().randomResourceName("jsdktm-", 20);
+        final String app1Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp1-", 20);
+        final String app2Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp2-", 20);
+        final String app3Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp3-", 20);
+        final String app4Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp4-", 20);
+        final String app5Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp5-", 20);
+        final String plan1Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jplan1_", 15);
+        final String plan2Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jplan2_", 15);
+        final String plan3Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jplan3_", 15);
+        final String domainName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
+        final String tmName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jsdktm-", 20);
 
         try {
 

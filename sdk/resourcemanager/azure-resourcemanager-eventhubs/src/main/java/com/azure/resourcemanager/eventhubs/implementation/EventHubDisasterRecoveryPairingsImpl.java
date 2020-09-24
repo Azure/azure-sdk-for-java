@@ -26,7 +26,7 @@ public final class EventHubDisasterRecoveryPairingsImpl
     private EventHubsManager manager;
 
     public EventHubDisasterRecoveryPairingsImpl(EventHubsManager manager) {
-        super(manager.inner().getDisasterRecoveryConfigs());
+        super(manager.serviceClient().getDisasterRecoveryConfigs());
         this.manager = manager;
     }
 
@@ -62,7 +62,7 @@ public final class EventHubDisasterRecoveryPairingsImpl
     @Override
     public Mono<EventHubDisasterRecoveryPairing> getByNameAsync(
         String resourceGroupName, String namespaceName, String name) {
-        return this.inner().getAsync(resourceGroupName,
+        return this.innerModel().getAsync(resourceGroupName,
             namespaceName,
             name)
             .map(this::wrapModel);
@@ -77,7 +77,7 @@ public final class EventHubDisasterRecoveryPairingsImpl
     @Override
     public PagedIterable<EventHubDisasterRecoveryPairing> listByNamespace(
         String resourceGroupName, String namespaceName) {
-        return inner()
+        return innerModel()
             .list(resourceGroupName, namespaceName)
             .mapPage(this::wrapModel);
     }
@@ -85,7 +85,7 @@ public final class EventHubDisasterRecoveryPairingsImpl
     @Override
     public PagedFlux<EventHubDisasterRecoveryPairing> listByNamespaceAsync(
         String resourceGroupName, String namespaceName) {
-        return this.inner().listAsync(resourceGroupName, namespaceName)
+        return this.innerModel().listAsync(resourceGroupName, namespaceName)
             .mapPage(this::wrapModel);
     }
 
@@ -105,7 +105,7 @@ public final class EventHubDisasterRecoveryPairingsImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String name) {
-        return this.inner().deleteAsync(resourceGroupName,
+        return this.innerModel().deleteAsync(resourceGroupName,
                 namespaceName,
                 name);
     }

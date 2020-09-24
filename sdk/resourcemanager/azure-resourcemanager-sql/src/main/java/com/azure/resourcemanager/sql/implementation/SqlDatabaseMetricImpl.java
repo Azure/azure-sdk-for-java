@@ -21,34 +21,34 @@ public class SqlDatabaseMetricImpl extends WrapperImpl<MetricInner> implements S
 
     @Override
     public String name() {
-        return this.inner().name().value();
+        return this.innerModel().name().value();
     }
 
     @Override
     public OffsetDateTime startTime() {
-        return this.inner().startTime();
+        return this.innerModel().startTime();
     }
 
     @Override
     public OffsetDateTime endTime() {
-        return this.inner().endTime();
+        return this.innerModel().endTime();
     }
 
     @Override
     public String timeGrain() {
-        return this.inner().timeGrain();
+        return this.innerModel().timeGrain();
     }
 
     @Override
     public UnitType unit() {
-        return this.inner().unit();
+        return this.innerModel().unit();
     }
 
     @Override
     public List<SqlDatabaseMetricValue> metricValues() {
         List<SqlDatabaseMetricValue> sqlDatabaseMetricValues = new ArrayList<>();
-        if (this.inner().metricValues() != null) {
-            for (MetricValue metricValue : this.inner().metricValues()) {
+        if (this.innerModel().metricValues() != null) {
+            for (MetricValue metricValue : this.innerModel().metricValues()) {
                 sqlDatabaseMetricValues.add(new SqlDatabaseMetricValueImpl(metricValue));
             }
         }

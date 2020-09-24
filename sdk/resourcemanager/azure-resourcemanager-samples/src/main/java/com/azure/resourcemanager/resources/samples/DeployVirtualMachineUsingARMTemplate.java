@@ -7,7 +7,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.Deployment;
@@ -33,8 +33,8 @@ public class DeployVirtualMachineUsingARMTemplate {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, IllegalAccessException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSAT", 24);
-        final String deploymentName = azureResourceManager.sdkContext().randomResourceName("dpRSAT", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgRSAT", 24);
+        final String deploymentName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("dpRSAT", 24);
         try {
             String templateJson = DeployVirtualMachineUsingARMTemplate.getTemplate(azureResourceManager);
 
@@ -123,7 +123,7 @@ public class DeployVirtualMachineUsingARMTemplate {
     private static String getTemplate(AzureResourceManager azureResourceManager) throws IllegalAccessException, JsonProcessingException, IOException {
         final String adminUsername = "tirekicker";
         final String adminPassword = Utils.password();
-        final String osDiskName = azureResourceManager.sdkContext().randomResourceName("osdisk-", 24);
+        final String osDiskName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("osdisk-", 24);
 
         try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/virtualMachineWithManagedDisksTemplate.json")) {
 

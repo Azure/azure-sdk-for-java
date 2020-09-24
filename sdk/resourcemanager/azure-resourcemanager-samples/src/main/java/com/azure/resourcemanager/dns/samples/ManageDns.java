@@ -21,7 +21,7 @@ import com.azure.resourcemanager.dns.models.DnsRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
@@ -50,8 +50,8 @@ public class ManageDns {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         final String customDomainName         = "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
-        final String rgName                   = azureResourceManager.sdkContext().randomResourceName("rgNEMV_", 24);
-        final String webAppName               = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
+        final String rgName                   = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgNEMV_", 24);
+        final String webAppName               = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp1-", 20);
 
         try {
             ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
@@ -133,12 +133,12 @@ public class ManageDns {
 
             System.out.println("Creating a virtual machine with public IP...");
             VirtualMachine virtualMachine1 = azureResourceManager.virtualMachines()
-                    .define(azureResourceManager.sdkContext().randomResourceName("employeesvm-", 20))
+                    .define(azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("employeesvm-", 20))
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIPAddressDynamic()
-                        .withNewPrimaryPublicIPAddress(azureResourceManager.sdkContext().randomResourceName("empip-", 20))
+                        .withNewPrimaryPublicIPAddress(azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("empip-", 20))
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
                         .withAdminPassword("12NewPA$$w0rd!")
@@ -215,12 +215,12 @@ public class ManageDns {
 
             System.out.println("Creating a virtual machine with public IP...");
             VirtualMachine virtualMachine2 = azureResourceManager.virtualMachines()
-                    .define(azureResourceManager.sdkContext().randomResourceName("partnersvm-", 20))
+                    .define(azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("partnersvm-", 20))
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIPAddressDynamic()
-                        .withNewPrimaryPublicIPAddress(azureResourceManager.sdkContext().randomResourceName("ptnerpip-", 20))
+                        .withNewPrimaryPublicIPAddress(azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("ptnerpip-", 20))
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
                         .withAdminPassword("12NewPA$$w0rd!")

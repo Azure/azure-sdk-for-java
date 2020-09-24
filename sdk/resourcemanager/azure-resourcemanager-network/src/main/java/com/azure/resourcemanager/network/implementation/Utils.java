@@ -21,14 +21,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Defines a few utilities.
- */
+/** Defines a few utilities. */
 public final class Utils {
 
     private Utils() {
     }
-
 
     // Internal utility function
     static Subnet getAssociatedSubnet(NetworkManager manager, SubResource subnetRef) {
@@ -75,8 +72,7 @@ public final class Utils {
 
     // Internal utility function
     static Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends(
-        NetworkManager manager,
-        List<ApplicationGatewayBackendAddressPool> backendRefs) {
+        NetworkManager manager, List<ApplicationGatewayBackendAddressPool> backendRefs) {
         final Map<String, ApplicationGateway> appGateways = new HashMap<>();
         final List<ApplicationGatewayBackend> backends = new ArrayList<>();
 

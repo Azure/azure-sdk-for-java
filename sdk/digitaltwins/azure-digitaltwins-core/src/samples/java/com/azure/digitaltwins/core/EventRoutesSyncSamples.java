@@ -87,8 +87,7 @@ public class EventRoutesSyncSamples {
             String eventRouteId = "SomeEventRoute-" + UUID.randomUUID();
             String eventRouteEndpointName = parsedArguments.getEventRouteEndpointName();
             String filter = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
-            EventRoute eventRoute = new EventRoute();
-            eventRoute.setEndpointName(eventRouteEndpointName);
+            EventRoute eventRoute = new EventRoute(eventRouteEndpointName);
             eventRoute.setFilter(filter);
 
             try {

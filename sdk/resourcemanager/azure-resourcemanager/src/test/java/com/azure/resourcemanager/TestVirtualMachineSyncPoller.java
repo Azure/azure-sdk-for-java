@@ -17,7 +17,7 @@ import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
@@ -38,13 +38,13 @@ public class TestVirtualMachineSyncPoller extends TestTemplate<VirtualMachine, V
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String rgName = virtualMachines.manager().sdkContext().randomResourceName("rg", 10);
-        final String vnetName = virtualMachines.manager().sdkContext().randomResourceName("vnet", 10);
-        final String nicName = virtualMachines.manager().sdkContext().randomResourceName("nic", 10);
+        final String rgName = virtualMachines.manager().resourceManager().sdkContext().randomResourceName("rg", 10);
+        final String vnetName = virtualMachines.manager().resourceManager().sdkContext().randomResourceName("vnet", 10);
+        final String nicName = virtualMachines.manager().resourceManager().sdkContext().randomResourceName("nic", 10);
         final String subnetName = "default";
-        final String diskName = virtualMachines.manager().sdkContext().randomResourceName("disk", 10);
-        final String ipName = virtualMachines.manager().sdkContext().randomResourceName("ip", 10);
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
+        final String diskName = virtualMachines.manager().resourceManager().sdkContext().randomResourceName("disk", 10);
+        final String ipName = virtualMachines.manager().resourceManager().sdkContext().randomResourceName("ip", 10);
+        final String vmName = virtualMachines.manager().resourceManager().sdkContext().randomResourceName("vm", 10);
         final Region region = Region.US_EAST;
 
         // network

@@ -5,15 +5,17 @@ package com.azure.core.experimental.jsonpatch;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.fasterxml.jackson.core.JsonGenerator;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Represents a JSON Patch document.
@@ -25,12 +27,34 @@ public class JsonPatchDocument {
     private final ClientLogger logger = new ClientLogger(JsonPatchDocument.class);
 
     private final List<JsonPatchOperation> operations;
+    private final JsonSerializer serializer;
 
     /**
      * Creates a new JSON Patch document.
      */
     public JsonPatchDocument() {
+        this(null);
+    }
+
+    /**
+     * Creates a new JSON Patch document.
+     * <p>
+     * If {@code serializer} isn't specified {@link JacksonAdapter} will be used.
+     *
+     * @param serializer The {@link JsonSerializer} that will be used to serialize patch operation values.
+     */
+    public JsonPatchDocument(JsonSerializer serializer) {
         this.operations = new ArrayList<>();
+        this.serializer = serializer;
+    }
+
+    /**
+     * Gets an unmodifiable list of JSON Patch operations in this document.
+     *
+     * @return An unmodifiable list of JSON Patch operations in this document.
+     */
+    public List<JsonPatchOperation> getJsonPatchOperations() {
+        return Collections.unmodifiableList(operations);
     }
 
     /**
@@ -43,19 +67,17 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendAdd#String-String}
+     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendAdd#String-Object}
      *
      * @param path The path to apply the addition.
-     * @param rawJsonValue The raw JSON value to add to the path.
+     * @param value The value to add to the path.
      * @return The updated JsonPatchDocument object.
-     * @throws NullPointerException If {@code path} or {@code rawJsonValue} is null.
+     * @throws NullPointerException If {@code path} is null.
      */
-    public JsonPatchDocument appendAdd(String path, String rawJsonValue) {
+    public JsonPatchDocument appendAdd(String path, Object value) {
         Objects.requireNonNull(path, "'path' cannot be null.");
-        Objects.requireNonNull(rawJsonValue, "'rawJsonValue' cannot be null.");
 
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.ADD, path, null, rawJsonValue));
-        return this;
+        return appendOperation(JsonPatchOperationKind.ADD, null, path, serializeValue(value));
     }
 
     /**
@@ -65,19 +87,17 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendReplace#String-String}
+     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendReplace#String-Object}
      *
      * @param path The path to replace.
-     * @param rawJsonValue The raw JSON value to use as the replacement.
+     * @param value The value to use as the replacement.
      * @return The updated JsonPatchDocument object.
-     * @throws NullPointerException If {@code path} or {@code rawJsonValue} is null.
+     * @throws NullPointerException If {@code path} is null.
      */
-    public JsonPatchDocument appendReplace(String path, String rawJsonValue) {
+    public JsonPatchDocument appendReplace(String path, Object value) {
         Objects.requireNonNull(path, "'path' cannot be null.");
-        Objects.requireNonNull(rawJsonValue, "'rawJsonValue' cannot be null.");
 
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.REPLACE, path, null, rawJsonValue));
-        return this;
+        return appendOperation(JsonPatchOperationKind.REPLACE, null, path, serializeValue(value));
     }
 
     /**
@@ -98,8 +118,7 @@ public class JsonPatchDocument {
         Objects.requireNonNull(from, "'from' cannot be null.");
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.COPY, path, from, null));
-        return this;
+        return appendOperation(JsonPatchOperationKind.COPY, from, path, null);
     }
 
     /**
@@ -122,8 +141,7 @@ public class JsonPatchDocument {
         Objects.requireNonNull(from, "'from' cannot be null.");
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.MOVE, path, from, null));
-        return this;
+        return appendOperation(JsonPatchOperationKind.MOVE, from, path, null);
     }
 
     /**
@@ -142,8 +160,7 @@ public class JsonPatchDocument {
     public JsonPatchDocument appendRemove(String path) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.REMOVE, path, null, null));
-        return this;
+        return appendOperation(JsonPatchOperationKind.REMOVE, null, path, null);
     }
 
     /**
@@ -153,18 +170,43 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendTest#String-String}
+     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendTest#String-Object}
      *
      * @param path The path to test.
-     * @param rawJsonValue The raw JSON value to test against.
+     * @param value The value to test against.
      * @return The updated JsonPatchDocument object.
-     * @throws NullPointerException If {@code path} or {@code rawJsonValue} is null.
+     * @throws NullPointerException If {@code path} is null.
      */
-    public JsonPatchDocument appendTest(String path, String rawJsonValue) {
+    public JsonPatchDocument appendTest(String path, Object value) {
         Objects.requireNonNull(path, "'path' cannot be null.");
-        Objects.requireNonNull(rawJsonValue, "'rawJsonValue' cannot be null.");
 
-        operations.add(new JsonPatchOperation(JsonPatchOperationKind.TEST, path, null, rawJsonValue));
+        return appendOperation(JsonPatchOperationKind.TEST, null, path, serializeValue(value));
+    }
+
+    private Optional<String> serializeValue(Object value) {
+        if (value == null) {
+            return Optional.empty();
+        }
+
+        String rawValue;
+        try {
+            if (serializer == null) {
+                rawValue = MAPPER.writeValueAsString(value);
+            } else {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                serializer.serialize(outputStream, value);
+                rawValue = outputStream.toString("UTF-8");
+            }
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
+
+        return Optional.of(rawValue);
+    }
+
+    private JsonPatchDocument appendOperation(JsonPatchOperationKind operationKind, String from, String path,
+        Optional<String> optionalValue) {
+        operations.add(new JsonPatchOperation(operationKind, from, path, optionalValue));
         return this;
     }
 
@@ -175,42 +217,16 @@ public class JsonPatchDocument {
      */
     @Override
     public String toString() {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        StringBuilder builder = new StringBuilder("[");
 
-        try {
-            JsonGenerator generator = MAPPER.createGenerator(outputStream);
-            generator.writeStartArray();
-
-            for (JsonPatchOperation operation : operations) {
-                writeOperation(generator, operation);
+        for (int i = 0; i < operations.size(); i++) {
+            if (i > 0) {
+                builder.append(",");
             }
 
-            generator.writeEndArray();
-            generator.flush();
-            generator.close();
-
-            return outputStream.toString("UTF-8");
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
-        }
-    }
-
-    private static void writeOperation(JsonGenerator generator, JsonPatchOperation operation) throws IOException {
-        generator.writeStartObject();
-
-        generator.writeStringField("op", operation.getKind().toString());
-
-        if (operation.getFrom() != null) {
-            generator.writeStringField("from", operation.getFrom());
+            operations.get(i).buildString(builder);
         }
 
-        generator.writeStringField("path", operation.getPath());
-
-        if (operation.getRawJsonValue() != null) {
-            generator.writeFieldName("value");
-            generator.writeTree(MAPPER.readTree(operation.getRawJsonValue()));
-        }
-
-        generator.writeEndObject();
+        return builder.append("]").toString();
     }
 }

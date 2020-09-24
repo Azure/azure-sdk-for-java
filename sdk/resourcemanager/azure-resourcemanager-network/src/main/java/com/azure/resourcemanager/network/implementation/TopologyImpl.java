@@ -29,7 +29,7 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
@@ -39,12 +39,12 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
 
     @Override
     public OffsetDateTime createdTime() {
-        return inner().createdDateTime();
+        return innerModel().createdDateTime();
     }
 
     @Override
     public OffsetDateTime lastModifiedTime() {
-        return inner().lastModified();
+        return innerModel().lastModified();
     }
 
     @Override
@@ -54,7 +54,7 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
 
     private void initializeResourcesFromInner() {
         this.resources = new TreeMap<>();
-        List<TopologyResource> topologyResources = this.inner().resources();
+        List<TopologyResource> topologyResources = this.innerModel().resources();
         if (topologyResources != null) {
             for (TopologyResource resource : topologyResources) {
                 this.resources.put(resource.id(), resource);
@@ -88,7 +88,7 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
     }
 
     @Override
-    public TopologyInner inner() {
+    public TopologyInner innerModel() {
         return this.inner;
     }
 
@@ -97,7 +97,7 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkWatchers()
             .getTopologyAsync(parent().resourceGroupName(), parent().name(), parameters)
             .map(

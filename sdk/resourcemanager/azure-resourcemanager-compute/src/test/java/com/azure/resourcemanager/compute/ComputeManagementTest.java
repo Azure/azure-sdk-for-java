@@ -22,7 +22,7 @@ import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -71,13 +71,14 @@ public abstract class ComputeManagementTest extends ResourceManagerTestBase {
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
-        computeManager = ComputeManager.authenticate(httpPipeline, profile, sdkContext);
-        networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
-        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
-        msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
+            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
+        computeManager = ComputeManager.authenticate(httpPipeline, profile);
+        networkManager = NetworkManager.authenticate(httpPipeline, profile);
+        storageManager = StorageManager.authenticate(httpPipeline, profile);
+        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
+        msiManager = MSIManager.authenticate(httpPipeline, profile);
+        setSdkContext(sdkContext, computeManager, networkManager, keyVaultManager, msiManager);
     }
 
     @Override

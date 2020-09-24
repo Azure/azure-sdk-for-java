@@ -14,7 +14,7 @@ import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.DockerUtils;
@@ -88,17 +88,17 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, InterruptedException, JSchException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgaci", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgaci", 15);
         final Region region = Region.US_EAST2;
 
-        final String acrName = azureResourceManager.sdkContext().randomResourceName("acr", 20);
+        final String acrName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("acr", 20);
 
-        final String aciName = azureResourceManager.sdkContext().randomResourceName("acisample", 20);
+        final String aciName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("acisample", 20);
         final String containerImageName = "microsoft/aci-helloworld";
         final String containerImageTag = "latest";
         final String dockerContainerName = "sample-hello";
 
-        final String acsName = azureResourceManager.sdkContext().randomResourceName("acssample", 30);
+        final String acsName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("acssample", 30);
         String servicePrincipalClientId = clientId; // replace with a real service principal client id
         String servicePrincipalSecret = secret; // and corresponding secret
         final String rootUserName = "acsuser";

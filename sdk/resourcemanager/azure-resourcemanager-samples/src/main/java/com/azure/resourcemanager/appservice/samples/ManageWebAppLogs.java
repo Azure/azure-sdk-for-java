@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.appservice.models.LogLevel;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
@@ -44,9 +44,9 @@ public final class ManageWebAppLogs {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         // New resources
         final String suffix = ".azurewebsites.net";
-        final String appName = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
+        final String appName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp1-", 20);
         final String appUrl = appName + suffix;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 

@@ -4,14 +4,14 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /**
  * Type representing access key of {@link EventHubNamespaceAuthorizationRule}.
  */
 @Fluent
 public interface EventHubAuthorizationKey
-    extends HasInner<AccessKeysInner> {
+    extends HasInnerModel<AccessKeysInner> {
     /**
      * @return primary access key
      */

@@ -16,7 +16,7 @@ import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -44,8 +44,8 @@ public class ManageCdnProfileWithWebApp {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String resourceGroupName = azureResourceManager.sdkContext().randomResourceName("rg", 20);
-        final String cdnProfileName = azureResourceManager.sdkContext().randomResourceName("cdnStandardProfile", 20);
+        final String resourceGroupName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg", 20);
+        final String cdnProfileName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("cdnStandardProfile", 20);
         String[] appNames = new String[8];
 
         try {
@@ -58,7 +58,7 @@ public class ManageCdnProfileWithWebApp {
             // ============================================================
             // Create 8 websites
             for (int i = 0; i < 8; i++) {
-                appNames[i] = azureResourceManager.sdkContext().randomResourceName("webapp" + (i + 1) + "-", 20);
+                appNames[i] = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp" + (i + 1) + "-", 20);
             }
 
             // 2 in US

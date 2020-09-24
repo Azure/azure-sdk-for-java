@@ -11,7 +11,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
@@ -35,12 +35,12 @@ public class ManageEventHub {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV_", 24);
-        final String namespaceName1 = azureResourceManager.sdkContext().randomResourceName("ns", 14);
-        final String namespaceName2 = azureResourceManager.sdkContext().randomResourceName("ns", 14);
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("stg", 14);
-        final String eventHubName1 = azureResourceManager.sdkContext().randomResourceName("eh", 14);
-        final String eventHubName2 = azureResourceManager.sdkContext().randomResourceName("eh", 14);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgNEMV_", 24);
+        final String namespaceName1 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("ns", 14);
+        final String namespaceName2 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("ns", 14);
+        final String storageAccountName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("stg", 14);
+        final String eventHubName1 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("eh", 14);
+        final String eventHubName2 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("eh", 14);
         try {
 
             //============================================================

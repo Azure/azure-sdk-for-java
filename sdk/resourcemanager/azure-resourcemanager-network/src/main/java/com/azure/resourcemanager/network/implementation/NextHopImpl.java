@@ -88,7 +88,7 @@ public class NextHopImpl extends ExecutableImpl<NextHop> implements NextHop, Nex
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkWatchers()
             .getNextHopAsync(parent.resourceGroupName(), parent.name(), parameters)
             .map(

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
@@ -48,7 +48,7 @@ public class TestVirtualNetworkGateway {
     public class Basic extends TestTemplate<VirtualNetworkGateway, VirtualNetworkGateways> {
 
         public Basic(NetworkManager networkManager) {
-            initializeResourceNames(networkManager.sdkContext());
+            initializeResourceNames(networkManager.resourceManager().sdkContext());
         }
 
         @Override
@@ -96,7 +96,7 @@ public class TestVirtualNetworkGateway {
     /** Test Site-To-Site Virtual Network Gateway Connection. */
     public class SiteToSite extends TestTemplate<VirtualNetworkGateway, VirtualNetworkGateways> {
         public SiteToSite(NetworkManager networkManager) {
-            initializeResourceNames(networkManager.sdkContext());
+            initializeResourceNames(networkManager.resourceManager().sdkContext());
         }
 
         @Override
@@ -108,7 +108,7 @@ public class TestVirtualNetworkGateway {
         public VirtualNetworkGateway createResource(VirtualNetworkGateways gateways) throws Exception {
 
             // Create virtual network gateway
-            initializeResourceNames(gateways.manager().sdkContext());
+            initializeResourceNames(gateways.manager().resourceManager().sdkContext());
             VirtualNetworkGateway vngw =
                 gateways
                     .define(gatewayName1)
@@ -185,7 +185,7 @@ public class TestVirtualNetworkGateway {
     public class VNetToVNet extends TestTemplate<VirtualNetworkGateway, VirtualNetworkGateways> {
 
         public VNetToVNet(NetworkManager networkManager) {
-            initializeResourceNames(networkManager.sdkContext());
+            initializeResourceNames(networkManager.resourceManager().sdkContext());
         }
 
         @Override
@@ -267,7 +267,7 @@ public class TestVirtualNetworkGateway {
     public class PointToSite extends TestTemplate<VirtualNetworkGateway, VirtualNetworkGateways> {
 
         public PointToSite(NetworkManager networkManager) {
-            initializeResourceNames(networkManager.sdkContext());
+            initializeResourceNames(networkManager.resourceManager().sdkContext());
         }
 
         @Override
@@ -279,7 +279,7 @@ public class TestVirtualNetworkGateway {
         public VirtualNetworkGateway createResource(final VirtualNetworkGateways gateways) throws Exception {
 
             // Create virtual network gateway
-            initializeResourceNames(gateways.manager().sdkContext());
+            initializeResourceNames(gateways.manager().resourceManager().sdkContext());
 
             Network network =
                 gateways

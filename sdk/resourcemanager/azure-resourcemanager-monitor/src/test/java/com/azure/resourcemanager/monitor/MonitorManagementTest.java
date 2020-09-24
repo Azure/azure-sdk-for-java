@@ -60,8 +60,9 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         monitorManager = MonitorManager.authenticate(httpPipeline, profile);
-        computeManager = ComputeManager.authenticate(httpPipeline, profile, sdkContext);
+        computeManager = ComputeManager.authenticate(httpPipeline, profile);
         storageManager = StorageManager.authenticate(httpPipeline, profile);
+        setSdkContext(sdkContext, computeManager);
 
         //        eventHubManager = EventHubManager
         //                .authenticate(restClient, defaultSubscription, sdkContext);

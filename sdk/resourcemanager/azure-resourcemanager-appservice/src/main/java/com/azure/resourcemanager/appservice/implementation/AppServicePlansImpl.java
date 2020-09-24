@@ -18,7 +18,7 @@ public class AppServicePlansImpl
     implements AppServicePlans {
 
     public AppServicePlansImpl(AppServiceManager manager) {
-        super(manager.inner().getAppServicePlans(), manager);
+        super(manager.serviceClient().getAppServicePlans(), manager);
     }
 
     @Override

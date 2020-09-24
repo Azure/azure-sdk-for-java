@@ -32,40 +32,40 @@ public class PrivateEndpointConnectionImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public PrivateEndpointProperty privateEndpoint() {
-        return inner().privateEndpoint();
+        return innerModel().privateEndpoint();
     }
 
     @Override
     public PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState() {
-        return inner().privateLinkServiceConnectionState();
+        return innerModel().privateLinkServiceConnectionState();
     }
 
     @Override
     public PrivateEndpointConnectionImpl withStateProperty(PrivateLinkServiceConnectionStateProperty property) {
-        this.inner().withPrivateLinkServiceConnectionState(property);
+        this.innerModel().withPrivateLinkServiceConnectionState(property);
         return this;
     }
 
     @Override
     public PrivateEndpointConnectionImpl withStatus(String status) {
-        if (this.inner().privateLinkServiceConnectionState() == null) {
-            this.inner().withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionStateProperty());
+        if (this.innerModel().privateLinkServiceConnectionState() == null) {
+            this.innerModel().withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionStateProperty());
         }
-        this.inner().privateLinkServiceConnectionState().withStatus(status);
+        this.innerModel().privateLinkServiceConnectionState().withStatus(status);
         return this;
     }
 
     @Override
     public PrivateEndpointConnectionImpl withDescription(String description) {
-        if (this.inner().privateLinkServiceConnectionState() == null) {
-            this.inner().withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionStateProperty());
+        if (this.innerModel().privateLinkServiceConnectionState() == null) {
+            this.innerModel().withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionStateProperty());
         }
-        this.inner().privateLinkServiceConnectionState().withDescription(description);
+        this.innerModel().privateLinkServiceConnectionState().withDescription(description);
         return this;
     }
 
@@ -74,7 +74,7 @@ public class PrivateEndpointConnectionImpl
         final PrivateEndpointConnectionImpl self = this;
         return this
             .client
-            .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.inner())
+            .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.innerModel())
             .map(
                 privateEndpointConnectionInner -> {
                     self.setInner(privateEndpointConnectionInner);

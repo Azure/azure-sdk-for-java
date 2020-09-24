@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.ConnectionStringType;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
@@ -50,11 +50,11 @@ public final class ManageLinuxWebAppStorageAccountConnection {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
+        final String app1Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp1-", 20);
         final String app1Url        = app1Name + suffix;
-        final String storageName    = azureResourceManager.sdkContext().randomResourceName("jsdkstore", 20);
-        final String containerName  = azureResourceManager.sdkContext().randomResourceName("jcontainer", 20);
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String storageName    = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jsdkstore", 20);
+        final String containerName  = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jcontainer", 20);
+        final String rgName         = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 

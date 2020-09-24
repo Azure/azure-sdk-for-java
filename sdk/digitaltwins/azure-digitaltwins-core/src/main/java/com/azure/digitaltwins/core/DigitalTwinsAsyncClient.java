@@ -11,14 +11,18 @@ import com.azure.core.http.rest.*;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
-import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
-import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
+import com.azure.digitaltwins.core.implementation.converters.EventRouteConverter;
+import com.azure.digitaltwins.core.implementation.converters.EventRouteListOptionsConverter;
+import com.azure.digitaltwins.core.implementation.converters.IncomingRelationshipConverter;
 import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
+import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
+import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
 import com.azure.digitaltwins.core.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +32,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -52,8 +57,9 @@ public final class DigitalTwinsAsyncClient {
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
     private static final Boolean includeModelDefinitionOnGet = true;
+    private JsonSerializer serializer = null;
 
-    DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
+    DigitalTwinsAsyncClient(String serviceEndpoint, HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, JsonSerializer jsonSerializer) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
         stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, mapper));
 
@@ -62,8 +68,12 @@ public final class DigitalTwinsAsyncClient {
 
         this.serviceVersion = serviceVersion;
 
+        // Is null by default. If not null, then the user provided a custom json serializer for the convenience layer to use.
+        // If null, then mapper will be used instead. See DeserializationHelpers for more details
+        this.serializer = jsonSerializer;
+
         this.protocolLayer = new AzureDigitalTwinsAPIImplBuilder()
-            .host(host)
+            .host(serviceEndpoint)
             .pipeline(pipeline)
             .serializerAdapter(jacksonAdapter)
             .buildClient();
@@ -119,13 +129,14 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse = null;
                 try {
-                    genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
+                    genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
                     logger.error("JsonProcessingException occurred while deserializing the response: ", e);
                     return Mono.error(e);
                 }
 
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
@@ -166,7 +177,7 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse = null;
                 try {
-                    genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
+                    genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
                     logger.error("JsonProcessingException occurred while deserializing the digital twin get response: ", e);
                     return Mono.error(e);
@@ -291,7 +302,7 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse = null;
                 try {
-                    genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
+                    genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
                     logger.error("JsonProcessingException occurred while deserializing the create relationship response: ", e);
                     return Mono.error(e);
@@ -337,7 +348,7 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse = null;
                 try {
-                    genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
+                    genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
                     logger.error("JsonProcessingException occurred while deserializing the get relationship response: ", e);
                     return Mono.error(e);
@@ -449,7 +460,7 @@ public final class DigitalTwinsAsyncClient {
     public <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz) {
         return new PagedFlux<>(
             () -> withContext(context -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, context)),
-            nextLink -> withContext(context -> listRelationshipsNextPage(nextLink, clazz, context)));
+            nextLink -> withContext(context -> listRelationshipsNextPage(this.protocolLayer.getHost() + nextLink, clazz, context)));
     }
 
     <T> Mono<PagedResponse<T>> listRelationshipsFirstPage(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) {
@@ -461,7 +472,7 @@ public final class DigitalTwinsAsyncClient {
                     List<T> list = objectPagedResponse.getValue().stream()
                         .map(object -> {
                             try {
-                                return DeserializationHelpers.castObject(mapper, object, clazz);
+                                return DeserializationHelpers.deserializeObject(mapper, object, clazz, this.serializer);
                             } catch (JsonProcessingException e) {
                                 logger.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
                                 throw new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e);
@@ -474,7 +485,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         list,
-                        SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
+                        objectPagedResponse.getContinuationToken(),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -488,7 +499,7 @@ public final class DigitalTwinsAsyncClient {
                 List<T> stringList = objectPagedResponse.getValue().stream()
                     .map(object -> {
                         try {
-                            return DeserializationHelpers.castObject(mapper, object, clazz);
+                            return DeserializationHelpers.deserializeObject(mapper, object, clazz, this.serializer);
                         } catch (JsonProcessingException e) {
                             logger.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
                             throw new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e);
@@ -501,7 +512,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
+                    objectPagedResponse.getContinuationToken(),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -509,7 +520,7 @@ public final class DigitalTwinsAsyncClient {
     <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) {
         return new PagedFlux<>(
             () -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, context),
-            nextLink -> listRelationshipsNextPage(nextLink, clazz, context));
+            nextLink -> listRelationshipsNextPage(this.protocolLayer.getHost() + nextLink, clazz, context));
     }
 
     /**
@@ -521,15 +532,39 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId) {
         return new PagedFlux<>(
-            () -> withContext(context -> protocolLayer.getDigitalTwins().listIncomingRelationshipsSinglePageAsync(digitalTwinId, context)),
-            nextLink -> withContext(context -> protocolLayer.getDigitalTwins().listIncomingRelationshipsNextSinglePageAsync(nextLink, context)));
+            () -> withContext(context -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, context)),
+            nextLink -> withContext(context -> listIncomingRelationshipsNextSinglePageAsync(this.protocolLayer.getHost() + nextLink, context)));
     }
 
     PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId, Context context) {
         return new PagedFlux<>(
-            () -> protocolLayer.getDigitalTwins().listIncomingRelationshipsSinglePageAsync(digitalTwinId, context),
-            nextLink -> protocolLayer.getDigitalTwins().listIncomingRelationshipsNextSinglePageAsync(nextLink, context));
+            () -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, context),
+            nextLink -> listIncomingRelationshipsNextSinglePageAsync(this.protocolLayer.getHost() + nextLink, context));
     }
+
+    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsFirstPageAsync(String digitalTwinId, Context context){
+        return protocolLayer.getDigitalTwins().listIncomingRelationshipsSinglePageAsync(digitalTwinId, context)
+            .map(pagedIncomingRelationshipMappingFunction);
+    }
+
+    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(String nextLink, Context context){
+        return protocolLayer.getDigitalTwins().listIncomingRelationshipsNextSinglePageAsync(nextLink, context)
+            .map(pagedIncomingRelationshipMappingFunction);
+    }
+
+    private Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.IncomingRelationship>, PagedResponse<IncomingRelationship>> pagedIncomingRelationshipMappingFunction = (pagedIncomingRelationshipResponse) -> {
+        List<IncomingRelationship> convertedList = pagedIncomingRelationshipResponse.getValue().stream()
+            .map(IncomingRelationshipConverter::map)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+        return new PagedResponseBase<>(
+            pagedIncomingRelationshipResponse.getRequest(),
+            pagedIncomingRelationshipResponse.getStatusCode(),
+            pagedIncomingRelationshipResponse.getHeaders(),
+            convertedList,
+            pagedIncomingRelationshipResponse.getContinuationToken(),
+            ((PagedResponseBase)pagedIncomingRelationshipResponse).getDeserializedHeaders());
+    };
 
     //endregion Relationship APIs
 
@@ -560,7 +595,7 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> models, Context context) {
         List<Object> modelsPayload = new ArrayList<>();
-        for (String model: models) {
+        for (String model : models) {
             try {
                 modelsPayload.add(mapper.readValue(model, Object.class));
             }
@@ -621,38 +656,32 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DigitalTwinsModelData> listModels() {
-        return listModels(new ListModelOptions());
+        return listModels(new ModelsListOptions());
     }
 
     /**
      * List the models in this digital twins instance based on some options.
-     * @param listModelOptions The options to follow when listing the models.
+     * @param modelsListOptions The options to follow when listing the models.
      * @return A {@link PagedFlux} containing the retrieved {@link DigitalTwinsModelData} instances.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinsModelData> listModels(ListModelOptions listModelOptions) {
+    public PagedFlux<DigitalTwinsModelData> listModels(ModelsListOptions modelsListOptions) {
         return new PagedFlux<>(
-            () -> withContext(context -> listModelsSinglePageAsync(listModelOptions, context)),
-            nextLink -> withContext(context -> listModelsNextSinglePageAsync(nextLink, context)));
+            () -> withContext(context -> listModelsSinglePageAsync(modelsListOptions, context)),
+            nextLink -> withContext(context -> listModelsNextSinglePageAsync(this.protocolLayer.getHost() + nextLink, context)));
     }
 
-    PagedFlux<DigitalTwinsModelData> listModels(Context context){
+    PagedFlux<DigitalTwinsModelData> listModels(ModelsListOptions modelsListOptions, Context context){
         return new PagedFlux<>(
-            () -> listModelsSinglePageAsync(new ListModelOptions(), context),
-            nextLink -> listModelsNextSinglePageAsync(nextLink, context));
+            () -> listModelsSinglePageAsync(modelsListOptions, context),
+            nextLink -> listModelsNextSinglePageAsync(this.protocolLayer.getHost() + nextLink, context));
     }
 
-    PagedFlux<DigitalTwinsModelData> listModels(ListModelOptions listModelOptions, Context context){
-        return new PagedFlux<>(
-            () -> listModelsSinglePageAsync(listModelOptions, context),
-            nextLink -> listModelsNextSinglePageAsync(nextLink, context));
-    }
-
-    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ListModelOptions listModelOptions, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ModelsListOptions modelsListOptions, Context context){
         return protocolLayer.getDigitalTwinModels().listSinglePageAsync(
-            listModelOptions.getDependenciesFor(),
-            listModelOptions.getIncludeModelDefinition(),
-            new DigitalTwinModelsListOptions().setMaxItemCount(listModelOptions.getMaxItemCount()),
+            modelsListOptions.getDependenciesFor(),
+            modelsListOptions.getIncludeModelDefinition(),
+            new DigitalTwinModelsListOptions().setMaxItemCount(modelsListOptions.getMaxItemCount()),
             context)
             .map(
                 objectPagedResponse -> {
@@ -665,7 +694,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         convertedList,
-                        null,
+                        objectPagedResponse.getContinuationToken(),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -683,7 +712,7 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(),
                 objectPagedResponse.getHeaders(),
                 convertedList,
-                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
+                objectPagedResponse.getContinuationToken(),
                 ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
         });
     }
@@ -778,7 +807,7 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse = null;
                 try {
-                    genericResponse = DeserializationHelpers.castObject(mapper, response.getValue(), clazz);
+                    genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
                     logger.error("JsonProcessingException occurred while deserializing the get component response: ", e);
                     return Mono.error(e);
@@ -864,7 +893,7 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getValue().getItems().stream()
                     .map(object -> {
                         try {
-                            return DeserializationHelpers.castObject(mapper, object, clazz);
+                            return DeserializationHelpers.deserializeObject(mapper, object, clazz, this.serializer);
                         } catch (JsonProcessingException e) {
                             logger.error("JsonProcessingException occurred while deserializing the query response: ", e);
                             throw new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e);
@@ -889,7 +918,7 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getValue().getItems().stream()
                     .map(object -> {
                         try {
-                            return DeserializationHelpers.castObject(mapper, object, clazz);
+                            return DeserializationHelpers.deserializeObject(mapper, object, clazz, this.serializer);
                         } catch (JsonProcessingException e) {
                             logger.error("JsonProcessingException occurred while deserializing the query response: ", e);
                             throw new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e);
@@ -932,7 +961,7 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, Context context)
     {
-        return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, eventRoute, context);
+        return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, EventRouteConverter.map(eventRoute), context);
     }
 
     /**
@@ -960,7 +989,12 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId, Context context)
     {
-        return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(eventRouteId, context);
+        return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(eventRouteId, context)
+            .map(eventRouteResponse -> new SimpleResponse<>(
+                eventRouteResponse.getRequest(),
+                eventRouteResponse.getStatusCode(),
+                eventRouteResponse.getHeaders(),
+                EventRouteConverter.map(eventRouteResponse.getValue())));
     }
 
     /**
@@ -1014,27 +1048,44 @@ public final class DigitalTwinsAsyncClient {
     {
         return new PagedFlux<>(
             () -> withContext(context -> listEventRoutesFirstPage(options, context)),
-            nextLink -> withContext(context -> listEventRoutesNextPage(nextLink, context)));
+            nextLink -> withContext(context -> listEventRoutesNextPage(this.protocolLayer.getHost() + nextLink, context)));
     }
 
     PagedFlux<EventRoute> listEventRoutes(EventRoutesListOptions options, Context context)
     {
         return new PagedFlux<>(
             () -> listEventRoutesFirstPage(options, context),
-            nextLink -> listEventRoutesNextPage(nextLink, context));
+            nextLink -> listEventRoutesNextPage(this.protocolLayer.getHost() + nextLink, context));
     }
 
     Mono<PagedResponse<EventRoute>> listEventRoutesFirstPage(EventRoutesListOptions options, Context context) {
         return protocolLayer
             .getEventRoutes()
-            .listSinglePageAsync(options, context);
+            .listSinglePageAsync(EventRouteListOptionsConverter.map(options), context)
+            .map(pagedEventRouteMappingFunction);
     }
 
     Mono<PagedResponse<EventRoute>> listEventRoutesNextPage(String nextLink, Context context) {
         return protocolLayer
             .getEventRoutes()
-            .listNextSinglePageAsync(nextLink, context);
+            .listNextSinglePageAsync(nextLink, context)
+            .map(pagedEventRouteMappingFunction);
     }
+
+    private Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.EventRoute>, PagedResponse<EventRoute>> pagedEventRouteMappingFunction = (pagedEventRouteResponse) -> {
+        List<EventRoute> convertedList = pagedEventRouteResponse.getValue().stream()
+            .map(EventRouteConverter::map)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+
+        return new PagedResponseBase<>(
+            pagedEventRouteResponse.getRequest(),
+            pagedEventRouteResponse.getStatusCode(),
+            pagedEventRouteResponse.getHeaders(),
+            convertedList,
+            pagedEventRouteResponse.getContinuationToken(),
+            ((PagedResponseBase) pagedEventRouteResponse).getDeserializedHeaders());
+    };
 
     //endregion Event Route APIs
 

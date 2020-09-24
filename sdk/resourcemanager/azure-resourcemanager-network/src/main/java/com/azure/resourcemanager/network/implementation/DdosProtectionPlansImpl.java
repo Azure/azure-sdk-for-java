@@ -16,7 +16,7 @@ public class DdosProtectionPlansImpl
     implements DdosProtectionPlans {
 
     public DdosProtectionPlansImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getDdosProtectionPlans(), networkManager);
+        super(networkManager.serviceClient().getDdosProtectionPlans(), networkManager);
     }
 
     @Override

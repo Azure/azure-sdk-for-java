@@ -12,7 +12,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,8 +35,8 @@ public final class DeployUsingARMTemplate {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, IllegalAccessException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSAT", 24);
-        final String deploymentName = azureResourceManager.sdkContext().randomResourceName("dpRSAT", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgRSAT", 24);
+        final String deploymentName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("dpRSAT", 24);
         try {
             String templateJson = DeployUsingARMTemplate.getTemplate(azureResourceManager);
 
@@ -137,8 +137,8 @@ public final class DeployUsingARMTemplate {
     }
 
     private static String getTemplate(AzureResourceManager azureResourceManager) throws IllegalAccessException, JsonProcessingException, IOException {
-        final String hostingPlanName = azureResourceManager.sdkContext().randomResourceName("hpRSAT", 24);
-        final String webappName = azureResourceManager.sdkContext().randomResourceName("wnRSAT", 24);
+        final String hostingPlanName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("hpRSAT", 24);
+        final String webappName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("wnRSAT", 24);
 
         try (InputStream embeddedTemplate = DeployUsingARMTemplate.class.getResourceAsStream("/templateValue.json")) {
 

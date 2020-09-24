@@ -17,12 +17,12 @@ public class NetworkSecurityGroupsImpl
         NetworkSecurityGroup,
         NetworkSecurityGroupImpl,
         NetworkSecurityGroupInner,
-    NetworkSecurityGroupsClient,
-    NetworkManager>
+        NetworkSecurityGroupsClient,
+        NetworkManager>
     implements NetworkSecurityGroups {
 
     public NetworkSecurityGroupsImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getNetworkSecurityGroups(), networkManager);
+        super(networkManager.serviceClient().getNetworkSecurityGroups(), networkManager);
     }
 
     @Override

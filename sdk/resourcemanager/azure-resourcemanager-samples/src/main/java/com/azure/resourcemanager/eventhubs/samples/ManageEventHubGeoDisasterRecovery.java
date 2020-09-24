@@ -14,7 +14,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairing;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.ProvisioningStateDR;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -35,11 +35,11 @@ public class ManageEventHubGeoDisasterRecovery {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV_", 24);
-        final String primaryNamespaceName = azureResourceManager.sdkContext().randomResourceName("ns", 14);
-        final String secondaryNamespaceName = azureResourceManager.sdkContext().randomResourceName("ns", 14);
-        final String geoDRName = azureResourceManager.sdkContext().randomResourceName("geodr", 14);
-        final String eventHubName = azureResourceManager.sdkContext().randomResourceName("eh", 14);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgNEMV_", 24);
+        final String primaryNamespaceName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("ns", 14);
+        final String secondaryNamespaceName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("ns", 14);
+        final String geoDRName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("geodr", 14);
+        final String eventHubName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("eh", 14);
         boolean isFailOverSucceeded = false;
         EventHubDisasterRecoveryPairing pairing = null;
 

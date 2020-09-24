@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
@@ -33,9 +33,9 @@ public final class ManageSqlImportExportDatabase {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqlserver", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgsql", 20);
-        String storageName = azureResourceManager.sdkContext().randomResourceName(sqlServerName, 23);
+        final String sqlServerName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("sqlserver", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgsql", 20);
+        String storageName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName(sqlServerName, 23);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
         final String dbFromSampleName = "db-from-sample";

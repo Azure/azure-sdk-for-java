@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSkuType;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuits;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
 
@@ -26,7 +26,7 @@ public class TestExpressRouteCircuit {
     public class Basic extends TestTemplate<ExpressRouteCircuit, ExpressRouteCircuits> {
         @Override
         public ExpressRouteCircuit createResource(ExpressRouteCircuits expressRouteCircuits) throws Exception {
-            initializeResourceNames(expressRouteCircuits.manager().sdkContext());
+            initializeResourceNames(expressRouteCircuits.manager().resourceManager().sdkContext());
 
             // create Express Route Circuit
             ExpressRouteCircuit erc =
@@ -78,7 +78,7 @@ public class TestExpressRouteCircuit {
     public class ExpressRouteCircuitPeering extends TestTemplate<ExpressRouteCircuit, ExpressRouteCircuits> {
         @Override
         public ExpressRouteCircuit createResource(ExpressRouteCircuits expressRouteCircuits) throws Exception {
-            initializeResourceNames(expressRouteCircuits.manager().sdkContext());
+            initializeResourceNames(expressRouteCircuits.manager().resourceManager().sdkContext());
 
             // create Express Route Circuit
             ExpressRouteCircuit erc =

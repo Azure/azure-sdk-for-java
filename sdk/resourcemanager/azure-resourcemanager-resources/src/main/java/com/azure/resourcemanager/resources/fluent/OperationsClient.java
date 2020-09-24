@@ -25,7 +25,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluent.inner.OperationInner;
+import com.azure.resourcemanager.resources.fluent.models.OperationInner;
 import com.azure.resourcemanager.resources.models.OperationListResult;
 import reactor.core.publisher.Mono;
 
@@ -80,7 +80,7 @@ public final class OperationsClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -111,7 +111,7 @@ public final class OperationsClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -154,7 +154,7 @@ public final class OperationsClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OperationInner> listAsync(Context context) {
+    private PagedFlux<OperationInner> listAsync(Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
@@ -195,7 +195,7 @@ public final class OperationsClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -224,7 +224,7 @@ public final class OperationsClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

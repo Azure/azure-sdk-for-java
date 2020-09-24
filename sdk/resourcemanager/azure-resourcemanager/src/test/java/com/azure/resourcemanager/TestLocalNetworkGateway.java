@@ -4,7 +4,7 @@ package com.azure.resourcemanager;
 
 import com.azure.resourcemanager.network.models.LocalNetworkGateway;
 import com.azure.resourcemanager.network.models.LocalNetworkGateways;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
 
@@ -23,7 +23,7 @@ public class TestLocalNetworkGateway extends TestTemplate<LocalNetworkGateway, L
 
     @Override
     public LocalNetworkGateway createResource(LocalNetworkGateways localNetworkGateways) throws Exception {
-        initializeResourceNames(localNetworkGateways.manager().sdkContext());
+        initializeResourceNames(localNetworkGateways.manager().resourceManager().sdkContext());
         LocalNetworkGateway gateway =
             localNetworkGateways
                 .define(lngwName)

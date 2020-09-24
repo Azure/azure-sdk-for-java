@@ -15,7 +15,7 @@ import com.azure.resourcemanager.monitor.models.MetricCollection;
 import com.azure.resourcemanager.monitor.models.MetricDefinition;
 import com.azure.resourcemanager.monitor.models.MetricValue;
 import com.azure.resourcemanager.monitor.models.TimeSeriesElement;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
@@ -52,10 +52,10 @@ public class GettingSqlServerMetrics {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws ClassNotFoundException, SQLException {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqltest", 20);
+        final String sqlServerName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("sqltest", 20);
         final String dbName = "dbSample";
         final String epName = "epSample";
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgsql", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgsql", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
