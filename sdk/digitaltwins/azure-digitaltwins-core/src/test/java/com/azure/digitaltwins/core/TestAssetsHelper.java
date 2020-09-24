@@ -1,9 +1,10 @@
 package com.azure.digitaltwins.core;
 
-import com.azure.digitaltwins.core.models.UpdateOperationUtility;
+import com.azure.core.experimental.jsonpatch.JsonPatchDocument;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -53,18 +54,18 @@ public class TestAssetsHelper {
 
     public static List<Object> getRoomTwinUpdatePayload()
     {
-        UpdateOperationUtility uou = new UpdateOperationUtility();
-        uou.appendAddOperation("/Humidity", 30);
-        uou.appendReplaceOperation("/Temperature", 70);
-        uou.appendRemoveOperation("/EmployeeId");
-        return uou.getUpdateOperations();
+        JsonPatchDocument uou = new JsonPatchDocument();
+        uou.appendAdd("/Humidity", 30);
+        uou.appendReplace("/Temperature", 70);
+        uou.appendRemove("/EmployeeId");
+        return new ArrayList<>(uou.getJsonPatchOperations());
     }
 
     public static List<Object> getWifiComponentUpdatePayload()
     {
-        UpdateOperationUtility uou = new UpdateOperationUtility();
-        uou.appendReplaceOperation("/Network", "New Network");
-        return uou.getUpdateOperations();
+        JsonPatchDocument uou = new JsonPatchDocument();
+        uou.appendReplace("/Network", "New Network");
+        return new ArrayList<>(uou.getJsonPatchOperations());
     }
 
     public static String getFloorTwinPayload(String floorModelId)
@@ -97,9 +98,9 @@ public class TestAssetsHelper {
 
     public static List<Object> getRelationshipUpdatePayload(String propertyName, boolean propertyValue)
     {
-        UpdateOperationUtility uou = new UpdateOperationUtility();
-        uou.appendReplaceOperation(propertyName, propertyValue);
-        return uou.getUpdateOperations();
+        return new ArrayList<>(new JsonPatchDocument()
+            .appendReplace(propertyName, propertyValue)
+            .getJsonPatchOperations());
     }
 
     public static String getWifiModelPayload(String wifiModelId)

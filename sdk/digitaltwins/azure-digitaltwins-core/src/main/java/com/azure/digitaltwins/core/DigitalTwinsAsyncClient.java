@@ -6,8 +6,15 @@ package com.azure.digitaltwins.core;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.experimental.jsonpatch.JsonPatchDocument;
+import com.azure.core.experimental.jsonpatch.JsonPatchDocumentSerializer;
+import com.azure.core.experimental.jsonpatch.JsonPatchOperationSerializer;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.*;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -23,7 +30,21 @@ import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
-import com.azure.digitaltwins.core.models.*;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
+import com.azure.digitaltwins.core.models.BasicRelationship;
+import com.azure.digitaltwins.core.models.DeleteDigitalTwinRequestOptions;
+import com.azure.digitaltwins.core.models.DeleteRelationshipRequestOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.models.DigitalTwinsResponseHeaders;
+import com.azure.digitaltwins.core.models.EventRoute;
+import com.azure.digitaltwins.core.models.EventRoutesListOptions;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
+import com.azure.digitaltwins.core.models.ModelsListOptions;
+import com.azure.digitaltwins.core.models.PublishTelemetryRequestOptions;
+import com.azure.digitaltwins.core.models.UpdateComponentRequestOptions;
+import com.azure.digitaltwins.core.models.UpdateDigitalTwinRequestOptions;
+import com.azure.digitaltwins.core.models.UpdateRelationshipRequestOptions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -64,7 +85,10 @@ public final class DigitalTwinsAsyncClient {
         stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, mapper));
 
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
-        jacksonAdapter.serializer().registerModule(stringModule);
+        jacksonAdapter.serializer()
+            .registerModule(stringModule)
+            .registerModule(JsonPatchDocumentSerializer.getModule())
+            .registerModule(JsonPatchOperationSerializer.getModule());
 
         this.serviceVersion = serviceVersion;
 
@@ -192,7 +216,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwinUpdateOperations The JSON patch to apply to the specified digital twin.
-     *                                    This argument can be created using {@link UpdateOperationUtility}.
+     *                                    This argument can be created using {@link JsonPatchDocument}.
      * @return An empty Mono
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -207,7 +231,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwinUpdateOperations The JSON patch to apply to the specified digital twin.
-     *                                    This argument can be created using {@link UpdateOperationUtility}.
+     *                                    This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional settings for this request
      * @return A {@link DigitalTwinsResponse}
      */
@@ -364,7 +388,7 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param relationshipUpdateOperations The JSON patch to apply to the specified digital twin's relationship.
-     *                                     This argument can be created using {@link UpdateOperationUtility}.
+     *                                     This argument can be created using {@link JsonPatchDocument}.
      * @return An empty Mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -379,7 +403,7 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param relationshipUpdateOperations The JSON patch to apply to the specified digital twin's relationship.
-     *                                     This argument can be created using {@link UpdateOperationUtility}.
+     *                                     This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional settings for this request.
      * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
      */
@@ -764,9 +788,9 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> decommissionModelWithResponse(String modelId, Context context) {
-        List<Object> updateOperation = new UpdateOperationUtility()
-            .appendReplaceOperation("/decommissioned", true)
-            .getUpdateOperations();
+        List<Object> updateOperation = new ArrayList<>(new JsonPatchDocument()
+            .appendReplace("/decommissioned", true)
+            .getJsonPatchOperations());
 
         return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(modelId, updateOperation, context);
     }
@@ -822,7 +846,7 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
      * @param componentUpdateOperations The JSON patch to apply to the specified digital twin's relationship.
-     *                                  This argument can be created using {@link UpdateOperationUtility}.
+     *                                  This argument can be created using {@link JsonPatchDocument}.
      * @return An empty Mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -836,7 +860,7 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
      * @param componentUpdateOperations The JSON patch to apply to the specified digital twin's relationship.
-     *                                  This argument can be created using {@link UpdateOperationUtility}.
+     *                                  This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request.
      * @return A {@link DigitalTwinsResponse} containing an empty Mono.
      */

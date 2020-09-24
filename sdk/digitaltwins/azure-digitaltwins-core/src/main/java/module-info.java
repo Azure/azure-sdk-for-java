@@ -3,6 +3,7 @@
 
 module com.azure.digitaltwins.core {
     requires transitive com.azure.core;
+    requires com.azure.core.experimental;
 
     exports com.azure.digitaltwins.core;
     exports com.azure.digitaltwins.core.models;

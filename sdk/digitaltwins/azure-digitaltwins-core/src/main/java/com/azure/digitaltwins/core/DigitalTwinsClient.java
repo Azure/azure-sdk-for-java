@@ -6,11 +6,25 @@ package com.azure.digitaltwins.core;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.experimental.jsonpatch.JsonPatchDocument;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.models.*;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
+import com.azure.digitaltwins.core.models.BasicRelationship;
+import com.azure.digitaltwins.core.models.DeleteDigitalTwinRequestOptions;
+import com.azure.digitaltwins.core.models.DeleteRelationshipRequestOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.models.EventRoute;
+import com.azure.digitaltwins.core.models.EventRoutesListOptions;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
+import com.azure.digitaltwins.core.models.ModelsListOptions;
+import com.azure.digitaltwins.core.models.PublishTelemetryRequestOptions;
+import com.azure.digitaltwins.core.models.UpdateComponentRequestOptions;
+import com.azure.digitaltwins.core.models.UpdateDigitalTwinRequestOptions;
+import com.azure.digitaltwins.core.models.UpdateRelationshipRequestOptions;
 
 import java.util.List;
 
@@ -112,7 +126,7 @@ public final class DigitalTwinsClient {
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwinUpdateOperations The JSON patch to apply to the specified digital twin.
-     *                                    This argument can be created using {@link UpdateOperationUtility}.
+     *                                    This argument can be created using {@link JsonPatchDocument}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations)
@@ -125,7 +139,7 @@ public final class DigitalTwinsClient {
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwinUpdateOperations The JSON patch to apply to the specified digital twin.
-     *                                    This argument can be created using {@link UpdateOperationUtility}.
+     *                                    This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional settings for this request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link DigitalTwinsResponse}
@@ -230,7 +244,7 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param relationshipUpdateOperations The JSON patch to apply to the specified digital twin's relationship.
-     *                                     This argument can be created using {@link UpdateOperationUtility}.
+     *                                     This argument can be created using {@link JsonPatchDocument}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateRelationship(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations) {
@@ -243,7 +257,7 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param relationshipUpdateOperations The JSON patch to apply to the specified digital twin's relationship.
-     *                                     This argument can be created using {@link UpdateOperationUtility}.
+     *                                     This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional settings for this request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
@@ -479,7 +493,7 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
      * @param componentUpdateOperations The JSON patch to apply to the specified digital twin's relationship.
-     *                                  This argument can be created using {@link UpdateOperationUtility}.
+     *                                  This argument can be created using {@link JsonPatchDocument}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateComponent(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations) {
@@ -491,7 +505,7 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
      * @param componentUpdateOperations The JSON patch to apply to the specified digital twin's relationship.
-     *                                  This argument can be created using {@link UpdateOperationUtility}.
+     *                                  This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link DigitalTwinsResponse} containing no parsed payload object.

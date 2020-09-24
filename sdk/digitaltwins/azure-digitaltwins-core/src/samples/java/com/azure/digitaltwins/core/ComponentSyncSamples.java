@@ -1,5 +1,6 @@
 package com.azure.digitaltwins.core;
 
+import com.azure.core.experimental.jsonpatch.JsonPatchDocument;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -8,18 +9,21 @@ import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.DigitalTwinMetadata;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.models.ModelProperties;
-import com.azure.digitaltwins.core.models.UpdateOperationUtility;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 
 public class ComponentSyncSamples {
@@ -137,11 +141,12 @@ public class ComponentSyncSamples {
 
         // Update Component1 by replacing the property ComponentProp1 value,
         // using the UpdateOperationUtility to build the payload.
-        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
+        JsonPatchDocument updateOperationUtility = new JsonPatchDocument();
 
-        updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new Value");
+        updateOperationUtility.appendReplace("/ComponentProp1", "Some new Value");
 
-        client.updateComponent(basicDigitalTwinId, "Component1", updateOperationUtility.getUpdateOperations());
+        List<Object> operations = new ArrayList<>(updateOperationUtility.getJsonPatchOperations());
+        client.updateComponent(basicDigitalTwinId, "Component1", operations);
 
         ConsoleLogger.print("Updated component for digital twin: " + basicDigitalTwinId);
 
