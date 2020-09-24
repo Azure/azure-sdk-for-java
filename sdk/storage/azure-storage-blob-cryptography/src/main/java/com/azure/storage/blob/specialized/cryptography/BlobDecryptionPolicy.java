@@ -75,7 +75,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * @param keyResolver The key resolver used to select the correct key for decrypting existing blobs.
      * @param requiresEncryption Whether or not encryption is enforced by this client.
      */
-    BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver, boolean requiresEncryption) {
+    BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver,
+        boolean requiresEncryption) {
         this.keyWrapper = key;
         this.keyResolver = keyResolver;
         this.requiresEncryption = requiresEncryption;
