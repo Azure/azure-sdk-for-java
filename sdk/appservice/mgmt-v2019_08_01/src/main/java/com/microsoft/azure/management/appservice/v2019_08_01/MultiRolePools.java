@@ -11,13 +11,13 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.WorkerPoolResourceInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
 import java.util.List;
 
 /**
  * Type representing MultiRolePools.
  */
-public interface MultiRolePools extends HasInner<WorkerPoolResourceInner>, HasManager<CertificateRegistrationManager> {
+public interface MultiRolePools extends HasInner<WorkerPoolResourceInner>, HasManager<AppServiceManager> {
     /**
      * @return the computeMode value.
      */

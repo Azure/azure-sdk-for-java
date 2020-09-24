@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import org.joda.time.DateTime;
 
 class CertificateEmailImpl extends WrapperImpl<CertificateEmailInner> implements CertificateEmail {
-    private final CertificateRegistrationManager manager;
-    CertificateEmailImpl(CertificateEmailInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    CertificateEmailImpl(CertificateEmailInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

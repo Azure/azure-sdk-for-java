@@ -13,13 +13,13 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class SiteHybridConnectionImpl extends CreatableUpdatableImpl<SiteHybridConnection, HybridConnectionInner, SiteHybridConnectionImpl> implements SiteHybridConnection, SiteHybridConnection.Definition, SiteHybridConnection.Update {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String namespaceName;
     private String relayName;
 
-    SiteHybridConnectionImpl(String name, CertificateRegistrationManager manager) {
+    SiteHybridConnectionImpl(String name, AppServiceManager manager) {
         super(name, new HybridConnectionInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class SiteHybridConnectionImpl extends CreatableUpdatableImpl<SiteHybridConnecti
         //
     }
 
-    SiteHybridConnectionImpl(HybridConnectionInner inner, CertificateRegistrationManager manager) {
+    SiteHybridConnectionImpl(HybridConnectionInner inner, AppServiceManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -41,7 +41,7 @@ class SiteHybridConnectionImpl extends CreatableUpdatableImpl<SiteHybridConnecti
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

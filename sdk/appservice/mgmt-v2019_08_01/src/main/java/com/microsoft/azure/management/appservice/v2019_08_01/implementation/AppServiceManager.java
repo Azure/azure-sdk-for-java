@@ -11,8 +11,6 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
@@ -37,7 +35,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 /**
  * Entry point to Azure CertificateRegistration resource management.
  */
-public final class CertificateRegistrationManager extends ManagerCore<CertificateRegistrationManager, WebSiteManagementClientImpl> {
+public final class AppServiceManager extends ManagerCore<AppServiceManager, WebSiteManagementClientImpl> {
     private AppServiceCertificateOrders appServiceCertificateOrders;
     private CertificateRegistrationProviders certificateRegistrationProviders;
     private Domains domains;
@@ -59,7 +57,7 @@ public final class CertificateRegistrationManager extends ManagerCore<Certificat
     * @return the instance allowing configurations
     */
     public static Configurable configure() {
-        return new CertificateRegistrationManager.ConfigurableImpl();
+        return new AppServiceManager.ConfigurableImpl();
     }
     /**
     * Creates an instance of CertificateRegistrationManager that exposes CertificateRegistration resource management API entry points.
@@ -68,8 +66,8 @@ public final class CertificateRegistrationManager extends ManagerCore<Certificat
     * @param subscriptionId the subscription UUID
     * @return the CertificateRegistrationManager
     */
-    public static CertificateRegistrationManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new CertificateRegistrationManager(new RestClient.Builder()
+    public static AppServiceManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+        return new AppServiceManager(new RestClient.Builder()
             .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
             .withCredentials(credentials)
             .withSerializerAdapter(new AzureJacksonAdapter())
@@ -83,8 +81,8 @@ public final class CertificateRegistrationManager extends ManagerCore<Certificat
     * @param subscriptionId the subscription UUID
     * @return the CertificateRegistrationManager
     */
-    public static CertificateRegistrationManager authenticate(RestClient restClient, String subscriptionId) {
-        return new CertificateRegistrationManager(restClient, subscriptionId);
+    public static AppServiceManager authenticate(RestClient restClient, String subscriptionId) {
+        return new AppServiceManager(restClient, subscriptionId);
     }
     /**
     * The interface allowing configurations to be set.
@@ -97,7 +95,7 @@ public final class CertificateRegistrationManager extends ManagerCore<Certificat
         * @param subscriptionId the subscription UUID
         * @return the interface exposing CertificateRegistration management API entry points that work across subscriptions
         */
-        CertificateRegistrationManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+        AppServiceManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }
 
     /**
@@ -254,11 +252,11 @@ public final class CertificateRegistrationManager extends ManagerCore<Certificat
     * The implementation for Configurable interface.
     */
     private static final class ConfigurableImpl extends AzureConfigurableCoreImpl<Configurable> implements Configurable {
-        public CertificateRegistrationManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-           return CertificateRegistrationManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public AppServiceManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+           return AppServiceManager.authenticate(buildRestClient(credentials), subscriptionId);
         }
      }
-    private CertificateRegistrationManager(RestClient restClient, String subscriptionId) {
+    private AppServiceManager(RestClient restClient, String subscriptionId) {
         super(
             restClient,
             subscriptionId,

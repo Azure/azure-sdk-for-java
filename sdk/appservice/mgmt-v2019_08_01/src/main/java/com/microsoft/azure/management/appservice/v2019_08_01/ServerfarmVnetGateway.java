@@ -15,12 +15,12 @@ import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
 
 /**
  * Type representing ServerfarmVnetGateway.
  */
-public interface ServerfarmVnetGateway extends HasInner<VnetGatewayInner>, Indexable, Refreshable<ServerfarmVnetGateway>, Updatable<ServerfarmVnetGateway.Update>, HasManager<CertificateRegistrationManager> {
+public interface ServerfarmVnetGateway extends HasInner<VnetGatewayInner>, Indexable, Refreshable<ServerfarmVnetGateway>, Updatable<ServerfarmVnetGateway.Update>, HasManager<AppServiceManager> {
     /**
      * @return the id value.
      */

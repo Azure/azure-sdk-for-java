@@ -10,19 +10,18 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.PerfMonResponse;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import rx.Observable;
 import com.microsoft.azure.management.appservice.v2019_08_01.PerfMonSet;
 
 class PerfMonResponseImpl extends WrapperImpl<PerfMonResponseInner> implements PerfMonResponse {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
 
-    PerfMonResponseImpl(PerfMonResponseInner inner,  CertificateRegistrationManager manager) {
+    PerfMonResponseImpl(PerfMonResponseInner inner,  AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

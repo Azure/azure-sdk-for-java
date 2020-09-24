@@ -10,7 +10,6 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.HostingEnvironmentAppServicePlan;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import rx.Observable;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2019_08_01.HostingEnvironmentProfile;
 import com.microsoft.azure.management.appservice.v2019_08_01.ProvisioningState;
@@ -19,15 +18,15 @@ import com.microsoft.azure.management.appservice.v2019_08_01.StatusOptions;
 import java.util.Map;
 
 class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInner> implements HostingEnvironmentAppServicePlan {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
 
-    HostingEnvironmentAppServicePlanImpl(AppServicePlanInner inner,  CertificateRegistrationManager manager) {
+    HostingEnvironmentAppServicePlanImpl(AppServicePlanInner inner,  AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

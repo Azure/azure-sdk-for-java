@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.TldLegalAgreement;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class TldLegalAgreementImpl extends WrapperImpl<TldLegalAgreementInner> implements TldLegalAgreement {
-    private final CertificateRegistrationManager manager;
-    TldLegalAgreementImpl(TldLegalAgreementInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    TldLegalAgreementImpl(TldLegalAgreementInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

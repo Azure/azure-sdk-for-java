@@ -10,7 +10,6 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.ServerfarmSite;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import rx.Observable;
 import com.microsoft.azure.management.appservice.v2019_08_01.SiteAvailabilityState;
 import com.microsoft.azure.management.appservice.v2019_08_01.CloningInfo;
 import java.util.List;
@@ -26,15 +25,15 @@ import java.util.Map;
 import com.microsoft.azure.management.appservice.v2019_08_01.UsageState;
 
 class ServerfarmSiteImpl extends WrapperImpl<SiteInner> implements ServerfarmSite {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
 
-    ServerfarmSiteImpl(SiteInner inner,  CertificateRegistrationManager manager) {
+    ServerfarmSiteImpl(SiteInner inner,  AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

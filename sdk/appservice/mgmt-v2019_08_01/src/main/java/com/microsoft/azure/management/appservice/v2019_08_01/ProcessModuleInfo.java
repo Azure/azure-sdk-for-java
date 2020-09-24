@@ -13,12 +13,12 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.Proc
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
 
 /**
  * Type representing ProcessModuleInfo.
  */
-public interface ProcessModuleInfo extends HasInner<ProcessModuleInfoInner>, Indexable, Refreshable<ProcessModuleInfo>, HasManager<CertificateRegistrationManager> {
+public interface ProcessModuleInfo extends HasInner<ProcessModuleInfoInner>, Indexable, Refreshable<ProcessModuleInfo>, HasManager<AppServiceManager> {
     /**
      * @return the baseAddress value.
      */

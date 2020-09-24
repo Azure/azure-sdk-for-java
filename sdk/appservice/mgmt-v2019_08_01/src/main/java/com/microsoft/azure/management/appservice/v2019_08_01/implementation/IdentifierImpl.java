@@ -13,12 +13,12 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class IdentifierImpl extends CreatableUpdatableImpl<Identifier, IdentifierInner, IdentifierImpl> implements Identifier, Identifier.Definition, Identifier.Update {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String domainOwnershipIdentifierName;
 
-    IdentifierImpl(String name, CertificateRegistrationManager manager) {
+    IdentifierImpl(String name, AppServiceManager manager) {
         super(name, new IdentifierInner());
         this.manager = manager;
         // Set resource name
@@ -26,7 +26,7 @@ class IdentifierImpl extends CreatableUpdatableImpl<Identifier, IdentifierInner,
         //
     }
 
-    IdentifierImpl(IdentifierInner inner, CertificateRegistrationManager manager) {
+    IdentifierImpl(IdentifierInner inner, AppServiceManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -39,7 +39,7 @@ class IdentifierImpl extends CreatableUpdatableImpl<Identifier, IdentifierInner,
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

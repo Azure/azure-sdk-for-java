@@ -10,20 +10,20 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.OutboundEnvironmentEndpoint;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import rx.Observable;
+
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2019_08_01.EndpointDependency;
 
 class OutboundEnvironmentEndpointImpl extends WrapperImpl<OutboundEnvironmentEndpointInner> implements OutboundEnvironmentEndpoint {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
 
-    OutboundEnvironmentEndpointImpl(OutboundEnvironmentEndpointInner inner,  CertificateRegistrationManager manager) {
+    OutboundEnvironmentEndpointImpl(OutboundEnvironmentEndpointInner inner,  AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

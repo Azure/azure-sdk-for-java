@@ -13,12 +13,12 @@ import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperI
 import rx.Observable;
 
 class DiagnosticCategoryImpl extends IndexableRefreshableWrapperImpl<DiagnosticCategory, DiagnosticCategoryInner> implements DiagnosticCategory {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String siteName;
     private String diagnosticCategory;
 
-    DiagnosticCategoryImpl(DiagnosticCategoryInner inner,  CertificateRegistrationManager manager) {
+    DiagnosticCategoryImpl(DiagnosticCategoryInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -28,7 +28,7 @@ class DiagnosticCategoryImpl extends IndexableRefreshableWrapperImpl<DiagnosticC
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

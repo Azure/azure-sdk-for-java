@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.User;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class UserImpl extends WrapperImpl<UserInner> implements User {
-    private final CertificateRegistrationManager manager;
-    UserImpl(UserInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    UserImpl(UserInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

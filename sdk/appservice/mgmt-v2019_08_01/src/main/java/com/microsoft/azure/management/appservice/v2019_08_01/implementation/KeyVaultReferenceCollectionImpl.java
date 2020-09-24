@@ -14,14 +14,14 @@ import java.util.Map;
 import com.microsoft.azure.management.appservice.v2019_08_01.ApiKVReference;
 
 class KeyVaultReferenceCollectionImpl extends WrapperImpl<KeyVaultReferenceCollectionInner> implements KeyVaultReferenceCollection {
-    private final CertificateRegistrationManager manager;
-    KeyVaultReferenceCollectionImpl(KeyVaultReferenceCollectionInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    KeyVaultReferenceCollectionImpl(KeyVaultReferenceCollectionInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

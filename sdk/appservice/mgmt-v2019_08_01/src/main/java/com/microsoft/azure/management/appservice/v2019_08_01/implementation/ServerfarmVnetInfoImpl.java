@@ -16,12 +16,12 @@ import com.microsoft.azure.management.appservice.v2019_08_01.VnetRoute;
 import java.util.List;
 
 class ServerfarmVnetInfoImpl extends IndexableRefreshableWrapperImpl<ServerfarmVnetInfo, VnetInfoInner> implements ServerfarmVnetInfo {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String vnetName;
 
-    ServerfarmVnetInfoImpl(VnetInfoInner inner,  CertificateRegistrationManager manager) {
+    ServerfarmVnetInfoImpl(VnetInfoInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -31,7 +31,7 @@ class ServerfarmVnetInfoImpl extends IndexableRefreshableWrapperImpl<ServerfarmV
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

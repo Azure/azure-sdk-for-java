@@ -10,21 +10,20 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.HostingEnvironmentDiagnostics;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import rx.Observable;
 
 class HostingEnvironmentDiagnosticsImpl extends WrapperImpl<HostingEnvironmentDiagnosticsInner> implements HostingEnvironmentDiagnostics {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String diagnosticsName;
 
-    HostingEnvironmentDiagnosticsImpl(HostingEnvironmentDiagnosticsInner inner,  CertificateRegistrationManager manager) {
+    HostingEnvironmentDiagnosticsImpl(HostingEnvironmentDiagnosticsInner inner,  AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

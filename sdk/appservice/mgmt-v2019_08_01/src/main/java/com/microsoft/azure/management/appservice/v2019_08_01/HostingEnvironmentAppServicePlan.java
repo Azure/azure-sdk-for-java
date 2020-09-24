@@ -11,14 +11,14 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServicePlanInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
 import org.joda.time.DateTime;
 import java.util.Map;
 
 /**
  * Type representing HostingEnvironmentAppServicePlan.
  */
-public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePlanInner>, HasManager<CertificateRegistrationManager> {
+public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePlanInner>, HasManager<AppServiceManager> {
     /**
      * @return the freeOfferExpirationTime value.
      */

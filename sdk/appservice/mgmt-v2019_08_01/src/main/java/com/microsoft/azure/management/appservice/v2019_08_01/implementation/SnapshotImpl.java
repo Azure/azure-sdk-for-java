@@ -10,18 +10,17 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.Snapshot;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import rx.Observable;
 
 class SnapshotImpl extends WrapperImpl<SnapshotInner> implements Snapshot {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
 
-    SnapshotImpl(SnapshotInner inner,  CertificateRegistrationManager manager) {
+    SnapshotImpl(SnapshotInner inner,  AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

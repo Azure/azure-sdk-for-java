@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
 
 /**
  * Type representing SiteHybridConnection.
  */
-public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, Indexable, Refreshable<SiteHybridConnection>, Updatable<SiteHybridConnection.Update>, HasManager<CertificateRegistrationManager> {
+public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, Indexable, Refreshable<SiteHybridConnection>, Updatable<SiteHybridConnection.Update>, HasManager<AppServiceManager> {
     /**
      * @return the hostname value.
      */

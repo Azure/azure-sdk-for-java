@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.RelayServiceConnect
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class RelayServiceConnectionEntityImpl extends WrapperImpl<RelayServiceConnectionEntityInner> implements RelayServiceConnectionEntity {
-    private final CertificateRegistrationManager manager;
-    RelayServiceConnectionEntityImpl(RelayServiceConnectionEntityInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    RelayServiceConnectionEntityImpl(RelayServiceConnectionEntityInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

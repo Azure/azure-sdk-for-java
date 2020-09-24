@@ -13,12 +13,12 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.Hybr
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
 
 /**
  * Type representing ServerfarmHybridConnection.
  */
-public interface ServerfarmHybridConnection extends HasInner<HybridConnectionInner>, Indexable, Refreshable<ServerfarmHybridConnection>, HasManager<CertificateRegistrationManager> {
+public interface ServerfarmHybridConnection extends HasInner<HybridConnectionInner>, Indexable, Refreshable<ServerfarmHybridConnection>, HasManager<AppServiceManager> {
     /**
      * @return the hostname value.
      */

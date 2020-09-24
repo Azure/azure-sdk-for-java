@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
 
 class SlotConfigNamesResourceImpl extends WrapperImpl<SlotConfigNamesResourceInner> implements SlotConfigNamesResource {
-    private final CertificateRegistrationManager manager;
-    SlotConfigNamesResourceImpl(SlotConfigNamesResourceInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    SlotConfigNamesResourceImpl(SlotConfigNamesResourceInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

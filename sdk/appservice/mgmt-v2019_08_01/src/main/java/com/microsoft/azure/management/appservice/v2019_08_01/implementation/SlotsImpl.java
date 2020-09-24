@@ -28,13 +28,13 @@ import com.microsoft.azure.management.appservice.v2019_08_01.ManagedServiceIdent
 import rx.functions.Func1;
 
 class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> implements Slots, Slots.Definition, Slots.Update {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String slot;
     private SitePatchResource updateParameter;
 
-    SlotsImpl(String name, CertificateRegistrationManager manager) {
+    SlotsImpl(String name, AppServiceManager manager) {
         super(name, new SiteInner());
         this.manager = manager;
         // Set resource name
@@ -43,7 +43,7 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
         this.updateParameter = new SitePatchResource();
     }
 
-    SlotsImpl(SiteInner inner, CertificateRegistrationManager manager) {
+    SlotsImpl(SiteInner inner, AppServiceManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -57,7 +57,7 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

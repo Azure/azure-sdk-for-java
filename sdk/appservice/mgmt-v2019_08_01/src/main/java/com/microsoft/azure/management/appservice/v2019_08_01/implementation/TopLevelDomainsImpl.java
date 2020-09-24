@@ -22,9 +22,9 @@ import com.microsoft.azure.arm.utils.PagedListConverter;
 
 class TopLevelDomainsImpl extends WrapperImpl<TopLevelDomainsInner> implements TopLevelDomains {
     private PagedListConverter<TopLevelDomainInner, TopLevelDomain> converter;
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
 
-    TopLevelDomainsImpl(CertificateRegistrationManager manager) {
+    TopLevelDomainsImpl(AppServiceManager manager) {
         super(manager.inner().topLevelDomains());
         this.manager = manager;
         this.converter = new PagedListConverter<TopLevelDomainInner, TopLevelDomain>() {
@@ -35,7 +35,7 @@ class TopLevelDomainsImpl extends WrapperImpl<TopLevelDomainsInner> implements T
         };
     }
 
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

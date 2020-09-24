@@ -10,18 +10,17 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.HybridConnection;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import rx.Observable;
 
 class HybridConnectionImpl extends WrapperImpl<HybridConnectionInner> implements HybridConnection {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
 
-    HybridConnectionImpl(HybridConnectionInner inner,  CertificateRegistrationManager manager) {
+    HybridConnectionImpl(HybridConnectionInner inner,  AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

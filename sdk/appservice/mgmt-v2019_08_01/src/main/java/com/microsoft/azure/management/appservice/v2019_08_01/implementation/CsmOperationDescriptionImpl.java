@@ -14,14 +14,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.CsmOperationDisplay
 import com.microsoft.azure.management.appservice.v2019_08_01.CsmOperationDescriptionProperties;
 
 class CsmOperationDescriptionImpl extends WrapperImpl<CsmOperationDescriptionInner> implements CsmOperationDescription {
-    private final CertificateRegistrationManager manager;
-    CsmOperationDescriptionImpl(CsmOperationDescriptionInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    CsmOperationDescriptionImpl(CsmOperationDescriptionInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import com.microsoft.azure.management.appservice.v2019_08_01.VnetRoute;
 
 class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInner, SiteVnetInfoImpl> implements SiteVnetInfo, SiteVnetInfo.Definition, SiteVnetInfo.Update {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String vnetName;
     private String slot;
 
-    SiteVnetInfoImpl(String name, CertificateRegistrationManager manager) {
+    SiteVnetInfoImpl(String name, AppServiceManager manager) {
         super(name, new VnetInfoInner());
         this.manager = manager;
         // Set resource name
@@ -30,7 +30,7 @@ class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInne
         //
     }
 
-    SiteVnetInfoImpl(VnetInfoInner inner, CertificateRegistrationManager manager) {
+    SiteVnetInfoImpl(VnetInfoInner inner, AppServiceManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -44,7 +44,7 @@ class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInne
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

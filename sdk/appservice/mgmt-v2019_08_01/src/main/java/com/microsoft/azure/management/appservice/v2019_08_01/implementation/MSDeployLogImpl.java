@@ -14,14 +14,14 @@ import java.util.List;
 import com.microsoft.azure.management.appservice.v2019_08_01.MSDeployLogEntry;
 
 class MSDeployLogImpl extends WrapperImpl<MSDeployLogInner> implements MSDeployLog {
-    private final CertificateRegistrationManager manager;
-    MSDeployLogImpl(MSDeployLogInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    MSDeployLogImpl(MSDeployLogInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

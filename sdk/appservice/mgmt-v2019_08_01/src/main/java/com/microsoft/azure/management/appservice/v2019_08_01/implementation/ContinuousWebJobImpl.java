@@ -16,12 +16,12 @@ import com.microsoft.azure.management.appservice.v2019_08_01.ContinuousWebJobSta
 import com.microsoft.azure.management.appservice.v2019_08_01.WebJobType;
 
 class ContinuousWebJobImpl extends IndexableRefreshableWrapperImpl<ContinuousWebJob, ContinuousWebJobInner> implements ContinuousWebJob {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String webJobName;
 
-    ContinuousWebJobImpl(ContinuousWebJobInner inner,  CertificateRegistrationManager manager) {
+    ContinuousWebJobImpl(ContinuousWebJobInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -31,7 +31,7 @@ class ContinuousWebJobImpl extends IndexableRefreshableWrapperImpl<ContinuousWeb
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

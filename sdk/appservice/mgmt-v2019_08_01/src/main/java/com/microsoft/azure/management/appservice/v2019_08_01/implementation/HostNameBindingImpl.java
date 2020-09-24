@@ -17,12 +17,12 @@ import com.microsoft.azure.management.appservice.v2019_08_01.HostNameType;
 import com.microsoft.azure.management.appservice.v2019_08_01.SslState;
 
 class HostNameBindingImpl extends CreatableUpdatableImpl<HostNameBinding, HostNameBindingInner, HostNameBindingImpl> implements HostNameBinding, HostNameBinding.Definition, HostNameBinding.Update {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String hostName;
 
-    HostNameBindingImpl(String name, CertificateRegistrationManager manager) {
+    HostNameBindingImpl(String name, AppServiceManager manager) {
         super(name, new HostNameBindingInner());
         this.manager = manager;
         // Set resource name
@@ -30,7 +30,7 @@ class HostNameBindingImpl extends CreatableUpdatableImpl<HostNameBinding, HostNa
         //
     }
 
-    HostNameBindingImpl(HostNameBindingInner inner, CertificateRegistrationManager manager) {
+    HostNameBindingImpl(HostNameBindingInner inner, AppServiceManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -43,7 +43,7 @@ class HostNameBindingImpl extends CreatableUpdatableImpl<HostNameBinding, HostNa
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

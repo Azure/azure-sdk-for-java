@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.appservice.v2019_08_01.CsmOperationDescription;
 
 class CertificateRegistrationProvidersImpl extends WrapperImpl<CertificateRegistrationProvidersInner> implements CertificateRegistrationProviders {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
 
-    CertificateRegistrationProvidersImpl(CertificateRegistrationManager manager) {
+    CertificateRegistrationProvidersImpl(AppServiceManager manager) {
         super(manager.inner().certificateRegistrationProviders());
         this.manager = manager;
     }
 
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

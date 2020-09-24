@@ -16,12 +16,12 @@ import com.microsoft.azure.management.appservice.v2019_08_01.DiagnosticData;
 import com.microsoft.azure.management.appservice.v2019_08_01.DetectorInfo;
 
 class DetectorResponseImpl extends IndexableRefreshableWrapperImpl<DetectorResponse, DetectorResponseInner> implements DetectorResponse {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String detectorName;
 
-    DetectorResponseImpl(DetectorResponseInner inner,  CertificateRegistrationManager manager) {
+    DetectorResponseImpl(DetectorResponseInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -31,7 +31,7 @@ class DetectorResponseImpl extends IndexableRefreshableWrapperImpl<DetectorRespo
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

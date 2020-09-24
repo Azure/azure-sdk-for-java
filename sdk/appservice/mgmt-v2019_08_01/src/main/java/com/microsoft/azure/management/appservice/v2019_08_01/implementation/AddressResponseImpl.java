@@ -14,14 +14,14 @@ import java.util.List;
 import com.microsoft.azure.management.appservice.v2019_08_01.VirtualIPMapping;
 
 class AddressResponseImpl extends WrapperImpl<AddressResponseInner> implements AddressResponse {
-    private final CertificateRegistrationManager manager;
-    AddressResponseImpl(AddressResponseInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    AddressResponseImpl(AddressResponseInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

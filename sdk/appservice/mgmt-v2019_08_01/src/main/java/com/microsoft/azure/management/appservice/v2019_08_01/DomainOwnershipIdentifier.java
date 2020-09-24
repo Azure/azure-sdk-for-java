@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
 
 /**
  * Type representing DomainOwnershipIdentifier.
  */
-public interface DomainOwnershipIdentifier extends HasInner<DomainOwnershipIdentifierInner>, Indexable, Refreshable<DomainOwnershipIdentifier>, Updatable<DomainOwnershipIdentifier.Update>, HasManager<CertificateRegistrationManager> {
+public interface DomainOwnershipIdentifier extends HasInner<DomainOwnershipIdentifierInner>, Indexable, Refreshable<DomainOwnershipIdentifier>, Updatable<DomainOwnershipIdentifier.Update>, HasManager<AppServiceManager> {
     /**
      * @return the id value.
      */

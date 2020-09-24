@@ -14,12 +14,12 @@ import rx.Observable;
 import org.joda.time.DateTime;
 
 class DeploymentImpl extends CreatableUpdatableImpl<Deployment, DeploymentInner, DeploymentImpl> implements Deployment, Deployment.Definition, Deployment.Update {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String id;
 
-    DeploymentImpl(String name, CertificateRegistrationManager manager) {
+    DeploymentImpl(String name, AppServiceManager manager) {
         super(name, new DeploymentInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class DeploymentImpl extends CreatableUpdatableImpl<Deployment, DeploymentInner,
         //
     }
 
-    DeploymentImpl(DeploymentInner inner, CertificateRegistrationManager manager) {
+    DeploymentImpl(DeploymentInner inner, AppServiceManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -40,7 +40,7 @@ class DeploymentImpl extends CreatableUpdatableImpl<Deployment, DeploymentInner,
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

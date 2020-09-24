@@ -17,14 +17,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.DeletedSite;
 import com.microsoft.azure.Page;
 
 class DeletedWebAppsImpl extends WrapperImpl<DeletedWebAppsInner> implements DeletedWebApps {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
 
-    DeletedWebAppsImpl(CertificateRegistrationManager manager) {
+    DeletedWebAppsImpl(AppServiceManager manager) {
         super(manager.inner().deletedWebApps());
         this.manager = manager;
     }
 
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

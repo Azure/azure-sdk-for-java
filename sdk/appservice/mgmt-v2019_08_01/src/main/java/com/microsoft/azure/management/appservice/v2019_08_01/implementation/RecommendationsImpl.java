@@ -22,9 +22,9 @@ import com.microsoft.azure.arm.utils.PagedListConverter;
 
 class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements Recommendations {
     private PagedListConverter<RecommendationInner, Recommendation> converter;
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
 
-    RecommendationsImpl(CertificateRegistrationManager manager) {
+    RecommendationsImpl(AppServiceManager manager) {
         super(manager.inner().recommendations());
         this.manager = manager;
         this.converter = new PagedListConverter<RecommendationInner, Recommendation>() {
@@ -35,7 +35,7 @@ class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements R
         };
     }
 
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

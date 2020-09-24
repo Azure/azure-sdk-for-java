@@ -14,12 +14,12 @@ import rx.Observable;
 import java.util.Map;
 
 class FunctionEnvelopeImpl extends CreatableUpdatableImpl<FunctionEnvelope, FunctionEnvelopeInner, FunctionEnvelopeImpl> implements FunctionEnvelope, FunctionEnvelope.Definition, FunctionEnvelope.Update {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String functionName;
 
-    FunctionEnvelopeImpl(String name, CertificateRegistrationManager manager) {
+    FunctionEnvelopeImpl(String name, AppServiceManager manager) {
         super(name, new FunctionEnvelopeInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class FunctionEnvelopeImpl extends CreatableUpdatableImpl<FunctionEnvelope, Func
         //
     }
 
-    FunctionEnvelopeImpl(FunctionEnvelopeInner inner, CertificateRegistrationManager manager) {
+    FunctionEnvelopeImpl(FunctionEnvelopeInner inner, AppServiceManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -40,7 +40,7 @@ class FunctionEnvelopeImpl extends CreatableUpdatableImpl<FunctionEnvelope, Func
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

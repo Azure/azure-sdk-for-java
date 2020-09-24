@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.SiteSourceControl;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class SiteSourceControlImpl extends WrapperImpl<SiteSourceControlInner> implements SiteSourceControl {
-    private final CertificateRegistrationManager manager;
-    SiteSourceControlImpl(SiteSourceControlInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    SiteSourceControlImpl(SiteSourceControlInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

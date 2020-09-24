@@ -14,14 +14,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.SkuCapacity;
 import com.microsoft.azure.management.appservice.v2019_08_01.SkuDescription;
 
 class SkuInfoImpl extends WrapperImpl<SkuInfoInner> implements SkuInfo {
-    private final CertificateRegistrationManager manager;
-    SkuInfoImpl(SkuInfoInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    SkuInfoImpl(SkuInfoInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

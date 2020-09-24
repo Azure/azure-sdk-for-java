@@ -14,12 +14,12 @@ import rx.Observable;
 import com.microsoft.azure.management.appservice.v2019_08_01.PublicCertificateLocation;
 
 class PublicCertificateImpl extends CreatableUpdatableImpl<PublicCertificate, PublicCertificateInner, PublicCertificateImpl> implements PublicCertificate, PublicCertificate.Definition, PublicCertificate.Update {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String publicCertificateName;
 
-    PublicCertificateImpl(String name, CertificateRegistrationManager manager) {
+    PublicCertificateImpl(String name, AppServiceManager manager) {
         super(name, new PublicCertificateInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class PublicCertificateImpl extends CreatableUpdatableImpl<PublicCertificate, Pu
         //
     }
 
-    PublicCertificateImpl(PublicCertificateInner inner, CertificateRegistrationManager manager) {
+    PublicCertificateImpl(PublicCertificateInner inner, AppServiceManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -40,7 +40,7 @@ class PublicCertificateImpl extends CreatableUpdatableImpl<PublicCertificate, Pu
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

@@ -16,14 +16,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
 import java.util.List;
 import org.joda.time.DateTime;
 
 /**
  * Type representing SiteExtensionInfo.
  */
-public interface SiteExtensionInfo extends HasInner<SiteExtensionInfoInner>, Indexable, Refreshable<SiteExtensionInfo>, Updatable<SiteExtensionInfo.Update>, HasManager<CertificateRegistrationManager> {
+public interface SiteExtensionInfo extends HasInner<SiteExtensionInfoInner>, Indexable, Refreshable<SiteExtensionInfo>, Updatable<SiteExtensionInfo.Update>, HasManager<AppServiceManager> {
     /**
      * @return the authors value.
      */

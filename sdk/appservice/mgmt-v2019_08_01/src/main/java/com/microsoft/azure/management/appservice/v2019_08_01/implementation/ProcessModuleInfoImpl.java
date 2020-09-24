@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperI
 import rx.Observable;
 
 class ProcessModuleInfoImpl extends IndexableRefreshableWrapperImpl<ProcessModuleInfo, ProcessModuleInfoInner> implements ProcessModuleInfo {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String processId;
     private String baseAddress;
     private String instanceId;
 
-    ProcessModuleInfoImpl(ProcessModuleInfoInner inner,  CertificateRegistrationManager manager) {
+    ProcessModuleInfoImpl(ProcessModuleInfoInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -32,7 +32,7 @@ class ProcessModuleInfoImpl extends IndexableRefreshableWrapperImpl<ProcessModul
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

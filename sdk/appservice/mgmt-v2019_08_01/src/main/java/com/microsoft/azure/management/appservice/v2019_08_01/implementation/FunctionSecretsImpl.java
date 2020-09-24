@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.FunctionSecrets;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class FunctionSecretsImpl extends WrapperImpl<FunctionSecretsInner> implements FunctionSecrets {
-    private final CertificateRegistrationManager manager;
-    FunctionSecretsImpl(FunctionSecretsInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    FunctionSecretsImpl(FunctionSecretsInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

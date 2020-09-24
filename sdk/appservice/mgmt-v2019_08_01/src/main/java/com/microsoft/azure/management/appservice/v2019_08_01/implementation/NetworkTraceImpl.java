@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.NetworkTrace;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class NetworkTraceImpl extends WrapperImpl<NetworkTraceInner> implements NetworkTrace {
-    private final CertificateRegistrationManager manager;
-    NetworkTraceImpl(NetworkTraceInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    NetworkTraceImpl(NetworkTraceInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

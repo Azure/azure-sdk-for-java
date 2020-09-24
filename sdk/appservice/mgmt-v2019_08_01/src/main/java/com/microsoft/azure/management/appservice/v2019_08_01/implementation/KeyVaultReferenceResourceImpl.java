@@ -16,14 +16,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.ConfigReferenceSour
 import com.microsoft.azure.management.appservice.v2019_08_01.ResolveStatus;
 
 class KeyVaultReferenceResourceImpl extends WrapperImpl<KeyVaultReferenceResourceInner> implements KeyVaultReferenceResource {
-    private final CertificateRegistrationManager manager;
-    KeyVaultReferenceResourceImpl(KeyVaultReferenceResourceInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    KeyVaultReferenceResourceImpl(KeyVaultReferenceResourceInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

@@ -19,13 +19,13 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2019_08_01.ProcessThreadInfo;
 
 class ProcessInfoImpl extends IndexableRefreshableWrapperImpl<ProcessInfo, ProcessInfoInner> implements ProcessInfo {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String processId;
     private String instanceId;
 
-    ProcessInfoImpl(ProcessInfoInner inner,  CertificateRegistrationManager manager) {
+    ProcessInfoImpl(ProcessInfoInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -36,7 +36,7 @@ class ProcessInfoImpl extends IndexableRefreshableWrapperImpl<ProcessInfo, Proce
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

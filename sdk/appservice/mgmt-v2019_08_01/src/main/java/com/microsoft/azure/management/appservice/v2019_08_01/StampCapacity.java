@@ -10,13 +10,13 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.StampCapacityInner;
 
 /**
  * Type representing StampCapacity.
  */
-public interface StampCapacity extends HasInner<StampCapacityInner>, HasManager<CertificateRegistrationManager> {
+public interface StampCapacity extends HasInner<StampCapacityInner>, HasManager<AppServiceManager> {
     /**
      * @return the availableCapacity value.
      */

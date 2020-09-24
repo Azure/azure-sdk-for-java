@@ -15,14 +15,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.DatabaseBackupSetti
 import com.microsoft.azure.management.appservice.v2019_08_01.BackupRestoreOperationType;
 
 class RestoreRequestImpl extends WrapperImpl<RestoreRequestInner> implements RestoreRequest {
-    private final CertificateRegistrationManager manager;
-    RestoreRequestImpl(RestoreRequestInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    RestoreRequestImpl(RestoreRequestInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

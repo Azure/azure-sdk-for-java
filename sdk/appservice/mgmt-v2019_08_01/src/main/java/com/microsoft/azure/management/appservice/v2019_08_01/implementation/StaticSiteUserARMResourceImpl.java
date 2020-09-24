@@ -13,13 +13,13 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class StaticSiteUserARMResourceImpl extends CreatableUpdatableImpl<StaticSiteUserARMResource, StaticSiteUserARMResourceInner, StaticSiteUserARMResourceImpl> implements StaticSiteUserARMResource, StaticSiteUserARMResource.Update {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String authprovider;
     private String userid;
 
-    StaticSiteUserARMResourceImpl(String name, CertificateRegistrationManager manager) {
+    StaticSiteUserARMResourceImpl(String name, AppServiceManager manager) {
         super(name, new StaticSiteUserARMResourceInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class StaticSiteUserARMResourceImpl extends CreatableUpdatableImpl<StaticSiteUse
         //
     }
 
-    StaticSiteUserARMResourceImpl(StaticSiteUserARMResourceInner inner, CertificateRegistrationManager manager) {
+    StaticSiteUserARMResourceImpl(StaticSiteUserARMResourceInner inner, AppServiceManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -41,7 +41,7 @@ class StaticSiteUserARMResourceImpl extends CreatableUpdatableImpl<StaticSiteUse
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

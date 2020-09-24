@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class SiteVnetGatewayImpl extends CreatableUpdatableImpl<SiteVnetGateway, VnetGatewayInner, SiteVnetGatewayImpl> implements SiteVnetGateway, SiteVnetGateway.Definition, SiteVnetGateway.Update {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String vnetName;
     private String gatewayName;
     private String slot;
 
-    SiteVnetGatewayImpl(String name, CertificateRegistrationManager manager) {
+    SiteVnetGatewayImpl(String name, AppServiceManager manager) {
         super(name, new VnetGatewayInner());
         this.manager = manager;
         // Set resource name
@@ -28,7 +28,7 @@ class SiteVnetGatewayImpl extends CreatableUpdatableImpl<SiteVnetGateway, VnetGa
         //
     }
 
-    SiteVnetGatewayImpl(VnetGatewayInner inner, CertificateRegistrationManager manager) {
+    SiteVnetGatewayImpl(VnetGatewayInner inner, AppServiceManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -43,7 +43,7 @@ class SiteVnetGatewayImpl extends CreatableUpdatableImpl<SiteVnetGateway, VnetGa
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

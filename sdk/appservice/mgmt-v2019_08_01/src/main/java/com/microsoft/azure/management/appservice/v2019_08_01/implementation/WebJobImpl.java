@@ -15,13 +15,13 @@ import java.util.Map;
 import com.microsoft.azure.management.appservice.v2019_08_01.WebJobType;
 
 class WebJobImpl extends IndexableRefreshableWrapperImpl<WebJob, WebJobInner> implements WebJob {
-    private final CertificateRegistrationManager manager;
+    private final AppServiceManager manager;
     private String resourceGroupName;
     private String name;
     private String webJobName;
     private String slot;
 
-    WebJobImpl(WebJobInner inner,  CertificateRegistrationManager manager) {
+    WebJobImpl(WebJobInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -32,7 +32,7 @@ class WebJobImpl extends IndexableRefreshableWrapperImpl<WebJob, WebJobInner> im
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

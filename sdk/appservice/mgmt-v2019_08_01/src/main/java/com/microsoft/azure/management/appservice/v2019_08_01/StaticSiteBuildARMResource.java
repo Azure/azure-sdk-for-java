@@ -13,13 +13,13 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.Stat
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
 import org.joda.time.DateTime;
 
 /**
  * Type representing StaticSiteBuildARMResource.
  */
-public interface StaticSiteBuildARMResource extends HasInner<StaticSiteBuildARMResourceInner>, Indexable, Refreshable<StaticSiteBuildARMResource>, HasManager<CertificateRegistrationManager> {
+public interface StaticSiteBuildARMResource extends HasInner<StaticSiteBuildARMResourceInner>, Indexable, Refreshable<StaticSiteBuildARMResource>, HasManager<AppServiceManager> {
     /**
      * @return the buildId value.
      */

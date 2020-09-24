@@ -31,14 +31,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.ScmType;
 import com.microsoft.azure.management.appservice.v2019_08_01.VirtualApplication;
 
 class SiteConfigResourceImpl extends WrapperImpl<SiteConfigResourceInner> implements SiteConfigResource {
-    private final CertificateRegistrationManager manager;
-    SiteConfigResourceImpl(SiteConfigResourceInner inner, CertificateRegistrationManager manager) {
+    private final AppServiceManager manager;
+    SiteConfigResourceImpl(SiteConfigResourceInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CertificateRegistrationManager manager() {
+    public AppServiceManager manager() {
         return this.manager;
     }
 

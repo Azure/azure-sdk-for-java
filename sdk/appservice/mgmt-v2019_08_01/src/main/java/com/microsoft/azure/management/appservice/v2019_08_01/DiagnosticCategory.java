@@ -13,12 +13,12 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.Diag
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
 
 /**
  * Type representing DiagnosticCategory.
  */
-public interface DiagnosticCategory extends HasInner<DiagnosticCategoryInner>, Indexable, Refreshable<DiagnosticCategory>, HasManager<CertificateRegistrationManager> {
+public interface DiagnosticCategory extends HasInner<DiagnosticCategoryInner>, Indexable, Refreshable<DiagnosticCategory>, HasManager<AppServiceManager> {
     /**
      * @return the description value.
      */
