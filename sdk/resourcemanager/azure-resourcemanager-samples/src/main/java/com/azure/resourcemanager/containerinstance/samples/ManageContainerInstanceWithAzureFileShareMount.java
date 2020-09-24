@@ -11,6 +11,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -83,7 +84,7 @@ public class ManageContainerInstanceWithAzureFileShareMount {
             String storageAccountName = containerGroup.volumes().get(volumeMountName).azureFile().storageAccountName();
             StorageAccount storageAccount = azureResourceManager.storageAccounts().getByResourceGroup(rgName, storageAccountName);
             ShareClient shareClient = new ShareClientBuilder()
-                .connectionString(com.azure.resourcemanager.resources.fluentcore.utils.Utils.getStorageConnectionString(
+                .connectionString(ResourceManagerUtils.getStorageConnectionString(
                     storageAccountName,
                     storageAccount.getKeys().get(0).value(),
                     azureResourceManager.containerGroups().manager().environment()

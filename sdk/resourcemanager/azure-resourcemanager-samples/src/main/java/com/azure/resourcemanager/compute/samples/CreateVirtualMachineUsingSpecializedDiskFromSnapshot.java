@@ -118,7 +118,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                     .create();
 
             System.out.println("Created managed snapshot holding OS: " + osSnapshot.id());
-            // Utils.print(osSnapshot); TODO
+            // ResourceManagerUtils.print(osSnapshot); TODO
 
             //=============================================================
             // Create Managed snapshot from the Data managed disks
@@ -137,7 +137,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                 dataSnapshots.add(dataSnapshot);
 
                 System.out.println("Created managed snapshot holding data: " + dataSnapshot.id());
-                // Utils.print(dataDisk); TODO
+                // ResourceManagerUtils.print(dataDisk); TODO
                 i++;
             }
 
@@ -154,7 +154,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                     .create();
 
             System.out.println("Created managed disk holding OS: " + osDisk.id());
-            // Utils.print(osDisk); TODO
+            // ResourceManagerUtils.print(osDisk); TODO
 
             //=============================================================
             // Create Managed disks from the data snapshots
@@ -173,7 +173,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                 newDataDisks.add(dataDisk);
 
                 System.out.println("Created managed disk holding data: " + dataDisk.id());
-                // Utils.print(dataDisk); TODO
+                // ResourceManagerUtils.print(dataDisk); TODO
                 i++;
             }
 

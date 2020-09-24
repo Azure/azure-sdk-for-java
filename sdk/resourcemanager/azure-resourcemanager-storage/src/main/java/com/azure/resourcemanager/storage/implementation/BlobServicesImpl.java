@@ -38,6 +38,6 @@ public class BlobServicesImpl extends WrapperImpl<BlobServicesClient> implements
 
     @Override
     public Mono<BlobServiceProperties> getServicePropertiesAsync(String resourceGroupName, String accountName) {
-        return inner().getServicePropertiesAsync(resourceGroupName, accountName).map(inner -> wrapModel(inner));
+        return innerModel().getServicePropertiesAsync(resourceGroupName, accountName).map(inner -> wrapModel(inner));
     }
 }

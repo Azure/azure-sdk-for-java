@@ -53,7 +53,7 @@ class ServiceBusSubscriptionsImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.inner().deleteAsync(this.resourceGroupName,
+        return this.innerModel().deleteAsync(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName,
                 name);
@@ -61,17 +61,17 @@ class ServiceBusSubscriptionsImpl
 
     @Override
     protected Mono<SubscriptionResourceInner> getInnerByNameAsync(String name) {
-        return this.inner().getAsync(this.resourceGroupName, this.namespaceName, this.topicName, name);
+        return this.innerModel().getAsync(this.resourceGroupName, this.namespaceName, this.topicName, name);
     }
 
     @Override
     protected PagedFlux<SubscriptionResourceInner> listInnerAsync() {
-        return this.inner().listAllAsync(this.resourceGroupName, this.namespaceName, this.topicName);
+        return this.innerModel().listAllAsync(this.resourceGroupName, this.namespaceName, this.topicName);
     }
 
     @Override
     protected PagedIterable<SubscriptionResourceInner> listInner() {
-        return this.inner().listAll(this.resourceGroupName, this.namespaceName, this.topicName);
+        return this.innerModel().listAll(this.resourceGroupName, this.namespaceName, this.topicName);
     }
 
     @Override

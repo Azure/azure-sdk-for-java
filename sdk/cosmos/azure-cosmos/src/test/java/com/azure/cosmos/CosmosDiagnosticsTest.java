@@ -42,6 +42,7 @@ import java.net.InetSocketAddress;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -51,11 +52,11 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.InstanceOfAssertFactories.INSTANT;
 
 public class CosmosDiagnosticsTest extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
-        DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US).withZone(ZoneOffset.UTC);
+    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER = DateTimeFormatter.ISO_INSTANT;
     private CosmosClient gatewayClient;
     private CosmosClient directClient;
     private CosmosContainer container;
@@ -221,6 +222,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineDirect(diagnostics);
             validateJson(diagnostics);
+
+            // validate that on failed operation request timeline is populated
+            try {
+                cosmosContainer.createItem(internalObjectNode);
+                fail("expected 409");
+            } catch (CosmosException e) {
+                validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
+            }
         } finally {
             if (testDirectClient != null) {
                 testDirectClient.close();
@@ -436,15 +445,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(node.get("storeResult").asText()).isNotNull();
 
             String requestResponseTimeUTC  = node.get("requestResponseTimeUTC").asText();
-            String formattedInstant = RESPONSE_TIME_FORMATTER.format(Instant.now());
-            String[] requestResponseTimeUTCList = requestResponseTimeUTC.split(" ");
-            String[] formattedInstantList = formattedInstant.split(" ");
-            assertThat(requestResponseTimeUTC.length()).isEqualTo(formattedInstant.length());
-            assertThat(requestResponseTimeUTCList.length).isEqualTo(formattedInstantList.length);
-            assertThat(requestResponseTimeUTCList[0]).isEqualTo(formattedInstantList[0]);
-            assertThat(requestResponseTimeUTCList[1]).isEqualTo(formattedInstantList[1]);
-            assertThat(requestResponseTimeUTCList[2]).isEqualTo(formattedInstantList[2]);
-
+            Instant instant = Instant.from(RESPONSE_TIME_FORMATTER.parse(requestResponseTimeUTC));
+            assertThat(Instant.now().toEpochMilli() - instant.toEpochMilli()).isLessThan(5000);
             assertThat(node.get("requestResponseTimeUTC")).isNotNull();
             assertThat(node.get("requestOperationType")).isNotNull();
             assertThat(node.get("requestOperationType")).isNotNull();
@@ -488,6 +490,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"serializationType\":\"ITEM_DESERIALIZATION\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
     }
+
+
+
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void addressResolutionStatistics() {

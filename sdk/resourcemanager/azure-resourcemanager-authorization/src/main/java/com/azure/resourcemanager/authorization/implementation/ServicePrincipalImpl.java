@@ -70,12 +70,12 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
 
     @Override
     public String applicationId() {
-        return inner().appId();
+        return innerModel().appId();
     }
 
     @Override
     public List<String> servicePrincipalNames() {
-        return inner().servicePrincipalNames();
+        return innerModel().servicePrincipalNames();
     }
 
     @Override
@@ -139,7 +139,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
             }
             List<KeyCredentialInner> updateKeyCredentials = new ArrayList<>();
             for (CertificateCredential certificateCredential : newCerts.values()) {
-                updateKeyCredentials.add(certificateCredential.inner());
+                updateKeyCredentials.add(certificateCredential.innerModel());
             }
             mono =
                 mono
@@ -161,7 +161,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
             }
             List<PasswordCredentialInner> updatePasswordCredentials = new ArrayList<>();
             for (PasswordCredential passwordCredential : newPasses.values()) {
-                updatePasswordCredentials.add(passwordCredential.inner());
+                updatePasswordCredentials.add(passwordCredential.innerModel());
             }
             mono =
                 mono
@@ -361,7 +361,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
 
     @Override
     public String id() {
-        return inner().objectId();
+        return innerModel().objectId();
     }
 
     @Override

@@ -56,7 +56,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //                    .create();
 //
 //            System.out.println("Created CosmosDB");
-//            Utils.print(cosmosDBAccount);
+//            ResourceManagerUtils.print(cosmosDBAccount);
 //
 //            //============================================================
 //            // Create a service principal
@@ -128,7 +128,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //
 //            Date t2 = new Date();
 //            System.out.println("Created Azure Container Registry: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureRegistry.id());
-//            Utils.print(azureRegistry);
+//            ResourceManagerUtils.print(azureRegistry);
 //
 //            //=============================================================
 //            // Create a Docker client that will be used to push/pull images to/from the Azure Container Registry
@@ -164,7 +164,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //                    .create();
 //
 //            System.out.println("Created web app " + app1.name());
-//            Utils.print(app1);
+//            ResourceManagerUtils.print(app1);
 //
 //            return true;
 //        } catch (Exception e) {

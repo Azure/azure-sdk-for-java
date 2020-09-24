@@ -25,7 +25,7 @@ import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -53,35 +53,35 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
         initRecordSets();
         if (isInCreateMode()) {
             // Set the zone type to Public by default
-            this.inner().withZoneType(ZoneType.PUBLIC);
+            this.innerModel().withZoneType(ZoneType.PUBLIC);
         }
     }
 
     @Override
     public long maxNumberOfRecordSets() {
-        return Utils.toPrimitiveLong(this.inner().maxNumberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().maxNumberOfRecordSets());
     }
 
     @Override
     public long numberOfRecordSets() {
-        return Utils.toPrimitiveLong(this.inner().numberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().numberOfRecordSets());
     }
 
     @Override
     public String etag() {
-        return this.inner().etag();
+        return this.innerModel().etag();
     }
 
     @Override
     public ZoneType accessType() {
-        return this.inner().zoneType();
+        return this.innerModel().zoneType();
     }
 
     @Override
     public List<String> registrationVirtualNetworkIds() {
         List<String> list = new ArrayList<>();
-        if (this.inner().registrationVirtualNetworks() != null) {
-            for (SubResource sb : this.inner().registrationVirtualNetworks()) {
+        if (this.innerModel().registrationVirtualNetworks() != null) {
+            for (SubResource sb : this.innerModel().registrationVirtualNetworks()) {
                 list.add(sb.id());
             }
         }
@@ -91,8 +91,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     @Override
     public List<String> resolutionVirtualNetworkIds() {
         List<String> list = new ArrayList<>();
-        if (this.inner().resolutionVirtualNetworks() != null) {
-            for (SubResource sb : this.inner().resolutionVirtualNetworks()) {
+        if (this.innerModel().resolutionVirtualNetworks() != null) {
+            for (SubResource sb : this.innerModel().resolutionVirtualNetworks()) {
                 list.add(sb.id());
             }
         }
@@ -121,10 +121,10 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
 
     @Override
     public List<String> nameServers() {
-        if (this.inner() == null) {
+        if (this.innerModel() == null) {
             return new ArrayList<>();
         }
-        return this.inner().nameServers();
+        return this.innerModel().nameServers();
     }
 
     @Override
@@ -409,8 +409,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                         .createOrUpdateAsync(
                             self.resourceGroupName(),
                             self.name(),
-                            self.inner(),
-                            etagState.ifMatchValueOnUpdate(self.inner().etag()),
+                            self.innerModel(),
+                            etagState.ifMatchValueOnUpdate(self.innerModel().etag()),
                             etagState.ifNonMatchValueOnCreate()))
             .map(innerToFluentMap(this))
             .map(

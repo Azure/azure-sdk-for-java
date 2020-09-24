@@ -25,6 +25,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
@@ -41,6 +42,7 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
@@ -219,7 +221,7 @@ public class BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream() {
-        return openInputStream(new BlobRange(0), null);
+        return openInputStream(null, null);
     }
 
     /**
@@ -233,7 +235,23 @@ public class BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
-        return new BlobInputStream(client, range.getOffset(), range.getCount(), requestConditions);
+        return openInputStream(new BlobInputStreamOptions().setRange(range).setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Opens a blob input stream to download the specified range of the blob.
+     *
+     * @param options {@link BlobInputStreamOptions}
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobInputStream openInputStream(BlobInputStreamOptions options) {
+        options = options == null ? new BlobInputStreamOptions() : options;
+        BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
+        int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
+
+        return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
+            options.getRequestConditions(), getProperties());
     }
 
     /**

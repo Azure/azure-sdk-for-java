@@ -34,9 +34,9 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
 
         sqlServers[0] = future.get();
 
-        Assertions.assertNotNull(sqlServers[0].inner());
+        Assertions.assertNotNull(sqlServers[0].innerModel());
 
-        Assertions.assertNotNull(sqlServers[0].inner());
+        Assertions.assertNotNull(sqlServers[0].innerModel());
         // Including master database
         Assertions.assertEquals(sqlServers[0].databases().list().size(), 3);
         Assertions.assertEquals(sqlServers[0].elasticPools().list().size(), 1);
@@ -55,7 +55,7 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
                 .withoutElasticPool("elasticPool1")
                 .apply();
 
-        Assertions.assertNotNull(sqlServer.inner());
+        Assertions.assertNotNull(sqlServer.innerModel());
         // Just master database
         Assertions.assertEquals(1, sqlServer.databases().list().size());
         Assertions.assertEquals(0, sqlServer.elasticPools().list().size());

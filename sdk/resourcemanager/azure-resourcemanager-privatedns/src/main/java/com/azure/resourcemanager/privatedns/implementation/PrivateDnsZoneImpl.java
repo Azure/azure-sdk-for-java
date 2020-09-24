@@ -22,7 +22,7 @@ import com.azure.resourcemanager.privatedns.models.TxtRecordSets;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinks;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 /** Implementation for {@link PrivateDnsZone}. */
@@ -60,42 +60,42 @@ class PrivateDnsZoneImpl
 
     @Override
     public String etag() {
-        return inner().etag();
+        return innerModel().etag();
     }
 
     @Override
     public long maxNumberOfRecordSets() {
-        return Utils.toPrimitiveLong(inner().maxNumberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().maxNumberOfRecordSets());
     }
 
     @Override
     public long numberOfRecordSets() {
-        return Utils.toPrimitiveLong(inner().numberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().numberOfRecordSets());
     }
 
     @Override
     public long maxNumberOfVirtualNetworkLinks() {
-        return Utils.toPrimitiveLong(inner().maxNumberOfVirtualNetworkLinks());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().maxNumberOfVirtualNetworkLinks());
     }
 
     @Override
     public long numberOfVirtualNetworkLinks() {
-        return Utils.toPrimitiveLong(inner().numberOfVirtualNetworkLinks());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().numberOfVirtualNetworkLinks());
     }
 
     @Override
     public long maxNumberOfVirtualNetworkLinksWithRegistration() {
-        return Utils.toPrimitiveLong(inner().maxNumberOfVirtualNetworkLinksWithRegistration());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().maxNumberOfVirtualNetworkLinksWithRegistration());
     }
 
     @Override
     public long numberOfVirtualNetworkLinksWithRegistration() {
-        return Utils.toPrimitiveLong(inner().numberOfVirtualNetworkLinksWithRegistration());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().numberOfVirtualNetworkLinksWithRegistration());
     }
 
     @Override
     public ProvisioningState provisioningState() {
-        return inner().provisioningState();
+        return innerModel().provisioningState();
     }
 
     @Override
@@ -387,8 +387,8 @@ class PrivateDnsZoneImpl
             .createOrUpdateAsync(
                 resourceGroupName(),
                 name(),
-                inner(),
-                etagState.ifMatchValueOnUpdate(inner().etag()),
+                innerModel(),
+                etagState.ifMatchValueOnUpdate(innerModel().etag()),
                 etagState.ifNonMatchValueOnCreate())
             .map(innerToFluentMap(this))
             .map(privateDnsZone -> {

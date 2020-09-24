@@ -7,7 +7,7 @@ module com.azure.resourcemanager.resources {
     // export public APIs of resources
     exports com.azure.resourcemanager.resources;
     exports com.azure.resourcemanager.resources.fluent;
-    exports com.azure.resourcemanager.resources.fluent.inner;
+    exports com.azure.resourcemanager.resources.fluent.models;
     exports com.azure.resourcemanager.resources.models;
 
     // export public APIs used commonly across multiple services
@@ -115,7 +115,7 @@ module com.azure.resourcemanager.resources {
         com.azure.resourcemanager.trafficmanager;
 
     // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.resources.fluent.inner to
+    opens com.azure.resourcemanager.resources.fluent.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.resources.models to

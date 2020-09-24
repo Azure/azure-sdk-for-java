@@ -1323,7 +1323,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         for (String geography : geographies) {
             for (Location location : locations) {
                 if (location.regionType() == RegionType.PHYSICAL) {
-                    if (geography.equals(location.inner().metadata().geographyGroup())) {
+                    if (geography.equals(location.innerModel().metadata().geographyGroup())) {
                         locationGroupByGeography.add(location);
                     }
                 }
@@ -1331,7 +1331,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         }
         for (Location location : locations) {
             if (location.regionType() == RegionType.PHYSICAL) {
-                if (!geographies.contains(location.inner().metadata().geographyGroup())) {
+                if (!geographies.contains(location.innerModel().metadata().geographyGroup())) {
                     locationGroupByGeography.add(location);
                 }
             }
@@ -1346,8 +1346,8 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
                         .append("\n").append(MessageFormat.format(
                             " * {0} ({1})",
                             location.displayName(),
-                            location.inner().metadata().geographyGroup()))
-                        .append(location.inner().metadata().regionCategory() == RegionCategory.RECOMMENDED
+                            location.innerModel().metadata().geographyGroup()))
+                        .append(location.innerModel().metadata().regionCategory() == RegionCategory.RECOMMENDED
                             ? " (recommended)" : "")
                         .append("\n").append(" */")
                         .append("\n").append(MessageFormat.format(
@@ -1374,7 +1374,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     }
 
     private static String getLocationVariableName(Location location) {
-        final String geographyGroup = location.inner().metadata().geographyGroup();
+        final String geographyGroup = location.innerModel().metadata().geographyGroup();
         String displayName = location.displayName();
         if ("US".equals(geographyGroup)) {
             if (displayName.contains(" US")) {

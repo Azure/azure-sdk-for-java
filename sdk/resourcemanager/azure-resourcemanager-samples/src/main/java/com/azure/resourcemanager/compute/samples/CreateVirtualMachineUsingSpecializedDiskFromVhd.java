@@ -122,7 +122,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                     .create();
 
             System.out.println("Created managed disk holding OS: " + osDisk.id());
-            // Utils.print(osDisk); TODO
+            // ResourceManagerUtils.print(osDisk); TODO
 
             //=============================================================
             // Create Managed disks from the Data VHDs
@@ -144,7 +144,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                 dataDisks.add(dataDisk);
 
                 System.out.println("Created managed disk holding data: " + dataDisk.id());
-                // Utils.print(dataDisk); TODO
+                // ResourceManagerUtils.print(dataDisk); TODO
                 i++;
             }
 

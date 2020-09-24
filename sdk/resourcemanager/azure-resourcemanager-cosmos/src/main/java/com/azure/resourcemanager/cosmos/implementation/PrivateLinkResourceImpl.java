@@ -16,26 +16,26 @@ public class PrivateLinkResourceImpl extends WrapperImpl<PrivateLinkResourceInne
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public String name() {
-        return inner().name();
+        return innerModel().name();
     }
 
     @Override
     public String type() {
-        return inner().type();
+        return innerModel().type();
     }
 
     @Override
     public String groupId() {
-        return inner().groupId();
+        return innerModel().groupId();
     }
 
     @Override
     public List<String> requiredMembers() {
-        return inner().requiredMembers();
+        return innerModel().requiredMembers();
     }
 }

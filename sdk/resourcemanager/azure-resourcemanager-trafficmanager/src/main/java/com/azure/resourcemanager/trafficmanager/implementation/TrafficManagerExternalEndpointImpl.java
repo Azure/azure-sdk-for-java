@@ -17,11 +17,11 @@ class TrafficManagerExternalEndpointImpl extends TrafficManagerEndpointImpl impl
 
     @Override
     public String fqdn() {
-        return inner().target();
+        return innerModel().target();
     }
 
     @Override
     public Region sourceTrafficLocation() {
-        return Region.fromName((inner().endpointLocation()));
+        return Region.fromName((innerModel().endpointLocation()));
     }
 }

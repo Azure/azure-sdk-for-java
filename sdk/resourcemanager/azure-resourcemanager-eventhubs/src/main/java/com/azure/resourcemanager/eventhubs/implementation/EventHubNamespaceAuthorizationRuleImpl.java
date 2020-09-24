@@ -78,7 +78,7 @@ class EventHubNamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<E
                 .createOrUpdateAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor1Name(),
                         this.name(),
-                        this.inner().rights())
+                        this.innerModel().rights())
                 .map(innerToFluentMap(this));
     }
 

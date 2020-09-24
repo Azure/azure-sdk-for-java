@@ -10,7 +10,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryEncodedTaskSte
 import com.azure.resourcemanager.containerregistry.models.RegistryTask;
 import com.azure.resourcemanager.containerregistry.models.SetValue;
 import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,16 +20,16 @@ class RegistryEncodedTaskStepImpl extends RegistryTaskStepImpl
     implements RegistryEncodedTaskStep,
         RegistryEncodedTaskStep.Definition,
         RegistryEncodedTaskStep.Update,
-        HasInner<EncodedTaskStep> {
+        HasInnerModel<EncodedTaskStep> {
 
     private EncodedTaskStep inner;
     private EncodedTaskStepUpdateParameters encodedTaskStepUpdateParameters;
     private RegistryTaskImpl taskImpl;
 
     RegistryEncodedTaskStepImpl(RegistryTaskImpl taskImpl) {
-        super(taskImpl.inner().step());
+        super(taskImpl.innerModel().step());
         this.inner = new EncodedTaskStep();
-        if (taskImpl.inner().step() != null && !(taskImpl.inner().step() instanceof EncodedTaskStep)) {
+        if (taskImpl.innerModel().step() != null && !(taskImpl.innerModel().step() instanceof EncodedTaskStep)) {
             throw new IllegalArgumentException(
                 "Constructor for RegistryEncodedTaskStepImpl invoked for class that is not an EncodedTaskStep");
         }
@@ -59,7 +59,7 @@ class RegistryEncodedTaskStepImpl extends RegistryTaskStepImpl
     }
 
     private EncodedTaskStep encodedTaskStep() {
-        TaskStepProperties step = this.taskImpl.inner().step();
+        TaskStepProperties step = this.taskImpl.innerModel().step();
         if (step instanceof EncodedTaskStep) {
             return (EncodedTaskStep) step;
         } else {
@@ -138,12 +138,12 @@ class RegistryEncodedTaskStepImpl extends RegistryTaskStepImpl
     }
 
     @Override
-    public EncodedTaskStep inner() {
+    public EncodedTaskStep innerModel() {
         return this.inner;
     }
 
     private boolean isInCreateMode() {
-        if (this.taskImpl.inner().id() == null) {
+        if (this.taskImpl.innerModel().id() == null) {
             return true;
         }
         return false;

@@ -15,8 +15,8 @@ public class ApplicationSecurityGroupsImpl
         ApplicationSecurityGroup,
         ApplicationSecurityGroupImpl,
         ApplicationSecurityGroupInner,
-    ApplicationSecurityGroupsClient,
-    NetworkManager>
+        ApplicationSecurityGroupsClient,
+        NetworkManager>
     implements ApplicationSecurityGroups {
 
     public ApplicationSecurityGroupsImpl(final NetworkManager networkManager) {

@@ -20,31 +20,31 @@ class MetricCollectionImpl extends WrapperImpl<ResponseInner> implements MetricC
 
     @Override
     public String namespace() {
-        return this.inner().namespace();
+        return this.innerModel().namespace();
     }
 
     @Override
     public String resourceRegion() {
-        return this.inner().resourceRegion();
+        return this.innerModel().resourceRegion();
     }
 
     @Override
     public Double cost() {
-        return this.inner().cost().doubleValue();
+        return this.innerModel().cost().doubleValue();
     }
 
     @Override
     public String timespan() {
-        return this.inner().timespan();
+        return this.innerModel().timespan();
     }
 
     @Override
     public Duration interval() {
-        return this.inner().interval();
+        return this.innerModel().interval();
     }
 
     @Override
     public List<Metric> metrics() {
-        return this.inner().value().stream().map(MetricImpl::new).collect(Collectors.toList());
+        return this.innerModel().value().stream().map(MetricImpl::new).collect(Collectors.toList());
     }
 }

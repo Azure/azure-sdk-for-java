@@ -22,21 +22,21 @@ class MXRecordSetImpl extends DnsRecordSetImpl implements MXRecordSet {
 
     @Override
     public List<MxRecord> records() {
-        if (this.inner().mxRecords() != null) {
-            return Collections.unmodifiableList(this.inner().mxRecords());
+        if (this.innerModel().mxRecords() != null) {
+            return Collections.unmodifiableList(this.innerModel().mxRecords());
         }
         return Collections.unmodifiableList(new ArrayList<>());
     }
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (this.inner().mxRecords() != null && this.inner().mxRecords().size() > 0) {
+        if (this.innerModel().mxRecords() != null && this.innerModel().mxRecords().size() > 0) {
             if (resource.mxRecords() == null) {
                 resource.withMxRecords(new ArrayList<>());
             }
 
-            resource.mxRecords().addAll(this.inner().mxRecords());
-            this.inner().mxRecords().clear();
+            resource.mxRecords().addAll(this.innerModel().mxRecords());
+            this.innerModel().mxRecords().clear();
         }
 
         if (this.recordSetRemoveInfo.mxRecords().size() > 0) {

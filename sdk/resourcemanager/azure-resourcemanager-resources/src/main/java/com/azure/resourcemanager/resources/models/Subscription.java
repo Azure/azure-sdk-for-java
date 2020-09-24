@@ -6,9 +6,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluent.inner.SubscriptionInner;
+import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
 
 /**
  * An immutable client-side representation of an Azure subscription.
@@ -16,7 +16,7 @@ import com.azure.resourcemanager.resources.fluent.inner.SubscriptionInner;
 @Fluent
 public interface Subscription extends
         Indexable,
-        HasInner<SubscriptionInner> {
+        HasInnerModel<SubscriptionInner> {
 
     /**
      * @return the UUID of the subscription

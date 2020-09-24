@@ -29,8 +29,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluent.inner.OperationInner;
+import com.azure.resourcemanager.resources.fluent.models.OperationInner;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import com.azure.resourcemanager.resources.implementation.FeatureClientBuilder;
 import com.azure.resourcemanager.resources.models.OperationListResult;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
@@ -99,7 +100,7 @@ public final class FeatureClient extends AzureServiceClient {
      *
      * @return the serializerAdapter value.
      */
-    public SerializerAdapter getSerializerAdapter() {
+    SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
@@ -134,8 +135,10 @@ public final class FeatureClient extends AzureServiceClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
+     * @param subscriptionId The ID of the target subscription.
+     * @param endpoint server parameter.
      */
-    FeatureClient(
+    public FeatureClient(
         HttpPipeline httpPipeline,
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
@@ -182,7 +185,7 @@ public final class FeatureClient extends AzureServiceClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync() {
+    private Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync() {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
@@ -211,7 +214,7 @@ public final class FeatureClient extends AzureServiceClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync(Context context) {
+    private Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync(Context context) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
@@ -253,7 +256,7 @@ public final class FeatureClient extends AzureServiceClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OperationInner> listOperationsAsync(Context context) {
+    private PagedFlux<OperationInner> listOperationsAsync(Context context) {
         return new PagedFlux<>(
             () -> listOperationsSinglePageAsync(context),
             nextLink -> listOperationsNextSinglePageAsync(nextLink, context));
@@ -295,7 +298,7 @@ public final class FeatureClient extends AzureServiceClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInner>> listOperationsNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<OperationInner>> listOperationsNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -324,7 +327,7 @@ public final class FeatureClient extends AzureServiceClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInner>> listOperationsNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<OperationInner>> listOperationsNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

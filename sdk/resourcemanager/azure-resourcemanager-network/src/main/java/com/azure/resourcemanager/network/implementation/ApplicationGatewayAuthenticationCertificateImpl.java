@@ -32,12 +32,12 @@ class ApplicationGatewayAuthenticationCertificateImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String data() {
-        return this.inner().data();
+        return this.innerModel().data();
     }
 
     // Verbs
@@ -71,7 +71,7 @@ class ApplicationGatewayAuthenticationCertificateImpl
             return this;
         }
 
-        this.inner().withData(base64data);
+        this.innerModel().withData(base64data);
         return this;
     }
 }
