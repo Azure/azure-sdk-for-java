@@ -59,8 +59,9 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
+        this.msiManager = MSIManager.authenticate(httpPipeline, profile);
         this.resourceManager = msiManager.resourceManager();
+        setSdkContext(sdkContext, msiManager);
     }
 
     @Override

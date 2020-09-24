@@ -39,11 +39,11 @@ public class ManageSqlServerDnsAliases {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws ClassNotFoundException, SQLException {
-        final String sqlServerForTestName = azureResourceManager.sdkContext().randomResourceName("sqltest", 20);
-        final String sqlServerForProdName = azureResourceManager.sdkContext().randomResourceName("sqlprod", 20);
-        final String sqlServerDnsAlias = azureResourceManager.sdkContext().randomResourceName("sqlserver", 20);
+        final String sqlServerForTestName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("sqltest", 20);
+        final String sqlServerForProdName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("sqlprod", 20);
+        final String sqlServerDnsAlias = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("sqlserver", 20);
         final String dbName = "dbSample";
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSSDFW", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgRSSDFW", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
         try {

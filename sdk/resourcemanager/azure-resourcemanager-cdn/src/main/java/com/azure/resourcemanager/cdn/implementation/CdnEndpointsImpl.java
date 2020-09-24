@@ -110,7 +110,8 @@ class CdnEndpointsImpl extends
         CheckNameAvailabilityResult result;
 
         do {
-            endpointName = this.getParent().manager().sdkContext().randomResourceName(endpointNamePrefix, 50);
+            endpointName = this.getParent().manager().resourceManager().sdkContext()
+                .randomResourceName(endpointNamePrefix, 50);
             result = this.getParent().checkEndpointNameAvailability(endpointName);
         } while (!result.nameAvailable());
 
