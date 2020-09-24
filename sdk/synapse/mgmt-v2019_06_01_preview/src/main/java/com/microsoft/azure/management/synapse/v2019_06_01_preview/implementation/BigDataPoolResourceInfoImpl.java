@@ -104,6 +104,11 @@ class BigDataPoolResourceInfoImpl extends CreatableUpdatableImpl<BigDataPoolReso
     }
 
     @Override
+    public Boolean isComputeIsolationEnabled() {
+        return this.inner().isComputeIsolationEnabled();
+    }
+
+    @Override
     public LibraryRequirements libraryRequirements() {
         return this.inner().libraryRequirements();
     }
@@ -202,6 +207,12 @@ class BigDataPoolResourceInfoImpl extends CreatableUpdatableImpl<BigDataPoolReso
     @Override
     public BigDataPoolResourceInfoImpl withDefaultSparkLogFolder(String defaultSparkLogFolder) {
         this.inner().withDefaultSparkLogFolder(defaultSparkLogFolder);
+        return this;
+    }
+
+    @Override
+    public BigDataPoolResourceInfoImpl withIsComputeIsolationEnabled(Boolean isComputeIsolationEnabled) {
+        this.inner().withIsComputeIsolationEnabled(isComputeIsolationEnabled);
         return this;
     }
 

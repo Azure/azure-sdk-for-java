@@ -9,35 +9,17 @@
 package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.EntityResource;
 
 /**
  * Integration runtime resource type.
  */
-public class IntegrationRuntimeResourceInner extends SubResource {
+public class IntegrationRuntimeResourceInner extends EntityResource {
     /**
      * Integration runtime properties.
      */
     @JsonProperty(value = "properties", required = true)
     private IntegrationRuntimeInner properties;
-
-    /**
-     * The resource name.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /**
-     * The resource type.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
-
-    /**
-     * Etag identifies change in the resource.
-     */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String etag;
 
     /**
      * Get integration runtime properties.
@@ -57,33 +39,6 @@ public class IntegrationRuntimeResourceInner extends SubResource {
     public IntegrationRuntimeResourceInner withProperties(IntegrationRuntimeInner properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the resource name.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the resource type.
-     *
-     * @return the type value
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Get etag identifies change in the resource.
-     *
-     * @return the etag value
-     */
-    public String etag() {
-        return this.etag;
     }
 
 }
