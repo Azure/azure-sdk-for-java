@@ -2,8 +2,8 @@
 
 Azure Communication Administration is used for managing users and tokens for Azure Communication Services.
 
-<!-- [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
-| [Product documentation][azconfig_docs] -->
+[Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
+| [Product documentation][azconfig_docs]
 ## Getting started
 
 ### Prerequisites
@@ -119,7 +119,7 @@ Check out other client libraries for Azure communication service
 [azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
 [package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
 [api_documentation]: https://aka.ms/java-docs
-[source]: src
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-administration
 
 
 

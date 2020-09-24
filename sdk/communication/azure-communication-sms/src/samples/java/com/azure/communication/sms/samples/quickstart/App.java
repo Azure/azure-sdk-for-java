@@ -14,6 +14,7 @@ import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 
 /**
  * Hello world!
@@ -22,19 +23,23 @@ import com.azure.core.http.HttpClient;
 public class App {
     public static void main(String[] args) {
 
-        // Retrieve the Azure Communication SMS Service endpoint for use with the application. 
-        // The endpoint string is stored in an environment variable on the machine running the 
-        // application called COMMUNICATION_SERVICES_ENDPOINT.
-        String endpoint = System.getenv("COMMUNICATION_SERVICES_ENDPOINT");
+        /*@@*/ // Retrieve the Azure Communication SMS Service endpoint for use with the application. 
+        /*@@*/ // The endpoint string is stored in an environment variable on the machine running the 
+        /*@@*/ // application called COMMUNICATION_SERVICES_ENDPOINT.
+        /*@@*/ String endpoint = System.getenv("COMMUNICATION_SERVICES_ENDPOINT");
 
-        // Retrieve the access key string for use with the application. The access key
-        // string is stored in an environment variable on the machine running the application 
-        // called COMMUNICATION_SERVICES_ACCESS_KEY.
-        String accessKey = System.getenv("COMMUNICATION_SERVICES_ACCESS_KEY");
+        /*@@*/ // Retrieve the access key string for use with the application. The access key
+        /*@@*/ // string is stored in an environment variable on the machine running the application 
+        /*@@*/ // called COMMUNICATION_SERVICES_ACCESS_KEY.
+        /*@@*/ String accessKey = System.getenv("COMMUNICATION_SERVICES_ACCESS_KEY");
+
+        //@@ // Your can find your endpoint and access token from your resource in the Azure Portal
+        //@@ String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+        //@@ String accessToken = "SECRET";
 
         // Instantiate the http client
-        HttpClient httpClient = null; // Your HttpClient
-
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+        
         CommunicationClientCredential credential = null;
         try {
             credential = new CommunicationClientCredential(accessKey);
