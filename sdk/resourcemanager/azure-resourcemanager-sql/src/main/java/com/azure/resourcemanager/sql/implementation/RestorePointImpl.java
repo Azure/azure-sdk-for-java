@@ -20,17 +20,17 @@ class RestorePointImpl extends WrapperImpl<RestorePointInner> implements Restore
         super(innerObject);
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
-        this.resourceId = ResourceId.fromString(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.innerModel().id());
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -55,16 +55,16 @@ class RestorePointImpl extends WrapperImpl<RestorePointInner> implements Restore
 
     @Override
     public RestorePointType restorePointType() {
-        return this.inner().restorePointType();
+        return this.innerModel().restorePointType();
     }
 
     @Override
     public OffsetDateTime restorePointCreationDate() {
-        return this.inner().restorePointCreationDate();
+        return this.innerModel().restorePointCreationDate();
     }
 
     @Override
     public OffsetDateTime earliestRestoreDate() {
-        return this.inner().earliestRestoreDate();
+        return this.innerModel().earliestRestoreDate();
     }
 }

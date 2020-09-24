@@ -66,7 +66,7 @@ class EventHubNamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<E
 
     @Override
     protected Mono<AuthorizationRuleInner> getInnerAsync() {
-        return this.manager.inner().getNamespaces()
+        return this.manager.serviceClient().getNamespaces()
                 .getAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor1Name(),
                         this.name());
@@ -74,17 +74,17 @@ class EventHubNamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<E
 
     @Override
     public Mono<EventHubNamespaceAuthorizationRule> createResourceAsync() {
-        return this.manager.inner().getNamespaces()
+        return this.manager.serviceClient().getNamespaces()
                 .createOrUpdateAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor1Name(),
                         this.name(),
-                        this.inner().rights())
+                        this.innerModel().rights())
                 .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<AccessKeysInner> getKeysInnerAsync() {
-        return this.manager.inner().getNamespaces()
+        return this.manager.serviceClient().getNamespaces()
                 .listKeysAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor1Name(),
                         this.name());
@@ -94,7 +94,7 @@ class EventHubNamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<E
     protected Mono<AccessKeysInner> regenerateKeysInnerAsync(KeyType keyType) {
         final RegenerateAccessKeyParameters regenKeyInner = new RegenerateAccessKeyParameters()
                 .withKeyType(keyType);
-        return this.manager.inner().getNamespaces()
+        return this.manager.serviceClient().getNamespaces()
                 .regenerateKeysAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor1Name(),
                         this.name(),

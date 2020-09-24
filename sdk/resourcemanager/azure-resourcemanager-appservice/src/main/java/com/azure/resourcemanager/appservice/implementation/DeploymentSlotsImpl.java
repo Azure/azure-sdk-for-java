@@ -26,7 +26,7 @@ class DeploymentSlotsImpl
     private final WebAppImpl parent;
 
     DeploymentSlotsImpl(final WebAppImpl parent) {
-        super(parent.manager().inner().getWebApps(), parent.manager());
+        super(parent.manager().serviceClient().getWebApps(), parent.manager());
 
         this.parent = parent;
     }

@@ -18,7 +18,7 @@ import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLink;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;

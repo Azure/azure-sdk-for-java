@@ -12,8 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point to virtual machine scale set network interface management API. */
 @Fluent
 public interface VirtualMachineScaleSetNetworkInterfaces
-    extends SupportsListing<VirtualMachineScaleSetNetworkInterface>,
-        HasManager<NetworkManager> {
+    extends SupportsListing<VirtualMachineScaleSetNetworkInterface>, HasManager<NetworkManager> {
     /**
      * Gets a network interface associated with a virtual machine scale set instance.
      *

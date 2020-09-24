@@ -20,12 +20,12 @@ class ServiceObjectiveImpl extends RefreshableWrapperImpl<ServiceObjectiveInner,
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -40,17 +40,17 @@ class ServiceObjectiveImpl extends RefreshableWrapperImpl<ServiceObjectiveInner,
 
     @Override
     public String serviceObjectiveName() {
-        return this.inner().serviceObjectiveName();
+        return this.innerModel().serviceObjectiveName();
     }
 
     @Override
     public boolean isDefault() {
-        return this.inner().isDefault();
+        return this.innerModel().isDefault();
     }
 
     @Override
     public boolean isSystem() {
-        return this.inner().isSystem();
+        return this.innerModel().isSystem();
     }
 
     @Override
@@ -60,7 +60,7 @@ class ServiceObjectiveImpl extends RefreshableWrapperImpl<ServiceObjectiveInner,
 
     @Override
     public String description() {
-        return this.inner().description();
+        return this.innerModel().description();
     }
 
     @Override
@@ -68,7 +68,7 @@ class ServiceObjectiveImpl extends RefreshableWrapperImpl<ServiceObjectiveInner,
         return this
             .sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getServiceObjectives()
             .getAsync(this.resourceGroupName(), this.sqlServerName(), this.name());
     }

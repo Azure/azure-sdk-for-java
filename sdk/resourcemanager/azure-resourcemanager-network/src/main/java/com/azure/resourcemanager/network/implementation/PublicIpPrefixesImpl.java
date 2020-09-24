@@ -11,11 +11,11 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 
 public class PublicIpPrefixesImpl
     extends TopLevelModifiableResourcesImpl<
-    PublicIpPrefix, PublicIpPrefixImpl, PublicIpPrefixInner, PublicIpPrefixesClient, NetworkManager>
+        PublicIpPrefix, PublicIpPrefixImpl, PublicIpPrefixInner, PublicIpPrefixesClient, NetworkManager>
     implements PublicIpPrefixes {
 
     public PublicIpPrefixesImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getPublicIpPrefixes(), networkManager);
+        super(networkManager.serviceClient().getPublicIpPrefixes(), networkManager);
     }
 
     @Override
@@ -32,5 +32,4 @@ public class PublicIpPrefixesImpl
     protected PublicIpPrefixImpl wrapModel(String name) {
         return new PublicIpPrefixImpl(name, new PublicIpPrefixInner(), this.manager());
     }
-
 }

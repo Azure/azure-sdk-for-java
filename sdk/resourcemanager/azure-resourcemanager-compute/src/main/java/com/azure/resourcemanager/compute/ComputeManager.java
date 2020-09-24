@@ -45,7 +45,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure compute resource management. */
-public final class ComputeManager extends Manager<ComputeManager, ComputeManagementClient> {
+public final class ComputeManager extends Manager<ComputeManagementClient> {
     // The service managers
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
@@ -180,9 +180,9 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
             virtualMachineImages =
                 new VirtualMachineImagesImpl(
                     new VirtualMachinePublishersImpl(
-                        super.innerManagementClient.getVirtualMachineImages(),
-                        super.innerManagementClient.getVirtualMachineExtensionImages()),
-                    super.innerManagementClient.getVirtualMachineImages());
+                        this.serviceClient().getVirtualMachineImages(),
+                        this.serviceClient().getVirtualMachineExtensionImages()),
+                    this.serviceClient().getVirtualMachineImages());
         }
         return virtualMachineImages;
     }
@@ -193,8 +193,8 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
             virtualMachineExtensionImages =
                 new VirtualMachineExtensionImagesImpl(
                     new VirtualMachinePublishersImpl(
-                        super.innerManagementClient.getVirtualMachineImages(),
-                        super.innerManagementClient.getVirtualMachineExtensionImages()));
+                        this.serviceClient().getVirtualMachineImages(),
+                        this.serviceClient().getVirtualMachineExtensionImages()));
         }
         return virtualMachineExtensionImages;
     }
@@ -211,7 +211,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     /** @return the compute resource usage management API entry point */
     public ComputeUsages usages() {
         if (computeUsages == null) {
-            computeUsages = new ComputeUsagesImpl(super.innerManagementClient);
+            computeUsages = new ComputeUsagesImpl(this.serviceClient());
         }
         return computeUsages;
     }

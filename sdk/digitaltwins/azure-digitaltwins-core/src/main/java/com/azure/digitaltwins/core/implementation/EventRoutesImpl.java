@@ -24,9 +24,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.implementation.models.EventRoute;
 import com.azure.digitaltwins.core.implementation.models.EventRouteCollection;
-import com.azure.digitaltwins.core.models.EventRoute;
-import com.azure.digitaltwins.core.models.EventRoutesListOptions;
+import com.azure.digitaltwins.core.implementation.models.EventRoutesListOptions;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EventRoutes. */

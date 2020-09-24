@@ -9,7 +9,7 @@ import com.azure.resourcemanager.eventhubs.fluent.inner.ArmDisasterRecoveryInner
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
@@ -24,7 +24,7 @@ public interface EventHubDisasterRecoveryPairing extends
     HasManager<EventHubsManager>,
     Refreshable<EventHubDisasterRecoveryPairing>,
     Updatable<EventHubDisasterRecoveryPairing.Update>,
-    HasInner<ArmDisasterRecoveryInner> {
+        HasInnerModel<ArmDisasterRecoveryInner> {
     /**
      * @return primary event hub namespace resource group
      */

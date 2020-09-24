@@ -89,9 +89,8 @@ abstract class EncryptionSettings {
                 publicSettings
                     .put(
                         "KeyEncryptionKeyURL",
-                        config
-                            .keyEncryptionKeyUrl()); // KeyVault to hold Key for encrypting "Disk Encryption Key" (aka
-                                                     // kek).
+                        config.keyEncryptionKeyUrl()); // KeyVault to hold Key for encrypting "Disk Encryption Key" (aka
+                // kek).
             }
             if (this.requestedForLegacyEncryptExtension()) {
                 // Legacy-Encrypt-Extension requires AAD credentials (AADClientID in PublicSettings & AADClientSecret in

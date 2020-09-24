@@ -32,15 +32,15 @@ import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -675,7 +675,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .define(storageName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withSku(SkuName.PREMIUM_LRS)
+                .withSku(StorageAccountSkuType.PREMIUM_LRS)
                 .create();
 
         // Creates a virtual machine with an unmanaged data disk that gets stored in the above
@@ -794,13 +794,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         // checking to see if withTag correctly update
         virtualMachine.update().withTag("test", "testValue").apply();
-        Assertions.assertEquals("testValue", virtualMachine.inner().tags().get("test"));
+        Assertions.assertEquals("testValue", virtualMachine.innerModel().tags().get("test"));
 
         // checking to see if withTags correctly updates
         Map<String, String> testTags = new HashMap<String, String>();
         testTags.put("testTag", "testValue");
         virtualMachine.update().withTags(testTags).apply();
-        Assertions.assertEquals(testTags, virtualMachine.inner().tags());
+        Assertions.assertEquals(testTags, virtualMachine.innerModel().tags());
     }
 
     @Test
@@ -851,7 +851,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertTrue(virtualMachine.osDiskSize() > 0);
         Disk disk = computeManager.disks().getById(virtualMachine.osDiskId());
         Assertions.assertNotNull(disk);
-        Assertions.assertEquals(DiskState.ATTACHED, disk.inner().diskState());
+        Assertions.assertEquals(DiskState.ATTACHED, disk.innerModel().diskState());
 
         // call simulate eviction
         virtualMachine.simulateEviction();
@@ -862,7 +862,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNull(virtualMachine.osDiskStorageAccountType());
         Assertions.assertTrue(virtualMachine.osDiskSize() == 0);
         disk = computeManager.disks().getById(virtualMachine.osDiskId());
-        Assertions.assertEquals(DiskState.RESERVED, disk.inner().diskState());
+        Assertions.assertEquals(DiskState.RESERVED, disk.innerModel().diskState());
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

@@ -36,7 +36,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
     protected Mono<RecommendedElasticPoolInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getRecommendedElasticPools()
             .getAsync(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
@@ -53,52 +53,52 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
 
     @Override
     public ElasticPoolEdition databaseEdition() {
-        return this.inner().databaseEdition();
+        return this.innerModel().databaseEdition();
     }
 
     @Override
     public double dtu() {
-        return this.inner().dtu();
+        return this.innerModel().dtu();
     }
 
     @Override
     public double databaseDtuMin() {
-        return this.inner().databaseDtuMin();
+        return this.innerModel().databaseDtuMin();
     }
 
     @Override
     public double databaseDtuMax() {
-        return this.inner().databaseDtuMax();
+        return this.innerModel().databaseDtuMax();
     }
 
     @Override
     public double storageMB() {
-        return this.inner().storageMB();
+        return this.innerModel().storageMB();
     }
 
     @Override
     public OffsetDateTime observationPeriodStart() {
-        return this.inner().observationPeriodStart();
+        return this.innerModel().observationPeriodStart();
     }
 
     @Override
     public OffsetDateTime observationPeriodEnd() {
-        return this.inner().observationPeriodEnd();
+        return this.innerModel().observationPeriodEnd();
     }
 
     @Override
     public double maxObservedDtu() {
-        return this.inner().maxObservedDtu();
+        return this.innerModel().maxObservedDtu();
     }
 
     @Override
     public double maxObservedStorageMB() {
-        return this.inner().maxObservedStorageMB();
+        return this.innerModel().maxObservedStorageMB();
     }
 
     @Override
     public List<TrackedResource> databases() {
-        return this.inner().databases();
+        return this.innerModel().databases();
     }
 
     @Override
@@ -108,7 +108,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
             this
                 .sqlServer
                 .manager()
-                .inner()
+                .serviceClient()
                 .getDatabases()
                 .listByElasticPool(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name());
         for (DatabaseInner inner : databaseInners) {
@@ -123,7 +123,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
         return this
             .sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabases()
             .listByElasticPoolAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name())
             .mapPage(
@@ -137,7 +137,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
             this
                 .sqlServer
                 .manager()
-                .inner()
+                .serviceClient()
                 .getDatabases()
                 .get(this.sqlServer.resourceGroupName(), this.sqlServer.name(), databaseName);
 
@@ -150,7 +150,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
         return this
             .sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabases()
             .getAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), databaseName)
             .map(
@@ -165,7 +165,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
             this
                 .sqlServer
                 .manager()
-                .inner()
+                .serviceClient()
                 .getRecommendedElasticPools()
                 .listMetrics(this.resourceGroupName(), this.sqlServerName(), this.name());
         for (RecommendedElasticPoolMetricInner inner : recommendedElasticPoolMetricInners) {
@@ -176,12 +176,12 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override

@@ -6,7 +6,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Map;
 @Fluent
 public interface PrivateDnsRecordSet
     extends ExternalChildResource<PrivateDnsRecordSet, PrivateDnsZone>,
-        HasInner<RecordSetInner> {
+        HasInnerModel<RecordSetInner> {
     /**
      * @return the type of the record set.
      */

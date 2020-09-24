@@ -69,7 +69,7 @@ abstract class PrivateDnsRecordSetsBaseImpl<PrivateRecordSetT, PrivateRecordSetI
 
     @Override
     public Mono<PrivateRecordSetT> getByNameAsync(String name) {
-        return parent().manager().inner().getRecordSets()
+        return parent().manager().serviceClient().getRecordSets()
             .getAsync(parent().resourceGroupName(), parent().name(), recordType, name)
             .map(this::wrapModel);
     }
@@ -85,7 +85,7 @@ abstract class PrivateDnsRecordSetsBaseImpl<PrivateRecordSetT, PrivateRecordSetI
 
     protected PagedFlux<PrivateRecordSetT> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
         return wrapPageAsync(
-            parent().manager().inner().getRecordSets().listByTypeAsync(
+            parent().manager().serviceClient().getRecordSets().listByTypeAsync(
                 parent().resourceGroupName(),
                 parent().name(),
                 recordType,

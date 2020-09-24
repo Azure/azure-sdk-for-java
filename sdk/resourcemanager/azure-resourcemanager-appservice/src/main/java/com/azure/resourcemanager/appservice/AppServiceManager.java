@@ -31,7 +31,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure storage resource management. */
-public final class AppServiceManager extends Manager<AppServiceManager, WebSiteManagementClient> {
+public final class AppServiceManager extends Manager<WebSiteManagementClient> {
     // Managers
     private final AuthorizationManager authorizationManager;
     private final KeyVaultManager keyVaultManager;

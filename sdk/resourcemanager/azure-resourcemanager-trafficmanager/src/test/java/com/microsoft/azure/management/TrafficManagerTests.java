@@ -11,7 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
@@ -120,7 +120,7 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
                 .withTimeToLive(500)
                 .create();
 
-        Assertions.assertNotNull(profile.inner());
+        Assertions.assertNotNull(profile.innerModel());
         Assertions.assertTrue(profile.trafficRoutingMethod().equals(TrafficRoutingMethod.GEOGRAPHIC));
         Assertions.assertTrue(profile.externalEndpoints().containsKey("external-ep-1"));
         TrafficManagerExternalEndpoint endpoint = profile.externalEndpoints().get("external-ep-1");
@@ -169,7 +169,7 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
                 .attach()
                 .create();
 
-        Assertions.assertNotNull(profile.inner());
+        Assertions.assertNotNull(profile.innerModel());
         Assertions.assertEquals(TrafficRoutingMethod.SUBNET, profile.trafficRoutingMethod());
         Assertions.assertTrue(profile.externalEndpoints().containsKey("external-ep-1"));
         TrafficManagerExternalEndpoint endpoint = profile.externalEndpoints().get("external-ep-1");

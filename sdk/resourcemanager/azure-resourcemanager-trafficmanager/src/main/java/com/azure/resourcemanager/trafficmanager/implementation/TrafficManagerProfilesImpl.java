@@ -27,9 +27,9 @@ public class TrafficManagerProfilesImpl
     private GeographicHierarchies geographicHierarchies;
 
     public TrafficManagerProfilesImpl(final TrafficManager trafficManager) {
-        super(trafficManager.inner().getProfiles(), trafficManager);
+        super(trafficManager.serviceClient().getProfiles(), trafficManager);
         this.geographicHierarchies =
-            new GeographicHierarchiesImpl(trafficManager, trafficManager.inner().getGeographicHierarchies());
+            new GeographicHierarchiesImpl(trafficManager, trafficManager.serviceClient().getGeographicHierarchies());
     }
 
     @Override
@@ -74,15 +74,15 @@ public class TrafficManagerProfilesImpl
 
     private TrafficManagerProfileImpl setDefaults(TrafficManagerProfileImpl profile) {
         // MonitorConfig is required
-        profile.inner().withMonitorConfig(new MonitorConfig());
+        profile.innerModel().withMonitorConfig(new MonitorConfig());
         profile.withHttpMonitoring(); // Default to Http monitoring
         // DnsConfig is required
-        profile.inner().withDnsConfig(new DnsConfig());
+        profile.innerModel().withDnsConfig(new DnsConfig());
         profile.withTimeToLive(300);
         // TM location must be 'global' irrespective of region of the resource group it resides.
-        profile.inner().withLocation("global");
+        profile.innerModel().withLocation("global");
         // Endpoints are external child resource still initializing it avoid null checks in the model impl.
-        profile.inner().withEndpoints(new ArrayList<EndpointInner>());
+        profile.innerModel().withEndpoints(new ArrayList<EndpointInner>());
         return profile;
     }
 }

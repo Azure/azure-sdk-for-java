@@ -17,7 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure redis resource management. */
-public final class RedisManager extends Manager<RedisManager, RedisManagementClient> {
+public final class RedisManager extends Manager<RedisManagementClient> {
     // Collections
     private RedisCaches redisCaches;
 

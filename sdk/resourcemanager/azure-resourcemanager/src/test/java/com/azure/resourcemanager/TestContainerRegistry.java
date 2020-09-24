@@ -8,7 +8,7 @@ import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.Webhook;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
