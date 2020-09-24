@@ -185,7 +185,7 @@ public final class SubscriptionsClient {
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LocationInner> listLocationsAsync(String subscriptionId, Context context) {
+    private PagedFlux<LocationInner> listLocationsAsync(String subscriptionId, Context context) {
         return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId, context));
     }
 
@@ -404,7 +404,7 @@ public final class SubscriptionsClient {
      * @return all subscriptions for a tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SubscriptionInner> listAsync(Context context) {
+    private PagedFlux<SubscriptionInner> listAsync(Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }

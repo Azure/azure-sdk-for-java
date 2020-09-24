@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The PolicyDefinition model. */
+/** The policy definition. */
 @JsonFlatten
 @Fluent
 public class PolicyDefinitionInner extends ProxyResource {

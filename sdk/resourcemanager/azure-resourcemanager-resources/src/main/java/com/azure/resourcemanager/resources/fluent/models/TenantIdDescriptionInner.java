@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TenantIdDescription model. */
+/** Tenant Id information. */
 @Immutable
 public final class TenantIdDescriptionInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantIdDescriptionInner.class);

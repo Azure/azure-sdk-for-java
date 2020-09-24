@@ -13,7 +13,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The WhatIfOperationResult model. */
+/**
+ * Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of
+ * results.
+ */
 @JsonFlatten
 @Fluent
 public class WhatIfOperationResultInner {

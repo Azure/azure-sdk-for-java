@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TagsListResult model. */
+/** List of subscription tags. */
 @Fluent
 public final class TagsListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsListResult.class);

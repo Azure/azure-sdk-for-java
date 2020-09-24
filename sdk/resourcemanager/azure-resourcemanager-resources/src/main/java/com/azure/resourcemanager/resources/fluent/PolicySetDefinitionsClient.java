@@ -821,7 +821,7 @@ public final class PolicySetDefinitionsClient {
      * @return list of policy set definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicySetDefinitionInner> listAsync(Context context) {
+    private PagedFlux<PolicySetDefinitionInner> listAsync(Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
@@ -936,7 +936,7 @@ public final class PolicySetDefinitionsClient {
      * @return list of policy set definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicySetDefinitionInner> listBuiltInAsync(Context context) {
+    private PagedFlux<PolicySetDefinitionInner> listBuiltInAsync(Context context) {
         return new PagedFlux<>(
             () -> listBuiltInSinglePageAsync(context), nextLink -> listBuiltInNextSinglePageAsync(nextLink, context));
     }
@@ -1496,7 +1496,7 @@ public final class PolicySetDefinitionsClient {
      * @return list of policy set definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(String managementGroupId, Context context) {
+    private PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(String managementGroupId, Context context) {
         return new PagedFlux<>(
             () -> listByManagementGroupSinglePageAsync(managementGroupId, context),
             nextLink -> listByManagementGroupNextSinglePageAsync(nextLink, context));
