@@ -56,7 +56,7 @@ public final class ContainerInstanceManager
      * @return the ContainerInstanceManager
      */
     public static ContainerInstanceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new ContainerInstanceManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */

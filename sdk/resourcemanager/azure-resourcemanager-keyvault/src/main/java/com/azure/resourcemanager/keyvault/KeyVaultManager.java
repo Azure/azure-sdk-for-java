@@ -54,7 +54,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
      * @return the KeyVaultManager
      */
     public static KeyVaultManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new KeyVaultManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */

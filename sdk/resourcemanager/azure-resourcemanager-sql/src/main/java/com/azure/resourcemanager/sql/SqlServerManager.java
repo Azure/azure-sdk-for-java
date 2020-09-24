@@ -69,7 +69,7 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
      * @return the SqlServer
      */
     public static SqlServerManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new SqlServerManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */

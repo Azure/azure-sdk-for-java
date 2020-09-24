@@ -48,7 +48,7 @@ public final class TrafficManager extends Manager<TrafficManagerManagementClient
      * @return the TrafficManager
      */
     public static TrafficManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new TrafficManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */

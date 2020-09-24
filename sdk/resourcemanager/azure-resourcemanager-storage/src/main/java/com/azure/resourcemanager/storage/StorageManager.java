@@ -63,7 +63,7 @@ public final class StorageManager extends Manager<StorageManagementClient> {
      * @return the StorageManager
      */
     public static StorageManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new StorageManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */

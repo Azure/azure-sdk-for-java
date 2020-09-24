@@ -70,7 +70,7 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
      * @return the EventHubsManager
      */
     public static EventHubsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new EventHubsManager(httpPipeline, profile);
     }
 
     /**

@@ -57,7 +57,7 @@ public final class ContainerRegistryManager
      * @return the ContainerRegistryManager
      */
     public static ContainerRegistryManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new ContainerRegistryManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */

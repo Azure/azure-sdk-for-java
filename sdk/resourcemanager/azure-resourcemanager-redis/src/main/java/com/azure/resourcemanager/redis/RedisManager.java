@@ -48,7 +48,7 @@ public final class RedisManager extends Manager<RedisManagementClient> {
      * @return the RedisManager
      */
     public static RedisManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new RedisManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */

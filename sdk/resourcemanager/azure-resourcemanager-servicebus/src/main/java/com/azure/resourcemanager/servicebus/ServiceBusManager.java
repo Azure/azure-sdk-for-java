@@ -50,7 +50,7 @@ public final class ServiceBusManager extends Manager<ServiceBusManagementClient>
      * @return the ServiceBusManager
      */
     public static ServiceBusManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new ServiceBusManager(httpPipeline, profile);
     }
 
     /**

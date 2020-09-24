@@ -108,7 +108,7 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
      * @return the ComputeManager
      */
     public static ComputeManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new ComputeManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */

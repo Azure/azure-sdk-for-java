@@ -72,7 +72,7 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
      * @return the StorageManager
      */
     public static AppServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new AppServiceManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */

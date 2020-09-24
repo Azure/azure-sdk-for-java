@@ -51,7 +51,7 @@ public final class CdnManager extends Manager<CdnManagementClient> {
      * @return the CDN Manager
      */
     public static CdnManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new CdnManager(httpPipeline, profile);
     }
 
     /**

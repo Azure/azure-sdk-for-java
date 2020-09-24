@@ -47,7 +47,7 @@ public final class AppPlatformManager extends Manager<AppPlatformManagementClien
      * @return the AppPlatformManager
      */
     public static AppPlatformManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new AppPlatformManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */

@@ -50,7 +50,7 @@ public final class ContainerServiceManager
      * @return the ContainerServiceManager
      */
     public static ContainerServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile);
+        return new ContainerServiceManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
