@@ -8,7 +8,7 @@ import java.util.List;
  * The optional parameters when listing models.
  */
 @Fluent
-public final class ListModelOptions {
+public final class ModelsListOptions {
 
     /*
      * The maximum number of items to retrieve per request. The server may
@@ -29,9 +29,9 @@ public final class ListModelOptions {
      * Sets the maximum number of items to retrieve per request. The server may choose to return less than the
      * requested max.
      * @param maxItemCount the maxItemCount value to set.
-     * @return the ListModelOptions object itself.
+     * @return the ModelsListOptions object itself.
      */
-    public ListModelOptions setMaxItemCount(Integer maxItemCount) {
+    public ModelsListOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }
@@ -51,9 +51,9 @@ public final class ListModelOptions {
     /**
      * Sets whether to include the model definition in the result. If false, only the model metadata will be returned.
      * @param includeModelDefinition the includeModelDefinition value to set.
-     * @return the ListModelOptions object itself.
+     * @return the ModelsListOptions object itself.
      */
-    public ListModelOptions setIncludeModelDefinition(Boolean includeModelDefinition) {
+    public ModelsListOptions setIncludeModelDefinition(Boolean includeModelDefinition) {
         this.includeModelDefinition = includeModelDefinition;
         return this;
     }
@@ -72,9 +72,9 @@ public final class ListModelOptions {
     /**
      * Sets the model Ids that will have their dependencies retrieved.
      * @param dependenciesFor the dependenciesFor value to set.
-     * @return the ListModelOptions object itself.
+     * @return the ModelsListOptions object itself.
      */
-    public ListModelOptions setDependenciesFor(List<String> dependenciesFor) {
+    public ModelsListOptions setDependenciesFor(List<String> dependenciesFor) {
         this.dependenciesFor = dependenciesFor;
         return this;
     }
