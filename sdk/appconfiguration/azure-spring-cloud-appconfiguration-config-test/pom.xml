@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-spring-cloud-appconfiguration-config-test</artifactId>
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-cloud-appconfiguration-config-test;current} -->
+
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
+    </dependency>
+  </dependencies>
+
+</project>

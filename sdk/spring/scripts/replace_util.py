@@ -18,6 +18,13 @@ ARTIFACT_ID_PAIRS = 'artifact_id_pairs'
 VERSION_UPDATE_ITEMS = 'version_update_items'
 
 config = {
+    'appconfiguration': {
+        'sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-test/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+            )
+        }
+    },
     'cosmos': {
         'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml': {
             VERSION_UPDATE_ITEMS: (
