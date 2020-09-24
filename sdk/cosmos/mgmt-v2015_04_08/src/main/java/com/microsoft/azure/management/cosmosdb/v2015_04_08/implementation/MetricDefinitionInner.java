@@ -27,7 +27,7 @@ public class MetricDefinitionInner {
 
     /**
      * The primary aggregation type of the metric. Possible values include:
-     * 'None', 'Average', 'Total', 'Minimimum', 'Maximum', 'Last'.
+     * 'None', 'Average', 'Total', 'Minimum', 'Maximum', 'Last'.
      */
     @JsonProperty(value = "primaryAggregationType", access = JsonProperty.Access.WRITE_ONLY)
     private PrimaryAggregationType primaryAggregationType;
@@ -62,7 +62,7 @@ public class MetricDefinitionInner {
     }
 
     /**
-     * Get the primary aggregation type of the metric. Possible values include: 'None', 'Average', 'Total', 'Minimimum', 'Maximum', 'Last'.
+     * Get the primary aggregation type of the metric. Possible values include: 'None', 'Average', 'Total', 'Minimum', 'Maximum', 'Last'.
      *
      * @return the primaryAggregationType value
      */
