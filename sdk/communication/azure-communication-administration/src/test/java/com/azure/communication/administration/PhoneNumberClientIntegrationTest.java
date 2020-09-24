@@ -21,11 +21,10 @@ import com.azure.communication.administration.models.ReleaseResponse;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
 import com.azure.communication.common.PhoneNumber;
-import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,57 +35,57 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestBase {
+public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTestBase {
     @Test()
     public void listAllPhoneNumbers() {
-        PagedFlux<AcquiredPhoneNumber> pagedFlux = this.getClient().listAllPhoneNumbers(LOCALE);
+        PagedIterable<AcquiredPhoneNumber> pagedIterable = this.getClient().listAllPhoneNumbers(LOCALE);
 
-        assertNotNull(pagedFlux.blockFirst().getPhoneNumber());
+        assertNotNull(pagedIterable.iterator().next().getPhoneNumber());
     }
 
     @Test()
     public void listPhonePlanGroups() {
-        PagedFlux<PhonePlanGroup> pagedFlux =
+        PagedIterable<PhonePlanGroup> pagedIterable =
             this.getClient().listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
 
-        assertNotNull(pagedFlux.blockFirst().getPhonePlanGroupId());
+        assertNotNull(pagedIterable.iterator().next().getPhonePlanGroupId());
     }
 
     @Test()
     public void listPhonePlans() {
-        PagedFlux<PhonePlan> pagedFlux =
+        PagedIterable<PhonePlan> pagedIterable =
             this.getClient().listPhonePlans(COUNTRY_CODE, PHONE_PLAN_GROUP_ID, LOCALE);
 
-        assertNotNull(pagedFlux.blockFirst().getPhonePlanId());
+        assertNotNull(pagedIterable.iterator().next().getPhonePlanId());
     }
 
     @Test()
     public void listAllReleases() {
-        PagedFlux<PhoneNumberEntity> pagedFlux = this.getClient().listAllReleases();
+        PagedIterable<PhoneNumberEntity> pagedIterable = this.getClient().listAllReleases();
 
-        assertNotNull(pagedFlux.blockFirst().getId());
+        assertNotNull(pagedIterable.iterator().next().getId());
     }
 
     @Test()
     public void listAllSearches() {
-        PagedFlux<PhoneNumberEntity> pagedFlux = this.getClient().listAllSearches();
+        PagedIterable<PhoneNumberEntity> pagedIterable = this.getClient().listAllSearches();
 
-        assertNotNull(pagedFlux.blockFirst().getId());
+        assertNotNull(pagedIterable.iterator().next().getId());
     }
 
     @Test()
     public void listAllSupportedCountries() {
-        PagedFlux<PhoneNumberCountry> pagedFlux = this.getClient().listAllSupportedCountries(LOCALE);
+        PagedIterable<PhoneNumberCountry> pagedIterable = this.getClient().listAllSupportedCountries(LOCALE);
 
-        assertNotNull(pagedFlux.blockFirst().getCountryCode());
+        assertNotNull(pagedIterable.iterator().next().getCountryCode());
     }
 
     @Test()
     public void getPhonePlanLocationOptions() {
-        Mono<LocationOptionsResponse> mono =
+        LocationOptionsResponse response =
             this.getClient().getPhonePlanLocationOptions(COUNTRY_CODE, PHONE_PLAN_GROUP_ID, PHONE_PLAN_ID, LOCALE);
 
-        assertNotNull(mono.block().getLocationOptions().getLabelId());
+        assertNotNull(response.getLocationOptions().getLabelId());
     }
 
     @Test()
@@ -102,10 +101,10 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
         query.setOptionsValue(LOCATION_OPTION_CITY);
         locationOptions.add(query);
 
-        Mono<AreaCodes> mono =
+        AreaCodes areaCodes =
             this.getClient().getAllAreaCodes("selection", COUNTRY_CODE, PHONE_PLAN_ID, locationOptions);
 
-        assertTrue(mono.block().getPrimaryAreaCodes().size() > 0);
+        assertTrue(areaCodes.getPrimaryAreaCodes().size() > 0);
     }
 
     @Test()
@@ -121,12 +120,11 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
         query.setOptionsValue(LOCATION_OPTION_CITY);
         locationOptions.add(query);
 
-        Mono<Response<AreaCodes>> mono = this.getClient().getAllAreaCodesWithResponse(
+        Response<AreaCodes> areaCodesResponse = this.getClient().getAllAreaCodesWithResponse(
             "selection", COUNTRY_CODE, PHONE_PLAN_ID, locationOptions, Context.NONE);
 
-        Response<AreaCodes> response = mono.block();
-        assertEquals(200, response.getStatusCode());
-        assertTrue(response.getValue().getPrimaryAreaCodes().size() > 0);
+        assertEquals(200, areaCodesResponse.getStatusCode());
+        assertTrue(areaCodesResponse.getValue().getPrimaryAreaCodes().size() > 0);
     }
 
     @Test()
@@ -140,9 +138,9 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
         Map<PhoneNumber, NumberUpdateCapabilities> updateMap = new HashMap<>();
         updateMap.put(new PhoneNumber(PHONENUMBER_FOR_CAPABILITIES), update);
 
-        Mono<UpdateNumberCapabilitiesResponse> mono = this.getClient().updateCapabilities(updateMap);
+        UpdateNumberCapabilitiesResponse updateResponse = this.getClient().updateCapabilities(updateMap);
 
-        assertNotNull(mono.block().getCapabilitiesUpdateId());
+        assertNotNull(updateResponse.getCapabilitiesUpdateId());
     }
 
     @Test()
@@ -156,27 +154,26 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
         Map<PhoneNumber, NumberUpdateCapabilities> updateMap = new HashMap<>();
         updateMap.put(new PhoneNumber(PHONENUMBER_FOR_CAPABILITIES), update);
 
-        Mono<Response<UpdateNumberCapabilitiesResponse>> mono =
+        Response<UpdateNumberCapabilitiesResponse> response =
             this.getClient().updateCapabilitiesWithResponse(updateMap, Context.NONE);
 
-        Response<UpdateNumberCapabilitiesResponse> response = mono.block();
         assertEquals(200, response.getStatusCode());
         assertNotNull(response.getValue().getCapabilitiesUpdateId());
     }
 
     @Test()
     public void getCapabilitiesUpdate() {
-        Mono<UpdatePhoneNumberCapabilitiesResponse> mono =
+        UpdatePhoneNumberCapabilitiesResponse updateResponse =
             this.getClient().getCapabilitiesUpdate(CAPABILITIES_ID);
-        assertNotNull(mono.block().getCapabilitiesUpdateId());
+
+        assertNotNull(updateResponse.getCapabilitiesUpdateId());
     }
 
     @Test()
     public void getCapabilitiesUpdateWithResponse() {
-        Mono<Response<UpdatePhoneNumberCapabilitiesResponse>> mono =
+        Response<UpdatePhoneNumberCapabilitiesResponse> response =
             this.getClient().getCapabilitiesUpdateWithResponse(CAPABILITIES_ID, Context.NONE);
 
-        Response<UpdatePhoneNumberCapabilitiesResponse> response = mono.block();
         assertEquals(200, response.getStatusCode());
         assertNotNull(response.getValue().getCapabilitiesUpdateId());
     }
@@ -189,14 +186,14 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
         CreateSearchOptions createSearchOptions = new CreateSearchOptions();
         createSearchOptions
             .setAreaCode(AREA_CODE_FOR_SEARCH)
-            .setDescription("testsearch20200014")
-            .setDisplayName("testsearch20200014")
+            .setDescription("318362fa-2b19-4062-92af-fa0673914f30")
+            .setDisplayName("318362fa-2b19-4062-92af-fa0673914f30")
             .setPhonePlanIds(phonePlanIds)
             .setQuantity(1);
 
-        Mono<CreateSearchResponse> mono = this.getClient().createSearch(createSearchOptions);
+        CreateSearchResponse createSearchResponse = this.getClient().createSearch(createSearchOptions);
 
-        assertNotNull(mono.block().getSearchId());
+        assertNotNull(createSearchResponse.getSearchId());
     }
 
     @Test()
@@ -207,15 +204,13 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
         CreateSearchOptions createSearchOptions = new CreateSearchOptions();
         createSearchOptions
             .setAreaCode(AREA_CODE_FOR_SEARCH)
-            .setDescription("testsearch20200014")
-            .setDisplayName("testsearch20200014")
+            .setDescription("318362fa-2b19-4062-92af-fa0673914f30")
+            .setDisplayName("318362fa-2b19-4062-92af-fa0673914f30")
             .setPhonePlanIds(phonePlanIds)
             .setQuantity(1);
 
-        Mono<Response<CreateSearchResponse>> mono =
+        Response<CreateSearchResponse> response =
             this.getClient().createSearchWithResponse(createSearchOptions, Context.NONE);
-
-        Response<CreateSearchResponse> response = mono.block();
 
         assertEquals(201, response.getStatusCode());
         assertNotNull(response.getValue().getSearchId());
@@ -223,45 +218,40 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
 
     @Test()
     public void getSearchById() {
-        Mono<PhoneNumberSearch> mono = this.getClient().getSearchById(SEARCH_ID);
+        PhoneNumberSearch search = this.getClient().getSearchById(SEARCH_ID);
 
-        assertEquals(SEARCH_ID, mono.block().getSearchId());
+        assertEquals(SEARCH_ID, search.getSearchId());
     }
 
     @Test()
     public void getSearchByIdWithResponse() {
-        Mono<Response<PhoneNumberSearch>> mono = this.getClient().getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
+        Response<PhoneNumberSearch> response = this.getClient().getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
 
-        Response<PhoneNumberSearch> response = mono.block();
         assertEquals(200, response.getStatusCode());
         assertEquals(SEARCH_ID, response.getValue().getSearchId());
     }
 
     @Test()
     public void purchaseSearch() {
-        Mono<Void> mono = this.getClient().purchaseSearch(SEARCH_ID_TO_PURCHASE);
-        mono.block();
+        this.getClient().purchaseSearch(SEARCH_ID_TO_PURCHASE);
     }
 
     @Test()
     public void purchaseSearchWithResponse() {
-        Mono<Response<Void>> mono = this.getClient().purchaseSearchWithResponse(SEARCH_ID_TO_PURCHASE, Context.NONE);
+        Response<Void> response = this.getClient().purchaseSearchWithResponse(SEARCH_ID_TO_PURCHASE, Context.NONE);
 
-        Response<Void> response = mono.block();
         assertEquals(202, response.getStatusCode());
     }
 
     @Test()
     public void cancelSearch() {
-        Mono<Void> mono = this.getClient().cancelSearch(SEARCH_ID_TO_CANCEL);
-        mono.block();
+        this.getClient().cancelSearch(SEARCH_ID_TO_CANCEL);
     }
 
     @Test()
     public void cancelSearchWithResponse() {
-        Mono<Response<Void>> mono = this.getClient().cancelSearchWithResponse(SEARCH_ID_TO_CANCEL, Context.NONE);
+        Response<Void> response = this.getClient().cancelSearchWithResponse(SEARCH_ID_TO_CANCEL, Context.NONE);
 
-        Response<Void> response = mono.block();
         assertEquals(202, response.getStatusCode());
     }
 
@@ -273,9 +263,7 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
         pstnConfiguration.setAzurePstnTargetId("AzurePstnTargetId");
         pstnConfiguration.setCallbackUrl("https://callbackurl");
 
-        Mono<Void> mono = this.getClient().configureNumber(number, pstnConfiguration);
-
-        mono.block();
+        this.getClient().configureNumber(number, pstnConfiguration);
     }
 
     @Test()
@@ -286,9 +274,8 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
         pstnConfiguration.setAzurePstnTargetId("AzurePstnTargetId");
         pstnConfiguration.setCallbackUrl("https://callbackurl");
 
-        Mono<Response<Void>> mono = this.getClient().configureNumberWithResponse(number, pstnConfiguration, Context.NONE);
+        Response<Void> response = this.getClient().configureNumberWithResponse(number, pstnConfiguration, Context.NONE);
 
-        Response<Void> response = mono.block();
         assertEquals(202, response.getStatusCode());
     }
 
@@ -296,19 +283,18 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
     public void getNumberConfiguration() {
         PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_GET_CONFIG);
 
-        Mono<NumberConfigurationResponse> mono = this.getClient().getNumberConfiguration(number);
+        NumberConfigurationResponse numberConfig = this.getClient().getNumberConfiguration(number);
 
-        assertEquals("ApplicationId", mono.block().getPstnConfiguration().getApplicationId());
+        assertEquals("ApplicationId", numberConfig.getPstnConfiguration().getApplicationId());
     }
 
     @Test()
     public void getNumberConfigurationWithResponse() {
         PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_GET_CONFIG);
 
-        Mono<Response<NumberConfigurationResponse>> mono =
+        Response<NumberConfigurationResponse> response =
             this.getClient().getNumberConfigurationWithResponse(number, Context.NONE);
 
-        Response<NumberConfigurationResponse> response = mono.block();
         assertEquals(200, response.getStatusCode());
         assertEquals("ApplicationId", response.getValue().getPstnConfiguration().getApplicationId());
     }
@@ -316,19 +302,15 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
     @Test()
     public void unconfigureNumber() {
         PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_UNCONFIGURE);
-
-        Mono<Void> mono = this.getClient().unconfigureNumber(number);
-
-        mono.block();
+        this.getClient().unconfigureNumber(number);
     }
 
     @Test()
     public void unconfigureNumberWithResponse() {
         PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_UNCONFIGURE);
 
-        Mono<Response<Void>> mono = this.getClient().unconfigureNumberWithResponse(number, Context.NONE);
+        Response<Void> response = this.getClient().unconfigureNumberWithResponse(number, Context.NONE);
 
-        Response<Void> response = mono.block();
         assertEquals(202, response.getStatusCode());
     }
 
@@ -337,9 +319,9 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
         List<PhoneNumber> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(new PhoneNumber(PHONENUMBER_TO_RELEASE));
 
-        Mono<ReleaseResponse> mono = this.getClient().releasePhoneNumbers(phoneNumbers);
+        ReleaseResponse releaseResponse = this.getClient().releasePhoneNumbers(phoneNumbers);
 
-        assertNotNull(mono.block().getReleaseId());
+        assertNotNull(releaseResponse.getReleaseId());
     }
 
     @Test()
@@ -347,15 +329,14 @@ public class PhoneNumberAsyncClientPlaybackTest extends PhoneNumberPlaybackTestB
         List<PhoneNumber> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(new PhoneNumber(PHONENUMBER_TO_RELEASE));
 
-        Mono<Response<ReleaseResponse>> mono =
+        Response<ReleaseResponse> response =
             this.getClient().releasePhoneNumbersWithResponse(phoneNumbers, Context.NONE);
 
-        Response<ReleaseResponse> response = mono.block();
         assertEquals(200, response.getStatusCode());
         assertNotNull(response.getValue().getReleaseId());
     }
 
-    private PhoneNumberAsyncClient getClient() {
-        return super.getClientBuilder().buildAsyncClient();
+    private PhoneNumberClient getClient() {
+        return super.getClientBuilder().buildClient();
     }
 }

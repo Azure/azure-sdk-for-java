@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class PhoneNumberPlaybackTestBase extends TestBase {
+public class PhoneNumberIntegrationTestBase extends TestBase {
     private static final String PLAYBACK_ACCESS_KEY = "QWNjZXNzS2V5";
     private static final String PLAYBACK_ENDPOINT = "https://REDACTED.communication.azure.com";
     private static final String ENV_ACCESS_KEY =
