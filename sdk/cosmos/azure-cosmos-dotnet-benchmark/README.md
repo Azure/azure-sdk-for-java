@@ -1,8 +1,10 @@
-# Azure CosmosDB Client Library for Java
+# Azure CosmosDB client library for Java
 
 # Port of the Microsoft Azure Cosmos DB .NET Benchmark tool for Java
 
-## Getting started - Build the benchmarking tool
+## Getting started 
+
+### Build the benchmarking tool
 
 ```bash
 git clone https://github.com/Azure/azure-sdk-for-java.git
