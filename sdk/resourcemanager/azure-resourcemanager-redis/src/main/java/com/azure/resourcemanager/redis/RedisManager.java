@@ -14,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure redis resource management. */
 public final class RedisManager extends Manager<RedisManagementClient> {
@@ -49,19 +48,7 @@ public final class RedisManager extends Manager<RedisManagementClient> {
      * @return the RedisManager
      */
     public static RedisManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of RedisManager that exposes Redis resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the RedisManager
-     */
-    public static RedisManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new RedisManager(httpPipeline, profile, sdkContext);
+        return new RedisManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -84,7 +71,7 @@ public final class RedisManager extends Manager<RedisManagementClient> {
         }
     }
 
-    private RedisManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private RedisManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -92,8 +79,7 @@ public final class RedisManager extends Manager<RedisManagementClient> {
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
+                .buildClient());
     }
 
     /** @return the Redis Cache management API entry point */

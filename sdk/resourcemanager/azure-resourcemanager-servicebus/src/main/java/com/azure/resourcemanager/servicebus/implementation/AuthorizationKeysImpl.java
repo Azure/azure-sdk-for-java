@@ -20,21 +20,21 @@ class AuthorizationKeysImpl
 
     @Override
     public String primaryKey() {
-        return this.inner().primaryKey();
+        return this.innerModel().primaryKey();
     }
 
     @Override
     public String secondaryKey() {
-        return this.inner().secondaryKey();
+        return this.innerModel().secondaryKey();
     }
 
     @Override
     public String primaryConnectionString() {
-        return this.inner().primaryConnectionString();
+        return this.innerModel().primaryConnectionString();
     }
 
     @Override
     public String secondaryConnectionString() {
-        return this.inner().secondaryConnectionString();
+        return this.innerModel().secondaryConnectionString();
     }
 }

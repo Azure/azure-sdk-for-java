@@ -40,7 +40,7 @@ public class DnsZonesImpl
 
     private DnsZoneImpl setDefaults(DnsZoneImpl dnsZone) {
         // Zone location must be 'global' irrespective of region of the resource group it resides.
-        dnsZone.inner().withLocation("global");
+        dnsZone.innerModel().withLocation("global");
         return dnsZone;
     }
 

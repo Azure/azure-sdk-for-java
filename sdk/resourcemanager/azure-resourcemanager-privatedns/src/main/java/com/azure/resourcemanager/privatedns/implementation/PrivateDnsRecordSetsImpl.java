@@ -36,7 +36,7 @@ class PrivateDnsRecordSetsImpl
 
     void withCnameRecordSet(String name, String alias) {
         CnameRecordSetImpl recordSet = CnameRecordSetImpl.newRecordSet(name, getParent());
-        recordSet.inner().cnameRecord().withCname(alias);
+        recordSet.innerModel().cnameRecord().withCname(alias);
         setDefaults(prepareInlineDefine(recordSet.withTimeToLive(DEFAULT_TTL_IN_SECONDS)));
     }
 

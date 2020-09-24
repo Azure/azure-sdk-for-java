@@ -60,20 +60,20 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_SOUTH_CENTRAL;
-        final String resourceGroupName = azureResourceManager.sdkContext().randomResourceName("rg", 15);
-        final String vnetAName = azureResourceManager.sdkContext().randomResourceName("net", 15);
-        final String vnetBName = azureResourceManager.sdkContext().randomResourceName("net", 15);
+        final String resourceGroupName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg", 15);
+        final String vnetAName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("net", 15);
+        final String vnetBName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("net", 15);
 
-        final String[] vmNames = azureResourceManager.sdkContext().randomResourceNames("vm", 15, 2);
+        final String[] vmNames = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceNames("vm", 15, 2);
         final String[] vmIPAddresses = new String[]{
                 /* within subnetA */ "10.0.0.8",
                 /* within subnetB */ "10.1.0.8"
         };
 
-        final String peeringABName = azureResourceManager.sdkContext().randomResourceName("peer", 15);
+        final String peeringABName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("peer", 15);
         final String rootname = "tirekicker";
-        final String password = azureResourceManager.sdkContext().randomResourceName("pWd!", 15);
-        final String networkWatcherName = azureResourceManager.sdkContext().randomResourceName("netwch", 20);
+        final String password = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("pWd!", 15);
+        final String networkWatcherName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("netwch", 20);
 
         try {
 

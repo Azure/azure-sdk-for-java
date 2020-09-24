@@ -17,16 +17,16 @@ class VirtualMachineScaleSetSkuImpl extends WrapperImpl<VirtualMachineScaleSetSk
 
     @Override
     public String resourceType() {
-        return this.inner().resourceType();
+        return this.innerModel().resourceType();
     }
 
     @Override
     public VirtualMachineScaleSetSkuTypes skuType() {
-        return VirtualMachineScaleSetSkuTypes.fromSku(this.inner().sku());
+        return VirtualMachineScaleSetSkuTypes.fromSku(this.innerModel().sku());
     }
 
     @Override
     public VirtualMachineScaleSetSkuCapacity capacity() {
-        return this.inner().capacity();
+        return this.innerModel().capacity();
     }
 }

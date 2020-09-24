@@ -8,7 +8,7 @@ import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectio
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChild;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
@@ -19,7 +19,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 @Fluent
 public interface ExpressRouteCrossConnectionPeering
     extends IndependentChild<NetworkManager>,
-        HasInner<ExpressRouteCrossConnectionPeeringInner>,
+        HasInnerModel<ExpressRouteCrossConnectionPeeringInner>,
         Refreshable<ExpressRouteCrossConnectionPeering>,
         Updatable<ExpressRouteCrossConnectionPeering.Update> {
     /** @return the peering type */

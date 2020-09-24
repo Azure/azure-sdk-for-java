@@ -52,22 +52,22 @@ class HostnameSslBindingImpl<FluentT extends WebAppBase, FluentImplT extends Web
 
     @Override
     public String name() {
-        return inner().name();
+        return innerModel().name();
     }
 
     @Override
     public SslState sslState() {
-        return inner().sslState();
+        return innerModel().sslState();
     }
 
     @Override
     public String virtualIp() {
-        return inner().virtualIp();
+        return innerModel().virtualIp();
     }
 
     @Override
     public String thumbprint() {
-        return inner().thumbprint();
+        return innerModel().thumbprint();
     }
 
     @Override
@@ -157,19 +157,19 @@ class HostnameSslBindingImpl<FluentT extends WebAppBase, FluentImplT extends Web
     }
 
     private HostnameSslBindingImpl<FluentT, FluentImplT> withCertificateThumbprint(String thumbprint) {
-        inner().withThumbprint(thumbprint);
+        innerModel().withThumbprint(thumbprint);
         return this;
     }
 
     @Override
     public HostnameSslBindingImpl<FluentT, FluentImplT> withSniBasedSsl() {
-        inner().withSslState(SslState.SNI_ENABLED);
+        innerModel().withSslState(SslState.SNI_ENABLED);
         return this;
     }
 
     @Override
     public HostnameSslBindingImpl<FluentT, FluentImplT> withIpBasedSsl() {
-        inner().withSslState(SslState.IP_BASED_ENABLED);
+        innerModel().withSslState(SslState.IP_BASED_ENABLED);
         return this;
     }
 
@@ -190,7 +190,7 @@ class HostnameSslBindingImpl<FluentT extends WebAppBase, FluentImplT extends Web
 
     @Override
     public HostnameSslBindingImpl<FluentT, FluentImplT> forHostname(String hostname) {
-        inner().withName(hostname);
+        innerModel().withName(hostname);
         return this;
     }
 

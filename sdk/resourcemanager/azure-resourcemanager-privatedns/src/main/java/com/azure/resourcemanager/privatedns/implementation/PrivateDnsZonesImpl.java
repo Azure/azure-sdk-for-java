@@ -85,7 +85,7 @@ public final class PrivateDnsZonesImpl
     }
 
     private PrivateDnsZoneImpl setDefaults(PrivateDnsZoneImpl privateDnsZone) {
-        privateDnsZone.inner().withLocation("global");
+        privateDnsZone.innerModel().withLocation("global");
         return privateDnsZone;
     }
 }

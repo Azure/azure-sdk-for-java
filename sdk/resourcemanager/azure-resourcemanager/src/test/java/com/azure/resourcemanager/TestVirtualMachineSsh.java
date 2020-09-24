@@ -23,7 +23,7 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().resourceManager().sdkContext().randomResourceName("vm", 10);
 
         final String sshKey =
             "ssh-rsa"
@@ -75,8 +75,8 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
                 }
             }
 
-            Assertions.assertNotNull(vm.inner().osProfile().linuxConfiguration().ssh());
-            Assertions.assertTrue(vm.inner().osProfile().linuxConfiguration().ssh().publicKeys().size() > 0);
+            Assertions.assertNotNull(vm.innerModel().osProfile().linuxConfiguration().ssh());
+            Assertions.assertTrue(vm.innerModel().osProfile().linuxConfiguration().ssh().publicKeys().size() > 0);
         }
         return vm;
     }

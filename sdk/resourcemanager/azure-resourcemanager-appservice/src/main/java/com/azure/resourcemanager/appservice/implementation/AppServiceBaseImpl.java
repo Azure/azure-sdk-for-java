@@ -365,7 +365,7 @@ abstract class AppServiceBaseImpl<
     }
 
     private AppServicePlanImpl newDefaultAppServicePlan() {
-        String planName = this.manager().sdkContext().randomResourceName(name() + "plan", 32);
+        String planName = this.manager().resourceManager().sdkContext().randomResourceName(name() + "plan", 32);
         return newDefaultAppServicePlan(planName);
     }
 
@@ -420,7 +420,7 @@ abstract class AppServiceBaseImpl<
                     "serverFarms",
                     appServicePlanCreatable.name(),
                     "");
-        inner().withServerFarmId(id);
+        innerModel().withServerFarmId(id);
         if (appServicePlanCreatable instanceof AppServicePlanImpl) {
             return withOperatingSystem(((AppServicePlanImpl) appServicePlanCreatable).operatingSystem());
         } else {
@@ -432,14 +432,14 @@ abstract class AppServiceBaseImpl<
     @SuppressWarnings("unchecked")
     private FluentImplT withOperatingSystem(OperatingSystem os) {
         if (os == OperatingSystem.LINUX) {
-            inner().withReserved(true);
-            inner().withKind(inner().kind() + ",linux");
+            innerModel().withReserved(true);
+            innerModel().withKind(innerModel().kind() + ",linux");
         }
         return (FluentImplT) this;
     }
 
     public FluentImplT withExistingAppServicePlan(AppServicePlan appServicePlan) {
-        inner().withServerFarmId(appServicePlan.id());
+        innerModel().withServerFarmId(appServicePlan.id());
         this.withRegion(appServicePlan.regionName());
         return withOperatingSystem(appServicePlanOperatingSystem(appServicePlan));
     }

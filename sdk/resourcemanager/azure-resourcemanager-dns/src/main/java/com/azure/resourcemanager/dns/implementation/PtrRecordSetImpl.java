@@ -23,8 +23,8 @@ class PtrRecordSetImpl extends DnsRecordSetImpl implements PtrRecordSet {
     @Override
     public List<String> targetDomainNames() {
         List<String> targetDomainNames = new ArrayList<>();
-        if (this.inner().ptrRecords() != null) {
-            for (PtrRecord ptrRecord : this.inner().ptrRecords()) {
+        if (this.innerModel().ptrRecords() != null) {
+            for (PtrRecord ptrRecord : this.innerModel().ptrRecords()) {
                 targetDomainNames.add(ptrRecord.ptrdname());
             }
         }
@@ -33,13 +33,13 @@ class PtrRecordSetImpl extends DnsRecordSetImpl implements PtrRecordSet {
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (this.inner().ptrRecords() != null && this.inner().ptrRecords().size() > 0) {
+        if (this.innerModel().ptrRecords() != null && this.innerModel().ptrRecords().size() > 0) {
             if (resource.ptrRecords() == null) {
                 resource.withPtrRecords(new ArrayList<>());
             }
 
-            resource.ptrRecords().addAll(this.inner().ptrRecords());
-            this.inner().ptrRecords().clear();
+            resource.ptrRecords().addAll(this.innerModel().ptrRecords());
+            this.innerModel().ptrRecords().clear();
         }
 
         if (this.recordSetRemoveInfo.ptrRecords().size() > 0) {

@@ -157,7 +157,6 @@ public final class RntbdTransportClient extends TransportClient {
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
 
         final Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
-
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
             if (request.requestContext.cosmosDiagnostics == null) {
@@ -168,6 +167,9 @@ public final class RntbdTransportClient extends TransportClient {
                 RequestTimeline timeline = record.takeTimelineSnapshot();
                 response.setRequestTimeline(timeline);
                 response.setEndpointStats(record.serviceEndpointStatistics());
+                response.setRntbdResponseLength(record.responseLength());
+                response.setRntbdRequestLength(record.requestLength());
+                response.setRequestPayloadLength(request.getContentLength());
             }
 
         })).onErrorMap(throwable -> {
@@ -189,11 +191,16 @@ public final class RntbdTransportClient extends TransportClient {
                     address.toString());
             }
 
+            assert error instanceof CosmosException;
             CosmosException cosmosException = (CosmosException) error;
             BridgeInternal.setServiceEndpointStatistics(cosmosException, record.serviceEndpointStatistics());
 
-            return cosmosException;
+            BridgeInternal.setRntbdRequestLength(cosmosException, record.requestLength());
+            BridgeInternal.setRntbdResponseLength(cosmosException, record.responseLength());
+            BridgeInternal.setRequestBodyLength(cosmosException, request.getContentLength());
+            BridgeInternal.setRequestTimeline(cosmosException, record.takeTimelineSnapshot());
 
+            return cosmosException;
         });
 
         return result.doFinally(signalType -> {

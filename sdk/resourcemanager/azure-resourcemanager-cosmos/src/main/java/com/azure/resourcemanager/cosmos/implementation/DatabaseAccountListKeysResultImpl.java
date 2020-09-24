@@ -15,21 +15,21 @@ public class DatabaseAccountListKeysResultImpl extends WrapperImpl<DatabaseAccou
 
     @Override
     public String primaryMasterKey() {
-        return this.inner().primaryMasterKey();
+        return this.innerModel().primaryMasterKey();
     }
 
     @Override
     public String secondaryMasterKey() {
-        return this.inner().secondaryMasterKey();
+        return this.innerModel().secondaryMasterKey();
     }
 
     @Override
     public String primaryReadonlyMasterKey() {
-        return this.inner().primaryReadonlyMasterKey();
+        return this.innerModel().primaryReadonlyMasterKey();
     }
 
     @Override
     public String secondaryReadonlyMasterKey() {
-        return this.inner().secondaryReadonlyMasterKey();
+        return this.innerModel().secondaryReadonlyMasterKey();
     }
 }

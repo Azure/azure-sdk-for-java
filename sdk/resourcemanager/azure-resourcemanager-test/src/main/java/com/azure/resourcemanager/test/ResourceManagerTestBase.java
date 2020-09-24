@@ -28,12 +28,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -271,6 +274,49 @@ public abstract class ResourceManagerTestBase extends TestBase {
         for (Map.Entry<String, String> entry : rules.entrySet()) {
             interceptorManager.addTextReplacementRule(entry.getKey(), entry.getValue());
         }
+    }
+
+    /**
+     * Sets sdk context when running the tests
+     *
+     * @param sdkContext the sdkContext
+     * @param objects the manager classes to change sdkContext
+     * @param <SdkContext> the type of sdk context
+     * @throws RuntimeException when field cannot be found or set.
+     */
+    protected <SdkContext> void setSdkContext(SdkContext sdkContext, Object... objects) {
+        try {
+            for (Object obj : objects) {
+                for (final Field field : obj.getClass().getSuperclass().getDeclaredFields()) {
+                    if (field.getName().equals("resourceManager")) {
+                        setAccessible(field);
+                        Field context = field.get(obj).getClass().getDeclaredField("sdkContext");
+                        setAccessible(context);
+                        context.set(field.get(obj), sdkContext);
+                    }
+                }
+                for (Field field : obj.getClass().getDeclaredFields()) {
+                    if (field.getName().equals("sdkContext")) {
+                        setAccessible(field);
+                        field.set(obj, sdkContext);
+                    } else if (field.getName().contains("Manager")) {
+                        setAccessible(field);
+                        setSdkContext(sdkContext, field.get(obj));
+                    }
+                }
+            }
+        } catch (IllegalAccessException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        } catch (NoSuchFieldException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        }
+    }
+
+    private void setAccessible(final Field field) {
+        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+            field.setAccessible(true);
+            return null;
+        });
     }
 
     protected abstract HttpPipeline buildHttpPipeline(

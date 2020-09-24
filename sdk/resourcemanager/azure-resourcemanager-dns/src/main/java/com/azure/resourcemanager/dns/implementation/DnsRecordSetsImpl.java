@@ -32,7 +32,7 @@ class DnsRecordSetsImpl
 
     void withCNameRecordSet(String name, String alias) {
         CNameRecordSetImpl recordSet = CNameRecordSetImpl.newRecordSet(name, this.getParent());
-        recordSet.inner().cnameRecord().withCname(alias);
+        recordSet.innerModel().cnameRecord().withCname(alias);
         setDefaults(prepareInlineDefine(recordSet.withTimeToLive(DEFAULT_TTL_IN_SECONDS)));
     }
 

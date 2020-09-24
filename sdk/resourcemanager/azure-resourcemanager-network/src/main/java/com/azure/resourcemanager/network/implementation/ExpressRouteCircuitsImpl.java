@@ -14,8 +14,8 @@ public class ExpressRouteCircuitsImpl
         ExpressRouteCircuit,
         ExpressRouteCircuitImpl,
         ExpressRouteCircuitInner,
-    ExpressRouteCircuitsClient,
-    NetworkManager>
+        ExpressRouteCircuitsClient,
+        NetworkManager>
     implements ExpressRouteCircuits {
 
     public ExpressRouteCircuitsImpl(NetworkManager manager) {

@@ -51,17 +51,17 @@ class EventHubConsumerGroupImpl
 
     @Override
     public OffsetDateTime createdAt() {
-        return this.inner().createdAt();
+        return this.innerModel().createdAt();
     }
 
     @Override
     public OffsetDateTime updatedAt() {
-        return this.inner().updatedAt();
+        return this.innerModel().updatedAt();
     }
 
     @Override
     public String userMetadata() {
-        return this.inner().userMetadata();
+        return this.innerModel().userMetadata();
     }
 
     @Override
@@ -85,7 +85,7 @@ class EventHubConsumerGroupImpl
 
     @Override
     public EventHubConsumerGroupImpl withUserMetadata(String metadata) {
-        this.inner().withUserMetadata(metadata);
+        this.innerModel().withUserMetadata(metadata);
         return this;
     }
 
@@ -96,7 +96,7 @@ class EventHubConsumerGroupImpl
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),
                         this.name(),
-                        this.inner().userMetadata())
+                        this.innerModel().userMetadata())
                 .map(innerToFluentMap(this));
     }
 
