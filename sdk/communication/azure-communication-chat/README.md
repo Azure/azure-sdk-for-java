@@ -52,7 +52,7 @@ endpoint = "https://*Azure-Communication-Resource-Name*.communications.azure.com
 User access tokens enable you to build client applications that directly authenticate to Azure Communication Services. 
 You generate these tokens on your server, pass them back to a client device, and then use them to initialize the Communication Services SDKs. 
 
-Learn how to generate user access tokens from [User Access Tokens](https://docs.microsoft.com/en-us/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java#issue-user-access-tokens)
+Learn how to generate user access tokens from [User Access Tokens](https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java#issue-user-access-tokens)
 
 ## Examples
 
@@ -240,7 +240,7 @@ listMessages returns different types of messages which can be identified by `cha
 
 -`ThreadActivity/DeleteMember`: System message that indicates a member has been removed from the chat thread.
 
-For more details, see [Message Types](https://docs.microsoft.com/en-us/azure/communication-services/concepts/chat/concepts#message-types).
+For more details, see [Message Types](https://docs.microsoft.com/azure/communication-services/concepts/chat/concepts#message-types).
 
 #### Update a chat message
 
@@ -293,7 +293,7 @@ chatThreadMembersResponse.iterableByPage().forEach(resp -> {
 Use `addMembers` method to add thread members to the thread identified by threadId.
 `addChatThreadMembersOptions` describes the request object containing the members to be added; Use `.setMembers()` to set the thread members to be added to the thread;
 
-- `user`, required, is the CommunicationUser you've created by using the CommunicationIdentityClient. More info at: [Create A User](https://docs.microsoft.com/en-us/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java#create-a-user).
+- `user`, required, is the CommunicationUser you've created by using the CommunicationIdentityClient. More info at: [Create A User](https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java#create-a-user).
 - `display_name`, optional, is the display name for the thread member.
 - `share_history_time`, optional, is the time from which the chat history is shared with the member. To share history since the inception of the chat thread, set this property to any date equal to, or less than the thread creation time. To share no history previous to when the member was added, set it to the current date. To share partial history, set it to the required date.
 
