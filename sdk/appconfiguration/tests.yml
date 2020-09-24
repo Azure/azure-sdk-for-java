@@ -5,9 +5,10 @@ jobs:
     parameters:
       ServiceDirectory: appconfiguration
       Artifacts:
-        - name: azure-data-appconfiguration
-          groupId: com.azure
-          safeName: azuredataappconfiguration
+        - name: azure-spring-cloud-starter-appconfiguration-config-test
+          groupId: com.microsoft.azure
+          safeName: azurespringcloudstarterappconfigurationconfigtest
+      TimeoutInMinutes: 90
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_APPCONFIG_CONNECTION_STRING: $(AZURE_APPCONFIG_CONNECTION_STRING)
@@ -25,3 +26,4 @@ jobs:
           inputs:
             mavenPomFile: pom.xml
             goals: clean verify
+            options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
