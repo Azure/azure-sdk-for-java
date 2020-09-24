@@ -26,6 +26,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +42,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     public void listAllPhoneNumbers() {
         PagedFlux<AcquiredPhoneNumber> pagedFlux = this.getClient().listAllPhoneNumbers(LOCALE);
 
-        assertNotNull(pagedFlux.blockFirst().getPhoneNumber());
+        StepVerifier.create(pagedFlux.next())
+            .assertNext(item -> {
+                assertNotNull(item.getPhoneNumber());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -49,7 +54,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         PagedFlux<PhonePlanGroup> pagedFlux =
             this.getClient().listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
 
-        assertNotNull(pagedFlux.blockFirst().getPhonePlanGroupId());
+        StepVerifier.create(pagedFlux.next())
+            .assertNext(item -> {
+                assertNotNull(item.getPhonePlanGroupId());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -57,28 +66,44 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         PagedFlux<PhonePlan> pagedFlux =
             this.getClient().listPhonePlans(COUNTRY_CODE, PHONE_PLAN_GROUP_ID, LOCALE);
 
-        assertNotNull(pagedFlux.blockFirst().getPhonePlanId());
+        StepVerifier.create(pagedFlux.next())
+            .assertNext(item -> {
+                assertNotNull(item.getPhonePlanId());
+            })
+            .verifyComplete();
     }
 
     @Test()
     public void listAllReleases() {
         PagedFlux<PhoneNumberEntity> pagedFlux = this.getClient().listAllReleases();
 
-        assertNotNull(pagedFlux.blockFirst().getId());
+        StepVerifier.create(pagedFlux.next())
+            .assertNext(item -> {
+                assertNotNull(item.getId());
+            })
+            .verifyComplete();
     }
 
     @Test()
     public void listAllSearches() {
         PagedFlux<PhoneNumberEntity> pagedFlux = this.getClient().listAllSearches();
 
-        assertNotNull(pagedFlux.blockFirst().getId());
+        StepVerifier.create(pagedFlux.next())
+            .assertNext(item -> {
+                assertNotNull(item.getId());
+            })
+            .verifyComplete();
     }
 
     @Test()
     public void listAllSupportedCountries() {
         PagedFlux<PhoneNumberCountry> pagedFlux = this.getClient().listAllSupportedCountries(LOCALE);
 
-        assertNotNull(pagedFlux.blockFirst().getCountryCode());
+        StepVerifier.create(pagedFlux.next())
+            .assertNext(item -> {
+                assertNotNull(item.getCountryCode());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -86,7 +111,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         Mono<LocationOptionsResponse> mono =
             this.getClient().getPhonePlanLocationOptions(COUNTRY_CODE, PHONE_PLAN_GROUP_ID, PHONE_PLAN_ID, LOCALE);
 
-        assertNotNull(mono.block().getLocationOptions().getLabelId());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertNotNull(item.getLocationOptions().getLabelId());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -105,7 +134,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         Mono<AreaCodes> mono =
             this.getClient().getAllAreaCodes("selection", COUNTRY_CODE, PHONE_PLAN_ID, locationOptions);
 
-        assertTrue(mono.block().getPrimaryAreaCodes().size() > 0);
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertTrue(item.getPrimaryAreaCodes().size() > 0);
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -124,9 +157,12 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         Mono<Response<AreaCodes>> mono = this.getClient().getAllAreaCodesWithResponse(
             "selection", COUNTRY_CODE, PHONE_PLAN_ID, locationOptions, Context.NONE);
 
-        Response<AreaCodes> response = mono.block();
-        assertEquals(200, response.getStatusCode());
-        assertTrue(response.getValue().getPrimaryAreaCodes().size() > 0);
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(200, item.getStatusCode());
+                assertTrue(item.getValue().getPrimaryAreaCodes().size() > 0);
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -142,7 +178,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         Mono<UpdateNumberCapabilitiesResponse> mono = this.getClient().updateCapabilities(updateMap);
 
-        assertNotNull(mono.block().getCapabilitiesUpdateId());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertNotNull(item.getCapabilitiesUpdateId());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -159,16 +199,24 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         Mono<Response<UpdateNumberCapabilitiesResponse>> mono =
             this.getClient().updateCapabilitiesWithResponse(updateMap, Context.NONE);
 
-        Response<UpdateNumberCapabilitiesResponse> response = mono.block();
-        assertEquals(200, response.getStatusCode());
-        assertNotNull(response.getValue().getCapabilitiesUpdateId());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(200, item.getStatusCode());
+                assertNotNull(item.getValue().getCapabilitiesUpdateId());
+            })
+            .verifyComplete();
     }
 
     @Test()
     public void getCapabilitiesUpdate() {
         Mono<UpdatePhoneNumberCapabilitiesResponse> mono =
             this.getClient().getCapabilitiesUpdate(CAPABILITIES_ID);
-        assertNotNull(mono.block().getCapabilitiesUpdateId());
+
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertNotNull(item.getCapabilitiesUpdateId());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -176,9 +224,12 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         Mono<Response<UpdatePhoneNumberCapabilitiesResponse>> mono =
             this.getClient().getCapabilitiesUpdateWithResponse(CAPABILITIES_ID, Context.NONE);
 
-        Response<UpdatePhoneNumberCapabilitiesResponse> response = mono.block();
-        assertEquals(200, response.getStatusCode());
-        assertNotNull(response.getValue().getCapabilitiesUpdateId());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(200, item.getStatusCode());
+                assertNotNull(item.getValue().getCapabilitiesUpdateId());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -196,7 +247,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         Mono<CreateSearchResponse> mono = this.getClient().createSearch(createSearchOptions);
 
-        assertNotNull(mono.block().getSearchId());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertNotNull(item.getSearchId());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -215,54 +270,71 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         Mono<Response<CreateSearchResponse>> mono =
             this.getClient().createSearchWithResponse(createSearchOptions, Context.NONE);
 
-        Response<CreateSearchResponse> response = mono.block();
-
-        assertEquals(201, response.getStatusCode());
-        assertNotNull(response.getValue().getSearchId());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(201, item.getStatusCode());
+                assertNotNull(item.getValue().getSearchId());
+            })
+            .verifyComplete();
     }
 
     @Test()
     public void getSearchById() {
         Mono<PhoneNumberSearch> mono = this.getClient().getSearchById(SEARCH_ID);
 
-        assertEquals(SEARCH_ID, mono.block().getSearchId());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(SEARCH_ID, item.getSearchId());
+            })
+            .verifyComplete();
     }
 
     @Test()
     public void getSearchByIdWithResponse() {
         Mono<Response<PhoneNumberSearch>> mono = this.getClient().getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
 
-        Response<PhoneNumberSearch> response = mono.block();
-        assertEquals(200, response.getStatusCode());
-        assertEquals(SEARCH_ID, response.getValue().getSearchId());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(200, item.getStatusCode());
+                assertEquals(SEARCH_ID, item.getValue().getSearchId());
+            })
+            .verifyComplete();
     }
 
     @Test()
     public void purchaseSearch() {
         Mono<Void> mono = this.getClient().purchaseSearch(SEARCH_ID_TO_PURCHASE);
-        mono.block();
+
+        StepVerifier.create(mono).verifyComplete();
     }
 
     @Test()
     public void purchaseSearchWithResponse() {
         Mono<Response<Void>> mono = this.getClient().purchaseSearchWithResponse(SEARCH_ID_TO_PURCHASE, Context.NONE);
 
-        Response<Void> response = mono.block();
-        assertEquals(202, response.getStatusCode());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(202, item.getStatusCode());
+            })
+            .verifyComplete();
     }
 
     @Test()
     public void cancelSearch() {
         Mono<Void> mono = this.getClient().cancelSearch(SEARCH_ID_TO_CANCEL);
-        mono.block();
+
+        StepVerifier.create(mono).verifyComplete();
     }
 
     @Test()
     public void cancelSearchWithResponse() {
         Mono<Response<Void>> mono = this.getClient().cancelSearchWithResponse(SEARCH_ID_TO_CANCEL, Context.NONE);
 
-        Response<Void> response = mono.block();
-        assertEquals(202, response.getStatusCode());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(202, item.getStatusCode());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -275,7 +347,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         Mono<Void> mono = this.getClient().configureNumber(number, pstnConfiguration);
 
-        mono.block();
+        StepVerifier.create(mono).verifyComplete();
     }
 
     @Test()
@@ -288,8 +360,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         Mono<Response<Void>> mono = this.getClient().configureNumberWithResponse(number, pstnConfiguration, Context.NONE);
 
-        Response<Void> response = mono.block();
-        assertEquals(202, response.getStatusCode());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(202, item.getStatusCode());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -298,7 +373,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         Mono<NumberConfigurationResponse> mono = this.getClient().getNumberConfiguration(number);
 
-        assertEquals("ApplicationId", mono.block().getPstnConfiguration().getApplicationId());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals("ApplicationId", item.getPstnConfiguration().getApplicationId());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -308,9 +387,12 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         Mono<Response<NumberConfigurationResponse>> mono =
             this.getClient().getNumberConfigurationWithResponse(number, Context.NONE);
 
-        Response<NumberConfigurationResponse> response = mono.block();
-        assertEquals(200, response.getStatusCode());
-        assertEquals("ApplicationId", response.getValue().getPstnConfiguration().getApplicationId());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(200, item.getStatusCode());
+                assertEquals("ApplicationId", item.getValue().getPstnConfiguration().getApplicationId());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -319,7 +401,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         Mono<Void> mono = this.getClient().unconfigureNumber(number);
 
-        mono.block();
+        StepVerifier.create(mono).verifyComplete();
     }
 
     @Test()
@@ -328,8 +410,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         Mono<Response<Void>> mono = this.getClient().unconfigureNumberWithResponse(number, Context.NONE);
 
-        Response<Void> response = mono.block();
-        assertEquals(202, response.getStatusCode());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(202, item.getStatusCode());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -339,7 +424,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         Mono<ReleaseResponse> mono = this.getClient().releasePhoneNumbers(phoneNumbers);
 
-        assertNotNull(mono.block().getReleaseId());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertNotNull(item.getReleaseId());
+            })
+            .verifyComplete();
     }
 
     @Test()
@@ -350,9 +439,12 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         Mono<Response<ReleaseResponse>> mono =
             this.getClient().releasePhoneNumbersWithResponse(phoneNumbers, Context.NONE);
 
-        Response<ReleaseResponse> response = mono.block();
-        assertEquals(200, response.getStatusCode());
-        assertNotNull(response.getValue().getReleaseId());
+        StepVerifier.create(mono)
+            .assertNext(item -> {
+                assertEquals(200, item.getStatusCode());
+                assertNotNull(item.getValue().getReleaseId());
+            })
+            .verifyComplete();
     }
 
     private PhoneNumberAsyncClient getClient() {
