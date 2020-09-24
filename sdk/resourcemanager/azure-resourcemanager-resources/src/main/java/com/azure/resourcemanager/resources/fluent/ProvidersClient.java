@@ -26,7 +26,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
+import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
 import com.azure.resourcemanager.resources.models.ProviderListResult;
 import reactor.core.publisher.Mono;
 
@@ -194,7 +194,7 @@ public final class ProvidersClient {
      * @return resource provider information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProviderInner>> unregisterWithResponseAsync(
+    private Mono<Response<ProviderInner>> unregisterWithResponseAsync(
         String resourceProviderNamespace, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -250,29 +250,6 @@ public final class ProvidersClient {
      * Unregisters a subscription from a resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider to unregister.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource provider information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProviderInner> unregisterAsync(String resourceProviderNamespace, Context context) {
-        return unregisterWithResponseAsync(resourceProviderNamespace, context)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Unregisters a subscription from a resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -294,8 +271,8 @@ public final class ProvidersClient {
      * @return resource provider information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderInner unregister(String resourceProviderNamespace, Context context) {
-        return unregisterAsync(resourceProviderNamespace, context).block();
+    public Response<ProviderInner> unregisterWithResponse(String resourceProviderNamespace, Context context) {
+        return unregisterWithResponseAsync(resourceProviderNamespace, context).block();
     }
 
     /**
@@ -351,7 +328,7 @@ public final class ProvidersClient {
      * @return resource provider information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProviderInner>> registerWithResponseAsync(String resourceProviderNamespace, Context context) {
+    private Mono<Response<ProviderInner>> registerWithResponseAsync(String resourceProviderNamespace, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -406,29 +383,6 @@ public final class ProvidersClient {
      * Registers a subscription with a resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider to register.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource provider information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProviderInner> registerAsync(String resourceProviderNamespace, Context context) {
-        return registerWithResponseAsync(resourceProviderNamespace, context)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Registers a subscription with a resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -450,8 +404,8 @@ public final class ProvidersClient {
      * @return resource provider information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderInner register(String resourceProviderNamespace, Context context) {
-        return registerAsync(resourceProviderNamespace, context).block();
+    public Response<ProviderInner> registerWithResponse(String resourceProviderNamespace, Context context) {
+        return registerWithResponseAsync(resourceProviderNamespace, context).block();
     }
 
     /**
@@ -467,7 +421,7 @@ public final class ProvidersClient {
      * @return all resource providers for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ProviderInner>> listSinglePageAsync(Integer top, String expand) {
+    private Mono<PagedResponse<ProviderInner>> listSinglePageAsync(Integer top, String expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -517,7 +471,7 @@ public final class ProvidersClient {
      * @return all resource providers for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ProviderInner>> listSinglePageAsync(Integer top, String expand, Context context) {
+    private Mono<PagedResponse<ProviderInner>> listSinglePageAsync(Integer top, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -570,6 +524,20 @@ public final class ProvidersClient {
     /**
      * Gets all resource providers for a subscription.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all resource providers for a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ProviderInner> listAsync() {
+        final Integer top = null;
+        final String expand = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(top, expand), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all resource providers for a subscription.
+     *
      * @param top The number of results to return. If null is passed returns all deployments.
      * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query
      *     string to retrieve resource provider metadata. To include property aliases in response, use
@@ -581,42 +549,9 @@ public final class ProvidersClient {
      * @return all resource providers for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ProviderInner> listAsync(Integer top, String expand, Context context) {
+    private PagedFlux<ProviderInner> listAsync(Integer top, String expand, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(top, expand, context), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all resource providers for a subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ProviderInner> listAsync() {
-        final Integer top = null;
-        final String expand = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top, expand), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all resource providers for a subscription.
-     *
-     * @param top The number of results to return. If null is passed returns all deployments.
-     * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query
-     *     string to retrieve resource provider metadata. To include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProviderInner> list(Integer top, String expand) {
-        return new PagedIterable<>(listAsync(top, expand));
     }
 
     /**
@@ -648,7 +583,6 @@ public final class ProvidersClient {
     public PagedIterable<ProviderInner> list() {
         final Integer top = null;
         final String expand = null;
-        final Context context = null;
         return new PagedIterable<>(listAsync(top, expand));
     }
 
@@ -665,7 +599,7 @@ public final class ProvidersClient {
      * @return all resource providers for the tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ProviderInner>> listAtTenantScopeSinglePageAsync(Integer top, String expand) {
+    private Mono<PagedResponse<ProviderInner>> listAtTenantScopeSinglePageAsync(Integer top, String expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -704,7 +638,7 @@ public final class ProvidersClient {
      * @return all resource providers for the tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ProviderInner>> listAtTenantScopeSinglePageAsync(
+    private Mono<PagedResponse<ProviderInner>> listAtTenantScopeSinglePageAsync(
         Integer top, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -748,6 +682,22 @@ public final class ProvidersClient {
     /**
      * Gets all resource providers for the tenant.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all resource providers for the tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ProviderInner> listAtTenantScopeAsync() {
+        final Integer top = null;
+        final String expand = null;
+        return new PagedFlux<>(
+            () -> listAtTenantScopeSinglePageAsync(top, expand),
+            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all resource providers for the tenant.
+     *
      * @param top The number of results to return. If null is passed returns all providers.
      * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query
      *     string to retrieve resource provider metadata. To include property aliases in response, use
@@ -759,44 +709,10 @@ public final class ProvidersClient {
      * @return all resource providers for the tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ProviderInner> listAtTenantScopeAsync(Integer top, String expand, Context context) {
+    private PagedFlux<ProviderInner> listAtTenantScopeAsync(Integer top, String expand, Context context) {
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(top, expand, context),
             nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all resource providers for the tenant.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for the tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ProviderInner> listAtTenantScopeAsync() {
-        final Integer top = null;
-        final String expand = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listAtTenantScopeSinglePageAsync(top, expand),
-            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all resource providers for the tenant.
-     *
-     * @param top The number of results to return. If null is passed returns all providers.
-     * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query
-     *     string to retrieve resource provider metadata. To include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for the tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProviderInner> listAtTenantScope(Integer top, String expand) {
-        return new PagedIterable<>(listAtTenantScopeAsync(top, expand));
     }
 
     /**
@@ -828,7 +744,6 @@ public final class ProvidersClient {
     public PagedIterable<ProviderInner> listAtTenantScope() {
         final Integer top = null;
         final String expand = null;
-        final Context context = null;
         return new PagedIterable<>(listAtTenantScopeAsync(top, expand));
     }
 
@@ -890,7 +805,7 @@ public final class ProvidersClient {
      * @return the specified resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProviderInner>> getWithResponseAsync(
+    private Mono<Response<ProviderInner>> getWithResponseAsync(
         String resourceProviderNamespace, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -949,31 +864,6 @@ public final class ProvidersClient {
      * Gets the specified resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProviderInner> getAsync(String resourceProviderNamespace, String expand, Context context) {
-        return getWithResponseAsync(resourceProviderNamespace, expand, context)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -982,7 +872,6 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> getAsync(String resourceProviderNamespace) {
         final String expand = null;
-        final Context context = null;
         return getWithResponseAsync(resourceProviderNamespace, expand)
             .flatMap(
                 (Response<ProviderInner> res) -> {
@@ -998,22 +887,6 @@ public final class ProvidersClient {
      * Gets the specified resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderInner get(String resourceProviderNamespace, String expand) {
-        return getAsync(resourceProviderNamespace, expand).block();
-    }
-
-    /**
-     * Gets the specified resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1022,7 +895,6 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderInner get(String resourceProviderNamespace) {
         final String expand = null;
-        final Context context = null;
         return getAsync(resourceProviderNamespace, expand).block();
     }
 
@@ -1039,8 +911,8 @@ public final class ProvidersClient {
      * @return the specified resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderInner get(String resourceProviderNamespace, String expand, Context context) {
-        return getAsync(resourceProviderNamespace, expand, context).block();
+    public Response<ProviderInner> getWithResponse(String resourceProviderNamespace, String expand, Context context) {
+        return getWithResponseAsync(resourceProviderNamespace, expand, context).block();
     }
 
     /**
@@ -1095,7 +967,7 @@ public final class ProvidersClient {
      * @return the specified resource provider at the tenant level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProviderInner>> getAtTenantScopeWithResponseAsync(
+    private Mono<Response<ProviderInner>> getAtTenantScopeWithResponseAsync(
         String resourceProviderNamespace, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1143,31 +1015,6 @@ public final class ProvidersClient {
      * Gets the specified resource provider at the tenant level.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider at the tenant level.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProviderInner> getAtTenantScopeAsync(String resourceProviderNamespace, String expand, Context context) {
-        return getAtTenantScopeWithResponseAsync(resourceProviderNamespace, expand, context)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified resource provider at the tenant level.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1176,7 +1023,6 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> getAtTenantScopeAsync(String resourceProviderNamespace) {
         final String expand = null;
-        final Context context = null;
         return getAtTenantScopeWithResponseAsync(resourceProviderNamespace, expand)
             .flatMap(
                 (Response<ProviderInner> res) -> {
@@ -1192,22 +1038,6 @@ public final class ProvidersClient {
      * Gets the specified resource provider at the tenant level.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider at the tenant level.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderInner getAtTenantScope(String resourceProviderNamespace, String expand) {
-        return getAtTenantScopeAsync(resourceProviderNamespace, expand).block();
-    }
-
-    /**
-     * Gets the specified resource provider at the tenant level.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1216,7 +1046,6 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderInner getAtTenantScope(String resourceProviderNamespace) {
         final String expand = null;
-        final Context context = null;
         return getAtTenantScopeAsync(resourceProviderNamespace, expand).block();
     }
 
@@ -1233,8 +1062,9 @@ public final class ProvidersClient {
      * @return the specified resource provider at the tenant level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderInner getAtTenantScope(String resourceProviderNamespace, String expand, Context context) {
-        return getAtTenantScopeAsync(resourceProviderNamespace, expand, context).block();
+    public Response<ProviderInner> getAtTenantScopeWithResponse(
+        String resourceProviderNamespace, String expand, Context context) {
+        return getAtTenantScopeWithResponseAsync(resourceProviderNamespace, expand, context).block();
     }
 
     /**
@@ -1247,7 +1077,7 @@ public final class ProvidersClient {
      * @return list of resource providers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ProviderInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ProviderInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1276,7 +1106,7 @@ public final class ProvidersClient {
      * @return list of resource providers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ProviderInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ProviderInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1304,7 +1134,7 @@ public final class ProvidersClient {
      * @return list of resource providers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ProviderInner>> listAtTenantScopeNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ProviderInner>> listAtTenantScopeNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1333,7 +1163,7 @@ public final class ProvidersClient {
      * @return list of resource providers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ProviderInner>> listAtTenantScopeNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ProviderInner>> listAtTenantScopeNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

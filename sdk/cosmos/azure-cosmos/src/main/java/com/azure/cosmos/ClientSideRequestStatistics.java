@@ -20,21 +20,17 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.sun.management.OperatingSystemMXBean;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -42,9 +38,6 @@ import java.util.Set;
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
-    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
-        DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US);
-
     private ConnectionMode connectionMode;
 
     private List<StoreResponseStatistics> responseStatisticsList;
@@ -280,8 +273,8 @@ class ClientSideRequestStatistics {
             long requestLatency = statistics.getDuration().toMillis();
             generator.writeStringField("userAgent", CosmosDiagnostics.USER_AGENT);
             generator.writeNumberField("requestLatencyInMs", requestLatency);
-            generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.formatDateTime(statistics.requestStartTimeUTC));
-            generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.formatDateTime(statistics.requestEndTimeUTC));
+            generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
+            generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestEndTimeUTC));
             generator.writeObjectField("connectionMode", statistics.connectionMode);
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
             int supplementalResponseStatisticsListCount = statistics.supplementalResponseStatisticsList.size();

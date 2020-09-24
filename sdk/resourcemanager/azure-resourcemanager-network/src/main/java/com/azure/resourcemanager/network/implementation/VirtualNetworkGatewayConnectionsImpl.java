@@ -25,8 +25,8 @@ class VirtualNetworkGatewayConnectionsImpl
         VirtualNetworkGatewayConnection,
         VirtualNetworkGatewayConnectionImpl,
         VirtualNetworkGatewayConnectionInner,
-    VirtualNetworkGatewayConnectionsClient,
-    NetworkManager>
+        VirtualNetworkGatewayConnectionsClient,
+        NetworkManager>
     implements VirtualNetworkGatewayConnections {
 
     private final VirtualNetworkGatewayImpl parent;

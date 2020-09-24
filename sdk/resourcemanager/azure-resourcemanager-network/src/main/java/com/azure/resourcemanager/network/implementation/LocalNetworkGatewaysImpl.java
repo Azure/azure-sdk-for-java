@@ -23,8 +23,8 @@ public class LocalNetworkGatewaysImpl
         LocalNetworkGateway,
         LocalNetworkGatewayImpl,
         LocalNetworkGatewayInner,
-    LocalNetworkGatewaysClient,
-    NetworkManager>
+        LocalNetworkGatewaysClient,
+        NetworkManager>
     implements LocalNetworkGateways {
 
     public LocalNetworkGatewaysImpl(final NetworkManager networkManager) {

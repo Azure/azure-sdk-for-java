@@ -19,10 +19,10 @@ class CnameRecordSetImpl extends PrivateDnsRecordSetImpl implements CnameRecordS
 
     @Override
     public String canonicalName() {
-        if (inner().cnameRecord() == null) {
+        if (innerModel().cnameRecord() == null) {
             return null;
         }
-        return inner().cnameRecord().cname();
+        return innerModel().cnameRecord().cname();
     }
 
     @Override

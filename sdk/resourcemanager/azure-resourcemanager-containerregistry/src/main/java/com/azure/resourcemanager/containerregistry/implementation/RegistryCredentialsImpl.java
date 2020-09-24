@@ -20,8 +20,8 @@ public class RegistryCredentialsImpl extends WrapperImpl<RegistryListCredentials
         super(innerObject);
 
         this.accessKeys = new HashMap<>();
-        if (this.inner().passwords() != null) {
-            for (RegistryPassword registryPassword : this.inner().passwords()) {
+        if (this.innerModel().passwords() != null) {
+            for (RegistryPassword registryPassword : this.innerModel().passwords()) {
                 switch (registryPassword.name()) {
                     case PASSWORD:
                         this.accessKeys.put(AccessKeyType.PRIMARY, registryPassword.value());
@@ -43,6 +43,6 @@ public class RegistryCredentialsImpl extends WrapperImpl<RegistryListCredentials
 
     @Override
     public String username() {
-        return this.inner().username();
+        return this.innerModel().username();
     }
 }

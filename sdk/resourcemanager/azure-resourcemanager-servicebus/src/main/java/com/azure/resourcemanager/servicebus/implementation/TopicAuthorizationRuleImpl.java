@@ -69,7 +69,7 @@ class TopicAuthorizationRuleImpl
                 this.namespaceName(),
                 this.topicName(),
                 this.name(),
-                prepareForCreate(this.inner()))
+                prepareForCreate(this.innerModel()))
             .map(inner -> {
                 setInner(inner);
                 return self;

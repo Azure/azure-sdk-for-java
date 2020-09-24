@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 /** A client-side representation of a subnet of a virtual network. */
 @Fluent()
-public interface Subnet extends HasInner<SubnetInner>, ChildResource<Network> {
+public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Network> {
 
     /**
      * @return network interface IP configurations that are associated with this subnet
@@ -253,9 +253,7 @@ public interface Subnet extends HasInner<SubnetInner>, ChildResource<Network> {
             Update withoutRouteTable();
         }
 
-        /**
-         * The stage of the subnet definition allowing to specify the subnet delegation.
-         */
+        /** The stage of the subnet definition allowing to specify the subnet delegation. */
         interface WithDelegation {
 
             /**

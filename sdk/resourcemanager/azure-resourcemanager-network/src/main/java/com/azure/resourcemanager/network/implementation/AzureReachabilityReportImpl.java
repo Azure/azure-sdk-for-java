@@ -52,7 +52,7 @@ class AzureReachabilityReportImpl extends ExecutableImpl<AzureReachabilityReport
     }
 
     @Override
-    public AzureReachabilityReportInner inner() {
+    public AzureReachabilityReportInner innerModel() {
         return this.inner;
     }
 

@@ -37,17 +37,17 @@ class TransparentDataEncryptionImpl
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.sqlServerManager = sqlServerManager;
-        this.resourceId = ResourceId.fromString(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.innerModel().id());
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -67,12 +67,12 @@ class TransparentDataEncryptionImpl
 
     @Override
     public TransparentDataEncryptionStatus status() {
-        return this.inner().status();
+        return this.innerModel().status();
     }
 
     @Override
     public TransparentDataEncryption updateStatus(TransparentDataEncryptionStatus transparentDataEncryptionState) {
-        this.inner().withStatus(transparentDataEncryptionState);
+        this.innerModel().withStatus(transparentDataEncryptionState);
         TransparentDataEncryptionInner transparentDataEncryptionInner =
             this
                 .sqlServerManager
