@@ -301,7 +301,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                 .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
                 .setMetadata(metadataFinal).setTags(options.getTags()).setTier(options.getTier())
                 .setRequestConditions(options.getRequestConditions())
-                .setCalculateAndVerifyMd5(options.isCalculateAndVerifyMd5())));
+                .setComputeMd5(options.isComputeMd5())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

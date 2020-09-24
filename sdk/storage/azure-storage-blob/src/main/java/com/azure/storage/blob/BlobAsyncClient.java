@@ -429,11 +429,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction = (stream) ->
                 uploadInChunks(blockBlobAsyncClient, stream, validatedParallelTransferOptions,
                     options.getHeaders(), options.getMetadata(), options.getTags(),
-                    options.getTier(), validatedRequestConditions, options.isCalculateAndVerifyMd5());
+                    options.getTier(), validatedRequestConditions, options.isComputeMd5());
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobMethod =
                 (stream, length) -> UploadUtils.computeMd5(ProgressReporter.addProgressReporting(stream,
-                    validatedParallelTransferOptions.getProgressReceiver()), options.isCalculateAndVerifyMd5(), logger)
+                    validatedParallelTransferOptions.getProgressReceiver()), options.isComputeMd5(), logger)
                     .flatMap(fluxMd5Wrapper -> blockBlobAsyncClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(
                     fluxMd5Wrapper.getData(), length)
                     .setHeaders(options.getHeaders()).setMetadata(options.getMetadata()).setTags(options.getTags())

@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.DownloadRetryOptions
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ParallelTransferOptions
+import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
 import com.microsoft.azure.storage.CloudStorageAccount
@@ -224,6 +225,29 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ByteBuffer outputByteBuffer = collectBytesInBuffer(beac.download()).block()
 
         return compareListToBuffer(byteBufferList, outputByteBuffer)
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Encryption computeMd5"() {
+        setup:
+        def byteBufferList = []
+        for (def i = 0; i < byteBufferCount; i++) {
+            byteBufferList.add(getRandomData(size))
+        }
+        Flux<ByteBuffer> flux = Flux.fromIterable(byteBufferList)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setMaxSingleUploadSizeLong(maxSingleUploadSize)
+            .setBlockSizeLong(blockSize)
+
+        expect:
+        beac.uploadWithResponse(new BlobParallelUploadOptions(flux).setParallelTransferOptions(parallelTransferOptions).setComputeMd5(true)).block().getStatusCode() == 201
+
+        where:
+        size           | maxSingleUploadSize | blockSize               | byteBufferCount
+        Constants.KB   | null                | null                    | 1                  // Simple case where uploadFull is called.
+        Constants.KB   | Constants.KB        | 500 * Constants.KB      | 1000               // uploadChunked 2 blocks staged
+        Constants.KB   | Constants.KB        | 5 * Constants.KB        | 1000               // uploadChunked 100 blocks staged
     }
 
     // This test checks that HTTP headers are successfully set on the encrypted client

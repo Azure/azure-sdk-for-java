@@ -1227,40 +1227,25 @@ class BlockBlobAPITest extends APISpec {
 
     @Unroll
     @Requires({ liveMode() })
-    def "Async buffered upload md5"() {
+    def "Async buffered upload computeMd5"() {
         setup:
-        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
-            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
-            .getBlobAsyncClient(blobAsyncClient.getBlobName())
-
-        when:
-        def data = getRandomData(dataSize)
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4)
-        blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data)).setParallelTransferOptions(parallelTransferOptions).setCalculateAndVerifyMd5(true)).block()
-        data.position(0)
-
-        then:
-        // Due to memory issues, this check only runs on small to medium sized data sets.
-        if (dataSize < 100 * 1024 * 1024) {
-            StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
-                .assertNext({ assert it == data })
-                .verifyComplete()
+        def byteBufferList = []
+        for (def i = 0; i < byteBufferCount; i++) {
+            byteBufferList.add(getRandomData(size))
         }
+        Flux<ByteBuffer> flux = Flux.fromIterable(byteBufferList)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setMaxSingleUploadSizeLong(maxSingleUploadSize)
+            .setBlockSizeLong(blockSize)
 
-        StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext({ assert it.getCommittedBlocks().size() == blockCount })
-            .verifyComplete()
+        expect:
+        blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(flux).setParallelTransferOptions(parallelTransferOptions).setComputeMd5(true)).block().getStatusCode() == 201
 
         where:
-        dataSize  | bufferSize  | numBuffs || blockCount
-        35        | 5           | 2        || 7 // Requires cycling through the same buffers multiple times.
-        35        | 5           | 5        || 7 // Most buffers may only be used once.
-        100       | 10          | 2        || 10 // Larger data set.
-        100       | 10          | 5        || 10 // Larger number of Buffs.
-        10        | 1           | 10       || 10 // Exactly enough buffer space to hold all the data.
-        50        | 10          | 2        || 5 // Larger data.
-        10        | 2           | 4        || 5
-        10        | 3           | 3        || 4 // Data does not squarely fit in buffers.
+        size           | maxSingleUploadSize | blockSize               | byteBufferCount
+        Constants.KB   | null                | null                    | 1                  // Simple case where uploadFull is called.
+        Constants.KB   | Constants.KB        | 500 * Constants.KB      | 1000               // uploadChunked 2 blocks staged
+        Constants.KB   | Constants.KB        | 5 * Constants.KB        | 1000               // uploadChunked 100 blocks staged
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
