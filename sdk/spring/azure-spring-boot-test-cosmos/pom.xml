@@ -11,7 +11,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-spring-boot-test-cosmosdb</artifactId>
+  <artifactId>azure-spring-boot-test-cosmos</artifactId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-boot-test-cosmosdb;current} -->
 
   <dependencies>
