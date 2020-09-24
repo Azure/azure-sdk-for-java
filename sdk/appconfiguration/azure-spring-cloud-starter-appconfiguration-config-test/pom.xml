@@ -13,14 +13,14 @@
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure-spring-cloud-appconfiguration-config-test</artifactId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-cloud-appconfiguration-config-test;current} -->
+  <artifactId>azure-spring-cloud-starter-appconfiguration-config-test</artifactId>
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-cloud-starter-appconfiguration-config-test;current} -->
 
   <dependencies>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
+      <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
     </dependency>
   </dependencies>
 
