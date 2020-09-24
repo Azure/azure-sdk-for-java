@@ -15,29 +15,47 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OptionTests {
     @Test
-    public void testNone() {
-        final Option<Void> noneOption = Option.none();
-        assertTrue(noneOption.isNone());
+    public void testUnset() {
+        final Option<Void> unsetOption = Option.unset();
+        assertFalse(unsetOption.isSet());
     }
 
     @Test
-    public void testSomeNull() {
-        final Option<Void> someNullOption = Option.some(null);
-        assertFalse(someNullOption.isNone());
-        assertNull(someNullOption.getValue());
+    public void testEmpty() {
+        final Option<Void> emptyOption = Option.empty();
+        assertTrue(emptyOption.isSet());
+        assertNull(emptyOption.getValue());
     }
 
     @Test
-    public void testSomeNonNull() {
-        final Option<Integer> someNullOption = Option.some(1);
-        assertFalse(someNullOption.isNone());
-        assertEquals(1, someNullOption.getValue());
+    public void testOf() {
+        final Option<Integer> setOption = Option.of(1);
+        assertTrue(setOption.isSet());
+        assertEquals(1, setOption.getValue());
+    }
+
+    @Test
+    public void testOfThrows() {
+        assertThrows(NullPointerException.class, () -> {
+            Option.of(null);
+        });
+    }
+
+    @Test
+    public void testOfNullable() {
+        final Option<Integer> nullOption = Option.ofNullable(null);
+        assertTrue(nullOption.isSet());
+        assertNull(nullOption.getValue());
+
+        final Option<Integer> nonNullOption = Option.ofNullable(1);
+        assertTrue(nonNullOption.isSet());
+        assertEquals(1, nonNullOption.getValue());
     }
 
     @Test
     public void testGetValueThrows() {
-        final Option<Void> noneOption = Option.none();
-        Exception exception = assertThrows(NoSuchElementException.class, () -> {
+        final Option<Void> noneOption = Option.unset();
+        assertThrows(NoSuchElementException.class, () -> {
             noneOption.getValue();
         });
     }
