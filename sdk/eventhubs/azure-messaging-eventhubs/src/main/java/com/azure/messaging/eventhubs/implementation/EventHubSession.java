@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
@@ -35,4 +36,17 @@ public interface EventHubSession extends AmqpSession {
      */
     Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
                                          EventPosition eventPosition, ReceiveOptions options);
+
+    /**
+     * Create a new AMQP producer.
+     * @param linkName Name of the sender link.
+     * @param entityPath The entity path this link connects to receive events.
+     * @param timeout Timeout required for creating and opening AMQP link.
+     * @param retry The retry policy to use when sending messages.
+     * @param publishingState Options to use when creating the producer.
+     * @return A newly created AMQP link.
+     */
+    Mono<AmqpSendLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
+                                  boolean idempotentPartitionPublishing, PartitionPublishingState publishingState);
+
 }

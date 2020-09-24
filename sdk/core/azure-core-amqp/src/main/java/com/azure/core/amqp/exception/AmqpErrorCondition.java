@@ -106,7 +106,17 @@ public enum AmqpErrorCondition {
     /**
      * A connection error occurred.
      */
-    CONNECTION_FRAMING_ERROR("amqp:connection:framing-error");
+    CONNECTION_FRAMING_ERROR("amqp:connection:framing-error"),
+
+    /**
+     * A producer is disconnected because another higher epoc producer connects to the service.
+     */
+    PRODUCER_EPOCH_STOLEN("com.microsoft:producer-epoch-stolen"),
+
+    /**
+     * An idempotent producer is sending an event without a consecutive producer sequence number.
+     */
+    OUT_OF_ORDER_SEQUENCE("com.microsoft:out-of-order-sequence");
 
     private static final Map<String, AmqpErrorCondition> ERROR_CONSTANT_MAP = new HashMap<>();
     private final String errorCondition;

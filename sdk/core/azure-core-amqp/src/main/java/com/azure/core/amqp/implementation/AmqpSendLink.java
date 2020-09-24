@@ -6,12 +6,14 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.engine.Delivery;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * An AMQP link that sends information to the remote endpoint.
@@ -76,6 +78,12 @@ public interface AmqpSendLink extends AmqpLink {
      * @return A Mono that completes and returns the size of the send link.
      */
     Mono<Integer> getLinkSize();
+
+    /**
+     * Gets the properties of the send link returned from the service.
+     * @return A Mono that completes and returns the properties of the send link.
+     */
+    Mono<Map<Symbol, Object>> getRemoteProperties();
 
     /**
      * Gets the context for this AMQP send link.

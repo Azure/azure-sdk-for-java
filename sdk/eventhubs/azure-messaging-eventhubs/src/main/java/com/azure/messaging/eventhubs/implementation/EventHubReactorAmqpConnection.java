@@ -96,14 +96,24 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions) {
-        return createSession(entityPath).flatMap(session -> {
-            logger.verbose("Get or create producer for path: '{}'", entityPath);
-            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+    public Mono<AmqpSendLink> createSendLink(
+        String linkName, String entityPath, AmqpRetryOptions retryOptions,
+        boolean idempotentPartitionPublishing, PartitionPublishingState publishingState
+    ) {
+        return createSession(entityPath).cast(EventHubSession.class)
+            .flatMap(session -> {
+                logger.verbose("Get or create producer for path: '{}'", entityPath);
+                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+                return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
+                    idempotentPartitionPublishing, publishingState);
+            });
+    }
 
-            return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy)
-                .cast(AmqpSendLink.class);
-        });
+    @Override
+    public Mono<AmqpSendLink> createSendLink(
+        String linkName, String entityPath, AmqpRetryOptions retryOptions
+    ) {
+        return this.createSendLink(linkName, entityPath, retryOptions, false, null);
     }
 
     /**

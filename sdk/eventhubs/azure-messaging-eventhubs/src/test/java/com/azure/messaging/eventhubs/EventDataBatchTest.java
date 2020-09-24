@@ -90,4 +90,21 @@ public class EventDataBatchTest {
         Assertions.assertEquals(partitionId, batch.getPartitionId());
         Assertions.assertEquals(0, batch.getEvents().size());
     }
+
+    /**
+     * Verify that a batch created by an idempotent producer has larger size than a normal batch
+     */
+    @Test
+    public void preAllocateForIdempotentProducer() {
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY,
+            null, new TracerProvider(Collections.emptyList()), null, null);
+        batch.tryAdd(new EventData(new byte[1024]));
+        int size = batch.getSizeInBytes();
+
+        final EventDataBatch batchIdempotent = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY,
+            null, new TracerProvider(Collections.emptyList()), null, null, true);
+        batchIdempotent.tryAdd(new EventData(new byte[1024]));
+
+        Assertions.assertTrue(batchIdempotent.getSizeInBytes() > batch.getSizeInBytes());
+    }
 }
