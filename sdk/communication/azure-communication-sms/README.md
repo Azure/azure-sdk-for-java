@@ -34,7 +34,7 @@ SMS messaging uses HMAC authentication with resource access key. This is done vi
 CommunicationClientCredentials The credentials must be provided to the SMSClientBuilder 
 via the credential() function. Endpoint and httpClient must also be set.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/App.java#L36-L61 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L36-L61 -->
 ```java
 // Your can find your endpoint and access token from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
@@ -72,7 +72,7 @@ Use the `sendMessage` function to send a new message to a list of phone numbers.
 Once you send the message, you'll receive a response where you can access several
 properties such as the message id with the `response.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/App.java#L58-L74 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L63-L79 -->
 ```java
 // Currently Sms services only supports one phone number
 List<PhoneNumber> to = new ArrayList<PhoneNumber>();

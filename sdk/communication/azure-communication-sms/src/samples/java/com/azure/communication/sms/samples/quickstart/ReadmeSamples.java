@@ -20,7 +20,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
  * Hello world!
  *
  */
-public class App {
+public class ReadmeSamples {
     public static void main(String[] args) {
 
         /*@@*/ // Retrieve the Azure Communication SMS Service endpoint for use with the application. 
