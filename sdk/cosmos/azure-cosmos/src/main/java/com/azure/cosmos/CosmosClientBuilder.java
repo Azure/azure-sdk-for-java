@@ -275,7 +275,7 @@ public class CosmosClientBuilder {
      * @return current Builder.
      */
     public CosmosClientBuilder resourceToken(String resourceToken) {
-        this.keyOrResourceToken = resourceToken;
+        this.keyOrResourceToken = Objects.requireNonNull(resourceToken, "'resourceToken' cannot be null.");
         this.cosmosAuthorizationTokenResolver = null;
         this.credential = null;
         this.permissions = null;
