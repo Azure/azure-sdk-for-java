@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The RecordSet model. */
+/** Describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS zone. */
 @JsonFlatten
 @Fluent
 public class RecordSetInner extends ProxyResource {

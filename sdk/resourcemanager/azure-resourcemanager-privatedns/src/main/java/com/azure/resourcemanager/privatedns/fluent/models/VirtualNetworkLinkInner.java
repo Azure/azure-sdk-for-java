@@ -14,7 +14,7 @@ import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinkState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualNetworkLink model. */
+/** Describes a link to virtual network for a Private DNS zone. */
 @JsonFlatten
 @Fluent
 public class VirtualNetworkLinkInner extends Resource {

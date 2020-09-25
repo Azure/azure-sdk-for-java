@@ -12,7 +12,7 @@ import com.azure.resourcemanager.privatedns.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PrivateZone model. */
+/** Describes a Private DNS zone. */
 @JsonFlatten
 @Fluent
 public class PrivateZoneInner extends Resource {
