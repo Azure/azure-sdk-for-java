@@ -5,26 +5,26 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.dns.models.NSRecordSet;
-import com.azure.resourcemanager.dns.models.NSRecordSets;
+import com.azure.resourcemanager.dns.models.NsRecordSet;
+import com.azure.resourcemanager.dns.models.NsRecordSets;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import reactor.core.publisher.Mono;
 
-/** Implementation of NSRecordSets. */
-class NSRecordSetsImpl extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImpl> implements NSRecordSets {
+/** Implementation of NsRecordSets. */
+class NsRecordSetsImpl extends DnsRecordSetsBaseImpl<NsRecordSet, NsRecordSetImpl> implements NsRecordSets {
 
-    NSRecordSetsImpl(DnsZoneImpl dnsZone) {
+    NsRecordSetsImpl(DnsZoneImpl dnsZone) {
         super(dnsZone, RecordType.NS);
     }
 
     @Override
-    public NSRecordSet getByName(String name) {
+    public NsRecordSet getByName(String name) {
         return getByNameAsync(name).block();
     }
 
     @Override
-    public Mono<NSRecordSet> getByNameAsync(String name) {
+    public Mono<NsRecordSet> getByNameAsync(String name) {
         return this
             .parent()
             .manager()
@@ -35,7 +35,7 @@ class NSRecordSetsImpl extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImp
     }
 
     @Override
-    protected PagedIterable<NSRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
+    protected PagedIterable<NsRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super
             .wrapList(
                 this
@@ -53,7 +53,7 @@ class NSRecordSetsImpl extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImp
     }
 
     @Override
-    protected PagedFlux<NSRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
+    protected PagedFlux<NsRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
         return wrapPageAsync(
             this
                 .parent()
@@ -64,10 +64,10 @@ class NSRecordSetsImpl extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImp
     }
 
     @Override
-    protected NSRecordSetImpl wrapModel(RecordSetInner inner) {
+    protected NsRecordSetImpl wrapModel(RecordSetInner inner) {
         if (inner == null) {
             return null;
         }
-        return new NSRecordSetImpl(inner.name(), this.dnsZone, inner);
+        return new NsRecordSetImpl(inner.name(), this.dnsZone, inner);
     }
 }

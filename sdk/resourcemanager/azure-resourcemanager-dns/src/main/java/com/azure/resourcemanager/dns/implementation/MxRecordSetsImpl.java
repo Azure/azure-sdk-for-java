@@ -5,26 +5,26 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.dns.models.MXRecordSet;
-import com.azure.resourcemanager.dns.models.MXRecordSets;
+import com.azure.resourcemanager.dns.models.MxRecordSet;
+import com.azure.resourcemanager.dns.models.MxRecordSets;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import reactor.core.publisher.Mono;
 
-/** Implementation of MXRecordSets. */
-class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImpl> implements MXRecordSets {
+/** Implementation of MxRecordSets. */
+class MxRecordSetsImpl extends DnsRecordSetsBaseImpl<MxRecordSet, MxRecordSetImpl> implements MxRecordSets {
 
-    MXRecordSetsImpl(DnsZoneImpl dnsZone) {
+    MxRecordSetsImpl(DnsZoneImpl dnsZone) {
         super(dnsZone, RecordType.MX);
     }
 
     @Override
-    public MXRecordSet getByName(String name) {
+    public MxRecordSet getByName(String name) {
         return getByNameAsync(name).block();
     }
 
     @Override
-    public Mono<MXRecordSet> getByNameAsync(String name) {
+    public Mono<MxRecordSet> getByNameAsync(String name) {
         return this
             .parent()
             .manager()
@@ -35,7 +35,7 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
     }
 
     @Override
-    public PagedIterable<MXRecordSet> list() {
+    public PagedIterable<MxRecordSet> list() {
         return super
             .wrapList(
                 this
@@ -47,7 +47,7 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
     }
 
     @Override
-    protected PagedIterable<MXRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
+    protected PagedIterable<MxRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super
             .wrapList(
                 this
@@ -65,7 +65,7 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
     }
 
     @Override
-    protected PagedFlux<MXRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
+    protected PagedFlux<MxRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
         return wrapPageAsync(
             this
                 .parent()
@@ -76,10 +76,10 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
     }
 
     @Override
-    protected MXRecordSetImpl wrapModel(RecordSetInner inner) {
+    protected MxRecordSetImpl wrapModel(RecordSetInner inner) {
         if (inner == null) {
             return null;
         }
-        return new MXRecordSetImpl(inner.name(), this.dnsZone, inner);
+        return new MxRecordSetImpl(inner.name(), this.dnsZone, inner);
     }
 }

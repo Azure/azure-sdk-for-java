@@ -28,7 +28,7 @@ import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
-import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.core.management.Region;
@@ -44,7 +44,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
@@ -59,7 +59,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;
     protected AppServiceManager appServiceManager;
-    protected MSIManager msiManager;
+    protected MsiManager msiManager;
 
     protected AppServiceDomain domain;
     protected AppServiceCertificateOrder certificateOrder;
@@ -86,15 +86,15 @@ public class AppServiceTest extends ResourceManagerTestBase {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 20);
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        SdkContext sdkContext = new SdkContext();
-        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
         appServiceManager = AppServiceManager.authenticate(httpPipeline, profile);
-        msiManager = MSIManager.authenticate(httpPipeline, profile);
-        setSdkContext(sdkContext, appServiceManager, msiManager);
+        msiManager = MsiManager.authenticate(httpPipeline, profile);
+        setInternalContext(internalContext, appServiceManager, msiManager);
 
         // useExistingDomainAndCertificate();
         // createNewDomainAndCertificate();

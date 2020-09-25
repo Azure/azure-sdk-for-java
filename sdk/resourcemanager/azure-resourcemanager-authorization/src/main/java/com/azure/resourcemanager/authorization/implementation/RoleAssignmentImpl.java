@@ -16,7 +16,7 @@ import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentInner
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -114,7 +114,8 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                                                 throw logger.logExceptionAsError(Exceptions.propagate(throwable));
                                             }
                                         })
-                                    .flatMap(i -> Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(i))))))
+                                    .flatMap(i -> Mono.delay(ResourceManagerUtils.InternalRuntimeContext
+                                        .getDelayDuration(Duration.ofSeconds(i))))))
             .map(innerToFluentMap(this));
     }
 

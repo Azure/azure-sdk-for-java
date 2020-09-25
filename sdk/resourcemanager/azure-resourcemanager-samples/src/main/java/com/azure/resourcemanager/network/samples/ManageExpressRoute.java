@@ -35,11 +35,11 @@ public final class ManageExpressRoute {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_NORTH_CENTRAL;
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg", 20);
-        final String ercName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("erc", 20);
-        final String gatewayName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("gtw", 20);
-        final String connectionName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("con", 20);
-        final String vnetName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vnet", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 20);
+        final String ercName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("erc", 20);
+        final String gatewayName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("gtw", 20);
+        final String connectionName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("con", 20);
+        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet", 20);
 
         try {
             //============================================================

@@ -12,7 +12,7 @@ import java.util.Iterator;
  */
 public class TestUtilities {
     /**
-     * Wrapper on the SdkContext.sleep, in case of record mode will not sleep, otherwise sleep.
+     * Wrapper on the ResourceManagerUtils.InternalRuntimeContext.sleep, in case of record mode will not sleep, otherwise sleep.
      *
      * @param milliseconds time in milliseconds for which to sleep.
      * @param isRecordMode the value indicates whether it is record mode.

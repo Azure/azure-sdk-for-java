@@ -459,7 +459,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
             .withNewFirewallRule(
                 startIPAddress,
                 endIPAddress,
-                this.manager().resourceManager().sdkContext().randomResourceName("firewall_", 15));
+                this.manager().resourceManager().internalContext().randomResourceName("firewall_", 15));
     }
 
     @Override

@@ -46,13 +46,13 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgSB04_", 24);
-        final String namespaceName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("namespace", 20);
-        final String topic1Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("topic1_", 24);
-        final String topic2Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("topic2_", 24);
-        final String subscription1Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("subs_", 24);
-        final String subscription2Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("subs_", 24);
-        final String subscription3Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("subs_", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgSB04_", 24);
+        final String namespaceName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("namespace", 20);
+        final String topic1Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("topic1_", 24);
+        final String topic2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("topic2_", 24);
+        final String subscription1Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("subs_", 24);
+        final String subscription2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("subs_", 24);
+        final String subscription3Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("subs_", 24);
         final String sendRuleName = "SendRule";
         final String manageRuleName = "ManageRule";
 

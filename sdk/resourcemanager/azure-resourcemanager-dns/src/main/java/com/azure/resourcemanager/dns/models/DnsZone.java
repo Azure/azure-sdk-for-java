@@ -80,13 +80,13 @@ public interface DnsZone
     CaaRecordSets caaRecordSets();
 
     /** @return entry point to manage record sets in this zone containing CNAME (canonical name) records */
-    CNameRecordSets cNameRecordSets();
+    CnameRecordSets cNameRecordSets();
 
     /** @return entry point to manage record sets in this zone containing MX (mail exchange) records */
-    MXRecordSets mxRecordSets();
+    MxRecordSets mxRecordSets();
 
     /** @return entry point to manage record sets in this zone containing NS (name server) records */
-    NSRecordSets nsRecordSets();
+    NsRecordSets nsRecordSets();
 
     /** @return entry point to manage record sets in this zone containing PTR (pointer) records */
     PtrRecordSets ptrRecordSets();

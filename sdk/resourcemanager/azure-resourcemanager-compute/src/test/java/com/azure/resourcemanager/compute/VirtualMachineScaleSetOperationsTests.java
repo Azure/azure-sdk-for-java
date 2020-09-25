@@ -45,7 +45,6 @@ import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
@@ -1243,7 +1242,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             vmss.virtualMachines().simulateEviction(instance.instanceId());
         }
 
-        SdkContext.sleep(30 * 60 * 1000);
+        ResourceManagerUtils.InternalRuntimeContext.sleep(30 * 60 * 1000);
 
         for (VirtualMachineScaleSetVM instance: vmInstances) {
             instance.refresh();
