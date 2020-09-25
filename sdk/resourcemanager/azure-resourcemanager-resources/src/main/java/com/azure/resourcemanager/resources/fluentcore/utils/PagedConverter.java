@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Utility class for conversion of PagedResponse.
@@ -31,16 +32,31 @@ public final class PagedConverter {
      * @param <T> input type of pagedFlux
      * @param <S> return type of pagedFlux
      * @param pagedFlux input
-     * @param mapper the flatMap transform of element T to Publisher of S.
+     * @param transformer the flatMap transform of element T to Publisher of S.
      * @return the PagedFlux.
      */
     public static <T, S> PagedFlux<S> flatMapPage(PagedFlux<T> pagedFlux,
-            Function<? super T, ? extends Publisher<? extends S>> mapper) {
+            Function<? super T, ? extends Publisher<? extends S>> transformer) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<T>> flux = (continuationToken == null)
                     ? pagedFlux.byPage()
                     : pagedFlux.byPage(continuationToken);
-            return flux.flatMap(PagedConverter.flatMapPagedResponse(mapper));
+            return flux.concatMap(PagedConverter.flatMapPagedResponse(transformer));
+        };
+        return PagedFlux.create(provider);
+    }
+
+    public static <T, S> PagedFlux<S> mergePagedFlux(PagedFlux<T> pagedFlux,
+            Function<? super T, PagedFlux<S>> transformer) {
+        Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<T>> flux = (continuationToken == null)
+                ? pagedFlux.byPage()
+                : pagedFlux.byPage(continuationToken);
+            return flux.concatMap(pagedResponse -> {
+                List<Flux<PagedResponse<S>>> flux1 = pagedResponse.getValue().stream()
+                    .map(item -> transformer.apply(item).byPage()).collect(Collectors.toList());
+                return Flux.mergeSequential(flux1);
+            });
         };
         return PagedFlux.create(provider);
     }
