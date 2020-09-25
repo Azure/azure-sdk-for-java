@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.batch.TransactionalBatchResponse;
+import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import reactor.core.publisher.Mono;

@@ -3,11 +3,6 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
-import com.azure.cosmos.batch.TransactionalBatch;
-import com.azure.cosmos.batch.implementation.BatchExecUtils;
-import com.azure.cosmos.batch.implementation.TransactionalBatchCore;
-import com.azure.cosmos.batch.implementation.BatchAsyncContainerExecutor;
-import com.azure.cosmos.batch.implementation.ItemBatchOperation;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
@@ -21,6 +16,10 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.batch.BatchAsyncContainerExecutor;
+import com.azure.cosmos.implementation.batch.BatchExecUtils;
+import com.azure.cosmos.implementation.batch.BatchExecutor;
+import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -48,8 +47,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
-import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
+import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
+import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
@@ -75,6 +74,7 @@ public class CosmosAsyncContainer {
     private final String queryItemsSpanName;
     private final String readAllConflictsSpanName;
     private final String queryConflictsSpanName;
+    private final String batchSpanName;
     private CosmosAsyncScripts scripts;
     private final boolean bulkExecutionEnabled;
     private BatchAsyncContainerExecutor executor;
@@ -106,6 +106,7 @@ public class CosmosAsyncContainer {
         this.queryItemsSpanName = "queryItems." + this.id;
         this.readAllConflictsSpanName = "readAllConflicts." + this.id;
         this.queryConflictsSpanName = "queryConflicts." + this.id;
+        this.batchSpanName = "transactionalBatch." + this.id;
     }
 
     /**
@@ -549,18 +550,85 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Initializes a new instance of {@link com.azure.cosmos.batch.TransactionalBatch}
-     * that can be used to perform operations across multiple items in the container with the provided partition
-     * key in a transactional manner
+     * Executes the transactional batch at the Azure Cosmos service as an asynchronous operation.
+     *
+     * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
+     *
+     * @return A Mono response which contains details of execution of the transactional batch.
      * <p>
-     * After subscription the operation will be performed.
-     *TransactionalBatch.java
-     * @param partitionKey the partition key for all items in the batch.
-     * @return A new instance of {@link com.azure.cosmos.batch.TransactionalBatch}.
+     * If the transactional batch executes successfully, the value returned by {@link
+     * TransactionalBatchResponse#getResponseStatus} on the response returned will be set to 200}.
+     * <p>
+     * If an operation within the transactional batch fails during execution, no changes from the batch will be
+     * committed and the status of the failing operation is made available by {@link
+     * TransactionalBatchResponse#getResponseStatus}. To obtain information about the operations that failed, the
+     * response can be enumerated. This returns {@link TransactionalBatchOperationResult} instances corresponding to
+     * each operation in the transactional batch in the order they were added to the transactional batch. For a result
+     * corresponding to an operation within the transactional batch, use
+     * {@link TransactionalBatchOperationResult#getResponseStatus}
+     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
+     * another operation within the transactional batch, the value of this field will be 424;
+     * for the operation that caused the batch to abort, the value of this field
+     * will indicate the cause of failure.
+     * <p>
+     * The value returned by {@link TransactionalBatchResponse#getResponseStatus} on the response returned may also have
+     * values such as 500 in case of server errors and 429.
+     * <p>
+     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * transactional batch succeeded.
      */
     @Beta(Beta.SinceVersion.V4_4_0)
-    public TransactionalBatch createTransactionalBatch(PartitionKey partitionKey) {
-        return new TransactionalBatchCore(this, partitionKey);
+    public Mono<TransactionalBatchResponse> executeTransactionalBatch(TransactionalBatch transactionalBatch) {
+        return executeTransactionalBatch(transactionalBatch, new TransactionalBatchRequestOptions());
+    }
+
+    /**
+     * Executes the transactional batch at the Azure Cosmos service as an asynchronous operation.
+     *
+     * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
+     * @param requestOptions Options that apply specifically to batch request.
+     *
+     * @return A Mono response which contains details of execution of the transactional batch.
+     * <p>
+     * If the transactional batch executes successfully, the value returned by {@link
+     * TransactionalBatchResponse#getResponseStatus} on the response returned will be set to 200}.
+     * <p>
+     * If an operation within the transactional batch fails during execution, no changes from the batch will be
+     * committed and the status of the failing operation is made available by {@link
+     * TransactionalBatchResponse#getResponseStatus}. To obtain information about the operations that failed, the
+     * response can be enumerated. This returns {@link TransactionalBatchOperationResult} instances corresponding to
+     * each operation in the transactional batch in the order they were added to the transactional batch. For a result
+     * corresponding to an operation within the transactional batch, use
+     * {@link TransactionalBatchOperationResult#getResponseStatus}
+     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
+     * another operation within the transactional batch, the value of this field will be 424;
+     * for the operation that caused the batch to abort, the value of this field
+     * will indicate the cause of failure.
+     * <p>
+     * The value returned by {@link TransactionalBatchResponse#getResponseStatus} on the response returned may also have
+     * values such as 500 in case of server errors and 429.
+     * <p>
+     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * transactional batch succeeded.
+     */
+    @Beta(Beta.SinceVersion.V4_4_0)
+    public Mono<TransactionalBatchResponse> executeTransactionalBatch(
+        TransactionalBatch transactionalBatch,
+        TransactionalBatchRequestOptions requestOptions) {
+
+        if (requestOptions == null) {
+            requestOptions = new TransactionalBatchRequestOptions();
+        }
+
+        final BatchExecutor executor = new BatchExecutor(this, transactionalBatch, requestOptions);
+        final Mono<TransactionalBatchResponse> responseMono = executor.executeAsync();
+
+        return withContext(context -> database.getClient().getTracerProvider().
+            traceEnabledBatchResponsePublisher(responseMono,
+                context,
+                this.batchSpanName,
+                database.getId(),
+                database.getClient().getServiceEndpoint()));
     }
 
     /**
