@@ -108,9 +108,10 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        AzureResourceManager.Authenticated azureAuthed = AzureResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        AzureResourceManager.Authenticated azureAuthed = AzureResourceManager.authenticate(httpPipeline, profile);
         azureResourceManager = azureAuthed.withDefaultSubscription();
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
+        this.msiManager = MSIManager.authenticate(httpPipeline, profile);
+        setSdkContext(sdkContext, azureResourceManager, msiManager);
     }
 
     @Override
@@ -228,7 +229,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      */
     @Test
     public void testDeployments() throws Exception {
-        String testId = azureResourceManager.deployments().manager().sdkContext().randomResourceName("", 8);
+        String testId = azureResourceManager.deployments().manager().resourceManager().sdkContext().randomResourceName("", 8);
         PagedIterable<Deployment> deployments = azureResourceManager.deployments().list();
         System.out.println("Deployments: " + TestUtilities.getSize(deployments));
         Deployment deployment =
@@ -260,13 +261,13 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         NetworkSecurityGroup nsg =
             azureResourceManager
                 .networkSecurityGroups()
-                .define(azureResourceManager.networkSecurityGroups().manager().sdkContext().randomResourceName("nsg", 13))
+                .define(azureResourceManager.networkSecurityGroups().manager().resourceManager().sdkContext().randomResourceName("nsg", 13))
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .create();
         azureResourceManager
             .publicIpAddresses()
-            .define(azureResourceManager.networkSecurityGroups().manager().sdkContext().randomResourceName("pip", 13))
+            .define(azureResourceManager.networkSecurityGroups().manager().resourceManager().sdkContext().randomResourceName("pip", 13))
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(nsg.resourceGroupName())
             .create();
@@ -603,7 +604,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
 
     @Test
     public void testManagedDiskVMUpdate() throws Exception {
-        SdkContext context = azureResourceManager.disks().manager().sdkContext();
+        SdkContext context = azureResourceManager.disks().manager().resourceManager().sdkContext();
         final String rgName = context.randomResourceName("rg", 13);
         final String linuxVM2Name = context.randomResourceName("vm" + "-", 10);
         final String linuxVM2Pip = context.randomResourceName("pip" + "-", 18);

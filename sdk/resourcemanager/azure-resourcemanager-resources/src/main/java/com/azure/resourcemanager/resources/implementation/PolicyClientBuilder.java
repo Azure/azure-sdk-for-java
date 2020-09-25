@@ -13,11 +13,10 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluent.PolicyClient;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the PolicyClient type. */
-@ServiceClientBuilder(serviceClients = {PolicyClient.class})
+/** A builder for creating a new instance of the PolicyClientImpl type. */
+@ServiceClientBuilder(serviceClients = {PolicyClientImpl.class})
 public final class PolicyClientBuilder {
     /*
      * The ID of the target subscription.
@@ -116,11 +115,11 @@ public final class PolicyClientBuilder {
     }
 
     /**
-     * Builds an instance of PolicyClient with the provided parameters.
+     * Builds an instance of PolicyClientImpl with the provided parameters.
      *
-     * @return an instance of PolicyClient.
+     * @return an instance of PolicyClientImpl.
      */
-    public PolicyClient buildClient() {
+    public PolicyClientImpl buildClient() {
         if (endpoint == null) {
             this.endpoint = "https://management.azure.com";
         }
@@ -139,8 +138,9 @@ public final class PolicyClientBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        PolicyClient client =
-            new PolicyClient(pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        PolicyClientImpl client =
+            new PolicyClientImpl(
+                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

@@ -9,7 +9,7 @@ Service Bus offers a reliable and secure platform for asynchronous transfer of d
 ## Getting started
 
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
 
@@ -71,4 +71,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [spring_integration]: https://spring.io/projects/spring-integration
 [spring_integration_sample_with_service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-integration-sample
 [src_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-servicebus
-
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

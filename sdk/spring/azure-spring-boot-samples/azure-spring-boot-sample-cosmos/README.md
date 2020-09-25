@@ -9,7 +9,7 @@ This sample project demonstrates how to use Azure Cosmos DB via Spring Boot Star
 
 * An Azure subscription; if you don't already have an Azure subscription, you can activate your [MSDN subscriber benefits](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/) or sign up for a [free Azure account](https://azure.microsoft.com/free/).
 
-* A [Java Development Kit (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/), version 1.8.
+* A [Java Development Kit (JDK)][jdk_link], version 1.8.
 
 * [Apache Maven](http://maven.apache.org/), version 3.0 or later.
 
@@ -66,3 +66,5 @@ If `com.fasterxml.jackson.databind.JsonMappingException` is thrown during deseri
 Please refer to [this article](https://docs.microsoft.com/java/azure/spring-framework/configure-spring-boot-starter-java-app-with-cosmos-db) for the tutorial about how to use the Spring Boot Starter with Azure Cosmos DB API.
 
 ## Contributing
+<!-- LINKS -->
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

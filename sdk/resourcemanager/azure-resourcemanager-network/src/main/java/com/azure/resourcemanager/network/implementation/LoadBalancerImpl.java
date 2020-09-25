@@ -109,7 +109,7 @@ class LoadBalancerImpl
     }
 
     protected LoadBalancerBackendImpl ensureUniqueBackend() {
-        String name = this.manager().sdkContext().randomResourceName("backend", 20);
+        String name = this.manager().resourceManager().sdkContext().randomResourceName("backend", 20);
         LoadBalancerBackendImpl backend = this.defineBackend(name);
         backend.attach();
         return backend;
@@ -130,7 +130,7 @@ class LoadBalancerImpl
     }
 
     protected LoadBalancerFrontendImpl ensureUniqueFrontend() {
-        String name = this.manager().sdkContext().randomResourceName("frontend", 20);
+        String name = this.manager().resourceManager().sdkContext().randomResourceName("frontend", 20);
         LoadBalancerFrontendImpl frontend = this.defineFrontend(name);
         frontend.attach();
         return frontend;
@@ -507,7 +507,7 @@ class LoadBalancerImpl
             this.creatablePIPKeys.put(this.addDependency(creatablePip), frontendName);
         } else if (!existingPipFrontendName.equalsIgnoreCase(frontendName)) {
             // Existing PIP definition already in use but under a different frontend, so error
-            String exceptionMessage = 
+            String exceptionMessage =
                 "This public IP address definition is already associated with a frontend under a different name.";
             throw logger.logExceptionAsError(new IllegalArgumentException(exceptionMessage));
         }

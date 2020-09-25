@@ -37,7 +37,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
     @Override
     public DnsZone createResource(DnsZones dnsZones) throws Exception {
         final Region region = Region.US_EAST;
-        final String testId = dnsZones.manager().sdkContext().randomResourceName("", 8);
+        final String testId = dnsZones.manager().resourceManager().sdkContext().randomResourceName("", 8);
         final String groupName = "rg" + testId;
         final String topLevelDomain = "www.contoso" + testId + ".com";
 

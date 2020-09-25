@@ -4,18 +4,21 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+import com.azure.digitaltwins.core.models.ModelsListOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
+
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Async client implementation of the model tests defined in {@link ModelsTestBase}
@@ -99,6 +102,43 @@ public class ModelsAsyncTest extends ModelsTestBase {
 
         StepVerifier.create(asyncClient.createModels(modelsToCreate))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_CONFLICT));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void listModelsMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+        DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
+
+        // Create some models
+        List<DigitalTwinsModelData> createdModels = new ArrayList<>();
+        createModelsRunner(asyncClient, (modelsList) -> StepVerifier.create(asyncClient.createModels(modelsList))
+            .assertNext(createdModelsResponseList -> {
+                createdModelsResponseList.forEach(item -> createdModels.add(item));
+                logger.info("Created models successfully");
+            })
+            .verifyComplete());
+
+        createdModels.forEach(Assertions::assertNotNull);
+
+        AtomicInteger pageCount = new AtomicInteger();
+
+        // List models in multiple pages and verify more than one page was viewed.
+        StepVerifier.create(asyncClient.listModels(new ModelsListOptions().setMaxItemCount(2)).byPage())
+            .thenConsumeWhile(
+                page -> {
+                    pageCount.getAndIncrement();
+                    logger.info("content for this page " + pageCount);
+                    for (DigitalTwinsModelData model : page.getValue()) {
+                        logger.info(model.getId());
+                    }
+                    return true;
+                })
+            .verifyComplete();
+
+        int finalPageCount = pageCount.get();
+
+        assertTrue(finalPageCount > 1);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

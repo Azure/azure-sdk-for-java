@@ -59,6 +59,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     private PolicyAssignments policyAssignments;
     private Subscriptions subscriptions;
     private Tenants tenants;
+    private SdkContext sdkContext;
 
     /**
      * Creates an instance of ResourceManager that exposes resource management API entry points.
@@ -129,14 +130,6 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
         Subscriptions subscriptions();
 
         /**
-         * Specifies sdk context for resource manager.
-         *
-         * @param sdkContext the sdk context
-         * @return the authenticated itself for chaining
-         */
-        Authenticated withSdkContext(SdkContext sdkContext);
-
-        /**
          * Specifies a subscription to expose resource management API entry points that work in a subscription.
          *
          * @param subscriptionId the subscription UUID
@@ -160,7 +153,6 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     private static final class AuthenticatedImpl implements Authenticated {
         private final HttpPipeline httpPipeline;
         private AzureProfile profile;
-        private SdkContext sdkContext;
         private final SubscriptionClient subscriptionClient;
         // The subscription less collections
         private Subscriptions subscriptions;
@@ -169,7 +161,6 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
         AuthenticatedImpl(HttpPipeline httpPipeline, AzureProfile profile) {
             this.httpPipeline = httpPipeline;
             this.profile = profile;
-            this.sdkContext = new SdkContext();
             this.subscriptionClient = new SubscriptionClientBuilder()
                     .pipeline(httpPipeline)
                     .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
@@ -191,16 +182,10 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
         }
 
         @Override
-        public AuthenticatedImpl withSdkContext(SdkContext sdkContext) {
-            this.sdkContext = sdkContext;
-            return this;
-        }
-
-        @Override
         public ResourceManager withSubscription(String subscriptionId) {
             Objects.requireNonNull(subscriptionId);
             profile = new AzureProfile(profile.getTenantId(), subscriptionId, profile.getEnvironment());
-            return new ResourceManager(httpPipeline, profile, sdkContext);
+            return new ResourceManager(httpPipeline, profile);
         }
 
         @Override
@@ -209,11 +194,11 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
                 String subscriptionId = ResourceManagerUtils.getDefaultSubscription(this.subscriptions().list());
                 profile = new AzureProfile(profile.getTenantId(), subscriptionId, profile.getEnvironment());
             }
-            return new ResourceManager(httpPipeline, profile, sdkContext);
+            return new ResourceManager(httpPipeline, profile);
         }
     }
 
-    private ResourceManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private ResourceManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             null,
             profile,
@@ -221,8 +206,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
+                .buildClient());
         super.withResourceManager(this);
 
         this.featureClient = new FeatureClientBuilder()
@@ -355,5 +339,15 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
             tenants = new TenantsImpl(subscriptionClient.getTenants());
         }
         return tenants;
+    }
+
+    /**
+     * @return the {@link SdkContext} associated with this manager
+     */
+    public SdkContext sdkContext() {
+        if (sdkContext == null) {
+            sdkContext = new SdkContext();
+        }
+        return this.sdkContext;
     }
 }
