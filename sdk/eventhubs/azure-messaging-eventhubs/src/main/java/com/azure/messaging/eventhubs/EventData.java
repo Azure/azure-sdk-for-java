@@ -129,6 +129,7 @@ public class EventData {
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
         this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
         this.properties = new HashMap<>();
+        this.commitProducerDataFromSysProperties();  // populate producer publishing when receiving an event.
     }
 
     /**
