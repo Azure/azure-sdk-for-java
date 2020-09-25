@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("CopySource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SharePointOnlineListSource", value = SharePointOnlineListSource.class),
+    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeSource", value = AzureDatabricksDeltaLakeSource.class),
     @JsonSubTypes.Type(name = "SnowflakeSource", value = SnowflakeSource.class),
     @JsonSubTypes.Type(name = "HttpSource", value = HttpSource.class),
     @JsonSubTypes.Type(name = "AzureBlobFSSource", value = AzureBlobFSSource.class),
