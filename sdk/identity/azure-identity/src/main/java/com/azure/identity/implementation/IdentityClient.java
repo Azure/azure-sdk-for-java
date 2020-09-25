@@ -580,17 +580,10 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithDeviceCode(TokenRequestContext request,
                                                       Consumer<DeviceCodeInfo> deviceCodeConsumer) {
-
-        final Consumer<DeviceCodeInfo> deviceCodeInfoConsumer;
-        if (deviceCodeConsumer != null) {
-            deviceCodeInfoConsumer = deviceCodeConsumer;
-        } else {
-            deviceCodeInfoConsumer = deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
-        }
         return publicClientApplicationAccessor.getValue().flatMap(pc ->
             Mono.fromFuture(() -> {
                 DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(
-                    new HashSet<>(request.getScopes()), dc -> deviceCodeInfoConsumer.accept(
+                    new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
                         new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
                         OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
                 return pc.acquireToken(parameters);
