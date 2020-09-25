@@ -6,6 +6,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -63,6 +64,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -79,7 +81,9 @@ import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuListener {
+public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuListener, DiagnosticsClientContext {
+    private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
+    private static final AtomicInteger clientIdGenerator = new AtomicInteger(0);
 
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutioncontext, but not used";
@@ -106,6 +110,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
     private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
     private final boolean contentResponseOnWriteEnabled;
+
+    private final AtomicBoolean closed = new AtomicBoolean(false);
+    private final int clientId;
 
     // RetryPolicy retries a request when it encounters session unavailable (see ClientRetryPolicy).
     // Once it exhausts all write regions it clears the session container, then it uses RxClientCollectionCache
@@ -210,10 +217,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          boolean connectionSharingAcrossClientsEnabled,
                          boolean contentResponseOnWriteEnabled) {
 
+        activeClientsCnt.incrementAndGet();
+        this.clientId = clientIdGenerator.getAndDecrement();
+
         logger.info(
-            "Initializing DocumentClient with"
+            "Initializing DocumentClient [{}] with"
                 + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], directModeProtocol [{}]",
-            serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
+            this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
 
         try {
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
@@ -266,6 +276,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             close();
             throw e;
         }
+    }
+
+    @Override
+    public String getConfig() {
+        return "";
+    }
+
+    @Override
+    public int getNumberOfClients() {
+        return activeClientsCnt.get();
+    }
+
+    @Override
+    public int clientId() {
+        return this.clientId;
+    }
+
+    @Override
+    public CosmosDiagnostics createDiagnostics() {
+        return null;
     }
 
     private void initializeGatewayConfigurationReader() {
@@ -371,7 +401,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                              UserAgentContainer userAgentContainer,
                                              GlobalEndpointManager globalEndpointManager,
                                              HttpClient httpClient) {
-        return new RxGatewayStoreModel(sessionContainer,
+        return new RxGatewayStoreModel(this,
+                sessionContainer,
                 consistencyLevel,
                 queryCompatibilityMode,
                 userAgentContainer,
@@ -3331,16 +3362,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public void close() {
-        logger.info("Shutting down ...");
-        logger.info("Closing Global Endpoint Manager ...");
-        LifeCycleUtils.closeQuietly(this.globalEndpointManager);
-        logger.info("Closing StoreClientFactory ...");
-        LifeCycleUtils.closeQuietly(this.storeClientFactory);
-        logger.info("Shutting down reactorHttpClient ...");
-        LifeCycleUtils.closeQuietly(this.reactorHttpClient);
-        logger.info("Shutting down CpuMonitor ...");
-        CpuMonitor.unregister(this);
-        logger.info("Shutting down completed.");
+        logger.info("Attempting to close client {}", this.clientId);
+        if (!closed.getAndSet(true)) {
+            logger.info("Shutting down ...");
+            logger.info("Closing Global Endpoint Manager ...");
+            LifeCycleUtils.closeQuietly(this.globalEndpointManager);
+            logger.info("Closing StoreClientFactory ...");
+            LifeCycleUtils.closeQuietly(this.storeClientFactory);
+            logger.info("Shutting down reactorHttpClient ...");
+            LifeCycleUtils.closeQuietly(this.reactorHttpClient);
+            logger.info("Shutting down CpuMonitor ...");
+            CpuMonitor.unregister(this);
+            logger.info("Shutting down completed.");
+        } else {
+            logger.warn("Already shutdown!");
+        }
     }
 
     @Override

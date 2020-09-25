@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
@@ -38,6 +39,7 @@ import java.util.Set;
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
+    private final DiagnosticsClientContext clientContext;
     private ConnectionMode connectionMode;
 
     private List<StoreResponseStatistics> responseStatisticsList;
@@ -55,7 +57,8 @@ class ClientSideRequestStatistics {
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
 
-    ClientSideRequestStatistics() {
+    ClientSideRequestStatistics(DiagnosticsClientContext clientContext) {
+        this.clientContext = clientContext;
         this.requestStartTimeUTC = Instant.now();
         this.requestEndTimeUTC = Instant.now();
         this.responseStatisticsList = new ArrayList<>();
