@@ -57,7 +57,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.9.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -177,7 +177,7 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
-          <archive>                   
+          <archive>
             <manifest>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>

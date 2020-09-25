@@ -34,11 +34,11 @@ public final class ManageVpnGatewaySite2SiteConnection {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST2;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rg", 20);
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 20);
-        final String vpnGatewayName = azureResourceManager.sdkContext().randomResourceName("vngw", 20);
-        final String localGatewayName = azureResourceManager.sdkContext().randomResourceName("lngw", 20);
-        final String connectionName = azureResourceManager.sdkContext().randomResourceName("con", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 20);
+        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet", 20);
+        final String vpnGatewayName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vngw", 20);
+        final String localGatewayName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("lngw", 20);
+        final String connectionName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("con", 20);
 
 
         try {

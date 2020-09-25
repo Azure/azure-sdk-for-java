@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SmsReceiver model. */
+/** An SMS receiver. */
 @Fluent
 public final class SmsReceiver {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SmsReceiver.class);

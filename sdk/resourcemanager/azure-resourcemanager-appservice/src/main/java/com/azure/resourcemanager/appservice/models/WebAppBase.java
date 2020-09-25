@@ -5,7 +5,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;

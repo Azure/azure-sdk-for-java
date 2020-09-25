@@ -6,12 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetSkuInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetSkuInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetListSkusResult model. */
+/** The Virtual Machine Scale Set List Skus operation response. */
 @Fluent
 public final class VirtualMachineScaleSetListSkusResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetListSkusResult.class);

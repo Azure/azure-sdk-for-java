@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -307,7 +308,8 @@ public final class DeploymentImpl extends
     @Override
     public Accepted<Deployment> beginCreate() {
         return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient(),
+            this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager().serviceClient().getDeployments()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters).block(),
             inner -> new DeploymentImpl(inner, inner.name(), resourceManager),
@@ -338,7 +340,7 @@ public final class DeploymentImpl extends
                 .flatMap(activationResponse -> FluxUtil.collectBytesInByteBufferStream(activationResponse.getValue()))
                 .map(response -> {
                     try {
-                        return (DeploymentExtendedInner) this.manager().serviceClient().getSerializerAdapter()
+                        return (DeploymentExtendedInner) SerializerFactory.createDefaultManagementSerializerAdapter()
                             .deserialize(new String(response, StandardCharsets.UTF_8),
                                 DeploymentExtendedInner.class, SerializerEncoding.JSON);
                     } catch (IOException ioe) {

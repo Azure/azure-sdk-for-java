@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.models.TagCount;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TagValue model. */
+/** Tag information. */
 @Fluent
 public final class TagValueInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagValueInner.class);

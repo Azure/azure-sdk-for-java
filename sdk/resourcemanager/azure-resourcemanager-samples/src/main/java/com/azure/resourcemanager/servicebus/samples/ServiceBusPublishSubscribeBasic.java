@@ -48,11 +48,11 @@ public final class ServiceBusPublishSubscribeBasic {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgSB02_", 24);
-        final String namespaceName = azureResourceManager.sdkContext().randomResourceName("namespace", 20);
-        final String topicName = azureResourceManager.sdkContext().randomResourceName("topic_", 24);
-        final String subscription1Name = azureResourceManager.sdkContext().randomResourceName("sub1_", 24);
-        final String subscription2Name = azureResourceManager.sdkContext().randomResourceName("sub2_", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgSB02_", 24);
+        final String namespaceName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("namespace", 20);
+        final String topicName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("topic_", 24);
+        final String subscription1Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sub1_", 24);
+        final String subscription2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sub2_", 24);
 
         try {
             //============================================================

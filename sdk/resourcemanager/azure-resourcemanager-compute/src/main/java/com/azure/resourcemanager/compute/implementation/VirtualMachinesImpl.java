@@ -16,7 +16,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
@@ -213,7 +213,8 @@ public class VirtualMachinesImpl
         return AcceptedImpl
             .newAccepted(
                 logger,
-                manager().serviceClient(),
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
                 () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
                 Function.identity(),
                 Void.class,

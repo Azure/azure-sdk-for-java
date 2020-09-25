@@ -6,12 +6,15 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.ServiceEndpointPolicyDefinitionInner;
+import com.azure.resourcemanager.network.fluent.models.ServiceEndpointPolicyDefinitionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ServiceEndpointPolicyDefinitionListResult model. */
+/**
+ * Response for ListServiceEndpointPolicyDefinition API service call. Retrieves all service endpoint policy definition
+ * that belongs to a service endpoint policy.
+ */
 @Fluent
 public final class ServiceEndpointPolicyDefinitionListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyDefinitionListResult.class);

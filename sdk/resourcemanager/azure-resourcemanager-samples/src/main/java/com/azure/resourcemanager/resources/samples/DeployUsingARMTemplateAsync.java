@@ -38,8 +38,8 @@ public final class DeployUsingARMTemplateAsync {
      * @return true if sample runs successfully
      */
     public static boolean runSample(final AzureResourceManager azureResourceManager) throws InterruptedException {
-        final String rgPrefix = azureResourceManager.sdkContext().randomResourceName("rgJavaTest", 16);
-        final String deploymentPrefix = azureResourceManager.sdkContext().randomResourceName("javaTest", 16);
+        final String rgPrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgJavaTest", 16);
+        final String deploymentPrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("javaTest", 16);
         final String sshKey = getSSHPublicKey();
         final int numDeployments = 3;
 

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CorsRules model. */
+/** Sets the CORS rules. You can include up to five CorsRule elements in the request. */
 @Fluent
 public final class CorsRules {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CorsRules.class);

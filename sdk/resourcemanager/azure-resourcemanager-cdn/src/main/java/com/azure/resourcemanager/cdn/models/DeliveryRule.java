@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DeliveryRule model. */
+/** A rule that specifies a set of actions and conditions. */
 @Fluent
 public final class DeliveryRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeliveryRule.class);

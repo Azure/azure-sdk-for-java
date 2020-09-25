@@ -5,7 +5,7 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
-import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;

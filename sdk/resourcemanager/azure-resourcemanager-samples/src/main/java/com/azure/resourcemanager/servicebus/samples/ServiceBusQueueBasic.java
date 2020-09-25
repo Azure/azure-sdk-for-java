@@ -46,10 +46,10 @@ public final class ServiceBusQueueBasic {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgSB01_", 24);
-        final String namespaceName = azureResourceManager.sdkContext().randomResourceName("namespace", 20);
-        final String queue1Name = azureResourceManager.sdkContext().randomResourceName("queue1_", 24);
-        final String queue2Name = azureResourceManager.sdkContext().randomResourceName("queue2_", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgSB01_", 24);
+        final String namespaceName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("namespace", 20);
+        final String queue1Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("queue1_", 24);
+        final String queue2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("queue2_", 24);
 
         try {
             //============================================================

@@ -14,7 +14,7 @@ import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.eclipse.jgit.api.Git;
@@ -44,15 +44,15 @@ public final class ManageLinuxWebAppSourceControl {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws GitAPIException {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
-        final String app4Name       = azureResourceManager.sdkContext().randomResourceName("webapp4-", 20);
+        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String app2Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp2-", 20);
+        final String app3Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp3-", 20);
+        final String app4Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp4-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
         final String app3Url        = app3Name + suffix;
         final String app4Url        = app4Name + suffix;
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 
@@ -85,7 +85,7 @@ public final class ManageLinuxWebAppSourceControl {
             // warm up
             System.out.println("Warming up " + app1Url + "/helloworld...");
             Utils.curl("http://" + app1Url + "/helloworld/");
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
             System.out.println("CURLing " + app1Url + "/helloworld...");
             System.out.println(Utils.curl("http://" + app1Url + "/helloworld/"));
 
@@ -129,7 +129,7 @@ public final class ManageLinuxWebAppSourceControl {
             // warm up
             System.out.println("Warming up " + app2Url + "/helloworld...");
             Utils.curl("http://" + app2Url + "/helloworld/");
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
             System.out.println("CURLing " + app2Url + "/helloworld...");
             System.out.println(Utils.curl("http://" + app2Url + "/helloworld/"));
 
@@ -153,7 +153,7 @@ public final class ManageLinuxWebAppSourceControl {
             // warm up
             System.out.println("Warming up " + app3Url + "...");
             Utils.curl("http://" + app3Url);
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
             System.out.println("CURLing " + app3Url + "...");
             System.out.println(Utils.curl("http://" + app3Url));
 
@@ -180,7 +180,7 @@ public final class ManageLinuxWebAppSourceControl {
             // warm up
             System.out.println("Warming up " + app4Url + "...");
             Utils.curl("http://" + app4Url);
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
             System.out.println("CURLing " + app4Url + "...");
             System.out.println(Utils.curl("http://" + app4Url));
 

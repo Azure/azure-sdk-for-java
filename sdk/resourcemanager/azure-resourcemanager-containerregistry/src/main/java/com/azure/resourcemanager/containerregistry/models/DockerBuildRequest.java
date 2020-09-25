@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The DockerBuildRequest model. */
+/** The parameters for a docker quick build. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DockerBuildRequest")
 @Fluent

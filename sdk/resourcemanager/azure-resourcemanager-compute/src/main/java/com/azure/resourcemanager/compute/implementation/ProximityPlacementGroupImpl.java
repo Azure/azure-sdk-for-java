@@ -6,7 +6,7 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.resourcemanager.compute.models.ComputeSku;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroup;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
-import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupInner;
+import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
 import com.azure.resourcemanager.compute.models.SubResourceWithColocationStatus;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import java.util.ArrayList;

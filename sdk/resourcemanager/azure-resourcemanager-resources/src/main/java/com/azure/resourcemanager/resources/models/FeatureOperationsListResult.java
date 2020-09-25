@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The FeatureOperationsListResult model. */
+/** List of previewed features. */
 @Fluent
 public final class FeatureOperationsListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FeatureOperationsListResult.class);

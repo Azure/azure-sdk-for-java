@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.inner.TopicResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.TopicResourceInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;

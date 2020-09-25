@@ -3,8 +3,8 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.fluent.PacketCapturesClient;
-import com.azure.resourcemanager.network.fluent.inner.PacketCaptureInner;
-import com.azure.resourcemanager.network.fluent.inner.PacketCaptureResultInner;
+import com.azure.resourcemanager.network.fluent.models.PacketCaptureInner;
+import com.azure.resourcemanager.network.fluent.models.PacketCaptureResultInner;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.PCFilter;
 import com.azure.resourcemanager.network.models.PacketCapture;

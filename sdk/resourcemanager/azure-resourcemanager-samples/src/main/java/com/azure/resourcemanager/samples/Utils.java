@@ -72,11 +72,11 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountListReadOnlyKeysRe
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.dns.models.ARecordSet;
 import com.azure.resourcemanager.dns.models.AaaaRecordSet;
-import com.azure.resourcemanager.dns.models.CNameRecordSet;
+import com.azure.resourcemanager.dns.models.CnameRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
-import com.azure.resourcemanager.dns.models.MXRecordSet;
+import com.azure.resourcemanager.dns.models.MxRecordSet;
 import com.azure.resourcemanager.dns.models.MxRecord;
-import com.azure.resourcemanager.dns.models.NSRecordSet;
+import com.azure.resourcemanager.dns.models.NsRecordSet;
 import com.azure.resourcemanager.dns.models.PtrRecordSet;
 import com.azure.resourcemanager.dns.models.SoaRecord;
 import com.azure.resourcemanager.dns.models.SoaRecordSet;
@@ -114,7 +114,7 @@ import com.azure.resourcemanager.monitor.models.SmsReceiver;
 import com.azure.resourcemanager.monitor.models.VoiceReceiver;
 import com.azure.resourcemanager.monitor.models.WebhookReceiver;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
+import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress;
@@ -158,8 +158,6 @@ import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.TopologyAssociation;
 import com.azure.resourcemanager.network.models.TopologyResource;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
-import com.azure.resourcemanager.privatedns.models.CnameRecordSet;
-import com.azure.resourcemanager.privatedns.models.MxRecordSet;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLink;
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
@@ -167,7 +165,7 @@ import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCachePremium;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
@@ -233,7 +231,7 @@ import java.util.stream.Collectors;
 public final class Utils {
     /** @return a generated password */
     public static String password() {
-        String password = new SdkContext().randomResourceName("Pa5$", 12);
+        String password = new ResourceManagerUtils.InternalRuntimeContext().randomResourceName("Pa5$", 12);
         System.out.printf("Password: %s%n", password);
         return password;
     }
@@ -1229,18 +1227,18 @@ public final class Utils {
             }
         }
 
-        PagedIterable<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
+        PagedIterable<CnameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         info.append("\n\tCNAME Record sets:");
-        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
+        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
             info.append("\n\t\tId: ").append(cnameRecordSet.id())
                     .append("\n\t\tName: ").append(cnameRecordSet.name())
                     .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
                     .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
         }
 
-        PagedIterable<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        PagedIterable<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
         info.append("\n\tMX Record sets:");
-        for (MXRecordSet mxRecordSet : mxRecordSets) {
+        for (MxRecordSet mxRecordSet : mxRecordSets) {
             info.append("\n\t\tId: ").append(mxRecordSet.id())
                     .append("\n\t\tName: ").append(mxRecordSet.name())
                     .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
@@ -1253,9 +1251,9 @@ public final class Utils {
             }
         }
 
-        PagedIterable<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        PagedIterable<NsRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
         info.append("\n\tNS Record sets:");
-        for (NSRecordSet nsRecordSet : nsRecordSets) {
+        for (NsRecordSet nsRecordSet : nsRecordSets) {
             info.append("\n\t\tId: ").append(nsRecordSet.id())
                     .append("\n\t\tName: ").append(nsRecordSet.name())
                     .append("\n\t\tTTL (seconds): ").append(nsRecordSet.timeToLive())
@@ -1362,18 +1360,18 @@ public final class Utils {
             }
         }
 
-        PagedIterable<CnameRecordSet> cnameRecordSets = privateDnsZone.cnameRecordSets().list();
+        PagedIterable<com.azure.resourcemanager.privatedns.models.CnameRecordSet> cnameRecordSets = privateDnsZone.cnameRecordSets().list();
         info.append("\n\tCNAME Record sets:");
-        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
+        for (com.azure.resourcemanager.privatedns.models.CnameRecordSet cnameRecordSet : cnameRecordSets) {
             info.append("\n\t\tId: ").append(cnameRecordSet.id())
                 .append("\n\t\tName: ").append(cnameRecordSet.name())
                 .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
                 .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
         }
 
-        PagedIterable<MxRecordSet> mxRecordSets = privateDnsZone.mxRecordSets().list();
+        PagedIterable<com.azure.resourcemanager.privatedns.models.MxRecordSet> mxRecordSets = privateDnsZone.mxRecordSets().list();
         info.append("\n\tMX Record sets:");
-        for (MxRecordSet mxRecordSet : mxRecordSets) {
+        for (com.azure.resourcemanager.privatedns.models.MxRecordSet mxRecordSet : mxRecordSets) {
             info.append("\n\t\tId: ").append(mxRecordSet.id())
                 .append("\n\t\tName: ").append(mxRecordSet.name())
                 .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
@@ -1569,7 +1567,7 @@ public final class Utils {
 //     * @return a random name
 //     */
 //    public static String createRandomName(String namePrefix) {
-//        return SdkContext.randomResourceName(namePrefix, 30);
+//        return ResourceManagerUtils.InternalRuntimeContext.randomResourceName(namePrefix, 30);
 //    }
 
     /**

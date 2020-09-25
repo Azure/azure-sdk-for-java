@@ -4,9 +4,9 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
+import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
@@ -194,7 +194,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                         roleEntry ->
                             manager()
                                 .roleAssignments()
-                                .define(this.manager().sdkContext().randomUuid())
+                                .define(this.manager().internalContext().randomUuid())
                                 .forServicePrincipal(servicePrincipal)
                                 .withBuiltInRole(roleEntry.getValue())
                                 .withScope(roleEntry.getKey())

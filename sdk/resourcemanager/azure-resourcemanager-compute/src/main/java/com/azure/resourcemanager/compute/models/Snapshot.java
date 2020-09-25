@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.inner.SnapshotInner;
+import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;

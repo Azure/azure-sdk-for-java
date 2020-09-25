@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LegalHoldProperties model. */
+/** The LegalHold property of a blob container. */
 @Fluent
 public final class LegalHoldProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LegalHoldProperties.class);

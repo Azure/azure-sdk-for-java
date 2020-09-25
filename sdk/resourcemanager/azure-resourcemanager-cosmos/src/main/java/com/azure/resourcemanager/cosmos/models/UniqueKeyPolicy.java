@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The UniqueKeyPolicy model. */
+/**
+ * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure
+ * Cosmos DB service.
+ */
 @Fluent
 public final class UniqueKeyPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UniqueKeyPolicy.class);

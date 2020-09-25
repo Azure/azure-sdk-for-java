@@ -43,11 +43,11 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azureResourceManager.sdkContext().randomResourceName("VM2", 15);
-        final String linuxVMName3 = azureResourceManager.sdkContext().randomResourceName("VM3", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIPDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 15);
+        final String linuxVMName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 15);
+        final String linuxVMName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM2", 15);
+        final String linuxVMName3 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM3", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMV", 15);
+        final String publicIPDnsLabel = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
 

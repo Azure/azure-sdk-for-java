@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
-import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.ApplicationsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;

@@ -17,7 +17,7 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
@@ -41,10 +41,10 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) {
         // New resources
         final Region region         = Region.US_WEST;
-        final String appName        = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
-        final String vaultName      = azureResourceManager.sdkContext().randomResourceName("vault", 20);
-        final String cosmosName     = azureResourceManager.sdkContext().randomResourceName("cosmosdb", 20);
+        final String appName        = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
+        final String vaultName      = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vault", 20);
+        final String cosmosName     = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("cosmosdb", 20);
         final String appUrl         = appName + ".azurewebsites.net";
 
         try {
@@ -77,7 +77,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
                         .attach()
                     .create();
 
-            SdkContext.sleep(10000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
 
             //============================================================
             // Store Cosmos DB credentials in Key Vault
@@ -138,7 +138,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
             // warm up
             System.out.println("Warming up " + appUrl + "...");
             Utils.curl("http://" + appUrl);
-            SdkContext.sleep(10000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
             System.out.println("CURLing " + appUrl);
             System.out.println(Utils.curl("http://" + appUrl));
 

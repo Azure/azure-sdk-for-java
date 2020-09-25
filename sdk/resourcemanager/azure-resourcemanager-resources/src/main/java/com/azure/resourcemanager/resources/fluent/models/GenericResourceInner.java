@@ -13,7 +13,7 @@ import com.azure.resourcemanager.resources.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GenericResource model. */
+/** Resource information. */
 @Fluent
 public class GenericResourceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GenericResourceInner.class);

@@ -5,9 +5,9 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.DomainsClient;
-import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
-import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifierInner;
-import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
+import com.azure.resourcemanager.appservice.fluent.models.DomainInner;
+import com.azure.resourcemanager.appservice.fluent.models.DomainOwnershipIdentifierInner;
+import com.azure.resourcemanager.appservice.fluent.models.TldLegalAgreementInner;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.Contact;
 import com.azure.resourcemanager.appservice.models.DnsType;

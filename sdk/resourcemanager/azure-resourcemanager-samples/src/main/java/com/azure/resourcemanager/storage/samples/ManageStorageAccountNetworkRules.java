@@ -36,12 +36,12 @@ public final class ManageStorageAccountNetworkRules {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgSTMS", 8);
-        final String networkName = azureResourceManager.sdkContext().randomResourceName("nw", 8);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgSTMS", 8);
+        final String networkName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("nw", 8);
         final String subnetName = "subnetA";
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("sa", 8);
-        final String publicIpName = azureResourceManager.sdkContext().randomResourceName("pip", 8);
-        final String vmName = azureResourceManager.sdkContext().randomResourceName("vm", 8);
+        final String storageAccountName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sa", 8);
+        final String publicIpName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 8);
+        final String vmName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vm", 8);
 
         try {
             // ============================================================

@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The PolicyAssignment model. */
+/** The policy assignment. */
 @JsonFlatten
 @Fluent
 public class PolicyAssignmentInner extends ProxyResource {

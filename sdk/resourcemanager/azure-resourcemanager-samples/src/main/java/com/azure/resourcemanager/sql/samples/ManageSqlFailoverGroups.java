@@ -9,7 +9,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
@@ -33,10 +33,10 @@ public class ManageSqlFailoverGroups {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlPrimaryServerName = azureResourceManager.sdkContext().randomResourceName("sqlpri", 20);
-        final String sqlSecondaryServerName = azureResourceManager.sdkContext().randomResourceName("sqlsec", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgsql", 20);
-        final String failoverGroupName = azureResourceManager.sdkContext().randomResourceName("fog", 20);
+        final String sqlPrimaryServerName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sqlpri", 20);
+        final String sqlSecondaryServerName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sqlsec", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgsql", 20);
+        final String failoverGroupName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("fog", 20);
         final String dbName = "dbSample";
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
@@ -136,7 +136,7 @@ public class ManageSqlFailoverGroups {
             // ============================================================
             // Get the database from the secondary SQL server.
             System.out.println("Getting the database from the secondary server");
-            SdkContext.sleep(3 * 60 * 1000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(3 * 60 * 1000);
 
             db = sqlSecondaryServer.databases().get(dbName);
 

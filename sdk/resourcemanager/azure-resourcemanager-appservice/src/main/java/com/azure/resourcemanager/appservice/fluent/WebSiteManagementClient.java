@@ -4,320 +4,155 @@
 
 package com.azure.resourcemanager.appservice.fluent;
 
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the WebSiteManagementClient type. */
-@ServiceClient(builder = WebSiteManagementClientBuilder.class)
-public final class WebSiteManagementClient extends AzureServiceClient {
-    private final ClientLogger logger = new ClientLogger(WebSiteManagementClient.class);
-
-    /** Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). */
-    private final String subscriptionId;
-
+/** The interface for WebSiteManagementClient class. */
+public interface WebSiteManagementClient {
     /**
      * Gets Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      *
      * @return the subscriptionId value.
      */
-    public String getSubscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /** server parameter. */
-    private final String endpoint;
+    String getSubscriptionId();
 
     /**
      * Gets server parameter.
      *
      * @return the endpoint value.
      */
-    public String getEndpoint() {
-        return this.endpoint;
-    }
-
-    /** Api Version. */
-    private final String apiVersion;
+    String getEndpoint();
 
     /**
      * Gets Api Version.
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
-
-    /** The HTTP pipeline to send requests through. */
-    private final HttpPipeline httpPipeline;
+    String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
      */
-    public HttpPipeline getHttpPipeline() {
-        return this.httpPipeline;
-    }
-
-    /** The serializer to serialize an object into a string. */
-    private final SerializerAdapter serializerAdapter;
-
-    /**
-     * Gets The serializer to serialize an object into a string.
-     *
-     * @return the serializerAdapter value.
-     */
-    public SerializerAdapter getSerializerAdapter() {
-        return this.serializerAdapter;
-    }
-
-    /** The default poll interval for long-running operation. */
-    private final Duration defaultPollInterval;
+    HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
      *
      * @return the defaultPollInterval value.
      */
-    public Duration getDefaultPollInterval() {
-        return this.defaultPollInterval;
-    }
-
-    /** The AppServiceCertificateOrdersClient object to access its operations. */
-    private final AppServiceCertificateOrdersClient appServiceCertificateOrders;
+    Duration getDefaultPollInterval();
 
     /**
      * Gets the AppServiceCertificateOrdersClient object to access its operations.
      *
      * @return the AppServiceCertificateOrdersClient object.
      */
-    public AppServiceCertificateOrdersClient getAppServiceCertificateOrders() {
-        return this.appServiceCertificateOrders;
-    }
-
-    /** The CertificateRegistrationProvidersClient object to access its operations. */
-    private final CertificateRegistrationProvidersClient certificateRegistrationProviders;
+    AppServiceCertificateOrdersClient getAppServiceCertificateOrders();
 
     /**
      * Gets the CertificateRegistrationProvidersClient object to access its operations.
      *
      * @return the CertificateRegistrationProvidersClient object.
      */
-    public CertificateRegistrationProvidersClient getCertificateRegistrationProviders() {
-        return this.certificateRegistrationProviders;
-    }
-
-    /** The DomainsClient object to access its operations. */
-    private final DomainsClient domains;
+    CertificateRegistrationProvidersClient getCertificateRegistrationProviders();
 
     /**
      * Gets the DomainsClient object to access its operations.
      *
      * @return the DomainsClient object.
      */
-    public DomainsClient getDomains() {
-        return this.domains;
-    }
-
-    /** The TopLevelDomainsClient object to access its operations. */
-    private final TopLevelDomainsClient topLevelDomains;
+    DomainsClient getDomains();
 
     /**
      * Gets the TopLevelDomainsClient object to access its operations.
      *
      * @return the TopLevelDomainsClient object.
      */
-    public TopLevelDomainsClient getTopLevelDomains() {
-        return this.topLevelDomains;
-    }
-
-    /** The DomainRegistrationProvidersClient object to access its operations. */
-    private final DomainRegistrationProvidersClient domainRegistrationProviders;
+    TopLevelDomainsClient getTopLevelDomains();
 
     /**
      * Gets the DomainRegistrationProvidersClient object to access its operations.
      *
      * @return the DomainRegistrationProvidersClient object.
      */
-    public DomainRegistrationProvidersClient getDomainRegistrationProviders() {
-        return this.domainRegistrationProviders;
-    }
-
-    /** The CertificatesClient object to access its operations. */
-    private final CertificatesClient certificates;
+    DomainRegistrationProvidersClient getDomainRegistrationProviders();
 
     /**
      * Gets the CertificatesClient object to access its operations.
      *
      * @return the CertificatesClient object.
      */
-    public CertificatesClient getCertificates() {
-        return this.certificates;
-    }
-
-    /** The DeletedWebAppsClient object to access its operations. */
-    private final DeletedWebAppsClient deletedWebApps;
+    CertificatesClient getCertificates();
 
     /**
      * Gets the DeletedWebAppsClient object to access its operations.
      *
      * @return the DeletedWebAppsClient object.
      */
-    public DeletedWebAppsClient getDeletedWebApps() {
-        return this.deletedWebApps;
-    }
-
-    /** The DiagnosticsClient object to access its operations. */
-    private final DiagnosticsClient diagnostics;
+    DeletedWebAppsClient getDeletedWebApps();
 
     /**
      * Gets the DiagnosticsClient object to access its operations.
      *
      * @return the DiagnosticsClient object.
      */
-    public DiagnosticsClient getDiagnostics() {
-        return this.diagnostics;
-    }
-
-    /** The ProvidersClient object to access its operations. */
-    private final ProvidersClient providers;
+    DiagnosticsClient getDiagnostics();
 
     /**
      * Gets the ProvidersClient object to access its operations.
      *
      * @return the ProvidersClient object.
      */
-    public ProvidersClient getProviders() {
-        return this.providers;
-    }
-
-    /** The RecommendationsClient object to access its operations. */
-    private final RecommendationsClient recommendations;
+    ProvidersClient getProviders();
 
     /**
      * Gets the RecommendationsClient object to access its operations.
      *
      * @return the RecommendationsClient object.
      */
-    public RecommendationsClient getRecommendations() {
-        return this.recommendations;
-    }
-
-    /** The ResourceProvidersClient object to access its operations. */
-    private final ResourceProvidersClient resourceProviders;
+    RecommendationsClient getRecommendations();
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
      *
      * @return the ResourceProvidersClient object.
      */
-    public ResourceProvidersClient getResourceProviders() {
-        return this.resourceProviders;
-    }
-
-    /** The WebAppsClient object to access its operations. */
-    private final WebAppsClient webApps;
+    ResourceProvidersClient getResourceProviders();
 
     /**
      * Gets the WebAppsClient object to access its operations.
      *
      * @return the WebAppsClient object.
      */
-    public WebAppsClient getWebApps() {
-        return this.webApps;
-    }
-
-    /** The StaticSitesClient object to access its operations. */
-    private final StaticSitesClient staticSites;
+    WebAppsClient getWebApps();
 
     /**
      * Gets the StaticSitesClient object to access its operations.
      *
      * @return the StaticSitesClient object.
      */
-    public StaticSitesClient getStaticSites() {
-        return this.staticSites;
-    }
-
-    /** The AppServiceEnvironmentsClient object to access its operations. */
-    private final AppServiceEnvironmentsClient appServiceEnvironments;
+    StaticSitesClient getStaticSites();
 
     /**
      * Gets the AppServiceEnvironmentsClient object to access its operations.
      *
      * @return the AppServiceEnvironmentsClient object.
      */
-    public AppServiceEnvironmentsClient getAppServiceEnvironments() {
-        return this.appServiceEnvironments;
-    }
-
-    /** The AppServicePlansClient object to access its operations. */
-    private final AppServicePlansClient appServicePlans;
+    AppServiceEnvironmentsClient getAppServiceEnvironments();
 
     /**
      * Gets the AppServicePlansClient object to access its operations.
      *
      * @return the AppServicePlansClient object.
      */
-    public AppServicePlansClient getAppServicePlans() {
-        return this.appServicePlans;
-    }
-
-    /** The ResourceHealthMetadatasClient object to access its operations. */
-    private final ResourceHealthMetadatasClient resourceHealthMetadatas;
+    AppServicePlansClient getAppServicePlans();
 
     /**
      * Gets the ResourceHealthMetadatasClient object to access its operations.
      *
      * @return the ResourceHealthMetadatasClient object.
      */
-    public ResourceHealthMetadatasClient getResourceHealthMetadatas() {
-        return this.resourceHealthMetadatas;
-    }
-
-    /**
-     * Initializes an instance of WebSiteManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param defaultPollInterval The default poll interval for long-running operation.
-     * @param environment The Azure environment.
-     */
-    WebSiteManagementClient(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
-        super(httpPipeline, serializerAdapter, environment);
-        this.httpPipeline = httpPipeline;
-        this.serializerAdapter = serializerAdapter;
-        this.defaultPollInterval = defaultPollInterval;
-        this.subscriptionId = subscriptionId;
-        this.endpoint = endpoint;
-        this.apiVersion = "2019-08-01";
-        this.appServiceCertificateOrders = new AppServiceCertificateOrdersClient(this);
-        this.certificateRegistrationProviders = new CertificateRegistrationProvidersClient(this);
-        this.domains = new DomainsClient(this);
-        this.topLevelDomains = new TopLevelDomainsClient(this);
-        this.domainRegistrationProviders = new DomainRegistrationProvidersClient(this);
-        this.certificates = new CertificatesClient(this);
-        this.deletedWebApps = new DeletedWebAppsClient(this);
-        this.diagnostics = new DiagnosticsClient(this);
-        this.providers = new ProvidersClient(this);
-        this.recommendations = new RecommendationsClient(this);
-        this.resourceProviders = new ResourceProvidersClient(this);
-        this.webApps = new WebAppsClient(this);
-        this.staticSites = new StaticSitesClient(this);
-        this.appServiceEnvironments = new AppServiceEnvironmentsClient(this);
-        this.appServicePlans = new AppServicePlansClient(this);
-        this.resourceHealthMetadatas = new ResourceHealthMetadatasClient(this);
-    }
+    ResourceHealthMetadatasClient getResourceHealthMetadatas();
 }

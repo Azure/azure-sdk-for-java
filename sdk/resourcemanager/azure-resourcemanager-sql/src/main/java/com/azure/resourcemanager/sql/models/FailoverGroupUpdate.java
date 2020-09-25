@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The FailoverGroupUpdate model. */
+/** A failover group update request. */
 @JsonFlatten
 @Fluent
 public class FailoverGroupUpdate {

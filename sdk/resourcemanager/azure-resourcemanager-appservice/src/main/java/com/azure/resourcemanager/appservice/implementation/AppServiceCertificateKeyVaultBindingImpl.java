@@ -8,7 +8,7 @@ import com.azure.resourcemanager.appservice.models.AppServiceCertificateKeyVault
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.KeyVaultSecretStatus;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import reactor.core.publisher.Mono;
 

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeploymentExportResult model. */
+/** The deployment export result. */
 @Fluent
 public final class DeploymentExportResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentExportResultInner.class);

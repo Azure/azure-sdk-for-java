@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The DeploymentPropertiesExtended model. */
+/** Deployment properties with additional details. */
 @Immutable
 public final class DeploymentPropertiesExtended {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentPropertiesExtended.class);

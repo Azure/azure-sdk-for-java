@@ -6,12 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetExtensionListResult model. */
+/** The List VM scale set extension operation response. */
 @Fluent
 public final class VirtualMachineScaleSetExtensionListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetExtensionListResult.class);

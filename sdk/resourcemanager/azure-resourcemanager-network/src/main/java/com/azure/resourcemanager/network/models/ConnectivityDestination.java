@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ConnectivityDestination model. */
+/** Parameters that define destination of connection. */
 @Fluent
 public final class ConnectivityDestination {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityDestination.class);

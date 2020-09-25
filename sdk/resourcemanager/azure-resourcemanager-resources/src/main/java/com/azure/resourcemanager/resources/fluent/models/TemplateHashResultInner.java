@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TemplateHashResult model. */
+/** Result of the request to calculate template hash. It contains a string of minified template and its hash. */
 @Fluent
 public final class TemplateHashResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TemplateHashResultInner.class);

@@ -36,9 +36,9 @@ public final class ManageKeyVault {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) {
-        final String vaultName1 = azureResourceManager.sdkContext().randomResourceName("vault1", 20);
-        final String vaultName2 = azureResourceManager.sdkContext().randomResourceName("vault2", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV", 24);
+        final String vaultName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vault1", 20);
+        final String vaultName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vault2", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgNEMV", 24);
 
         try {
             //============================================================
