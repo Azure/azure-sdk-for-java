@@ -46,6 +46,7 @@ import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
+import com.azure.storage.file.share.models.Range;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
@@ -54,6 +55,7 @@ import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
@@ -1614,8 +1616,7 @@ public class ShareFileAsyncClient {
      */
     public PagedFlux<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions) {
         try {
-            return listRangesWithOptionalTimeout(range, requestConditions, null,
-                null, Context.NONE);
+            return listRangesWithOptionalTimeout(range, requestConditions, null, Context.NONE);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -1636,11 +1637,12 @@ public class ShareFileAsyncClient {
      * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      */
-    public PagedFlux<ShareFileRange> listRangesDiff(String previousSnapshot) {
+    public Mono<ShareFileRangeList> listRangesDiff(String previousSnapshot) {
         try {
-            return listRangesDiff(new ShareFileListRangesDiffOptions(previousSnapshot));
+            return listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(previousSnapshot))
+                .map(Response::getValue);
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -1651,7 +1653,7 @@ public class ShareFileAsyncClient {
      *
      * <p>List all ranges within the file range from 1KB to 2KB.</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiff#ShareFileListRangesDiffOptions}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiffWithResponse#ShareFileListRangesDiffOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
@@ -1659,35 +1661,47 @@ public class ShareFileAsyncClient {
      * @param options {@link ShareFileListRangesDiffOptions}.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      */
-    public PagedFlux<ShareFileRange> listRangesDiff(ShareFileListRangesDiffOptions options) {
+    public Mono<Response<ShareFileRangeList>> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
-            return listRangesWithOptionalTimeout(options.getRange(), options.getRequestConditions(),
-                options.getPreviousSnapshot(), null, Context.NONE);
+            return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
+                options.getPreviousSnapshot(), Context.NONE);
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return monoError(logger, ex);
         }
     }
 
     PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range,
-        ShareRequestConditions requestConditions, String previousSnapshot, Duration timeout,
+        ShareRequestConditions requestConditions, Duration timeout,
         Context context) {
+
+        Function<String, Mono<PagedResponse<ShareFileRange>>> retriever =
+            marker -> StorageImplUtils.applyOptionalTimeout(
+                this.listRangesWithResponse(range, requestConditions, null, context), timeout)
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    response.getValue().getRanges().stream()
+                        .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+                        .map(ShareFileRange::new).collect(Collectors.toList()),
+                    null,
+                    response.getHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
+    }
+
+    Mono<Response<ShareFileRangeList>> listRangesWithResponse(ShareFileRange range,
+        ShareRequestConditions requestConditions, String previousSnapshot, Context context) {
 
         ShareRequestConditions finalRequestConditions = requestConditions == null
             ? new ShareRequestConditions() : requestConditions;
         String rangeString = range == null ? null : range.toString();
-        Function<String, Mono<PagedResponse<ShareFileRange>>> retriever =
-            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
-                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, previousSnapshot,
-                    null, rangeString, finalRequestConditions.getLeaseId(), context), timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().stream().map(ShareFileRange::new).collect(Collectors.toList()),
-                    null,
-                    response.getDeserializedHeaders()));
+        context = context == null ? Context.NONE : context;
 
-        return new PagedFlux<>(() -> retriever.apply(null), retriever);
+        return this.azureFileStorageClient.files().getRangeListWithRestResponseAsync(shareName, filePath, snapshot,
+            previousSnapshot, null, rangeString, finalRequestConditions.getLeaseId(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
