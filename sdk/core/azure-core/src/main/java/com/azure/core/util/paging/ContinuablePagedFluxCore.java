@@ -12,8 +12,9 @@ import reactor.core.publisher.Operators;
 
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.Supplier;
 
@@ -238,15 +239,17 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
         private final PageRetriever<C, P> pageRetriever;
         private final Integer defaultPageSize;
 
+        volatile boolean lastPage;
         volatile boolean done;
-        volatile V next;
+        volatile Queue<P> pages = new ConcurrentLinkedQueue<>();
+        volatile V currentPage;
         private Throwable error;
         private volatile boolean cancelled;
 
-        volatile int wip;
+        volatile long wip;
         @SuppressWarnings("rawtypes")
-        static final AtomicIntegerFieldUpdater<BaseSubscription> WIP =
-            AtomicIntegerFieldUpdater.newUpdater(BaseSubscription.class, "wip");
+        static final AtomicLongFieldUpdater<BaseSubscription> WIP =
+            AtomicLongFieldUpdater.newUpdater(BaseSubscription.class, "wip");
 
         volatile long requested;
         @SuppressWarnings("rawtypes")
@@ -265,12 +268,12 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
         public void request(long l) {
             if (Operators.validate(l)) {
                 Operators.addCap(REQUESTED, this, l);
-                drain();
+                drain(l);
             }
         }
 
-        private void drain() {
-            if (WIP.getAndIncrement(this) != 0) {
+        private void drain(long l) {
+            if (WIP.getAndAccumulate(this, l, Long::sum) != 0) {
                 return;
             }
 
@@ -279,7 +282,6 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
                 requestPage();
             }
 
-            int missed = 1;
             while (true) {
                 if (cancelled) {
                     return;
@@ -294,7 +296,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
                         emitted = true;
                     }
 
-                    if (d) {
+                    if (d || (lastPage && !hasNext())) {
                         if (error != null) {
                             subscriber.onError(error);
                         } else {
@@ -309,11 +311,12 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
                         // do this after checking d to avoid calling read
                         // when done
                         Operators.produced(REQUESTED, this, 1);
+                    } else {
+                        requestPage();
                     }
                 }
 
-                missed = WIP.addAndGet(this, -missed);
-                if (missed == 0) {
+                if (WIP.decrementAndGet(this) == 0) {
                     return;
                 }
             }
@@ -326,8 +329,9 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
         private void requestPage() {
             CountDownLatch countDownLatch = new CountDownLatch(1);
             pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize)
-                .singleOrEmpty()
-                .subscribe(this::setNext, this::setError, countDownLatch::countDown);
+                .subscribe(page -> addPage(page, continuationState),
+                    throwable -> setError(throwable, countDownLatch),
+                    () -> onComplete(countDownLatch));
 
             try {
                 countDownLatch.await();
@@ -336,10 +340,17 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
             }
         }
 
-        abstract void setNext(P page);
+        abstract void addPage(P page, ContinuationState<C> continuationState);
 
-        private synchronized void setError(Throwable error) {
+        private synchronized void onComplete(CountDownLatch countDownLatch) {
+            countDownLatch.countDown();
+            this.lastPage = this.lastPage || !hasNext();
+        }
+
+        private synchronized void setError(Throwable error, CountDownLatch countDownLatch) {
             this.error = error;
+            countDownLatch.countDown();
+            this.done = true;
         }
 
         @Override
@@ -357,23 +368,28 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
 
         @Override
         boolean needToRequestPage() {
-            return next == null;
+            return currentPage == null && pages.peek() == null && !lastPage;
         }
 
         @Override
         boolean hasNext() {
-            return next != null;
+            return currentPage != null || pages.peek() != null;
         }
 
         @Override
         P getNext() {
-            return next;
+            if (currentPage == null) {
+                currentPage = pages.poll();
+            }
+
+            return currentPage;
         }
 
         @Override
-        synchronized void setNext(P page) {
-            this.done = page.getContinuationToken() == null;
-            this.next = page;
+        synchronized void addPage(P page, ContinuationState<C> continuationState) {
+            this.lastPage = page.getContinuationToken() == null;
+            continuationState.setLastContinuationToken(page.getContinuationToken());
+            this.pages.add(page);
         }
     }
 
@@ -386,23 +402,28 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
 
         @Override
         boolean needToRequestPage() {
-            return next == null || !next.hasNext();
+            return (currentPage == null || !currentPage.hasNext()) && pages.peek() == null && !lastPage;
         }
 
         @Override
         boolean hasNext() {
-            return next != null && next.hasNext();
+            return (currentPage != null && currentPage.hasNext()) || pages.peek() != null;
         }
 
         @Override
         T getNext() {
-            return next.next();
+            if ((currentPage == null || !currentPage.hasNext()) && pages.peek() != null) {
+                currentPage = pages.poll().getElements().iterator();
+            }
+
+            return currentPage.next();
         }
 
         @Override
-        void setNext(P page) {
-            this.done = page.getContinuationToken() == null;
-            this.next = page.getElements().iterator();
+        void addPage(P page, ContinuationState<C> continuationState) {
+            this.lastPage = page.getContinuationToken() == null;
+            continuationState.setLastContinuationToken(page.getContinuationToken());
+            this.pages.add(page);
         }
     }
 }

@@ -3,29 +3,29 @@
 
 package com.azure.core.http.rest;
 
-import static com.azure.core.util.FluxUtil.withContext;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import java.util.Collections;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.context.Context;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import reactor.util.context.Context;
+
+import static com.azure.core.util.FluxUtil.withContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for {@link PagedFlux}
@@ -284,7 +284,12 @@ public class PagedFluxTest {
             return Mono.empty();
         }
 
-        return Mono.just(pagedResponses.get(Integer.valueOf(continuationToken)));
+        int parsedToken = Integer.parseInt(continuationToken);
+        if (parsedToken >= pagedResponses.size()) {
+            return Mono.empty();
+        }
+
+        return Mono.just(pagedResponses.get(parsedToken));
     }
 
     private List<Integer> getItems(Integer i) {
@@ -292,7 +297,50 @@ public class PagedFluxTest {
     }
 
     private List<String> getStringItems(Integer i) {
-        return IntStream.range(i * 3, i * 3 + 3).boxed().map(val -> String.valueOf(val)).collect(Collectors.toList());
+        return IntStream.range(i * 3, i * 3 + 3).boxed().map(String::valueOf).collect(Collectors.toList());
     }
 
+    @Test
+    public void streamFindFirstOnlyRetrievesOnePage() throws InterruptedException {
+        OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
+        Integer next = new OnlyOnePagedFlux(() -> pageRetriever).blockFirst();
+
+        Thread.sleep(2000);
+
+        assertEquals(1, pageRetriever.getGetCount());
+    }
+
+    @Test
+    public void iterateNextOnlyRetrievesOnePage() throws InterruptedException {
+        OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
+        Integer next = new OnlyOnePagedFlux(() -> pageRetriever).blockFirst();
+
+        Thread.sleep(2000);
+
+        assertEquals(1, pageRetriever.getGetCount());
+    }
+
+    @Test
+    public void streamByPageFindFirstOnlyRetrievesOnePage() throws InterruptedException {
+        OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
+        OnlyOneContinuablePage page = new OnlyOnePagedFlux(() -> pageRetriever)
+            .byPage()
+            .blockFirst();
+
+        Thread.sleep(2000);
+
+        assertEquals(1, pageRetriever.getGetCount());
+    }
+
+    @Test
+    public void iterateByPageNextOnlyRetrievesOnePage() throws InterruptedException {
+        OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
+        OnlyOneContinuablePage page = new OnlyOnePagedFlux(() -> pageRetriever)
+            .byPage()
+            .blockFirst();
+
+        Thread.sleep(2000);
+
+        assertEquals(1, pageRetriever.getGetCount());
+    }
 }

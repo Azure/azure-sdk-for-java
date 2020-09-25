@@ -6,12 +6,6 @@ package com.azure.core.http.rest;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.util.IterableStream;
-import com.azure.core.util.paging.ContinuablePage;
-import com.azure.core.util.paging.ContinuablePagedFlux;
-import com.azure.core.util.paging.ContinuablePagedFluxCore;
-import com.azure.core.util.paging.ContinuablePagedIterable;
-import com.azure.core.util.paging.PageRetriever;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -20,7 +14,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -222,7 +215,12 @@ public class PagedIterableTest {
             return Mono.empty();
         }
 
-        return Mono.just(pagedResponses.get(Integer.parseInt(continuationToken)));
+        int parsedToken = Integer.parseInt(continuationToken);
+        if (parsedToken >= pagedResponses.size()) {
+            return Mono.empty();
+        }
+
+        return Mono.just(pagedResponses.get(parsedToken));
     }
 
     private List<Integer> getItems(int i) {
@@ -301,63 +299,5 @@ public class PagedIterableTest {
         Thread.sleep(2000);
 
         assertEquals(1, pageRetriever.getGetCount());
-    }
-
-    private static final class OnlyOnePagedFlux
-        extends ContinuablePagedFluxCore<Integer, Integer, OnlyOneContinuablePage> {
-        protected OnlyOnePagedFlux(Supplier<PageRetriever<Integer, OnlyOneContinuablePage>> pageRetrieverProvider) {
-            super(pageRetrieverProvider);
-        }
-    }
-
-    private static final class OnlyOnePagedIterable
-        extends ContinuablePagedIterable<Integer, Integer, OnlyOneContinuablePage> {
-        public OnlyOnePagedIterable(ContinuablePagedFlux<Integer, Integer, OnlyOneContinuablePage> pagedFlux) {
-            super(pagedFlux);
-        }
-    }
-
-    private static final class OnlyOnePageRetriever implements PageRetriever<Integer, OnlyOneContinuablePage> {
-        private final AtomicInteger getCount = new AtomicInteger();
-
-        @Override
-        public Flux<OnlyOneContinuablePage> get(Integer continuationToken, Integer pageSize) {
-            int value = getCount.getAndIncrement();
-            if (value == 3) {
-                pageSize = (pageSize == null) ? 10 : pageSize;
-                return Flux.just(new OnlyOneContinuablePage(continuationToken, null, pageSize));
-            } else {
-                continuationToken = (continuationToken == null) ? 0 : continuationToken;
-                pageSize = (pageSize == null) ? 10 : pageSize;
-                return Flux.just(new OnlyOneContinuablePage(continuationToken, continuationToken + 1, pageSize));
-            }
-        }
-
-        public int getGetCount() {
-            return getCount.get();
-        }
-    }
-
-    private static final class OnlyOneContinuablePage implements ContinuablePage<Integer, Integer> {
-        private final IterableStream<Integer> elements;
-        private final Integer nextContinuationToken;
-
-        private OnlyOneContinuablePage(Integer continuationToken, Integer nextContinuationToken, Integer pageSize) {
-            elements = IterableStream.of(IntStream.range(continuationToken * 10, (continuationToken * 10) + pageSize)
-                .boxed()
-                .collect(Collectors.toList()));
-
-            this.nextContinuationToken = nextContinuationToken;
-        }
-
-        @Override
-        public IterableStream<Integer> getElements() {
-            return elements;
-        }
-
-        @Override
-        public Integer getContinuationToken() {
-            return nextContinuationToken;
-        }
     }
 }
