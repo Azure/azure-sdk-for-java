@@ -20,7 +20,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class EventDataBatchTest {
+public class EventDataBatchBaseTest {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
     @Mock
@@ -33,7 +33,7 @@ public class EventDataBatchTest {
 
     @Test
     public void nullEventData() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, null, null, null, null);
             batch.tryAdd(null);
         });
