@@ -246,8 +246,9 @@ public class TableAsyncClient {
     }
 
     /**
-     * if UpdateMode is MERGE, merges or fails if the entity doesn't exist. If UpdateMode is REPLACE replaces or fails
-     * if the entity doesn't exist
+     * updates the entity, using UpdateMode.MERGE
+     *
+     * merges or fails if the entity doesn't exist.
      *
      * @param entity the entity to update
      *
@@ -255,12 +256,14 @@ public class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateEntity(TableEntity entity) {
-        //TODO: merge or throw an error if it cannot be found
-        return Mono.empty();
+        return updateEntity(entity, null);
     }
 
     /**
      * updates the entity
+     *
+     * if UpdateMode is MERGE, merges or fails if the entity doesn't exist. If UpdateMode is REPLACE replaces or fails
+     * if the entity doesn't exist
      *
      * @param entity the entity to update
      * @param updateMode which type of mode to execute
@@ -273,6 +276,8 @@ public class TableAsyncClient {
     }
 
     /**
+     * updates the entity
+     *
      * if UpdateMode is MERGE, merges or fails if the entity doesn't exist. If UpdateMode is REPLACE replaces or fails
      * if the entity doesn't exist
      *
@@ -289,6 +294,8 @@ public class TableAsyncClient {
     }
 
     /**
+     * updates the entity
+     *
      * if UpdateMode is MERGE, merges or fails if the entity doesn't exist. If UpdateMode is REPLACE replaces or fails
      * if the entity doesn't exist
      *
