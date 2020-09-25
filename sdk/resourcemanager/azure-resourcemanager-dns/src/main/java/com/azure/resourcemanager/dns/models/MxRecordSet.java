@@ -7,7 +7,7 @@ import java.util.List;
 
 /** An immutable client-side representation of an MX (mail exchange) record set in an Azure DNS Zone. */
 @Fluent
-public interface MXRecordSet extends DnsRecordSet {
+public interface MxRecordSet extends DnsRecordSet {
     /** @return the MX records in this record set */
     List<MxRecord> records();
 }

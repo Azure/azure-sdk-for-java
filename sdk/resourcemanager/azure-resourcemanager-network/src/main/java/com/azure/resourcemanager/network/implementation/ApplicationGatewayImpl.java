@@ -410,7 +410,7 @@ class ApplicationGatewayImpl
     }
 
     protected ApplicationGatewayBackendImpl ensureUniqueBackend() {
-        String name = this.manager().resourceManager().sdkContext()
+        String name = this.manager().resourceManager().internalContext()
             .randomResourceName("backend", 20);
         ApplicationGatewayBackendImpl backend = this.defineBackend(name);
         backend.attach();
@@ -421,7 +421,7 @@ class ApplicationGatewayImpl
         ApplicationGatewayIpConfigurationImpl ipConfig =
             (ApplicationGatewayIpConfigurationImpl) defaultIPConfiguration();
         if (ipConfig == null) {
-            String name = this.manager().resourceManager().sdkContext().randomResourceName("ipcfg", 11);
+            String name = this.manager().resourceManager().internalContext().randomResourceName("ipcfg", 11);
             ipConfig = this.defineIPConfiguration(name);
             ipConfig.attach();
         }
@@ -433,7 +433,7 @@ class ApplicationGatewayImpl
         if (frontend != null) {
             return frontend;
         } else {
-            String name = this.manager().resourceManager().sdkContext().randomResourceName("frontend", 14);
+            String name = this.manager().resourceManager().internalContext().randomResourceName("frontend", 14);
             frontend = this.defineFrontend(name);
             frontend.attach();
             this.defaultPrivateFrontend = frontend;
@@ -446,7 +446,7 @@ class ApplicationGatewayImpl
         if (frontend != null) {
             return frontend;
         } else {
-            String name = this.manager().resourceManager().sdkContext().randomResourceName("frontend", 14);
+            String name = this.manager().resourceManager().internalContext().randomResourceName("frontend", 14);
             frontend = this.defineFrontend(name);
             frontend.attach();
             this.defaultPublicFrontend = frontend;
@@ -458,7 +458,7 @@ class ApplicationGatewayImpl
 
     private Creatable<Network> ensureDefaultNetworkDefinition() {
         if (this.creatableNetwork == null) {
-            final String vnetName = this.manager().resourceManager().sdkContext().randomResourceName("vnet", 10);
+            final String vnetName = this.manager().resourceManager().internalContext().randomResourceName("vnet", 10);
             this.creatableNetwork =
                 this
                     .manager()
@@ -478,7 +478,7 @@ class ApplicationGatewayImpl
 
     private Creatable<PublicIpAddress> ensureDefaultPipDefinition() {
         if (this.creatablePip == null) {
-            final String pipName = this.manager().resourceManager().sdkContext().randomResourceName("pip", 9);
+            final String pipName = this.manager().resourceManager().internalContext().randomResourceName("pip", 9);
             this.creatablePip =
                 this
                     .manager()
@@ -1044,7 +1044,7 @@ class ApplicationGatewayImpl
             // If no conflict, create a new port
             if (name == null) {
                 // No name specified, so auto-name it
-                name = this.manager().resourceManager().sdkContext().randomResourceName("port", 9);
+                name = this.manager().resourceManager().internalContext().randomResourceName("port", 9);
             }
 
             frontendPortByName = new ApplicationGatewayFrontendPort().withName(name).withPort(portNumber);

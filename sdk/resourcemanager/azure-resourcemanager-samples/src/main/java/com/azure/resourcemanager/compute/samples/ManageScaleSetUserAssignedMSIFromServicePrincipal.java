@@ -41,11 +41,11 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
      */
     public static boolean runSample(AzureResourceManager.Authenticated authenticated) {
         Region region = Region.US_WEST_CENTRAL;
-        String vmssName = authenticated.roleAssignments().manager().sdkContext().randomResourceName("vmss", 15);
-        String spName1 = authenticated.roleAssignments().manager().sdkContext().randomResourceName("sp1", 21);
-        String rgName = authenticated.roleAssignments().manager().sdkContext().randomResourceName("rg", 22);
-        String identityName1 = authenticated.roleAssignments().manager().sdkContext().randomResourceName("msi-id1", 15);
-        String identityName2 = authenticated.roleAssignments().manager().sdkContext().randomResourceName("msi-id1", 15);
+        String vmssName = authenticated.roleAssignments().manager().internalContext().randomResourceName("vmss", 15);
+        String spName1 = authenticated.roleAssignments().manager().internalContext().randomResourceName("sp1", 21);
+        String rgName = authenticated.roleAssignments().manager().internalContext().randomResourceName("rg", 22);
+        String identityName1 = authenticated.roleAssignments().manager().internalContext().randomResourceName("msi-id1", 15);
+        String identityName2 = authenticated.roleAssignments().manager().internalContext().randomResourceName("msi-id1", 15);
         ServicePrincipal servicePrincipal = null;
         String subscription = "0b1f6471-1bf0-4dda-aec3-cb9272f09590";
 

@@ -33,7 +33,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -536,7 +535,8 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             .flatMapMany(
                 redisCache ->
                     Mono
-                        .delay(SdkContext.getDelayDuration(manager().serviceClient().getDefaultPollInterval()))
+                        .delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(
+                            manager().serviceClient().getDefaultPollInterval()))
                         .flatMap(o ->
                             manager().serviceClient().getRedis().getByResourceGroupAsync(resourceGroupName(), name()))
                         .doOnNext(this::setInner)
@@ -596,7 +596,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             || innerLinkedResource.provisioningState() != ProvisioningState.SUCCEEDED
             || innerResource == null
             || innerResource.provisioningState() != ProvisioningState.SUCCEEDED) {
-            SdkContext.sleep(30 * 1000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(30 * 1000);
 
             innerLinkedResource =
                 this

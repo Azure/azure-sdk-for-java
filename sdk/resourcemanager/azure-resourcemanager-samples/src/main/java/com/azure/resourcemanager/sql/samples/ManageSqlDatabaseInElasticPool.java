@@ -41,8 +41,8 @@ public final class ManageSqlDatabaseInElasticPool {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlServerName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("sqlserver", 20);
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgRSSDEP", 20);
+        final String sqlServerName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sqlserver", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgRSSDEP", 20);
         final String elasticPoolName = "myElasticPool";
         final String elasticPool2Name = "secondElasticPool";
         final String administratorLogin = "sqladmin3423";
