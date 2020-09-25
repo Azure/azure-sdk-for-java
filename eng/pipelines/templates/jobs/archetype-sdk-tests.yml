@@ -56,6 +56,7 @@ parameters:
     goals: 'test'
   TestResultsFiles: ''
   SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+  ResourceGroupLocationCanary: "centraluseuap"
   ArmTemplateParameters: '@{}'
   Location: ''
 
@@ -82,7 +83,7 @@ jobs:
             JavaTestVersion: '1.8'            
             DisplayName: 'Linux - Java 8'            
             SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)            
-            Location: centraluseuap            
+            Location: ${{ parameters.ResourceGroupLocationCanary }}            
             AZURE_TEST_HTTP_CLIENTS: netty
       maxParallel: ${{ parameters.MaxParallel }}
 
