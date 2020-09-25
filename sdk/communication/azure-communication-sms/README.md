@@ -116,7 +116,7 @@ Check out other client libraries for Azure Communication Services
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
-[package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
+[package]: https://search.maven.org/artifact/com.azure/azure-communication-sms
 [api_documentation]: https://aka.ms/java-docs
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-sms
 
