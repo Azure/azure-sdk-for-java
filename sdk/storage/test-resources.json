@@ -133,14 +133,20 @@
           "apiVersion": "[variables('storageApiVersion')]",
           "name": "[concat(variables('primaryAccountName'), '/testscope1')]",
           "properties": {
-          }
+          },
+          "dependsOn": [
+            "[variables('primaryAccountName')]"
+          ]
         },
         {
           "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
           "apiVersion": "[variables('storageApiVersion')]",
           "name": "[concat(variables('primaryAccountName'), '/testscope2')]",
           "properties": {
-          }
+          },
+          "dependsOn": [
+            "[variables('primaryAccountName')]"
+          ]
         },
         {
             "type": "Microsoft.Storage/storageAccounts",
