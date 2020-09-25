@@ -54,6 +54,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
      * @param consumer handler
      * @return CosmosPagedFlux instance with attached handler
      */
+    @Beta(value = Beta.SinceVersion.V4_6_0)
     public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> consumer) {
         return new CosmosPagedFlux<T>(this.optionsFluxFunction, consumer);
     }
@@ -97,10 +98,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     public void subscribe(CoreSubscriber<? super T> coreSubscriber) {
         Flux<FeedResponse<T>> pagedResponse = this.byPage();
         pagedResponse.flatMap(tFeedResponse -> {
-            //  If the user has passed feedResponseConsumer, then call it with each feedResponse
-            if (this.feedResponseConsumer != null) {
-                feedResponseConsumer.accept(tFeedResponse);
-            }
             IterableStream<T> elements = tFeedResponse.getElements();
             if (elements == null) {
                 return Flux.empty();
