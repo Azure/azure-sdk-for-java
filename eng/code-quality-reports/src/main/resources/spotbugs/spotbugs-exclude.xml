@@ -2145,8 +2145,12 @@
   <!-- Known issue in autorest of inner Enumeration for InputStream response -->
   <!-- Not much can be done if spotbugs think the class is too big for analysis -->
   <Match>
-    <Class name="com.azure.resourcemanager.appservice.implementation.WebAppsClientImpl"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON,SKIPPED_CLASS_TOO_BIG"/>
+    <Or>
+      <Class name="com.azure.resourcemanager.appservice.fluent.WebAppsClient"/>
+      <Class name="com.azure.resourcemanager.appservice.implementation.WebAppsClientImpl"/>
+      <Class name="~com\.azure\.resourcemanager\.appservice\.implementation\.WebAppsClientImpl(.+)"/>
+    </Or>
+    <Bug pattern="SKIPPED_CLASS_TOO_BIG,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
   <!-- Exclude REC_CATCH_EXCEPTION and false positive error for management samples. All samples in management catch Exception instead of throw it. -->
