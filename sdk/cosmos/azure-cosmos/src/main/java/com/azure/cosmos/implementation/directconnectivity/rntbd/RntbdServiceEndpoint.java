@@ -278,7 +278,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 case HttpConstants.StatusCodes.CONFLICT:
                 case HttpConstants.StatusCodes.NOTFOUND:
                     this.lastSuccessfulRequestNanoTime.set(System.nanoTime());
+                    return;
                 default:
+                    return;
             }
         }
     }

@@ -572,7 +572,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 afterOperation2,
                 beforeOperation3,
                 afterOperation3);
-            
+
             // read
             CosmosItemResponse<TestItem> readItemResponse = container.readItem(testItem.id, new PartitionKey(testItem.mypk), TestItem.class);
             // no request payload and no response payload
