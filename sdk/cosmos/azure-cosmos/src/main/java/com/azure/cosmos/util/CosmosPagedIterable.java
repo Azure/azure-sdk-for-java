@@ -6,6 +6,8 @@ import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.cosmos.models.FeedResponse;
 
+import java.util.function.Consumer;
+
 /**
  * Cosmos implementation of {@link com.azure.core.util.paging.ContinuablePagedIterable}.
  * <p>
@@ -22,6 +24,8 @@ import com.azure.cosmos.models.FeedResponse;
  */
 public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<String, T, FeedResponse<T>> {
 
+    private Consumer<FeedResponse<T>> feedResponseConsumer;
+
     /**
      * Creates instance given {@link ContinuablePagedFlux}.
      *
@@ -29,5 +33,9 @@ public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<Strin
      */
     CosmosPagedIterable(ContinuablePagedFlux<String, T, FeedResponse<T>> pagedFlux) {
         super(pagedFlux);
+    }
+
+    CosmosPagedIterable<T> handle(Consumer<FeedResponse<T>> feedResponseConsumer) {
+
     }
 }
