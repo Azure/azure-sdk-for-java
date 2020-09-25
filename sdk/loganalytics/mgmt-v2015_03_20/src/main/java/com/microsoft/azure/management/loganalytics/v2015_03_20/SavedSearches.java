@@ -50,15 +50,4 @@ public interface SavedSearches extends SupportsCreating<SavedSearch.DefinitionSt
      */
     Completable deleteAsync(String resourceGroupName, String workspaceName, String savedSearchId);
 
-    /**
-     * Gets the results from a saved search for a given workspace.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param savedSearchId The id of the saved search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<SearchResultsResponse> getResultsAsync(String resourceGroupName, String workspaceName, String savedSearchId);
-
 }
