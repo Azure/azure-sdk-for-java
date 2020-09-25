@@ -23,7 +23,7 @@ public class CosmosHealthConfiguration {
 
     @Bean
     @ConditionalOnEnabledHealthIndicator("azure-cosmos")
-    public HealthIndicator healthIndicator(CosmosAsyncClient cosmosAsyncClient) {
+    public HealthIndicator cosmosHealthContributor(CosmosAsyncClient cosmosAsyncClient) {
         return new CosmosHealthIndicator(cosmosAsyncClient);
     }
 

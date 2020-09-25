@@ -5,7 +5,7 @@ package com.microsoft.azure.spring.autoconfigure.cosmos;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
  * Auto Configure Cosmos properties and connection policy.
  */
 @Configuration
-@ConditionalOnClass({ CosmosClient.class, CosmosTemplate.class })
+@ConditionalOnClass({ CosmosAsyncClient.class, CosmosTemplate.class })
 @ConditionalOnResource(resources = "classpath:cosmos.enable.config")
 @EnableConfigurationProperties(CosmosProperties.class)
 public class CosmosAutoConfiguration extends AbstractCosmosConfiguration {
@@ -52,7 +52,6 @@ public class CosmosAutoConfiguration extends AbstractCosmosConfiguration {
         return cosmosClientBuilder;
     }
 
-    @Bean
     @Override
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
