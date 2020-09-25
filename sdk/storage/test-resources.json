@@ -109,10 +109,10 @@
                 "enabled": true,
                 "days": 1
             }
-        },
-        "dependsOn": [
-          "[variables('primaryAccountName')]"
-        ]
+            },
+            "dependsOn": [
+                "[variables('primaryAccountName')]"
+            ]
         },
         {
             "type": "Microsoft.Storage/storageAccounts/fileServices",
@@ -123,10 +123,10 @@
                 "enabled": true,
                 "days": 1
             }
-        },
-        "dependsOn": [
-          "[variables('primaryAccountName')]"
-        ]
+            },
+            "dependsOn": [
+                "[variables('primaryAccountName')]"
+            ]
         },
         {
           "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
