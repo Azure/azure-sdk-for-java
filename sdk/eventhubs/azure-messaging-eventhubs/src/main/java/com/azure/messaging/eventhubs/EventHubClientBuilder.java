@@ -421,7 +421,6 @@ public class EventHubClientBuilder {
             states.forEach((partitionId, state) -> {
                 this.initialPartitionPublishingStates.put(partitionId, new PartitionPublishingState(state));
             });
-            this.initialPartitionPublishingStates = Collections.unmodifiableMap(this.initialPartitionPublishingStates);
         } else {
             this.initialPartitionPublishingStates = null;
         }
