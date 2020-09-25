@@ -9,9 +9,12 @@ module com.azure.data.tables {
     exports com.azure.data.tables;
     exports com.azure.data.tables.models;
 
+    exports com.azure.data.tables.implementation to com.azure.core;
+    exports com.azure.data.tables.implementation.models to com.azure.core;
+
     // exporting some packages specifically for Jackson
-    opens com.azure.data.tables to com.fasterxml.jackson.databind;
-    opens com.azure.data.tables.implementation to com.fasterxml.jackson.databind;
-    opens com.azure.data.tables.implementation.models to com.fasterxml.jackson.databind;
-    opens com.azure.data.tables.models to com.fasterxml.jackson.databind;
+    opens com.azure.data.tables to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.data.tables.implementation to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.data.tables.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.data.tables.models to com.fasterxml.jackson.databind, com.azure.core;
 }
