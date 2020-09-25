@@ -223,7 +223,7 @@ public class BlobParallelUploadOptions {
     }
 
     /**
-     * Sets the calculateAndVerifyMd5 property.
+     * Sets the computeMd5 property.
      *
      * @param computeMd5 Whether or not the library should calculate the md5 and send it for the service to
      * verify.

@@ -44,7 +44,7 @@ class UploadUtilsTest extends Specification {
     }
 
     @Unroll
-    def "computeMd5 data"() {
+    def "computeMd5 data"() { // This test checks that we maintain the integrity of data when we reset the buffers in the compute md5 calculation.
         setup:
         def flux = Flux.fromIterable(data.stream().map({ str -> ByteBuffer.wrap(str.getBytes())}) as Iterable<ByteBuffer>)
 
