@@ -195,7 +195,7 @@ class VirtualMachineImpl
         this.authorizationManager = authorizationManager;
         this.vmName = name;
         this.isMarketplaceLinuxImage = false;
-        this.namer = this.manager().sdkContext().createIdentifierProvider(this.vmName);
+        this.namer = this.manager().resourceManager().sdkContext().createIdentifierProvider(this.vmName);
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         this.virtualMachineExtensions =
@@ -1795,7 +1795,8 @@ class VirtualMachineImpl
         return AcceptedImpl
             .<VirtualMachine, VirtualMachineInner>newAccepted(
                 logger,
-                this.manager().serviceClient(),
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
                 () ->
                     this
                         .manager()

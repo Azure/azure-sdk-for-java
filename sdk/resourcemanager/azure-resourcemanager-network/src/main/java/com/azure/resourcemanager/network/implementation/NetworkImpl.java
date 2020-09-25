@@ -291,7 +291,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
         DdosProtectionPlan.DefinitionStages.WithGroup ddosProtectionPlanWithGroup =
             manager()
                 .ddosProtectionPlans()
-                .define(this.manager().sdkContext().randomResourceName(name(), 20))
+                .define(this.manager().resourceManager().sdkContext().randomResourceName(name(), 20))
                 .withRegion(region());
         if (super.creatableGroup != null && isInCreateMode()) {
             ddosProtectionPlanCreatable = ddosProtectionPlanWithGroup.withNewResourceGroup(super.creatableGroup);

@@ -15,7 +15,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /**
  * Entry point to Azure Managed Service Identity (MSI) resource management.
@@ -43,7 +42,7 @@ public final class MSIManager extends Manager<ManagedServiceIdentityClient> {
      * @return the MSIManager
      */
     public static MSIManager authenticate(TokenCredential credential, AzureProfile profile) {
-        return new MSIManager(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile, new SdkContext());
+        return new MSIManager(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -55,20 +54,7 @@ public final class MSIManager extends Manager<ManagedServiceIdentityClient> {
      * @return the MSIManager
      */
     public static MSIManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return  authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of MSIManager that exposes Managed Service Identity (MSI)
-     * resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the MSIManager
-     */
-    public static MSIManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new MSIManager(httpPipeline, profile, sdkContext);
+        return  new MSIManager(httpPipeline, profile);
     }
 
     /**
@@ -95,16 +81,13 @@ public final class MSIManager extends Manager<ManagedServiceIdentityClient> {
         }
     }
 
-    private MSIManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private MSIManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(httpPipeline, profile, new ManagedServiceIdentityClientBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-                sdkContext);
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline,
-            profile,
-            sdkContext);
+                .buildClient());
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
     }
 
     /**

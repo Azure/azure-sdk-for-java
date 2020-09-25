@@ -93,7 +93,7 @@ class ApplicationGatewayUrlPathMapImpl
 
     @Override
     public ApplicationGatewayUrlPathMapImpl toBackendHttpPort(int portNumber) {
-        String name = this.parent().manager().sdkContext().randomResourceName("backcfg", 12);
+        String name = this.parent().manager().resourceManager().sdkContext().randomResourceName("backcfg", 12);
         this.parent().defineBackendHttpConfiguration(name).withPort(portNumber).attach();
         return this.toBackendHttpConfiguration(name);
     }

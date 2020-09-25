@@ -58,7 +58,7 @@ class NetworkInterfaceImpl
     NetworkInterfaceImpl(String name, NetworkInterfaceInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.nicName = name;
-        this.namer = this.manager().sdkContext().createIdentifierProvider(this.nicName);
+        this.namer = this.manager().resourceManager().sdkContext().createIdentifierProvider(this.nicName);
         initializeChildrenFromInner();
     }
 
@@ -471,7 +471,8 @@ class NetworkInterfaceImpl
         return AcceptedImpl
             .newAccepted(
                 logger,
-                this.manager().serviceClient(),
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
                 () ->
                     this
                         .manager()

@@ -101,6 +101,14 @@ Controls if is a session aware consumer. Set it to `true` if is a queue with ses
 
 Default: `false`
 
+**_requeueRejected_**
+
+Controls if is a message that trigger any exception in consumer will be force to DLQ. 
+Set it to `true` if a message that trigger any exception in consumer will be force to DLQ.
+Set it to `false` if a message that trigger any exception in consumer will be re-queued. 
+
+Default: `false`
+
 ## Examples
 
 Please use this `sample` as a reference for how to use this binder in your projects. 
@@ -149,7 +157,8 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [service_bus_topic_binder]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-topic-stream-binder
 [spring_cloud_stream_binder_service_bus_multiple_binders]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-queue-multibinders-sample
 [spring_cloud_stream_binder_service_bus_queue]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-queue-binder-sample
-[spring_cloud_stream_binder_service_bus_topic]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-topic-binder-sample
+[spring_cloud_stream_binder_service_bus_topic]: https://ghithub.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-topic-binder-sampleh
 [spring_integration]: https://spring.io/projects/spring-integration
 [src_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-queue-stream-binder
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+

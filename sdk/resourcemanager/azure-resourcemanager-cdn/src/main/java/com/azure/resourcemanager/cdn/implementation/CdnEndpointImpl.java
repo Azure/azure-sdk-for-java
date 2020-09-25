@@ -82,7 +82,8 @@ class CdnEndpointImpl
                             self.parent().resourceGroupName(),
                             self.parent().name(),
                             self.name(),
-                            self.parent().manager().sdkContext().randomResourceName("CustomDomain", 50),
+                            self.parent().manager().resourceManager().sdkContext()
+                                .randomResourceName("CustomDomain", 50),
                             customDomainInner.hostname()), 32, 32)
                     .then(self.parent().manager().serviceClient()
                         .getCustomDomains().listByEndpointAsync(
@@ -137,7 +138,8 @@ class CdnEndpointImpl
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
-                self.parent().manager().sdkContext().randomResourceName("CustomDomain", 50),
+                self.parent().manager().resourceManager().sdkContext()
+                    .randomResourceName("CustomDomain", 50),
                 itemToCreate.hostname()
             ), 32, 32);
 

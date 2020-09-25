@@ -55,9 +55,10 @@ public class NetworkManagementTest extends ResourceManagerTestBase {
         rgName = generateRandomResourceName("javanwmrg", 15);
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
+        networkManager = NetworkManager.authenticate(httpPipeline, profile);
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
         msiManager = MSIManager.authenticate(httpPipeline, profile);
+        setSdkContext(sdkContext, networkManager);
     }
 
     @Override

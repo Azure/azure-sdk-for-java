@@ -79,9 +79,9 @@ public class DeployImageFromContainerRegistryToKubernetes {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, JSchException, InterruptedException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgaks", 15);
-        final String acrName = azureResourceManager.sdkContext().randomResourceName("acrsample", 20);
-        final String aksName = azureResourceManager.sdkContext().randomResourceName("akssample", 30);
+        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgaks", 15);
+        final String acrName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("acrsample", 20);
+        final String aksName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("akssample", 30);
         final String rootUserName = "aksuser";
         final Region region = Region.US_EAST;
         final String dockerImageName = "nginx";

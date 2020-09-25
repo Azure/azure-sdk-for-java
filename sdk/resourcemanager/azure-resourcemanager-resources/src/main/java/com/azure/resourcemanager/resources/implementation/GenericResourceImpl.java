@@ -13,7 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
-import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
 import reactor.core.publisher.Mono;
 
@@ -152,7 +151,8 @@ final class GenericResourceImpl
         String name = isInCreateMode() ? this.name() : ResourceUtils.nameFromResourceId(innerModel().id());
 
         return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient(),
+            this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager().serviceClient().getResources()
                 .createOrUpdateWithResponseAsync(
                     resourceGroupName(),
@@ -197,7 +197,6 @@ final class GenericResourceImpl
         if (this.apiVersion != null) {
             apiVersion = Mono.just(this.apiVersion);
         } else {
-            final ResourceManagementClient serviceClient = this.manager().serviceClient();
             apiVersion = this.manager().providers().getByNameAsync(resourceProviderNamespace)
                 .flatMap(provider -> {
                     String id;
@@ -205,7 +204,7 @@ final class GenericResourceImpl
                         id = innerModel().id();
                     } else {
                         id = ResourceUtils.constructResourceId(
-                            serviceClient.getSubscriptionId(),
+                            this.manager().subscriptionId(),
                             resourceGroupName(),
                             resourceProviderNamespace(),
                             resourceType(),

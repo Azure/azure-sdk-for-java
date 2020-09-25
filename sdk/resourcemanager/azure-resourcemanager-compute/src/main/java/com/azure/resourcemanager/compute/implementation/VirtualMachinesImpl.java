@@ -213,7 +213,8 @@ public class VirtualMachinesImpl
         return AcceptedImpl
             .newAccepted(
                 logger,
-                manager().serviceClient(),
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
                 () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
                 Function.identity(),
                 Void.class,
