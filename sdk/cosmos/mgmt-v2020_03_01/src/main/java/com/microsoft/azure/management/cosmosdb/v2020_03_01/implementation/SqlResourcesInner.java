@@ -30,6 +30,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
@@ -98,6 +99,22 @@ public class SqlResourcesInner {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default")
         Observable<Response<ResponseBody>> beginUpdateSqlDatabaseThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ThroughputSettingsUpdateParameters updateThroughputParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_03_01.SqlResources migrateSqlDatabaseToAutoscale" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale")
+        Observable<Response<ResponseBody>> migrateSqlDatabaseToAutoscale(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_03_01.SqlResources beginMigrateSqlDatabaseToAutoscale" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale")
+        Observable<Response<ResponseBody>> beginMigrateSqlDatabaseToAutoscale(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_03_01.SqlResources migrateSqlDatabaseToManualThroughput" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput")
+        Observable<Response<ResponseBody>> migrateSqlDatabaseToManualThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_03_01.SqlResources beginMigrateSqlDatabaseToManualThroughput" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput")
+        Observable<Response<ResponseBody>> beginMigrateSqlDatabaseToManualThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_03_01.SqlResources listSqlContainers" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers")
         Observable<Response<ResponseBody>> listSqlContainers(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -133,6 +150,22 @@ public class SqlResourcesInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_03_01.SqlResources beginUpdateSqlContainerThroughput" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default")
         Observable<Response<ResponseBody>> beginUpdateSqlContainerThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Query("api-version") String apiVersion, @Body ThroughputSettingsUpdateParameters updateThroughputParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_03_01.SqlResources migrateSqlContainerToAutoscale" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToAutoscale")
+        Observable<Response<ResponseBody>> migrateSqlContainerToAutoscale(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_03_01.SqlResources beginMigrateSqlContainerToAutoscale" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToAutoscale")
+        Observable<Response<ResponseBody>> beginMigrateSqlContainerToAutoscale(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_03_01.SqlResources migrateSqlContainerToManualThroughput" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToManualThroughput")
+        Observable<Response<ResponseBody>> migrateSqlContainerToManualThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_03_01.SqlResources beginMigrateSqlContainerToManualThroughput" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToManualThroughput")
+        Observable<Response<ResponseBody>> beginMigrateSqlContainerToManualThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_03_01.SqlResources listSqlStoredProcedures" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures")
@@ -211,7 +244,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -225,7 +258,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -238,7 +271,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;SqlDatabaseGetResultsInner&gt; object
@@ -255,7 +288,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;SqlDatabaseGetResultsInner&gt; object
@@ -300,7 +333,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -315,7 +348,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -329,7 +362,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -347,7 +380,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -391,7 +424,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
@@ -407,7 +440,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
@@ -422,7 +455,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
@@ -441,7 +474,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
@@ -473,7 +506,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
@@ -489,7 +522,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
@@ -504,7 +537,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
@@ -523,7 +556,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
@@ -573,7 +606,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -587,7 +620,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -601,7 +634,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -619,7 +652,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -646,7 +679,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -660,7 +693,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -674,7 +707,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -692,7 +725,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -737,7 +770,7 @@ public class SqlResourcesInner {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -752,7 +785,7 @@ public class SqlResourcesInner {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -766,7 +799,7 @@ public class SqlResourcesInner {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -784,7 +817,7 @@ public class SqlResourcesInner {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -828,7 +861,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
@@ -844,7 +877,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
@@ -859,7 +892,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
@@ -878,7 +911,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
@@ -910,7 +943,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
@@ -926,7 +959,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
@@ -941,7 +974,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
@@ -960,7 +993,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL database.
@@ -1008,9 +1041,341 @@ public class SqlResourcesInner {
     }
 
     /**
+     * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner migrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName) {
+        return migrateSqlDatabaseToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().last().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(migrateSqlDatabaseToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName) {
+        return migrateSqlDatabaseToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> migrateSqlDatabaseToAutoscaleWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-03-01";
+        Observable<Response<ResponseBody>> observable = service.migrateSqlDatabaseToAutoscale(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType());
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner beginMigrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName) {
+        return beginMigrateSqlDatabaseToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginMigrateSqlDatabaseToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName) {
+        return beginMigrateSqlDatabaseToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> beginMigrateSqlDatabaseToAutoscaleWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-03-01";
+        return service.beginMigrateSqlDatabaseToAutoscale(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputSettingsGetResultsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputSettingsGetResultsInner> clientResponse = beginMigrateSqlDatabaseToAutoscaleDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToAutoscaleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputSettingsGetResultsInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner migrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName) {
+        return migrateSqlDatabaseToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().last().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(migrateSqlDatabaseToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+        return migrateSqlDatabaseToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> migrateSqlDatabaseToManualThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-03-01";
+        Observable<Response<ResponseBody>> observable = service.migrateSqlDatabaseToManualThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType());
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner beginMigrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName) {
+        return beginMigrateSqlDatabaseToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginMigrateSqlDatabaseToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+        return beginMigrateSqlDatabaseToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> beginMigrateSqlDatabaseToManualThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-03-01";
+        return service.beginMigrateSqlDatabaseToManualThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputSettingsGetResultsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputSettingsGetResultsInner> clientResponse = beginMigrateSqlDatabaseToManualThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToManualThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputSettingsGetResultsInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1025,7 +1390,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1039,7 +1404,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1057,7 +1422,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1106,7 +1471,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1122,7 +1487,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1137,7 +1502,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1156,7 +1521,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1204,7 +1569,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1221,7 +1586,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1237,7 +1602,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1257,7 +1622,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1293,7 +1658,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1310,7 +1675,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1326,7 +1691,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1346,7 +1711,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1400,7 +1765,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1415,7 +1780,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1430,7 +1795,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1449,7 +1814,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1480,7 +1845,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1495,7 +1860,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1510,7 +1875,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1529,7 +1894,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1578,7 +1943,7 @@ public class SqlResourcesInner {
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1594,7 +1959,7 @@ public class SqlResourcesInner {
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1609,7 +1974,7 @@ public class SqlResourcesInner {
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1628,7 +1993,7 @@ public class SqlResourcesInner {
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1676,7 +2041,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1693,7 +2058,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1709,7 +2074,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1729,7 +2094,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1765,7 +2130,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1782,7 +2147,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1798,7 +2163,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1818,7 +2183,7 @@ public class SqlResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1870,9 +2235,369 @@ public class SqlResourcesInner {
     }
 
     /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return migrateSqlContainerToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName).toBlocking().last().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String containerName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(migrateSqlContainerToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return migrateSqlContainerToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> migrateSqlContainerToAutoscaleWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-03-01";
+        Observable<Response<ResponseBody>> observable = service.migrateSqlContainerToAutoscale(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType());
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner beginMigrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return beginMigrateSqlContainerToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName).toBlocking().single().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String containerName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginMigrateSqlContainerToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return beginMigrateSqlContainerToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> beginMigrateSqlContainerToAutoscaleWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-03-01";
+        return service.beginMigrateSqlContainerToAutoscale(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputSettingsGetResultsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputSettingsGetResultsInner> clientResponse = beginMigrateSqlContainerToAutoscaleDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToAutoscaleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputSettingsGetResultsInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return migrateSqlContainerToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName).toBlocking().last().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> migrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(migrateSqlContainerToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputSettingsGetResultsInner> migrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return migrateSqlContainerToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> migrateSqlContainerToManualThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-03-01";
+        Observable<Response<ResponseBody>> observable = service.migrateSqlContainerToManualThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType());
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return beginMigrateSqlContainerToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName).toBlocking().single().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginMigrateSqlContainerToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return beginMigrateSqlContainerToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> beginMigrateSqlContainerToManualThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-03-01";
+        return service.beginMigrateSqlContainerToManualThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputSettingsGetResultsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputSettingsGetResultsInner> clientResponse = beginMigrateSqlContainerToManualThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToManualThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputSettingsGetResultsInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1888,7 +2613,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1903,7 +2628,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1922,7 +2647,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1975,7 +2700,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -1992,7 +2717,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2008,7 +2733,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2028,7 +2753,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2080,7 +2805,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2098,7 +2823,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2115,7 +2840,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2136,7 +2861,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2176,7 +2901,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2194,7 +2919,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2211,7 +2936,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2232,7 +2957,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2290,7 +3015,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2306,7 +3031,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2322,7 +3047,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2342,7 +3067,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2377,7 +3102,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2393,7 +3118,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2409,7 +3134,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2429,7 +3154,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2482,7 +3207,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2498,7 +3223,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2513,7 +3238,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2532,7 +3257,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2585,7 +3310,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2602,7 +3327,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2618,7 +3343,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2638,7 +3363,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2690,7 +3415,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2708,7 +3433,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2725,7 +3450,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2746,7 +3471,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2786,7 +3511,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2804,7 +3529,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2821,7 +3546,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2842,7 +3567,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2900,7 +3625,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2916,7 +3641,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2932,7 +3657,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2952,7 +3677,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -2987,7 +3712,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3003,7 +3728,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3019,7 +3744,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3039,7 +3764,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3092,7 +3817,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3108,7 +3833,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3123,7 +3848,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3142,7 +3867,7 @@ public class SqlResourcesInner {
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3195,7 +3920,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3212,7 +3937,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3228,7 +3953,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3248,7 +3973,7 @@ public class SqlResourcesInner {
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3300,7 +4025,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3318,7 +4043,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3335,7 +4060,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3356,7 +4081,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3396,7 +4121,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3414,7 +4139,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3431,7 +4156,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3452,7 +4177,7 @@ public class SqlResourcesInner {
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3510,7 +4235,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3526,7 +4251,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3542,7 +4267,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3562,7 +4287,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3597,7 +4322,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3613,7 +4338,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3629,7 +4354,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
@@ -3649,7 +4374,7 @@ public class SqlResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
