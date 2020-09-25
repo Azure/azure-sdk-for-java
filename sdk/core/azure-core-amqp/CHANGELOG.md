@@ -1,6 +1,9 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (2020-09-25)
+### New Features
+- Optionally enable idempotency of a send link to send AMQP messages with producer group id, producer owner level and producer 
+sequence number in the message annotations. 
 
 ## 1.5.1 (2020-09-10)
 - Add support for SAS when authenticating.
