@@ -23,8 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 
-class ServersImpl extends GroupableResourcesCoreImpl<Server, ServerImpl, ServerInner, ServersInner, PostgreSQLManager>  implements Servers {
-    protected ServersImpl(PostgreSQLManager manager) {
+class ServersImpl extends GroupableResourcesCoreImpl<Server, ServerImpl, ServerInner, ServersInner, DBForPostgreSQLManager>  implements Servers {
+    protected ServersImpl(DBForPostgreSQLManager manager) {
         super(manager.inner().servers(), manager);
     }
 
