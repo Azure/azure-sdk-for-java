@@ -2,8 +2,8 @@
 
 ### 4.5.1 (2020-09-25)
 #### Key Bug Fixes
-* Add preview implementation for ChangeFeedProcessor which allows for a more detailed view of the current state.
-* Fixes for Multiple partition supervisor tasks running simultaneously if leaseAcquireInterval is smaller than leaseRenewInterval.
+* Added preview implementation for ChangeFeedProcessor which allows for a more detailed view of the current state.
+* Fixed Multiple partition supervisor tasks running simultaneously if leaseAcquireInterval is smaller than leaseRenewInterval.
 * Improved Diagnostics for Rntbd connectivity.
 * Stopped onError Dropped events from leaking into default reactor hook.
 
