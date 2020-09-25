@@ -21,7 +21,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.rest.ActivationResponse;
@@ -312,7 +311,8 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
 
     public static <T, InnerT> Accepted<T> newAccepted(
         ClientLogger logger,
-        AzureServiceClient client,
+        HttpPipeline httpPipeline,
+        Duration pollInterval,
         Supplier<Response<Flux<ByteBuffer>>> activationOperation,
         Function<InnerT, T> convertOperation,
         Type innerType,
@@ -329,8 +329,8 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
             Accepted<T> accepted = new AcceptedImpl<InnerT, T>(
                 activationResponse,
                 SerializerFactory.createDefaultManagementSerializerAdapter(),
-                client.getHttpPipeline(),
-                SdkContext.getDelayDuration(client.getDefaultPollInterval()),
+                httpPipeline,
+                SdkContext.getDelayDuration(pollInterval),
                 innerType, innerType,
                 convertOperation);
 
@@ -340,7 +340,8 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
 
     public static <T extends HasInnerModel<InnerT>, InnerT> Accepted<T> newAccepted(
         ClientLogger logger,
-        AzureServiceClient client,
+        HttpPipeline httpPipeline,
+        Duration pollInterval,
         Supplier<Response<Flux<ByteBuffer>>> activationOperation,
         Function<InnerT, T> convertOperation,
         Type innerType,
@@ -357,8 +358,8 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
             Accepted<T> accepted = new AcceptedImpl<InnerT, T>(
                 activationResponse,
                 SerializerFactory.createDefaultManagementSerializerAdapter(),
-                client.getHttpPipeline(),
-                SdkContext.getDelayDuration(client.getDefaultPollInterval()),
+                httpPipeline,
+                SdkContext.getDelayDuration(pollInterval),
                 innerType, innerType,
                 convertOperation);
 
