@@ -14,7 +14,7 @@ import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
@@ -49,16 +49,16 @@ public class NetworkManagementTest extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        SdkContext sdkContext = new SdkContext();
-        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         rgName = generateRandomResourceName("javanwmrg", 15);
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         networkManager = NetworkManager.authenticate(httpPipeline, profile);
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
         msiManager = MsiManager.authenticate(httpPipeline, profile);
-        setSdkContext(sdkContext, networkManager);
+        setInternalContext(internalContext, networkManager);
     }
 
     @Override

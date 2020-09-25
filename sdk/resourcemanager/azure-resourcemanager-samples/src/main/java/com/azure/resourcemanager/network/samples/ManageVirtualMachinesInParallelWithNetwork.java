@@ -44,11 +44,11 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final int frontendVMCount = 4;
         final int backendVMCount = 4;
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgNEPP", 24);
-        final String frontEndNsgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("fensg", 24);
-        final String backEndNsgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("bensg", 24);
-        final String networkName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vnetCOMV", 24);
-        final String storageAccountName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("stgCOMV", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgNEPP", 24);
+        final String frontEndNsgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("fensg", 24);
+        final String backEndNsgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("bensg", 24);
+        final String networkName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnetCOMV", 24);
+        final String storageAccountName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("stgCOMV", 20);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_SOUTH_CENTRAL;

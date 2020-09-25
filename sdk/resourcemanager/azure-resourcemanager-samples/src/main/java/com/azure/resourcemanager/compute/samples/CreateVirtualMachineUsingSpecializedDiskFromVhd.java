@@ -38,13 +38,13 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("VM2", 15);
-        final String managedOSDiskName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("ds-os-", 15);
-        final String managedDataDiskNamePrefix = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("ds-data-", 15);
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIpDnsLabel = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("pip", 15);
-        final String storageAccountName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("stg", 15);
+        final String linuxVMName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 15);
+        final String linuxVMName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM2", 15);
+        final String managedOSDiskName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ds-os-", 15);
+        final String managedDataDiskNamePrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ds-data-", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMV", 15);
+        final String publicIpDnsLabel = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 15);
+        final String storageAccountName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("stg", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;

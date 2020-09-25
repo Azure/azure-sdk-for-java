@@ -207,7 +207,8 @@ class FunctionAppImpl
                                         SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING, connectionString);
                                     addAppSettingIfNotModified(
                                         SETTING_WEBSITE_CONTENTSHARE,
-                                        this.manager().resourceManager().sdkContext().randomResourceName(name(), 32));
+                                        this.manager().resourceManager().internalContext()
+                                            .randomResourceName(name(), 32));
                                 }
                                 return FunctionAppImpl.super.submitAppSettings();
                             }))
@@ -594,7 +595,7 @@ class FunctionAppImpl
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
-                    this.manager().resourceManager().sdkContext().randomResourceName(name(), 20),
+                    this.manager().resourceManager().internalContext().randomResourceName(name(), 20),
                     StorageAccountSkuType.STANDARD_GRS);
             }
         }

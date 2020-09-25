@@ -348,7 +348,7 @@ public final class AzureResourceManager {
         this.computeManager = ComputeManager.authenticate(httpPipeline, profile);
         this.networkManager = NetworkManager.authenticate(httpPipeline, profile);
         this.keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
-        //        this.batchManager = BatchManager.authenticate(restClient, subscriptionId, sdkContext);
+        //        this.batchManager = BatchManager.authenticate(restClient, subscriptionId, internalContext);
         this.trafficManager = TrafficManager.authenticate(httpPipeline, profile);
         this.redisManager = RedisManager.authenticate(httpPipeline, profile);
         this.cdnManager = CdnManager.authenticate(httpPipeline, profile);
@@ -360,8 +360,10 @@ public final class AzureResourceManager {
         this.containerRegistryManager = ContainerRegistryManager.authenticate(httpPipeline, profile);
         this.containerServiceManager = ContainerServiceManager.authenticate(httpPipeline, profile);
         this.cosmosManager = CosmosManager.authenticate(httpPipeline, profile);
-        //        this.searchServiceManager = SearchServiceManager.authenticate(restClient, subscriptionId, sdkContext);
-        //        this.authorizationManager = AuthorizationManager.authenticate(restClient, subscriptionId, sdkContext);
+        //        this.searchServiceManager = SearchServiceManager
+        //        .authenticate(restClient, subscriptionId, internalContext);
+        //        this.authorizationManager = AuthorizationManager
+        //        .authenticate(restClient, subscriptionId, internalContext);
         this.msiManager = MsiManager.authenticate(httpPipeline, profile);
         this.monitorManager = MonitorManager.authenticate(httpPipeline, profile);
         this.eventHubsManager = EventHubsManager.authenticate(httpPipeline, profile);

@@ -9,7 +9,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.samples.Utils;
@@ -33,8 +33,8 @@ public class DeployVirtualMachineUsingARMTemplate {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, IllegalAccessException {
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgRSAT", 24);
-        final String deploymentName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("dpRSAT", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgRSAT", 24);
+        final String deploymentName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("dpRSAT", 24);
         try {
             String templateJson = DeployVirtualMachineUsingARMTemplate.getTemplate(azureResourceManager);
 
@@ -72,7 +72,7 @@ public class DeployVirtualMachineUsingARMTemplate {
             while (!(deployment.provisioningState().equalsIgnoreCase("Succeeded")
                     || deployment.provisioningState().equalsIgnoreCase("Failed")
                     || deployment.provisioningState().equalsIgnoreCase("Cancelled"))) {
-                SdkContext.sleep(10000);
+                ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
                 deployment = azureResourceManager.deployments().getByResourceGroup(rgName, deploymentName);
                 System.out.println("Current deployment status : " + deployment.provisioningState());
             }
@@ -123,7 +123,7 @@ public class DeployVirtualMachineUsingARMTemplate {
     private static String getTemplate(AzureResourceManager azureResourceManager) throws IllegalAccessException, JsonProcessingException, IOException {
         final String adminUsername = "tirekicker";
         final String adminPassword = Utils.password();
-        final String osDiskName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("osdisk-", 24);
+        final String osDiskName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("osdisk-", 24);
 
         try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/virtualMachineWithManagedDisksTemplate.json")) {
 

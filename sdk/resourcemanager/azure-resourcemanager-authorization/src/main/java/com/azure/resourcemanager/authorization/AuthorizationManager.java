@@ -26,12 +26,12 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.HasServiceClient;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /** Entry point to Azure Authorization and Graph RBAC management. */
 public final class AuthorizationManager implements HasServiceClient<GraphRbacManagementClient> {
     private final String tenantId;
-    private SdkContext sdkContext;
+    private ResourceManagerUtils.InternalRuntimeContext internalContext;
     // The sdk clients
     private final GraphRbacManagementClient graphRbacManagementClient;
     private final AuthorizationManagementClient authorizationManagementClient;
@@ -131,12 +131,12 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
         return tenantId;
     }
 
-    /** @return the sdk context in authorization manager */
-    public SdkContext sdkContext() {
-        if (sdkContext == null) {
-            sdkContext = new SdkContext();
+    /** @return the {@link ResourceManagerUtils.InternalRuntimeContext} associated with this manager */
+    public ResourceManagerUtils.InternalRuntimeContext internalContext() {
+        if (internalContext == null) {
+            internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         }
-        return sdkContext;
+        return internalContext;
     }
 
     /** @return the Active Directory user management API entry point */

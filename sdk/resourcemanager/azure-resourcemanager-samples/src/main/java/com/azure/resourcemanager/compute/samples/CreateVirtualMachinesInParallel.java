@@ -37,7 +37,7 @@ public final class CreateVirtualMachinesInParallel {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgCOPD", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOPD", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
@@ -87,7 +87,7 @@ public final class CreateVirtualMachinesInParallel {
                 // Create 1 network creatable per region
                 // Prepare Creatable Network definition (Where all the virtual machines get added to)
                 //
-                String networkName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vnetCOPD-", 20);
+                String networkName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnetCOPD-", 20);
                 Creatable<Network> networkCreatable = azureResourceManager.networks().define(networkName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup)
@@ -96,12 +96,12 @@ public final class CreateVirtualMachinesInParallel {
                 //=============================================================
                 // Create 1 storage creatable per region (For storing VMs disk)
                 //
-                String storageAccountName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("stgcopd", 20);
+                String storageAccountName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("stgcopd", 20);
                 Creatable<StorageAccount> storageAccountCreatable = azureResourceManager.storageAccounts().define(storageAccountName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup);
 
-                String linuxVMNamePrefix = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vm-", 15);
+                String linuxVMNamePrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vm-", 15);
                 for (int i = 1; i <= vmCount; i++) {
 
                     //=============================================================
@@ -111,7 +111,7 @@ public final class CreateVirtualMachinesInParallel {
                             .define(String.format("%s-%d", linuxVMNamePrefix, i))
                                 .withRegion(region)
                                 .withExistingResourceGroup(resourceGroup)
-                                .withLeafDomainLabel(azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("pip", 10));
+                                .withLeafDomainLabel(azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 10));
 
 //                    publicIpCreatableKeys.add(publicIPAddressCreatable.key());
 
@@ -161,7 +161,7 @@ public final class CreateVirtualMachinesInParallel {
 //            //=============================================================
 //            // Create 1 Traffic Manager Profile
 //            //
-//            String trafficManagerName = azure.sdkContext().randomResourceName("tra", 15);
+//            String trafficManagerName = azure.internalContext().randomResourceName("tra", 15);
 //            TrafficManagerProfile.DefinitionStages.WithEndpoint profileWithEndpoint = azure.trafficManagerProfiles().define(trafficManagerName)
 //                    .withExistingResourceGroup(resourceGroup)
 //                    .withLeafDomainLabel(trafficManagerName)

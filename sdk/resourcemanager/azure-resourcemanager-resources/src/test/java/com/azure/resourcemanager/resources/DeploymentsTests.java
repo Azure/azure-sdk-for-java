@@ -13,7 +13,7 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
@@ -256,7 +256,7 @@ public class DeploymentsTests extends ResourceManagementTest {
             ? defaultDelayInMillis
             : acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
-            SdkContext.sleep(delayInMills);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(delayInMills);
 
             PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
@@ -292,7 +292,7 @@ public class DeploymentsTests extends ResourceManagementTest {
             ? defaultDelayInMillis
             : acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
-            SdkContext.sleep(delayInMills);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(delayInMills);
 
             PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
@@ -324,7 +324,7 @@ public class DeploymentsTests extends ResourceManagementTest {
                 ? defaultDelayInMillis
                 : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
             while (!pollStatus.isComplete()) {
-                SdkContext.sleep(delayInMills);
+                ResourceManagerUtils.InternalRuntimeContext.sleep(delayInMills);
 
                 PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
                 pollStatus = pollResponse.getStatus();

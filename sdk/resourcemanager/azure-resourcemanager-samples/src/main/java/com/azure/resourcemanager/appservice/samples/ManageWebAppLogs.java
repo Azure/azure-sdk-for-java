@@ -15,7 +15,7 @@ import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.appservice.models.LogLevel;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import org.apache.commons.lang.time.StopWatch;
 import reactor.core.publisher.BaseSubscriber;
@@ -44,9 +44,9 @@ public final class ManageWebAppLogs {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         // New resources
         final String suffix = ".azurewebsites.net";
-        final String appName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp1-", 20);
+        final String appName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
         final String appUrl = appName + suffix;
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 
@@ -103,7 +103,7 @@ public final class ManageWebAppLogs {
                     // warm up
                     System.out.println("Warming up " + appUrl + "/coffeeshop...");
                     Utils.curl("http://" + appUrl + "/coffeeshop/");
-                    SdkContext.sleep(5000);
+                    ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
                     System.out.println("CURLing " + appUrl + "/coffeeshop...");
                     System.out.println(Utils.curl("http://" + appUrl + "/coffeeshop/"));
                 }
@@ -121,12 +121,12 @@ public final class ManageWebAppLogs {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    SdkContext.sleep(10000);
+                    ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
                     System.out.println("Starting hitting");
                     Utils.curl("http://" + appUrl + "/coffeeshop/");
-                    SdkContext.sleep(15000);
+                    ResourceManagerUtils.InternalRuntimeContext.sleep(15000);
                     Utils.curl("http://" + appUrl + "/coffeeshop/");
-                    SdkContext.sleep(20000);
+                    ResourceManagerUtils.InternalRuntimeContext.sleep(20000);
                     Utils.curl("http://" + appUrl + "/coffeeshop/");
                 }
             }).start();

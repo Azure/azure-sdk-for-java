@@ -17,7 +17,7 @@ import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -269,7 +269,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // wait for deploy
         if (!isPlaybackMode()) {
-            SdkContext.sleep(180000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(180000);
         }
 
         functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
@@ -314,7 +314,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // wait for deploy
         if (!isPlaybackMode()) {
-            SdkContext.sleep(180000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(180000);
         }
 
         // verify deploy
