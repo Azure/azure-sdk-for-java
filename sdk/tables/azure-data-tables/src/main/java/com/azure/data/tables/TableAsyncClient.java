@@ -13,6 +13,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -51,8 +52,6 @@ public class TableAsyncClient {
     private final AzureTableImpl implementation;
     private final String accountName;
     private final String tableUrl;
-    private final QueryOptions defaultQueryOptions = new QueryOptions()
-        .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
     TableAsyncClient(String tableName, AzureTableImpl implementation) {
         try {
@@ -582,8 +581,7 @@ public class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableEntity> getEntity(String partitionKey, String rowKey) {
-        return getEntityWithResponse(partitionKey, rowKey).flatMap(response ->
-            Mono.justOrEmpty(response.getValue()));
+        return getEntityWithResponse(partitionKey, rowKey, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -591,19 +589,42 @@ public class TableAsyncClient {
      *
      * @param partitionKey the partition key of the entity
      * @param rowKey the row key of the entity
+     * @param select a select expression using OData notation. Limits the columns on each record to just those
+     *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     *
+     * @return a mono of the table entity
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TableEntity> getEntity(String partitionKey, String rowKey, String select) {
+        return getEntityWithResponse(partitionKey, rowKey, select).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * gets the entity which fits the given criteria
+     *
+     * @param partitionKey the partition key of the entity
+     * @param rowKey the row key of the entity
+     * @param select a select expression using OData notation. Limits the columns on each record to just those
+     *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
      *
      * @return a mono of the response with the table entity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TableEntity>> getEntityWithResponse(String partitionKey, String rowKey) {
-        return withContext(context -> getEntityWithResponse(partitionKey, rowKey, defaultQueryOptions, context));
+    public Mono<Response<TableEntity>> getEntityWithResponse(String partitionKey, String rowKey, String select) {
+        return withContext(context -> getEntityWithResponse(partitionKey, rowKey, select, null, context));
     }
 
-    Mono<Response<TableEntity>> getEntityWithResponse(String partitionKey, String rowKey, QueryOptions queryOptions,
-                                                      Context context) {
+    Mono<Response<TableEntity>> getEntityWithResponse(String partitionKey, String rowKey, String select,
+                                                      Duration timeout, Context context) {
+        Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
+        QueryOptions queryOptions = new QueryOptions()
+            .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
+        if (select != null) {
+            queryOptions.setSelect(select);
+        }
 
         return implementation.getTables().queryEntitiesWithPartitionAndRowKeyWithResponseAsync(tableName, partitionKey,
-            rowKey, null, null, queryOptions, context)
+            rowKey, timeoutInt, null, queryOptions, context)
             .handle((response, sink) -> {
                 final TableEntityQueryResponse entityQueryResponse = response.getValue();
                 if (entityQueryResponse == null) {

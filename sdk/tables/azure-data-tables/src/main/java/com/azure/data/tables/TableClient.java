@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
@@ -376,12 +375,45 @@ public class TableClient {
      *
      * @param partitionKey the partition key of the entity
      * @param rowKey the row key of the entity
+     * @param select a select expression using OData notation. Limits the columns on each record to just those
+     *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * @return the table entity
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableEntity getEntity(String partitionKey, String rowKey, String select) {
+        return client.getEntity(partitionKey, rowKey, select).block();
+    }
+
+    /**
+     * gets the entity which fits the given criteria
+     *
+     * @param partitionKey the partition key of the entity
+     * @param rowKey the row key of the entity
+     * @param select a select expression using OData notation. Limits the columns on each record to just those
+     *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * @param timeout max time for query to execute before erroring out
+     * @return the table entity
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableEntity getEntity(String partitionKey, String rowKey, String select, Duration timeout) {
+        return getEntityWithResponse(partitionKey, rowKey, select, timeout, null).getValue();
+    }
+
+    /**
+     * gets the entity which fits the given criteria
+     *
+     * @param partitionKey the partition key of the entity
+     * @param rowKey the row key of the entity
+     * @param select a select expression using OData notation. Limits the columns on each record to just those
+     *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * @param timeout max time for query to execute before erroring out
      * @param context the context of the query
      * @return a mono of the response with the table entity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, Context context) {
-        return client.getEntityWithResponse(partitionKey, rowKey, new QueryOptions(), context).block();
+    public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, String select,
+                                                       Duration timeout, Context context) {
+        return client.getEntityWithResponse(partitionKey, rowKey, select, timeout, context).block();
     }
 
 }
