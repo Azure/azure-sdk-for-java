@@ -178,6 +178,13 @@ public class EventProcessorClientBuilder {
         return this;
     }
 
+    /**
+     * Set ObjectSerializer implementation to be used for creating ObjectBatch.
+     *
+     * @param serializer ObjectSerializer implementation
+     *
+     * @return updated builder instance
+     */
     public EventProcessorClientBuilder serializer(ObjectSerializer serializer) {
         eventHubClientBuilder.serializer(serializer);
         return this;

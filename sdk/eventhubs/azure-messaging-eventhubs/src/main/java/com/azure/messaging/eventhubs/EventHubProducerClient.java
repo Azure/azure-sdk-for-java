@@ -10,11 +10,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.time.Duration;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -152,10 +150,25 @@ public class EventHubProducerClient implements Closeable {
         return producer.createBatch(options).block(tryTimeout);
     }
 
+    /**
+     * Creates an {@link ObjectBatch} that can fit as many events as the transport allows.
+     *
+     * @param objectType The class of the object type.
+     * @param <T> The type of object.
+     * @return The object batch.
+     */
     public <T> ObjectBatch<T> createBatch(Class<T> objectType) {
         return producer.createBatch(objectType).block();
     }
 
+    /**
+     * Creates an {@link ObjectBatch} that can fit as many events as the transport allows.
+     *
+     * @param objectType The class of the object type.
+     * @param options A set of options used to configure the {@link ObjectBatch}.
+     * @param <T> The type of object.
+     * @return The object batch.
+     */
     public <T> ObjectBatch<T> createBatch(Class<T> objectType, CreateBatchOptions options) {
         return producer.createBatch(objectType, options).block();
     }
@@ -239,7 +252,6 @@ public class EventHubProducerClient implements Closeable {
      *
      * @param objectBatch The batch to send to the service.
      * @param <T> object type
-     * @return A {@link Mono} that completes when the batch is pushed to the service.
      * @throws NullPointerException if {@code objectBatch} is {@code null}.
      * @see EventHubProducerAsyncClient#createBatch(Class)
      * @see EventHubProducerAsyncClient#createBatch(Class, CreateBatchOptions)

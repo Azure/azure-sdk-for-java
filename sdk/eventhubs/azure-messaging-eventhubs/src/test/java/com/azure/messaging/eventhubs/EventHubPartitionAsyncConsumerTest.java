@@ -236,15 +236,14 @@ class EventHubPartitionAsyncConsumerTest {
         ObjectSerializer testSerializer = new ObjectSerializer() {
             @Override
             public <T> T deserialize(InputStream inputStream, TypeReference<T> typeReference) {
-                return null;
+                return deserializeAsync(inputStream, typeReference).block();
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             public <T> Mono<T> deserializeAsync(InputStream inputStream, TypeReference<T> typeReference) {
                 if (typeReference.getJavaType().getTypeName().equals(o.getClass().getTypeName())) {
-
-//                    typeReference.getJavaType().getTypeName()
-                    return Mono.empty();
+                    return Mono.just((T) o);
                 }
                 return null;
             }
@@ -284,7 +283,7 @@ class EventHubPartitionAsyncConsumerTest {
                     partitionEvent.getLastEnqueuedEventProperties());
                 Assertions.assertSame(event, partitionEvent.getData());
                 Assertions.assertSame(Integer.class.cast(o),
-                    partitionEvent.getData().getDeserializedObjectAsync(Integer.class).block());
+                    partitionEvent.getData().getDeserializedObject(Integer.class));
             })
             .thenCancel()
             .verify();
