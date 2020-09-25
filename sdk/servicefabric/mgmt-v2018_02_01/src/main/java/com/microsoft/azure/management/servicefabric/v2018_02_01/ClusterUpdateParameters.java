@@ -80,7 +80,7 @@ public class ClusterUpdateParameters {
     /**
      * The reliability level sets the replica set size of system services.
      * Learn about
-     * [ReliabilityLevel](https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity).
+     * [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
      *
      * - None - Run the System services with a target replica set count of 1.
      * This should only be used for test clusters.
@@ -289,7 +289,7 @@ public class ClusterUpdateParameters {
     }
 
     /**
-     * Get the reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity).
+     * Get the reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
        - None - Run the System services with a target replica set count of 1. This should only be used for test clusters.
        - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters.
        - Silver - Run the System services with a target replica set count of 5.
@@ -304,7 +304,7 @@ public class ClusterUpdateParameters {
     }
 
     /**
-     * Set the reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity).
+     * Set the reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
        - None - Run the System services with a target replica set count of 1. This should only be used for test clusters.
        - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters.
        - Silver - Run the System services with a target replica set count of 5.
