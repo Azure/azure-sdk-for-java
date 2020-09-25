@@ -77,7 +77,7 @@ SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
 ### Schemas
 
 A schema has 6 components:
-- Group Name: The name of the group of schemas in the Schema Registry instance.
+- Group Name: The name of the group of schemas in the Schema Registry instance.  Schema groups must be pre-created before registering schemas.
 - Schema Name: The name of the schema.
 - Schema ID: The ID assigned by the Schema Registry instance for the schema.
 - Serialization Type: The format used for serialization of the schema. For example, Avro.
@@ -118,6 +118,8 @@ String schemaContent = "{\n"
     + "        }\n"
     + "    ]\n"
     + "}";
+    
+// schema group must be pre-created!
 SchemaProperties schemaProperties = schemaRegistryClient.registerSchema("{schema-group}", "{schema-name}",
     schemaContent, SerializationType.AVRO);
 System.out.println("Registered schema: " + schemaProperties.getSchemaId());
