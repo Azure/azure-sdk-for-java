@@ -11,7 +11,6 @@ package com.microsoft.azure.management.loganalytics.v2015_03_20.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.loganalytics.v2015_03_20.SearchParameters;
 import com.microsoft.azure.management.loganalytics.v2015_03_20.WorkspacePurgeBody;
 import com.microsoft.azure.management.loganalytics.v2015_03_20.WorkspacesPurgeHeaders;
 import com.microsoft.azure.Page;
@@ -70,18 +69,6 @@ public class WorkspacesInner {
         @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/schema")
         Observable<Response<ResponseBody>> getSchema(@Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.loganalytics.v2015_03_20.Workspaces getSearchResults" })
-        @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/search")
-        Observable<Response<ResponseBody>> getSearchResults(@Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("subscriptionId") String subscriptionId, @Body SearchParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.loganalytics.v2015_03_20.Workspaces beginGetSearchResults" })
-        @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/search")
-        Observable<Response<ResponseBody>> beginGetSearchResults(@Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("subscriptionId") String subscriptionId, @Body SearchParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.loganalytics.v2015_03_20.Workspaces updateSearchResults" })
-        @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/search/{id}")
-        Observable<Response<ResponseBody>> updateSearchResults(@Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.loganalytics.v2015_03_20.Workspaces purge" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/purge")
         Observable<Response<ResponseBody>> purge(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Path("workspaceName") String workspaceName, @Query("api-version") String apiVersion, @Body WorkspacePurgeBody body, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -101,6 +88,10 @@ public class WorkspacesInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.loganalytics.v2015_03_20.Workspaces deleteGateways" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/gateways/{gatewayId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteGateways(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("gatewayId") String gatewayId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.loganalytics.v2015_03_20.Workspaces availableServiceTiers" })
+        @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/availableServiceTiers")
+        Observable<Response<ResponseBody>> availableServiceTiers(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -272,272 +263,8 @@ public class WorkspacesInner {
     }
 
     /**
-     * Submit a search for a given workspace. The response will contain an id to track the search. User can use the id to poll the search status and get the full search result later if the search takes long time to finish.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param parameters The parameters required to execute a search query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SearchResultsResponseInner object if successful.
-     */
-    public SearchResultsResponseInner getSearchResults(String resourceGroupName, String workspaceName, SearchParameters parameters) {
-        return getSearchResultsWithServiceResponseAsync(resourceGroupName, workspaceName, parameters).toBlocking().last().body();
-    }
-
-    /**
-     * Submit a search for a given workspace. The response will contain an id to track the search. User can use the id to poll the search status and get the full search result later if the search takes long time to finish.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param parameters The parameters required to execute a search query.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<SearchResultsResponseInner> getSearchResultsAsync(String resourceGroupName, String workspaceName, SearchParameters parameters, final ServiceCallback<SearchResultsResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getSearchResultsWithServiceResponseAsync(resourceGroupName, workspaceName, parameters), serviceCallback);
-    }
-
-    /**
-     * Submit a search for a given workspace. The response will contain an id to track the search. User can use the id to poll the search status and get the full search result later if the search takes long time to finish.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param parameters The parameters required to execute a search query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<SearchResultsResponseInner> getSearchResultsAsync(String resourceGroupName, String workspaceName, SearchParameters parameters) {
-        return getSearchResultsWithServiceResponseAsync(resourceGroupName, workspaceName, parameters).map(new Func1<ServiceResponse<SearchResultsResponseInner>, SearchResultsResponseInner>() {
-            @Override
-            public SearchResultsResponseInner call(ServiceResponse<SearchResultsResponseInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Submit a search for a given workspace. The response will contain an id to track the search. User can use the id to poll the search status and get the full search result later if the search takes long time to finish.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param parameters The parameters required to execute a search query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<SearchResultsResponseInner>> getSearchResultsWithServiceResponseAsync(String resourceGroupName, String workspaceName, SearchParameters parameters) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (workspaceName == null) {
-            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.getSearchResults(resourceGroupName, workspaceName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<SearchResultsResponseInner>() { }.getType());
-    }
-
-    /**
-     * Submit a search for a given workspace. The response will contain an id to track the search. User can use the id to poll the search status and get the full search result later if the search takes long time to finish.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param parameters The parameters required to execute a search query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SearchResultsResponseInner object if successful.
-     */
-    public SearchResultsResponseInner beginGetSearchResults(String resourceGroupName, String workspaceName, SearchParameters parameters) {
-        return beginGetSearchResultsWithServiceResponseAsync(resourceGroupName, workspaceName, parameters).toBlocking().single().body();
-    }
-
-    /**
-     * Submit a search for a given workspace. The response will contain an id to track the search. User can use the id to poll the search status and get the full search result later if the search takes long time to finish.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param parameters The parameters required to execute a search query.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<SearchResultsResponseInner> beginGetSearchResultsAsync(String resourceGroupName, String workspaceName, SearchParameters parameters, final ServiceCallback<SearchResultsResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginGetSearchResultsWithServiceResponseAsync(resourceGroupName, workspaceName, parameters), serviceCallback);
-    }
-
-    /**
-     * Submit a search for a given workspace. The response will contain an id to track the search. User can use the id to poll the search status and get the full search result later if the search takes long time to finish.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param parameters The parameters required to execute a search query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SearchResultsResponseInner object
-     */
-    public Observable<SearchResultsResponseInner> beginGetSearchResultsAsync(String resourceGroupName, String workspaceName, SearchParameters parameters) {
-        return beginGetSearchResultsWithServiceResponseAsync(resourceGroupName, workspaceName, parameters).map(new Func1<ServiceResponse<SearchResultsResponseInner>, SearchResultsResponseInner>() {
-            @Override
-            public SearchResultsResponseInner call(ServiceResponse<SearchResultsResponseInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Submit a search for a given workspace. The response will contain an id to track the search. User can use the id to poll the search status and get the full search result later if the search takes long time to finish.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param parameters The parameters required to execute a search query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SearchResultsResponseInner object
-     */
-    public Observable<ServiceResponse<SearchResultsResponseInner>> beginGetSearchResultsWithServiceResponseAsync(String resourceGroupName, String workspaceName, SearchParameters parameters) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (workspaceName == null) {
-            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        return service.beginGetSearchResults(resourceGroupName, workspaceName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchResultsResponseInner>>>() {
-                @Override
-                public Observable<ServiceResponse<SearchResultsResponseInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<SearchResultsResponseInner> clientResponse = beginGetSearchResultsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<SearchResultsResponseInner> beginGetSearchResultsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SearchResultsResponseInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SearchResultsResponseInner>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets updated search results for a given search query.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param id The id of the search that will have results updated. You can get the id from the response of the GetResults call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SearchResultsResponseInner object if successful.
-     */
-    public SearchResultsResponseInner updateSearchResults(String resourceGroupName, String workspaceName, String id) {
-        return updateSearchResultsWithServiceResponseAsync(resourceGroupName, workspaceName, id).toBlocking().single().body();
-    }
-
-    /**
-     * Gets updated search results for a given search query.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param id The id of the search that will have results updated. You can get the id from the response of the GetResults call.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<SearchResultsResponseInner> updateSearchResultsAsync(String resourceGroupName, String workspaceName, String id, final ServiceCallback<SearchResultsResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateSearchResultsWithServiceResponseAsync(resourceGroupName, workspaceName, id), serviceCallback);
-    }
-
-    /**
-     * Gets updated search results for a given search query.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param id The id of the search that will have results updated. You can get the id from the response of the GetResults call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SearchResultsResponseInner object
-     */
-    public Observable<SearchResultsResponseInner> updateSearchResultsAsync(String resourceGroupName, String workspaceName, String id) {
-        return updateSearchResultsWithServiceResponseAsync(resourceGroupName, workspaceName, id).map(new Func1<ServiceResponse<SearchResultsResponseInner>, SearchResultsResponseInner>() {
-            @Override
-            public SearchResultsResponseInner call(ServiceResponse<SearchResultsResponseInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets updated search results for a given search query.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param id The id of the search that will have results updated. You can get the id from the response of the GetResults call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SearchResultsResponseInner object
-     */
-    public Observable<ServiceResponse<SearchResultsResponseInner>> updateSearchResultsWithServiceResponseAsync(String resourceGroupName, String workspaceName, String id) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (workspaceName == null) {
-            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
-        }
-        if (id == null) {
-            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.updateSearchResults(resourceGroupName, workspaceName, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchResultsResponseInner>>>() {
-                @Override
-                public Observable<ServiceResponse<SearchResultsResponseInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<SearchResultsResponseInner> clientResponse = updateSearchResultsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<SearchResultsResponseInner> updateSearchResultsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SearchResultsResponseInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SearchResultsResponseInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
+     In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution of purge requests by sending a single command whose predicate includes all user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge request to verify that the results are expected.
      *
      * @param resourceGroupName The Resource Group name.
      * @param workspaceName The Log Analytics Workspace name.
@@ -553,6 +280,7 @@ public class WorkspacesInner {
 
     /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
+     In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution of purge requests by sending a single command whose predicate includes all user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge request to verify that the results are expected.
      *
      * @param resourceGroupName The Resource Group name.
      * @param workspaceName The Log Analytics Workspace name.
@@ -567,6 +295,7 @@ public class WorkspacesInner {
 
     /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
+     In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution of purge requests by sending a single command whose predicate includes all user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge request to verify that the results are expected.
      *
      * @param resourceGroupName The Resource Group name.
      * @param workspaceName The Log Analytics Workspace name.
@@ -585,6 +314,7 @@ public class WorkspacesInner {
 
     /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
+     In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution of purge requests by sending a single command whose predicate includes all user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge request to verify that the results are expected.
      *
      * @param resourceGroupName The Resource Group name.
      * @param workspaceName The Log Analytics Workspace name.
@@ -979,6 +709,92 @@ public class WorkspacesInner {
     private ServiceResponse<Void> deleteGatewaysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the available service tiers for the workspace.
+     *
+     * @param resourceGroupName The Resource Group name.
+     * @param workspaceName The Log Analytics Workspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;AvailableServiceTierInner&gt; object if successful.
+     */
+    public List<AvailableServiceTierInner> availableServiceTiers(String resourceGroupName, String workspaceName) {
+        return availableServiceTiersWithServiceResponseAsync(resourceGroupName, workspaceName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the available service tiers for the workspace.
+     *
+     * @param resourceGroupName The Resource Group name.
+     * @param workspaceName The Log Analytics Workspace name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AvailableServiceTierInner>> availableServiceTiersAsync(String resourceGroupName, String workspaceName, final ServiceCallback<List<AvailableServiceTierInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(availableServiceTiersWithServiceResponseAsync(resourceGroupName, workspaceName), serviceCallback);
+    }
+
+    /**
+     * Gets the available service tiers for the workspace.
+     *
+     * @param resourceGroupName The Resource Group name.
+     * @param workspaceName The Log Analytics Workspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;AvailableServiceTierInner&gt; object
+     */
+    public Observable<List<AvailableServiceTierInner>> availableServiceTiersAsync(String resourceGroupName, String workspaceName) {
+        return availableServiceTiersWithServiceResponseAsync(resourceGroupName, workspaceName).map(new Func1<ServiceResponse<List<AvailableServiceTierInner>>, List<AvailableServiceTierInner>>() {
+            @Override
+            public List<AvailableServiceTierInner> call(ServiceResponse<List<AvailableServiceTierInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the available service tiers for the workspace.
+     *
+     * @param resourceGroupName The Resource Group name.
+     * @param workspaceName The Log Analytics Workspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;AvailableServiceTierInner&gt; object
+     */
+    public Observable<ServiceResponse<List<AvailableServiceTierInner>>> availableServiceTiersWithServiceResponseAsync(String resourceGroupName, String workspaceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.availableServiceTiers(this.client.subscriptionId(), resourceGroupName, workspaceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AvailableServiceTierInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<AvailableServiceTierInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<AvailableServiceTierInner>> clientResponse = availableServiceTiersDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<List<AvailableServiceTierInner>> availableServiceTiersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<AvailableServiceTierInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<AvailableServiceTierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
