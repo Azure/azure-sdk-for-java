@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The GroupGetMemberGroupsResult model. */
+/** Server response for GetMemberGroups API call. */
 @Fluent
 public final class GroupGetMemberGroupsResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupGetMemberGroupsResult.class);

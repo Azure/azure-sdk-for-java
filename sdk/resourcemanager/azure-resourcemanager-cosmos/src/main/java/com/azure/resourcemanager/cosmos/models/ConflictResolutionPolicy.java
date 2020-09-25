@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ConflictResolutionPolicy model. */
+/** The conflict resolution policy for the container. */
 @Fluent
 public final class ConflictResolutionPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConflictResolutionPolicy.class);

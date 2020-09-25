@@ -6,12 +6,15 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.VpnSiteLinkInner;
+import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListVpnSiteLinksResult model. */
+/**
+ * Result of the request to list VpnSiteLinks. It contains a list of VpnSiteLinks and a URL nextLink to get the next set
+ * of results.
+ */
 @Fluent
 public final class ListVpnSiteLinksResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ListVpnSiteLinksResult.class);

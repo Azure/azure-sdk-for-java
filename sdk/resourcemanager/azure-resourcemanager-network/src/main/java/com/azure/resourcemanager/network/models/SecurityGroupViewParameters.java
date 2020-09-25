@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SecurityGroupViewParameters model. */
+/** Parameters that define the VM to check security groups for. */
 @Fluent
 public final class SecurityGroupViewParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityGroupViewParameters.class);

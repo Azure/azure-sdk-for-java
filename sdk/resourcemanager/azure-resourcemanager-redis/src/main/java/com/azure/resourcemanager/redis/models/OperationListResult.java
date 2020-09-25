@@ -6,12 +6,15 @@ package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.redis.fluent.inner.OperationInner;
+import com.azure.resourcemanager.redis.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OperationListResult model. */
+/**
+ * Result of the request to list REST API operations. It contains a list of operations and a URL nextLink to get the
+ * next set of results.
+ */
 @Fluent
 public final class OperationListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);

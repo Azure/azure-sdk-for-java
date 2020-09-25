@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The MongoDBCollectionResource model. */
+/** Cosmos DB MongoDB collection resource object. */
 @Fluent
 public class MongoDBCollectionResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDBCollectionResource.class);

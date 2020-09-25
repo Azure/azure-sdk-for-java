@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VpnClientRevokedCertificate model. */
+/** VPN client revoked certificate of virtual network gateway. */
 @JsonFlatten
 @Fluent
 public class VpnClientRevokedCertificate extends SubResource {

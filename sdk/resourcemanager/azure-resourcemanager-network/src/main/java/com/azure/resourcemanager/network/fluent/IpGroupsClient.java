@@ -4,37 +4,16 @@
 
 package com.azure.resourcemanager.network.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.fluent.inner.IpGroupInner;
-import com.azure.resourcemanager.network.models.ErrorException;
-import com.azure.resourcemanager.network.models.IpGroupListResult;
-import com.azure.resourcemanager.network.models.TagsObject;
+import com.azure.resourcemanager.network.fluent.models.IpGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -43,128 +22,24 @@ import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IpGroups. */
-public final class IpGroupsClient
-    implements InnerSupportsGet<IpGroupInner>, InnerSupportsListing<IpGroupInner>, InnerSupportsDelete<Void> {
-    private final ClientLogger logger = new ClientLogger(IpGroupsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final IpGroupsService service;
-
-    /** The service client containing this operation class. */
-    private final NetworkManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in IpGroupsClient. */
+public interface IpGroupsClient
+    extends InnerSupportsGet<IpGroupInner>, InnerSupportsListing<IpGroupInner>, InnerSupportsDelete<Void> {
     /**
-     * Initializes an instance of IpGroupsClient.
+     * Gets the specified ipGroups.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @param expand Expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
+     *     resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified ipGroups.
      */
-    IpGroupsClient(NetworkManagementClient client) {
-        this.service = RestProxy.create(IpGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for NetworkManagementClientIpGroups to be used by the proxy service to
-     * perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
-    private interface IpGroupsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups"
-                + "/{ipGroupsName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<IpGroupInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ipGroupsName") String ipGroupsName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$expand") String expand,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups"
-                + "/{ipGroupsName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ipGroupsName") String ipGroupsName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") IpGroupInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups"
-                + "/{ipGroupsName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<IpGroupInner>> updateGroups(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ipGroupsName") String ipGroupsName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups"
-                + "/{ipGroupsName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ipGroupsName") String ipGroupsName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<IpGroupListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/ipGroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<IpGroupListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<IpGroupListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<IpGroupListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<IpGroupInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String ipGroupsName, String expand);
 
     /**
      * Gets the specified ipGroups.
@@ -174,47 +49,38 @@ public final class IpGroupsClient
      * @param expand Expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
      *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified ipGroups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IpGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String ipGroupsName, String expand) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ipGroupsName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ipGroupsName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            ipGroupsName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            expand,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<IpGroupInner> getByResourceGroupAsync(String resourceGroupName, String ipGroupsName, String expand);
+
+    /**
+     * Gets the specified ipGroups.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified ipGroups.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<IpGroupInner> getByResourceGroupAsync(String resourceGroupName, String ipGroupsName);
+
+    /**
+     * Gets the specified ipGroups.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified ipGroups.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IpGroupInner getByResourceGroup(String resourceGroupName, String ipGroupsName);
 
     /**
      * Gets the specified ipGroups.
@@ -225,174 +91,13 @@ public final class IpGroupsClient
      *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified ipGroups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IpGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String ipGroupsName, String expand, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ipGroupsName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ipGroupsName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                ipGroupsName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                expand,
-                context);
-    }
-
-    /**
-     * Gets the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param expand Expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
-     *     resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified ipGroups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpGroupInner> getByResourceGroupAsync(String resourceGroupName, String ipGroupsName, String expand) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, ipGroupsName, expand)
-            .flatMap(
-                (Response<IpGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param expand Expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
-     *     resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified ipGroups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpGroupInner> getByResourceGroupAsync(
-        String resourceGroupName, String ipGroupsName, String expand, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, ipGroupsName, expand, context)
-            .flatMap(
-                (Response<IpGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified ipGroups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpGroupInner> getByResourceGroupAsync(String resourceGroupName, String ipGroupsName) {
-        final String expand = null;
-        final Context context = null;
-        return getByResourceGroupWithResponseAsync(resourceGroupName, ipGroupsName, expand)
-            .flatMap(
-                (Response<IpGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param expand Expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
-     *     resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified ipGroups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpGroupInner getByResourceGroup(String resourceGroupName, String ipGroupsName, String expand) {
-        return getByResourceGroupAsync(resourceGroupName, ipGroupsName, expand).block();
-    }
-
-    /**
-     * Gets the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified ipGroups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpGroupInner getByResourceGroup(String resourceGroupName, String ipGroupsName) {
-        final String expand = null;
-        final Context context = null;
-        return getByResourceGroupAsync(resourceGroupName, ipGroupsName, expand).block();
-    }
-
-    /**
-     * Gets the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param expand Expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
-     *     resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified ipGroups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpGroupInner getByResourceGroup(
-        String resourceGroupName, String ipGroupsName, String expand, Context context) {
-        return getByResourceGroupAsync(resourceGroupName, ipGroupsName, expand, context).block();
-    }
+    Response<IpGroupInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String ipGroupsName, String expand, Context context);
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
@@ -401,52 +106,43 @@ public final class IpGroupsClient
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters The IpGroups resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IpGroups resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String ipGroupsName, IpGroupInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ipGroupsName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ipGroupsName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            ipGroupsName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String ipGroupsName, IpGroupInner parameters);
+
+    /**
+     * Creates or updates an ipGroups in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @param parameters The IpGroups resource information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the IpGroups resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<IpGroupInner>, IpGroupInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String ipGroupsName, IpGroupInner parameters);
+
+    /**
+     * Creates or updates an ipGroups in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @param parameters The IpGroups resource information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the IpGroups resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<IpGroupInner>, IpGroupInner> beginCreateOrUpdate(
+        String resourceGroupName, String ipGroupsName, IpGroupInner parameters);
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
@@ -456,49 +152,13 @@ public final class IpGroupsClient
      * @param parameters The IpGroups resource information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IpGroups resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String ipGroupsName, IpGroupInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ipGroupsName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ipGroupsName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                ipGroupsName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
+    SyncPoller<PollResult<IpGroupInner>, IpGroupInner> beginCreateOrUpdate(
+        String resourceGroupName, String ipGroupsName, IpGroupInner parameters, Context context);
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
@@ -507,20 +167,26 @@ public final class IpGroupsClient
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters The IpGroups resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IpGroups resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<IpGroupInner>, IpGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String ipGroupsName, IpGroupInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, ipGroupsName, parameters);
-        return this
-            .client
-            .<IpGroupInner, IpGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), IpGroupInner.class, IpGroupInner.class, Context.NONE);
-    }
+    Mono<IpGroupInner> createOrUpdateAsync(String resourceGroupName, String ipGroupsName, IpGroupInner parameters);
+
+    /**
+     * Creates or updates an ipGroups in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @param parameters The IpGroups resource information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the IpGroups resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IpGroupInner createOrUpdate(String resourceGroupName, String ipGroupsName, IpGroupInner parameters);
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
@@ -530,129 +196,13 @@ public final class IpGroupsClient
      * @param parameters The IpGroups resource information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IpGroups resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<IpGroupInner>, IpGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String ipGroupsName, IpGroupInner parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, ipGroupsName, parameters, context);
-        return this
-            .client
-            .<IpGroupInner, IpGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), IpGroupInner.class, IpGroupInner.class, context);
-    }
-
-    /**
-     * Creates or updates an ipGroups in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param parameters The IpGroups resource information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpGroups resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<IpGroupInner>, IpGroupInner> beginCreateOrUpdate(
-        String resourceGroupName, String ipGroupsName, IpGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, ipGroupsName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Creates or updates an ipGroups in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param parameters The IpGroups resource information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpGroups resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<IpGroupInner>, IpGroupInner> beginCreateOrUpdate(
-        String resourceGroupName, String ipGroupsName, IpGroupInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, ipGroupsName, parameters, context).getSyncPoller();
-    }
-
-    /**
-     * Creates or updates an ipGroups in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param parameters The IpGroups resource information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpGroups resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String ipGroupsName, IpGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, ipGroupsName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates an ipGroups in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param parameters The IpGroups resource information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpGroups resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String ipGroupsName, IpGroupInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, ipGroupsName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates an ipGroups in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param parameters The IpGroups resource information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpGroups resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpGroupInner createOrUpdate(String resourceGroupName, String ipGroupsName, IpGroupInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, ipGroupsName, parameters).block();
-    }
-
-    /**
-     * Creates or updates an ipGroups in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param parameters The IpGroups resource information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpGroups resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpGroupInner createOrUpdate(
-        String resourceGroupName, String ipGroupsName, IpGroupInner parameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, ipGroupsName, parameters, context).block();
-    }
+    IpGroupInner createOrUpdate(
+        String resourceGroupName, String ipGroupsName, IpGroupInner parameters, Context context);
 
     /**
      * Updates tags of an IpGroups resource.
@@ -661,49 +211,53 @@ public final class IpGroupsClient
      * @param ipGroupsName The name of the ipGroups.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IpGroups resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IpGroupInner>> updateGroupsWithResponseAsync(
-        String resourceGroupName, String ipGroupsName, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ipGroupsName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ipGroupsName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateGroups(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            ipGroupsName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<IpGroupInner>> updateGroupsWithResponseAsync(
+        String resourceGroupName, String ipGroupsName, Map<String, String> tags);
+
+    /**
+     * Updates tags of an IpGroups resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the IpGroups resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<IpGroupInner> updateGroupsAsync(String resourceGroupName, String ipGroupsName, Map<String, String> tags);
+
+    /**
+     * Updates tags of an IpGroups resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the IpGroups resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<IpGroupInner> updateGroupsAsync(String resourceGroupName, String ipGroupsName);
+
+    /**
+     * Updates tags of an IpGroups resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the IpGroups resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IpGroupInner updateGroups(String resourceGroupName, String ipGroupsName);
 
     /**
      * Updates tags of an IpGroups resource.
@@ -713,131 +267,13 @@ public final class IpGroupsClient
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IpGroups resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IpGroupInner>> updateGroupsWithResponseAsync(
-        String resourceGroupName, String ipGroupsName, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ipGroupsName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ipGroupsName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        context = this.client.mergeContext(context);
-        return service
-            .updateGroups(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                ipGroupsName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Updates tags of an IpGroups resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpGroups resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpGroupInner> updateGroupsAsync(
-        String resourceGroupName, String ipGroupsName, Map<String, String> tags) {
-        return updateGroupsWithResponseAsync(resourceGroupName, ipGroupsName, tags)
-            .flatMap(
-                (Response<IpGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates tags of an IpGroups resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpGroups resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpGroupInner> updateGroupsAsync(
-        String resourceGroupName, String ipGroupsName, Map<String, String> tags, Context context) {
-        return updateGroupsWithResponseAsync(resourceGroupName, ipGroupsName, tags, context)
-            .flatMap(
-                (Response<IpGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates tags of an IpGroups resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpGroups resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpGroupInner updateGroups(String resourceGroupName, String ipGroupsName, Map<String, String> tags) {
-        return updateGroupsAsync(resourceGroupName, ipGroupsName, tags).block();
-    }
-
-    /**
-     * Updates tags of an IpGroups resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpGroups resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpGroupInner updateGroups(
-        String resourceGroupName, String ipGroupsName, Map<String, String> tags, Context context) {
-        return updateGroupsAsync(resourceGroupName, ipGroupsName, tags, context).block();
-    }
+    Response<IpGroupInner> updateGroupsWithResponse(
+        String resourceGroupName, String ipGroupsName, Map<String, String> tags, Context context);
 
     /**
      * Deletes the specified ipGroups.
@@ -845,45 +281,38 @@ public final class IpGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String ipGroupsName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ipGroupsName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ipGroupsName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            ipGroupsName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String ipGroupsName);
+
+    /**
+     * Deletes the specified ipGroups.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ipGroupsName);
+
+    /**
+     * Deletes the specified ipGroups.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ipGroupsName);
 
     /**
      * Deletes the specified ipGroups.
@@ -892,43 +321,12 @@ public final class IpGroupsClient
      * @param ipGroupsName The name of the ipGroups.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String ipGroupsName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ipGroupsName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ipGroupsName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                ipGroupsName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ipGroupsName, Context context);
 
     /**
      * Deletes the specified ipGroups.
@@ -936,17 +334,24 @@ public final class IpGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ipGroupsName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ipGroupsName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String ipGroupsName);
+
+    /**
+     * Deletes the specified ipGroups.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String ipGroupsName);
 
     /**
      * Deletes the specified ipGroups.
@@ -955,163 +360,35 @@ public final class IpGroupsClient
      * @param ipGroupsName The name of the ipGroups.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String ipGroupsName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ipGroupsName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ipGroupsName) {
-        return beginDeleteAsync(resourceGroupName, ipGroupsName).getSyncPoller();
-    }
-
-    /**
-     * Deletes the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String ipGroupsName, Context context) {
-        return beginDeleteAsync(resourceGroupName, ipGroupsName, context).getSyncPoller();
-    }
-
-    /**
-     * Deletes the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String ipGroupsName) {
-        return beginDeleteAsync(resourceGroupName, ipGroupsName).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String ipGroupsName, Context context) {
-        return beginDeleteAsync(resourceGroupName, ipGroupsName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String ipGroupsName) {
-        deleteAsync(resourceGroupName, ipGroupsName).block();
-    }
-
-    /**
-     * Deletes the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String ipGroupsName, Context context) {
-        deleteAsync(resourceGroupName, ipGroupsName, context).block();
-    }
+    void delete(String resourceGroupName, String ipGroupsName, Context context);
 
     /**
      * Gets all IpGroups in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all IpGroups in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IpGroupInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .<PagedResponse<IpGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<IpGroupInner> listByResourceGroupAsync(String resourceGroupName);
+
+    /**
+     * Gets all IpGroups in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all IpGroups in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<IpGroupInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets all IpGroups in a resource group.
@@ -1119,347 +396,42 @@ public final class IpGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all IpGroups in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IpGroupInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets all IpGroups in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all IpGroups in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IpGroupInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all IpGroups in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all IpGroups in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IpGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all IpGroups in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all IpGroups in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IpGroupInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
-    }
-
-    /**
-     * Gets all IpGroups in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all IpGroups in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IpGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
-    }
+    PagedIterable<IpGroupInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets all IpGroups in a subscription.
      *
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all IpGroups in a subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IpGroupInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context))
-            .<PagedResponse<IpGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<IpGroupInner> listAsync();
+
+    /**
+     * Gets all IpGroups in a subscription.
+     *
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all IpGroups in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<IpGroupInner> list();
 
     /**
      * Gets all IpGroups in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all IpGroups in a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IpGroupInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2020-05-01";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets all IpGroups in a subscription.
-     *
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all IpGroups in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IpGroupInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all IpGroups in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all IpGroups in a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IpGroupInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all IpGroups in a subscription.
-     *
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all IpGroups in a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IpGroupInner> list() {
-        return new PagedIterable<>(listAsync());
-    }
-
-    /**
-     * Gets all IpGroups in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all IpGroups in a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IpGroupInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListIpGroups API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IpGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
-            .<PagedResponse<IpGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListIpGroups API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IpGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListIpGroups API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IpGroupInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<IpGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListIpGroups API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IpGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    PagedIterable<IpGroupInner> list(Context context);
 }
