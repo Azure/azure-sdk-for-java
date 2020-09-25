@@ -101,10 +101,6 @@
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[concat(variables('primaryAccountName'), '/default')]",
             "properties": {
-            "deleteRetentionPolicy": {
-                "enabled": true,
-                "days": 1
-            },
             "containerDeleteRetentionPolicy": {
                 "enabled": true,
                 "days": 1
