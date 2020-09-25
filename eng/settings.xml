@@ -4,7 +4,7 @@
     <mirrors>
         <mirror>
             <id>repo-maven-apache-org-mirror</id>
-            <url>https://repo-maven-apache-org.azurefd.net/maven2</url>
+            <url>https://mavenproxy.azurefd.net/</url>
             <mirrorOf>central</mirrorOf>
         </mirror>
         <mirror>
