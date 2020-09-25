@@ -33,9 +33,9 @@ public class App {
         /*@@*/ // called COMMUNICATION_SERVICES_ACCESS_KEY.
         /*@@*/ String accessKey = System.getenv("COMMUNICATION_SERVICES_ACCESS_KEY");
 
-        //@@ // Your can find your endpoint and access token from your resource in the Azure Portal
-        //@@ String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        //@@ String accessToken = "SECRET";
+        //@@// Your can find your endpoint and access token from your resource in the Azure Portal
+        //@@String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+        //@@String accessToken = "SECRET";
 
         // Instantiate the http client
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();

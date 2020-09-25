@@ -34,7 +34,7 @@ SMS messaging uses HMAC authentication with resource access key. This is done vi
 CommunicationClientCredentials The credentials must be provided to the SMSClientBuilder 
 via the credential() function. Endpoint and httpClient must also be set.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/App.java#L25-L56 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/App.java#L36-L61 -->
 ```java
 // Your can find your endpoint and access token from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
