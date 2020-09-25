@@ -29,11 +29,11 @@ public final class PagedConverter {
     /**
      * Applies flatMap transform to elements of PagedFlux.
      *
-     * @param <T> input type of pagedFlux
-     * @param <S> return type of pagedFlux
-     * @param pagedFlux input
+     * @param <T> input type of PagedFlux.
+     * @param <S> return type of PagedFlux.
+     * @param pagedFlux the input of PagedFlux.
      * @param transformer the flatMap transform of element T to Publisher of S.
-     * @return the PagedFlux.
+     * @return the PagedFlux with elements in PagedResponse transformed.
      */
     public static <T, S> PagedFlux<S> flatMapPage(PagedFlux<T> pagedFlux,
             Function<? super T, ? extends Publisher<? extends S>> transformer) {
@@ -46,6 +46,15 @@ public final class PagedConverter {
         return PagedFlux.create(provider);
     }
 
+    /**
+     * Merge PagedFlux in PagedFlux to a single PagedFlux.
+     *
+     * @param <T> input type of PagedFlux.
+     * @param <S> return type of PagedFlux.
+     * @param pagedFlux the input of PagedFlux.
+     * @param transformer the transform of element T to PagedFlux of S.
+     * @return the merged PagedFlux.
+     */
     public static <T, S> PagedFlux<S> mergePagedFlux(PagedFlux<T> pagedFlux,
             Function<? super T, PagedFlux<S>> transformer) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
@@ -53,9 +62,9 @@ public final class PagedConverter {
                 ? pagedFlux.byPage()
                 : pagedFlux.byPage(continuationToken);
             return flux.concatMap(pagedResponse -> {
-                List<Flux<PagedResponse<S>>> flux1 = pagedResponse.getValue().stream()
+                List<Flux<PagedResponse<S>>> fluxList = pagedResponse.getValue().stream()
                     .map(item -> transformer.apply(item).byPage()).collect(Collectors.toList());
-                return Flux.mergeSequential(flux1);
+                return Flux.mergeSequential(fluxList);
             });
         };
         return PagedFlux.create(provider);
@@ -64,8 +73,8 @@ public final class PagedConverter {
     /**
      * Applies flatMap transform to elements of PagedResponse.
      *
-     * @param <T> input type of pagedFlux
-     * @param <S> return type of pagedFlux
+     * @param <T> input type of pagedFlux.
+     * @param <S> return type of pagedFlux.
      * @param mapper the flatMap transform of element T to Publisher of S.
      * @return the lifted transform on PagedResponse.
      */
