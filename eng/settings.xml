@@ -12,5 +12,6 @@
             <url>https://oss-sonatype-org.azurefd.net/content/repositories/snapshots/</url>
             <mirrorOf>ossrh</mirrorOf>
         </mirror>
+        
     </mirrors>
 </settings>
