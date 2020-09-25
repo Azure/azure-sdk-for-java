@@ -69,13 +69,13 @@ You will also need to [register a new AAD application][register_aad_app] and [gr
      .buildAsyncClient();
  ```
 
-#### Create `SchemaRegistryAvroSerializer` through the builder
+#### Create `SchemaRegistryAvroSerializer` through the builder.  
 
 <!-- embedme ./src/samples/java/com/azure/data/schemaregistry/avro/ReadmeSamples.java#L39-L42 -->
 ```java
 SchemaRegistryAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryAvroSerializerBuilder()
     .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
-    .schemaGroup("{schema-group}")
+    .schemaGroup("{schema-group}") // schema group must be pre-created
     .buildSerializer();
 ```
 
