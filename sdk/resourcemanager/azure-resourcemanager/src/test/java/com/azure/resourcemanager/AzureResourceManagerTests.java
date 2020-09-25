@@ -25,7 +25,7 @@ import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
 import com.azure.resourcemanager.containerinstance.models.Operation;
 import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
-import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.ConnectionMonitor;
@@ -83,7 +83,7 @@ import org.junit.jupiter.api.Test;
 
 public class AzureResourceManagerTests extends ResourceManagerTestBase {
     private AzureResourceManager azureResourceManager;
-    private MSIManager msiManager;
+    private MsiManager msiManager;
 
     @Override
     protected HttpPipeline buildHttpPipeline(
@@ -110,7 +110,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         AzureResourceManager.Authenticated azureAuthed = AzureResourceManager.authenticate(httpPipeline, profile);
         azureResourceManager = azureAuthed.withDefaultSubscription();
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile);
+        this.msiManager = MsiManager.authenticate(httpPipeline, profile);
         setInternalContext(internalContext, azureResourceManager, msiManager);
     }
 

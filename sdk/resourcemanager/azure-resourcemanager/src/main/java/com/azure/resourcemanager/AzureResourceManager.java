@@ -62,7 +62,7 @@ import com.azure.resourcemanager.monitor.models.AlertRules;
 import com.azure.resourcemanager.monitor.models.AutoscaleSettings;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
 import com.azure.resourcemanager.monitor.models.MetricDefinitions;
-import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.msi.models.Identities;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
@@ -139,7 +139,7 @@ public final class AzureResourceManager {
     //    private final SearchServiceManager searchServiceManager;
     private final CosmosManager cosmosManager;
     //    private final AuthorizationManager authorizationManager;
-    private final MSIManager msiManager;
+    private final MsiManager msiManager;
     private final MonitorManager monitorManager;
     private final EventHubsManager eventHubsManager;
     private final AppPlatformManager appPlatformManager;
@@ -364,7 +364,7 @@ public final class AzureResourceManager {
         //        .authenticate(restClient, subscriptionId, internalContext);
         //        this.authorizationManager = AuthorizationManager
         //        .authenticate(restClient, subscriptionId, internalContext);
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile);
+        this.msiManager = MsiManager.authenticate(httpPipeline, profile);
         this.monitorManager = MonitorManager.authenticate(httpPipeline, profile);
         this.eventHubsManager = EventHubsManager.authenticate(httpPipeline, profile);
         this.appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile);
