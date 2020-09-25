@@ -16,6 +16,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Signal;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -36,8 +37,25 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
 
+    private Consumer<FeedResponse<T>> feedResponseConsumer;
+
     CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
         this.optionsFluxFunction = optionsFluxFunction;
+    }
+
+    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction, Consumer<FeedResponse<T>> consumer) {
+        this.optionsFluxFunction = optionsFluxFunction;
+        this.feedResponseConsumer = consumer;
+    }
+
+    /**
+     * Handle for invoking "side-effects" on each FeedResponse returned by CosmosPagedFlux
+     *
+     * @param consumer handler
+     * @return CosmosPagedFlux instance with attached handler
+     */
+    public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> consumer) {
+        return new CosmosPagedFlux<T>(this.optionsFluxFunction, consumer);
     }
 
     @Override
@@ -79,6 +97,10 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     public void subscribe(CoreSubscriber<? super T> coreSubscriber) {
         Flux<FeedResponse<T>> pagedResponse = this.byPage();
         pagedResponse.flatMap(tFeedResponse -> {
+            //  If the user has passed feedResponseConsumer, then call it with each feedResponse
+            if (this.feedResponseConsumer != null) {
+                feedResponseConsumer.accept(tFeedResponse);
+            }
             IterableStream<T> elements = tFeedResponse.getElements();
             if (elements == null) {
                 return Flux.empty();
@@ -104,6 +126,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             if (pagedFluxOptions.getTracerProvider().isEnabled()) {
                 pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable),
                     TracerProvider.ERROR_CODE);
+            }
+        }).doOnNext(feedResponse -> {
+            //  If the user has passed feedResponseConsumer, then call it with each feedResponse
+            if (feedResponseConsumer != null) {
+                feedResponseConsumer.accept(feedResponse);
             }
         });
     }
