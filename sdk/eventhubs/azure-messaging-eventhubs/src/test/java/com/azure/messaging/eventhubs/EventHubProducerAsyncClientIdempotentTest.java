@@ -424,9 +424,9 @@ class EventHubProducerAsyncClientIdempotentTest {
 
         StepVerifier.create(producer.getPartitionPublishingProperties(PARTITION_0))
             .assertNext(properties -> {
-               assertEquals(properties.getOwnerLevel(), PRODUCER_OWNER_LEVEL);
-               assertEquals(properties.getProducerGroupId(), PRODUCER_GROUP_ID);
-               assertEquals(properties.getSequenceNumber(), PRODUCER_SEQ_NUMBER + objectBatch.getCount());
+                assertEquals(properties.getOwnerLevel(), PRODUCER_OWNER_LEVEL);
+                assertEquals(properties.getProducerGroupId(), PRODUCER_GROUP_ID);
+                assertEquals(properties.getSequenceNumber(), PRODUCER_SEQ_NUMBER + objectBatch.getCount());
             }).verifyComplete();
     }
 }

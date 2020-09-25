@@ -31,7 +31,6 @@ import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
