@@ -40,6 +40,7 @@ import java.util.concurrent.Callable;
  */
 class RxGatewayStoreModel implements RxStoreModel {
     private final static byte[] EMPTY_BYTE_ARRAY = {};
+    private final DiagnosticsClientContext clientContext;
     private final Logger logger = LoggerFactory.getLogger(RxGatewayStoreModel.class);
     private final Map<String, String> defaultHeaders;
     private final HttpClient httpClient;
@@ -49,12 +50,14 @@ class RxGatewayStoreModel implements RxStoreModel {
     private ISessionContainer sessionContainer;
 
     public RxGatewayStoreModel(
+            DiagnosticsClientContext clientContext,
             ISessionContainer sessionContainer,
             ConsistencyLevel defaultConsistencyLevel,
             QueryCompatibilityMode queryCompatibilityMode,
             UserAgentContainer userAgentContainer,
             GlobalEndpointManager globalEndpointManager,
             HttpClient httpClient) {
+        this.clientContext = clientContext;
         this.defaultHeaders = new HashMap<>();
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
                 "no-cache");
@@ -140,7 +143,7 @@ class RxGatewayStoreModel implements RxStoreModel {
         try {
 
             if (request.requestContext.cosmosDiagnostics == null) {
-                request.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
+                request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
             }
 
             URI uri = getUri(request);
@@ -278,7 +281,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                        })
                        .single();
 
-        }).map(RxDocumentServiceResponse::new)
+        }).map(rsp -> new RxDocumentServiceResponse(this.clientContext, rsp))
                    .onErrorResume(throwable -> {
                        Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
                        if (!(unwrappedException instanceof Exception)) {

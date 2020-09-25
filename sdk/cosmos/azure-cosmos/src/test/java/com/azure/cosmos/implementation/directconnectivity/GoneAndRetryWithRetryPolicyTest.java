@@ -18,6 +18,8 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static com.azure.cosmos.implementation.TestUtils.*;
+import static com.azure.cosmos.implementation.TestUtils.*;
 
 /**
  * This test file will cover various exception on GoneAndRetryWithRetryPolicy.
@@ -32,7 +34,7 @@ public class GoneAndRetryWithRetryPolicyTest {
      */
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void shouldRetryWithGoneException() {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
         Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new GoneException());
@@ -70,7 +72,7 @@ public class GoneAndRetryWithRetryPolicyTest {
      */
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void shouldRetryWithPartitionIsMigratingException() {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
         Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new PartitionIsMigratingException());
@@ -85,7 +87,7 @@ public class GoneAndRetryWithRetryPolicyTest {
      */
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void shouldRetryWithInvalidPartitionException() {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
         Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new InvalidPartitionException());
@@ -110,7 +112,7 @@ public class GoneAndRetryWithRetryPolicyTest {
      */
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void shouldRetryWithPartitionKeyRangeIsSplittingException() {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
         Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new PartitionKeyRangeIsSplittingException());
@@ -128,7 +130,7 @@ public class GoneAndRetryWithRetryPolicyTest {
      */
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void shouldRetryWithGenericException() {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
         Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new BadRequestException());

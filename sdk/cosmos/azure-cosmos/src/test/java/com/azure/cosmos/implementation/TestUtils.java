@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import org.mockito.Mockito;
+
 public class TestUtils {
     private static final String DATABASES_PATH_SEGMENT = "dbs";
     private static final String COLLECTIONS_PATH_SEGMENT = "colls";
@@ -33,6 +35,10 @@ public class TestUtils {
     public static String getUserNameLink(String databaseId, String userId) {
         
         return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + USERS_PATH_SEGMENT + "/" + userId;
+    }
+
+    public static DiagnosticsClientContext mockDiagnosticsClientContext() {
+        return Mockito.mock(DiagnosticsClientContext.class);
     }
 
     private TestUtils() {

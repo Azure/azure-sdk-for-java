@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -37,15 +38,18 @@ import java.util.Map;
  */
 public class RxClientCollectionCache extends RxCollectionCache {
 
-    private RxStoreModel storeModel;
+    private final DiagnosticsClientContext diagnosticsClientContext;
+    private final RxStoreModel storeModel;
     private final IAuthorizationTokenProvider tokenProvider;
     private final IRetryPolicyFactory retryPolicy;
     private final ISessionContainer sessionContainer;
 
-    public RxClientCollectionCache(ISessionContainer sessionContainer,
-            RxStoreModel storeModel,
-            IAuthorizationTokenProvider tokenProvider,
-            IRetryPolicyFactory retryPolicy) {
+    public RxClientCollectionCache(DiagnosticsClientContext diagnosticsClientContext,
+                                   ISessionContainer sessionContainer,
+                                   RxStoreModel storeModel,
+                                   IAuthorizationTokenProvider tokenProvider,
+                                   IRetryPolicyFactory retryPolicy) {
+        this.diagnosticsClientContext = diagnosticsClientContext;
         this.storeModel = storeModel;
         this.tokenProvider = tokenProvider;
         this.retryPolicy = retryPolicy;
@@ -72,7 +76,7 @@ public class RxClientCollectionCache extends RxCollectionCache {
                                                          Map<String, Object> properties) {
 
         String path = Utils.joinPath(collectionLink, null);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this.diagnosticsClientContext,
                 OperationType.Read,
                 ResourceType.DocumentCollection,
                 path,

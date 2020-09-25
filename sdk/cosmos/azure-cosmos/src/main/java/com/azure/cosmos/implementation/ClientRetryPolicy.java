@@ -44,7 +44,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private AtomicInteger cnt = new AtomicInteger(0);
     private int serviceUnavailableRetryCount;
 
-    public ClientRetryPolicy(GlobalEndpointManager globalEndpointManager,
+    public ClientRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
+                             GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
                              ThrottlingRetryOptions throttlingRetryOptions) {
 
@@ -56,7 +57,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.enableEndpointDiscovery = enableEndpointDiscovery;
         this.sessionTokenRetryCount = 0;
         this.canUseMultipleWriteLocations = false;
-        this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
+        this.cosmosDiagnostics = diagnosticsClientContext.createDiagnostics();
     }
 
     @Override

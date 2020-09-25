@@ -49,6 +49,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import static com.azure.cosmos.implementation.TestUtils.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
@@ -200,12 +201,14 @@ public class AddressResolverTest {
         RxDocumentServiceRequest request;
         if (nameBased) {
             request = RxDocumentServiceRequest.create(
+                mockDiagnosticsClientContext(),
                 OperationType.Read,
                 ResourceType.Document,
                 "dbs/db/colls/coll/docs/doc1",
                 new HashMap<>());
         } else {
             request = RxDocumentServiceRequest.create(
+                mockDiagnosticsClientContext(),
                 OperationType.Read,
                 ResourceType.Document,
                 DOCUMENT_TEST_URL,
@@ -268,11 +271,13 @@ public class AddressResolverTest {
         RxDocumentServiceRequest request;
         if (nameBased) {
             request = RxDocumentServiceRequest.createFromName(
+                mockDiagnosticsClientContext(),
                 OperationType.Read,
                 "dbs/db/colls/coll/docs/doc1",
                 ResourceType.Document);
         } else {
             request = RxDocumentServiceRequest.create(
+                mockDiagnosticsClientContext(),
                 OperationType.Read,
                 ResourceType.Document,
                 DOCUMENT_TEST_URL,

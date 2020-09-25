@@ -40,6 +40,7 @@ import java.util.Set;
 class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
     private final DiagnosticsClientContext clientContext;
+    private final DiagnosticsClientContext diagnosticsClientContext;
     private ConnectionMode connectionMode;
 
     private List<StoreResponseStatistics> responseStatisticsList;
@@ -57,8 +58,9 @@ class ClientSideRequestStatistics {
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
 
-    ClientSideRequestStatistics(DiagnosticsClientContext clientContext) {
-        this.clientContext = clientContext;
+    ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
+        this.diagnosticsClientContext = diagnosticsClientContext;
+        this.clientContext = null;
         this.requestStartTimeUTC = Instant.now();
         this.requestEndTimeUTC = Instant.now();
         this.responseStatisticsList = new ArrayList<>();
@@ -315,6 +317,14 @@ class ClientSideRequestStatistics {
             } catch (Exception e) {
                 // Error while evaluating system information, do nothing
             }
+
+            generator.writeObjectFieldStart("ClientStatistics");
+            generator.writeNumberField("numberOfClients", statistics.diagnosticsClientContext.getNumberOfClients());
+            generator.writeNumberField("id", statistics.diagnosticsClientContext.clientId());
+            generator.writeStringField("cfg", statistics.diagnosticsClientContext.getConfig());
+
+            generator.writeEndObject();
+
             generator.writeEndObject();
         }
     }

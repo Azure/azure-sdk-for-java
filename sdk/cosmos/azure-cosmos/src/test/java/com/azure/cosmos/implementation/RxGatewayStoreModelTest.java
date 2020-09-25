@@ -25,6 +25,8 @@ public class RxGatewayStoreModelTest {
 
     @Test(groups = "unit")
     public void readTimeout() throws Exception {
+        DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
+
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
         UserAgentContainer userAgentContainer = new UserAgentContainer();
@@ -35,7 +37,7 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
                 .when(httpClient).send(Mockito.any(HttpRequest.class));
 
-        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(clientContext,
                 sessionContainer,
                 ConsistencyLevel.SESSION,
                 queryCompatibilityMode,
@@ -43,7 +45,7 @@ public class RxGatewayStoreModelTest {
                 globalEndpointManager,
                 httpClient);
 
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put("key", "value");
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);

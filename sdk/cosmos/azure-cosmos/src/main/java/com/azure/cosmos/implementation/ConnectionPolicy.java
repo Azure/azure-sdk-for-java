@@ -498,4 +498,10 @@ public final class ConnectionPolicy {
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
             '}';
     }
+
+    public String asDiagnostics() {
+        // TODO: cache this to avoid recomputation per diagnostics request
+        // TODO: only include essential configs
+        return toString();
+    }
 }

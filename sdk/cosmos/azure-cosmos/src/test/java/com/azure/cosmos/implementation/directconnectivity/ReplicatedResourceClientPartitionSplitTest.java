@@ -29,6 +29,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import static com.azure.cosmos.implementation.TestUtils.*;
 
 public class ReplicatedResourceClientPartitionSplitTest {
     protected static final int TIMEOUT = 120000;
@@ -112,7 +113,8 @@ public class ReplicatedResourceClientPartitionSplitTest {
         SessionContainer sessionContainer = new SessionContainer("test");
 
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        ReplicatedResourceClient resourceClient = new ReplicatedResourceClient(new Configs(),
+        ReplicatedResourceClient resourceClient = new ReplicatedResourceClient(mockDiagnosticsClientContext(),
+                                                                               new Configs(),
                                                                                addressSelectorWrapper.addressSelector,
                                                                                sessionContainer,
                                                                                transportClientWrapper.transportClient,
@@ -121,7 +123,7 @@ public class ReplicatedResourceClientPartitionSplitTest {
                                                                                false,
                                                                                false);
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         request.requestContext = new DocumentServiceRequestContext();
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId(partitionKeyRangeIdBeforeSplit);

@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -61,6 +62,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final static int DefaultBatchSize = 50;
 
     private final static int DefaultSuboptimalPartitionForceRefreshIntervalInSeconds = 600;
+    private final DiagnosticsClientContext clientContext;
     private final ServiceConfig serviceConfig = ServiceConfig.getInstance();
 
     private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
@@ -81,12 +83,14 @@ public class GatewayAddressCache implements IAddressCache {
     private volatile Instant suboptimalMasterPartitionTimestamp;
 
     public GatewayAddressCache(
+            DiagnosticsClientContext clientContext,
             URI serviceEndpoint,
             Protocol protocol,
             IAuthorizationTokenProvider tokenProvider,
             UserAgentContainer userAgent,
             HttpClient httpClient,
             long suboptimalPartitionForceRefreshIntervalInSeconds) {
+        this.clientContext = clientContext;
         try {
             this.addressEndpoint = new URL(serviceEndpoint.toURL(), Paths.ADDRESS_PATH_SEGMENT).toURI();
         } catch (MalformedURLException | URISyntaxException e) {
@@ -121,12 +125,14 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     public GatewayAddressCache(
+            DiagnosticsClientContext clientContext,
             URI serviceEndpoint,
             Protocol protocol,
             IAuthorizationTokenProvider tokenProvider,
             UserAgentContainer userAgent,
             HttpClient httpClient) {
-        this(serviceEndpoint,
+        this(clientContext,
+             serviceEndpoint,
              protocol,
              tokenProvider,
              userAgent,
@@ -303,7 +309,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
 
-        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
+        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(clientContext, httpResponseMono, httpRequest);
         return dsrObs.map(
             dsr -> {
                 MetadataDiagnosticsContext metadataDiagnosticsContext =
@@ -522,7 +528,7 @@ public class GatewayAddressCache implements IAddressCache {
         httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
         Instant addressCallStartTime = Instant.now();
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
-        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
+        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(this.clientContext, httpResponseMono, httpRequest);
 
         return dsrObs.map(
             dsr -> {
@@ -598,6 +604,7 @@ public class GatewayAddressCache implements IAddressCache {
         int batchSize = GatewayAddressCache.DefaultBatchSize;
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                this.clientContext,
                 OperationType.Read,
                 //    collection.AltLink,
                 collection.getResourceId(),

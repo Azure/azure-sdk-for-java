@@ -38,6 +38,7 @@ import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.COMPL
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.COMPLETING_SPLIT;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static com.azure.cosmos.implementation.TestUtils.*;
 
 public class ConsistencyWriterTest {
 
@@ -77,7 +78,7 @@ public class ConsistencyWriterTest {
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
 
-        consistencyWriter = new ConsistencyWriter(
+        consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(),
                 addressSelectorWrapper.addressSelector,
                 sessionContainer,
                 transportClientWrapper.transportClient,
@@ -254,7 +255,7 @@ public class ConsistencyWriterTest {
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
 
-        consistencyWriter = new ConsistencyWriter(
+        consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(),
                 addressSelector,
                 sessionContainer,
                 transportClient,

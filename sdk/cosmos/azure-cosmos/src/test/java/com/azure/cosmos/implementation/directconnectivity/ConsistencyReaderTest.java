@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.Utils.ValueHolder;
 import static org.assertj.core.api.Assertions.assertThat;
+import static com.azure.cosmos.implementation.TestUtils.*;
 
 public class ConsistencyReaderTest {
     private final Configs configs = new Configs();
@@ -64,14 +65,15 @@ public class ConsistencyReaderTest {
         TransportClient transportClient = Mockito.mock(TransportClient.class);
         GatewayServiceConfiguratorReaderMock gatewayServiceConfigurationReaderWrapper = GatewayServiceConfiguratorReaderMock.from(accountConsistencyLevel);
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        ConsistencyReader consistencyReader = new ConsistencyReader(configs,
+        ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
+                                                                    configs,
                                                                     addressSelector,
                                                                     sessionContainer,
                                                                     transportClient,
                                                                     gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
                                                                     authorizationTokenProvider);
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         if (requestConsistency != null) {
             request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, requestConsistency.toString());
@@ -114,7 +116,8 @@ public class ConsistencyReaderTest {
                                                                                                                         userMaxReplicaCount,
                                                                                                                         userMinReplicaCount);
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        ConsistencyReader consistencyReader = new ConsistencyReader(configs,
+        ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
+                                                                    configs,
                                                                     addressSelector,
                                                                     sessionContainer,
                                                                     transportClient,
@@ -123,10 +126,10 @@ public class ConsistencyReaderTest {
 
         RxDocumentServiceRequest request;
         if (isReadingFromMasterOperation) {
-            request = RxDocumentServiceRequest.createFromName(
+            request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                     OperationType.ReadFeed, "/dbs/db/colls/col", ResourceType.DocumentCollection);
         } else {
-            request = RxDocumentServiceRequest.createFromName(
+            request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                     OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         }
 
@@ -180,7 +183,7 @@ public class ConsistencyReaderTest {
                                                                                       gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
                                                                                       authorizationTokenProvider);
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.EVENTUAL.toString());
 
@@ -289,7 +292,7 @@ public class ConsistencyReaderTest {
                                                                                       gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
                                                                                       authorizationTokenProvider);
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         request.requestContext = new DocumentServiceRequestContext();
@@ -395,7 +398,8 @@ public class ConsistencyReaderTest {
                                                                                                                                   3);
 
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        ConsistencyReader consistencyReader = new ConsistencyReader(configs,
+        ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
+                                                                    configs,
                                                                     addressSelectorWrapper.addressSelector,
                                                                     sessionContainer,
                                                                     transportClientWrapper.transportClient,
@@ -404,7 +408,7 @@ public class ConsistencyReaderTest {
 
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
@@ -456,7 +460,7 @@ public class ConsistencyReaderTest {
                 .build();
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
@@ -476,7 +480,8 @@ public class ConsistencyReaderTest {
                                                                                                                                   3);
 
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        ConsistencyReader consistencyReader = new ConsistencyReader(configs,
+        ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
+                                                                    configs,
                                                                     addressSelectorWrapper.addressSelector,
                                                                     sessionContainer,
                                                                     transportClientWrapper.transportClient,
@@ -522,7 +527,7 @@ public class ConsistencyReaderTest {
                 .build();
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
@@ -542,7 +547,8 @@ public class ConsistencyReaderTest {
                                                                                                                                   3);
 
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        ConsistencyReader consistencyReader = new ConsistencyReader(configs,
+        ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
+                                                                    configs,
                                                                     addressSelectorWrapper.addressSelector,
                                                                     sessionContainer,
                                                                     transportClientWrapper.transportClient,
@@ -586,7 +592,7 @@ public class ConsistencyReaderTest {
                 .build();
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
@@ -606,7 +612,8 @@ public class ConsistencyReaderTest {
                                                                                                                                   3);
 
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        ConsistencyReader consistencyReader = new ConsistencyReader(configs,
+        ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
+                                                                    configs,
                                                                     addressSelectorWrapper.addressSelector,
                                                                     sessionContainer,
                                                                     transportClientWrapper.transportClient,
@@ -639,7 +646,7 @@ public class ConsistencyReaderTest {
                 .withSecondary(secondaryReplicaURIs)
                 .build();
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
         request.requestContext = new DocumentServiceRequestContext();
@@ -680,9 +687,9 @@ public class ConsistencyReaderTest {
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        QuorumReader quorumReader = new QuorumReader(configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
+        QuorumReader quorumReader = new QuorumReader(mockDiagnosticsClientContext(), configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
 
-        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(mockDiagnosticsClientContext(), request, replicaCountToRead, readMode);
 
         StoreResponseValidator validator = StoreResponseValidator.create()
                 .withBELSN(51)
