@@ -3,7 +3,7 @@
 
 package com.microsoft.azure.spring.autoconfigure.cosmos;
 
-import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,17 +27,17 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
     private String uri;
 
     @Autowired
-    private CosmosClient cosmosClient;
+    private CosmosAsyncClient cosmosAsyncClient;
 
-    public CosmosHealthIndicator(CosmosClient cosmosClient) {
+    public CosmosHealthIndicator(CosmosAsyncClient cosmosAsyncClient) {
         super("Cosmos health check failed");
-        Assert.notNull(cosmosClient, "CosmosClient must not be null");
-        this.cosmosClient = cosmosClient;
+        Assert.notNull(cosmosAsyncClient, "CosmosClient must not be null");
+        this.cosmosAsyncClient = cosmosAsyncClient;
     }
 
     @Override
     protected void doHealthCheck(Builder builder) throws Exception {
-        CosmosDatabaseResponse response = this.cosmosClient.getDatabase(dbName).read();
+        CosmosDatabaseResponse response = this.cosmosAsyncClient.getDatabase(dbName).read().block();
 
         if (response != null) {
             LOGGER.info("The health indicator cost {} RUs, cosmos uri: {}, dbName: {}",

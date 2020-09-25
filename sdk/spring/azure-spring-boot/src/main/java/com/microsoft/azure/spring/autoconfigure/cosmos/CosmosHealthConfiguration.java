@@ -3,7 +3,7 @@
 
 package com.microsoft.azure.spring.autoconfigure.cosmos;
 
-import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosAsyncClient;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -16,15 +16,15 @@ import org.springframework.context.annotation.PropertySource;
  * CosmosHealthConfiguration
  */
 @Configuration
-@ConditionalOnClass({ CosmosClient.class, HealthIndicator.class})
+@ConditionalOnClass({ CosmosAsyncClient.class, HealthIndicator.class})
 @PropertySource("classpath:/azure-spring-actuator.properties")
 @AutoConfigureAfter(CosmosAutoConfiguration.class)
 public class CosmosHealthConfiguration {
 
     @Bean
     @ConditionalOnEnabledHealthIndicator("azure-cosmos")
-    public HealthIndicator cosmosHealthContributor(CosmosClient cosmosClient) {
-        return new CosmosHealthIndicator(cosmosClient);
+    public HealthIndicator cosmosHealthContributor(CosmosAsyncClient cosmosAsyncClient) {
+        return new CosmosHealthIndicator(cosmosAsyncClient);
     }
 
 }
