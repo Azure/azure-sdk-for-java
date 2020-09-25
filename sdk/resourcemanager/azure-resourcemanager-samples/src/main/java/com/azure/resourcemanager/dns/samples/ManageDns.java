@@ -23,7 +23,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.io.IOException;
@@ -50,8 +50,8 @@ public class ManageDns {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         final String customDomainName         = "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
-        final String rgName                   = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgNEMV_", 24);
-        final String webAppName               = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp1-", 20);
+        final String rgName                   = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgNEMV_", 24);
+        final String webAppName               = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
 
         try {
             ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
@@ -112,7 +112,7 @@ public class ManageDns {
 
             // Waiting for a minute for DNS CName entry to propagate
             System.out.println("Waiting a minute for CName record entry to propagate...");
-            SdkContext.sleep(60 * 1000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(60 * 1000);
 
             // Step 2: Adds a web app host name binding for www.[customDomainName]
             //         This binding action will fail if the CName record propagation is not yet completed
@@ -133,12 +133,12 @@ public class ManageDns {
 
             System.out.println("Creating a virtual machine with public IP...");
             VirtualMachine virtualMachine1 = azureResourceManager.virtualMachines()
-                    .define(azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("employeesvm-", 20))
+                    .define(azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("employeesvm-", 20))
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIPAddressDynamic()
-                        .withNewPrimaryPublicIPAddress(azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("empip-", 20))
+                        .withNewPrimaryPublicIPAddress(azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("empip-", 20))
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
                         .withAdminPassword("12NewPA$$w0rd!")
@@ -215,12 +215,12 @@ public class ManageDns {
 
             System.out.println("Creating a virtual machine with public IP...");
             VirtualMachine virtualMachine2 = azureResourceManager.virtualMachines()
-                    .define(azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("partnersvm-", 20))
+                    .define(azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("partnersvm-", 20))
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIPAddressDynamic()
-                        .withNewPrimaryPublicIPAddress(azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("ptnerpip-", 20))
+                        .withNewPrimaryPublicIPAddress(azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ptnerpip-", 20))
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
                         .withAdminPassword("12NewPA$$w0rd!")

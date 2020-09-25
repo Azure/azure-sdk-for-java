@@ -360,7 +360,7 @@ public class ContainerGroupImpl
                 manager()
                     .storageManager()
                     .storageAccounts()
-                    .define(manager().resourceManager().sdkContext().randomResourceName("fs", 24))
+                    .define(manager().resourceManager().internalContext().randomResourceName("fs", 24))
                     .withRegion(this.regionName());
             Creatable<StorageAccount> creatable;
             if (this.creatableGroup != null) {
@@ -468,7 +468,8 @@ public class ContainerGroupImpl
     @Override
     public ContainerGroupImpl withNewNetworkProfileOnExistingVirtualNetwork(
         String virtualNetworkId, String subnetName) {
-        creatableNetworkProfileName = manager().resourceManager().sdkContext().randomResourceName("aci-profile-", 20);
+        creatableNetworkProfileName = manager().resourceManager().internalContext()
+            .randomResourceName("aci-profile-", 20);
         String subnetId = String.format("%s/subnets/%s", virtualNetworkId, subnetName);
         SubnetInner subnetInner = new SubnetInner();
         subnetInner.withId(subnetId);
@@ -493,7 +494,7 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupImpl withNewVirtualNetwork(String addressSpace) {
-        String virtualNetworkName = manager().resourceManager().sdkContext().randomResourceName("net", 20);
+        String virtualNetworkName = manager().resourceManager().internalContext().randomResourceName("net", 20);
         String subnetName = "subnet0";
 
         creatableVirtualNetwork =

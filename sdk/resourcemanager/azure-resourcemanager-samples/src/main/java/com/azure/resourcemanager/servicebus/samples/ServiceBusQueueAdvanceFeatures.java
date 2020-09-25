@@ -48,10 +48,10 @@ public final class ServiceBusQueueAdvanceFeatures {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgSB04_", 24);
-        final String namespaceName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("namespace", 20);
-        final String queue1Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("queue1_", 24);
-        final String queue2Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("queue2_", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgSB04_", 24);
+        final String namespaceName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("namespace", 20);
+        final String queue1Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("queue1_", 24);
+        final String queue2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("queue2_", 24);
         final String sendRuleName = "SendRule";
 
         try {

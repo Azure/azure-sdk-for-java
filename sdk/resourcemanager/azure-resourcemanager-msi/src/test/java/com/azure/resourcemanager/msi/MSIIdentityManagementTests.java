@@ -18,7 +18,7 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
@@ -56,12 +56,12 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        SdkContext sdkContext = new SdkContext();
-        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         this.msiManager = MSIManager.authenticate(httpPipeline, profile);
         this.resourceManager = msiManager.resourceManager();
-        setSdkContext(sdkContext, msiManager);
+        setInternalContext(internalContext, msiManager);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
                 .withoutAccessTo(resourceGroup.id(), BuiltInRole.READER)
                 .apply();
 
-        SdkContext.sleep(30 * 1000);
+        ResourceManagerUtils.InternalRuntimeContext.sleep(30 * 1000);
 
         // Ensure role assignment removed
         //

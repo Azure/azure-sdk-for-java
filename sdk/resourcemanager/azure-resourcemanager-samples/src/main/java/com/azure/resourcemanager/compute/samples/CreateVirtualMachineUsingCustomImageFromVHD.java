@@ -45,12 +45,12 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("VM1", 10);
-        final String linuxVMName2 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("VM2", 10);
-        final String linuxVMName3 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("VM3", 10);
-        final String customImageName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("img", 10);
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIPDnsLabel = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("pip", 10);
+        final String linuxVMName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 10);
+        final String linuxVMName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM2", 10);
+        final String linuxVMName3 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM3", 10);
+        final String customImageName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("img", 10);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMV", 15);
+        final String publicIPDnsLabel = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 10);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;

@@ -31,9 +31,9 @@ public final class ManageResource {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgRSMR", 24);
-        final String resourceName1 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rn1", 24);
-        final String resourceName2 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rn2", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgRSMR", 24);
+        final String resourceName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rn1", 24);
+        final String resourceName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rn2", 24);
         try {
 
 

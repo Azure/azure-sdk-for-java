@@ -64,7 +64,6 @@ import com.azure.resourcemanager.resources.fluentcore.dag.IndexableTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1052,7 +1051,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         return sourceControl
             .registerGithubAccessToken()
             .then(createOrUpdateSourceControl(sourceControl.innerModel()))
-            .delayElement(SdkContext.getDelayDuration(Duration.ofSeconds(30)))
+            .delayElement(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(30)))
             .map(ignored -> WebAppBaseImpl.this);
     }
 
