@@ -10,7 +10,6 @@
 package com.microsoft.azure.management.loganalytics.v2020_03_01_preview.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.loganalytics.v2020_03_01_preview.DataSourceType;
 import com.microsoft.azure.management.loganalytics.v2020_03_01_preview.LinkedStorageAccounts;
 import rx.Completable;
 import rx.Observable;
