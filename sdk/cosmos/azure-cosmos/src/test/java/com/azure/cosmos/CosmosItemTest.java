@@ -166,7 +166,6 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
                 container.queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class);
 
-        feedResponseIterator1.iterableByPage()
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 

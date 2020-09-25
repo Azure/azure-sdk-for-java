@@ -9,7 +9,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -20,44 +20,45 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CosmosPagedFluxTest extends TestSuiteBase {
+public class CosmosPagedIterableTest extends TestSuiteBase {
 
     private static final int NUM_OF_ITEMS = 10;
 
-    private CosmosAsyncClient cosmosAsyncClient;
-    private CosmosAsyncContainer cosmosAsyncContainer;
+    private CosmosClient cosmosClient;
+    private CosmosContainer cosmosContainer;
 
     @Factory(dataProvider = "clientBuilders")
-    public CosmosPagedFluxTest(CosmosClientBuilder clientBuilder) {
+    public CosmosPagedIterableTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void before_CosmosPagedFluxTest() {
-        assertThat(this.cosmosAsyncClient).isNull();
-        this.cosmosAsyncClient = getClientBuilder().buildAsyncClient();
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.cosmosAsyncClient);
-        cosmosAsyncContainer =
-            cosmosAsyncClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+    public void before_CosmosPagedIterableTest() {
+        assertThat(this.cosmosClient).isNull();
+        this.cosmosClient = getClientBuilder().buildClient();
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.cosmosClient.asyncClient());
+        cosmosContainer =
+            cosmosClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
         createItems(NUM_OF_ITEMS);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.cosmosAsyncClient).isNotNull();
-        this.cosmosAsyncClient.close();
+        assertThat(this.cosmosClient).isNotNull();
+        this.cosmosClient.close();
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readAllItemsByPageWithCosmosPagedFluxHandler() throws Exception {
+    public void readAllItemsByPageWithCosmosPagedIterableHandler() throws Exception {
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
-        CosmosPagedFlux<InternalObjectNode> cosmosPagedFlux =
-            cosmosAsyncContainer.readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class);
+        CosmosPagedIterable<InternalObjectNode> cosmosPagedIterable =
+            cosmosContainer.readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class);
 
         AtomicInteger handleCount = new AtomicInteger();
-        cosmosPagedFlux = cosmosPagedFlux.handle(feedResponse -> {
+        cosmosPagedIterable = cosmosPagedIterable.handle(feedResponse -> {
             CosmosDiagnostics cosmosDiagnostics = feedResponse.getCosmosDiagnostics();
+            logger.info("Cosmos Diagnostics : {}", cosmosDiagnostics);
             if (cosmosDiagnostics != null) {
                 handleCount.incrementAndGet();
             }
@@ -65,7 +66,7 @@ public class CosmosPagedFluxTest extends TestSuiteBase {
 
         AtomicInteger itemCount = new AtomicInteger();
         AtomicInteger feedResponseCount = new AtomicInteger();
-        cosmosPagedFlux.byPage().toIterable().forEach(feedResponse -> {
+        cosmosPagedIterable.iterableByPage().forEach(feedResponse -> {
             feedResponseCount.incrementAndGet();
             int size = feedResponse.getResults().size();
             itemCount.addAndGet(size);
@@ -77,23 +78,24 @@ public class CosmosPagedFluxTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readAllItemsBySubscribeWithCosmosPagedFluxHandler() throws Exception {
+    public void readAllItemsBySubscribeWithCosmosPagedIterableHandler() throws Exception {
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
-        CosmosPagedFlux<InternalObjectNode> cosmosPagedFlux =
-            cosmosAsyncContainer.readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class);
+        CosmosPagedIterable<InternalObjectNode> cosmosPagedIterable =
+            cosmosContainer.readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class);
 
         AtomicInteger handleCount = new AtomicInteger();
-        cosmosPagedFlux = cosmosPagedFlux.handle(feedResponse -> {
+        cosmosPagedIterable = cosmosPagedIterable.handle(feedResponse -> {
             CosmosDiagnostics cosmosDiagnostics = feedResponse.getCosmosDiagnostics();
+            logger.info("Cosmos Diagnostics : {}", cosmosDiagnostics);
             if (cosmosDiagnostics != null) {
                 handleCount.incrementAndGet();
             }
         });
 
         AtomicInteger itemCount = new AtomicInteger();
-        cosmosPagedFlux.toIterable().forEach(internalObjectNode -> {
+        cosmosPagedIterable.forEach(internalObjectNode -> {
             itemCount.incrementAndGet();
         });
 
@@ -104,7 +106,7 @@ public class CosmosPagedFluxTest extends TestSuiteBase {
     private void createItems(int numOfItems) {
         for (int i = 0; i < numOfItems; i++) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
-            cosmosAsyncContainer.createItem(properties).block();
+            cosmosContainer.createItem(properties);
         }
     }
 
