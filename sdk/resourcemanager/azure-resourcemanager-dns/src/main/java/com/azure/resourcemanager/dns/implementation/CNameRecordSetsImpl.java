@@ -4,6 +4,7 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.dns.models.CNameRecordSet;
 import com.azure.resourcemanager.dns.models.CNameRecordSets;
 import com.azure.resourcemanager.dns.models.RecordType;
@@ -47,7 +48,8 @@ class CNameRecordSetsImpl extends DnsRecordSetsBaseImpl<CNameRecordSet, CNameRec
                         this.dnsZone.name(),
                         this.recordType,
                         pageSize,
-                        recordSetNameSuffix));
+                        recordSetNameSuffix,
+                        Context.NONE));
     }
 
     @Override

@@ -25,7 +25,7 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     public PagedIterable<ActiveDirectoryGroup> list() {
-        return wrapList(this.manager.serviceClient().getGroups().list(null));
+        return wrapList(this.manager.serviceClient().getGroups().list());
     }
 
     @Override

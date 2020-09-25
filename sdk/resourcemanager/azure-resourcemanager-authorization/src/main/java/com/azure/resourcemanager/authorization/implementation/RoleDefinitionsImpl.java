@@ -68,7 +68,7 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
 
     @Override
     public PagedIterable<RoleDefinition> listByScope(String scope) {
-        return wrapList(inner().list(scope, null));
+        return wrapList(inner().list(scope));
     }
 
     @Override

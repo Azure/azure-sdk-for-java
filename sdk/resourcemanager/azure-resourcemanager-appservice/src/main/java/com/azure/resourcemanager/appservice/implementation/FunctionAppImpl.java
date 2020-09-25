@@ -21,6 +21,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -88,7 +89,7 @@ class FunctionAppImpl
     private FunctionService functionService;
     private FunctionDeploymentSlots deploymentSlots;
 
-    private String functionAppKeyServiceHost;
+    private final String functionAppKeyServiceHost;
     private String functionServiceHost;
 
     FunctionAppImpl(
@@ -420,6 +421,9 @@ class FunctionAppImpl
 
     @Override
     public Mono<String> getMasterKeyAsync() {
+        Context context1 = (this.manager().serviceClient() instanceof WebSiteManagementClientImpl)
+            ? ((WebSiteManagementClientImpl) this.manager().serviceClient()).getContext()
+            : Context.NONE;
         return FluxUtil
             .withContext(
                 context ->
@@ -432,7 +436,7 @@ class FunctionAppImpl
                             "2019-08-01"))
             .map(ListKeysResult::getMasterKey)
             .subscriberContext(
-                context -> context.putAll(FluxUtil.toReactorContext(this.manager().serviceClient().getContext())));
+                context -> context.putAll(FluxUtil.toReactorContext(context1)));
     }
 
     @Override
@@ -625,11 +629,11 @@ class FunctionAppImpl
     }
 
     @Host("{$host}")
-    @ServiceInterface(name = "FunctionAppKeyService")
+    @ServiceInterface(name = "FunctionKeyService")
     private interface FunctionAppKeyService {
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listKeys"
+            "Accept: application/json",
+            "Content-Type: application/json; charset=utf-8"
         })
         @Post(
             "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
@@ -646,16 +650,16 @@ class FunctionAppImpl
     @ServiceInterface(name = "FunctionService")
     private interface FunctionService {
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listFunctionKeys"
+            "Accept: application/json",
+            "Content-Type: application/json; charset=utf-8"
         })
         @Get("admin/functions/{name}/keys")
         Mono<FunctionKeyListResult> listFunctionKeys(
             @HostParam("$host") String host, @PathParam("name") String functionName);
 
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps addFunctionKey"
+            "Accept: application/json",
+            "Content-Type: application/json; charset=utf-8"
         })
         @Put("admin/functions/{name}/keys/{keyName}")
         Mono<NameValuePair> addFunctionKey(
@@ -665,8 +669,8 @@ class FunctionAppImpl
             @BodyParam("application/json") NameValuePair key);
 
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps generateFunctionKey"
+            "Accept: application/json",
+            "Content-Type: application/json; charset=utf-8"
         })
         @Post("admin/functions/{name}/keys/{keyName}")
         Mono<NameValuePair> generateFunctionKey(
@@ -675,8 +679,7 @@ class FunctionAppImpl
             @PathParam("keyName") String keyName);
 
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteFunctionKey"
+            "Content-Type: application/json; charset=utf-8"
         })
         @Delete("admin/functions/{name}/keys/{keyName}")
         Mono<Void> deleteFunctionKey(
@@ -685,22 +688,19 @@ class FunctionAppImpl
             @PathParam("keyName") String keyName);
 
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps ping"
+            "Content-Type: application/json; charset=utf-8"
         })
         @Post("admin/host/ping")
         Mono<Void> ping(@HostParam("$host") String host);
 
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getHostStatus"
+            "Content-Type: application/json; charset=utf-8"
         })
         @Get("admin/host/status")
         Mono<Void> getHostStatus(@HostParam("$host") String host);
 
         @Headers({
-            "Content-Type: application/json; charset=utf-8",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps triggerFunction"
+            "Content-Type: application/json; charset=utf-8"
         })
         @Post("admin/functions/{name}")
         Mono<Void> triggerFunction(

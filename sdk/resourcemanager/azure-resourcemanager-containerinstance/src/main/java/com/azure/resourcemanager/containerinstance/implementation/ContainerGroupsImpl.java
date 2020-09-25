@@ -5,6 +5,7 @@ package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
@@ -66,7 +67,8 @@ public class ContainerGroupsImpl
                 .manager()
                 .serviceClient()
                 .getContainers()
-                .listLogs(resourceGroupName, containerGroupName, containerName, tailLineCount);
+                .listLogsWithResponse(resourceGroupName, containerGroupName, containerName, tailLineCount, Context.NONE)
+                .getValue();
 
         return logsInner != null ? logsInner.content() : null;
     }

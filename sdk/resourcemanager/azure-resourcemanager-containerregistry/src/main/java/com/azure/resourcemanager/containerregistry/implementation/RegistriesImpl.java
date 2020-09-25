@@ -183,6 +183,6 @@ public class RegistriesImpl
     }
 
     public WebhooksClient webhooks() {
-        return new WebhooksClientImpl(this.manager(), null);
+        return new RegistriesWebhooksClientImpl(this.manager(), null);
     }
 }

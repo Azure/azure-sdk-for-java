@@ -56,7 +56,7 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
 
     @Override
     public PagedIterable<RoleAssignment> listByScope(String scope) {
-        return wrapList(inner().listForScope(scope, null));
+        return wrapList(inner().listForScope(scope));
     }
 
     @Override

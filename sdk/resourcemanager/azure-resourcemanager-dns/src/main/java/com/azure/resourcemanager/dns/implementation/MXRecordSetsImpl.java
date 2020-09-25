@@ -4,6 +4,7 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.dns.models.MXRecordSet;
 import com.azure.resourcemanager.dns.models.MXRecordSets;
 import com.azure.resourcemanager.dns.models.RecordType;
@@ -59,7 +60,8 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
                         this.dnsZone.name(),
                         this.recordType,
                         pageSize,
-                        recordSetNameSuffix));
+                        recordSetNameSuffix,
+                        Context.NONE));
     }
 
     @Override
