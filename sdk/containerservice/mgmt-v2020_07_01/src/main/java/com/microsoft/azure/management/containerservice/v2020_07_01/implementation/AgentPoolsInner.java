@@ -28,6 +28,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -92,6 +93,14 @@ public class AgentPoolsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerservice.v2020_07_01.AgentPools getAvailableAgentPoolVersions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/availableAgentPoolVersions")
         Observable<Response<ResponseBody>> getAvailableAgentPoolVersions(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerservice.v2020_07_01.AgentPools upgradeNodeImageVersion" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/upgradeNodeImageVersion")
+        Observable<Response<ResponseBody>> upgradeNodeImageVersion(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Path("agentPoolName") String agentPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerservice.v2020_07_01.AgentPools beginUpgradeNodeImageVersion" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/upgradeNodeImageVersion")
+        Observable<Response<ResponseBody>> beginUpgradeNodeImageVersion(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Path("agentPoolName") String agentPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerservice.v2020_07_01.AgentPools listNext" })
         @GET
@@ -861,6 +870,180 @@ public class AgentPoolsInner {
     private ServiceResponse<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<AgentPoolAvailableVersionsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AgentPoolAvailableVersionsInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Upgrade node image version of an agent pool to the latest.
+     * Upgrade node image version of an agent pool to the latest.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AgentPoolInner object if successful.
+     */
+    public AgentPoolInner upgradeNodeImageVersion(String resourceGroupName, String resourceName, String agentPoolName) {
+        return upgradeNodeImageVersionWithServiceResponseAsync(resourceGroupName, resourceName, agentPoolName).toBlocking().last().body();
+    }
+
+    /**
+     * Upgrade node image version of an agent pool to the latest.
+     * Upgrade node image version of an agent pool to the latest.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AgentPoolInner> upgradeNodeImageVersionAsync(String resourceGroupName, String resourceName, String agentPoolName, final ServiceCallback<AgentPoolInner> serviceCallback) {
+        return ServiceFuture.fromResponse(upgradeNodeImageVersionWithServiceResponseAsync(resourceGroupName, resourceName, agentPoolName), serviceCallback);
+    }
+
+    /**
+     * Upgrade node image version of an agent pool to the latest.
+     * Upgrade node image version of an agent pool to the latest.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<AgentPoolInner> upgradeNodeImageVersionAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+        return upgradeNodeImageVersionWithServiceResponseAsync(resourceGroupName, resourceName, agentPoolName).map(new Func1<ServiceResponse<AgentPoolInner>, AgentPoolInner>() {
+            @Override
+            public AgentPoolInner call(ServiceResponse<AgentPoolInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Upgrade node image version of an agent pool to the latest.
+     * Upgrade node image version of an agent pool to the latest.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<AgentPoolInner>> upgradeNodeImageVersionWithServiceResponseAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (agentPoolName == null) {
+            throw new IllegalArgumentException("Parameter agentPoolName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-07-01";
+        Observable<Response<ResponseBody>> observable = service.upgradeNodeImageVersion(this.client.subscriptionId(), resourceGroupName, resourceName, agentPoolName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<AgentPoolInner>() { }.getType());
+    }
+
+    /**
+     * Upgrade node image version of an agent pool to the latest.
+     * Upgrade node image version of an agent pool to the latest.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AgentPoolInner object if successful.
+     */
+    public AgentPoolInner beginUpgradeNodeImageVersion(String resourceGroupName, String resourceName, String agentPoolName) {
+        return beginUpgradeNodeImageVersionWithServiceResponseAsync(resourceGroupName, resourceName, agentPoolName).toBlocking().single().body();
+    }
+
+    /**
+     * Upgrade node image version of an agent pool to the latest.
+     * Upgrade node image version of an agent pool to the latest.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AgentPoolInner> beginUpgradeNodeImageVersionAsync(String resourceGroupName, String resourceName, String agentPoolName, final ServiceCallback<AgentPoolInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpgradeNodeImageVersionWithServiceResponseAsync(resourceGroupName, resourceName, agentPoolName), serviceCallback);
+    }
+
+    /**
+     * Upgrade node image version of an agent pool to the latest.
+     * Upgrade node image version of an agent pool to the latest.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AgentPoolInner object
+     */
+    public Observable<AgentPoolInner> beginUpgradeNodeImageVersionAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+        return beginUpgradeNodeImageVersionWithServiceResponseAsync(resourceGroupName, resourceName, agentPoolName).map(new Func1<ServiceResponse<AgentPoolInner>, AgentPoolInner>() {
+            @Override
+            public AgentPoolInner call(ServiceResponse<AgentPoolInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Upgrade node image version of an agent pool to the latest.
+     * Upgrade node image version of an agent pool to the latest.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AgentPoolInner object
+     */
+    public Observable<ServiceResponse<AgentPoolInner>> beginUpgradeNodeImageVersionWithServiceResponseAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (agentPoolName == null) {
+            throw new IllegalArgumentException("Parameter agentPoolName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-07-01";
+        return service.beginUpgradeNodeImageVersion(this.client.subscriptionId(), resourceGroupName, resourceName, agentPoolName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AgentPoolInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AgentPoolInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AgentPoolInner> clientResponse = beginUpgradeNodeImageVersionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AgentPoolInner> beginUpgradeNodeImageVersionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AgentPoolInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<AgentPoolInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
