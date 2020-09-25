@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayIpConfiguration;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 

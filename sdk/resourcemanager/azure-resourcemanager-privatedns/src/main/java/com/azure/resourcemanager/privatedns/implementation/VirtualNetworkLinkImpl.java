@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.privatedns.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.privatedns.fluent.inner.VirtualNetworkLinkInner;
+import com.azure.resourcemanager.privatedns.fluent.models.VirtualNetworkLinkInner;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.privatedns.models.ProvisioningState;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLink;

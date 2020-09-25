@@ -3,9 +3,9 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
-import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NetworkSecurityRule;
 import com.azure.resourcemanager.network.models.Subnet;

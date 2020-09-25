@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ServerPrivateEndpointConnection model. */
+/** A private endpoint connection under a server. */
 @Immutable
 public final class ServerPrivateEndpointConnection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPrivateEndpointConnection.class);

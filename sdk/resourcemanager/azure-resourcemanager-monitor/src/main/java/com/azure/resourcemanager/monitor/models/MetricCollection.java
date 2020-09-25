@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.azure.resourcemanager.monitor.fluent.inner.ResponseInner;
+import com.azure.resourcemanager.monitor.fluent.models.ResponseInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.time.Duration;
 import java.util.List;

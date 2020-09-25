@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DnsSettings model. */
+/** DNS Proxy Settings in Firewall Policy. */
 @Fluent
 public final class DnsSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsSettings.class);

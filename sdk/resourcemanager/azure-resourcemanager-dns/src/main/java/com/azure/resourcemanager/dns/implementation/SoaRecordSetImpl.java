@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.models.SoaRecord;
 import com.azure.resourcemanager.dns.models.SoaRecordSet;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 
 /** Implementation of SoaRecordSet. */
 class SoaRecordSetImpl extends DnsRecordSetImpl implements SoaRecordSet {

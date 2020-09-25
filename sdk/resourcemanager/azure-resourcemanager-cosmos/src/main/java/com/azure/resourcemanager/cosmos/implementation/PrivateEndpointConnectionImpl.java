@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.resourcemanager.cosmos.fluent.PrivateEndpointConnectionsClient;
-import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.cosmos.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointProperty;

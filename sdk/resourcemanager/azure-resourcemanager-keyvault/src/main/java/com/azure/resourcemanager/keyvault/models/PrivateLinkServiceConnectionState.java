@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PrivateLinkServiceConnectionState model. */
+/** An object that represents the approval state of the private link connection. */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionState.class);

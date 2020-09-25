@@ -9,7 +9,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.resourcemanager.monitor.fluent.inner.MetadataValueInner;
+import com.azure.resourcemanager.monitor.fluent.models.MetadataValueInner;
 import com.azure.resourcemanager.monitor.models.Metric;
 import com.azure.resourcemanager.monitor.models.MetricCollection;
 import com.azure.resourcemanager.monitor.models.MetricDefinition;

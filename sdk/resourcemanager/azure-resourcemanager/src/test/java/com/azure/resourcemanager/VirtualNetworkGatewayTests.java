@@ -187,6 +187,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
      * @throws Exception
      */
     @Test
+    @Disabled("Service error 'VpnClientRootCertificateDataInvalid' on 'myTest3.cer'")
     public void testVirtualNetworkGatewayPointToSite() throws Exception {
         new TestVirtualNetworkGateway().new PointToSite(azureResourceManager.virtualNetworkGateways().manager())
             .runTest(azureResourceManager.virtualNetworkGateways(), azureResourceManager.resourceGroups());

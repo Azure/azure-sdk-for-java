@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.resourcemanager.dns.models.MxRecordSet;
 import com.azure.resourcemanager.dns.models.MxRecord;
 import com.azure.resourcemanager.dns.models.RecordType;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

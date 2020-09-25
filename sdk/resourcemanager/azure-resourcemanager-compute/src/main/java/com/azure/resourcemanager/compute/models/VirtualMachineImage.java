@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.Map;

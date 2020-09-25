@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The VirtualMachineScaleSetIdentity model. */
+/** Identity for the virtual machine scale set. */
 @Fluent
 public class VirtualMachineScaleSetIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetIdentity.class);
@@ -45,8 +45,8 @@ public class VirtualMachineScaleSetIdentity {
      * ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
-    @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(content = JsonInclude.Include.ALWAYS)
+    @JsonProperty(value = "userAssignedIdentities")
     private Map<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**

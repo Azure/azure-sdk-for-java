@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationGatewayFirewallExclusion model. */
+/** Allow to exclude some variable satisfy the condition for the WAF check. */
 @Fluent
 public final class ApplicationGatewayFirewallExclusion {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallExclusion.class);

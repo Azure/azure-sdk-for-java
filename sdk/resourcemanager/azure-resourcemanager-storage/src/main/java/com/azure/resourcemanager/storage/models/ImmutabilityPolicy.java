@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.storage.fluent.inner.ImmutabilityPolicyInner;
+import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyInner;
 
 /** Type representing ImmutabilityPolicy. */
 @Fluent

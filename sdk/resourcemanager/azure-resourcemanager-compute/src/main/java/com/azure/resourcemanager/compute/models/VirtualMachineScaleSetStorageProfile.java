@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetStorageProfile model. */
+/** Describes a virtual machine scale set storage profile. */
 @Fluent
 public final class VirtualMachineScaleSetStorageProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetStorageProfile.class);

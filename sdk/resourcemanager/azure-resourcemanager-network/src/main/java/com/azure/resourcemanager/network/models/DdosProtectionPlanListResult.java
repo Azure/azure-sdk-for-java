@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.DdosProtectionPlanInner;
+import com.azure.resourcemanager.network.fluent.models.DdosProtectionPlanInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DdosProtectionPlanListResult model. */
+/** A list of DDoS protection plans. */
 @Fluent
 public final class DdosProtectionPlanListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DdosProtectionPlanListResult.class);

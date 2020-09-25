@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
-import com.azure.resourcemanager.appplatform.fluent.inner.CertificateResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.CertificateResourceInner;
 import com.azure.resourcemanager.appplatform.models.CertificateProperties;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServiceCertificate;

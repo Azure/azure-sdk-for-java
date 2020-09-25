@@ -16,7 +16,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
-import com.azure.resourcemanager.compute.fluent.inner.ImageInner;
+import com.azure.resourcemanager.compute.fluent.models.ImageInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 

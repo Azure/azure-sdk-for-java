@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.cdn.implementation;
 
-import com.azure.resourcemanager.cdn.fluent.inner.CustomDomainInner;
-import com.azure.resourcemanager.cdn.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.cdn.fluent.models.CustomDomainInner;
+import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityResult;

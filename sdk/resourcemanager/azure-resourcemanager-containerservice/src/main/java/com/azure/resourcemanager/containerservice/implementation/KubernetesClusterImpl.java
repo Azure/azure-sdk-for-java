@@ -4,7 +4,7 @@ package com.azure.resourcemanager.containerservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
-import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
+import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshConfiguration;

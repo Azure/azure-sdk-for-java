@@ -9,9 +9,9 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeerings;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSkuType;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitAuthorizationInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitAuthorizationInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeeringInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 import java.util.ArrayList;

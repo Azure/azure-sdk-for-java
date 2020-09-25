@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteUserArmResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserArmResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The StaticSiteUserCollection model. */
+/** Collection of static site custom users. */
 @Fluent
 public final class StaticSiteUserCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteUserCollection.class);
