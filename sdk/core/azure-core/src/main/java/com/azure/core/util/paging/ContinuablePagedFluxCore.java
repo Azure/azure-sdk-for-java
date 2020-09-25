@@ -3,12 +3,18 @@
 
 package com.azure.core.util.paging;
 
-import com.azure.core.util.IterableStream;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Operators;
 
+import java.util.Iterator;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
+import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.Supplier;
 
 /**
@@ -121,14 +127,10 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      */
     @Override
     public void subscribe(CoreSubscriber<? super T> coreSubscriber) {
-        byPage(this.pageRetrieverProvider, null, this.defaultPageSize)
-            .flatMap(page -> {
-                IterableStream<T> iterableStream = page.getElements();
-                return iterableStream == null
-                    ? Flux.empty()
-                    : Flux.fromIterable(page.getElements());
-            })
-            .subscribe(coreSubscriber);
+        ItemSubscription<C, T, P> pageSubscription = new ItemSubscription<>(coreSubscriber,
+            new ContinuationState<>(null), this.pageRetrieverProvider.get(), this.defaultPageSize);
+
+        coreSubscriber.onSubscribe(pageSubscription);
     }
 
     /**
@@ -226,6 +228,181 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
          */
         boolean isDone() {
             return this.isDone;
+        }
+    }
+
+    private static abstract class BaseSubscription<C, T, P extends ContinuablePage<C, T>, U, V>
+        implements Subscription {
+        private final Subscriber<? super U> subscriber;
+        private final ContinuationState<C> continuationState;
+        private final PageRetriever<C, P> pageRetriever;
+        private final Integer defaultPageSize;
+
+        volatile boolean done;
+        volatile V next;
+        private Throwable error;
+        private volatile boolean cancelled;
+
+        volatile int wip;
+        @SuppressWarnings("rawtypes")
+        static final AtomicIntegerFieldUpdater<BaseSubscription> WIP =
+            AtomicIntegerFieldUpdater.newUpdater(BaseSubscription.class, "wip");
+
+        volatile long requested;
+        @SuppressWarnings("rawtypes")
+        static final AtomicLongFieldUpdater<BaseSubscription> REQUESTED =
+            AtomicLongFieldUpdater.newUpdater(BaseSubscription.class, "requested");
+
+        BaseSubscription(Subscriber<? super U> subscriber, ContinuationState<C> continuationState,
+            PageRetriever<C, P> pageRetriever, Integer defaultPageSize) {
+            this.subscriber = subscriber;
+            this.continuationState = continuationState;
+            this.pageRetriever = pageRetriever;
+            this.defaultPageSize = defaultPageSize;
+        }
+
+        @Override
+        public void request(long l) {
+            if (Operators.validate(l)) {
+                Operators.addCap(REQUESTED, this, l);
+                drain();
+            }
+        }
+
+        private void drain() {
+            if (WIP.getAndIncrement(this) != 0) {
+                return;
+            }
+
+            // On the first request or once the iterator is consumed request a page.
+            if (needToRequestPage()) {
+                requestPage();
+            }
+
+            int missed = 1;
+            while (true) {
+                if (cancelled) {
+                    return;
+                }
+
+                if (REQUESTED.get(this) > 0) {
+                    boolean emitted = false;
+                    // read d before next to avoid race
+                    boolean d = done;
+                    if (hasNext()) {
+                        subscriber.onNext(getNext());
+                        emitted = true;
+                    }
+
+                    if (d) {
+                        if (error != null) {
+                            subscriber.onError(error);
+                        } else {
+                            subscriber.onComplete();
+                        }
+
+                        // exit without reducing wip so that further drains will be NOOP
+                        return;
+                    }
+
+                    if (emitted) {
+                        // do this after checking d to avoid calling read
+                        // when done
+                        Operators.produced(REQUESTED, this, 1);
+                    }
+                }
+
+                missed = WIP.addAndGet(this, -missed);
+                if (missed == 0) {
+                    return;
+                }
+            }
+        }
+
+        abstract boolean needToRequestPage();
+        abstract boolean hasNext();
+        abstract U getNext();
+
+        private void requestPage() {
+            CountDownLatch countDownLatch = new CountDownLatch(1);
+            pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize)
+                .singleOrEmpty()
+                .subscribe(this::setNext, this::setError, countDownLatch::countDown);
+
+            try {
+                countDownLatch.await();
+            } catch (InterruptedException ex) {
+                error = ex;
+            }
+        }
+
+        abstract void setNext(P page);
+
+        private synchronized void setError(Throwable error) {
+            this.error = error;
+        }
+
+        @Override
+        public final void cancel() {
+            this.cancelled = true;
+        }
+    }
+
+    private static class PageSubscription<C, T, P extends ContinuablePage<C, T>>
+        extends BaseSubscription<C, T, P, P, P> {
+        PageSubscription(Subscriber<? super P> subscriber, ContinuationState<C> continuationState,
+            PageRetriever<C, P> pageRetriever, Integer defaultPageSize) {
+            super(subscriber, continuationState, pageRetriever, defaultPageSize);
+        }
+
+        @Override
+        boolean needToRequestPage() {
+            return next == null;
+        }
+
+        @Override
+        boolean hasNext() {
+            return next != null;
+        }
+
+        @Override
+        P getNext() {
+            return next;
+        }
+
+        @Override
+        synchronized void setNext(P page) {
+            this.done = page.getContinuationToken() == null;
+            this.next = page;
+        }
+    }
+
+    private static class ItemSubscription<C, T, P extends ContinuablePage<C, T>>
+        extends BaseSubscription<C, T, P, T, Iterator<T>> {
+        ItemSubscription(Subscriber<? super T> subscriber, ContinuationState<C> continuationState,
+            PageRetriever<C, P> pageRetriever, Integer defaultPageSize) {
+            super(subscriber, continuationState, pageRetriever, defaultPageSize);
+        }
+
+        @Override
+        boolean needToRequestPage() {
+            return next == null || !next.hasNext();
+        }
+
+        @Override
+        boolean hasNext() {
+            return next != null && next.hasNext();
+        }
+
+        @Override
+        T getNext() {
+            return next.next();
+        }
+
+        @Override
+        void setNext(P page) {
+            this.done = page.getContinuationToken() == null;
+            this.next = page.getElements().iterator();
         }
     }
 }
