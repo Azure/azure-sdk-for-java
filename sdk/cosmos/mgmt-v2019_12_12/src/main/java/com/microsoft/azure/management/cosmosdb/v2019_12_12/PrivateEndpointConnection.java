@@ -23,6 +23,11 @@ import com.microsoft.azure.management.cosmosdb.v2019_12_12.implementation.Cosmos
  */
 public interface PrivateEndpointConnection extends HasInner<PrivateEndpointConnectionInner>, Indexable, Refreshable<PrivateEndpointConnection>, Updatable<PrivateEndpointConnection.Update>, HasManager<CosmosDBManager> {
     /**
+     * @return the groupId value.
+     */
+    String groupId();
+
+    /**
      * @return the id value.
      */
     String id();
@@ -41,6 +46,11 @@ public interface PrivateEndpointConnection extends HasInner<PrivateEndpointConne
      * @return the privateLinkServiceConnectionState value.
      */
     PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState();
+
+    /**
+     * @return the provisioningState value.
+     */
+    String provisioningState();
 
     /**
      * @return the type value.
@@ -77,6 +87,18 @@ public interface PrivateEndpointConnection extends HasInner<PrivateEndpointConne
         }
 
         /**
+         * The stage of the privateendpointconnection definition allowing to specify GroupId.
+         */
+        interface WithGroupId {
+            /**
+             * Specifies groupId.
+             * @param groupId Group id of the private endpoint
+             * @return the next definition stage
+             */
+            WithCreate withGroupId(String groupId);
+        }
+
+        /**
          * The stage of the privateendpointconnection definition allowing to specify PrivateEndpoint.
          */
         interface WithPrivateEndpoint {
@@ -101,23 +123,47 @@ public interface PrivateEndpointConnection extends HasInner<PrivateEndpointConne
         }
 
         /**
+         * The stage of the privateendpointconnection definition allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             * @param provisioningState Provisioning state of the private endpoint
+             * @return the next definition stage
+             */
+            WithCreate withProvisioningState(String provisioningState);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<PrivateEndpointConnection>, DefinitionStages.WithPrivateEndpoint, DefinitionStages.WithPrivateLinkServiceConnectionState {
+        interface WithCreate extends Creatable<PrivateEndpointConnection>, DefinitionStages.WithGroupId, DefinitionStages.WithPrivateEndpoint, DefinitionStages.WithPrivateLinkServiceConnectionState, DefinitionStages.WithProvisioningState {
         }
     }
     /**
      * The template for a PrivateEndpointConnection update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PrivateEndpointConnection>, UpdateStages.WithPrivateEndpoint, UpdateStages.WithPrivateLinkServiceConnectionState {
+    interface Update extends Appliable<PrivateEndpointConnection>, UpdateStages.WithGroupId, UpdateStages.WithPrivateEndpoint, UpdateStages.WithPrivateLinkServiceConnectionState, UpdateStages.WithProvisioningState {
     }
 
     /**
      * Grouping of PrivateEndpointConnection update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the privateendpointconnection update allowing to specify GroupId.
+         */
+        interface WithGroupId {
+            /**
+             * Specifies groupId.
+             * @param groupId Group id of the private endpoint
+             * @return the next update stage
+             */
+            Update withGroupId(String groupId);
+        }
+
         /**
          * The stage of the privateendpointconnection update allowing to specify PrivateEndpoint.
          */
@@ -140,6 +186,18 @@ public interface PrivateEndpointConnection extends HasInner<PrivateEndpointConne
              * @return the next update stage
              */
             Update withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState);
+        }
+
+        /**
+         * The stage of the privateendpointconnection update allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             * @param provisioningState Provisioning state of the private endpoint
+             * @return the next update stage
+             */
+            Update withProvisioningState(String provisioningState);
         }
 
     }
