@@ -31,7 +31,6 @@ import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -421,7 +420,6 @@ public class EventHubClientBuilder {
             states.forEach((partitionId, state) -> {
                 this.initialPartitionPublishingStates.put(partitionId, new PartitionPublishingState(state));
             });
-            this.initialPartitionPublishingStates = Collections.unmodifiableMap(this.initialPartitionPublishingStates);
         } else {
             this.initialPartitionPublishingStates = null;
         }
