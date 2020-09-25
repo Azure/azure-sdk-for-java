@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @JsonSerialize(using = RntbdEndpointStatistics.RntbdEndpointStatsJsonSerializer.class)
 public class RntbdEndpointStatistics implements Serializable {
-
+    private static final long serialVersionUID = 1L;
 
     RntbdEndpointStatistics availableChannels(int availableChannels) {
         this.availableChannels = availableChannels;
