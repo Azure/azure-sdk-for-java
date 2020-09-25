@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.dns.implementation;
 
-import com.azure.resourcemanager.dns.models.NSRecordSet;
+import com.azure.resourcemanager.dns.models.NsRecordSet;
 import com.azure.resourcemanager.dns.models.NsRecord;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/** Implementation of NSRecordSet. */
-class NSRecordSetImpl extends DnsRecordSetImpl implements NSRecordSet {
-    NSRecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
+/** Implementation of NsRecordSet. */
+class NsRecordSetImpl extends DnsRecordSetImpl implements NsRecordSet {
+    NsRecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, RecordType.NS.toString(), parent, innerModel);
     }
 
-    static NSRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
-        return new NSRecordSetImpl(name, parent, new RecordSetInner().withNsRecords(new ArrayList<NsRecord>()));
+    static NsRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
+        return new NsRecordSetImpl(name, parent, new RecordSetInner().withNsRecords(new ArrayList<NsRecord>()));
     }
 
     @Override

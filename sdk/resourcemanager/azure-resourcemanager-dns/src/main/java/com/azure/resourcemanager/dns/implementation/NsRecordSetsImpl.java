@@ -4,26 +4,26 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.dns.models.CNameRecordSet;
-import com.azure.resourcemanager.dns.models.CNameRecordSets;
+import com.azure.resourcemanager.dns.models.NsRecordSet;
+import com.azure.resourcemanager.dns.models.NsRecordSets;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import reactor.core.publisher.Mono;
 
-/** Implementation of CNameRecordSets. */
-class CNameRecordSetsImpl extends DnsRecordSetsBaseImpl<CNameRecordSet, CNameRecordSetImpl> implements CNameRecordSets {
+/** Implementation of NsRecordSets. */
+class NsRecordSetsImpl extends DnsRecordSetsBaseImpl<NsRecordSet, NsRecordSetImpl> implements NsRecordSets {
 
-    CNameRecordSetsImpl(DnsZoneImpl dnsZone) {
-        super(dnsZone, RecordType.CNAME);
+    NsRecordSetsImpl(DnsZoneImpl dnsZone) {
+        super(dnsZone, RecordType.NS);
     }
 
     @Override
-    public CNameRecordSet getByName(String name) {
+    public NsRecordSet getByName(String name) {
         return getByNameAsync(name).block();
     }
 
     @Override
-    public Mono<CNameRecordSet> getByNameAsync(String name) {
+    public Mono<NsRecordSet> getByNameAsync(String name) {
         return this
             .parent()
             .manager()
@@ -34,7 +34,7 @@ class CNameRecordSetsImpl extends DnsRecordSetsBaseImpl<CNameRecordSet, CNameRec
     }
 
     @Override
-    protected PagedIterable<CNameRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
+    protected PagedIterable<NsRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
         return super
             .wrapList(
                 this
@@ -51,7 +51,7 @@ class CNameRecordSetsImpl extends DnsRecordSetsBaseImpl<CNameRecordSet, CNameRec
     }
 
     @Override
-    protected PagedFlux<CNameRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
+    protected PagedFlux<NsRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
         return wrapPageAsync(
             this
                 .parent()
@@ -62,10 +62,10 @@ class CNameRecordSetsImpl extends DnsRecordSetsBaseImpl<CNameRecordSet, CNameRec
     }
 
     @Override
-    protected CNameRecordSetImpl wrapModel(RecordSetInner inner) {
+    protected NsRecordSetImpl wrapModel(RecordSetInner inner) {
         if (inner == null) {
             return null;
         }
-        return new CNameRecordSetImpl(inner.name(), this.dnsZone, inner);
+        return new NsRecordSetImpl(inner.name(), this.dnsZone, inner);
     }
 }
