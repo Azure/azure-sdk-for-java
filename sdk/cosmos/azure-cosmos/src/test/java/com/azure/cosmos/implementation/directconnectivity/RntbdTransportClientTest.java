@@ -874,6 +874,11 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
+        public long lastSuccessfulRequestNanoTime() {
+            return 0;
+        }
+
+        @Override
         public int channelsMetrics() {
             return 0;
         }
