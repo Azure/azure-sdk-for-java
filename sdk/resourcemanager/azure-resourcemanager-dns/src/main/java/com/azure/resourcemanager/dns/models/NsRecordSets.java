@@ -4,7 +4,7 @@ package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** Entry point to CNAME record sets in a DNS zone. */
+/** Entry point to NS record sets in an Azure DNS zone. */
 @Fluent
-public interface CNameRecordSets extends DnsRecordSets<CNameRecordSet> {
+public interface NsRecordSets extends DnsRecordSets<NsRecordSet> {
 }

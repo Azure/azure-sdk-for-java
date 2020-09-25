@@ -16,7 +16,7 @@ import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.dns.models.ARecordSet;
-import com.azure.resourcemanager.dns.models.CNameRecordSet;
+import com.azure.resourcemanager.dns.models.CnameRecordSet;
 import com.azure.resourcemanager.dns.models.DnsRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
@@ -162,11 +162,11 @@ public class ManageDns {
             // Prints the CName and A Records in the root DNS zone
             //
             System.out.println("Getting CName record set in the root DNS zone " + customDomainName + "...");
-            PagedIterable<CNameRecordSet> cnameRecordSets = rootDnsZone
+            PagedIterable<CnameRecordSet> cnameRecordSets = rootDnsZone
                     .cNameRecordSets()
                     .list();
 
-            for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
+            for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
                 System.out.println("Name: " + cnameRecordSet.name() + " Canonical Name: " + cnameRecordSet.canonicalName());
             }
 

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.dns.implementation;
 
-import com.azure.resourcemanager.dns.models.MXRecordSet;
+import com.azure.resourcemanager.dns.models.MxRecordSet;
 import com.azure.resourcemanager.dns.models.MxRecord;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/** Implementation of MXRecordSet. */
-class MXRecordSetImpl extends DnsRecordSetImpl implements MXRecordSet {
-    MXRecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
+/** Implementation of MxRecordSet. */
+class MxRecordSetImpl extends DnsRecordSetImpl implements MxRecordSet {
+    MxRecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, RecordType.MX.toString(), parent, innerModel);
     }
 
-    static MXRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
-        return new MXRecordSetImpl(name, parent, new RecordSetInner().withMxRecords(new ArrayList<>()));
+    static MxRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
+        return new MxRecordSetImpl(name, parent, new RecordSetInner().withMxRecords(new ArrayList<>()));
     }
 
     @Override
