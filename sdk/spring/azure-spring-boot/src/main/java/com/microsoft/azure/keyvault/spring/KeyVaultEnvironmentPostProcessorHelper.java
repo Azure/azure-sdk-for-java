@@ -18,7 +18,6 @@ import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.microsoft.azure.keyvault.spring.KeyVaultProperties.Property;
 import com.microsoft.azure.telemetry.TelemetrySender;
 import java.util.Collections;
@@ -81,7 +80,6 @@ class KeyVaultEnvironmentPostProcessorHelper {
         final SecretClient secretClient = new SecretClientBuilder()
                 .vaultUrl(vaultUri)
                 .credential(tokenCredential)
-                .serviceVersion(SecretServiceVersion.V7_0)
                 .httpLogOptions(new HttpLogOptions().setApplicationId(AZURE_SPRING_KEY_VAULT))
                 .buildClient();
         try {
