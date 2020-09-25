@@ -46,6 +46,8 @@ public class CosmosException extends AzureException {
     private CosmosDiagnostics cosmosDiagnostics;
     private RequestTimeline requestTimeline;
     private CosmosError cosmosError;
+    private int rntbdChannelTaskQueueSize;
+
     private RntbdEndpointStatistics rntbdEndpointStatistics;
 
     long lsn;
@@ -54,6 +56,7 @@ public class CosmosException extends AzureException {
     Uri requestUri;
     String resourceAddress;
     private int requestPayloadLength;
+    private int rntbdPendingRequestQueueSize;
     private int rntbdRequestLength;
     private int rntbdResponseLength;
 
@@ -344,5 +347,21 @@ public class CosmosException extends AzureException {
 
     int getRequestPayloadLength() {
         return this.requestPayloadLength;
+    }
+
+    int getRntbdChannelTaskQueueSize() {
+        return this.rntbdChannelTaskQueueSize;
+    }
+
+    void setRntbdChannelTaskQueueSize(int rntbdChannelTaskQueueSize) {
+        this.rntbdChannelTaskQueueSize = rntbdChannelTaskQueueSize;
+    }
+
+    int getRntbdPendingRequestQueueSize() {
+        return this.rntbdChannelTaskQueueSize;
+    }
+
+    void setRntbdPendingRequestQueueSize(int rntbdPendingRequestQueueSize) {
+        this.rntbdPendingRequestQueueSize = rntbdPendingRequestQueueSize;
     }
 }

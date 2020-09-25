@@ -48,6 +48,8 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             "stage");
 
     private final RntbdRequestArgs args;
+    private volatile int channelTaskQueueLength;
+    private volatile int pendingRequestsQueueSize;
     private volatile RntbdEndpointStatistics serviceEndpointStatistics;
 
     private volatile int requestLength;
@@ -180,6 +182,22 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
     public void serviceEndpointStatistics(RntbdEndpointStatistics endpointMetrics) {
         this.serviceEndpointStatistics = endpointMetrics;
+    }
+
+    public int pendingRequestQueueSize() {
+        return this.pendingRequestsQueueSize;
+    }
+
+    public void pendingRequestQueueSize(int pendingRequestsQueueSize) {
+        this.pendingRequestsQueueSize = pendingRequestsQueueSize;
+    }
+
+    public int channelTaskQueueLength() {
+        return channelTaskQueueLength;
+    }
+
+    void channelTaskQueueLength(int value) {
+        this.channelTaskQueueLength = value;
     }
 
     public RntbdEndpointStatistics serviceEndpointStatistics() {

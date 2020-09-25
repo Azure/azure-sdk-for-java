@@ -207,6 +207,10 @@ public class StoreResult {
                 storeResult.storeResponse.getRequestPayloadLength() :  BridgeInternal.getRequestBodyLength(storeResult.exception));
             jsonGenerator.writeObjectField("responsePayloadLengthInBytes", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getResponseBodyLength() : null);
+            jsonGenerator.writeObjectField("channelTaskQueueSize", storeResult.storeResponse != null ? storeResult.storeResponse.getRntbdChannelTaskQueueSize() :
+                BridgeInternal.getChannelTaskQueueSize(storeResult.exception));
+            jsonGenerator.writeObjectField("pendingRequestsCount", storeResult.storeResponse != null ? storeResult.storeResponse.getPendingRequestQueueSize() :
+                BridgeInternal.getRntbdPendingRequestQueueSize(storeResult.exception));
             jsonGenerator.writeObjectField("serviceEndpointStatistics", storeResult.storeResponse != null ? storeResult.storeResponse.getEndpointStsts() :
                 storeResult.exception != null ? BridgeInternal.getServiceEndpointStatistics(storeResult.exception) : null);
 

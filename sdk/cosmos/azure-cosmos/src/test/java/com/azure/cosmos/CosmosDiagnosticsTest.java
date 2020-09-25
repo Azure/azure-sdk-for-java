@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -523,7 +524,105 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         CosmosItemResponse<Object> deleteItemResponse = container.deleteItem(testItem, null);
         // no request payload and no response payload
         validate(deleteItemResponse.getDiagnostics(), 0, 0);
+    }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void rntbdStatistics() throws Exception {
+        Instant beforeClientInitialization = Instant.now();
+
+        CosmosClient client1 = null;
+        try {
+
+            client1 = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .directMode()
+                .buildClient();
+
+            TestItem testItem = new TestItem();
+            testItem.id = UUID.randomUUID().toString();
+            testItem.mypk = UUID.randomUUID().toString();
+
+            int testItemLength = OBJECT_MAPPER.writeValueAsBytes(testItem).length;
+            CosmosContainer container = client1.getDatabase(this.cosmosAsyncContainer.getDatabase().getId()).getContainer(this.cosmosAsyncContainer.getId());
+
+            Thread.sleep(1000);
+
+            // create
+            // initializes the rntbd service endpoint
+            Instant beforeInitializingRntbdServiceEndpoint = Instant.now();
+            CosmosItemResponse<TestItem> operation1Response = container.upsertItem(testItem);
+            Instant afterInitializingRntbdServiceEndpoint = Instant.now();
+
+            Thread.sleep(1000);
+            Instant beforeOperation2 = Instant.now();
+            CosmosItemResponse<TestItem> operation2Response = container.upsertItem(testItem);
+            Instant afterOperation2 = Instant.now();
+
+            Thread.sleep(1000);
+            Instant beforeOperation3 = Instant.now();
+            CosmosItemResponse<TestItem> operation3Response = container.upsertItem(testItem);
+            Instant afterOperation3 = Instant.now();
+
+            validateRntbdStatistics(operation3Response.getDiagnostics(),
+                beforeClientInitialization,
+                beforeInitializingRntbdServiceEndpoint,
+                afterInitializingRntbdServiceEndpoint,
+                beforeOperation2,
+                afterOperation2,
+                beforeOperation3,
+                afterOperation3);
+            
+            // read
+            CosmosItemResponse<TestItem> readItemResponse = container.readItem(testItem.id, new PartitionKey(testItem.mypk), TestItem.class);
+            // no request payload and no response payload
+            validate(readItemResponse.getDiagnostics(), 0, ModelBridgeInternal.getPayloadLength(readItemResponse));
+
+            // delete
+            CosmosItemResponse<Object> deleteItemResponse = container.deleteItem(testItem, null);
+            // no request payload and no response payload
+            validate(deleteItemResponse.getDiagnostics(), 0, 0);
+        } finally {
+            LifeCycleUtils.closeQuietly(client1);
+        }
+    }
+
+    private void validateRntbdStatistics(CosmosDiagnostics cosmosDiagnostics,
+                                         Instant clientInitializationTime,
+                                         Instant beforeInitializingRntbdServiceEndpoint,
+                                         Instant afterInitializingRntbdServiceEndpoint,
+                                         Instant beforeOperation2,
+                                         Instant afterOperation2,
+                                         Instant beforeOperation3,
+                                         Instant afterOperation3) throws Exception {
+        ObjectNode diagnostics = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
+        JsonNode responseStatisticsList = diagnostics.get("responseStatisticsList");
+        assertThat(responseStatisticsList.isArray()).isTrue();
+        assertThat(responseStatisticsList.size()).isGreaterThan(0);
+        JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+        assertThat(storeResult).isNotNull();
+
+        boolean hasPayload = storeResult.get("exception").isNull();
+        assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThan(0);
+        assertThat(storeResult.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
+
+        JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
+        assertThat(serviceEndpointStatistics).isNotNull();
+
+        assertThat(serviceEndpointStatistics.get("availableChannels").asInt(-1)).isGreaterThan(0);
+        // no concurrent work
+        assertThat(serviceEndpointStatistics.get("acquiredChannels").asInt(-1)).isEqualTo(0);
+        // current request
+        assertThat(serviceEndpointStatistics.get("inflightRequests").asInt(-1)).isEqualTo(1);
+
+        assertThat(serviceEndpointStatistics.get("isClosed").asBoolean()).isEqualTo(false);
+
+        // first request initialized the rntbd service endpoint
+        assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText())).isAfterOrEqualTo(beforeInitializingRntbdServiceEndpoint);
+        assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText())).isBeforeOrEqualTo(afterInitializingRntbdServiceEndpoint);
+
+        assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText())).isAfterOrEqualTo(beforeOperation2).isBeforeOrEqualTo(afterOperation2);
+        assertThat(Instant.parse(serviceEndpointStatistics.get("lastSuccessfulRequestTime").asText())).isAfterOrEqualTo(beforeOperation2).isBeforeOrEqualTo(afterOperation2);
     }
 
     private void validate(CosmosDiagnostics cosmosDiagnostics, int expectedRequestPayloadSize, int expectedResponsePayloadSize) throws Exception {

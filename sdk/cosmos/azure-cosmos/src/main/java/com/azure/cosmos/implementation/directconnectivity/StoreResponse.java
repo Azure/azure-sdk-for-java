@@ -25,8 +25,10 @@ public class StoreResponse {
     final private byte[] content;
 
     private CosmosDiagnostics cosmosDiagnostics;
+    private int pendingRequestQueueSize;
     private int requestPayloadLength;
     private RequestTimeline requestTimeline;
+    private int rntbdChannelTaskQueueSize;
     private RntbdEndpointStatistics rntbdEndpointStatistics;
     private int rntbdRequestLength;
     private int rntbdResponseLength;
@@ -62,6 +64,22 @@ public class StoreResponse {
 
     public String[] getResponseHeaderValues() {
         return responseHeaderValues;
+    }
+
+    public int getRntbdChannelTaskQueueSize() {
+        return rntbdChannelTaskQueueSize;
+    }
+
+    public void setRntbdChannelTaskQueueSize(int rntbdChannelTaskQueueSize) {
+        this.rntbdChannelTaskQueueSize = rntbdChannelTaskQueueSize;
+    }
+
+    public int getPendingRequestQueueSize() {
+        return this.pendingRequestQueueSize;
+    }
+
+    public void setRntbdPendingRequestSize(int pendingRequestQueueSize) {
+        this.pendingRequestQueueSize = pendingRequestQueueSize;
     }
 
     public void setRntbdRequestLength(int rntbdRequestLength) {
@@ -144,7 +162,7 @@ public class StoreResponse {
         return this.requestTimeline;
     }
 
-    void setEndpointStats(RntbdEndpointStatistics rntbdEndpointStatistics) {
+    void setEndpointStatistics(RntbdEndpointStatistics rntbdEndpointStatistics) {
         this.rntbdEndpointStatistics = rntbdEndpointStatistics;
     }
 
