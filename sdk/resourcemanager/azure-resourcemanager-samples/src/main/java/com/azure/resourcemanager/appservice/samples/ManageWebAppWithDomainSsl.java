@@ -43,10 +43,10 @@ public final class ManageWebAppWithDomainSsl {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         // New resources
-        final String app1Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp2-", 20);
-        final String rgName         = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgNEMV_", 24);
-        final String domainName     = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
+        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String app2Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp2-", 20);
+        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgNEMV_", 24);
+        final String domainName     = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("jsdkdemo-", 20) + ".com";
         final String certPassword   = Utils.password();
 
         try {

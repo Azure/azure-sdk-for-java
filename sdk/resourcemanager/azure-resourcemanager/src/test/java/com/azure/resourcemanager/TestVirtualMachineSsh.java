@@ -23,7 +23,7 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().resourceManager().sdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
 
         final String sshKey =
             "ssh-rsa"

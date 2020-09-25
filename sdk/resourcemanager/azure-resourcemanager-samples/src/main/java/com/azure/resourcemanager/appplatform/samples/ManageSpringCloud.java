@@ -72,13 +72,13 @@ public class ManageSpringCloud {
      * @throws IllegalStateException unexcepted state
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg", 24);
-        final String serviceName  = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("service", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 24);
+        final String serviceName  = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("service", 24);
         final Region region = Region.US_EAST;
-        final String domainName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
-        final String certOrderName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("cert", 15);
-        final String vaultName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vault", 15);
-        final String certName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("cert", 15);
+        final String domainName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("jsdkdemo-", 20) + ".com";
+        final String certOrderName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("cert", 15);
+        final String vaultName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vault", 15);
+        final String certName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("cert", 15);
 
         try {
             azureResourceManager.resourceGroups().define(rgName)

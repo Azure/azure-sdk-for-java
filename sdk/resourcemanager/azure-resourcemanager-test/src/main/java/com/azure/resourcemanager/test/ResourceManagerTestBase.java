@@ -279,29 +279,29 @@ public abstract class ResourceManagerTestBase extends TestBase {
     /**
      * Sets sdk context when running the tests
      *
-     * @param sdkContext the sdkContext
-     * @param objects the manager classes to change sdkContext
-     * @param <SdkContext> the type of sdk context
+     * @param internalContext the internal runtime context
+     * @param objects the manager classes to change internal context
+     * @param <InternalContext> the type of internal context
      * @throws RuntimeException when field cannot be found or set.
      */
-    protected <SdkContext> void setSdkContext(SdkContext sdkContext, Object... objects) {
+    protected <InternalContext> void setInternalContext(InternalContext internalContext, Object... objects) {
         try {
             for (Object obj : objects) {
                 for (final Field field : obj.getClass().getSuperclass().getDeclaredFields()) {
                     if (field.getName().equals("resourceManager")) {
                         setAccessible(field);
-                        Field context = field.get(obj).getClass().getDeclaredField("sdkContext");
+                        Field context = field.get(obj).getClass().getDeclaredField("internalContext");
                         setAccessible(context);
-                        context.set(field.get(obj), sdkContext);
+                        context.set(field.get(obj), internalContext);
                     }
                 }
                 for (Field field : obj.getClass().getDeclaredFields()) {
-                    if (field.getName().equals("sdkContext")) {
+                    if (field.getName().equals("internalContext")) {
                         setAccessible(field);
-                        field.set(obj, sdkContext);
+                        field.set(obj, internalContext);
                     } else if (field.getName().contains("Manager")) {
                         setAccessible(field);
-                        setSdkContext(sdkContext, field.get(obj));
+                        setInternalContext(internalContext, field.get(obj));
                     }
                 }
             }

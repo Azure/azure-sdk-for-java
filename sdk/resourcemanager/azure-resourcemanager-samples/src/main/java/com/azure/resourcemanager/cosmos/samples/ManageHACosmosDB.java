@@ -41,8 +41,8 @@ public final class ManageHACosmosDB {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String docDBName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("docDb", 10);
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgNEMV", 24);
+        final String docDBName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("docDb", 10);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgNEMV", 24);
 
         try {
             //============================================================

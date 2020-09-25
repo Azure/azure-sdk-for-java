@@ -39,13 +39,13 @@ public class ManagePrivateDns {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgNEMV", 24);
-        final String vnetName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vnetwork-1", 24);
-        final String subnetName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("subnet-1", 24);
-        final String linkName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vnlink-1", 24);
-        final String vm1Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vm1-", 24);
-        final String vm2Name = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vm2-", 24);
-        final String rsName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("recordset1-", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgNEMV", 24);
+        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnetwork-1", 24);
+        final String subnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("subnet-1", 24);
+        final String linkName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnlink-1", 24);
+        final String vm1Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vm1-", 24);
+        final String vm2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vm2-", 24);
+        final String rsName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("recordset1-", 24);
         final String userName = "tirekicker";
         final String password = Utils.password();
 

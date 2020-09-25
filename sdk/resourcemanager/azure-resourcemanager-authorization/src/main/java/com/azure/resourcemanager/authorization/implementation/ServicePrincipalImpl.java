@@ -194,7 +194,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                         roleEntry ->
                             manager()
                                 .roleAssignments()
-                                .define(this.manager().sdkContext().randomUuid())
+                                .define(this.manager().internalContext().randomUuid())
                                 .forServicePrincipal(servicePrincipal)
                                 .withBuiltInRole(roleEntry.getValue())
                                 .withScope(roleEntry.getKey())

@@ -374,7 +374,7 @@ class NetworkPeeringImpl
                                 .defer(
                                     () -> {
                                         // No matching remote peering, so create one on the remote network
-                                        String peeringName = this.manager().resourceManager().sdkContext()
+                                        String peeringName = this.manager().resourceManager().internalContext()
                                             .randomResourceName("peer", 15);
 
                                         WithCreate remotePeeringDefinition =

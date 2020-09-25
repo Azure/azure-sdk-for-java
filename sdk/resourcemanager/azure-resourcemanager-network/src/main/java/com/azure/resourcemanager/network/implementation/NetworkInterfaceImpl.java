@@ -58,7 +58,7 @@ class NetworkInterfaceImpl
     NetworkInterfaceImpl(String name, NetworkInterfaceInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.nicName = name;
-        this.namer = this.manager().resourceManager().sdkContext().createIdentifierProvider(this.nicName);
+        this.namer = this.manager().resourceManager().internalContext().createIdentifierProvider(this.nicName);
         initializeChildrenFromInner();
     }
 

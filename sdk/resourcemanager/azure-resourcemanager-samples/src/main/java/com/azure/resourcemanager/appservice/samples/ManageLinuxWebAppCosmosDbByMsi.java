@@ -34,12 +34,12 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
         return true;
 //        // New resources
 //        final Region region         = Region.US_WEST;
-//        final String acrName        = azure.sdkContext().randomResourceName("acr", 20);
-//        final String appName        = azure.sdkContext().randomResourceName("webapp1-", 20);
-//        final String password       = SdkContext.randomUuid();
-//        final String rgName         = azure.sdkContext().randomResourceName("rg1NEMV_", 24);
-//        final String vaultName      = azure.sdkContext().randomResourceName("vault", 20);
-//        final String cosmosName     = azure.sdkContext().randomResourceName("cosmosdb", 20);
+//        final String acrName        = azure.internalContext().randomResourceName("acr", 20);
+//        final String appName        = azure.internalContext().randomResourceName("webapp1-", 20);
+//        final String password       = ResourceManagerUtils.InternalRuntimeContext.randomUuid();
+//        final String rgName         = azure.internalContext().randomResourceName("rg1NEMV_", 24);
+//        final String vaultName      = azure.internalContext().randomResourceName("vault", 20);
+//        final String cosmosName     = azure.internalContext().randomResourceName("cosmosdb", 20);
 //
 //        try {
 //            //============================================================
@@ -89,7 +89,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //                        .attach()
 //                    .create();
 //
-//            SdkContext.sleep(10000);
+//            ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
 //
 //            KeyVaultClient client = new KeyVaultClient(new KeyVaultCredentials() {
 //                @Override

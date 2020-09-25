@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -36,14 +36,14 @@ public class ManageLinuxFunctionAppSourceControl {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("webapp2-", 20);
+        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String app2Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp2-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
-        final String plan1Name      = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("plan1-", 20);
-        final String plan2Name      = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("plan2-", 20);
-        final String storage1Name   = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("storage1", 20);
-        final String rgName         = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String plan1Name      = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("plan1-", 20);
+        final String plan2Name      = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("plan2-", 20);
+        final String storage1Name   = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("storage1", 20);
+        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 
@@ -75,7 +75,7 @@ public class ManageLinuxFunctionAppSourceControl {
                 if (response != null && response.contains("Hello")) {
                     break;
                 }
-                SdkContext.sleep(10 * 1000);
+                ResourceManagerUtils.InternalRuntimeContext.sleep(10 * 1000);
             }
 
             // call function
@@ -112,7 +112,7 @@ public class ManageLinuxFunctionAppSourceControl {
                 if (response != null && response.contains("Hello")) {
                     break;
                 }
-                SdkContext.sleep(10 * 1000);
+                ResourceManagerUtils.InternalRuntimeContext.sleep(10 * 1000);
             }
 
             // call function

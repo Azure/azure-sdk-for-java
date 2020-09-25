@@ -54,18 +54,18 @@ public final class ManageVirtualNetworkAsync {
      * @return true if sample runs successfully
      */
     public static boolean runSample(final AzureResourceManager azureResourceManager) {
-        final String vnetName1 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vnet1", 20);
-        final String vnetName2 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vnet2", 20);
+        final String vnetName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet1", 20);
+        final String vnetName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet2", 20);
         final String vnet1FrontEndSubnetName = "frontend";
         final String vnet1BackEndSubnetName = "backend";
         final String vnet1FrontEndSubnetNsgName = "frontendnsg";
         final String vnet1BackEndSubnetNsgName = "backendnsg";
-        final String frontEndVMName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("fevm", 24);
-        final String backEndVMName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("bevm", 24);
-        final String publicIPAddressLeafDnsForFrontEndVM = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("pip1", 24);
+        final String frontEndVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("fevm", 24);
+        final String backEndVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("bevm", 24);
+        final String publicIPAddressLeafDnsForFrontEndVM = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip1", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgNEMV", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgNEMV", 24);
 
         try {
             //============================================================
