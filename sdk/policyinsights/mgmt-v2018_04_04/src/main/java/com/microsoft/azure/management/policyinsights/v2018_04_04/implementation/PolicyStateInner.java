@@ -180,7 +180,7 @@ public class PolicyStateInner {
     private String policySetDefinitionParameters;
 
     /**
-     * Comma seperated list of management group IDs, which represent the
+     * Comma separated list of management group IDs, which represent the
      * hierarchy of the management groups the resource is under.
      */
     @JsonProperty(value = "managementGroupIds")
@@ -194,7 +194,7 @@ public class PolicyStateInner {
     private String policyDefinitionReferenceId;
 
     /**
-     * Get the additionalProperties value.
+     * Get unmatched properties from the message are deserialized this collection.
      *
      * @return the additionalProperties value
      */
@@ -203,7 +203,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the additionalProperties value.
+     * Set unmatched properties from the message are deserialized this collection.
      *
      * @param additionalProperties the additionalProperties value to set
      * @return the PolicyStateInner object itself.
@@ -214,7 +214,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the odataid value.
+     * Get oData entity ID; always set to null since policy state records do not have an entity ID.
      *
      * @return the odataid value
      */
@@ -223,7 +223,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the odataid value.
+     * Set oData entity ID; always set to null since policy state records do not have an entity ID.
      *
      * @param odataid the odataid value to set
      * @return the PolicyStateInner object itself.
@@ -234,7 +234,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the odatacontext value.
+     * Get oData context string; used by OData clients to resolve type information based on metadata.
      *
      * @return the odatacontext value
      */
@@ -243,7 +243,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the odatacontext value.
+     * Set oData context string; used by OData clients to resolve type information based on metadata.
      *
      * @param odatacontext the odatacontext value to set
      * @return the PolicyStateInner object itself.
@@ -254,7 +254,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the timestamp value.
+     * Get timestamp for the policy state record.
      *
      * @return the timestamp value
      */
@@ -263,7 +263,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the timestamp value.
+     * Set timestamp for the policy state record.
      *
      * @param timestamp the timestamp value to set
      * @return the PolicyStateInner object itself.
@@ -274,7 +274,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the resourceId value.
+     * Get resource ID.
      *
      * @return the resourceId value
      */
@@ -283,7 +283,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the resourceId value.
+     * Set resource ID.
      *
      * @param resourceId the resourceId value to set
      * @return the PolicyStateInner object itself.
@@ -294,7 +294,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policyAssignmentId value.
+     * Get policy assignment ID.
      *
      * @return the policyAssignmentId value
      */
@@ -303,7 +303,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policyAssignmentId value.
+     * Set policy assignment ID.
      *
      * @param policyAssignmentId the policyAssignmentId value to set
      * @return the PolicyStateInner object itself.
@@ -314,7 +314,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policyDefinitionId value.
+     * Get policy definition ID.
      *
      * @return the policyDefinitionId value
      */
@@ -323,7 +323,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policyDefinitionId value.
+     * Set policy definition ID.
      *
      * @param policyDefinitionId the policyDefinitionId value to set
      * @return the PolicyStateInner object itself.
@@ -334,7 +334,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the effectiveParameters value.
+     * Get effective parameters for the policy assignment.
      *
      * @return the effectiveParameters value
      */
@@ -343,7 +343,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the effectiveParameters value.
+     * Set effective parameters for the policy assignment.
      *
      * @param effectiveParameters the effectiveParameters value to set
      * @return the PolicyStateInner object itself.
@@ -354,7 +354,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the isCompliant value.
+     * Get flag which states whether the resource is compliant against the policy assignment it was evaluated against.
      *
      * @return the isCompliant value
      */
@@ -363,7 +363,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the isCompliant value.
+     * Set flag which states whether the resource is compliant against the policy assignment it was evaluated against.
      *
      * @param isCompliant the isCompliant value to set
      * @return the PolicyStateInner object itself.
@@ -374,7 +374,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the subscriptionId value.
+     * Get subscription ID.
      *
      * @return the subscriptionId value
      */
@@ -383,7 +383,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the subscriptionId value.
+     * Set subscription ID.
      *
      * @param subscriptionId the subscriptionId value to set
      * @return the PolicyStateInner object itself.
@@ -394,7 +394,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the resourceType value.
+     * Get resource type.
      *
      * @return the resourceType value
      */
@@ -403,7 +403,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the resourceType value.
+     * Set resource type.
      *
      * @param resourceType the resourceType value to set
      * @return the PolicyStateInner object itself.
@@ -414,7 +414,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the resourceLocation value.
+     * Get resource location.
      *
      * @return the resourceLocation value
      */
@@ -423,7 +423,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the resourceLocation value.
+     * Set resource location.
      *
      * @param resourceLocation the resourceLocation value to set
      * @return the PolicyStateInner object itself.
@@ -434,7 +434,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the resourceGroup value.
+     * Get resource group name.
      *
      * @return the resourceGroup value
      */
@@ -443,7 +443,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the resourceGroup value.
+     * Set resource group name.
      *
      * @param resourceGroup the resourceGroup value to set
      * @return the PolicyStateInner object itself.
@@ -454,7 +454,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the resourceTags value.
+     * Get list of resource tags.
      *
      * @return the resourceTags value
      */
@@ -463,7 +463,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the resourceTags value.
+     * Set list of resource tags.
      *
      * @param resourceTags the resourceTags value to set
      * @return the PolicyStateInner object itself.
@@ -474,7 +474,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policyAssignmentName value.
+     * Get policy assignment name.
      *
      * @return the policyAssignmentName value
      */
@@ -483,7 +483,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policyAssignmentName value.
+     * Set policy assignment name.
      *
      * @param policyAssignmentName the policyAssignmentName value to set
      * @return the PolicyStateInner object itself.
@@ -494,7 +494,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policyAssignmentOwner value.
+     * Get policy assignment owner.
      *
      * @return the policyAssignmentOwner value
      */
@@ -503,7 +503,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policyAssignmentOwner value.
+     * Set policy assignment owner.
      *
      * @param policyAssignmentOwner the policyAssignmentOwner value to set
      * @return the PolicyStateInner object itself.
@@ -514,7 +514,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policyAssignmentParameters value.
+     * Get policy assignment parameters.
      *
      * @return the policyAssignmentParameters value
      */
@@ -523,7 +523,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policyAssignmentParameters value.
+     * Set policy assignment parameters.
      *
      * @param policyAssignmentParameters the policyAssignmentParameters value to set
      * @return the PolicyStateInner object itself.
@@ -534,7 +534,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policyAssignmentScope value.
+     * Get policy assignment scope.
      *
      * @return the policyAssignmentScope value
      */
@@ -543,7 +543,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policyAssignmentScope value.
+     * Set policy assignment scope.
      *
      * @param policyAssignmentScope the policyAssignmentScope value to set
      * @return the PolicyStateInner object itself.
@@ -554,7 +554,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policyDefinitionName value.
+     * Get policy definition name.
      *
      * @return the policyDefinitionName value
      */
@@ -563,7 +563,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policyDefinitionName value.
+     * Set policy definition name.
      *
      * @param policyDefinitionName the policyDefinitionName value to set
      * @return the PolicyStateInner object itself.
@@ -574,7 +574,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policyDefinitionAction value.
+     * Get policy definition action, i.e. effect.
      *
      * @return the policyDefinitionAction value
      */
@@ -583,7 +583,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policyDefinitionAction value.
+     * Set policy definition action, i.e. effect.
      *
      * @param policyDefinitionAction the policyDefinitionAction value to set
      * @return the PolicyStateInner object itself.
@@ -594,7 +594,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policyDefinitionCategory value.
+     * Get policy definition category.
      *
      * @return the policyDefinitionCategory value
      */
@@ -603,7 +603,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policyDefinitionCategory value.
+     * Set policy definition category.
      *
      * @param policyDefinitionCategory the policyDefinitionCategory value to set
      * @return the PolicyStateInner object itself.
@@ -614,7 +614,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policySetDefinitionId value.
+     * Get policy set definition ID, if the policy assignment is for a policy set.
      *
      * @return the policySetDefinitionId value
      */
@@ -623,7 +623,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policySetDefinitionId value.
+     * Set policy set definition ID, if the policy assignment is for a policy set.
      *
      * @param policySetDefinitionId the policySetDefinitionId value to set
      * @return the PolicyStateInner object itself.
@@ -634,7 +634,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policySetDefinitionName value.
+     * Get policy set definition name, if the policy assignment is for a policy set.
      *
      * @return the policySetDefinitionName value
      */
@@ -643,7 +643,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policySetDefinitionName value.
+     * Set policy set definition name, if the policy assignment is for a policy set.
      *
      * @param policySetDefinitionName the policySetDefinitionName value to set
      * @return the PolicyStateInner object itself.
@@ -654,7 +654,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policySetDefinitionOwner value.
+     * Get policy set definition owner, if the policy assignment is for a policy set.
      *
      * @return the policySetDefinitionOwner value
      */
@@ -663,7 +663,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policySetDefinitionOwner value.
+     * Set policy set definition owner, if the policy assignment is for a policy set.
      *
      * @param policySetDefinitionOwner the policySetDefinitionOwner value to set
      * @return the PolicyStateInner object itself.
@@ -674,7 +674,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policySetDefinitionCategory value.
+     * Get policy set definition category, if the policy assignment is for a policy set.
      *
      * @return the policySetDefinitionCategory value
      */
@@ -683,7 +683,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policySetDefinitionCategory value.
+     * Set policy set definition category, if the policy assignment is for a policy set.
      *
      * @param policySetDefinitionCategory the policySetDefinitionCategory value to set
      * @return the PolicyStateInner object itself.
@@ -694,7 +694,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policySetDefinitionParameters value.
+     * Get policy set definition parameters, if the policy assignment is for a policy set.
      *
      * @return the policySetDefinitionParameters value
      */
@@ -703,7 +703,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policySetDefinitionParameters value.
+     * Set policy set definition parameters, if the policy assignment is for a policy set.
      *
      * @param policySetDefinitionParameters the policySetDefinitionParameters value to set
      * @return the PolicyStateInner object itself.
@@ -714,7 +714,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the managementGroupIds value.
+     * Get comma separated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
      *
      * @return the managementGroupIds value
      */
@@ -723,7 +723,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the managementGroupIds value.
+     * Set comma separated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
      *
      * @param managementGroupIds the managementGroupIds value to set
      * @return the PolicyStateInner object itself.
@@ -734,7 +734,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Get the policyDefinitionReferenceId value.
+     * Get reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
      *
      * @return the policyDefinitionReferenceId value
      */
@@ -743,7 +743,7 @@ public class PolicyStateInner {
     }
 
     /**
-     * Set the policyDefinitionReferenceId value.
+     * Set reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
      *
      * @param policyDefinitionReferenceId the policyDefinitionReferenceId value to set
      * @return the PolicyStateInner object itself.
