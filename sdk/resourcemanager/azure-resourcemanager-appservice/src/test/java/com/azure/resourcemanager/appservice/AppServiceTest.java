@@ -28,7 +28,7 @@ import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
-import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.core.management.Region;
@@ -59,7 +59,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;
     protected AppServiceManager appServiceManager;
-    protected MSIManager msiManager;
+    protected MsiManager msiManager;
 
     protected AppServiceDomain domain;
     protected AppServiceCertificateOrder certificateOrder;
@@ -93,7 +93,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
         appServiceManager = AppServiceManager.authenticate(httpPipeline, profile);
-        msiManager = MSIManager.authenticate(httpPipeline, profile);
+        msiManager = MsiManager.authenticate(httpPipeline, profile);
         setSdkContext(sdkContext, appServiceManager, msiManager);
 
         // useExistingDomainAndCertificate();

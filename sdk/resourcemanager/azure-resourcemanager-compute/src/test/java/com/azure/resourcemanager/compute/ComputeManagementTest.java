@@ -11,7 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
-import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.Network;
@@ -45,7 +45,7 @@ public abstract class ComputeManagementTest extends ResourceManagerTestBase {
     protected StorageManager storageManager;
     protected AuthorizationManager authorizationManager;
     protected KeyVaultManager keyVaultManager;
-    protected MSIManager msiManager;
+    protected MsiManager msiManager;
 
     @Override
     protected HttpPipeline buildHttpPipeline(
@@ -77,7 +77,7 @@ public abstract class ComputeManagementTest extends ResourceManagerTestBase {
         storageManager = StorageManager.authenticate(httpPipeline, profile);
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
         authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
-        msiManager = MSIManager.authenticate(httpPipeline, profile);
+        msiManager = MsiManager.authenticate(httpPipeline, profile);
         setSdkContext(sdkContext, computeManager, networkManager, keyVaultManager, msiManager);
     }
 

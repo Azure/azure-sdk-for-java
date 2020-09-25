@@ -6,7 +6,7 @@ package com.azure.resourcemanager.msi.implementation;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
-import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.msi.fluent.inner.IdentityInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -19,12 +19,12 @@ import java.util.Objects;
  * The implementation for Identity and its create and update interfaces.
  */
 public final class IdentityImpl
-        extends GroupableResourceImpl<Identity, IdentityInner, IdentityImpl, MSIManager>
+        extends GroupableResourceImpl<Identity, IdentityInner, IdentityImpl, MsiManager>
         implements Identity, Identity.Definition, Identity.Update {
 
     private RoleAssignmentHelper roleAssignmentHelper;
 
-    public IdentityImpl(String name, IdentityInner innerObject, MSIManager manager) {
+    public IdentityImpl(String name, IdentityInner innerObject, MsiManager manager) {
         super(name, innerObject, manager);
         this.roleAssignmentHelper = new RoleAssignmentHelper(manager.authorizationManager(),
             this.taskGroup(),

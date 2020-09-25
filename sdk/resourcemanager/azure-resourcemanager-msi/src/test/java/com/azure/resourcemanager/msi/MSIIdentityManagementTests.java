@@ -33,7 +33,7 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
     private String rgName = "";
     private Region region = Region.fromName("West Central US");
 
-    private MSIManager msiManager;
+    private MsiManager msiManager;
     private ResourceManager resourceManager;
 
     @Override
@@ -59,7 +59,7 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         SdkContext sdkContext = new SdkContext();
         sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile);
+        this.msiManager = MsiManager.authenticate(httpPipeline, profile);
         this.resourceManager = msiManager.resourceManager();
         setSdkContext(sdkContext, msiManager);
     }
