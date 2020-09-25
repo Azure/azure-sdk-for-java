@@ -41,7 +41,7 @@ public class GremlinResourcesInner {
     /** The Retrofit service to perform REST calls. */
     private GremlinResourcesService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of GremlinResourcesInner.
@@ -49,7 +49,7 @@ public class GremlinResourcesInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public GremlinResourcesInner(Retrofit retrofit, CosmosDBImpl client) {
+    public GremlinResourcesInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(GremlinResourcesService.class);
         this.client = client;
     }

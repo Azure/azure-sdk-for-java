@@ -34,7 +34,7 @@ public class CollectionPartitionsInner {
     /** The Retrofit service to perform REST calls. */
     private CollectionPartitionsService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of CollectionPartitionsInner.
@@ -42,7 +42,7 @@ public class CollectionPartitionsInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public CollectionPartitionsInner(Retrofit retrofit, CosmosDBImpl client) {
+    public CollectionPartitionsInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(CollectionPartitionsService.class);
         this.client = client;
     }

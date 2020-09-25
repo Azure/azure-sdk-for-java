@@ -13,8 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.MongoDBCollectionCreateUpdateParameters;
 import java.util.Map;
-import java.util.List;
-import com.microsoft.azure.management.cosmosdb.v2019_08_01.MongoIndex;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.MongoDBCollectionGetPropertiesResource;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.MongoDBCollectionResource;
 import rx.functions.Func1;
 
@@ -98,28 +97,8 @@ class MongoDBCollectionGetResultsImpl extends CreatableUpdatableImpl<MongoDBColl
     }
 
     @Override
-    public String _etag() {
-        return this.inner()._etag();
-    }
-
-    @Override
-    public String _rid() {
-        return this.inner()._rid();
-    }
-
-    @Override
-    public Object _ts() {
-        return this.inner()._ts();
-    }
-
-    @Override
     public String id() {
         return this.inner().id();
-    }
-
-    @Override
-    public List<MongoIndex> indexes() {
-        return this.inner().indexes();
     }
 
     @Override
@@ -128,18 +107,13 @@ class MongoDBCollectionGetResultsImpl extends CreatableUpdatableImpl<MongoDBColl
     }
 
     @Override
-    public String mongoDBCollectionGetResultsId() {
-        return this.inner().mongoDBCollectionGetResultsId();
-    }
-
-    @Override
     public String name() {
         return this.inner().name();
     }
 
     @Override
-    public Map<String, String> shardKey() {
-        return this.inner().shardKey();
+    public MongoDBCollectionGetPropertiesResource resource() {
+        return this.inner().resource();
     }
 
     @Override

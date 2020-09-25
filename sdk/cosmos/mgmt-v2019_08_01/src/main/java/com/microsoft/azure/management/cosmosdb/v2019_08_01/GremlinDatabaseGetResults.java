@@ -24,26 +24,6 @@ import java.util.Map;
  */
 public interface GremlinDatabaseGetResults extends HasInner<GremlinDatabaseGetResultsInner>, Indexable, Refreshable<GremlinDatabaseGetResults>, Updatable<GremlinDatabaseGetResults.Update>, HasManager<CosmosDBManager> {
     /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
-     * @return the gremlinDatabaseGetResultsId value.
-     */
-    String gremlinDatabaseGetResultsId();
-
-    /**
      * @return the id value.
      */
     String id();
@@ -57,6 +37,11 @@ public interface GremlinDatabaseGetResults extends HasInner<GremlinDatabaseGetRe
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the resource value.
+     */
+    GremlinDatabaseGetPropertiesResource resource();
 
     /**
      * @return the tags value.
