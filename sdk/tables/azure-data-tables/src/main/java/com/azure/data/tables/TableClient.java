@@ -347,18 +347,6 @@ public class TableClient {
     }
 
     /**
-     * Queries and returns entities in the given table using the odata QueryOptions
-     *
-     * @param options the odata query object
-     * @param timeout max time for query to execute before erroring out
-     * @return a list of the tables that fit the query
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options, Duration timeout) {
-        return null;
-    }
-
-    /**
      * gets the entity which fits the given criteria
      *
      * @param partitionKey the partition key of the entity
