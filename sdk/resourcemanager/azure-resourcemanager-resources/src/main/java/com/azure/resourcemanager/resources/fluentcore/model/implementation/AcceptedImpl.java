@@ -24,7 +24,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.rest.ActivationResponse;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -330,7 +330,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 activationResponse,
                 SerializerFactory.createDefaultManagementSerializerAdapter(),
                 httpPipeline,
-                SdkContext.getDelayDuration(pollInterval),
+                ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollInterval),
                 innerType, innerType,
                 convertOperation);
 
@@ -359,7 +359,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 activationResponse,
                 SerializerFactory.createDefaultManagementSerializerAdapter(),
                 httpPipeline,
-                SdkContext.getDelayDuration(pollInterval),
+                ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollInterval),
                 innerType, innerType,
                 convertOperation);
 

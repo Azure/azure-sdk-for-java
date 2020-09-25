@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The VaultPatchParameters model. */
+/** Parameters for creating or updating a vault. */
 @Fluent
 public final class VaultPatchParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultPatchParameters.class);

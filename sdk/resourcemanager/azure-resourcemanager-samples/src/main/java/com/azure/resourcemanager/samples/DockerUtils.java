@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.exception.DockerClientException;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
@@ -189,8 +189,8 @@ public class DockerUtils {
      */
     public static DockerClient fromNewDockerVM(AzureResourceManager azureResourceManager, String rgName, Region region,
                                                String registryServerUrl, String username, String password) {
-        final String dockerVMName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("dockervm", 15);
-        final String publicIPDnsLabel = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("pip", 10);
+        final String dockerVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("dockervm", 15);
+        final String publicIPDnsLabel = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 10);
         final String vmUserName = "dockerUser";
         final String vmPassword = Utils.password();
 
@@ -216,7 +216,7 @@ public class DockerUtils {
         System.out.println("Created Azure Virtual Machine: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + dockerVM.id());
 
         // Wait for a minute for PIP to be available
-        SdkContext.sleep(60 * 1000);
+        ResourceManagerUtils.InternalRuntimeContext.sleep(60 * 1000);
         // Get the IP of the Docker host
         NicIpConfiguration nicIPConfiguration = dockerVM.getPrimaryNetworkInterface().primaryIPConfiguration();
         PublicIpAddress publicIp = nicIPConfiguration.getPublicIpAddress();

@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.privatedns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;

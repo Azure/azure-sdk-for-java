@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSourceStatus;
 import com.azure.resourcemanager.network.models.ConnectionStateSnapshot;
-import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorQueryResultInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorQueryResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.Collections;
 import java.util.List;

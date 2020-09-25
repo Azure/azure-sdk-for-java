@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The ManagedInstanceUpdate model. */
+/** An update request for an Azure SQL Database managed instance. */
 @JsonFlatten
 @Fluent
 public class ManagedInstanceUpdate {
@@ -162,13 +162,6 @@ public class ManagedInstanceUpdate {
      */
     @JsonProperty(value = "properties.instancePoolId")
     private String instancePoolId;
-
-    /*
-     * Specifies maintenance configuration id to apply to this managed
-     * instance.
-     */
-    @JsonProperty(value = "properties.maintenanceConfigurationId")
-    private String maintenanceConfigurationId;
 
     /*
      * Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
@@ -574,28 +567,6 @@ public class ManagedInstanceUpdate {
      */
     public ManagedInstanceUpdate withInstancePoolId(String instancePoolId) {
         this.instancePoolId = instancePoolId;
-        return this;
-    }
-
-    /**
-     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
-     * instance.
-     *
-     * @return the maintenanceConfigurationId value.
-     */
-    public String maintenanceConfigurationId() {
-        return this.maintenanceConfigurationId;
-    }
-
-    /**
-     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
-     * instance.
-     *
-     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
-     * @return the ManagedInstanceUpdate object itself.
-     */
-    public ManagedInstanceUpdate withMaintenanceConfigurationId(String maintenanceConfigurationId) {
-        this.maintenanceConfigurationId = maintenanceConfigurationId;
         return this;
     }
 

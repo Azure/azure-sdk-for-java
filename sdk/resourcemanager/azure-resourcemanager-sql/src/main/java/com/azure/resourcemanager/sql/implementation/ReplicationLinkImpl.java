@@ -9,7 +9,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.ReplicationRole;
 import com.azure.resourcemanager.sql.models.ReplicationState;
-import com.azure.resourcemanager.sql.fluent.inner.ReplicationLinkInner;
+import com.azure.resourcemanager.sql.fluent.models.ReplicationLinkInner;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 

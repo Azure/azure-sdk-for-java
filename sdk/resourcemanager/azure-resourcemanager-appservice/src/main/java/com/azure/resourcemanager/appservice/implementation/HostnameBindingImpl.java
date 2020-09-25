@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.HostnameBindingInner;
+import com.azure.resourcemanager.appservice.fluent.models.HostnameBindingInner;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.AzureResourceType;
 import com.azure.resourcemanager.appservice.models.CustomHostnameDnsRecordType;

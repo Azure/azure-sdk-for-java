@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.storage.fluent.inner.BlobContainerInner;
+import com.azure.resourcemanager.storage.fluent.models.BlobContainerInner;
 import java.time.OffsetDateTime;
 import java.util.Map;
 

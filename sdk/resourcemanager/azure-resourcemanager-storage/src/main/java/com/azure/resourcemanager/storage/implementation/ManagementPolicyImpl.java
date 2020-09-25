@@ -15,7 +15,7 @@ import com.azure.resourcemanager.storage.models.ManagementPolicyRule;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
 import com.azure.resourcemanager.storage.models.ManagementPolicySnapShot;
 import com.azure.resourcemanager.storage.models.PolicyRule;
-import com.azure.resourcemanager.storage.fluent.inner.ManagementPolicyInner;
+import com.azure.resourcemanager.storage.fluent.models.ManagementPolicyInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;

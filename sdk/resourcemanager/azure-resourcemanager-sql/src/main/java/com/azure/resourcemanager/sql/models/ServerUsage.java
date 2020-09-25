@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
-import com.azure.resourcemanager.sql.fluent.inner.ServerUsageInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL server usage metric. */

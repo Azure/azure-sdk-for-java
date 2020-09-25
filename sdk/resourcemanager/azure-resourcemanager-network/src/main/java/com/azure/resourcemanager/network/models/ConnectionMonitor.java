@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

@@ -6,12 +6,15 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.PeerExpressRouteCircuitConnectionInner;
+import com.azure.resourcemanager.network.fluent.models.PeerExpressRouteCircuitConnectionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PeerExpressRouteCircuitConnectionListResult model. */
+/**
+ * Response for ListPeeredConnections API service call retrieves all global reach peer circuit connections that belongs
+ * to a Private Peering for an ExpressRouteCircuit.
+ */
 @Fluent
 public final class PeerExpressRouteCircuitConnectionListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PeerExpressRouteCircuitConnectionListResult.class);

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.storage.fluent.inner.ManagementPolicyInner;
+import com.azure.resourcemanager.storage.fluent.models.ManagementPolicyInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 

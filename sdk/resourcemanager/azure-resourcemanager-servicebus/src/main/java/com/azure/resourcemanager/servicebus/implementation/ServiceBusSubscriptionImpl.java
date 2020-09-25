@@ -7,7 +7,7 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.inner.SubscriptionResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SubscriptionResourceInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.SubscriptionCreateOrUpdateParameters;

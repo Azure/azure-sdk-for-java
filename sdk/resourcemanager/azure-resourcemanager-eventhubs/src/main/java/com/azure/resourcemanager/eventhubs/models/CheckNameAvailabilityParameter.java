@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CheckNameAvailabilityParameter model. */
+/** Parameter supplied to check Namespace name availability operation. */
 @Fluent
 public final class CheckNameAvailabilityParameter {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityParameter.class);

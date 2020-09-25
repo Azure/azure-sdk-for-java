@@ -5,7 +5,7 @@ package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
-import com.azure.resourcemanager.servicebus.fluent.inner.CheckNameAvailabilityResultInner;
+import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityResultInner;
 
 /**
  * The result of checking for Service Bus namespace name availability.

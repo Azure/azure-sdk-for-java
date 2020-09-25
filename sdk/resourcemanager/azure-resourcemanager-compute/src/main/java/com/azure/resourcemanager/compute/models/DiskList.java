@@ -6,12 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.fluent.inner.DiskInner;
+import com.azure.resourcemanager.compute.fluent.models.DiskInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DiskList model. */
+/** The List Disks operation response. */
 @Fluent
 public final class DiskList {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskList.class);

@@ -16,7 +16,7 @@ import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeT
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.DockerUtils;
 import com.azure.resourcemanager.samples.SSHShell;
 import com.azure.resourcemanager.samples.Utils;
@@ -88,17 +88,17 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, InterruptedException, JSchException {
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgaci", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgaci", 15);
         final Region region = Region.US_EAST2;
 
-        final String acrName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("acr", 20);
+        final String acrName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acr", 20);
 
-        final String aciName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("acisample", 20);
+        final String aciName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acisample", 20);
         final String containerImageName = "microsoft/aci-helloworld";
         final String containerImageTag = "latest";
         final String dockerContainerName = "sample-hello";
 
-        final String acsName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("acssample", 30);
+        final String acsName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acssample", 30);
         String servicePrincipalClientId = clientId; // replace with a real service principal client id
         String servicePrincipalSecret = secret; // and corresponding secret
         final String rootUserName = "acsuser";
@@ -212,7 +212,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             // warm up
             System.out.println("Warming up " + containerGroup.ipAddress());
             Utils.curl("http://" + containerGroup.ipAddress());
-            SdkContext.sleep(15000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(15000);
             System.out.println("CURLing " + containerGroup.ipAddress());
             System.out.println(Utils.curl("http://" + containerGroup.ipAddress()));
 
@@ -281,7 +281,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             System.out.println("Created Azure Container Service: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureKubernetesCluster.id());
             Utils.print(azureKubernetesCluster);
 
-            SdkContext.sleep(120000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(120000);
 
 
             //=============================================================
@@ -310,7 +310,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
 
             // Wait for 15 minutes for kube endpoint to be available
-            SdkContext.sleep(15 * 60 * 1000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(15 * 60 * 1000);
 
 
             //=============================================================
@@ -334,7 +334,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
                 System.err.println(e.getMessage());
             }
 
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
             for (Namespace namespace : kubernetesClient.namespaces().list().getItems()) {
                 System.out.println("\tFound Kubernetes namespace: " + namespace.toString());
             }
@@ -363,7 +363,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             System.out.println("Creating new secret: " + kubernetesClient.secrets().inNamespace(acsNamespace).create(secretBuilder.build()));
 
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
 
             for (Secret kubeS : kubernetesClient.secrets().inNamespace(acsNamespace).list().getItems()) {
                 System.out.println("\tFound secret: " + kubeS);
@@ -400,7 +400,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
                 .build();
 
             System.out.println("Creating a replication controller: " + kubernetesClient.replicationControllers().inNamespace(acsNamespace).create(rc));
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
 
             rc = kubernetesClient.replicationControllers().inNamespace(acsNamespace).withName("acrsample-rc").get();
             System.out.println("Found replication controller: " + rc.toString());
@@ -430,7 +430,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             System.out.println("Creating a service: " + kubernetesClient.services().inNamespace(acsNamespace).create(lbService));
 
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
 
             System.out.println("\tFound service: " + kubernetesClient.services().inNamespace(acsNamespace).withName(acsLbIngressName).get());
 
@@ -457,7 +457,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
                 if (timeout > 0) {
                     timeout -= 30000; // 30 seconds
-                    SdkContext.sleep(30000);
+                    ResourceManagerUtils.InternalRuntimeContext.sleep(30000);
                 }
             }
 
@@ -468,7 +468,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
                 // warm up
                 System.out.println("Warming up " + serviceIP);
                 Utils.curl("http://" + serviceIP);
-                SdkContext.sleep(15000);
+                ResourceManagerUtils.InternalRuntimeContext.sleep(15000);
                 System.out.println("CURLing " + serviceIP);
                 System.out.println(Utils.curl("http://" + serviceIP));
             } else {

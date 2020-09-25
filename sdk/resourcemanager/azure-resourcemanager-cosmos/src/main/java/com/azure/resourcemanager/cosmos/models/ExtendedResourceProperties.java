@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExtendedResourceProperties model. */
+/**
+ * The system generated resource properties associated with SQL databases, SQL containers, Gremlin databases and Gremlin
+ * graphs.
+ */
 @Immutable
 public class ExtendedResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedResourceProperties.class);

@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.azure.resourcemanager.appservice.fluent.inner.FunctionEnvelopeInner;
+import com.azure.resourcemanager.appservice.fluent.models.FunctionEnvelopeInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.Map;
 

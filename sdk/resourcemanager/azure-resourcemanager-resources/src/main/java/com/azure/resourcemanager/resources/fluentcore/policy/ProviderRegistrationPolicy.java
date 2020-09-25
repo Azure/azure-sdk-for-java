@@ -13,9 +13,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.ResourceManager;
 import reactor.core.publisher.Mono;
 
@@ -105,7 +105,7 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         if (isProviderRegistered(provider)) {
             return Mono.empty();
         }
-        SdkContext.sleep(5 * 1000);
+        ResourceManagerUtils.InternalRuntimeContext.sleep(5 * 1000);
         return Mono.error(new ProviderUnregisteredException());
     }
 

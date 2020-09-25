@@ -146,7 +146,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         // Ensure expected role assignment exists for explicitly created EMSI
         //
         PagedIterable<RoleAssignment> roleAssignmentsForNetwork =
-            this.msiManager.graphRbacManager().roleAssignments().listByScope(network.id());
+            this.msiManager.authorizationManager().roleAssignments().listByScope(network.id());
         boolean found = false;
         for (RoleAssignment roleAssignment : roleAssignmentsForNetwork) {
             if (roleAssignment.principalId() != null
@@ -171,7 +171,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         // Ensure expected role assignment exists for explicitly created EMSI
         //
         PagedIterable<RoleAssignment> roleAssignmentsForResourceGroup =
-            this.msiManager.graphRbacManager().roleAssignments().listByScope(resourceGroup.id());
+            this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
 
         found = false;
         for (RoleAssignment roleAssignment : roleAssignmentsForResourceGroup) {
@@ -378,7 +378,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         // Ensure expected role assignment exists for LMSI
         //
         PagedIterable<RoleAssignment> roleAssignmentsForNetwork =
-            this.msiManager.graphRbacManager().roleAssignments().listByScope(network.id());
+            this.msiManager.authorizationManager().roleAssignments().listByScope(network.id());
         boolean found = false;
         for (RoleAssignment roleAssignment : roleAssignmentsForNetwork) {
             if (roleAssignment.principalId() != null
@@ -412,7 +412,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         PagedIterable<RoleAssignment> roleAssignmentsForResourceGroup =
             this
                 .msiManager
-                .graphRbacManager()
+                .authorizationManager()
                 .roleAssignments()
                 .listByScope(
                     resourceManager.resourceGroups().getByName(virtualMachineScaleSet.resourceGroupName()).id());
@@ -554,13 +554,13 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         final String scope, BuiltInRole role, final String principalId) {
         return this
             .msiManager
-            .graphRbacManager()
+            .authorizationManager()
             .roleDefinitions()
             .getByScopeAndRoleNameAsync(scope, role.toString())
             .flatMap(
                 roleDefinition ->
                     msiManager
-                        .graphRbacManager()
+                        .authorizationManager()
                         .roleAssignments()
                         .listByScopeAsync(scope)
                         .filter(

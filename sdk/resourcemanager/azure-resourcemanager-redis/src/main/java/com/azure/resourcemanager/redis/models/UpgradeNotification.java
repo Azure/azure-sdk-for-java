@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The UpgradeNotification model. */
+/** Properties of upgrade notification. */
 @Immutable
 public final class UpgradeNotification {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UpgradeNotification.class);

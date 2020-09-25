@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import java.util.UUID;
 
-/** The IdentityUpdate model. */
+/** Describes an identity resource. */
 @JsonFlatten
 @Fluent
 public class IdentityUpdate extends ProxyResource {

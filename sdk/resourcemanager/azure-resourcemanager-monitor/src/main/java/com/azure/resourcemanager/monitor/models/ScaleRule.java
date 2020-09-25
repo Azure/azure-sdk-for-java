@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.monitor.fluent.inner.ScaleRuleInner;
+import com.azure.resourcemanager.monitor.fluent.models.ScaleRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;

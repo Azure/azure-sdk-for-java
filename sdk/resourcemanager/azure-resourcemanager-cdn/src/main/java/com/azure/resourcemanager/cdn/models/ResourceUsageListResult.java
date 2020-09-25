@@ -6,12 +6,12 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cdn.fluent.inner.ResourceUsageInner;
+import com.azure.resourcemanager.cdn.fluent.models.ResourceUsageInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceUsageListResult model. */
+/** Output of check resource usage API. */
 @Fluent
 public final class ResourceUsageListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceUsageListResult.class);

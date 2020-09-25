@@ -58,9 +58,9 @@ import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.compute.models.WinRMConfiguration;
 import com.azure.resourcemanager.compute.models.WinRMListener;
 import com.azure.resourcemanager.compute.models.WindowsConfiguration;
-import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineUpdateInner;
+import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineUpdateInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
@@ -195,7 +195,7 @@ class VirtualMachineImpl
         this.authorizationManager = authorizationManager;
         this.vmName = name;
         this.isMarketplaceLinuxImage = false;
-        this.namer = this.manager().resourceManager().sdkContext().createIdentifierProvider(this.vmName);
+        this.namer = this.manager().resourceManager().internalContext().createIdentifierProvider(this.vmName);
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         this.virtualMachineExtensions =

@@ -6,7 +6,7 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
-import com.azure.resourcemanager.compute.fluent.ComputeManagementClientBuilder;
+import com.azure.resourcemanager.compute.implementation.ComputeManagementClientBuilder;
 import com.azure.resourcemanager.compute.implementation.AvailabilitySetsImpl;
 import com.azure.resourcemanager.compute.implementation.ComputeSkusImpl;
 import com.azure.resourcemanager.compute.implementation.ComputeUsagesImpl;

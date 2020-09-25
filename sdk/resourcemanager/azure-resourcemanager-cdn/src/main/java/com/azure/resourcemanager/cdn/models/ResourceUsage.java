@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.azure.resourcemanager.cdn.fluent.inner.ResourceUsageInner;
+import com.azure.resourcemanager.cdn.fluent.models.ResourceUsageInner;
 
 /**
  * Provides information about CDN resource usages.

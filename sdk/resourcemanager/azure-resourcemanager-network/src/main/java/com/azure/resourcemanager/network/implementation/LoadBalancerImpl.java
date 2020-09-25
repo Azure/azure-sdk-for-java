@@ -21,13 +21,13 @@ import com.azure.resourcemanager.network.models.LoadBalancingRule;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
-import com.azure.resourcemanager.network.fluent.inner.FrontendIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
+import com.azure.resourcemanager.network.fluent.models.FrontendIpConfigurationInner;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
-import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.LoadBalancerInner;
-import com.azure.resourcemanager.network.fluent.inner.LoadBalancingRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.ProbeInner;
+import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancingRuleInner;
+import com.azure.resourcemanager.network.fluent.models.ProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ class LoadBalancerImpl
     }
 
     protected LoadBalancerBackendImpl ensureUniqueBackend() {
-        String name = this.manager().resourceManager().sdkContext().randomResourceName("backend", 20);
+        String name = this.manager().resourceManager().internalContext().randomResourceName("backend", 20);
         LoadBalancerBackendImpl backend = this.defineBackend(name);
         backend.attach();
         return backend;
@@ -130,7 +130,7 @@ class LoadBalancerImpl
     }
 
     protected LoadBalancerFrontendImpl ensureUniqueFrontend() {
-        String name = this.manager().resourceManager().sdkContext().randomResourceName("frontend", 20);
+        String name = this.manager().resourceManager().internalContext().randomResourceName("frontend", 20);
         LoadBalancerFrontendImpl frontend = this.defineFrontend(name);
         frontend.attach();
         return frontend;

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ReplicationUpdateParameters model. */
+/** The parameters for updating a replication. */
 @Fluent
 public final class ReplicationUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationUpdateParameters.class);
