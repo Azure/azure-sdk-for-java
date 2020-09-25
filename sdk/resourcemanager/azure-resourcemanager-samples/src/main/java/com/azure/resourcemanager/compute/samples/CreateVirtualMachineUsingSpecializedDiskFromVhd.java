@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskSkuTypes;
@@ -17,7 +17,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -34,17 +34,17 @@ import java.util.List;
 public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String linuxVMName1 = azure.sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azure.sdkContext().randomResourceName("VM2", 15);
-        final String managedOSDiskName = azure.sdkContext().randomResourceName("ds-os-", 15);
-        final String managedDataDiskNamePrefix = azure.sdkContext().randomResourceName("ds-data-", 15);
-        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIpDnsLabel = azure.sdkContext().randomResourceName("pip", 15);
-        final String storageAccountName = azure.sdkContext().randomResourceName("stg", 15);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String linuxVMName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 15);
+        final String linuxVMName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM2", 15);
+        final String managedOSDiskName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ds-os-", 15);
+        final String managedDataDiskNamePrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ds-data-", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMV", 15);
+        final String publicIpDnsLabel = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 15);
+        final String storageAccountName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("stg", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;
@@ -59,7 +59,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
 
             System.out.println("Creating a un-managed Linux VM");
 
-            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName1)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -104,7 +104,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
             // Delete the virtual machine
             System.out.println("Deleting VM: " + linuxVM.id());
 
-            azure.virtualMachines().deleteById(linuxVM.id());
+            azureResourceManager.virtualMachines().deleteById(linuxVM.id());
 
             System.out.println("Deleted the VM");
 
@@ -113,7 +113,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
 
             System.out.println(String.format("Creating managed disk from the specialized OS VHD: %s ", specializedOSVhdUri));
 
-            Disk osDisk = azure.disks().define(managedOSDiskName)
+            Disk osDisk = azureResourceManager.disks().define(managedOSDiskName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withLinuxFromVhd(specializedOSVhdUri)
@@ -122,7 +122,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                     .create();
 
             System.out.println("Created managed disk holding OS: " + osDisk.id());
-            // Utils.print(osDisk); TODO
+            // ResourceManagerUtils.print(osDisk); TODO
 
             //=============================================================
             // Create Managed disks from the Data VHDs
@@ -132,7 +132,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
             for (String dataVhdUri : dataVhdUris) {
                 System.out.println(String.format("Creating managed disk from the Data VHD: %s ", dataVhdUri));
 
-                Disk dataDisk = azure.disks().define(managedDataDiskNamePrefix + "-" + i)
+                Disk dataDisk = azureResourceManager.disks().define(managedDataDiskNamePrefix + "-" + i)
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)
                         .withData()
@@ -144,7 +144,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                 dataDisks.add(dataDisk);
 
                 System.out.println("Created managed disk holding data: " + dataDisk.id());
-                // Utils.print(dataDisk); TODO
+                // ResourceManagerUtils.print(dataDisk); TODO
                 i++;
             }
 
@@ -153,7 +153,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
 
             System.out.println("Creating a Linux VM using specialized OS and data disks");
 
-            VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVMName2)
+            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines().define(linuxVMName2)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -189,7 +189,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
             System.out.println("Getting data disks SAS Uris");
 
             for (String diskId : dataDiskIds) {
-                Disk dataDisk = azure.disks().getById(diskId);
+                Disk dataDisk = azureResourceManager.disks().getById(diskId);
                 String dataDiskSasUri = dataDisk.grantAccess(24 * 60);
                 System.out.println(String.format("Data disk SAS Uri: %s", dataDiskSasUri));
             }
@@ -197,7 +197,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -218,18 +218,19 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -3,17 +3,15 @@
 package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation;
 
 import com.azure.core.management.Resource;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 /**
@@ -31,14 +29,13 @@ public abstract class GroupableResourcesImpl<
         ImplT extends T,
         InnerT extends Resource,
         InnerCollectionT,
-        ManagerT extends ManagerBase>
+        ManagerT extends Manager<?>>
         extends CreatableResourcesImpl<T, ImplT, InnerT>
         implements
         SupportsGettingById<T>,
         SupportsGettingByResourceGroup<T>,
         SupportsDeletingByResourceGroup,
-        HasManager<ManagerT>,
-        HasInner<InnerCollectionT> {
+        HasManager<ManagerT> {
 
     private final InnerCollectionT innerCollection;
     private final ManagerT myManager;
@@ -50,7 +47,6 @@ public abstract class GroupableResourcesImpl<
         this.myManager = manager;
     }
 
-    @Override
     public InnerCollectionT inner() {
         return this.innerCollection;
     }
@@ -80,8 +76,7 @@ public abstract class GroupableResourcesImpl<
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String groupName, String name) {
         return this.deleteInnerAsync(groupName, name)
-            .onErrorMap(AggregatedManagementException::convertToManagementException)
-            .subscribeOn(SdkContext.getReactorScheduler());
+            .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
     }
 
     @Override

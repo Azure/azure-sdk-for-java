@@ -9,12 +9,13 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.ResourceManager;
 import reactor.core.publisher.Mono;
 
@@ -56,7 +57,8 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                         body -> {
                             String bodyStr = new String(body, StandardCharsets.UTF_8);
 
-                            AzureJacksonAdapter jacksonAdapter = new AzureJacksonAdapter();
+                            SerializerAdapter jacksonAdapter =
+                                SerializerFactory.createDefaultManagementSerializerAdapter();
                             ManagementError cloudError;
                             try {
                                 cloudError = jacksonAdapter.deserialize(
@@ -103,7 +105,7 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         if (isProviderRegistered(provider)) {
             return Mono.empty();
         }
-        SdkContext.sleep(5 * 1000);
+        ResourceManagerUtils.InternalRuntimeContext.sleep(5 * 1000);
         return Mono.error(new ProviderUnregisteredException());
     }
 

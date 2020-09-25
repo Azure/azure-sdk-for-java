@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.SSHShell;
 import com.azure.resourcemanager.samples.Utils;
@@ -40,20 +40,20 @@ public final class ManageNetworkSecurityGroup {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws UnsupportedEncodingException, JSchException {
+    public static boolean runSample(AzureResourceManager azureResourceManager) throws UnsupportedEncodingException, JSchException {
         final Region region = Region.US_NORTH_CENTRAL;
-        final String frontEndNSGName = azure.sdkContext().randomResourceName("fensg", 24);
-        final String backEndNSGName = azure.sdkContext().randomResourceName("bensg", 24);
-        final String rgName = azure.sdkContext().randomResourceName("rgNEMS", 24);
-        final String vnetName = azure.sdkContext().randomResourceName("vnet", 24);
-        final String networkInterfaceName1 = azure.sdkContext().randomResourceName("nic1", 24);
-        final String networkInterfaceName2 = azure.sdkContext().randomResourceName("nic2", 24);
-        final String publicIPAddressLeafDNS1 = azure.sdkContext().randomResourceName("pip1", 24);
-        final String frontEndVMName = azure.sdkContext().randomResourceName("fevm", 24);
-        final String backEndVMName = azure.sdkContext().randomResourceName("bevm", 24);
+        final String frontEndNSGName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("fensg", 24);
+        final String backEndNSGName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("bensg", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgNEMS", 24);
+        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet", 24);
+        final String networkInterfaceName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("nic1", 24);
+        final String networkInterfaceName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("nic2", 24);
+        final String publicIPAddressLeafDNS1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip1", 24);
+        final String frontEndVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("fevm", 24);
+        final String backEndVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("bevm", 24);
         final String userName = "tirekicker";
         try {
             final String sshKey = SSHShell.generateSSHKeys(null, null).getSshPublicKey();
@@ -62,7 +62,7 @@ public final class ManageNetworkSecurityGroup {
 
             System.out.println("Creating a virtual network ...");
 
-            Network network = azure.networks().define(vnetName)
+            Network network = azureResourceManager.networks().define(vnetName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("172.16.0.0/16")
@@ -84,7 +84,7 @@ public final class ManageNetworkSecurityGroup {
             // - ALLOW-WEB- allows HTTP traffic into the front end subnet
 
             System.out.println("Creating a security group for the front end - allows SSH and HTTP");
-            NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEndNSGName)
+            NetworkSecurityGroup frontEndNSG = azureResourceManager.networkSecurityGroups().define(frontEndNSGName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .defineRule("ALLOW-SSH")
@@ -122,7 +122,7 @@ public final class ManageNetworkSecurityGroup {
             System.out.println("Creating a security group for the front end - allows SSH and "
                     + "denies all outbound internet traffic  ");
 
-            NetworkSecurityGroup backEndNSG = azure.networkSecurityGroups().define(backEndNSGName)
+            NetworkSecurityGroup backEndNSG = azureResourceManager.networkSecurityGroups().define(backEndNSGName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .defineRule("ALLOW-SQL")
@@ -160,7 +160,7 @@ public final class ManageNetworkSecurityGroup {
 
             System.out.println("Creating a network interface for the front end");
 
-            NetworkInterface networkInterface1 = azure.networkInterfaces().define(networkInterfaceName1)
+            NetworkInterface networkInterface1 = azureResourceManager.networkInterfaces().define(networkInterfaceName1)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
@@ -182,7 +182,7 @@ public final class ManageNetworkSecurityGroup {
 
             System.out.println("Creating a network interface for the back end");
 
-            NetworkInterface networkInterface2 = azure.networkInterfaces().define(networkInterfaceName2)
+            NetworkInterface networkInterface2 = azureResourceManager.networkInterfaces().define(networkInterfaceName2)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
@@ -203,7 +203,7 @@ public final class ManageNetworkSecurityGroup {
 
             Date t1 = new Date();
 
-            VirtualMachine frontEndVM = azure.virtualMachines().define(frontEndVMName)
+            VirtualMachine frontEndVM = azureResourceManager.virtualMachines().define(frontEndVMName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetworkInterface(networkInterface1)
@@ -229,7 +229,7 @@ public final class ManageNetworkSecurityGroup {
 
             t1 = new Date();
 
-            VirtualMachine backEndVM = azure.virtualMachines().define(backEndVMName)
+            VirtualMachine backEndVM = azureResourceManager.virtualMachines().define(backEndVMName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetworkInterface(networkInterface2)
@@ -249,7 +249,7 @@ public final class ManageNetworkSecurityGroup {
             // List network security groups
 
             System.out.println("Walking through network security groups");
-            PagedIterable<NetworkSecurityGroup> networkSecurityGroups = azure.networkSecurityGroups().listByResourceGroup(rgName);
+            PagedIterable<NetworkSecurityGroup> networkSecurityGroups = azureResourceManager.networkSecurityGroups().listByResourceGroup(rgName);
 
             for (NetworkSecurityGroup networkSecurityGroup : networkSecurityGroups) {
                 Utils.print(networkSecurityGroup);
@@ -281,7 +281,7 @@ public final class ManageNetworkSecurityGroup {
 
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -306,18 +306,19 @@ public final class ManageNetworkSecurityGroup {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

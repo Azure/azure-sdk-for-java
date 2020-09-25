@@ -7,9 +7,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 
 /**
@@ -25,14 +25,14 @@ public final class ManageResourceGroup {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String rgName = azure.sdkContext().randomResourceName("rgRSMA", 24);
-        final String rgName2 = azure.sdkContext().randomResourceName("rgRSMA", 24);
-        final String resourceTagName = azure.sdkContext().randomResourceName("rgRSTN", 24);
-        final String resourceTagValue = azure.sdkContext().randomResourceName("rgRSTV", 24);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgRSMA", 24);
+        final String rgName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgRSMA", 24);
+        final String resourceTagName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgRSTN", 24);
+        final String resourceTagValue = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgRSTV", 24);
         try {
 
 
@@ -41,7 +41,7 @@ public final class ManageResourceGroup {
 
             System.out.println("Creating a resource group with name: " + rgName);
 
-            ResourceGroup resourceGroup = azure.resourceGroups().define(rgName)
+            ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
                     .withRegion(Region.US_WEST)
                     .create();
 
@@ -65,7 +65,7 @@ public final class ManageResourceGroup {
 
             System.out.println("Creating another resource group with name: " + rgName2);
 
-            azure.resourceGroups().define(rgName2)
+            azureResourceManager.resourceGroups().define(rgName2)
                     .withRegion(Region.US_WEST)
                     .create();
 
@@ -77,7 +77,7 @@ public final class ManageResourceGroup {
 
             System.out.println("Listing all resource groups");
 
-            for (ResourceGroup rGroup : azure.resourceGroups().list()) {
+            for (ResourceGroup rGroup : azureResourceManager.resourceGroups().list()) {
                 System.out.println("Resource group: " + rGroup.name());
             }
 
@@ -87,13 +87,13 @@ public final class ManageResourceGroup {
 
             System.out.println("Deleting resource group: " + rgName2);
 
-            azure.resourceGroups().beginDeleteByName(rgName2);
+            azureResourceManager.resourceGroups().beginDeleteByName(rgName2);
             return true;
         } finally {
 
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -114,15 +114,16 @@ public final class ManageResourceGroup {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

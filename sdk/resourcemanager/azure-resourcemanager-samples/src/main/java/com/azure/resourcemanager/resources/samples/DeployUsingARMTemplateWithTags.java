@@ -8,12 +8,12 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
 import com.azure.resourcemanager.resources.models.GenericResource;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,21 +35,21 @@ public final class DeployUsingARMTemplateWithTags {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws IOException, IllegalAccessException {
-        final String rgName = azure.sdkContext().randomResourceName("rgRSAT", 24);
-        final String deploymentName = azure.sdkContext().randomResourceName("dpRSAT", 24);
+    public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, IllegalAccessException {
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgRSAT", 24);
+        final String deploymentName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("dpRSAT", 24);
         try {
-            String templateJson = getTemplate(azure);
+            String templateJson = getTemplate(azureResourceManager);
 
             //=============================================================
             // Create resource group.
 
             System.out.println("Creating a resource group with name: " + rgName);
 
-            azure.resourceGroups().define(rgName)
+            azureResourceManager.resourceGroups().define(rgName)
                     .withRegion(Region.US_WEST)
                     .create();
 
@@ -62,7 +62,7 @@ public final class DeployUsingARMTemplateWithTags {
 
             System.out.println("Starting a deployment for an Azure App Service: " + deploymentName);
 
-            Deployment deployment = azure.deployments().define(deploymentName)
+            Deployment deployment = azureResourceManager.deployments().define(deploymentName)
                     .withExistingResourceGroup(rgName)
                     .withTemplate(templateJson)
                     .withParameters("{}")
@@ -77,7 +77,7 @@ public final class DeployUsingARMTemplateWithTags {
             // Getting created resources
             for (DeploymentOperation operation : operations) {
                 if (operation.targetResource() != null) {
-                    genericResources.add(azure.genericResources().getById(operation.targetResource().id()));
+                    genericResources.add(azureResourceManager.genericResources().getById(operation.targetResource().id()));
                 }
             }
 
@@ -90,7 +90,7 @@ public final class DeployUsingARMTemplateWithTags {
                         .apply();
             }
 
-            PagedIterable<GenericResource> listResources = azure.genericResources().listByTag(rgName, "label", "deploy1");
+            PagedIterable<GenericResource> listResources = azureResourceManager.genericResources().listByTag(rgName, "label", "deploy1");
             System.out.println("Tagged resources for deployment: " + deploymentName);
             for (GenericResource genericResource : listResources) {
                 System.out.println(genericResource.resourceProviderNamespace() + "/" + genericResource.resourceType() + ": " + genericResource.name());
@@ -100,7 +100,7 @@ public final class DeployUsingARMTemplateWithTags {
 
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -123,24 +123,25 @@ public final class DeployUsingARMTemplateWithTags {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private static String getTemplate(Azure azure) throws IllegalAccessException, JsonProcessingException, IOException {
-        final String hostingPlanName = azure.sdkContext().randomResourceName("hpRSAT", 24);
-        final String webappName = azure.sdkContext().randomResourceName("wnRSAT", 24);
+    private static String getTemplate(AzureResourceManager azureResourceManager) throws IllegalAccessException, JsonProcessingException, IOException {
+        final String hostingPlanName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("hpRSAT", 24);
+        final String webappName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("wnRSAT", 24);
 
         try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/templateValue.json")) {
 

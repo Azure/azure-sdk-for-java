@@ -16,11 +16,11 @@ import com.azure.resourcemanager.privatedns.models.AaaaRecordSet;
 import com.azure.resourcemanager.privatedns.models.CnameRecordSet;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
@@ -55,7 +55,7 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         privateZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile);
@@ -117,9 +117,6 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Test
     public void canCreateRecordSetsWithDefaultETag() {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 

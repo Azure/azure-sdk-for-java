@@ -6,13 +6,13 @@ package com.azure.resourcemanager.appservice.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -32,29 +32,29 @@ public final class ManageWebAppSlots {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String resourceGroupName     = azure.sdkContext().randomResourceName("rg", 24);
-        final String app1Name       = azure.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azure.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azure.sdkContext().randomResourceName("webapp3-", 20);
+        final String resourceGroupName     = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 24);
+        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String app2Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp2-", 20);
+        final String app3Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp3-", 20);
         final String slotName       = "staging";
 
         try {
 
-            azure.resourceGroups().define(resourceGroupName)
+            azureResourceManager.resourceGroups().define(resourceGroupName)
                     .withRegion(Region.US_EAST)
                     .create();
 
             //============================================================
             // Create 3 web apps with 3 new app service plans in different regions
 
-            WebApp app1 = createWebApp(azure, app1Name, Region.US_EAST, resourceGroupName);
-            WebApp app2 = createWebApp(azure, app2Name, Region.EUROPE_WEST, resourceGroupName);
-            WebApp app3 = createWebApp(azure, app3Name, Region.ASIA_EAST, resourceGroupName);
+            WebApp app1 = createWebApp(azureResourceManager, app1Name, Region.US_EAST, resourceGroupName);
+            WebApp app2 = createWebApp(azureResourceManager, app2Name, Region.EUROPE_WEST, resourceGroupName);
+            WebApp app3 = createWebApp(azureResourceManager, app3Name, Region.ASIA_EAST, resourceGroupName);
 
 
             //============================================================
@@ -80,7 +80,7 @@ public final class ManageWebAppSlots {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + resourceGroupName);
-                azure.resourceGroups().beginDeleteByName(resourceGroupName);
+                azureResourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
                 System.out.println("Deleted Resource Group: " + resourceGroupName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -102,18 +102,19 @@ public final class ManageWebAppSlots {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -121,12 +122,12 @@ public final class ManageWebAppSlots {
         }
     }
 
-    private static WebApp createWebApp(Azure azure, String appName, Region region, String resourceGroupName) {
+    private static WebApp createWebApp(AzureResourceManager azureResourceManager, String appName, Region region, String resourceGroupName) {
         final String appUrl = appName + SUFFIX;
 
         System.out.println("Creating web app " + appName + " with master branch...");
 
-        WebApp app = azure.webApps()
+        WebApp app = azureResourceManager.webApps()
                 .define(appName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroupName)

@@ -21,9 +21,9 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 import java.util.Iterator;
 import org.junit.jupiter.api.Assertions;
@@ -101,7 +101,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
         virtualMachines = virtualMachineScaleSetVMs.list();
 
-        SdkContext.sleep(60 * 1000);
+        ResourceManagerUtils.InternalRuntimeContext.sleep(60 * 1000);
 
         Assertions.assertEquals(TestUtilities.getSize(virtualMachines), vmScaleSet.capacity());
         for (VirtualMachineScaleSetVM vm : virtualMachines) {
@@ -222,7 +222,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         // Waiting for pip to be reachable
         //
-        SdkContext.sleep(40 * 1000);
+        ResourceManagerUtils.InternalRuntimeContext.sleep(40 * 1000);
 
         deprovisionAgentInLinuxVM(vm.getPrimaryPublicIPAddress().fqdn(), 22, userName, password);
         vm.deallocate();

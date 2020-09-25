@@ -37,17 +37,17 @@ class TransparentDataEncryptionImpl
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.sqlServerManager = sqlServerManager;
-        this.resourceId = ResourceId.fromString(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.innerModel().id());
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -67,20 +67,23 @@ class TransparentDataEncryptionImpl
 
     @Override
     public TransparentDataEncryptionStatus status() {
-        return this.inner().status();
+        return this.innerModel().status();
     }
 
     @Override
     public TransparentDataEncryption updateStatus(TransparentDataEncryptionStatus transparentDataEncryptionState) {
-        this.inner().withStatus(transparentDataEncryptionState);
+        this.innerModel().withStatus(transparentDataEncryptionState);
         TransparentDataEncryptionInner transparentDataEncryptionInner =
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getTransparentDataEncryptions()
                 .createOrUpdate(
-                    this.resourceGroupName, this.sqlServerName, this.databaseName(),
-                    TransparentDataEncryptionName.CURRENT, transparentDataEncryptionState);
+                    this.resourceGroupName,
+                    this.sqlServerName,
+                    this.databaseName(),
+                    TransparentDataEncryptionName.CURRENT,
+                    transparentDataEncryptionState);
         this.setInner(transparentDataEncryptionInner);
 
         return this;
@@ -92,11 +95,14 @@ class TransparentDataEncryptionImpl
         final TransparentDataEncryptionImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getTransparentDataEncryptions()
             .createOrUpdateAsync(
-                self.resourceGroupName, self.sqlServerName, self.databaseName(),
-                TransparentDataEncryptionName.CURRENT, transparentDataEncryptionState)
+                self.resourceGroupName,
+                self.sqlServerName,
+                self.databaseName(),
+                TransparentDataEncryptionName.CURRENT,
+                transparentDataEncryptionState)
             .map(
                 transparentDataEncryptionInner -> {
                     self.setInner(transparentDataEncryptionInner);
@@ -110,9 +116,12 @@ class TransparentDataEncryptionImpl
         PagedIterable<TransparentDataEncryptionActivityInner> transparentDataEncryptionActivityInners =
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getTransparentDataEncryptionActivities()
-                .listByConfiguration(this.resourceGroupName, this.sqlServerName, this.databaseName(),
+                .listByConfiguration(
+                    this.resourceGroupName,
+                    this.sqlServerName,
+                    this.databaseName(),
                     TransparentDataEncryptionName.CURRENT);
         for (TransparentDataEncryptionActivityInner transparentDataEncryptionActivityInner
             : transparentDataEncryptionActivityInners) {
@@ -126,21 +135,20 @@ class TransparentDataEncryptionImpl
     public PagedFlux<TransparentDataEncryptionActivity> listActivitiesAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getTransparentDataEncryptionActivities()
-            .listByConfigurationAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(),
-                TransparentDataEncryptionName.CURRENT)
-            .mapPage(
-                TransparentDataEncryptionActivityImpl::new);
+            .listByConfigurationAsync(
+                this.resourceGroupName, this.sqlServerName, this.databaseName(), TransparentDataEncryptionName.CURRENT)
+            .mapPage(TransparentDataEncryptionActivityImpl::new);
     }
 
     @Override
     protected Mono<TransparentDataEncryptionInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getTransparentDataEncryptions()
-            .getAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(),
-                TransparentDataEncryptionName.CURRENT);
+            .getAsync(
+                this.resourceGroupName, this.sqlServerName, this.databaseName(), TransparentDataEncryptionName.CURRENT);
     }
 }

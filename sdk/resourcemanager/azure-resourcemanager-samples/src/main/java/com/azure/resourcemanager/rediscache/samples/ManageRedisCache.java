@@ -8,14 +8,14 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
 import com.azure.resourcemanager.redis.models.RebootType;
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCachePremium;
 import com.azure.resourcemanager.redis.models.RedisKeyType;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.core.management.profile.AzureProfile;
@@ -41,21 +41,21 @@ public final class ManageRedisCache {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String redisCacheName1 = azure.sdkContext().randomResourceName("rc1", 20);
-        final String redisCacheName2 = azure.sdkContext().randomResourceName("rc2", 20);
-        final String redisCacheName3 = azure.sdkContext().randomResourceName("rc3", 20);
-        final String rgName = azure.sdkContext().randomResourceName("rgRCMC", 20);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String redisCacheName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rc1", 20);
+        final String redisCacheName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rc2", 20);
+        final String redisCacheName3 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rc3", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgRCMC", 20);
         try {
             // ============================================================
             // Define a redis cache
 
             System.out.println("Creating a Redis Cache");
 
-            Creatable<RedisCache> redisCache1Definition = azure.redisCaches().define(redisCacheName1)
+            Creatable<RedisCache> redisCache1Definition = azureResourceManager.redisCaches().define(redisCacheName1)
                     .withRegion(Region.US_CENTRAL)
                     .withNewResourceGroup(rgName)
                     .withBasicSku();
@@ -63,13 +63,13 @@ public final class ManageRedisCache {
             // ============================================================
             // Define two more Redis caches
 
-            Creatable<RedisCache> redisCache2Definition = azure.redisCaches().define(redisCacheName2)
+            Creatable<RedisCache> redisCache2Definition = azureResourceManager.redisCaches().define(redisCacheName2)
                     .withRegion(Region.US_CENTRAL)
                     .withNewResourceGroup(rgName)
                     .withPremiumSku()
                     .withShardCount(3);
 
-            Creatable<RedisCache> redisCache3Definition = azure.redisCaches().define(redisCacheName3)
+            Creatable<RedisCache> redisCache3Definition = azureResourceManager.redisCaches().define(redisCacheName3)
                     .withRegion(Region.US_CENTRAL)
                     .withNewResourceGroup(rgName)
                     .withPremiumSku(2)
@@ -81,7 +81,7 @@ public final class ManageRedisCache {
             System.out.println("Creating three Redis Caches in parallel... (this will take several minutes)");
 
             @SuppressWarnings("unchecked")
-            CreatedResources<RedisCache> createdCaches = azure.redisCaches().create(
+            CreatedResources<RedisCache> createdCaches = azureResourceManager.redisCaches().create(
                     redisCache1Definition,
                     redisCache2Definition,
                     redisCache3Definition);
@@ -110,7 +110,7 @@ public final class ManageRedisCache {
 
             System.out.println("Listing Redis Caches");
 
-            PagedIterable<RedisCache> caches = azure.redisCaches().listByResourceGroup(rgName);
+            PagedIterable<RedisCache> caches = azureResourceManager.redisCaches().listByResourceGroup(rgName);
 
             // Walk through all the caches
             for (RedisCache redis : caches) {
@@ -144,14 +144,14 @@ public final class ManageRedisCache {
 
             System.out.println("Deleting a Redis Cache  - " + redisCache1.name());
 
-            azure.redisCaches().deleteById(redisCache1.id());
+            azureResourceManager.redisCaches().deleteById(redisCache1.id());
 
             System.out.println("Deleted Redis Cache");
             return true;
         } finally {
-            if (azure.resourceGroups().getByName(rgName) != null) {
+            if (azureResourceManager.resourceGroups().getByName(rgName) != null) {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().deleteByName(rgName);
+                azureResourceManager.resourceGroups().deleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } else {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -170,18 +170,19 @@ public final class ManageRedisCache {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

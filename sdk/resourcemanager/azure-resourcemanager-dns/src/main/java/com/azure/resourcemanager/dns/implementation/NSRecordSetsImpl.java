@@ -27,7 +27,7 @@ class NSRecordSetsImpl extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImp
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getRecordSets()
             .getAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), name, this.recordType)
             .map(this::wrapModel);
@@ -40,7 +40,7 @@ class NSRecordSetsImpl extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImp
                 this
                     .parent()
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getRecordSets()
                     .listByType(
                         this.dnsZone.resourceGroupName(),
@@ -56,7 +56,7 @@ class NSRecordSetsImpl extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImp
             this
                 .parent()
                 .manager()
-                .inner()
+                .serviceClient()
                 .getRecordSets()
                 .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }

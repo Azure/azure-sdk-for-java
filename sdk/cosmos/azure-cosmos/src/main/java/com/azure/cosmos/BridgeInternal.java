@@ -134,6 +134,50 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRequestTimeline(E e, RequestTimeline requestTimeline) {
+        e.setRequestTimeline(requestTimeline);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> RequestTimeline getRequestTimeline(E e) {
+        return e.getRequestTimeline();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdRequestLength(E e, int requestLen) {
+        e.setRntbdRequestLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdRequestLength(E e) {
+        return e.getRntbdRequestLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRequestBodyLength(E e, int requestLen) {
+        e.setRequestPayloadLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRequestBodyLength(E e) {
+        return e.getRequestPayloadLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdResponseLength(E e, int requestLen) {
+        e.setRntbdResponseLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdResponseLength(E e) {
+        return e.getRntbdResponseLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> E setResourceAddress(E e, String resourceAddress) {
         e.setResourceAddress(resourceAddress);
         return e;
@@ -180,6 +224,11 @@ public final class BridgeInternal {
     public static <E extends CosmosException> void setRequestHeaders(CosmosException cosmosException,
                                                                      Map<String, String> requestHeaders) {
         cosmosException.requestHeaders = requestHeaders;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setSubStatusCode(CosmosException documentClientException, int subStatusCode) {
+        documentClientException.setSubStatusCode(subStatusCode);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -411,8 +460,9 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void recordAddressResolutionEnd(CosmosDiagnostics cosmosDiagnostics,
-                                                  String identifier) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier);
+                                                  String identifier,
+                                                  String errorMessage) {
+        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier, errorMessage);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

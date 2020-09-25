@@ -12,8 +12,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
-import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
@@ -43,15 +43,15 @@ public final class ServiceBusQueueAdvanceFeatures {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String rgName = azure.sdkContext().randomResourceName("rgSB04_", 24);
-        final String namespaceName = azure.sdkContext().randomResourceName("namespace", 20);
-        final String queue1Name = azure.sdkContext().randomResourceName("queue1_", 24);
-        final String queue2Name = azure.sdkContext().randomResourceName("queue2_", 24);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgSB04_", 24);
+        final String namespaceName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("namespace", 20);
+        final String queue1Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("queue1_", 24);
+        final String queue2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("queue2_", 24);
         final String sendRuleName = "SendRule";
 
         try {
@@ -60,7 +60,7 @@ public final class ServiceBusQueueAdvanceFeatures {
 
             System.out.println("Creating name space " + namespaceName + " in resource group " + rgName + "...");
 
-            ServiceBusNamespace serviceBusNamespace = azure.serviceBusNamespaces()
+            ServiceBusNamespace serviceBusNamespace = azureResourceManager.serviceBusNamespaces()
                 .define(namespaceName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName)
@@ -157,14 +157,14 @@ public final class ServiceBusQueueAdvanceFeatures {
 
             System.out.println("Deleting namespace " + namespaceName + "...");
             // This will delete the namespace and queue within it.
-            azure.serviceBusNamespaces().deleteById(serviceBusNamespace.id());
+            azureResourceManager.serviceBusNamespaces().deleteById(serviceBusNamespace.id());
             System.out.println("Deleted namespace " + namespaceName + "...");
 
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -183,18 +183,19 @@ public final class ServiceBusQueueAdvanceFeatures {
         try {
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -18,16 +18,16 @@ class RecommendedElasticPoolMetricImpl extends WrapperImpl<RecommendedElasticPoo
 
     @Override
     public OffsetDateTime dateTime() {
-        return this.inner().dateTime();
+        return this.innerModel().dateTime();
     }
 
     @Override
     public double dtu() {
-        return this.inner().dtu();
+        return this.innerModel().dtu();
     }
 
     @Override
     public double sizeGB() {
-        return this.inner().sizeGB();
+        return this.innerModel().sizeGB();
     }
 }

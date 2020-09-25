@@ -23,6 +23,9 @@
 # PRLabel: %Batch
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
 
+# PRLabel: %Communication
+/sdk/communication/                                 @RezaJooyandeh @JianpingChen
+
 # PRLabel: %Azure.Core
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
 
@@ -63,6 +66,9 @@
 
 # PRLabel: %Storage
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @kasobol-msft
+
+# PRLabel: %EngSys
+/sdk/template/                                      @Azure/azure-sdk-eng
 
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                 @samvaity @mssfang

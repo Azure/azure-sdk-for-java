@@ -8,14 +8,14 @@ import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.Webhook;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
     @Override
     public Registry createResource(Registries registries) throws Exception {
-        final String testId = registries.manager().sdkContext().randomResourceName("", 8);
+        final String testId = registries.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String newName = "acr" + testId;
         final String rgName = "rgacr" + testId;
         Registry registry =

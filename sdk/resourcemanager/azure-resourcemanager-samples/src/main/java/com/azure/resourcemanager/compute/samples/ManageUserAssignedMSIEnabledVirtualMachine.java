@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
@@ -17,7 +17,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -37,15 +37,15 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String rgName1 = azure.sdkContext().randomResourceName("uamsi-rg-1", 15);
-        final String rgName2 = azure.sdkContext().randomResourceName("uamsi-rg-2", 15);
-        final String identityName = azure.sdkContext().randomResourceName("id", 15);
-        final String linuxVMName = azure.sdkContext().randomResourceName("VM1", 15);
-        final String pipName = azure.sdkContext().randomResourceName("pip1", 15);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String rgName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("uamsi-rg-1", 15);
+        final String rgName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("uamsi-rg-2", 15);
+        final String identityName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("id", 15);
+        final String linuxVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 15);
+        final String pipName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip1", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;
@@ -58,12 +58,12 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
 
             System.out.println("Creating a Resource Group and User Assigned MSI with CONTRIBUTOR access to the resource group");
 
-            ResourceGroup resourceGroup1 = azure.resourceGroups()
+            ResourceGroup resourceGroup1 = azureResourceManager.resourceGroups()
                     .define(rgName1)
                     .withRegion(region)
                     .create();
 
-            Identity identity = azure.identities()
+            Identity identity = azureResourceManager.identities()
                     .define(identityName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName2)
@@ -88,7 +88,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
 
             System.out.println("Creating a Linux VM with MSI associated and install Java8, Maven and Git");
 
-            VirtualMachine virtualMachine = azure.virtualMachines()
+            VirtualMachine virtualMachine = azureResourceManager.virtualMachines()
                     .define(linuxVMName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName2)
@@ -122,9 +122,9 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
             List<String> commands = new ArrayList<>();
             commands.add("git clone https://github.com/Azure-Samples/compute-java-manage-vm-from-vm-with-msi-credentials.git");
             commands.add("cd compute-java-manage-vm-from-vm-with-msi-credentials");
-            commands.add(String.format("mvn clean compile exec:java -Dexec.args='%s %s %s'", azure.subscriptionId(), resourceGroup1.name(), identity.clientId()));
+            commands.add(String.format("mvn clean compile exec:java -Dexec.args='%s %s %s'", azureResourceManager.subscriptionId(), resourceGroup1.name(), identity.clientId()));
 
-            runCommandOnVM(azure, virtualMachine, commands);
+            runCommandOnVM(azureResourceManager, virtualMachine, commands);
 
             System.out.println("Java application executed");
 
@@ -133,7 +133,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
 
             System.out.println("Retrieving the virtual machine created from the MSI enabled Linux VM");
 
-            PagedIterable<VirtualMachine> virtualMachines = azure.virtualMachines().listByResourceGroup(resourceGroup1.name());
+            PagedIterable<VirtualMachine> virtualMachines = azureResourceManager.virtualMachines().listByResourceGroup(resourceGroup1.name());
             for (VirtualMachine vm : virtualMachines) {
                 Utils.print(vm);
             }
@@ -142,9 +142,9 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName1);
-                azure.resourceGroups().deleteByName(rgName1);
+                azureResourceManager.resourceGroups().deleteByName(rgName1);
                 System.out.println("Deleting Resource Group: " + rgName2);
-                azure.resourceGroups().deleteByName(rgName2);
+                azureResourceManager.resourceGroups().deleteByName(rgName2);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -153,12 +153,12 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
         }
     }
 
-    private static RunCommandResult runCommandOnVM(Azure azure, VirtualMachine virtualMachine, List<String> commands) {
+    private static RunCommandResult runCommandOnVM(AzureResourceManager azureResourceManager, VirtualMachine virtualMachine, List<String> commands) {
         RunCommandInput runParams = new RunCommandInput()
                 .withCommandId("RunShellScript")
                 .withScript(commands);
 
-        return azure.virtualMachines().runCommand(virtualMachine.resourceGroupName(), virtualMachine.name(), runParams);
+        return azureResourceManager.virtualMachines().runCommand(virtualMachine.resourceGroupName(), virtualMachine.name(), runParams);
     }
 
     /**
@@ -172,18 +172,19 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

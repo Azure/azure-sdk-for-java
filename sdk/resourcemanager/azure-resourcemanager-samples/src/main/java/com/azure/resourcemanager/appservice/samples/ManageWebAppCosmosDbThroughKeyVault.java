@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -15,9 +15,9 @@ import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
@@ -34,17 +34,17 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @param clientId the client ID
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId) {
+    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) {
         // New resources
         final Region region         = Region.US_WEST;
-        final String appName        = azure.sdkContext().randomResourceName("webapp1-", 20);
-        final String rgName         = azure.sdkContext().randomResourceName("rg1NEMV_", 24);
-        final String vaultName      = azure.sdkContext().randomResourceName("vault", 20);
-        final String cosmosName     = azure.sdkContext().randomResourceName("cosmosdb", 20);
+        final String appName        = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
+        final String vaultName      = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vault", 20);
+        final String cosmosName     = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("cosmosdb", 20);
         final String appUrl         = appName + ".azurewebsites.net";
 
         try {
@@ -52,7 +52,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
             // Create a CosmosDB
 
             System.out.println("Creating a CosmosDB...");
-            CosmosDBAccount cosmosDBAccount = azure.cosmosDBAccounts().define(cosmosName)
+            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(cosmosName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
@@ -67,7 +67,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
             //============================================================
             // Create a key vault
 
-            Vault vault = azure.vaults()
+            Vault vault = azureResourceManager.vaults()
                     .define(vaultName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -77,7 +77,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
                         .attach()
                     .create();
 
-            SdkContext.sleep(10000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
 
             //============================================================
             // Store Cosmos DB credentials in Key Vault
@@ -100,7 +100,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
 
             System.out.println("Creating web app " + appName + " in resource group " + rgName + "...");
 
-            WebApp app = azure.webApps()
+            WebApp app = azureResourceManager.webApps()
                     .define(appName)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
@@ -138,7 +138,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
             // warm up
             System.out.println("Warming up " + appUrl + "...");
             Utils.curl("http://" + appUrl);
-            SdkContext.sleep(10000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
             System.out.println("CURLing " + appUrl);
             System.out.println(Utils.curl("http://" + appUrl));
 
@@ -147,7 +147,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -169,18 +169,19 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             final Configuration configuration = Configuration.getGlobalConfiguration();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
-            runSample(azure, configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
+            runSample(azureResourceManager, configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

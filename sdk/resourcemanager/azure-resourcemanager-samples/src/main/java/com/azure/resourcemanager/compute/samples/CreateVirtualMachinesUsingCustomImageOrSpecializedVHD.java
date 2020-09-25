@@ -7,12 +7,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.SSHShell;
 import com.azure.resourcemanager.samples.Utils;
@@ -39,15 +39,15 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String linuxVMName1 = azure.sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azure.sdkContext().randomResourceName("VM2", 15);
-        final String linuxVMName3 = azure.sdkContext().randomResourceName("VM3", 15);
-        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIPDnsLabel = azure.sdkContext().randomResourceName("pip", 15);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String linuxVMName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 15);
+        final String linuxVMName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM2", 15);
+        final String linuxVMName3 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM3", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMV", 15);
+        final String publicIPDnsLabel = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
 
@@ -62,7 +62,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
             System.out.println("Creating a Linux VM");
 
-            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName1)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -119,7 +119,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
             System.out.println("Creating a Linux VM using captured image - " + capturedImageUri);
 
-            VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVMName2)
+            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines().define(linuxVMName2)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -138,7 +138,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
             // Deleting the virtual machine
             System.out.println("Deleting VM: " + linuxVM2.id());
 
-            azure.virtualMachines().deleteById(linuxVM2.id()); // VM required to be deleted to be able to attach it's
+            azureResourceManager.virtualMachines().deleteById(linuxVM2.id()); // VM required to be deleted to be able to attach it's
             // OS Disk VHD to another VM (Deallocate is not sufficient)
 
             System.out.println("Deleted VM");
@@ -150,7 +150,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     + specializedVhd
                     + " of deleted VM");
 
-            VirtualMachine linuxVM3 = azure.virtualMachines().define(linuxVMName3)
+            VirtualMachine linuxVM3 = azureResourceManager.virtualMachines().define(linuxVMName3)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -166,7 +166,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -187,18 +187,19 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

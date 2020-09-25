@@ -16,21 +16,21 @@ final class DomainLegalAgreementImpl extends WrapperImpl<TldLegalAgreementInner>
 
     @Override
     public String agreementKey() {
-        return inner().agreementKey();
+        return innerModel().agreementKey();
     }
 
     @Override
     public String title() {
-        return inner().title();
+        return innerModel().title();
     }
 
     @Override
     public String content() {
-        return inner().content();
+        return innerModel().content();
     }
 
     @Override
     public String url() {
-        return inner().url();
+        return innerModel().url();
     }
 }

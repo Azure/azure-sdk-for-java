@@ -16,7 +16,7 @@ public class RouteTablesImpl
     implements RouteTables {
 
     public RouteTablesImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getRouteTables(), networkManager);
+        super(networkManager.serviceClient().getRouteTables(), networkManager);
     }
 
     @Override

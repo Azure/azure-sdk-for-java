@@ -89,9 +89,8 @@ public class SpringServiceCertificatesImpl
         return inner().listAsync(parent().resourceGroupName(), parent().name()).mapPage(this::wrapModel);
     }
 
-    @Override
     public CertificatesClient inner() {
-        return manager().inner().getCertificates();
+        return manager().serviceClient().getCertificates();
     }
 
     SpringServiceCertificate prepareCreateOrUpdate(String name, CertificateProperties properties) {

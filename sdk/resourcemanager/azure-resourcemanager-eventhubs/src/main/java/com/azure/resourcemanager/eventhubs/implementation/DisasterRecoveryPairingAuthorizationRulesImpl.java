@@ -48,7 +48,7 @@ public final class DisasterRecoveryPairingAuthorizationRulesImpl
     @Override
     public Mono<DisasterRecoveryPairingAuthorizationRule> getByNameAsync(
         String resourceGroupName, String namespaceName, String pairingName, String name) {
-        return this.manager.inner().getDisasterRecoveryConfigs().getAuthorizationRuleAsync(resourceGroupName,
+        return this.manager.serviceClient().getDisasterRecoveryConfigs().getAuthorizationRuleAsync(resourceGroupName,
             namespaceName,
             pairingName,
             name)
@@ -80,9 +80,8 @@ public final class DisasterRecoveryPairingAuthorizationRulesImpl
         return this.manager;
     }
 
-    @Override
     public DisasterRecoveryConfigsClient inner() {
-        return this.manager.inner().getDisasterRecoveryConfigs();
+        return this.manager.serviceClient().getDisasterRecoveryConfigs();
     }
 
     @Override

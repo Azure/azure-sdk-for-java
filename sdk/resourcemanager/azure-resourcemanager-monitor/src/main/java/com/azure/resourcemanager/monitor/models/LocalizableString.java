@@ -4,10 +4,10 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.resourcemanager.monitor.fluent.inner.LocalizableStringInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** The localizable string class. */
-public interface LocalizableString extends HasInner<LocalizableStringInner> {
+public interface LocalizableString extends HasInnerModel<LocalizableStringInner> {
     /**
      * Get the value value.
      *

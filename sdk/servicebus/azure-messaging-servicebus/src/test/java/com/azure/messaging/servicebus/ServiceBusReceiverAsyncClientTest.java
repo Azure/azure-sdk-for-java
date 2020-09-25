@@ -12,6 +12,7 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
@@ -76,6 +77,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ServiceBusReceiverAsyncClientTest {
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 5;
@@ -143,7 +145,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic());
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(), CLIENT_OPTIONS);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -184,12 +186,12 @@ class ServiceBusReceiverAsyncClientTest {
     @SuppressWarnings("unchecked")
     @Test
     void peekTwoMessages() {
+        // Arrange
         final long sequence1 = 10;
         final long sequence2 = 12;
         final ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
         when(receivedMessage.getSequenceNumber()).thenReturn(sequence1);
         when(receivedMessage2.getSequenceNumber()).thenReturn(sequence2);
-        // Arrange
         when(managementNode.peek(anyLong(), isNull(), isNull()))
             .thenReturn(Mono.just(receivedMessage), Mono.just(receivedMessage2));
 
@@ -198,7 +200,6 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNext(receivedMessage)
             .verifyComplete();
 
-        // Act & Assert
         StepVerifier.create(receiver.peekMessage())
             .expectNext(receivedMessage2)
             .verifyComplete();
@@ -211,6 +212,20 @@ class ServiceBusReceiverAsyncClientTest {
         // Because we always add one when we fetch the next message.
         Assertions.assertTrue(allValues.contains(0L));
         Assertions.assertTrue(allValues.contains(11L));
+    }
+
+    /**
+     * Verifies that when no messages are returned, that it does not error.
+     */
+    @Test
+    void peekEmptyEntity() {
+        // Arrange
+        when(managementNode.peek(0, null, null))
+            .thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(receiver.peekMessage())
+            .verifyComplete();
     }
 
     /**
@@ -369,7 +384,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that this peek batch of messages.
      */
     @Test
-    void peekBatchMessages() {
+    void peekMessages() {
         // Arrange
         final int numberOfEvents = 2;
 
@@ -379,6 +394,22 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.peekMessages(numberOfEvents))
             .expectNextCount(numberOfEvents)
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that this peek batch of messages.
+     */
+    @Test
+    void peekMessagesEmptyEntity() {
+        // Arrange
+        final int numberOfEvents = 2;
+
+        when(managementNode.peek(0, null, null, numberOfEvents))
+            .thenReturn(Flux.fromIterable(Collections.emptyList()));
+
+        // Act & Assert
+        StepVerifier.create(receiver.peekMessages(numberOfEvents))
             .verifyComplete();
     }
 

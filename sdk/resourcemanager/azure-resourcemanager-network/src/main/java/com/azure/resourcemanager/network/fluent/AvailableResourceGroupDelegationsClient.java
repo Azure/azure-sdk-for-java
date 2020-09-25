@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.inner.AvailableDelegationInner;
-import com.azure.resourcemanager.network.fluent.inner.AvailableDelegationsResultInner;
+import com.azure.resourcemanager.network.models.AvailableDelegationsResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailableResourceGroupDelegations. */
@@ -44,7 +44,7 @@ public final class AvailableResourceGroupDelegationsClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AvailableResourceGroupDelegationsClient(NetworkManagementClient client) {
+    AvailableResourceGroupDelegationsClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -67,7 +67,7 @@ public final class AvailableResourceGroupDelegationsClient {
                 + "/{location}/availableDelegations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailableDelegationsResultInner>> list(
+        Mono<Response<AvailableDelegationsResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -79,7 +79,7 @@ public final class AvailableResourceGroupDelegationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailableDelegationsResultInner>> listNext(
+        Mono<Response<AvailableDelegationsResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 

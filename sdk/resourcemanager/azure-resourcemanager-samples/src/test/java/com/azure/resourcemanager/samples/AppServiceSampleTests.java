@@ -20,40 +20,40 @@ import java.io.IOException;
 public class AppServiceSampleTests extends SamplesTestBase {
     @Test
     public void testManageWebAppBasic() {
-        Assertions.assertTrue(ManageWebAppBasic.runSample(azure));
+        Assertions.assertTrue(ManageWebAppBasic.runSample(azureResourceManager));
     }
 
     @Test
     @Disabled("Fails randomly when creating one of the three slots")
     public void testManageWebAppSlots() {
-        Assertions.assertTrue(ManageWebAppSlots.runSample(azure));
+        Assertions.assertTrue(ManageWebAppSlots.runSample(azureResourceManager));
     }
 
     @Test
     @Disabled("Failing in playback - dependent on git")
     public void testManageWebAppSourceControlAsync() {
-        Assertions.assertTrue(ManageWebAppSourceControlAsync.runSample(azure));
+        Assertions.assertTrue(ManageWebAppSourceControlAsync.runSample(azureResourceManager));
     }
 
     @Test
     @Disabled("Stops in between for user input")
     public void testManageWebAppSqlConnection() throws IOException {
-        Assertions.assertTrue(ManageWebAppSqlConnection.runSample(azure));
+        Assertions.assertTrue(ManageWebAppSqlConnection.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageLinuxWebAppBasic() {
-        Assertions.assertTrue(ManageLinuxWebAppBasic.runSample(azure));
+        Assertions.assertTrue(ManageLinuxWebAppBasic.runSample(azureResourceManager));
     }
 
     @Test
     @Disabled("Stops in between for user input")
     public void testManageLinuxWebAppSqlConnection() throws IOException {
-        Assertions.assertTrue(ManageLinuxWebAppSqlConnection.runSample(azure));
+        Assertions.assertTrue(ManageLinuxWebAppSqlConnection.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageFunctionAppBasic() {
-        Assertions.assertTrue(ManageFunctionAppBasic.runSample(azure));
+        Assertions.assertTrue(ManageFunctionAppBasic.runSample(azureResourceManager));
     }
 }

@@ -29,7 +29,7 @@ public class WebAppsImpl
     implements WebApps, SupportsBatchDeletion {
 
     public WebAppsImpl(final AppServiceManager manager) {
-        super(manager.inner().getWebApps(), manager);
+        super(manager.serviceClient().getWebApps(), manager);
     }
 
     @Override

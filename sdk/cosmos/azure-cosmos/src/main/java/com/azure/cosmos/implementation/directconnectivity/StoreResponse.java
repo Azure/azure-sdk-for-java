@@ -24,7 +24,11 @@ public class StoreResponse {
     final private byte[] content;
 
     private CosmosDiagnostics cosmosDiagnostics;
+    private int requestPayloadLength;
     private RequestTimeline requestTimeline;
+    private int responseLength;
+    private int rntbdRequestLength;
+    private int rntbdResponseLength;
 
     public StoreResponse(
             int status,
@@ -59,8 +63,40 @@ public class StoreResponse {
         return responseHeaderValues;
     }
 
+    public void setRntbdRequestLength(int rntbdRequestLength) {
+        this.rntbdRequestLength = rntbdRequestLength;
+    }
+
+    public void setRntbdResponseLength(int rntbdResponseLength) {
+        this.rntbdResponseLength = rntbdResponseLength;
+    }
+
+    public int getRntbdRequestLength() {
+        return rntbdRequestLength;
+    }
+
+    public int getRntbdResponseLength() {
+        return rntbdResponseLength;
+    }
+
+    public int getRequestPayloadLength() {
+        return requestPayloadLength;
+    }
+
+    public void setRequestPayloadLength(int requestPayloadLength) {
+        this.requestPayloadLength = requestPayloadLength;
+    }
+
+    public void setResponseBodyLength(int responseLength) {
+        this.responseLength = responseLength;
+    }
+
     public byte[] getResponseBody() {
         return this.content;
+    }
+
+    public int getResponseBodyLength() {
+        return (this.content != null) ? this.content.length : 0;
     }
 
     public long getLSN() {

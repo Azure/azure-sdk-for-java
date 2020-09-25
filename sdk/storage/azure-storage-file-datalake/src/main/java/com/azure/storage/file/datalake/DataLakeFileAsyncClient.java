@@ -11,6 +11,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReporter;
@@ -856,10 +857,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     public Mono<Response<PathProperties>> readToFileWithResponse(String filePath, FileRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
         DataLakeRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
-        return blockBlobAsyncClient.downloadToFileWithResponse(filePath, Transforms.toBlobRange(range),
-            Transforms.toBlobParallelTransferOptions(parallelTransferOptions),
-            Transforms.toBlobDownloadRetryOptions(options),
-            Transforms.toBlobRequestConditions(requestConditions), rangeGetContentMd5, openOptions)
+        return blockBlobAsyncClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath)
+        .setRange(Transforms.toBlobRange(range)).setParallelTransferOptions(parallelTransferOptions)
+        .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options))
+        .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
+        .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
             .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
     }

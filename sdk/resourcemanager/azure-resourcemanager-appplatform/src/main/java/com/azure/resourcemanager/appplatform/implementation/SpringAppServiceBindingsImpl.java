@@ -91,9 +91,8 @@ public class SpringAppServiceBindingsImpl
             .mapPage(this::wrapModel);
     }
 
-    @Override
     public BindingsClient inner() {
-        return manager().inner().getBindings();
+        return manager().serviceClient().getBindings();
     }
 
     SpringAppServiceBinding prepareCreateOrUpdate(String name, BindingResourceProperties properties) {

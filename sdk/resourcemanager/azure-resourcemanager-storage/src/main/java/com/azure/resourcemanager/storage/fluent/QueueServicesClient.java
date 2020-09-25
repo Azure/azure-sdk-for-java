@@ -43,7 +43,7 @@ public final class QueueServicesClient {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public QueueServicesClient(StorageManagementClient client) {
+    QueueServicesClient(StorageManagementClient client) {
         this.service =
             RestProxy.create(QueueServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

@@ -16,7 +16,7 @@ public class ManagementPoliciesImpl extends WrapperImpl<ManagementPoliciesClient
     private final StorageManager manager;
 
     public ManagementPoliciesImpl(StorageManager manager) {
-        super(manager.inner().getManagementPolicies());
+        super(manager.serviceClient().getManagementPolicies());
         this.manager = manager;
     }
 
@@ -39,12 +39,12 @@ public class ManagementPoliciesImpl extends WrapperImpl<ManagementPoliciesClient
 
     @Override
     public Mono<ManagementPolicy> getAsync(String resourceGroupName, String accountName) {
-        return this.inner().getAsync(resourceGroupName, accountName, ManagementPolicyName.DEFAULT)
+        return this.innerModel().getAsync(resourceGroupName, accountName, ManagementPolicyName.DEFAULT)
             .map(inner -> wrapModel(inner));
     }
 
     @Override
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
-        return this.inner().deleteAsync(resourceGroupName, accountName, ManagementPolicyName.DEFAULT);
+        return this.innerModel().deleteAsync(resourceGroupName, accountName, ManagementPolicyName.DEFAULT);
     }
 }

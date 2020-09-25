@@ -65,6 +65,8 @@ public final class Constants {
      */
     public static final int BUFFER_COPY_LENGTH = 8 * KB;
 
+    public static final String STORAGE_SCOPE = "https://storage.azure.com/.default";
+
     private Constants() {
     }
 

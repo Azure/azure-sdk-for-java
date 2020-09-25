@@ -20,7 +20,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -44,6 +44,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -133,7 +134,8 @@ class FunctionAppImpl
                 .build();
             functionServiceHost = baseUrl;
             functionService =
-                RestProxy.create(FunctionService.class, httpPipeline, new AzureJacksonAdapter());
+                RestProxy.create(FunctionService.class, httpPipeline,
+                    SerializerFactory.createDefaultManagementSerializerAdapter());
         }
     }
 
@@ -192,7 +194,7 @@ class FunctionAppImpl
                         .zipWith(
                             this.manager().appServicePlans().getByIdAsync(this.appServicePlanId()),
                             (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
-                                String connectionString = com.azure.resourcemanager.resources.fluentcore.utils.Utils
+                                String connectionString = ResourceManagerUtils
                                     .getStorageConnectionString(storageAccountToSet.name(), storageAccountKey.value(),
                                         manager().environment());
                                 addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
@@ -205,7 +207,8 @@ class FunctionAppImpl
                                         SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING, connectionString);
                                     addAppSettingIfNotModified(
                                         SETTING_WEBSITE_CONTENTSHARE,
-                                        this.manager().sdkContext().randomResourceName(name(), 32));
+                                        this.manager().resourceManager().internalContext()
+                                            .randomResourceName(name(), 32));
                                 }
                                 return FunctionAppImpl.super.submitAppSettings();
                             }))
@@ -224,7 +227,8 @@ class FunctionAppImpl
 
     @Override
     public OperatingSystem operatingSystem() {
-        return (inner().reserved() == null || !inner().reserved()) ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
+        return (innerModel().reserved() == null || !innerModel().reserved())
+            ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
     }
 
     private void addAppSettingIfNotModified(String key, String value) {
@@ -277,24 +281,6 @@ class FunctionAppImpl
     }
 
     @Override
-    public FunctionAppImpl withNewStorageAccount(String name, com.azure.resourcemanager.storage.models.SkuName sku) {
-        StorageAccount.DefinitionStages.WithGroup storageDefine =
-            manager().storageManager().storageAccounts().define(name).withRegion(regionName());
-        if (super.creatableGroup != null && isInCreateMode()) {
-            storageAccountCreatable =
-                storageDefine.withNewResourceGroup(super.creatableGroup).withGeneralPurposeAccountKind().withSku(sku);
-        } else {
-            storageAccountCreatable =
-                storageDefine
-                    .withExistingResourceGroup(resourceGroupName())
-                    .withGeneralPurposeAccountKind()
-                    .withSku(sku);
-        }
-        this.addDependency(storageAccountCreatable);
-        return this;
-    }
-
-    @Override
     public FunctionAppImpl withNewStorageAccount(String name, StorageAccountSkuType sku) {
         StorageAccount.DefinitionStages.WithGroup storageDefine =
             manager().storageManager().storageAccounts().define(name).withRegion(regionName());
@@ -327,7 +313,7 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withDailyUsageQuota(int quota) {
-        inner().withDailyMemoryTimeQuota(quota);
+        innerModel().withDailyMemoryTimeQuota(quota);
         return this;
     }
 
@@ -418,7 +404,7 @@ class FunctionAppImpl
     protected OperatingSystem appServicePlanOperatingSystem(AppServicePlan appServicePlan) {
         // Consumption plan or premium (elastic) plan would have "functionapp" or "elastic" in "kind" property, no
         // "linux" in it.
-        return (appServicePlan.inner().reserved() == null || !appServicePlan.inner().reserved())
+        return (appServicePlan.innerModel().reserved() == null || !appServicePlan.innerModel().reserved())
             ? OperatingSystem.WINDOWS
             : OperatingSystem.LINUX;
     }
@@ -447,7 +433,7 @@ class FunctionAppImpl
                             "2019-08-01"))
             .map(ListKeysResult::getMasterKey)
             .subscriberContext(
-                context -> context.putAll(FluxUtil.toReactorContext(this.manager().inner().getContext())));
+                context -> context.putAll(FluxUtil.toReactorContext(this.manager().serviceClient().getContext())));
     }
 
     @Override
@@ -523,7 +509,7 @@ class FunctionAppImpl
     @Override
     public Mono<Void> syncTriggersAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .syncFunctionTriggersAsync(resourceGroupName(), name())
             .onErrorResume(
@@ -602,15 +588,15 @@ class FunctionAppImpl
     }
 
     @Override
-    public Flux<Indexable> createAsync() {
+    public Mono<FunctionApp> createAsync() {
         if (this.isInCreateMode()) {
-            if (inner().serverFarmId() == null) {
+            if (innerModel().serverFarmId() == null) {
                 withNewConsumptionPlan();
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
-                    this.manager().sdkContext().randomResourceName(name(), 20),
-                    com.azure.resourcemanager.storage.models.SkuName.STANDARD_GRS);
+                    this.manager().resourceManager().internalContext().randomResourceName(name(), 20),
+                    StorageAccountSkuType.STANDARD_GRS);
             }
         }
         return super.createAsync();

@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.Configuration
@@ -47,7 +48,7 @@ class BuilderHelperTest extends Specification {
             }
         }
 
-        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, requestRetryOptions, null,
+        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, requestRetryOptions, BuilderHelper.defaultHttpLogOptions,
             new FreshDateTestClient(), new ArrayList<>(), Configuration.NONE)
 
         then:
@@ -104,9 +105,10 @@ class BuilderHelperTest extends Specification {
             .resourcePath("path")
             .credential(credentials)
             .retryOptions(requestRetryOptions)
+            .httpClient(new FreshDateTestClient())
 
         when:
-        def directoryClient = fileClientBuilder.httpClient(new FreshDateTestClient()).buildDirectoryClient()
+        def directoryClient = fileClientBuilder.buildDirectoryClient()
 
         then:
         StepVerifier.create(directoryClient.getHttpPipeline().send(request(directoryClient.getDirectoryUrl())))
@@ -114,7 +116,95 @@ class BuilderHelperTest extends Specification {
             .verifyComplete()
 
         when:
-        def fileClient = fileClientBuilder.httpClient(new FreshDateTestClient()).buildFileClient()
+        def fileClient = fileClientBuilder.buildFileClient()
+
+        then:
+        StepVerifier.create(fileClient.getHttpPipeline().send(request(fileClient.getFileUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the default pipeline builder.
+     */
+    def "Custom application id in UA string"() {
+        when:
+        def credentialPolicySupplier = new Supplier<HttpPipelinePolicy>() {
+            @Override
+            HttpPipelinePolicy get() {
+                return new StorageSharedKeyCredentialPolicy(credentials)
+            }
+        }
+
+        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, new RequestRetryOptions(), new HttpLogOptions().setApplicationId("custom-id"),
+            new ApplicationIdUAStringTestClient(), new ArrayList<>(), Configuration.NONE)
+
+        then:
+        StepVerifier.create(pipeline.send(request(endpoint)))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the service client builder's default pipeline.
+     */
+    def "Service client custom application id in UA string"() {
+        when:
+        def serviceClient = new ShareServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .httpClient(new ApplicationIdUAStringTestClient())
+            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .buildClient()
+
+        then:
+        StepVerifier.create(serviceClient.getHttpPipeline().send(request(serviceClient.getFileServiceUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the share client builder's default pipeline.
+     */
+    def "Share client custom application id in UA string"() {
+        when:
+        def shareClient = new ShareClientBuilder()
+            .endpoint(endpoint)
+            .shareName("share")
+            .credential(credentials)
+            .httpClient(new ApplicationIdUAStringTestClient())
+            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .buildClient()
+
+        then:
+        StepVerifier.create(shareClient.getHttpPipeline().send(request(shareClient.getShareUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the file client builder's default pipeline.
+     */
+    def "File client custom application id in UA string"() {
+        setup:
+        def fileClientBuilder = new ShareFileClientBuilder()
+            .endpoint(endpoint)
+            .shareName("fileSystem")
+            .resourcePath("path")
+            .credential(credentials)
+            .httpClient(new ApplicationIdUAStringTestClient())
+            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+
+        when:
+        def directoryClient = fileClientBuilder.buildDirectoryClient()
+
+        then:
+        StepVerifier.create(directoryClient.getHttpPipeline().send(request(directoryClient.getDirectoryUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+
+        when:
+        def fileClient = fileClientBuilder.buildFileClient()
 
         then:
         StepVerifier.create(fileClient.getHttpPipeline().send(request(fileClient.getFileUrl())))
@@ -142,6 +232,17 @@ class BuilderHelperTest extends Specification {
             }
 
             return new DateTimeRfc1123(dateHeader)
+        }
+    }
+
+    private static final class ApplicationIdUAStringTestClient implements HttpClient {
+        @Override
+        Mono<HttpResponse> send(HttpRequest request) {
+            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
+                throw new RuntimeException("Failed to set 'User-Agent' header.")
+            }
+            assert request.getHeaders().getValue("User-Agent").startsWith("custom-id")
+            return Mono.just(new MockHttpResponse(request, 200))
         }
     }
 }

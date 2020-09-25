@@ -4,16 +4,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.Collection;
 import reactor.core.publisher.Mono;
 
 /** Entry point to virtual machine scale set instance management API. */
 @Fluent
-public interface VirtualMachineScaleSetVMs
-    extends SupportsListing<VirtualMachineScaleSetVM>, HasInner<VirtualMachineScaleSetVMsClient> {
+public interface VirtualMachineScaleSetVMs extends SupportsListing<VirtualMachineScaleSetVM> {
     /**
      * Deletes the specified virtual machine instances from the scale set.
      *
@@ -77,8 +74,8 @@ public interface VirtualMachineScaleSetVMs
     void updateInstances(String... instanceIds);
 
     /**
-     * Simulates the eviction of the specified spot virtual machine in the scale set asynchronously.
-     * The eviction will occur with 30 minutes after calling this API.
+     * Simulates the eviction of the specified spot virtual machine in the scale set asynchronously. The eviction will
+     * occur with 30 minutes after calling this API.
      *
      * @param instanceId The instance ID of the virtual machine.
      * @return a representation of the deferred computation of this call
@@ -86,8 +83,8 @@ public interface VirtualMachineScaleSetVMs
     Mono<Void> simulateEvictionAsync(String instanceId);
 
     /**
-     * Simulates the eviction of the specified spot virtual machine in the scale set.
-     * The eviction will occur with 30 minutes after calling this API.
+     * Simulates the eviction of the specified spot virtual machine in the scale set. The eviction will occur with 30
+     * minutes after calling this API.
      *
      * @param instanceId The instance ID of the virtual machine.
      */

@@ -7,11 +7,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.core.models.IncomingRelationship;
-import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.models.BasicDigitalTwin;
-import com.azure.digitaltwins.core.models.BasicRelationship;
-import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.models.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -35,7 +32,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void relationshipLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void relationshipLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
         String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
@@ -53,8 +50,8 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 roomModelId,
                 hvacModelId,
                 modelsList -> {
-                    List<ModelData> createdModels = client.createModels(modelsList);
-                    logger.info("Created {} models successfully", createdModels.size());
+                    Iterable<DigitalTwinsModelData> createdModels = client.createModels(modelsList);
+                    logger.info("Created models successfully");
                 }
             );
 
@@ -96,28 +93,28 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             List<Object> floorContainsRoomUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", false);
 
             // Create relationship from Floor -> Room
-            BasicRelationship floorRoomRelationship = client.createRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorContainsRoomPayload, BasicRelationship.class);
+            BasicRelationship floorRoomRelationship = client.createRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class);
             assertThat(floorRoomRelationship.getId())
                 .isEqualTo(FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID)
                 .as("Created relationship from floor -> room");
             logger.info("Created {} relationship between source = {} and target = {}", floorRoomRelationship.getId(), floorRoomRelationship.getSourceId(), floorRoomRelationship.getTargetId());
 
             // Create relationship from Floor -> Hvac
-            BasicRelationship floorHvacRelationship = client.createRelationship(floorTwinId, FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID, floorCooledByHvacPayload, BasicRelationship.class);
+            BasicRelationship floorHvacRelationship = client.createRelationship(floorTwinId, FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID, deserializeJsonString(floorCooledByHvacPayload, BasicRelationship.class), BasicRelationship.class);
             assertThat(floorHvacRelationship.getId())
                 .isEqualTo(FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID)
                 .as("Created relationship from floor -> hvac");
             logger.info("Created {} relationship between source = {} and target = {}", floorHvacRelationship.getId(), floorHvacRelationship.getSourceId(), floorHvacRelationship.getTargetId());
 
             // Create relationship from Hvac -> Floor
-            BasicRelationship hvacFloorRelationship = client.createRelationship(hvacTwinId, HVAC_COOLS_FLOOR_RELATIONSHIP_ID, floorTwinCoolsRelationshipPayload, BasicRelationship.class);
+            BasicRelationship hvacFloorRelationship = client.createRelationship(hvacTwinId, HVAC_COOLS_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinCoolsRelationshipPayload, BasicRelationship.class), BasicRelationship.class);
             assertThat(hvacFloorRelationship.getId())
                 .isEqualTo(HVAC_COOLS_FLOOR_RELATIONSHIP_ID)
                 .as("Created relationship from hvac -> floor");
             logger.info("Created {} relationship between source = {} and target = {}", hvacFloorRelationship.getId(), hvacFloorRelationship.getSourceId(), hvacFloorRelationship.getTargetId());
 
             // Create relationship from Room -> Floor
-            BasicRelationship roomFloorRelationship = client.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, BasicRelationship.class);
+            BasicRelationship roomFloorRelationship = client.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship.class), BasicRelationship.class);
             assertThat(roomFloorRelationship.getId())
                 .isEqualTo(ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID)
                 .as("Created relationship from room -> floor");
@@ -125,7 +122,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // Create a relation which already exists - should return status code 409 (Conflict).
             assertRestException(
-                () -> client.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload),
+                () -> client.createRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class),
                 HTTP_PRECON_FAILED
             );
 
@@ -189,7 +186,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // GET a relationship which doesn't exist - should return status code 404 (Not Found).
             assertRestException(
-                () -> client.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID),
+                () -> client.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, String.class),
                 HTTP_NOT_FOUND
             );
 

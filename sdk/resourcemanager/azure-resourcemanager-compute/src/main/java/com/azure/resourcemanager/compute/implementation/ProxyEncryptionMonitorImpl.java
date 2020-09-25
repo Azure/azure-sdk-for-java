@@ -86,17 +86,14 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
                         if (EncryptionExtensionIdentifier.isNoAADVersion(osType(), extension.typeHandlerVersion())) {
                             self.resolvedEncryptionMonitor =
                                 (osType() == OperatingSystemTypes.LINUX)
-                                    ? new LinuxDiskVolumeNoAADEncryptionMonitorImpl(
-                                        virtualMachine.id(), computeManager)
-                                    : new WindowsVolumeNoAADEncryptionMonitorImpl(
-                                        virtualMachine.id(), computeManager);
+                                    ? new LinuxDiskVolumeNoAADEncryptionMonitorImpl(virtualMachine.id(), computeManager)
+                                    : new WindowsVolumeNoAADEncryptionMonitorImpl(virtualMachine.id(), computeManager);
                         } else {
                             self.resolvedEncryptionMonitor =
                                 (osType() == OperatingSystemTypes.LINUX)
                                     ? new LinuxDiskVolumeLegacyEncryptionMonitorImpl(
                                         virtualMachine.id(), computeManager)
-                                    : new WindowsVolumeLegacyEncryptionMonitorImpl(
-                                        virtualMachine.id(), computeManager);
+                                    : new WindowsVolumeLegacyEncryptionMonitorImpl(virtualMachine.id(), computeManager);
                         }
                         return self.resolvedEncryptionMonitor.refreshAsync();
                     })
@@ -111,10 +108,10 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
      */
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
         return computeManager
-            .inner()
+            .serviceClient()
             .getVirtualMachines()
             .getByResourceGroupAsync(ResourceUtils.groupFromResourceId(vmId), ResourceUtils.nameFromResourceId(vmId));
-            // Exception if vm not found
+        // Exception if vm not found
     }
 
     /**
@@ -127,8 +124,7 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
         if (vm.resources() != null) {
             for (VirtualMachineExtensionInner extension : vm.resources()) {
                 if (EncryptionExtensionIdentifier.isEncryptionPublisherName(extension.publisher())
-                    && EncryptionExtensionIdentifier
-                        .isEncryptionTypeName(extension.virtualMachineExtensionType(), osType())) {
+                    && EncryptionExtensionIdentifier.isEncryptionTypeName(extension.typePropertiesType(), osType())) {
                     return extension;
                 }
             }

@@ -1,4 +1,9 @@
 # Release History
+## 1.0.0-beta.5 (Unreleased)
+
+
+## 1.0.0-beta.4 (2020-09-21)
+- Minor code cleanup and refactoring
 
 ## 1.0.0-beta.3 (2020-09-10)
 - Removed `SchemaRegistryCodec` and `SchemaRegistrySerializer` 

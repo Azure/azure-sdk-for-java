@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
 import com.azure.resourcemanager.appservice.models.PricingTier;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -28,16 +28,16 @@ public final class ManageFunctionAppBasic {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String app1Name       = azure.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azure.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azure.sdkContext().randomResourceName("webapp3-", 20);
-        final String rg1Name        = azure.sdkContext().randomResourceName("rg1NEMV_", 24);
-        final String rg2Name        = azure.sdkContext().randomResourceName("rg2NEMV_", 24);
+        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String app2Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp2-", 20);
+        final String app3Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp3-", 20);
+        final String rg1Name        = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
+        final String rg2Name        = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg2NEMV_", 24);
 
         try {
 
@@ -47,7 +47,7 @@ public final class ManageFunctionAppBasic {
 
             System.out.println("Creating function app " + app1Name + " in resource group " + rg1Name + "...");
 
-            FunctionApp app1 = azure.functionApps()
+            FunctionApp app1 = azureResourceManager.functionApps()
                     .define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rg1Name)
@@ -60,8 +60,8 @@ public final class ManageFunctionAppBasic {
             // Create a second function app with the same app service plan
 
             System.out.println("Creating another function app " + app2Name + " in resource group " + rg1Name + "...");
-            AppServicePlan plan = azure.appServicePlans().getById(app1.appServicePlanId());
-            FunctionApp app2 = azure.functionApps()
+            AppServicePlan plan = azureResourceManager.appServicePlans().getById(app1.appServicePlanId());
+            FunctionApp app2 = azureResourceManager.functionApps()
                     .define(app2Name)
                     .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rg1Name)
@@ -76,7 +76,7 @@ public final class ManageFunctionAppBasic {
             // in a different resource group
 
             System.out.println("Creating another function app " + app3Name + " in resource group " + rg2Name + "...");
-            FunctionApp app3 = azure.functionApps()
+            FunctionApp app3 = azureResourceManager.functionApps()
                     .define(app3Name)
                     .withExistingAppServicePlan(plan)
                     .withNewResourceGroup(rg2Name)
@@ -105,13 +105,13 @@ public final class ManageFunctionAppBasic {
 
             System.out.println("Printing list of function apps in resource group " + rg1Name + "...");
 
-            for (FunctionAppBasic functionApp : azure.functionApps().listByResourceGroup(rg1Name)) {
+            for (FunctionAppBasic functionApp : azureResourceManager.functionApps().listByResourceGroup(rg1Name)) {
                 Utils.print(functionApp);
             }
 
             System.out.println("Printing list of function apps in resource group " + rg2Name + "...");
 
-            for (FunctionAppBasic functionApp : azure.functionApps().listByResourceGroup(rg2Name)) {
+            for (FunctionAppBasic functionApp : azureResourceManager.functionApps().listByResourceGroup(rg2Name)) {
                 Utils.print(functionApp);
             }
 
@@ -119,21 +119,21 @@ public final class ManageFunctionAppBasic {
             // Delete a function app
 
             System.out.println("Deleting function app " + app1Name + "...");
-            azure.functionApps().deleteByResourceGroup(rg1Name, app1Name);
+            azureResourceManager.functionApps().deleteByResourceGroup(rg1Name, app1Name);
             System.out.println("Deleted function app " + app1Name + "...");
 
             System.out.println("Printing list of function apps in resource group " + rg1Name + " again...");
-            for (FunctionAppBasic functionApp : azure.functionApps().listByResourceGroup(rg1Name)) {
+            for (FunctionAppBasic functionApp : azureResourceManager.functionApps().listByResourceGroup(rg1Name)) {
                 Utils.print(functionApp);
             }
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rg1Name);
-                azure.resourceGroups().beginDeleteByName(rg1Name);
+                azureResourceManager.resourceGroups().beginDeleteByName(rg1Name);
                 System.out.println("Deleted Resource Group: " + rg1Name);
                 System.out.println("Deleting Resource Group: " + rg2Name);
-                azure.resourceGroups().beginDeleteByName(rg2Name);
+                azureResourceManager.resourceGroups().beginDeleteByName(rg2Name);
                 System.out.println("Deleted Resource Group: " + rg2Name);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -155,17 +155,18 @@ public final class ManageFunctionAppBasic {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                     .configure()
                     .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credential, profile)
                     .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
-            runSample(azure);
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
+            runSample(azureResourceManager);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

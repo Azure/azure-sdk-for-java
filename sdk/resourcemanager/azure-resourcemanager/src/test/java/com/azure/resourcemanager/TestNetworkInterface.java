@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import java.util.Collection;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +18,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     @Override
     public NetworkInterface createResource(NetworkInterfaces networkInterfaces) throws Exception {
 
-        String postfix = networkInterfaces.manager().sdkContext().randomResourceName("", 8);
+        String postfix = networkInterfaces.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String nicName = "nic" + postfix;
         final String vnetName = "net" + postfix;
         final String pipName = "pip" + postfix;

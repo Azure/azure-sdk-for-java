@@ -9,7 +9,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.management.profile.AzureProfile;
 import com.jcraft.jsch.JSchException;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -17,7 +17,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.samples.SSHShell;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -39,16 +39,16 @@ import java.util.List;
 public final class CreateVirtualMachineUsingCustomImageFromVM {
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String linuxVMName1 = azure.sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azure.sdkContext().randomResourceName("VM2", 15);
-        final String linuxVMName3 = azure.sdkContext().randomResourceName("VM3", 15);
-        final String customImageName = azure.sdkContext().randomResourceName("img", 15);
-        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIpDnsLabel = azure.sdkContext().randomResourceName("pip", 15);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String linuxVMName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 15);
+        final String linuxVMName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM2", 15);
+        final String linuxVMName3 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM3", 15);
+        final String customImageName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("img", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMV", 15);
+        final String publicIpDnsLabel = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;
@@ -65,7 +65,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
 
             System.out.println("Creating a un-managed Linux VM");
 
-            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName1)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -121,7 +121,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
 
             System.out.println("Capturing VM as custom image: " + linuxVM.id());
 
-            VirtualMachineCustomImage virtualMachineCustomImage = azure.virtualMachineCustomImages()
+            VirtualMachineCustomImage virtualMachineCustomImage = azureResourceManager.virtualMachineCustomImages()
                     .define(customImageName)
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)
@@ -137,7 +137,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
 
             System.out.println("Creating a Linux VM using custom image - " + virtualMachineCustomImage.id());
 
-            VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVMName2)
+            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines().define(linuxVMName2)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -157,7 +157,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
 
             System.out.println("Creating another Linux VM with additional data disks using custom image - " + virtualMachineCustomImage.id());
 
-            VirtualMachine linuxVM3 = azure.virtualMachines().define(linuxVMName3)
+            VirtualMachine linuxVM3 = azureResourceManager.virtualMachines().define(linuxVMName3)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -187,14 +187,14 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
             System.out.println("Getting OS and data disks SAS Uris");
 
             // OS Disk SAS Uri
-            Disk osDisk = azure.disks().getById(linuxVM3.osDiskId());
+            Disk osDisk = azureResourceManager.disks().getById(linuxVM3.osDiskId());
 
             String osDiskSasUri = osDisk.grantAccess(24 * 60);
             System.out.println("OS disk SAS Uri: " + osDiskSasUri);
 
             // Data disks SAS Uri
             for (VirtualMachineDataDisk disk : linuxVM3.dataDisks().values()) {
-                Disk dataDisk = azure.disks().getById(disk.id());
+                Disk dataDisk = azureResourceManager.disks().getById(disk.id());
                 String dataDiskSasUri = dataDisk.grantAccess(24 * 60);
                 System.out.println(String.format("Data disk (lun: %d) SAS Uri: %s", disk.lun(), dataDiskSasUri));
             }
@@ -203,14 +203,14 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
             // Deleting the custom image
             System.out.println("Deleting custom Image: " + virtualMachineCustomImage.id());
 
-            azure.virtualMachineCustomImages().deleteById(virtualMachineCustomImage.id());
+            azureResourceManager.virtualMachineCustomImages().deleteById(virtualMachineCustomImage.id());
 
             System.out.println("Deleted custom image");
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -233,18 +233,19 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

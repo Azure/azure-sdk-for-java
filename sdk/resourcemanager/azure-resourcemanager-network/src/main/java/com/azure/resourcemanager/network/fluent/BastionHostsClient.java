@@ -56,7 +56,7 @@ public final class BastionHostsClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public BastionHostsClient(NetworkManagementClient client) {
+    BastionHostsClient(NetworkManagementClient client) {
         this.service =
             RestProxy.create(BastionHostsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

@@ -7,14 +7,14 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.ConnectionStringType;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -44,17 +44,17 @@ public final class ManageLinuxWebAppStorageAccountConnection {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azure.sdkContext().randomResourceName("webapp1-", 20);
+        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
         final String app1Url        = app1Name + suffix;
-        final String storageName    = azure.sdkContext().randomResourceName("jsdkstore", 20);
-        final String containerName  = azure.sdkContext().randomResourceName("jcontainer", 20);
-        final String rgName         = azure.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String storageName    = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("jsdkstore", 20);
+        final String containerName  = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("jcontainer", 20);
+        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 
@@ -63,7 +63,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
 
             System.out.println("Creating storage account " + storageName + "...");
 
-            StorageAccount storageAccount = azure.storageAccounts().define(storageName)
+            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(storageName)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .create();
@@ -92,7 +92,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
             System.out.println("Creating web app " + app1Name + "...");
 
             // note: the env variable will not work in linux since dot is not allowed in env variable name
-            WebApp app1 = azure.webApps().define(app1Name)
+            WebApp app1 = azureResourceManager.webApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rgName)
                     .withNewLinuxPlan(PricingTier.STANDARD_S1)
@@ -118,7 +118,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
             // warm up
             System.out.println("Warming up " + app1Url + "/azure-samples-blob-traverser...");
             Utils.curl("http://" + app1Url + "/azure-samples-blob-traverser/");
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
             System.out.println("CURLing " + app1Url + "/azure-samples-blob-traverser...");
             System.out.println(Utils.curl("http://" + app1Url + "/azure-samples-blob-traverser/"));
 
@@ -126,7 +126,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -148,18 +148,19 @@ public final class ManageLinuxWebAppStorageAccountConnection {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

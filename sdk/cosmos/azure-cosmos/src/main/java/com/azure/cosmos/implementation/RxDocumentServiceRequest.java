@@ -70,7 +70,8 @@ public class RxDocumentServiceRequest implements Cloneable {
                 || this.operationType == OperationType.Head
                 || this.operationType == OperationType.HeadFeed
                 || this.operationType == OperationType.Query
-                || this.operationType == OperationType.SqlQuery;
+                || this.operationType == OperationType.SqlQuery
+                || this.operationType == OperationType.QueryPlan;
     }
 
     public boolean isReadOnlyScript() {
@@ -953,6 +954,10 @@ public class RxDocumentServiceRequest implements Cloneable {
         }
 
         return Flux.just(Unpooled.wrappedBuffer(contentAsByteArray));
+    }
+
+    public int getContentLength() {
+        return contentAsByteArray != null ? contentAsByteArray.length : 0;
     }
 
     public byte[] getContentAsByteArray() {

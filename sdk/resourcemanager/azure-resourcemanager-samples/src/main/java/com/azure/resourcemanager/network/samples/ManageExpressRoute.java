@@ -7,13 +7,13 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSkuType;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 
 /**
@@ -30,22 +30,22 @@ public final class ManageExpressRoute {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_NORTH_CENTRAL;
-        final String rgName = azure.sdkContext().randomResourceName("rg", 20);
-        final String ercName = azure.sdkContext().randomResourceName("erc", 20);
-        final String gatewayName = azure.sdkContext().randomResourceName("gtw", 20);
-        final String connectionName = azure.sdkContext().randomResourceName("con", 20);
-        final String vnetName = azure.sdkContext().randomResourceName("vnet", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 20);
+        final String ercName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("erc", 20);
+        final String gatewayName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("gtw", 20);
+        final String connectionName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("con", 20);
+        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet", 20);
 
         try {
             //============================================================
             // create Express Route Circuit
             System.out.println("Creating express route circuit...");
-            ExpressRouteCircuit erc = azure.expressRouteCircuits().define(ercName)
+            ExpressRouteCircuit erc = azureResourceManager.expressRouteCircuits().define(ercName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withServiceProvider("Equinix")
@@ -75,7 +75,7 @@ public final class ManageExpressRoute {
             //============================================================
             // Create virtual network to be associated with virtual network gateway
             System.out.println("Creating virtual network...");
-            Network network = azure.networks().define(vnetName)
+            Network network = azureResourceManager.networks().define(vnetName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withAddressSpace("192.168.0.0/16")
@@ -86,7 +86,7 @@ public final class ManageExpressRoute {
             //============================================================
             // Create virtual network gateway
             System.out.println("Creating virtual network gateway...");
-            VirtualNetworkGateway vngw1 = azure.virtualNetworkGateways().define(gatewayName)
+            VirtualNetworkGateway vngw1 = azureResourceManager.virtualNetworkGateways().define(gatewayName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withExistingNetwork(network)
@@ -109,7 +109,7 @@ public final class ManageExpressRoute {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -129,18 +129,19 @@ public final class ManageExpressRoute {
             // Authenticate
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

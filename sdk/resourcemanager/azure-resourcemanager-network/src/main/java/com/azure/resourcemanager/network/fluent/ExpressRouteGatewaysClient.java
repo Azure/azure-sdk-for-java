@@ -51,7 +51,7 @@ public final class ExpressRouteGatewaysClient
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ExpressRouteGatewaysClient(NetworkManagementClient client) {
+    ExpressRouteGatewaysClient(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(ExpressRouteGatewaysService.class, client.getHttpPipeline(), client.getSerializerAdapter());

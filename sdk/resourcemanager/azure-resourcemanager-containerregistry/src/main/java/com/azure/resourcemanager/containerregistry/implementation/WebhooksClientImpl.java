@@ -29,7 +29,7 @@ public class WebhooksClientImpl implements Registries.WebhooksClient {
     @Override
     public Mono<Webhook> getAsync(final String resourceGroupName, final String registryName, final String webhookName) {
         final WebhooksClientImpl self = this;
-        final WebhooksClient webhooksInner = this.containerRegistryManager.inner().getWebhooks();
+        final WebhooksClient webhooksInner = this.containerRegistryManager.serviceClient().getWebhooks();
 
         return webhooksInner
             .getAsync(resourceGroupName, registryName, webhookName)
@@ -48,14 +48,15 @@ public class WebhooksClientImpl implements Registries.WebhooksClient {
 
     @Override
     public void delete(final String resourceGroupName, final String registryName, final String webhookName) {
-        this.containerRegistryManager.inner().getWebhooks().delete(resourceGroupName, registryName, webhookName);
+        this.containerRegistryManager.serviceClient().getWebhooks()
+            .delete(resourceGroupName, registryName, webhookName);
     }
 
     @Override
     public Mono<Void> deleteAsync(final String resourceGroupName, final String registryName, final String webhookName) {
         return this
             .containerRegistryManager
-            .inner()
+            .serviceClient()
             .getWebhooks()
             .deleteAsync(resourceGroupName, registryName, webhookName);
     }
@@ -68,7 +69,7 @@ public class WebhooksClientImpl implements Registries.WebhooksClient {
     @Override
     public PagedFlux<Webhook> listAsync(final String resourceGroupName, final String registryName) {
         final WebhooksClientImpl self = this;
-        final WebhooksClient webhooksInner = this.containerRegistryManager.inner().getWebhooks();
+        final WebhooksClient webhooksInner = this.containerRegistryManager.serviceClient().getWebhooks();
 
         return PagedConverter
             .flatMapPage(

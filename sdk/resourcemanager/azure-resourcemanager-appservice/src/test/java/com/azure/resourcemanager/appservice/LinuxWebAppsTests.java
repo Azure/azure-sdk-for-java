@@ -10,9 +10,9 @@ import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.io.ByteArrayInputStream;
 import java.util.zip.ZipInputStream;
 import org.apache.commons.io.IOUtils;
@@ -118,7 +118,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assertions.assertNotNull(webApp);
         if (!isPlaybackMode()) {
             // maybe 2 minutes is enough?
-            SdkContext.sleep(120000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(120000);
             Response<String> response = curl("http://" + webApp1.defaultHostname());
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
@@ -183,7 +183,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assertions.assertNotNull(webApp);
         if (!isPlaybackMode()) {
             // maybe 2 minutes is enough?
-            SdkContext.sleep(120000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(120000);
             Response<String> response = curl("https://" + webApp1.defaultHostname());
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();

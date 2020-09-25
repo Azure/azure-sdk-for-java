@@ -5,22 +5,19 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.authorization.models.RoleAssignment;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
 
 public class VirtualMachineManagedServiceIdentityOperationsTests extends ComputeManagementTest {
     private String rgName = "";
@@ -60,7 +57,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
@@ -88,7 +85,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         virtualMachine = virtualMachine.update().withSystemAssignedManagedServiceIdentity().apply();
 
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
@@ -113,7 +110,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
     @Test
     public void canSetMSIOnNewVMWithRoleAssignedToCurrentResourceGroup() throws Exception {
-        Flux<Indexable> resources =
+        VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()
                 .define(vmName)
@@ -129,31 +126,10 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withSystemAssignedManagedServiceIdentity()
                 .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
-                .createAsync();
-
-        final VirtualMachine[] virtualMachines = new VirtualMachine[1];
-        final RoleAssignment[] roleAssignments = new RoleAssignment[1];
-
-        resources
-            .collectList()
-            .block()
-            .forEach(
-                indexable -> {
-                    if (indexable instanceof VirtualMachine) {
-                        virtualMachines[0] = (VirtualMachine) indexable;
-                    }
-                    if (indexable instanceof RoleAssignment) {
-                        roleAssignments[0] = (RoleAssignment) indexable;
-                    }
-                });
-
-        Assertions.assertNotNull(virtualMachines[0]);
-        Assertions.assertNotNull(roleAssignments[0]);
-
-        final VirtualMachine virtualMachine = virtualMachines[0];
+                .create();
 
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
@@ -184,29 +160,6 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         }
 
         Assertions.assertTrue(found, "Resource group should have a role assignment with virtual machine MSI principal");
-
-        // Below we tests internal functionality to ensure a call for RoleAssignment is not happening.
-        // NOT a pattern applications/customer should use
-        //
-        RoleAssignment savedRoleAssignment = roleAssignments[0];
-        roleAssignments[0] = null;
-
-        TaskGroup.HasTaskGroup hasTaskGroup = (TaskGroup.HasTaskGroup) virtualMachine;
-        Assertions.assertNotNull(hasTaskGroup);
-        TaskGroup vmTaskGroup = hasTaskGroup.taskGroup();
-        vmTaskGroup
-            .invokeAsync(vmTaskGroup.newInvocationContext())
-            .collectList()
-            .block()
-            .forEach(
-                indexable -> {
-                    if (indexable instanceof RoleAssignment) {
-                        roleAssignments[0] = (RoleAssignment) indexable;
-                    }
-                });
-
-        Assertions.assertNotNull(roleAssignments[0]);
-        Assertions.assertTrue((roleAssignments[0]).key().equalsIgnoreCase(savedRoleAssignment.key()));
     }
 
     @Test
@@ -310,7 +263,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());

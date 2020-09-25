@@ -49,7 +49,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * "CustomScriptExtension".
      */
     @JsonProperty(value = "properties.type")
-    private String virtualMachineScaleSetExtensionType;
+    private String typePropertiesType;
 
     /*
      * Specifies the version of the script handler.
@@ -168,8 +168,8 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      *
      * @return the typePropertiesType value.
      */
-    public String virtualMachineScaleSetExtensionType() {
-        return this.virtualMachineScaleSetExtensionType;
+    public String typePropertiesType() {
+        return this.typePropertiesType;
     }
 
     /**
@@ -178,8 +178,8 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @param typePropertiesType the typePropertiesType value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
-    public VirtualMachineScaleSetExtensionInner withVirtualMachineScaleSetExtensionType(String typePropertiesType) {
-        this.virtualMachineScaleSetExtensionType = typePropertiesType;
+    public VirtualMachineScaleSetExtensionInner withTypePropertiesType(String typePropertiesType) {
+        this.typePropertiesType = typePropertiesType;
         return this;
     }
 

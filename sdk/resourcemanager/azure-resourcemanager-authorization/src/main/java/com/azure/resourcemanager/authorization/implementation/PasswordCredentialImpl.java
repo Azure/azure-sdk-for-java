@@ -62,17 +62,17 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
 
     @Override
     public OffsetDateTime startDate() {
-        return inner().startDate();
+        return innerModel().startDate();
     }
 
     @Override
     public OffsetDateTime endDate() {
-        return inner().endDate();
+        return innerModel().endDate();
     }
 
     @Override
     public String value() {
-        return inner().value();
+        return innerModel().value();
     }
 
     @Override
@@ -82,14 +82,14 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
 
     @Override
     public PasswordCredentialImpl<T> withPasswordValue(String password) {
-        inner().withValue(password);
+        innerModel().withValue(password);
         return this;
     }
 
     @Override
     public PasswordCredentialImpl<T> withStartDate(OffsetDateTime startDate) {
         OffsetDateTime original = startDate();
-        inner().withStartDate(startDate);
+        innerModel().withStartDate(startDate);
         // Adjust end time
         withDuration(Duration.between(original, endDate()));
         return this;
@@ -97,7 +97,7 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
 
     @Override
     public PasswordCredentialImpl<T> withDuration(Duration duration) {
-        inner().withEndDate(startDate().plus(duration));
+        innerModel().withEndDate(startDate().plus(duration));
         return this;
     }
 
@@ -159,7 +159,7 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
 
     @Override
     public String id() {
-        return inner().keyId();
+        return innerModel().keyId();
     }
 
     @Override

@@ -118,15 +118,6 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Create all the relationships
         connectTwinsTogether();
-
-        // TODO: Creating event route
-        // createEventRoute();
-
-        // TODO: Get all event routes
-        // listEventRoutes();
-
-        // TODO: Deleting event route
-        // deleteEventRoute();
     }
 
     /**
@@ -283,7 +274,7 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Call APIs to create the twins. For each async operation, once the operation is completed successfully, a latch is counted down.
         twins
-            .forEach((twinId, twinContent) -> client.createDigitalTwin(twinId, twinContent)
+            .forEach((twinId, twinContent) -> client.createDigitalTwin(twinId, twinContent, String.class)
                 .subscribe(
                     twin -> ConsoleLogger.printSuccess("Created digital twin: " + twinId + "\n\t Body: " + twin),
                     throwable -> ConsoleLogger.printFatal("Could not create digital twin " + twinId + " due to " + throwable),
@@ -314,7 +305,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                     relationships
                         .forEach(relationship -> {
                             try {
-                                client.createRelationship(relationship.getSourceId(), relationship.getId(), MAPPER.writeValueAsString(relationship))
+                                client.createRelationship(relationship.getSourceId(), relationship.getId(), MAPPER.writeValueAsString(relationship), String.class)
                                     .doOnSuccess(s -> ConsoleLogger.printSuccess("Linked twin " + relationship.getSourceId() + " to twin " + relationship.getTargetId() + " as " + relationship.getName()))
                                     .doOnError(IgnoreConflictError)
                                     .doOnTerminate(connectTwinsLatch::countDown)
@@ -346,7 +337,7 @@ public class DigitalTwinsLifecycleAsyncSample {
         ConsoleLogger.printHeader("Making a twin query and iterating over the results.");
 
         // Call API to query digital twins. For each async operation, once the operation is completed successfully, a latch is counted down.
-        client.query("SELECT * FROM digitaltwins")
+        client.query("SELECT * FROM digitaltwins", String.class)
             .doOnNext(queryResult -> ConsoleLogger.printHeader("Query result: " + queryResult))
             .doOnError(throwable -> ConsoleLogger.printFatal("Query error: " + throwable))
             .doOnTerminate(queryLatch::countDown)

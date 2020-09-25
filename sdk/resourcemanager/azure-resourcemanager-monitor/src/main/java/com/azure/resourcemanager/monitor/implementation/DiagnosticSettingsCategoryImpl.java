@@ -18,11 +18,11 @@ class DiagnosticSettingsCategoryImpl extends WrapperImpl<DiagnosticSettingsCateg
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public CategoryType type() {
-        return this.inner().categoryType();
+        return this.innerModel().categoryType();
     }
 }

@@ -6,12 +6,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.network.models.LocalNetworkGateway;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -29,23 +29,23 @@ public final class ManageVpnGatewaySite2SiteConnection {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST2;
-        final String rgName = azure.sdkContext().randomResourceName("rg", 20);
-        final String vnetName = azure.sdkContext().randomResourceName("vnet", 20);
-        final String vpnGatewayName = azure.sdkContext().randomResourceName("vngw", 20);
-        final String localGatewayName = azure.sdkContext().randomResourceName("lngw", 20);
-        final String connectionName = azure.sdkContext().randomResourceName("con", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 20);
+        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet", 20);
+        final String vpnGatewayName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vngw", 20);
+        final String localGatewayName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("lngw", 20);
+        final String connectionName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("con", 20);
 
 
         try {
             //============================================================
             // Create virtual network
             System.out.println("Creating virtual network...");
-            Network network = azure.networks().define(vnetName)
+            Network network = azureResourceManager.networks().define(vnetName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("10.11.0.0/16")
@@ -58,7 +58,7 @@ public final class ManageVpnGatewaySite2SiteConnection {
             //============================================================
             // Create VPN gateway
             System.out.println("Creating virtual network gateway...");
-            VirtualNetworkGateway vngw = azure.virtualNetworkGateways().define(vpnGatewayName)
+            VirtualNetworkGateway vngw = azureResourceManager.virtualNetworkGateways().define(vpnGatewayName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingNetwork(network)
@@ -70,7 +70,7 @@ public final class ManageVpnGatewaySite2SiteConnection {
             //============================================================
             // Create local network gateway
             System.out.println("Creating virtual network gateway...");
-            LocalNetworkGateway lngw = azure.localNetworkGateways().define(localGatewayName)
+            LocalNetworkGateway lngw = azureResourceManager.localNetworkGateways().define(localGatewayName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withIPAddress("40.71.184.214")
@@ -103,7 +103,7 @@ public final class ManageVpnGatewaySite2SiteConnection {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -123,18 +123,19 @@ public final class ManageVpnGatewaySite2SiteConnection {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

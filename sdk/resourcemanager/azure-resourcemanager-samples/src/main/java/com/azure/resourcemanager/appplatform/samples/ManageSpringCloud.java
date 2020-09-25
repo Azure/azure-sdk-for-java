@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
@@ -20,7 +20,7 @@ import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.security.keyvault.certificates.CertificateClient;
@@ -66,22 +66,22 @@ public class ManageSpringCloud {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @param clientId the aad client id in azure instance
      * @return true if sample runs successfully
      * @throws IllegalStateException unexcepted state
      */
-    public static boolean runSample(Azure azure, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
-        final String rgName = azure.sdkContext().randomResourceName("rg", 24);
-        final String serviceName  = azure.sdkContext().randomResourceName("service", 24);
+    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 24);
+        final String serviceName  = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("service", 24);
         final Region region = Region.US_EAST;
-        final String domainName = azure.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
-        final String certOrderName = azure.sdkContext().randomResourceName("cert", 15);
-        final String vaultName = azure.sdkContext().randomResourceName("vault", 15);
-        final String certName = azure.sdkContext().randomResourceName("cert", 15);
+        final String domainName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("jsdkdemo-", 20) + ".com";
+        final String certOrderName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("cert", 15);
+        final String vaultName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vault", 15);
+        final String certName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("cert", 15);
 
         try {
-            azure.resourceGroups().define(rgName)
+            azureResourceManager.resourceGroups().define(rgName)
                 .withRegion(region)
                 .create();
 
@@ -90,7 +90,7 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud service %s in resource group %s ...%n", serviceName, rgName);
 
-            SpringService service = azure.springServices().define(serviceName)
+            SpringService service = azureResourceManager.springServices().define(serviceName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .create();
@@ -159,7 +159,7 @@ public class ManageSpringCloud {
 
             System.out.println("Purchasing a domain " + domainName + "...");
 
-            AppServiceDomain domain = azure.appServiceDomains().define(domainName)
+            AppServiceDomain domain = azureResourceManager.appServiceDomains().define(domainName)
                 .withExistingResourceGroup(rgName)
                 .defineRegistrantContact()
                     .withFirstName("Jon")
@@ -179,7 +179,7 @@ public class ManageSpringCloud {
             System.out.println("Purchased domain " + domain.name());
             Utils.print(domain);
 
-            DnsZone dnsZone = azure.dnsZones().getById(domain.dnsZoneId());
+            DnsZone dnsZone = azureResourceManager.dnsZones().getById(domain.dnsZoneId());
             gateway.refresh();
 
             System.out.printf("Updating dns with CNAME ssl.%s to %s%n", domainName, gateway.fqdn());
@@ -188,7 +188,7 @@ public class ManageSpringCloud {
                 .apply();
 
             System.out.printf("Purchasing a certificate for *.%s and save to %s in key vault named %s ...%n", domainName, certOrderName, vaultName);
-            AppServiceCertificateOrder certificateOrder = azure.appServiceCertificateOrders().define(certOrderName)
+            AppServiceCertificateOrder certificateOrder = azureResourceManager.appServiceCertificateOrders().define(certOrderName)
                 .withExistingResourceGroup(rgName)
                 .withHostName(String.format("*.%s", domainName))
                 .withWildcardSku()
@@ -200,7 +200,7 @@ public class ManageSpringCloud {
             Utils.print(certificateOrder);
 
             System.out.printf("Updating key vault %s with access from %s, %s%n", vaultName, clientId, SPRING_CLOUD_SERVICE_PRINCIPAL);
-            Vault vault = azure.vaults().getByResourceGroup(rgName, vaultName);
+            Vault vault = azureResourceManager.vaults().getByResourceGroup(rgName, vaultName);
             vault.update()
                 .defineAccessPolicy()
                     .forServicePrincipal(clientId)
@@ -261,7 +261,7 @@ public class ManageSpringCloud {
         } finally {
             try {
                 System.out.println("Delete Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -281,18 +281,19 @@ public class ManageSpringCloud {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+            runSample(azureResourceManager, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

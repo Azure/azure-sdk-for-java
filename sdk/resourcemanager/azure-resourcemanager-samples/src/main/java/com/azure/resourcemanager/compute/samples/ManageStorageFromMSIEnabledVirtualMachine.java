@@ -7,13 +7,13 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -33,13 +33,13 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String linuxVMName = azure.sdkContext().randomResourceName("VM1", 15);
-        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
-        final String pipName = azure.sdkContext().randomResourceName("pip1", 15);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String linuxVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMV", 15);
+        final String pipName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip1", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;
@@ -55,7 +55,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
 
             System.out.println("Creating a Linux VM with MSI enabled");
 
-            VirtualMachine virtualMachine = azure.virtualMachines()
+            VirtualMachine virtualMachine = azureResourceManager.virtualMachines()
                     .define(linuxVMName)
                         .withRegion(region)
                         .withNewResourceGroup(rgName)
@@ -76,7 +76,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
 
             // Prepare custom script t install az cli that uses MSI to create a storage account
             //
-            final String stgName = azure.sdkContext().randomResourceName("st44", 15);
+            final String stgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("st44", 15);
             installCommand = installCommand.replace("{stgName}", stgName)
                     .replace("{rgName}", rgName)
                     .replace("{location}", region.name());
@@ -100,7 +100,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
 
             // Retrieve the storage account created by az cli using MSI credentials
             //
-            StorageAccount storageAccount = azure.storageAccounts()
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
                     .getByResourceGroup(rgName, stgName);
 
             System.out.println("Storage account created by az cli using MSI credential");
@@ -109,7 +109,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -129,18 +129,19 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

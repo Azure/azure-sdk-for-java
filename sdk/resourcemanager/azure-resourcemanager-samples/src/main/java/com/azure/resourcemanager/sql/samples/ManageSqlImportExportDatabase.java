@@ -8,8 +8,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
@@ -29,13 +29,13 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 public final class ManageSqlImportExportDatabase {
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String sqlServerName = azure.sdkContext().randomResourceName("sqlserver", 20);
-        final String rgName = azure.sdkContext().randomResourceName("rgsql", 20);
-        String storageName = azure.sdkContext().randomResourceName(sqlServerName, 23);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String sqlServerName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sqlserver", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgsql", 20);
+        String storageName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName(sqlServerName, 23);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
         final String dbFromSampleName = "db-from-sample";
@@ -43,7 +43,7 @@ public final class ManageSqlImportExportDatabase {
 
             // ============================================================
             // Create a SQL Server with one database from a sample.
-            SqlServer sqlServer = azure.sqlServers().define(sqlServerName)
+            SqlServer sqlServer = azureResourceManager.sqlServers().define(sqlServerName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
@@ -63,7 +63,7 @@ public final class ManageSqlImportExportDatabase {
             // Export a database from a SQL server created above to a new storage account within the same resource group.
             System.out.println("Exporting a database from a SQL server created above to a new storage account within the same resource group.");
 
-            Creatable<StorageAccount> storageAccountCreatable = azure.storageAccounts()
+            Creatable<StorageAccount> storageAccountCreatable = azureResourceManager.storageAccounts()
                 .define(storageName)
                 .withRegion(sqlServer.regionName())
                 .withExistingResourceGroup(sqlServer.resourceGroupName());
@@ -71,7 +71,7 @@ public final class ManageSqlImportExportDatabase {
             dbFromSample.exportTo(storageAccountCreatable, "container-name", "dbfromsample.bacpac")
                 .withSqlAdministratorLoginAndPassword(administratorLogin, administratorPassword)
                 .execute();
-            StorageAccount storageAccount = azure.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
+            StorageAccount storageAccount = azureResourceManager.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
 
             // ============================================================
             // Import a database within a new elastic pool from a storage account container created above.
@@ -110,7 +110,7 @@ public final class ManageSqlImportExportDatabase {
 
             // Delete the storage account.
             System.out.println("Deleting the storage account");
-            azure.storageAccounts().deleteById(storageAccount.id());
+            azureResourceManager.storageAccounts().deleteById(storageAccount.id());
 
             // Delete the databases.
             System.out.println("Deleting the databases");
@@ -123,12 +123,12 @@ public final class ManageSqlImportExportDatabase {
 
             // Delete the SQL Server.
             System.out.println("Deleting a Sql Server");
-            azure.sqlServers().deleteById(sqlServer.id());
+            azureResourceManager.sqlServers().deleteById(sqlServer.id());
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (Exception e) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -146,18 +146,19 @@ public final class ManageSqlImportExportDatabase {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

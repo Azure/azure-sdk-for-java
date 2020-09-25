@@ -7,12 +7,11 @@ package com.azure.resourcemanager.resources.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.resources.models.Deployment;
-import com.azure.resourcemanager.resources.models.DeploymentMode;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.io.ByteStreams;
@@ -35,12 +34,12 @@ public final class DeployUsingARMTemplateAsync {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final Azure azure) throws InterruptedException {
-        final String rgPrefix = azure.sdkContext().randomResourceName("rgJavaTest", 16);
-        final String deploymentPrefix = azure.sdkContext().randomResourceName("javaTest", 16);
+    public static boolean runSample(final AzureResourceManager azureResourceManager) throws InterruptedException {
+        final String rgPrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgJavaTest", 16);
+        final String deploymentPrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("javaTest", 16);
         final String sshKey = getSSHPublicKey();
         final int numDeployments = 3;
 
@@ -79,18 +78,18 @@ public final class DeployUsingARMTemplateAsync {
                             }
                             String deploymentName = deploymentPrefix + "-" + integer;
                             deploymentList.add(deploymentName);
-                            return azure.deployments()
+                            return azureResourceManager.deployments()
                                     .define(deploymentName)
                                     .withNewResourceGroup(rgPrefix + "-" + integer, Region.US_SOUTH_CENTRAL)
                                     .withTemplateLink(templateUri, templateContentVersion)
                                     .withParameters(params)
                                     .withMode(DeploymentMode.COMPLETE)
-                                    .createAsync().last();
+                                    .createAsync();
                         } catch (IOException e) {
                             return Flux.error(e);
                         }
                     })
-                    .map(indexable -> (Deployment) indexable)
+                    .map(indexable -> indexable)
                     .doOnNext(deployment -> {
                         if (deployment != null) {
                             System.out.println("Deployment finished: " + deployment.name());
@@ -120,7 +119,7 @@ public final class DeployUsingARMTemplateAsync {
                 for (int i = 1; i != numDeployments; i++) {
                     String rgName = rgPrefix + "-" + i;
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().beginDeleteByName(rgName);
+                    azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 }
             } catch (NullPointerException npe) {
@@ -144,15 +143,16 @@ public final class DeployUsingARMTemplateAsync {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

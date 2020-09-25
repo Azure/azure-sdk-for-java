@@ -40,7 +40,7 @@ class AvailableProvidersImpl extends ExecutableImpl<AvailableProviders>
 
     private void initializeResourcesFromInner() {
         this.providersByCountry = new TreeMap<>();
-        List<AvailableProvidersListCountry> availableProvidersList = this.inner().countries();
+        List<AvailableProvidersListCountry> availableProvidersList = this.innerModel().countries();
         if (availableProvidersList != null) {
             for (AvailableProvidersListCountry resource : availableProvidersList) {
                 this.providersByCountry.put(resource.countryName(), resource);
@@ -54,7 +54,7 @@ class AvailableProvidersImpl extends ExecutableImpl<AvailableProviders>
     }
 
     @Override
-    public AvailableProvidersListInner inner() {
+    public AvailableProvidersListInner innerModel() {
         return this.inner;
     }
 
@@ -63,7 +63,7 @@ class AvailableProvidersImpl extends ExecutableImpl<AvailableProviders>
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkWatchers()
             .listAvailableProvidersAsync(parent().resourceGroupName(), parent().name(), parameters)
             .map(

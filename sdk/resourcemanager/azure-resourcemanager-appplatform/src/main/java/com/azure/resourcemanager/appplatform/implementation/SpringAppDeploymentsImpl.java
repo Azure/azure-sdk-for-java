@@ -100,8 +100,7 @@ public class SpringAppDeploymentsImpl
         return inner == null ? null : new SpringAppDeploymentImpl(inner.name(), parent(), inner);
     }
 
-    @Override
     public DeploymentsClient inner() {
-        return manager().inner().getDeployments();
+        return manager().serviceClient().getDeployments();
     }
 }

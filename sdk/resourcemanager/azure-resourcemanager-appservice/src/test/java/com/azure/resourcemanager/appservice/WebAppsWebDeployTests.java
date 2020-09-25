@@ -11,9 +11,9 @@ import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.appservice.models.WebDeployment;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -64,7 +64,7 @@ public class WebAppsWebDeployTests extends AppServiceTest {
 
         Assertions.assertNotNull(deployment);
         if (!isPlaybackMode()) {
-            SdkContext.sleep(10000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
             Response<String> response = curl("http://" + webApp1.defaultHostname() + "/helloworld/");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();

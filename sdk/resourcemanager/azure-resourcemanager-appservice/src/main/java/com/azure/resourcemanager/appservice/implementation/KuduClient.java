@@ -18,7 +18,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.KuduAuthenticationPolicy;
@@ -52,8 +52,8 @@ class KuduClient {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    private String host;
-    private KuduService service;
+    private final String host;
+    private final KuduService service;
 
     KuduClient(WebAppBase webAppBase) {
         if (webAppBase.defaultHostname() == null) {
@@ -81,7 +81,8 @@ class KuduClient {
             .httpClient(webAppBase.manager().httpPipeline().getHttpClient())
             .build();
 
-        service = RestProxy.create(KuduService.class, httpPipeline, new AzureJacksonAdapter());
+        service = RestProxy.create(KuduService.class, httpPipeline,
+            SerializerFactory.createDefaultManagementSerializerAdapter());
     }
 
     @Host("{$host}")

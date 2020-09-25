@@ -23,11 +23,11 @@ public class SqlSyncFullSchemaPropertyImpl extends WrapperImpl<SyncFullSchemaPro
     public List<SyncFullSchemaTable> tables() {
         return Collections
             .unmodifiableList(
-                this.inner().tables() != null ? this.inner().tables() : new ArrayList<SyncFullSchemaTable>());
+                this.innerModel().tables() != null ? this.innerModel().tables() : new ArrayList<SyncFullSchemaTable>());
     }
 
     @Override
     public OffsetDateTime lastUpdateTime() {
-        return this.inner().lastUpdateTime();
+        return this.innerModel().lastUpdateTime();
     }
 }

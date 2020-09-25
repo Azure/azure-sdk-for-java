@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -15,7 +15,7 @@ import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
@@ -35,17 +35,17 @@ public final class ManageAvailabilitySet {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String rgName = azure.sdkContext().randomResourceName("rgCOMA", 15);
-        final String availSetName1 = azure.sdkContext().randomResourceName("av1", 15);
-        final String availSetName2 = azure.sdkContext().randomResourceName("av2", 15);
-        final String vm1Name = azure.sdkContext().randomResourceName("vm1", 15);
-        final String vm2Name = azure.sdkContext().randomResourceName("vm2", 15);
-        final String vnetName = azure.sdkContext().randomResourceName("vnet", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMA", 15);
+        final String availSetName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("av1", 15);
+        final String availSetName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("av2", 15);
+        final String vm1Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vm1", 15);
+        final String vm2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vm2", 15);
+        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet", 15);
 
         final String userName = "tirekicker";
         final String password = Utils.password();
@@ -57,7 +57,7 @@ public final class ManageAvailabilitySet {
 
             System.out.println("Creating an availability set");
 
-            AvailabilitySet availSet1 = azure.availabilitySets().define(availSetName1)
+            AvailabilitySet availSet1 = azureResourceManager.availabilitySets().define(availSetName1)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withFaultDomainCount(2)
@@ -73,7 +73,7 @@ public final class ManageAvailabilitySet {
             //=============================================================
             // Define a virtual network for the VMs in this availability set
 
-            Creatable<Network> networkDefinition = azure.networks().define(vnetName)
+            Creatable<Network> networkDefinition = azureResourceManager.networks().define(vnetName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withAddressSpace("10.0.0.0/28");
@@ -84,7 +84,7 @@ public final class ManageAvailabilitySet {
 
             System.out.println("Creating a Windows VM in the availability set");
 
-            VirtualMachine vm1 = azure.virtualMachines().define(vm1Name)
+            VirtualMachine vm1 = azureResourceManager.virtualMachines().define(vm1Name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork(networkDefinition)
@@ -107,7 +107,7 @@ public final class ManageAvailabilitySet {
 
             System.out.println("Creating a Linux VM in the availability set");
 
-            VirtualMachine vm2 = azure.virtualMachines().define(vm2Name)
+            VirtualMachine vm2 = azureResourceManager.virtualMachines().define(vm2Name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork(networkDefinition)
@@ -141,7 +141,7 @@ public final class ManageAvailabilitySet {
 
             System.out.println("Creating an availability set");
 
-            AvailabilitySet availSet2 = azure.availabilitySets().define(availSetName2)
+            AvailabilitySet availSet2 = azureResourceManager.availabilitySets().define(availSetName2)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .create();
@@ -157,7 +157,7 @@ public final class ManageAvailabilitySet {
 
             System.out.println("Printing list of availability sets  =======");
 
-            for (AvailabilitySet availabilitySet : azure.availabilitySets().listByResourceGroup(resourceGroupName)) {
+            for (AvailabilitySet availabilitySet : azureResourceManager.availabilitySets().listByResourceGroup(resourceGroupName)) {
                 Utils.print(availabilitySet);
             }
 
@@ -167,7 +167,7 @@ public final class ManageAvailabilitySet {
 
             System.out.println("Deleting an availability set: " + availSet2.id());
 
-            azure.availabilitySets().deleteById(availSet2.id());
+            azureResourceManager.availabilitySets().deleteById(availSet2.id());
 
             System.out.println("Deleted availability set: " + availSet2.id());
             return true;
@@ -175,7 +175,7 @@ public final class ManageAvailabilitySet {
 
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -197,18 +197,19 @@ public final class ManageAvailabilitySet {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

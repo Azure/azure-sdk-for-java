@@ -7,11 +7,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -36,13 +36,13 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @param defaultPollingInterval polling interval in seconds
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final Azure azure, int defaultPollingInterval) throws InterruptedException {
-        final String rgPrefix = azure.sdkContext().randomResourceName("rgJavaTest", 16);
-        final String deploymentPrefix = azure.sdkContext().randomResourceName("javaTest", 16);
+    public static boolean runSample(final AzureResourceManager azureResourceManager, int defaultPollingInterval) throws InterruptedException {
+        final String rgPrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgJavaTest", 16);
+        final String deploymentPrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("javaTest", 16);
         final String sshKey = getSSHPublicKey();
         final int numDeployments = 3;
         final int pollingInterval = defaultPollingInterval < 0 ? 15 : defaultPollingInterval; // in seconds
@@ -77,7 +77,7 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
                             } else {
                                 params = parameters;
                             }
-                            return azure.deployments()
+                            return azureResourceManager.deployments()
                                     .define(deploymentPrefix + "-" + integer)
                                     .withNewResourceGroup(rgPrefix + "-" + integer, Region.US_SOUTH_CENTRAL)
                                     .withTemplateLink(templateUri, templateContentVersion)
@@ -155,7 +155,7 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
                 for (int i = 1; i != numDeployments; i++) {
                     String rgName = rgPrefix + "-" + i;
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().beginDeleteByName(rgName);
+                    azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 }
             } catch (NullPointerException npe) {
@@ -179,15 +179,16 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
-            runSample(azure, -1);
+            runSample(azureResourceManager, -1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

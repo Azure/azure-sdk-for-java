@@ -8,7 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -18,7 +18,7 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
@@ -56,18 +56,18 @@ public final class CreateSimpleInternetFacingLoadBalancer {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST;
-        final String resourceGroupName = azure.sdkContext().randomResourceName("rg", 15);
-        final String vnetName = azure.sdkContext().randomResourceName("vnet", 24);
-        final String loadBalancerName = azure.sdkContext().randomResourceName("lb" + "-", 18);
-        final String publicIpName = azure.sdkContext().randomResourceName("pip", 18);
+        final String resourceGroupName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 15);
+        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet", 24);
+        final String loadBalancerName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("lb" + "-", 18);
+        final String publicIpName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 18);
         final String httpLoadBalancingRule = "httpRule";
 
-        final String availabilitySetName = azure.sdkContext().randomResourceName("av", 24);
+        final String availabilitySetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("av", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
         try {
@@ -75,7 +75,7 @@ public final class CreateSimpleInternetFacingLoadBalancer {
             //=============================================================
             // Define a common availability set for the backend virtual machines
 
-            Creatable<AvailabilitySet> availabilitySetDefinition = azure.availabilitySets().define(availabilitySetName)
+            Creatable<AvailabilitySet> availabilitySetDefinition = azureResourceManager.availabilitySets().define(availabilitySetName)
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupName)
                     .withSku(AvailabilitySetSkuTypes.ALIGNED);
@@ -83,7 +83,7 @@ public final class CreateSimpleInternetFacingLoadBalancer {
             //=============================================================
             // Define a common virtual network for the virtual machines
 
-            Creatable<Network> networkDefinition = azure.networks().define(vnetName)
+            Creatable<Network> networkDefinition = azureResourceManager.networks().define(vnetName)
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupName)
                     .withAddressSpace("10.0.0.0/28");
@@ -98,7 +98,7 @@ public final class CreateSimpleInternetFacingLoadBalancer {
 
             for (int i = 0; i < 2; i++) {
                 virtualMachineDefinitions.add(
-                        azure.virtualMachines().define(azure.sdkContext().randomResourceName("vm", 24))
+                        azureResourceManager.virtualMachines().define(azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vm", 24))
                                 .withRegion(region)
                                 .withExistingResourceGroup(resourceGroupName)
                                 .withNewPrimaryNetwork(networkDefinition)
@@ -115,7 +115,7 @@ public final class CreateSimpleInternetFacingLoadBalancer {
             stopwatch.start();
 
             // Create and retrieve the VMs by the interface accepted by the load balancing rule
-            Collection<VirtualMachine> virtualMachines = azure.virtualMachines().create(virtualMachineDefinitions).values();
+            Collection<VirtualMachine> virtualMachines = azureResourceManager.virtualMachines().create(virtualMachineDefinitions).values();
 
             stopwatch.stop();
             System.out.println("Created 2 Linux VMs: (took " + (stopwatch.getTime() / 1000) + " seconds)\n");
@@ -139,7 +139,7 @@ public final class CreateSimpleInternetFacingLoadBalancer {
                             + "- One load balancing rule for HTTP, mapping public ports on the load\n"
                             + "  balancer to ports in the backend address pool");
 
-            LoadBalancer loadBalancer = azure.loadBalancers().define(loadBalancerName)
+            LoadBalancer loadBalancer = azureResourceManager.loadBalancers().define(loadBalancerName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroupName)
 
@@ -183,14 +183,14 @@ public final class CreateSimpleInternetFacingLoadBalancer {
 
             System.out.println("Deleting load balancer " + loadBalancerName
                     + "(" + loadBalancer.id() + ")");
-            azure.loadBalancers().deleteById(loadBalancer.id());
+            azureResourceManager.loadBalancers().deleteById(loadBalancer.id());
             System.out.println("Deleted load balancer" + loadBalancerName);
 
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + resourceGroupName);
-                azure.resourceGroups().beginDeleteByName(resourceGroupName);
+                azureResourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
                 System.out.println("Deleted Resource Group: " + resourceGroupName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -214,18 +214,19 @@ public final class CreateSimpleInternetFacingLoadBalancer {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
