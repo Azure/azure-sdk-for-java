@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ServerCommunicationLink model. */
+/** Server communication link. */
 @JsonFlatten
 @Fluent
 public class ServerCommunicationLinkInner extends ProxyResource {

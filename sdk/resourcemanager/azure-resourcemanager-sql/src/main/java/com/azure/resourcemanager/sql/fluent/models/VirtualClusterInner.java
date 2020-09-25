@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualCluster model. */
+/** An Azure SQL virtual cluster. */
 @JsonFlatten
 @Fluent
 public class VirtualClusterInner extends Resource {

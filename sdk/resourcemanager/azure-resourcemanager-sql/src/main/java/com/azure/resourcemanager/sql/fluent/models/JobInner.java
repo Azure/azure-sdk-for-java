@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.JobSchedule;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Job model. */
+/** A job. */
 @JsonFlatten
 @Fluent
 public class JobInner extends ProxyResource {

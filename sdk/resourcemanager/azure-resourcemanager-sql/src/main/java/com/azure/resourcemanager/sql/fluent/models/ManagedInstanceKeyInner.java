@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ManagedInstanceKey model. */
+/** A managed instance key. */
 @JsonFlatten
 @Fluent
 public class ManagedInstanceKeyInner extends ProxyResource {

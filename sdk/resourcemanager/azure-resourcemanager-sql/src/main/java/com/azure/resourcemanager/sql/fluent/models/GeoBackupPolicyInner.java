@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.GeoBackupPolicyState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GeoBackupPolicy model. */
+/** A database geo backup policy. */
 @JsonFlatten
 @Fluent
 public class GeoBackupPolicyInner extends ProxyResource {

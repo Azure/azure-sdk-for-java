@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The LongTermRetentionBackup model. */
+/** A long term retention backup. */
 @JsonFlatten
 @Immutable
 public class LongTermRetentionBackupInner extends ProxyResource {

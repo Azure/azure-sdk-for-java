@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** The ElasticPoolDatabaseActivity model. */
+/** Represents the activity on an elastic pool. */
 @JsonFlatten
 @Fluent
 public class ElasticPoolDatabaseActivityInner extends ProxyResource {

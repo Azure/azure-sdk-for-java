@@ -14,7 +14,7 @@ import com.azure.resourcemanager.sql.models.SecurityAlertPolicyUseServerDefault;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DatabaseSecurityAlertPolicy model. */
+/** Contains information about a database Threat Detection policy. */
 @JsonFlatten
 @Fluent
 public class DatabaseSecurityAlertPolicyInner extends ProxyResource {

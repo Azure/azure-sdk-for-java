@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ElasticPoolOperation model. */
+/** A elastic pool operation. */
 @JsonFlatten
 @Immutable
 public class ElasticPoolOperationInner extends ProxyResource {

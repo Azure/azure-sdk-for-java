@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.models.CheckNameAvailabilityReason;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CheckNameAvailabilityResponse model. */
+/** The result of a name availability check. */
 @Immutable
 public final class CheckNameAvailabilityResponseInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityResponseInner.class);

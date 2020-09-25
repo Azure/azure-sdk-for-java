@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MetricDefinition model. */
+/** A database metric definition. */
 @Immutable
 public final class MetricDefinitionInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDefinitionInner.class);

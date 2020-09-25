@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ServiceObjective model. */
+/** Represents a database service objective. */
 @JsonFlatten
 @Immutable
 public class ServiceObjectiveInner extends ProxyResource {

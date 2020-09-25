@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.PrivateLinkResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PrivateLinkResource model. */
+/** A private link resource. */
 @Immutable
 public final class PrivateLinkResourceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceInner.class);

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The InstancePool model. */
+/** An Azure SQL instance pool. */
 @JsonFlatten
 @Fluent
 public class InstancePoolInner extends Resource {

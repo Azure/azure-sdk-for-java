@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The RestorePoint model. */
+/** Database restore points. */
 @JsonFlatten
 @Immutable
 public class RestorePointInner extends ProxyResource {

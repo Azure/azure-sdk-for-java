@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ServerDnsAlias model. */
+/** A server DNS alias. */
 @JsonFlatten
 @Immutable
 public class ServerDnsAliasInner extends ProxyResource {

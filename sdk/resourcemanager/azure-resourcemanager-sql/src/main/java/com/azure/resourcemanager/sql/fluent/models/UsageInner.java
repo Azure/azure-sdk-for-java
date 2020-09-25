@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.models.Name;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Usage model. */
+/** ARM usage. */
 @Immutable
 public final class UsageInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);

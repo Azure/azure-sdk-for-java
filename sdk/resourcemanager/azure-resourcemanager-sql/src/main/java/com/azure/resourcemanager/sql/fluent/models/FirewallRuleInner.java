@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FirewallRule model. */
+/** Represents a server firewall rule. */
 @JsonFlatten
 @Fluent
 public class FirewallRuleInner extends ProxyResource {

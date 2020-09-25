@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.DataMaskingRuleState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DataMaskingRule model. */
+/** Represents a database data masking rule. */
 @JsonFlatten
 @Fluent
 public class DataMaskingRuleInner extends ProxyResource {

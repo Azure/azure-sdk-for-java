@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The ImportExportResponse model. */
+/** Response for Import/Export Get operation. */
 @JsonFlatten
 @Immutable
 public class ImportExportResponseInner extends ProxyResource {

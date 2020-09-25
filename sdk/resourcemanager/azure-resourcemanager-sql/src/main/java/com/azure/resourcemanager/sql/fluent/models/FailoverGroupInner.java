@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The FailoverGroup model. */
+/** A failover group. */
 @JsonFlatten
 @Fluent
 public class FailoverGroupInner extends ProxyResource {

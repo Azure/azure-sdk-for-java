@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SubscriptionUsage model. */
+/** Usage Metric of a Subscription in a Location. */
 @JsonFlatten
 @Immutable
 public class SubscriptionUsageInner extends ProxyResource {

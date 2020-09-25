@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivitySta
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TransparentDataEncryptionActivity model. */
+/** Represents a database transparent data encryption Scan. */
 @JsonFlatten
 @Immutable
 public class TransparentDataEncryptionActivityInner extends ProxyResource {

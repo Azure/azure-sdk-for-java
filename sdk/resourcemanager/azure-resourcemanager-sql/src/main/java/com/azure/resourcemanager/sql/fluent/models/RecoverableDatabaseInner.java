@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The RecoverableDatabase model. */
+/** A recoverable database. */
 @JsonFlatten
 @Immutable
 public class RecoverableDatabaseInner extends ProxyResource {

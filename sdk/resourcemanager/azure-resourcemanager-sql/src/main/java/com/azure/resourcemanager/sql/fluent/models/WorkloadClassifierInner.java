@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The WorkloadClassifier model. */
+/** Workload classifier operations for a data warehouse. */
 @JsonFlatten
 @Fluent
 public class WorkloadClassifierInner extends ProxyResource {

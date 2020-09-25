@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The ManagedDatabaseRestoreDetailsResult model. */
+/** A managed database restore details. */
 @JsonFlatten
 @Immutable
 public class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {

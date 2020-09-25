@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The SyncFullSchemaProperties model. */
+/** Properties of the database full schema. */
 @Immutable
 public final class SyncFullSchemaPropertiesInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncFullSchemaPropertiesInner.class);

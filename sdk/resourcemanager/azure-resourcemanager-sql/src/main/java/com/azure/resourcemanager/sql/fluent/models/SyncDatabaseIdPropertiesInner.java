@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SyncDatabaseIdProperties model. */
+/** Properties of the sync database id. */
 @Immutable
 public final class SyncDatabaseIdPropertiesInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncDatabaseIdPropertiesInner.class);

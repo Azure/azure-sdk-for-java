@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ManagedInstance model. */
+/** An Azure SQL managed instance. */
 @JsonFlatten
 @Fluent
 public class ManagedInstanceInner extends Resource {
@@ -168,13 +168,6 @@ public class ManagedInstanceInner extends Resource {
      */
     @JsonProperty(value = "properties.instancePoolId")
     private String instancePoolId;
-
-    /*
-     * Specifies maintenance configuration id to apply to this managed
-     * instance.
-     */
-    @JsonProperty(value = "properties.maintenanceConfigurationId")
-    private String maintenanceConfigurationId;
 
     /*
      * Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
@@ -580,28 +573,6 @@ public class ManagedInstanceInner extends Resource {
      */
     public ManagedInstanceInner withInstancePoolId(String instancePoolId) {
         this.instancePoolId = instancePoolId;
-        return this;
-    }
-
-    /**
-     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
-     * instance.
-     *
-     * @return the maintenanceConfigurationId value.
-     */
-    public String maintenanceConfigurationId() {
-        return this.maintenanceConfigurationId;
-    }
-
-    /**
-     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
-     * instance.
-     *
-     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
-     * @return the ManagedInstanceInner object itself.
-     */
-    public ManagedInstanceInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
-        this.maintenanceConfigurationId = maintenanceConfigurationId;
         return this;
     }
 

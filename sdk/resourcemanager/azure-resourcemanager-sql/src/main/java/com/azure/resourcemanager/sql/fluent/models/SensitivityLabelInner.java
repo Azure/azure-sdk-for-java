@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.SensitivityLabelRank;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SensitivityLabel model. */
+/** A sensitivity label. */
 @JsonFlatten
 @Fluent
 public class SensitivityLabelInner extends ProxyResource {

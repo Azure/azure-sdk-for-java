@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedInstanceEncryptionProtector model. */
+/** The managed instance encryption protector. */
 @JsonFlatten
 @Fluent
 public class ManagedInstanceEncryptionProtectorInner extends ProxyResource {

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LocationCapabilities model. */
+/** The location capability. */
 @Fluent
 public final class LocationCapabilitiesInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationCapabilitiesInner.class);

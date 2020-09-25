@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JobTargetGroup model. */
+/** A group of job targets. */
 @JsonFlatten
 @Fluent
 public class JobTargetGroupInner extends ProxyResource {

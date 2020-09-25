@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The ManagedInstanceAdministrator model. */
+/** An Azure SQL managed instance administrator. */
 @JsonFlatten
 @Fluent
 public class ManagedInstanceAdministratorInner extends ProxyResource {

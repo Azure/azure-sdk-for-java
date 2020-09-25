@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ServerKey model. */
+/** A server key. */
 @JsonFlatten
 @Fluent
 public class ServerKeyInner extends ProxyResource {

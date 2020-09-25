@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Server model. */
+/** An Azure SQL Database server. */
 @JsonFlatten
 @Fluent
 public class ServerInner extends Resource {

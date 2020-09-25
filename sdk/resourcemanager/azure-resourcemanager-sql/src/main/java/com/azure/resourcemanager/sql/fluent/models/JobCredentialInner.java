@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JobCredential model. */
+/** A stored credential that can be used by a job to connect to target databases. */
 @JsonFlatten
 @Fluent
 public class JobCredentialInner extends ProxyResource {

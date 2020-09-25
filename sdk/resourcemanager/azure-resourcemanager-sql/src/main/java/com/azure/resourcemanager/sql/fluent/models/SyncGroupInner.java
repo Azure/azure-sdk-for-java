@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The SyncGroup model. */
+/** An Azure SQL Database sync group. */
 @JsonFlatten
 @Fluent
 public class SyncGroupInner extends ProxyResource {
@@ -68,12 +68,6 @@ public class SyncGroupInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.schema")
     private SyncGroupSchema schema;
-
-    /*
-     * If use private link connection is enabled.
-     */
-    @JsonProperty(value = "properties.usePrivateLinkConnection")
-    private Boolean usePrivateLinkConnection;
 
     /**
      * Get the interval property: Sync interval of the sync group.
@@ -210,26 +204,6 @@ public class SyncGroupInner extends ProxyResource {
      */
     public SyncGroupInner withSchema(SyncGroupSchema schema) {
         this.schema = schema;
-        return this;
-    }
-
-    /**
-     * Get the usePrivateLinkConnection property: If use private link connection is enabled.
-     *
-     * @return the usePrivateLinkConnection value.
-     */
-    public Boolean usePrivateLinkConnection() {
-        return this.usePrivateLinkConnection;
-    }
-
-    /**
-     * Set the usePrivateLinkConnection property: If use private link connection is enabled.
-     *
-     * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
-     * @return the SyncGroupInner object itself.
-     */
-    public SyncGroupInner withUsePrivateLinkConnection(Boolean usePrivateLinkConnection) {
-        this.usePrivateLinkConnection = usePrivateLinkConnection;
         return this;
     }
 

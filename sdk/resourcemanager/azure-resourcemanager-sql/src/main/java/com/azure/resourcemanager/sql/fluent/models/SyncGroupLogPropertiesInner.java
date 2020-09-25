@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** The SyncGroupLogProperties model. */
+/** Properties of an Azure SQL Database sync group log. */
 @Immutable
 public final class SyncGroupLogPropertiesInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncGroupLogPropertiesInner.class);

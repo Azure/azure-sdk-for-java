@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The InstanceFailoverGroup model. */
+/** An instance failover group. */
 @JsonFlatten
 @Fluent
 public class InstanceFailoverGroupInner extends ProxyResource {

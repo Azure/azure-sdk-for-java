@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ElasticPool model. */
+/** An elastic pool. */
 @JsonFlatten
 @Fluent
 public class ElasticPoolInner extends Resource {

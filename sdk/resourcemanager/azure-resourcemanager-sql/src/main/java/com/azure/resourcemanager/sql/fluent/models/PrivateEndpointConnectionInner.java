@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.PrivateLinkServiceConnectionStatePro
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PrivateEndpointConnection model. */
+/** A private endpoint connection. */
 @JsonFlatten
 @Fluent
 public class PrivateEndpointConnectionInner extends ProxyResource {

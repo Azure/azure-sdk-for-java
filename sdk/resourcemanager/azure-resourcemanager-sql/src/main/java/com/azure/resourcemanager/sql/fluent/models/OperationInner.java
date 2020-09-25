@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The Operation model. */
+/** SQL REST API operation definition. */
 @Immutable
 public final class OperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);

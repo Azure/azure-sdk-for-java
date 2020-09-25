@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ManagedInstanceLongTermRetentionBackup model. */
+/** A long term retention backup for a managed database. */
 @JsonFlatten
 @Immutable
 public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {

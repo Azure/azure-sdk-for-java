@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/** The ServiceTierAdvisor model. */
+/** Represents a Service Tier Advisor. */
 @JsonFlatten
 @Immutable
 public class ServiceTierAdvisorInner extends ProxyResource {

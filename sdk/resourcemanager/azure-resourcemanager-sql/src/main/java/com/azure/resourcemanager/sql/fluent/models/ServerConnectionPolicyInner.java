@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ServerConnectionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ServerConnectionPolicy model. */
+/** A server secure connection policy. */
 @JsonFlatten
 @Fluent
 public class ServerConnectionPolicyInner extends ProxyResource {

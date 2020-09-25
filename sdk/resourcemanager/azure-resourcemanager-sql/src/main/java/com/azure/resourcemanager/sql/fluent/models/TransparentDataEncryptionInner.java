@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TransparentDataEncryption model. */
+/** Represents a database transparent data encryption configuration. */
 @JsonFlatten
 @Fluent
 public class TransparentDataEncryptionInner extends ProxyResource {

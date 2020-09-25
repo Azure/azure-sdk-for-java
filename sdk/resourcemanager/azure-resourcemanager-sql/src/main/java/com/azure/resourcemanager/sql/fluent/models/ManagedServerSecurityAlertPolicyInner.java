@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The ManagedServerSecurityAlertPolicy model. */
+/** A managed server security alert policy. */
 @JsonFlatten
 @Fluent
 public class ManagedServerSecurityAlertPolicyInner extends ProxyResource {

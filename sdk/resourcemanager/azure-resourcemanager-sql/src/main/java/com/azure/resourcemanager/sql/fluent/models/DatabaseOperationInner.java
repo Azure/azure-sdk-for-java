@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The DatabaseOperation model. */
+/** A database operation. */
 @JsonFlatten
 @Immutable
 public class DatabaseOperationInner extends ProxyResource {

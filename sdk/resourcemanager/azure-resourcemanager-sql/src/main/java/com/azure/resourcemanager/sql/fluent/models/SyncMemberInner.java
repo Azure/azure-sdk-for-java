@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The SyncMember model. */
+/** An Azure SQL Database sync member. */
 @JsonFlatten
 @Fluent
 public class SyncMemberInner extends ProxyResource {
@@ -38,19 +38,6 @@ public class SyncMemberInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.sqlServerDatabaseId")
     private UUID sqlServerDatabaseId;
-
-    /*
-     * ARM resource id of the sync member logical database, for sync members in
-     * Azure.
-     */
-    @JsonProperty(value = "properties.syncMemberAzureDatabaseResourceId")
-    private String syncMemberAzureDatabaseResourceId;
-
-    /*
-     * Whether to use private link connection.
-     */
-    @JsonProperty(value = "properties.usePrivateLinkConnection")
-    private Boolean usePrivateLinkConnection;
 
     /*
      * Server name of the member database in the sync member
@@ -145,48 +132,6 @@ public class SyncMemberInner extends ProxyResource {
      */
     public SyncMemberInner withSqlServerDatabaseId(UUID sqlServerDatabaseId) {
         this.sqlServerDatabaseId = sqlServerDatabaseId;
-        return this;
-    }
-
-    /**
-     * Get the syncMemberAzureDatabaseResourceId property: ARM resource id of the sync member logical database, for sync
-     * members in Azure.
-     *
-     * @return the syncMemberAzureDatabaseResourceId value.
-     */
-    public String syncMemberAzureDatabaseResourceId() {
-        return this.syncMemberAzureDatabaseResourceId;
-    }
-
-    /**
-     * Set the syncMemberAzureDatabaseResourceId property: ARM resource id of the sync member logical database, for sync
-     * members in Azure.
-     *
-     * @param syncMemberAzureDatabaseResourceId the syncMemberAzureDatabaseResourceId value to set.
-     * @return the SyncMemberInner object itself.
-     */
-    public SyncMemberInner withSyncMemberAzureDatabaseResourceId(String syncMemberAzureDatabaseResourceId) {
-        this.syncMemberAzureDatabaseResourceId = syncMemberAzureDatabaseResourceId;
-        return this;
-    }
-
-    /**
-     * Get the usePrivateLinkConnection property: Whether to use private link connection.
-     *
-     * @return the usePrivateLinkConnection value.
-     */
-    public Boolean usePrivateLinkConnection() {
-        return this.usePrivateLinkConnection;
-    }
-
-    /**
-     * Set the usePrivateLinkConnection property: Whether to use private link connection.
-     *
-     * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
-     * @return the SyncMemberInner object itself.
-     */
-    public SyncMemberInner withUsePrivateLinkConnection(Boolean usePrivateLinkConnection) {
-        this.usePrivateLinkConnection = usePrivateLinkConnection;
         return this;
     }
 

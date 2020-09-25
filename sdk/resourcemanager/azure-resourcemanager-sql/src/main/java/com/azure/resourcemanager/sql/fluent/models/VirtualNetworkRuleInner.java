@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.VirtualNetworkRuleState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualNetworkRule model. */
+/** A virtual network rule. */
 @JsonFlatten
 @Fluent
 public class VirtualNetworkRuleInner extends ProxyResource {

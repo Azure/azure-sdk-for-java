@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BackupLongTermRetentionPolicy model. */
+/** A long term retention policy. */
 @JsonFlatten
 @Fluent
 public class BackupLongTermRetentionPolicyInner extends ProxyResource {

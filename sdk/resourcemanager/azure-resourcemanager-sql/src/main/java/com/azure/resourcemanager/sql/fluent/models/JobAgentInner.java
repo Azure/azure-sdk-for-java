@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JobAgent model. */
+/** An Azure SQL job agent. */
 @JsonFlatten
 @Fluent
 public class JobAgentInner extends Resource {

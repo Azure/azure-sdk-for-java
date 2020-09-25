@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** The Database model. */
+/** A database resource. */
 @JsonFlatten
 @Fluent
 public class DatabaseInner extends Resource {
@@ -226,9 +226,7 @@ public class DatabaseInner extends Resource {
     private Boolean zoneRedundant;
 
     /*
-     * The license type to apply for this database. `LicenseIncluded` if you
-     * need a license, or `BasePrice` if you have a license and are eligible
-     * for the Azure Hybrid Benefit.
+     * The license type to apply for this database.
      */
     @JsonProperty(value = "properties.licenseType")
     private DatabaseLicenseType licenseType;
@@ -758,8 +756,7 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
-     * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
+     * Get the licenseType property: The license type to apply for this database.
      *
      * @return the licenseType value.
      */
@@ -768,8 +765,7 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
-     * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
+     * Set the licenseType property: The license type to apply for this database.
      *
      * @param licenseType the licenseType value to set.
      * @return the DatabaseInner object itself.

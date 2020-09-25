@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** The JobExecution model. */
+/** An execution of a job. */
 @JsonFlatten
 @Fluent
 public class JobExecutionInner extends ProxyResource {

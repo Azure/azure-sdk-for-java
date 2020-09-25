@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The ServerAzureADAdministrator model. */
+/** Azure Active Directory administrator. */
 @JsonFlatten
 @Fluent
 public class ServerAzureADAdministratorInner extends ProxyResource {

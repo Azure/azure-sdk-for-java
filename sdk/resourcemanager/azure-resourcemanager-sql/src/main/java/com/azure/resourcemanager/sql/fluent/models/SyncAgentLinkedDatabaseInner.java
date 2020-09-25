@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SyncAgentLinkedDatabase model. */
+/** An Azure SQL Database sync agent linked database. */
 @JsonFlatten
 @Immutable
 public class SyncAgentLinkedDatabaseInner extends ProxyResource {

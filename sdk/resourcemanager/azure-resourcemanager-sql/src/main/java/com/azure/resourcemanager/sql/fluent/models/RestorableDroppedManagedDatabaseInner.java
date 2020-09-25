@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The RestorableDroppedManagedDatabase model. */
+/** A restorable dropped managed database resource. */
 @JsonFlatten
 @Immutable
 public class RestorableDroppedManagedDatabaseInner extends Resource {

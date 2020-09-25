@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The RecommendedElasticPoolMetric model. */
+/** Represents recommended elastic pool metric. */
 @Fluent
 public final class RecommendedElasticPoolMetricInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedElasticPoolMetricInner.class);

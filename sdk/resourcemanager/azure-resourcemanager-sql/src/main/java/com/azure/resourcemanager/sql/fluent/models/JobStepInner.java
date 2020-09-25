@@ -14,7 +14,7 @@ import com.azure.resourcemanager.sql.models.JobStepOutput;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JobStep model. */
+/** A job step. */
 @JsonFlatten
 @Fluent
 public class JobStepInner extends ProxyResource {

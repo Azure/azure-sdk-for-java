@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/** The DatabaseBlobAuditingPolicy model. */
+/** A database blob auditing policy. */
 @JsonFlatten
 @Fluent
 public class DatabaseBlobAuditingPolicyInner extends ProxyResource {

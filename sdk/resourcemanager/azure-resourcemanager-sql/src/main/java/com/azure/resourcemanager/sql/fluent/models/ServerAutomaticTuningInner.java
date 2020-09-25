@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ServerAutomaticTuning model. */
+/** Server-level Automatic Tuning. */
 @JsonFlatten
 @Fluent
 public class ServerAutomaticTuningInner extends ProxyResource {
