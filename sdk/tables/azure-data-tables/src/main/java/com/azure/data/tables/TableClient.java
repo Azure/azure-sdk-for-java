@@ -184,7 +184,7 @@ public class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateEntity(TableEntity entity) {
-        client.upsertEntity(entity).block();
+        client.updateEntity(entity).block();
     }
 
     /**
