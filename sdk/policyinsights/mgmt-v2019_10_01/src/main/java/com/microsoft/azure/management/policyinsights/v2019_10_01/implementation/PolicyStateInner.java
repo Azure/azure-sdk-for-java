@@ -12,6 +12,7 @@ import java.util.Map;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyEvaluationDetails;
 import java.util.List;
+import com.microsoft.azure.management.policyinsights.v2019_10_01.ComponentStateDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -213,6 +214,31 @@ public class PolicyStateInner {
      */
     @JsonProperty(value = "policyDefinitionGroupNames")
     private List<String> policyDefinitionGroupNames;
+
+    /**
+     * Components state compliance records populated only when URL contains
+     * $expand=components clause.
+     */
+    @JsonProperty(value = "components")
+    private List<ComponentStateDetails> components;
+
+    /**
+     * Evaluated policy definition version.
+     */
+    @JsonProperty(value = "policyDefinitionVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String policyDefinitionVersion;
+
+    /**
+     * Evaluated policy set definition version.
+     */
+    @JsonProperty(value = "policySetDefinitionVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String policySetDefinitionVersion;
+
+    /**
+     * Evaluated policy assignment version.
+     */
+    @JsonProperty(value = "policyAssignmentVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String policyAssignmentVersion;
 
     /**
      * Get unmatched properties from the message are deserialized this collection.
@@ -832,6 +858,53 @@ public class PolicyStateInner {
     public PolicyStateInner withPolicyDefinitionGroupNames(List<String> policyDefinitionGroupNames) {
         this.policyDefinitionGroupNames = policyDefinitionGroupNames;
         return this;
+    }
+
+    /**
+     * Get components state compliance records populated only when URL contains $expand=components clause.
+     *
+     * @return the components value
+     */
+    public List<ComponentStateDetails> components() {
+        return this.components;
+    }
+
+    /**
+     * Set components state compliance records populated only when URL contains $expand=components clause.
+     *
+     * @param components the components value to set
+     * @return the PolicyStateInner object itself.
+     */
+    public PolicyStateInner withComponents(List<ComponentStateDetails> components) {
+        this.components = components;
+        return this;
+    }
+
+    /**
+     * Get evaluated policy definition version.
+     *
+     * @return the policyDefinitionVersion value
+     */
+    public String policyDefinitionVersion() {
+        return this.policyDefinitionVersion;
+    }
+
+    /**
+     * Get evaluated policy set definition version.
+     *
+     * @return the policySetDefinitionVersion value
+     */
+    public String policySetDefinitionVersion() {
+        return this.policySetDefinitionVersion;
+    }
+
+    /**
+     * Get evaluated policy assignment version.
+     *
+     * @return the policyAssignmentVersion value
+     */
+    public String policyAssignmentVersion() {
+        return this.policyAssignmentVersion;
     }
 
 }

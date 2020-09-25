@@ -11,9 +11,11 @@ package com.microsoft.azure.management.policyinsights.v2019_10_01.implementation
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyStates;
+import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
-import com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyStatesQueryResults;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyState;
 import com.microsoft.azure.management.policyinsights.v2019_10_01.SummarizeResults;
 import com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyStatesResource;
 
@@ -30,13 +32,19 @@ class PolicyStatesImpl extends WrapperImpl<PolicyStatesInner> implements PolicyS
     }
 
     @Override
-    public Observable<PolicyStatesQueryResults> listQueryResultsForManagementGroupAsync(PolicyStatesResource policyStatesResource, String managementGroupName) {
+    public Observable<PolicyState> listQueryResultsForManagementGroupAsync(final PolicyStatesResource policyStatesResource, final String managementGroupName) {
         PolicyStatesInner client = this.inner();
         return client.listQueryResultsForManagementGroupAsync(policyStatesResource, managementGroupName)
-        .map(new Func1<PolicyStatesQueryResultsInner, PolicyStatesQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyStateInner>, Iterable<PolicyStateInner>>() {
             @Override
-            public PolicyStatesQueryResults call(PolicyStatesQueryResultsInner inner) {
-                return new PolicyStatesQueryResultsImpl(inner, manager());
+            public Iterable<PolicyStateInner> call(Page<PolicyStateInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyStateInner, PolicyState>() {
+            @Override
+            public PolicyState call(PolicyStateInner inner) {
+                return new PolicyStateImpl(inner, manager());
             }
         });
     }
@@ -54,13 +62,19 @@ class PolicyStatesImpl extends WrapperImpl<PolicyStatesInner> implements PolicyS
     }
 
     @Override
-    public Observable<PolicyStatesQueryResults> listQueryResultsForSubscriptionAsync(PolicyStatesResource policyStatesResource, String subscriptionId) {
+    public Observable<PolicyState> listQueryResultsForSubscriptionAsync(final PolicyStatesResource policyStatesResource, final String subscriptionId) {
         PolicyStatesInner client = this.inner();
         return client.listQueryResultsForSubscriptionAsync(policyStatesResource, subscriptionId)
-        .map(new Func1<PolicyStatesQueryResultsInner, PolicyStatesQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyStateInner>, Iterable<PolicyStateInner>>() {
             @Override
-            public PolicyStatesQueryResults call(PolicyStatesQueryResultsInner inner) {
-                return new PolicyStatesQueryResultsImpl(inner, manager());
+            public Iterable<PolicyStateInner> call(Page<PolicyStateInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyStateInner, PolicyState>() {
+            @Override
+            public PolicyState call(PolicyStateInner inner) {
+                return new PolicyStateImpl(inner, manager());
             }
         });
     }
@@ -78,13 +92,19 @@ class PolicyStatesImpl extends WrapperImpl<PolicyStatesInner> implements PolicyS
     }
 
     @Override
-    public Observable<PolicyStatesQueryResults> listQueryResultsForResourceGroupAsync(PolicyStatesResource policyStatesResource, String subscriptionId, String resourceGroupName) {
+    public Observable<PolicyState> listQueryResultsForResourceGroupAsync(final PolicyStatesResource policyStatesResource, final String subscriptionId, final String resourceGroupName) {
         PolicyStatesInner client = this.inner();
         return client.listQueryResultsForResourceGroupAsync(policyStatesResource, subscriptionId, resourceGroupName)
-        .map(new Func1<PolicyStatesQueryResultsInner, PolicyStatesQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyStateInner>, Iterable<PolicyStateInner>>() {
             @Override
-            public PolicyStatesQueryResults call(PolicyStatesQueryResultsInner inner) {
-                return new PolicyStatesQueryResultsImpl(inner, manager());
+            public Iterable<PolicyStateInner> call(Page<PolicyStateInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyStateInner, PolicyState>() {
+            @Override
+            public PolicyState call(PolicyStateInner inner) {
+                return new PolicyStateImpl(inner, manager());
             }
         });
     }
@@ -102,13 +122,19 @@ class PolicyStatesImpl extends WrapperImpl<PolicyStatesInner> implements PolicyS
     }
 
     @Override
-    public Observable<PolicyStatesQueryResults> listQueryResultsForResourceAsync(PolicyStatesResource policyStatesResource, String resourceId) {
+    public Observable<PolicyState> listQueryResultsForResourceAsync(final PolicyStatesResource policyStatesResource, final String resourceId) {
         PolicyStatesInner client = this.inner();
         return client.listQueryResultsForResourceAsync(policyStatesResource, resourceId)
-        .map(new Func1<PolicyStatesQueryResultsInner, PolicyStatesQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyStateInner>, Iterable<PolicyStateInner>>() {
             @Override
-            public PolicyStatesQueryResults call(PolicyStatesQueryResultsInner inner) {
-                return new PolicyStatesQueryResultsImpl(inner, manager());
+            public Iterable<PolicyStateInner> call(Page<PolicyStateInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyStateInner, PolicyState>() {
+            @Override
+            public PolicyState call(PolicyStateInner inner) {
+                return new PolicyStateImpl(inner, manager());
             }
         });
     }
@@ -126,13 +152,31 @@ class PolicyStatesImpl extends WrapperImpl<PolicyStatesInner> implements PolicyS
     }
 
     @Override
-    public Observable<PolicyStatesQueryResults> listQueryResultsForPolicySetDefinitionAsync(PolicyStatesResource policyStatesResource, String subscriptionId, String policySetDefinitionName) {
+    public Completable triggerSubscriptionEvaluationAsync(String subscriptionId) {
+        PolicyStatesInner client = this.inner();
+        return client.triggerSubscriptionEvaluationAsync(subscriptionId).toCompletable();
+    }
+
+    @Override
+    public Completable triggerResourceGroupEvaluationAsync(String subscriptionId, String resourceGroupName) {
+        PolicyStatesInner client = this.inner();
+        return client.triggerResourceGroupEvaluationAsync(subscriptionId, resourceGroupName).toCompletable();
+    }
+
+    @Override
+    public Observable<PolicyState> listQueryResultsForPolicySetDefinitionAsync(final PolicyStatesResource policyStatesResource, final String subscriptionId, final String policySetDefinitionName) {
         PolicyStatesInner client = this.inner();
         return client.listQueryResultsForPolicySetDefinitionAsync(policyStatesResource, subscriptionId, policySetDefinitionName)
-        .map(new Func1<PolicyStatesQueryResultsInner, PolicyStatesQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyStateInner>, Iterable<PolicyStateInner>>() {
             @Override
-            public PolicyStatesQueryResults call(PolicyStatesQueryResultsInner inner) {
-                return new PolicyStatesQueryResultsImpl(inner, manager());
+            public Iterable<PolicyStateInner> call(Page<PolicyStateInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyStateInner, PolicyState>() {
+            @Override
+            public PolicyState call(PolicyStateInner inner) {
+                return new PolicyStateImpl(inner, manager());
             }
         });
     }
@@ -150,13 +194,19 @@ class PolicyStatesImpl extends WrapperImpl<PolicyStatesInner> implements PolicyS
     }
 
     @Override
-    public Observable<PolicyStatesQueryResults> listQueryResultsForPolicyDefinitionAsync(PolicyStatesResource policyStatesResource, String subscriptionId, String policyDefinitionName) {
+    public Observable<PolicyState> listQueryResultsForPolicyDefinitionAsync(final PolicyStatesResource policyStatesResource, final String subscriptionId, final String policyDefinitionName) {
         PolicyStatesInner client = this.inner();
         return client.listQueryResultsForPolicyDefinitionAsync(policyStatesResource, subscriptionId, policyDefinitionName)
-        .map(new Func1<PolicyStatesQueryResultsInner, PolicyStatesQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyStateInner>, Iterable<PolicyStateInner>>() {
             @Override
-            public PolicyStatesQueryResults call(PolicyStatesQueryResultsInner inner) {
-                return new PolicyStatesQueryResultsImpl(inner, manager());
+            public Iterable<PolicyStateInner> call(Page<PolicyStateInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyStateInner, PolicyState>() {
+            @Override
+            public PolicyState call(PolicyStateInner inner) {
+                return new PolicyStateImpl(inner, manager());
             }
         });
     }
@@ -174,13 +224,19 @@ class PolicyStatesImpl extends WrapperImpl<PolicyStatesInner> implements PolicyS
     }
 
     @Override
-    public Observable<PolicyStatesQueryResults> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(PolicyStatesResource policyStatesResource, String subscriptionId, String policyAssignmentName) {
+    public Observable<PolicyState> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(final PolicyStatesResource policyStatesResource, final String subscriptionId, final String policyAssignmentName) {
         PolicyStatesInner client = this.inner();
         return client.listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(policyStatesResource, subscriptionId, policyAssignmentName)
-        .map(new Func1<PolicyStatesQueryResultsInner, PolicyStatesQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyStateInner>, Iterable<PolicyStateInner>>() {
             @Override
-            public PolicyStatesQueryResults call(PolicyStatesQueryResultsInner inner) {
-                return new PolicyStatesQueryResultsImpl(inner, manager());
+            public Iterable<PolicyStateInner> call(Page<PolicyStateInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyStateInner, PolicyState>() {
+            @Override
+            public PolicyState call(PolicyStateInner inner) {
+                return new PolicyStateImpl(inner, manager());
             }
         });
     }
@@ -198,13 +254,19 @@ class PolicyStatesImpl extends WrapperImpl<PolicyStatesInner> implements PolicyS
     }
 
     @Override
-    public Observable<PolicyStatesQueryResults> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(PolicyStatesResource policyStatesResource, String subscriptionId, String resourceGroupName, String policyAssignmentName) {
+    public Observable<PolicyState> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(final PolicyStatesResource policyStatesResource, final String subscriptionId, final String resourceGroupName, final String policyAssignmentName) {
         PolicyStatesInner client = this.inner();
         return client.listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(policyStatesResource, subscriptionId, resourceGroupName, policyAssignmentName)
-        .map(new Func1<PolicyStatesQueryResultsInner, PolicyStatesQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyStateInner>, Iterable<PolicyStateInner>>() {
             @Override
-            public PolicyStatesQueryResults call(PolicyStatesQueryResultsInner inner) {
-                return new PolicyStatesQueryResultsImpl(inner, manager());
+            public Iterable<PolicyStateInner> call(Page<PolicyStateInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyStateInner, PolicyState>() {
+            @Override
+            public PolicyState call(PolicyStateInner inner) {
+                return new PolicyStateImpl(inner, manager());
             }
         });
     }
