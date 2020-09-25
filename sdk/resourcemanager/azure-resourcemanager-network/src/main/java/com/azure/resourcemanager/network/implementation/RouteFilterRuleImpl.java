@@ -6,7 +6,7 @@ import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.RouteFilter;
 import com.azure.resourcemanager.network.models.RouteFilterRule;
 import com.azure.resourcemanager.network.models.RouteFilterRuleType;
-import com.azure.resourcemanager.network.fluent.inner.RouteFilterRuleInner;
+import com.azure.resourcemanager.network.fluent.models.RouteFilterRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;
 import java.util.Arrays;

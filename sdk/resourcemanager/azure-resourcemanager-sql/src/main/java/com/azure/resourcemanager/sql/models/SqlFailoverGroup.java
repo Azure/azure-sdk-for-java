@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.fluent.inner.FailoverGroupInner;
+import com.azure.resourcemanager.sql.fluent.models.FailoverGroupInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 

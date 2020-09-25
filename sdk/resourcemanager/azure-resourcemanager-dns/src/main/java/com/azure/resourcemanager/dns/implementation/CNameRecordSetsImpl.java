@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.dns.models.CNameRecordSet;
 import com.azure.resourcemanager.dns.models.CNameRecordSets;
 import com.azure.resourcemanager.dns.models.RecordType;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import reactor.core.publisher.Mono;
 
 /** Implementation of CNameRecordSets. */

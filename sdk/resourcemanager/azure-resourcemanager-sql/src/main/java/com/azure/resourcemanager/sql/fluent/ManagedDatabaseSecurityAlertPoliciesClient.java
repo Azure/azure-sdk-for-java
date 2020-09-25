@@ -27,8 +27,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.fluent.inner.ManagedDatabaseSecurityAlertPolicyInner;
-import com.azure.resourcemanager.sql.fluent.inner.ManagedDatabaseSecurityAlertPolicyListResultInner;
+import com.azure.resourcemanager.sql.fluent.models.ManagedDatabaseSecurityAlertPolicyInner;
+import com.azure.resourcemanager.sql.fluent.models.ManagedDatabaseSecurityAlertPolicyListResultInner;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import reactor.core.publisher.Mono;
 

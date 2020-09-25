@@ -26,8 +26,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolOperationInner;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolOperationListResultInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolOperationInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolOperationListResultInner;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 

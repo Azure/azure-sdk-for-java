@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionsClient;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionInner;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnections;

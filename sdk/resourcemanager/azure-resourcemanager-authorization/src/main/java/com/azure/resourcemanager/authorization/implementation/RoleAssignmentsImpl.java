@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.RoleAssignments;
-import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentInner;
+import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentInner;
 import com.azure.resourcemanager.authorization.fluent.RoleAssignmentsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import reactor.core.publisher.Mono;

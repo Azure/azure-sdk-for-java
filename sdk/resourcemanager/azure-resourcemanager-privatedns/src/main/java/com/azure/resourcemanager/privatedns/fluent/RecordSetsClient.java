@@ -30,8 +30,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
-import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetListResultInner;
+import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
+import com.azure.resourcemanager.privatedns.fluent.models.RecordSetListResultInner;
 import com.azure.resourcemanager.privatedns.models.RecordType;
 import reactor.core.publisher.Mono;
 

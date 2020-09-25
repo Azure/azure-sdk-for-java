@@ -28,8 +28,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.fluent.inner.JobInner;
-import com.azure.resourcemanager.sql.fluent.inner.JobListResultInner;
+import com.azure.resourcemanager.sql.fluent.models.JobInner;
+import com.azure.resourcemanager.sql.fluent.models.JobListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Jobs. */

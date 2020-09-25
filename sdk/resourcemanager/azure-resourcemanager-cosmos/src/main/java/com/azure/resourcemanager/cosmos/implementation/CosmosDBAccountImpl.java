@@ -4,7 +4,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.cosmos.CosmosManager;
-import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;

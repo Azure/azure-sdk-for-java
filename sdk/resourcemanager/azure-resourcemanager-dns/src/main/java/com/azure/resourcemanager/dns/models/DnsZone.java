@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.dns.DnsZoneManager;
-import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
+import com.azure.resourcemanager.dns.fluent.models.ZoneInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;

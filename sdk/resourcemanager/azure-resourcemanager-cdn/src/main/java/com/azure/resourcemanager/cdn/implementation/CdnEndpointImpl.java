@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.cdn.fluent.inner.CustomDomainInner;
-import com.azure.resourcemanager.cdn.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.cdn.fluent.models.CustomDomainInner;
+import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
 import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;

@@ -25,8 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolActivityInner;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolActivityListResultInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolActivityInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolActivityListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ElasticPoolActivities. */

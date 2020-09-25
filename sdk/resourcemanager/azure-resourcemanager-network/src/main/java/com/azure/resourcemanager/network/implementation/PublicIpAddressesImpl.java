@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.PublicIpAddressesClient;
-import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
+import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;

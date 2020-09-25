@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
+import com.azure.resourcemanager.appservice.fluent.models.TldLegalAgreementInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An immutable client-side representation of an Azure domain legal agreement. */

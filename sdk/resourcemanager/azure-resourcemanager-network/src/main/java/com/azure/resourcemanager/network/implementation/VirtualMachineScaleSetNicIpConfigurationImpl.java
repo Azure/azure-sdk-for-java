@@ -6,7 +6,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 
 /** Implementation for NicIPConfiguration for network interfaces associated with virtual machine scale set. */
 class VirtualMachineScaleSetNicIpConfigurationImpl

@@ -28,8 +28,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.fluent.inner.FirewallRuleInner;
-import com.azure.resourcemanager.sql.fluent.inner.FirewallRuleListResultInner;
+import com.azure.resourcemanager.sql.fluent.models.FirewallRuleInner;
+import com.azure.resourcemanager.sql.fluent.models.FirewallRuleListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FirewallRules. */

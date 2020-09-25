@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerInstanceManagementClient;
-import com.azure.resourcemanager.containerinstance.fluent.ContainerInstanceManagementClientBuilder;
+import com.azure.resourcemanager.containerinstance.implementation.ContainerInstanceManagementClientBuilder;
 import com.azure.resourcemanager.containerinstance.implementation.ContainerGroupsImpl;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.azure.resourcemanager.network.NetworkManager;

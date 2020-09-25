@@ -6,7 +6,7 @@ package com.azure.resourcemanager.redis;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.redis.fluent.RedisManagementClient;
-import com.azure.resourcemanager.redis.fluent.RedisManagementClientBuilder;
+import com.azure.resourcemanager.redis.implementation.RedisManagementClientBuilder;
 import com.azure.resourcemanager.redis.implementation.RedisCachesImpl;
 import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;

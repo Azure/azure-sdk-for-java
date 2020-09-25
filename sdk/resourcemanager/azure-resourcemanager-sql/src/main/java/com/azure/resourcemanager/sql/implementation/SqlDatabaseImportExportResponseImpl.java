@@ -4,7 +4,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
-import com.azure.resourcemanager.sql.fluent.inner.ImportExportResponseInner;
+import com.azure.resourcemanager.sql.fluent.models.ImportExportResponseInner;
 import java.util.UUID;
 
 /** Implementation for SqlDatabaseImportExportResponse. */

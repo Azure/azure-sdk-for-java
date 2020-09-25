@@ -23,7 +23,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionInner;
+import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionInner;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus;
 import reactor.core.publisher.Mono;

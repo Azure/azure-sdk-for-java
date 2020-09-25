@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtension;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

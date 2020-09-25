@@ -8,7 +8,7 @@ import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.MSIManager;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.msi.fluent.inner.IdentityInner;
+import com.azure.resourcemanager.msi.fluent.models.IdentityInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;

@@ -32,10 +32,10 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkP
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInstanceViewInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMInstanceViewInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInstanceViewInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMInstanceViewInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.core.management.Region;

@@ -25,8 +25,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseUsageInner;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseUsageListResultInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseUsageInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseUsageListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DatabaseUsages. */

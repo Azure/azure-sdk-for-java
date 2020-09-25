@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGateways;

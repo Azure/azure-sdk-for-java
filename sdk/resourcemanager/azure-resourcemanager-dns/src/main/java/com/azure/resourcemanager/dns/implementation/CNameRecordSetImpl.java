@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.resourcemanager.dns.models.CNameRecordSet;
 import com.azure.resourcemanager.dns.models.CnameRecord;
 import com.azure.resourcemanager.dns.models.RecordType;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 
 /** Implementation of CNameRecordSet. */
 class CNameRecordSetImpl extends DnsRecordSetImpl implements CNameRecordSet {

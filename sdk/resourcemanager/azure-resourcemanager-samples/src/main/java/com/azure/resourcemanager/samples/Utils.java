@@ -114,7 +114,7 @@ import com.azure.resourcemanager.monitor.models.SmsReceiver;
 import com.azure.resourcemanager.monitor.models.VoiceReceiver;
 import com.azure.resourcemanager.monitor.models.WebhookReceiver;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
+import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress;
