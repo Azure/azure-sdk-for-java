@@ -1,7 +1,9 @@
 # Release History
 
-## 5.3.0-beta.1 (Unreleased)
-
+## 5.3.0-beta.1 (2020-09-25)
+### New Features
+- A producer client can be configured to be an idempotent producer. When an event with the
+same publishing sequence number is sent twice, only one will be accepted to the event hub.
 
 ## 5.2.0 (2020-09-11)
 - Default scheme to 'sb://' if no scheme is set in 'Endpoint'. 
