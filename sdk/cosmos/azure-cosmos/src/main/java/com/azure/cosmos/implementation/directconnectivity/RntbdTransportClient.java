@@ -196,6 +196,7 @@ public final class RntbdTransportClient extends TransportClient {
             BridgeInternal.setRntbdResponseLength(cosmosException, record.responseLength());
             BridgeInternal.setRequestBodyLength(cosmosException, request.getContentLength());
             BridgeInternal.setRequestTimeline(cosmosException, record.takeTimelineSnapshot());
+            BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
 
             return cosmosException;
         });
@@ -215,7 +216,7 @@ public final class RntbdTransportClient extends TransportClient {
             // messages due to CompletionException errors. Anecdotal evidence shows that this is more likely to be seen
             // in low latency environments on Azure cloud. To avoid the onErrorDropped events to get logged in the
             // default hook (which logs with level ERROR) we inject a local hook in the Reactor Context to just log it
-            // as DEBUG level fro the lifecycle of this Mono (safe here because we know the onErrorDropped doesn't have
+            // as DEBUG level for the lifecycle of this Mono (safe here because we know the onErrorDropped doesn't have
             // any functional issues.
             //
             // One might be tempted to complete a pending request here, but that is ill advised. Testing and

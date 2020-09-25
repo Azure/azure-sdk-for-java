@@ -60,12 +60,25 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             !(exception instanceof RetryWithException) &&
             !(exception instanceof PartitionIsMigratingException) &&
             !(exception instanceof InvalidPartitionException &&
-            (this.request.getPartitionKeyRangeIdentity() == null ||
-            this.request.getPartitionKeyRangeIdentity().getCollectionRid() == null)) &&
+                (this.request.getPartitionKeyRangeIdentity() == null ||
+                this.request.getPartitionKeyRangeIdentity().getCollectionRid() == null)) &&
             !(exception instanceof PartitionKeyRangeIsSplittingException)) {
+
             logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
-                    exception);
+                exception);
             stopStopWatch(this.durationTimer);
+            return Mono.just(ShouldRetryResult.noRetry());
+        } else if (exception instanceof GoneException &&
+            !request.isReadOnly() &&
+            BridgeInternal.hasSendingRequestStarted((CosmosException)exception)) {
+
+            logger.debug(
+                "Operation will NOT be retried. Write operations can not be retried safely when sending the request " +
+                    "to the service because they aren't idempotent. Current attempt {}, Exception: ",
+                this.attemptCount,
+                exception);
+            stopStopWatch(this.durationTimer);
+            this.request.requestContext.forceRefreshAddressCache = true;
             return Mono.just(ShouldRetryResult.noRetry());
         } else if (exception instanceof RetryWithException) {
             this.lastRetryWithException = (RetryWithException) exception;
