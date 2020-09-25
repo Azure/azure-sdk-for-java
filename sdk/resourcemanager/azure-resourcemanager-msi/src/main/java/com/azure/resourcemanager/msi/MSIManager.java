@@ -101,9 +101,9 @@ public final class MSIManager extends Manager<ManagedServiceIdentityClient> {
     }
 
     /**
-     * @return the Graph RBAC manager.
+     * @return the authorization manager.
      */
-    public AuthorizationManager graphRbacManager() {
+    public AuthorizationManager authorizationManager() {
         return this.authorizationManager;
     }
 }
